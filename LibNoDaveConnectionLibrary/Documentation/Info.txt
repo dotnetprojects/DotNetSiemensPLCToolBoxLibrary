@@ -25,3 +25,7 @@ mc5decode -> http://sourceforge.net/projects/mc5decode/
 
 All Librarys wich are used are under the LGPL,
 as this Library is also!
+
+
+Additional Info
+When you want to use the communication Functions, be sure, that you copy libnodave.dll from the externalDlls Directory to your Project!
