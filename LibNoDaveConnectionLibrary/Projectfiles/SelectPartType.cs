@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public enum SelectPartType
     {

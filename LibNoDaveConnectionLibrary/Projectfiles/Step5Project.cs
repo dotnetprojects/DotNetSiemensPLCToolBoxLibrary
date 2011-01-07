@@ -7,7 +7,7 @@ using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
 using LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5;
 using LibNoDaveConnectionLibrary.General;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public class Step5Project : Project
     {

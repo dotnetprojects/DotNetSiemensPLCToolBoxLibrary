@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using LibNoDaveConnectionLibrary.DataTypes;
@@ -6,7 +6,7 @@ using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     internal partial class SelectProjectPartForm : Form
     {
@@ -15,7 +15,7 @@ namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
             InitializeComponent();            
         }        
 
-        LibNoDaveConnectionLibrary.STEP7Projectfiles.Step7ProjectV5 tmpPrj;        
+        Step7ProjectV5 tmpPrj;        
 
         class myTreeNode : TreeNode
         {

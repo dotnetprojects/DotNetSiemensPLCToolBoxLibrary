@@ -157,7 +157,7 @@
     <Compile Include="Projectfiles\Step5Project.cs" />
     <Compile Include="Projectfiles\Project.cs" />
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
-    <Compile Include="Projectfiles\Step7Projects.cs" />
+    <Compile Include="Projectfiles\Projects.cs" />
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
   </ItemGroup>
   <ItemGroup>

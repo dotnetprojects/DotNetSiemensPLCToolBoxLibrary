@@ -36,10 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.HMIGENOBJECTSLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Interop.HMIGENOBJECTSLib">
+      <HintPath>..\externalDlls\Interop.HMIGENOBJECTSLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\Debug\Interop.HMIGENOBJECTSLib.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

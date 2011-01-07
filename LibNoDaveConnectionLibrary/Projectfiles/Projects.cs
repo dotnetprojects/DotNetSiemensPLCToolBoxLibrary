@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using LibNoDaveConnectionLibrary.General;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
-    public static class Step7Projects
+    public static class Projects
     {
         /// <summary>
         /// This Function Returens a Step7 Project Instance for every Project Folder in the Path.
@@ -30,8 +30,6 @@ namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
             }
             try
             {
-                
-
                 foreach (string subd in System.IO.Directory.GetDirectories(dirname))
                 {
                     try

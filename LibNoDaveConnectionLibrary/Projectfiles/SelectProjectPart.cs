@@ -1,11 +1,8 @@
-﻿#if !IPHONE
-using System;
-using System.Collections.Generic;
-using System.Text;
+#if !IPHONE
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public static class SelectProjectPart
     {

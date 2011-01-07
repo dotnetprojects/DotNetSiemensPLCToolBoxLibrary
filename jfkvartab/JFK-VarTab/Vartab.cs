@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using LibNoDaveConnectionLibrary;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-using LibNoDaveConnectionLibrary.STEP7Projectfiles;
+using LibNoDaveConnectionLibrary.Projectfiles;
 
 namespace JFK_VarTab
 {

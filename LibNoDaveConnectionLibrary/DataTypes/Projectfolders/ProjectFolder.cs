@@ -12,7 +12,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Projects
         public List<ProjectFolder> SubItems { get; set; }
         public ProjectFolder Parent { get; set; }
 
-        public LibNoDaveConnectionLibrary.STEP7Projectfiles.Project Project { get; set; }
+        public LibNoDaveConnectionLibrary.Projectfiles.Project Project { get; set; }
 
         //This is the ID of the Folder in the Database (not everyone has one)
         //Only for internal use.

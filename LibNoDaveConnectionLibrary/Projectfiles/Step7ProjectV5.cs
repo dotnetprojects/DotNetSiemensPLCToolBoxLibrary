@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -7,7 +7,7 @@ using LibNoDaveConnectionLibrary.DataTypes;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.General;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public class Step7ProjectV5 : Project, IDisposable
     {        

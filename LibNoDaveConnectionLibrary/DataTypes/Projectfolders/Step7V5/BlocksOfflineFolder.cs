@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -7,7 +7,7 @@ using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.General;
 using LibNoDaveConnectionLibrary.MC7;
-using LibNoDaveConnectionLibrary.STEP7Projectfiles;
+using LibNoDaveConnectionLibrary.Projectfiles;
 
 namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
 {

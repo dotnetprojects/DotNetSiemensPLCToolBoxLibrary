@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Xml;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public class Step7ProjectV11 : Project
     {

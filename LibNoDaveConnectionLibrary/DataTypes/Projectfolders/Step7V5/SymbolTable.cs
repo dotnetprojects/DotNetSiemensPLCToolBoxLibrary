@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using LibNoDaveConnectionLibrary.STEP7Projectfiles;
+using LibNoDaveConnectionLibrary.Projectfiles;
 
 namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
 {

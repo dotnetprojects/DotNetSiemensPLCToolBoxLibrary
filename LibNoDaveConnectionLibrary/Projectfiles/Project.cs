@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 
-namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     public abstract class Project
     {

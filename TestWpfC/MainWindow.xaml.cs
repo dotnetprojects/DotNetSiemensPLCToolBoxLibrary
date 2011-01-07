@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +12,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary;
+using LibNoDaveConnectionLibrary.Projectfiles;
 
 namespace TestWpfC
 {
@@ -358,7 +359,7 @@ namespace TestWpfC
         private S7ProgrammFolder myblkFld;
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            myblkFld = LibNoDaveConnectionLibrary.STEP7Projectfiles.SelectProjectPart.SelectS7ProgrammFolder();
+            myblkFld = SelectProjectPart.SelectS7ProgrammFolder();
         }
     }
 }

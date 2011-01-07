@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary.STEP7Projectfiles
+namespace LibNoDaveConnectionLibrary.Projectfiles
 {
     partial class SelectProjectPartForm
     {

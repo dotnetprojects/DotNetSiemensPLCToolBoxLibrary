@@ -16,7 +16,7 @@ using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.General;
-using LibNoDaveConnectionLibrary.STEP7Projectfiles;
+using LibNoDaveConnectionLibrary.Projectfiles;
 using TestProjectFileFunctions;
 using Application = System.Windows.Forms.Application;
 using Color = System.Drawing.Color;
@@ -33,7 +33,7 @@ namespace JFK_VarTab
             InitializeComponent();
         }
 
-        LibNoDaveConnectionLibrary.STEP7Projectfiles.Step7ProjectV5 tmp;
+        Step7ProjectV5 tmp;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -63,7 +63,7 @@ namespace JFK_VarTab
             if (!string.IsNullOrEmpty(Settings.Default.ProjectsPath))
             {
                 lstProjects.Items.Clear();
-                lstProjects.Items.AddRange(Step7Projects.GetStep7ProjectsFromDirectory(Settings.Default.ProjectsPath));
+                lstProjects.Items.AddRange(Projects.GetStep7ProjectsFromDirectory(Settings.Default.ProjectsPath));
             }
 
         }
@@ -121,7 +121,7 @@ namespace JFK_VarTab
                 txtUndeleteName.Visible = false;
                 */
                 //treeStep7Project.Nodes.Clear();
-                Project tmp = Step7Projects.LoadProject(fnm, chkShowDeleted.Checked);
+                Project tmp = Projects.LoadProject(fnm, chkShowDeleted.Checked);
                 //tmp = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
 
                 //listBox1.Items.AddRange(tmp.PrgProjectFolders.ToArray());
@@ -747,7 +747,7 @@ namespace JFK_VarTab
                 lstProjects.Items.Clear();
                 Settings.Default.ProjectsPath = fldDlg.SelectedPath;
                 Settings.Default.Save();
-                lstProjects.Items.AddRange(Step7Projects.GetStep7ProjectsFromDirectory(fldDlg.SelectedPath));                
+                lstProjects.Items.AddRange(Projects.GetStep7ProjectsFromDirectory(fldDlg.SelectedPath));                
             }
         }
 
