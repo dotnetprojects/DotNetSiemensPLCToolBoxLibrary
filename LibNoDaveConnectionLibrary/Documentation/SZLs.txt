@@ -1,0 +1,24 @@
+﻿Documentation to SZLs used by Siemens but not officialy Documented.
+
+SZL-ID 305 (0x131) Subindex 0002 
+	- This SZL contains the TIS Constants. (Word 4 - Bit 11) Watchpoints
+
+http://spsnet.de/showthread.php?s=b9f2e5500714c7fabd5c6b017fc5d5b7&t=17901&page=2
+
+
+SZL partial list data: (VIPA 313SC)
+0000   00 02 be fd 47 00 00 00 00 00 00 00 00 00 3c 01
+0010   00 00 00 00 7d 00 00 05 03 04 00 00 00 00 00 0c
+0020   00 0a 00 00 00 09 00 00
+
+SZL partial list data: (Siemens 3xx)
+0000   00 02 be fd 4f 00 00 00 00 00 00 00 00 00 3c 01
+0010   00 00 00 00 7d 00 00 05 03 07 00 00 00 00 00 0c
+0020   00 0a 00 00 00 09 00 00
+
+SZL partial list data: (Siemens @home)
+0000   00 02 be fd 0f 00 00 00 00 00 00 00 00 00 3c 01
+0010   00 00 00 00 7d 00 00 05 03 04 00 00 00 00 00 0c
+0020   00 0a 00 00 00 09 00 00
+
+

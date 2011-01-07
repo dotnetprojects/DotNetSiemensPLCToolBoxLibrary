@@ -1,0 +1,114 @@
+﻿Description of the Status for a PLC Block Telegramm
+
+there are two Telegramms for this. I think one it's a old one, and one a new one.
+
+the Vipa plcs only understood the old Telegramm format, but i've to find out how step7 knows wich
+one is possible. I think the old Format is understood from all plcs, and the new one only from newer ones?
+
+I call the old format telegramm type 0x01 and the new one 0x13 (this numbers are shown in wireshrak, when you use the
+plugin for the step 7 telegrams)
+
+Description how it works (for old and new format)
+
+Step 7 aks for a Status of the Block with Telegramm 0x01 or 0x13.
+In this telegramm, step 7 tells the plc for wich rows it wants to read wich registers.
+the plc sends a response.
+step 7 sends a ask for data telegramm (0x..)
+the plc sends a response
+the plc sends the 0x01 or 0x13 telegramm with the register values for the asked lines.
+
+There is a maximum of how much data in the telegramm could be, and so you cannot aks for how much lines you want!
+
+Description of the 0x13 and 0x01 Telegram:
+
+0xFF - fix
+0x09 - fix
+0x..
+0x.. - 2 Bytes length
+0x..
+0x.. - Length of header
+0x..
+0x.. - Length of the Register ask part
+0x00
+0x00
+0x00
+0x01
+0x00
+0x00 - Fix 6 Lines?
+0x..
+0x.. - Length in the answer Telegramm
+0x00
+0x01
+0x00
+0x01
+0x00
+0x01
+0x00
+0x01
+0x00
+0x01 - Fix 10 Bytes?
+0x06 - Fix
+0x.. - Count of the calling Paths (0x00 = none, 0x01 = db or path, 0x02 = both)
+0x..
+0x.. - 2 Bytes Block type
+0x..
+0x.. - 2 Bytes Block Number
+0x..
+0x.. - 2 bytes Starting Row (Byteadress of the starting Command)
+0x..
+0x.. - Adress of the last asked command plus the length of this command.
+--- Callingpath follows, but only if the count of the calling path is not zero, and the length of this depends on the count
+--- End of Calling Paths
+
+---------This now is only for the 0x13 Telegramm---------
+0x80 - fixed?
+0x.. - count of asked lines.
+0x00 - fixed
+0x.. - first ask for registers (this are all the selected registers, so every one has a value, because in a line, there is only asked for the registers wich the command changes)
+
+--- and now follw the lines wich are asked for
+0x..
+0x.. - Byte Adress of the Line
+0x..
+0x.. - Asked registers
+---
+
+The Asked Registers can be: Bit 0 = STW, Bit 1 = Akku 1, Bit 2 = Akku 2, Bit 3 = AR1, Bit 4 = AR2, Bit 5 = DB/DI
+
+There is one speciality left. On a call line, there is also asked for Variables, these variables are appended to the end of the asked line list.
+The asked line list then looks like this:
+--- and now follw the lines wich are asked for
+0x..
+0x.. - Byte Adress of the Line
+0x.. - count asked Variables.
+0x.. - Asked registers
+---
+and a Asked Variable at the end then looks like this:
+0x.. - High Niblle Contains the Source Type (0 = M, 1 = E, 2 = A, 0xC = L,7 = DB.DBWxx, 0xB = DB, can also be DI the in the 4th Byte is 01 (because db adress can only be 2 bytes)) Low Nibble conatins the size (1 = Byte/Bit, 2 = Word, 3 = Dword)
+0x01 - Every time 01?
+0x.. 
+0x..
+0x..
+0x.. - 4 Bytes Address
+
+
+
+---------This now is only for the 0x01 Telegramm---------
+0x80 - fixed?
+0x.. - first ask for registers (this are all the selected registers, so every one has a value, because in a line, there is only asked for the registers wich the command changes)
+
+--- and now follw the lines wich are asked for
+0x80
+0x.. - Asked registers
+
+if the command is more than 2 bytes long, the length of the command -2 0x00 is added to the ask!
+---
+
+If for a command no register is asked, there are added as many 0x80s to the aks as long the telegramm is!
+
+The ask for Variables is the same as in the 0x13 command, in a asked line, the 0x80 in the beginning is replaced with the number of asked variables!
+And the the varaibles are added to the telegramm!
+
+
+
+

@@ -1,0 +1,9 @@
+﻿% Kommentare sind in der DO.S5D Datei nicht in ST.S5D!
+# Kommentarbausteine fangen nicht mit 7070 an -> noch analysieren!
+
+
+Datei ist in Blöcke unterteilt, welche immer wieder mit dem dateinamen beginnen.
+Danach folgt ein Zeichen Kennung ?
+Dann leerzeichen 7 stk
+Dann xx xx xx xx
+Dann Blockgröße in x*0x80

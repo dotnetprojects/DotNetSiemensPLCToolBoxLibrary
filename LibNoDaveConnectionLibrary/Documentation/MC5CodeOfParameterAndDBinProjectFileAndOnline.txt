@@ -1,0 +1,12 @@
+﻿Aufbau SSBPart Subblk 10 (DB in Hex)
+
+Ab Position 7:
+
+[DatenTyp Bsp 11=Struct] [Umgebung: Stat,In,Out,...] [AnzZeilen] [DatenTyp] 04 - vieleicht Struct usw..
+
+wenn mehr als 254 Zeilen dann:
+
+[DatenTyp Bsp 11=Struct] [Umgebung: Stat,In,Out,...] FF [AnzZeilen-255 lowB] [AnzZeilen-255 highB +1 ] [DatenTyp] [Umgebung: Stat,In,Out,...] - vieleicht Struct usw..
+
+
+das mit mehr als 254 Zeilen muss getestet werden, ob das Online genau so ist!

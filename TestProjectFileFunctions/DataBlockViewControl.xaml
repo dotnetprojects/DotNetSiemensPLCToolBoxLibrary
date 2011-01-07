@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="TestProjectFileFunctions.DataBlockViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Blocks="clr-namespace:LibNoDaveConnectionLibrary.DataTypes.Blocks;assembly=LibNoDaveConnectionLibrary" xmlns:local="clr-namespace:TestProjectFileFunctions" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Style TargetType="TreeViewItem">
+            <Style.Resources>
+                <!-- Resources omitted for clarity… -->
+            </Style.Resources>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeViewItem">
+                        <StackPanel Margin="0" Orientation="Vertical">
+                            <!-- Presents the Content -->
+                            <Border Padding="0" Margin="0" Name="sel">
+                            <ContentPresenter Margin="0"  Name="PART_Header" ContentSource="Header"/>
+                            </Border>
+                            <!-- Presents the Children -->
+                            <Border Padding="0" Margin="0">
+                                <ItemsPresenter x:Name="ItemsHost" Margin="0"/>
+                            </Border>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                                                        <!--When the item is selected in the TreeView, use the 
+              "selected" colors and give it a drop shadow. -->
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="sel" Value="Blue"></Setter>
+                                <!-- Setters omitted for clarity... -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Make each TreeViewItem show it's children  in a StackPanel. -->
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Left" IsItemsHost="True" Margin="0"/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <local:TreeviewDepthWidthConverter  Width="19" x:Key="lengthConverter" />
+        <local:TreeviewDepthWidthConverter  Width="330" preWidth="19" x:Key="length2Converter" />
+
+    </UserControl.Resources>
+
+    <Grid Background="White" Margin="0">
+        <!--
+            <StackPanel Height="20" Orientation="Horizontal" Margin="0">
+            <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black">
+                <TextBlock TextAlignment="Right" Text="Address" Margin="0" Width="45"/>
+            </Border>
+                <Border Padding="2" Width="330" BorderThickness="1,1,1,1" BorderBrush="Black">
+                <TextBlock Text="Name" Margin="0"/>                    
+            </Border>                
+            <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="80">
+                <TextBlock Text="DataType" Margin="0"/>
+            </Border>
+            <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="300">
+                <TextBlock Text="Value" Margin="0"/>
+            </Border>
+        </StackPanel> -->
+            
+                <TreeView Padding="0" Margin="0" Name="MyTree">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type Blocks:PLCDataRow}" ItemsSource="{Binding Children}">
+                        <Grid Margin="0">
+                        <!--<Thumb x:Name="PART_Thumb" HorizontalAlignment="Left" Width="5" Margin="7 0 0 0" Cursor="SizeWE">
+                            <Thumb.RenderTransform>
+                                <TranslateTransform X="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TreeviewDepthWidthConverter}}}" />
+                            </Thumb.RenderTransform>
+                            <Thumb.Template>
+                                <ControlTemplate>
+                                    <Border Background="Transparent" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>-->                
+                    <StackPanel Orientation="Horizontal" Margin="0">                       
+                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black">
+                            <TextBlock TextAlignment="Right" Text="{Binding BlockAddress}" Margin="0" Width="45"/>
+                        </Border>
+                        <Border Width="{Binding Converter={StaticResource lengthConverter}}"  Margin="0"/>
+                        <Border Padding="2" Width="{Binding Converter={StaticResource length2Converter}}" BorderThickness="1,1,1,1" BorderBrush="Black">
+                            <TextBlock Text="{Binding Name}" Margin="0"/>
+                        </Border>
+                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="140">
+                            <TextBlock Text="{Binding DataTypeAsString}" Margin="0"/>
+                        </Border>
+                        <Border Padding="2" Width="300" BorderThickness="1,1,1,1" BorderBrush="Black">
+                                <TextBlock Text="{Binding Comment}" Margin="0"/>
+                        </Border>
+                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="300">
+                            <TextBlock Text="{Binding Path=LibNoDaveValue.Value}" Margin="0"/>
+                        </Border>
+                    </StackPanel>
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+
+            <!--
+            <TreeView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid HorizontalAlignment="Center" IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </TreeView.ItemsPanel>
+            -->
+        </TreeView>
+            
+       
+    </Grid>
+</UserControl>

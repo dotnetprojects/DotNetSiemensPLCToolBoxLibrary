@@ -1,0 +1,27 @@
+In this director are only the files I changed from the original libnodave!
+
+0.8.4.5.5
+  - Timeout in TCP Connections was fix 1,5s wich was too short for some tasks.
+    Now, Stanadrt Timeout is 2.5s for every Connection, but can be changed via settimeout
+
+0.8.4.5.4
+  - Stop bits in LibNoDave serial Changed to 1
+
+0.8.4.5.3
+  - Multiple read returns 0x00 even if the first result does not exist!
+
+0.8.4.5.2
+  - Routing Bugfixes (Subnet Lowbyte/Highbyte switched!)
+
+0.8.4.5.1 and earlyer
+  - Routing
+  - Extened Connection
+
+Changes to the original Version:
+ - Routing on most Adapters
+ - a Bug in TCP Connection is fixed
+ - Deletion of PLC Blocks
+ - Upload of PLC Blocks to the PLC (not yet tested)
+
+Based on libnodave 0.8.4.5
+

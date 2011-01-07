@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LibNoDaveConnectionLibrary</RootNamespace>
+    <AssemblyName>LibNoDaveConnectionLibrary</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SHARPZIPLIB</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SHARPZIPLIB</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="DataTypes\BitByteAddress.cs" />
+    <Compile Include="DataTypes\Blocks\Block.cs" />
+    <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
+    <Compile Include="DataTypes\Blocks\PLCDataBlockExpandOptions.cs" />
+    <Compile Include="DataTypes\Blocks\ProjectBlockInfo.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\MC5FunctionBlockRow.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5CommentBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5Block.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5DataBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5FunctionBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5Parameter.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5ParameterFormat.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\S5ParameterType.cs" />
+    <Compile Include="DataTypes\Blocks\Step5\Step5ProjectBlockInfo.cs" />
+    <Compile Include="DataTypes\ConnectionTargetPLCType.cs" />
+    <Compile Include="DataTypes\LibNoDaveConnectionLibraryException.cs" />
+    <Compile Include="DataTypes\Blocks\VATBlock.cs" />
+    <Compile Include="DataTypes\LibNoDaveConnectionLibraryExceptionType.cs" />
+    <Compile Include="DataTypes\Projectfolders\IBlocksFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\ProjectFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step5\Step5BlocksFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step5\Step5ProjectFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Step7Attribute.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\CPFolder.cs" />
+    <Compile Include="DataTypes\TagDataSource.cs" />
+    <Compile Include="DataTypes\PLCType.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\CommunicationProcessorFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\CPUFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\HardwareConfigFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\S7ProgrammFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\SourceFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\StationConfigurationFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\BlocksOfflineFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\Step7ProjectFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTableEntry.cs" />
+    <Compile Include="DataTypes\Step7ProjectSourceInfo.cs" />
+    <Compile Include="DataTypes\DiagnosticEntry.cs" />
+    <Compile Include="DataTypes\PLCBlockType.cs" />
+    <Compile Include="DataTypes\PLCLanguage.cs" />
+    <Compile Include="DataTypes\PLCMemoryInfo.cs" />
+    <Compile Include="DataTypes\PLCState.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\Step7ProjectBlockInfo.cs" />
+    <Compile Include="DataTypes\TagDataType.cs" />
+    <Compile Include="DataTypes\TagDisplayDataType.cs" />
+    <Compile Include="General\NumericComparer.cs" />
+    <Compile Include="General\StringLogicalComparer.cs" />
+    <Compile Include="General\ZipHelper.cs" />
+    <Compile Include="InputBox.cs" />
+    <Compile Include="LibNoDaveValueUITypeEditor.cs" />
+    <Compile Include="EnumListBoxExtensions.cs" />
+    <Compile Include="LibNoDaveConnection.cs" />
+    <Compile Include="ConnectionEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionEditor.Designer.cs">
+      <DependentUpon>ConnectionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="libnodave.net.cs" />
+    <Compile Include="LibNoDaveConnectionConfiguration.cs" />
+    <Compile Include="LibNoDaveConnectionUITypeEditor.cs" />
+    <Compile Include="LibNoDaveValueEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LibNoDaveValueEditor.Designer.cs">
+      <DependentUpon>LibNoDaveValueEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PLCs\S5\MC5\MC5toComment.cs" />
+    <Compile Include="PLCs\S5\MC5\MC5LIB_SYMTAB.cs" />
+    <Compile Include="PLCs\S5\MC5\MC5toAWL.cs" />
+    <Compile Include="PLCs\S5\MC5\MC5toDB.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\AWLCodeOptimizer.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\AWLtoMC7.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\CallConverter.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\DBtoMC7.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\Helper.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\JumpMarks.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\LocalDataConverter.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\MC7Converter.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\MC7ConvertingOptions.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\MC7toAWL.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\MC7toDB.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\Memnoic.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\NetWork.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\Parameter.cs" />
+    <Compile Include="DataTypes\Blocks\PLCBlock.cs" />
+    <Compile Include="DataTypes\Blocks\PLCDataBlock.cs" />
+    <Compile Include="DataTypes\Blocks\PLCDataRow.cs" />
+    <Compile Include="DataTypes\Blocks\PLCDataRowSubType.cs" />
+    <Compile Include="DataTypes\Blocks\PLCDataRowType.cs" />
+    <Compile Include="DataTypes\Blocks\PLCFunctionBlock.cs" />
+    <Compile Include="DataTypes\Blocks\PLCFunctionBlockRow.cs" />
+    <Compile Include="DBF\ParseDBF.cs" />
+    <Compile Include="DataTypes\Blocks\VATRow.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LibNoDaveValue.cs" />
+    <Compile Include="Projectfiles\SelectPartType.cs" />
+    <Compile Include="Projectfiles\SelectProjectPart.cs" />
+    <Compile Include="Projectfiles\SelectProjectPartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Projectfiles\SelectProjectPartForm.Designer.cs">
+      <DependentUpon>SelectProjectPartForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Projectfiles\Step5Project.cs" />
+    <Compile Include="Projectfiles\Project.cs" />
+    <Compile Include="Projectfiles\Step7ProjectV5.cs" />
+    <Compile Include="Projectfiles\Step7Projects.cs" />
+    <Compile Include="Projectfiles\Step7ProjectV11.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConnectionEditor.resx">
+      <DependentUpon>ConnectionEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LibNoDaveValueEditor.resx">
+      <DependentUpon>LibNoDaveValueEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Projectfiles\SelectProjectPartForm.resx">
+      <DependentUpon>SelectProjectPartForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataTypes\Projectfolders\Step7V11\" />
+    <Folder Include="PLCs\S7_1xxx\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
+    <Content Include="Documentation\Licence.txt" />
+    <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
+    <Content Include="Documentation\PDUs.txt" />
+    <Content Include="Documentation\StatusOfPLCBlock.txt" />
+    <Content Include="Documentation\Step5ProjectInfo.txt" />
+    <Content Include="Documentation\Step7ProjectFileCommentRowInSubblkDBF.txt" />
+    <Content Include="Documentation\Step7Projectfiles.txt" />
+    <Content Include="Documentation\SZLs.txt" />
+    <Content Include="Documentation\Info.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

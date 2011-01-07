@@ -1,0 +1,27 @@
+﻿Info about LibNoDaveConnectionLibrary
+
+It is a Library for Connecting to PLCs with LibNoDave!
+
+It also includes the Management of the Siemens S7 Procet files.
+
+ Thanks go to:
+ * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
+ * Zottel         -> For LibNoDave
+ * Thomas_V2.1    -> For a few tips for the Step7 FileFormat
+ Many people at SPS-Forum.de for their help.
+
+Used extern Librarys:
+
+AvalonDock  : http://avalondock.codeplex.com/
+LibNoDave   : http://libnodave.sourceforge.net/
+SharpZipLib : http://www.icsharpcode.net/opensource/sharpziplib/
+AvalonEdit  : http://www.avalonedit.net/
+
+Included extern Librarys or Code from:
+
+libnodave.net.cs (part of LibNoDave)
+Load DBF into a Datatble from http://www.codeproject.com/KB/bugs/LoadDBF.aspx
+mc5decode -> http://sourceforge.net/projects/mc5decode/
+
+All Librarys wich are used are under the LGPL,
+as this Library is also!

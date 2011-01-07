@@ -1,0 +1,114 @@
+﻿Beschreibung von ausgesuchten Teilen des Step7 Dateiformates:
+
+Datei BAUSTEIN.DBF in einem Offline Bausteinordner…
+	ID --> Nummer des Datensatzes (die geleiche ID wird später in SUBBLK.DBF verwendet)
+	TYP --> Typ des Bausteines (8=OB, 10=DB, 12=FC,…)
+	NUMMER --> Bausteinnummer in Step7
+	ATTRIBS --> Autor und weitere Infos (aber welche ?)
+	LINKS --> Immer 0?
+	UDA --> Attributszeilen aus Step 7
+	SUBBLOCKS --> ?
+
+Datei SUBBLK.DBF in einem Offline Bausteinordner…
+	OBJECTID --> ID von BAUSTEIN.DBF
+	BLKLANG --> 0=undef?,1=AWL,2=KOP, 3=FUP,5=DB,15=VAT…
+	SUBBLKTYP --> weiter unten…
+	BLKNUMBER --> Nummer des Bausteines in Step7
+	ATTRIBUTE --> 0,1 oder 9 aber was bedeutets?
+	AGRESERVE --> immer 1?
+	BLKTOTLEN --> gesamt Bausteinlänge?
+	MC5LEN --> Länge Feld mc5code
+	SSBLEN --> Länge Feld ssbpart
+	ADDLEN --> Länge Feld addinfo
+	LOCDATALEN --> immer 0 (ausser wenn anderst angegeben.)
+	TIMESTAMP1 --> letzte Schnittstellen-Änderung
+	TIMESTAMP2 --> Änderungsdatum
+	PASSWORD --> KnowHowProtection bei Subblktyp 12, 8, 14.
+	USERNAME --> 
+	BLOCKFNAME --> Block Familien Name ? (z.B. IEC)
+	BLOCKNAME -->Bausteinname (wird als STD Symbol benutzt!) 
+	VERSION --> 
+	RESERVED1 --> immer 0?
+	CHECKSUM -->
+	CPUTYPE --> immer 0 ?
+	RESERVED2 --> immer 0?
+
+####################################################################
+Inhalt der Fehler mc5code,ssbpart und addinfo bei den verschiedenen Bausteintypen
+Bausteintyp FC (OB, FB, SFC, SFB ) (SFC und SFB sind keine richtigen Bausteine)
+Subblktyp 12: (8, 14, 13, 15)
+	mc5code = mc7code des Bausteines (nicht SFC,SFB)
+	addinfo = Netzwerkinformationen des Bausteines (nicht SFC,SFB) 
+		und Infos wo die Jumpmarken zu positionieren sind!          --> Wie das abläuft sieht man in der Networks.cs und JumpMarks.cs
+	ssbpart = mc7code des parameterinterfaces
+	locdatalen = Länge der Lokaldaten (nicht SFC,SFB)
+
+Subblktyp 5: (3, 4, 7, 9)
+	mc5code = Interface (Parameter) des Bausteines
+	addinfo = Symbholische Addressen von merken, bzw Datenworten
+			  Parameternamen und Typen der benutzen FC, FB			  
+	ssbpart = fixed?  (01 00 00 00 00 00 00 00) oder null
+
+Subblktyp 19: (17, 18, 22, 21)
+	mc5code = Kommentare der Netzwerke                              --> Infos hierzu: Step7ProjectFileCommentRowInSubblkDBF.txt
+	addinfo = Sprungmarken als Text, zuordung der sprungmarken in addinfo von subblktyp 12 nach nw infos
+	ssbpart = Bausteinbeschreibung
+
+Subblktyp 65 : (67, 64, 70, 71) 
+	mc5code = Verwendete FB, SFB, UDT in Parametern (Schnittstelle ist in ssbpart von subblk 12 beschrieben)
+	addinfo = Verwendete FC, FB im Code und deren CRC oder Schnittstellendatum oder sowas.
+	ssbpart = ????? 01 00 00 00 00  oder so fixed ?????
+	locdatalen = immer 2 ??
+####################################################################
+
+Bausteintyp DB
+Subblktyp 10: siehe 12 FC
+	mc5code = Aktualwerte des DBs
+	addinfo = 
+	ssbpart = Aufbau des DB in Hex inkl. UDTs usw…
+
+Subblktyp 6: siehe 5 FC
+	mc5code = Struktur des DBs als Text
+	addinfo = 
+	ssbpart = (null)
+
+Subblktyp 20: siehe 19FC
+	mc5code = fixed? \0\0\0\
+	addinfo = fixed? \0\0
+	ssbpart = fixed \0\0\0
+
+Subblktyp 66: siehe 65 FC
+	mc5code = 
+	addinfo = (null) ?
+	ssbpart = 
+
+####################################################################
+
+Bausteintyp UDT
+Subblktyp 39:
+	mc5code = (null) ?
+	addinfo = fixed ?
+	ssbpart = (null) ?
+
+Subblktyp 1: siehe 5 FC
+	mc5code = Struktur des UDTs als Text
+	addinfo = (null)
+	ssbpart = 
+
+Subblktyp 69: siehe 65 FC
+	mc5code = 
+	addinfo = 
+	ssbpart = 
+
+####################################################################
+
+Bausteintyp VAT
+Subblktyp 27:
+	mc5code = VAT (absolut adressiert)
+	addinfo = VAT (symbolisch addressiert)
+	ssbpart = (null) ?
+
+Subblktyp 38:
+	mc5code = Kommentar in einer VAT
+	addinfo = 
+	ssbpart = 

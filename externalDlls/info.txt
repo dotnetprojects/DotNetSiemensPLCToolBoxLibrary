@@ -1,0 +1,8 @@
+Used external DLLs:
+
+AvalonDock  : http://avalondock.codeplex.com/
+LibNoDave   : http://libnodave.sourceforge.net/
+SharpZipLib : http://www.icsharpcode.net/opensource/sharpziplib/
+AvalonEdit  : http://www.avalonedit.net/
+
+Interop.HMIGENOBJECTSLib.dll : -> Wrapper for WinCC HMIGENOBJECTSLib.dll automaticly created by VS2010

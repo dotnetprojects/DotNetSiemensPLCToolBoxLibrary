@@ -1,0 +1,52 @@
+﻿<Window x:Class="WPFToolboxForPLCs.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:dockwin="clr-namespace:WPFToolboxForPLCs.DockableWindows"
+      
+        mc:Ignorable="d" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+                
+        Title="MainWindow" Height="420" Width="709">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- <ResourceDictionary Source="/AvalonDock.Themes;component/themes/dev2010.xaml"/> -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Menu>
+            <MenuItem Header="Main">
+            </MenuItem>
+        </Menu>
+    
+    <ad:DockingManager x:Name="DockManager" IsAnimationEnabled="True" Grid.Row="1" Margin="0,4,0,0"
+                     ActiveContent="{Binding ElementName=Content1}" >
+        <ad:DockingManager.LayoutTransform>
+            <ScaleTransform
+                    ScaleX="{Binding Value, ElementName=zoomSlider}"
+                    ScaleY="{Binding Value, ElementName=zoomSlider}"/>
+        </ad:DockingManager.LayoutTransform>
+        <ad:ResizingPanel Orientation="Horizontal">
+            
+            <ad:DockablePane SelectedIndex="1">
+                    <dockwin:BlockList x:Name="BlocksTree" Title="BlocksTree" />
+            </ad:DockablePane>
+                <ad:DocumentPane x:Name="DocumentHost">
+                </ad:DocumentPane>
+            </ad:ResizingPanel>
+    </ad:DockingManager>
+</Grid>
+</Window>

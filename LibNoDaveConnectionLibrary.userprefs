@@ -1,0 +1,23 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="g:\LibNoDaveConnectionLibrary\LibNoDaveConnectionLibrary\LibNoDaveConnectionLibrary\LibNoDaveDataTypes\Step7ProjectSourceInfo.cs" ctype="Workbench">
+    <Files>
+      <File FileName="LibNoDaveConnectionLibrary\DBF\ParseDBF.cs" Line="1" Column="1" />
+      <File FileName="g:\LibNoDaveConnectionLibrary\LibNoDaveConnectionLibrary\LibNoDaveConnectionLibrary\LibNoDaveDataTypes\Step7ProjectSourceInfo.cs" Line="10" Column="31" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="LibNoDaveConnectionLibrary" expanded="True" selected="True">
+            <Node name="DBF" expanded="True" />
+          </Node>
+          <Node name="TestProjectFileFunctions" expanded="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>

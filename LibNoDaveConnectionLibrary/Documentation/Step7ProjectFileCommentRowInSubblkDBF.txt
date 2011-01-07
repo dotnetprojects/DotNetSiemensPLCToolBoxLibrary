@@ -1,0 +1,19 @@
+﻿Eine Komentarzeile beginnt immer mit 6 Byte:
+byte 0   = Anzahl zeichen Kommentar oder 06 Bei Netzwerk?
+byte 1   = Start NW Kommentar
+byte 2   = oder Anzahl der Befehle vor diesem Kommentar  (00 == Zeile ohne Befehl)
+byte 3   = Ende NW Kommentar (lowB)   oder Anzahl der Befehle vor diesem Kommentar
+byte 4   = Ende NW Kommentar (highB)
+byte 5   = 06 bei netzwerk, 28 bei zeile mit befehl?
+
+
+byte 5 ist bei einem NM immer 0x06
+
+byte 5 ist abundzu auch noch 0x28, hab aber keine ahnung was das bedeutet.
+
+byte 4 ist bei einer zeile mit einem befehl 0x80.
+ab und zu auch 0x20 keine ahnung was das bedeutet!
+
+
+
+Nach diesen Bytes kommt der Kommentar, danach beginnts wieder von vorne!
