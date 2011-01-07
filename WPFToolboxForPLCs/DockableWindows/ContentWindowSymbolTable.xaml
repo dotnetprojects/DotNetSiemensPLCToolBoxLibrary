@@ -1,22 +1,14 @@
 ﻿<ad:DocumentContent
-    x:Class="WPFToolboxForPLCs.DockableWindows.BlockList"
+    x:Class="WPFToolboxForPLCs.DockableWindows.ContentWindowSymbolTable"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" >
-
+             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2">
         <DataGrid.Columns>
-            <DataGridTemplateColumn Header="ObjectName" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ObjectName">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding BlockName}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
             <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Symbol">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -24,17 +16,24 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Name" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Name">
+            <DataGridTemplateColumn Header="Operand" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Operand">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Operand}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Type" Width="SizeToCells" IsReadOnly="True" SortMemberPath="BlockTypeString">
+            <DataGridTemplateColumn Header="DataType" Width="SizeToCells" IsReadOnly="True" SortMemberPath="DataType">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding BlockTypeString}" />
+                        <TextBlock Text="{Binding DataType}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Comment" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Comment">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Comment}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

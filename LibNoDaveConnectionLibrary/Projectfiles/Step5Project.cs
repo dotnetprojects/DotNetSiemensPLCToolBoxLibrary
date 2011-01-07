@@ -43,10 +43,7 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
         internal override void LoadProject()
         {
             _projectLoaded = true;
-
-            //Create the main Project Folder
-            ProjectStructure = new Step5ProjectFolder() { Project = this };
-
+         
             //Read Step5 Project into a Byte-Array
             Stream fsProject = ZipHelper.GetReadStream(_zipfile, _projectfilename);
             s5ProjectByteArray = new byte[ZipHelper.GetStreamLength(_zipfile, _projectfilename, fsProject)];
@@ -59,6 +56,8 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
             //Read the Project Size
             Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15] * 0x100;
 
+            //Create the main Project Folder
+            ProjectStructure = new Step5ProjectFolder() { Project = this, Name = ProjectName };
 
             //int startpos = s5ProjectByteArray[0x12] * 0x80;
 

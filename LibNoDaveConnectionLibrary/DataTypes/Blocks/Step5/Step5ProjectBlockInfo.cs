@@ -11,7 +11,7 @@
         //public PLCBlockType BlockType { get; set; }
         //public string Symbol { get; set; }
 
-        public override string BlockName
+        public override string Name
         {
             get
             {
@@ -24,21 +24,6 @@
         internal byte[] _blkByte;
         internal byte[] _blkHeaderByte;
         //internal S5Block _myblk;
-
-        public override string ToString()
-        {
-            string retVal = "";
-
-            string blknm = "";
-            if (!string.IsNullOrEmpty(BlockName))
-                blknm = " (" + BlockName + ")";
-            if (Deleted)
-                retVal += "$$_";
-            if (!string.IsNullOrEmpty(Symbol))
-                retVal += Symbol + " (" + BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString() + ")" + blknm;
-            else
-                retVal += BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString() + blknm;
-            return retVal;
-        }
+        
     }
 }

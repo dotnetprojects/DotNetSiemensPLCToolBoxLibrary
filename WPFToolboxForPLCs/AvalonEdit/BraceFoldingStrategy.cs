@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2009 Daniel Grunwald
+// Copyright (c) 2009 Daniel Grunwald
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this
 // software and associated documentation files (the "Software"), to deal in the Software
@@ -16,12 +16,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
 
-namespace TestWpfC
+namespace WPFToolboxForPLCs.AvalonEdit
 {
 	/// <summary>
 	/// Allows producing foldings from a document based on braces.

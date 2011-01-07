@@ -19,5 +19,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
         public string Name { get; set; }
 
         public ProjectFolder ParentFolder { get; set; }
+
+        public string BlockName { get { return BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString(); } }
     }
 }

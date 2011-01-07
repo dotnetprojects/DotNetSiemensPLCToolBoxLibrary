@@ -1,14 +1,67 @@
-﻿<ad:DockableContent
+﻿<ad:DocumentContent
     x:Class="WPFToolboxForPLCs.DockableWindows.FunctionBlockEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
     <Grid>
-        
+        <DockPanel Grid.Column="1" >
+            <DockPanel Name="toppanel" DockPanel.Dock="Top"  VerticalAlignment="Stretch" Height="160">
+                <TreeView DockPanel.Dock="Left" Width="180" Name="myTree" ItemsSource="{Binding}" SelectedItemChanged="myTree_SelectedItemChanged">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGrid" ItemsSource="{Binding Children}">
+                    <DataGrid.Columns>
+                        <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
+                                           Binding="{Binding Id}" 
+                                           CanUserSort="False"
+                                           IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Type" 
+                                           Binding="{Binding Date, StringFormat=d}" 
+                                           CanUserSort="False" />-->
+                        <DataGridTextColumn Header="Array" MinWidth="30" 
+                                           Binding="{Binding IsArray}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrSt" MinWidth="30" 
+                                           Binding="{Binding ArrayStart}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrStp" MinWidth="30" 
+                                           Binding="{Binding ArrayStop}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Name" MinWidth="100" 
+                                           Binding="{Binding Name}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Datatype" MinWidth="80" 
+                                           Binding="{Binding DataType}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="StartValue" MinWidth="80" 
+                                           Binding="{Binding StartValue}"
+                                           CanUserSort="False" />
+                        <!--<DataGridTextColumn Header="Adress" MinWidth="60" 
+                                           Binding="{Binding Adress}"
+                                           CanUserSort="False"
+                                           IsReadOnly="True"
+                                           />-->
+                        <DataGridTextColumn Header="Comment" MinWidth="100" Width="300"
+                                           Binding="{Binding Comment}"
+                                           CanUserSort="False" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </DockPanel>
+            <avalonEdit:TextEditor 
+				Name="textEditor"
+				FontFamily="Consolas"
+				FontSize="10pt"				
+                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>
+
+        </DockPanel>
     </Grid>
 
-</ad:DockableContent>
+</ad:DocumentContent>

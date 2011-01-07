@@ -361,5 +361,10 @@ namespace TestWpfC
         {
             myblkFld = SelectProjectPart.SelectS7ProgrammFolder();
         }
+
+        private void myDGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -23,12 +23,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes
             string retVal = "";
             if (KnowHowProtection)
                 retVal += "@";
-            if (Deleted)
-                retVal += "$$_";
-            if (!string.IsNullOrEmpty(Symbol))
-                retVal += Symbol + " (" + BlockType.ToString() + BlockNumber.ToString() + ")";
-            else
-                retVal += BlockType.ToString() + BlockNumber.ToString();
+            retVal += base.ToString();
             return retVal;
         }
     }

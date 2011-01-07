@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 
 namespace LibNoDaveConnectionLibrary.DataTypes.Projects
 {
@@ -16,8 +17,9 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Projects
 
         //This is the ID of the Folder in the Database (not everyone has one)
         //Only for internal use.
-        internal int ID;        
+        internal int ID;
 
+        
         public ProjectFolder()
         {
             SubItems = new List<ProjectFolder>();

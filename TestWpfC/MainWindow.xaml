@@ -45,7 +45,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-                <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGrid" ItemsSource="{Binding Children}">
+                <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGrid" ItemsSource="{Binding Children}" SelectionChanged="myDGrid_SelectionChanged">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
                                            Binding="{Binding Id}" 

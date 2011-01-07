@@ -50,6 +50,11 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
 
         public override string ToString()
         {
+            return ToString(true);
+        }
+
+        public string ToString(bool WithParameter)
+        {
             int bytecnt = 0;
             StringBuilder retVal = new StringBuilder();
 
@@ -66,7 +71,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
                 retVal.Append(Description.Replace("\n", "\r\n\t"));
                 retVal.Append("\r\n\r\n");
             }
-            if (Parameter != null)
+            if (Parameter != null && WithParameter)
             {
                 retVal.Append("Parameter\r\n");
                 retVal.Append(Parameter.ToString());

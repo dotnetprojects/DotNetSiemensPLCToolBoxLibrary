@@ -8,27 +8,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 
-        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-                
-        Title="MainWindow" Height="420" Width="709">
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <!-- <ResourceDictionary Source="/AvalonDock.Themes;component/themes/dev2010.xaml"/> -->
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="MainWindow" Height="420" Width="709">
+<Window.Resources>
+        <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
+            <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
+            <ControlTemplate.Triggers>
+                <Trigger Property="avalonEdit:TextEditor.WordWrap" Value="True">
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" TargetName="PART_ScrollViewer" Value="Disabled" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+       
     </Window.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
             <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
         <Menu>
             <MenuItem Header="Main">
+                <MenuItem Header="Open-Project" Click="MenuItem_Click">
+                    
+                </MenuItem>
             </MenuItem>
         </Menu>
     
@@ -39,10 +43,9 @@
                     ScaleX="{Binding Value, ElementName=zoomSlider}"
                     ScaleY="{Binding Value, ElementName=zoomSlider}"/>
         </ad:DockingManager.LayoutTransform>
-        <ad:ResizingPanel Orientation="Horizontal">
-            
-            <ad:DockablePane SelectedIndex="1">
-                    <dockwin:BlockList x:Name="BlocksTree" Title="BlocksTree" />
+            <ad:ResizingPanel Orientation="Horizontal" >
+                <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeWidth="0.28*">
+                    <dockwin:ProjectList x:Name="ProjectTree" Title="BlocksTree" IsCloseable="False" />
             </ad:DockablePane>
                 <ad:DocumentPane x:Name="DocumentHost">
                 </ad:DocumentPane>
