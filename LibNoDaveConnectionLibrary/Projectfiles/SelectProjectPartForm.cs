@@ -227,8 +227,5 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
             if (lstProjectFolder.Visible == false && treeStep7Project.SelectedNode != null)
                 cmdOk_Click(sender, e);
         }
-
-        
-
     }
 }

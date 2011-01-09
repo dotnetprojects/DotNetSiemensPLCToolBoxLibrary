@@ -52,6 +52,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
+      <HintPath>..\externalDlls\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -70,25 +74,50 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
-    <Compile Include="DockableWindows\BlockList.xaml.cs">
-      <DependentUpon>BlockList.xaml</DependentUpon>
+    <Compile Include="DockableWindows\ContentWindowBlockList.xaml.cs">
+      <DependentUpon>ContentWindowBlockList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DockableWindows\ProjectList.xaml.cs">
-      <DependentUpon>ProjectList.xaml</DependentUpon>
+    <Compile Include="DockableWindows\ContentWindowDataBlockEditor.xaml.cs">
+      <DependentUpon>ContentWindowDataBlockEditor.xaml</DependentUpon>
     </Compile>
-    <Page Include="DockableWindows\BlockList.xaml">
+    <Compile Include="DockableWindows\ContentWindowChart.xaml.cs">
+      <DependentUpon>ContentWindowChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockableWindows\DockableContentOnlineConnections.xaml.cs">
+      <DependentUpon>DockableContentOnlineConnections.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockableWindows\DataBlockViewControl\DataBlockViewControl.xaml.cs">
+      <DependentUpon>DataBlockViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockableWindows\DockableContentProjectList.xaml.cs">
+      <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WinFormsImage.cs" />
+    <Page Include="DockableWindows\ContentWindowBlockList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DockableWindows\DataBlockEditor.xaml">
+    <Page Include="DockableWindows\ContentWindowDataBlockEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DockableWindows\FunctionBlockEditor.xaml">
+    <Page Include="DockableWindows\ContentWindowFunctionBlockEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DockableWindows\DiffWindow.xaml">
+    <Page Include="DockableWindows\ContentWindowChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\DockableContentOnlineConnections.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\DataBlockViewControl\DataBlockViewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\ContentWindowDiffWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -104,23 +133,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DockableWindows\DataBlockEditor.xaml.cs">
-      <DependentUpon>DataBlockEditor.xaml</DependentUpon>
+    <Compile Include="DockableWindows\ContentWindowFunctionBlockEditor.xaml.cs">
+      <DependentUpon>ContentWindowFunctionBlockEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DockableWindows\FunctionBlockEditor.xaml.cs">
-      <DependentUpon>FunctionBlockEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DockableWindows\DiffWindow.xaml.cs">
-      <DependentUpon>DiffWindow.xaml</DependentUpon>
+    <Compile Include="DockableWindows\ContentWindowDiffWindow.xaml.cs">
+      <DependentUpon>ContentWindowDiffWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DockableWindows\ContentWindowSymbolTable.xaml.cs">
       <DependentUpon>ContentWindowSymbolTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DockableWindows\DataBlockViewControl\TreeviewDepthWidthConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="DockableWindows\ProjectList.xaml">
+    <Page Include="DockableWindows\DockableContentProjectList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

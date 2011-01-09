@@ -14,19 +14,36 @@ using WPFToolboxForPLCs.AvalonEdit;
 
 namespace WPFToolboxForPLCs.DockableWindows
 {
-    public partial class FunctionBlockEditor : DocumentContent
+    public partial class ContentWindowFunctionBlockEditor : DocumentContent
     {
         IHighlightingDefinition customHighlighting;
 
-        public FunctionBlockEditor(PLCFunctionBlock myBlock)
+        public ContentWindowFunctionBlockEditor(object myBlock)
         {
             InitializeComponent();
 
-            if (((PLCFunctionBlock)myBlock).Parameter != null)
-                myTree.DataContext = ((PLCFunctionBlock) myBlock).Parameter.Children;
-            textEditor.Text = myBlock.ToString(false);
+            string highlighterFile = "";
+
+            if (myBlock is PLCFunctionBlock)
+            {
+                highlighterFile="WPFToolboxForPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
+
+                if (((PLCFunctionBlock) myBlock).Parameter != null)
+                    myTree.DataContext = ((PLCFunctionBlock) myBlock).Parameter.Children;
+
+                textEditor.Text = ((PLCFunctionBlock) myBlock).ToString(false);
+            }
+            else
+            {
+                mainGrid.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
+                //toppanel.Visibility = System.Windows.Visibility.Collapsed;
+                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
+                textEditor.Text = myBlock.ToString();                
+            }
+           
+
             
-            using (Stream s = typeof(MainWindow).Assembly.GetManifestResourceStream("WPFToolboxForPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd"))
+            using (Stream s = typeof(MainWindow).Assembly.GetManifestResourceStream(highlighterFile))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");
@@ -113,8 +130,7 @@ namespace WPFToolboxForPLCs.DockableWindows
                     {
                         toolTip.PlacementTarget = this;
 
-                        toolTip.Content = new ICSharpCode.AvalonEdit.TextEditor { Template = (ControlTemplate)this.Resources["TemplateEditor"], Text = textEditor.Document.Text.Substring(fld.StartOffset, fld.EndOffset - fld.StartOffset), SyntaxHighlighting = customHighlighting, FontFamily = new FontFamily("Consolas"), Opacity = 0.6 };
-
+                        toolTip.Content = new ICSharpCode.AvalonEdit.TextEditor { Template = (ControlTemplate)this.Resources["TemplateEditor"], Text = textEditor.Document.Text.Substring(fld.StartOffset, fld.EndOffset - fld.StartOffset), SyntaxHighlighting = customHighlighting, FontFamily = new FontFamily("Consolas"), Opacity = 0.6 };                      
                         toolTip.IsOpen = true;
                         e.Handled = true;
                     }

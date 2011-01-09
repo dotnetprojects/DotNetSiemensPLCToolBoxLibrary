@@ -5,15 +5,13 @@ namespace WPFToolboxForPLCs.DockableWindows
     /// <summary>
     /// Interaction logic for SampleDockableContent.xaml
     /// </summary>
-    public partial class DataBlockEditor : DockableContent
+    public partial class ContentWindowDiffWindow : DocumentContent
     {
-        public DataBlockEditor()
+        public ContentWindowDiffWindow()
         {
             InitializeComponent();
 
             this.DataContext = this;
         }
-
-        
     }
 }

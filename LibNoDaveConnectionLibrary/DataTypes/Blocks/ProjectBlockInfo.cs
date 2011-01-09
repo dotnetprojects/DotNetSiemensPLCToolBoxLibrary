@@ -41,6 +41,12 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
                         return "Userdatatype";
                     case PLCBlockType.VAT:
                         return "Variabletable";
+                    case PLCBlockType.SFC:
+                        return "Systemfunction";
+                    case PLCBlockType.SFB:
+                        return "Systemfunctionblock";
+                    case PLCBlockType.SDB:
+                        return "Systemdatablock";
                     case PLCBlockType.S5_DB:
                         return "S5-Datablock";
                     case PLCBlockType.S5_FB:
@@ -75,13 +81,26 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
                         return "S5-Datacommentblock";
                     case PLCBlockType.S5_DKX:
                         return "S5-Extendeddatacommentblock";
+                    case PLCBlockType.S5_OK:
+                        return "S5-Organisationcommentblock";
+                    case PLCBlockType.S5_BB:
+                        return "S5-Variabletable";
                 }
                 return "";
 
             }
         }
 
-        public string BlockName { get { return BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString(); } }
+        public string BlockName
+        {
+            get
+            {
+                string retVal = BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString();
+                if (Deleted)
+                    retVal = "$$_" + retVal;
+                return retVal;
+            }
+        }
 
         public bool Deleted { get; set; }
         

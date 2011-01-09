@@ -71,7 +71,7 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
                 sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16] * 0x100);
             }
 
-            Step5BlocksFolder blkFld = new Step5BlocksFolder() { Name = "Blocks", Project = this };
+            Step5BlocksFolder blkFld = new Step5BlocksFolder() { Name = "Blocks", Project = this, Parent = ProjectStructure};
             ProjectStructure.SubItems.Add(blkFld);
 
             //int section_start = startpos;

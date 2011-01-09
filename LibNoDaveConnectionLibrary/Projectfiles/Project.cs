@@ -29,9 +29,12 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
 
         public override string ToString()
         {
+            string retVal = ProjectName;
+            
             if (ProjectName == null)
-                return ProjectFile;
-            return ProjectName;
+                retVal= ProjectFile;
+            
+            return retVal;
         }
 
     }

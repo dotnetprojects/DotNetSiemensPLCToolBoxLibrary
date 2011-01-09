@@ -1,9 +1,7 @@
 ﻿<Window x:Class="WPFToolboxForPLCs.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        
-        xmlns:dockwin="clr-namespace:WPFToolboxForPLCs.DockableWindows"
-      
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:dockwin="clr-namespace:WPFToolboxForPLCs.DockableWindows"      
         mc:Ignorable="d" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -30,9 +28,12 @@
 
         <Menu>
             <MenuItem Header="Main">
-                <MenuItem Header="Open-Project" Click="MenuItem_Click">
-                    
-                </MenuItem>
+                <MenuItem Header="Open-Project" Click="MenuItem_Click"></MenuItem>
+                <MenuItem Header="Open-Project (show deleted)" Click="MenuItem_Click_1"></MenuItem>                                    
+            </MenuItem>
+            <MenuItem Header="Windows">
+                <MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>
+                <MenuItem Header="Connections" IsChecked="True" Click="MenuItem_Click_2"></MenuItem>
             </MenuItem>
         </Menu>
     
@@ -44,12 +45,26 @@
                     ScaleY="{Binding Value, ElementName=zoomSlider}"/>
         </ad:DockingManager.LayoutTransform>
             <ad:ResizingPanel Orientation="Horizontal" >
-                <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeWidth="0.28*">
-                    <dockwin:ProjectList x:Name="ProjectTree" Title="BlocksTree" IsCloseable="False" />
-            </ad:DockablePane>
+                <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.28*">
+                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.8*">
+                        <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" IsCloseable="False" />                      
+                    </ad:DockablePane>
+                    <ad:DockablePane SelectedIndex="1" >
+                        <dockwin:DockableContentOnlineConnections x:Name="winConnections" Title="Connections" IsCloseable="true" />
+                    </ad:DockablePane>
+                </ad:ResizingPanel>
                 <ad:DocumentPane x:Name="DocumentHost">
                 </ad:DocumentPane>
             </ad:ResizingPanel>
     </ad:DockingManager>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Text="A" VerticalAlignment="Center"/>
+                    <Slider x:Name="zoomSlider" VerticalAlignment="Center" Value="1" IsSnapToTickEnabled="True" TickFrequency="0.2" TickPlacement="Both" Minimum="0.5" Maximum="3" SmallChange="0.5" LargeChange="0.5" Width="100"/>
+                    <TextBlock Text="A" FontSize="20" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
 </Grid>
 </Window>

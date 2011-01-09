@@ -72,9 +72,12 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
 
         public override string ToString()
         {
-            if (_zipfile == null)
-                return base.ToString();
-            return base.ToString() + " (zipped)";
+            string retVal = base.ToString();
+            if (_zipfile != null)
+                retVal += "(zipped)";
+            if (_showDeleted == true)
+                retVal += " (show deleted)";
+            return retVal;
         }
 
         public void Dispose()
@@ -145,7 +148,7 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
             S7ProgrammFolders = new List<S7ProgrammFolder>();
             BlocksOfflineFolders = new List<BlocksOfflineFolder>();
 
-            ProjectStructure.Name = ProjectName;
+            ProjectStructure.Name = this.ToString();
 
             //Get The Project Stations...            
             if (ZipHelper.FileExists(_zipfile,ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HOBJECT1.DBF"))
