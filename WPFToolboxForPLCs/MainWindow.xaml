@@ -32,9 +32,10 @@
                 <MenuItem Header="Open-Project (show deleted)" Click="MenuItem_Click_1"></MenuItem>                                    
             </MenuItem>
             <MenuItem Header="Windows">
-                <MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>
-                <MenuItem Header="Connections" IsChecked="True" Click="MenuItem_Click_2"></MenuItem>
+                <!--<MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>-->
+                <MenuItem Header="Connections" Click="MenuItem_Click_2"></MenuItem>
             </MenuItem>
+            <!-- <MenuItem Header="DiffWindow" Click="MenuItem_Click_3"></MenuItem> -->
         </Menu>
     
     <ad:DockingManager x:Name="DockManager" IsAnimationEnabled="True" Grid.Row="1" Margin="0,4,0,0"
@@ -46,7 +47,7 @@
         </ad:DockingManager.LayoutTransform>
             <ad:ResizingPanel Orientation="Horizontal" >
                 <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.28*">
-                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.8*">
+                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.9*">
                         <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" IsCloseable="False" />                      
                     </ad:DockablePane>
                     <ad:DockablePane SelectedIndex="1" >

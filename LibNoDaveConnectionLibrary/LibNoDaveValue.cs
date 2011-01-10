@@ -248,85 +248,88 @@ namespace LibNoDaveConnectionLibrary
             }
         }
 
-        public string GetS7FormatAddress()
+        public string S7FormatAddress
         {
-            int aksz = _internalGetSize();
-            StringBuilder ret = new StringBuilder();
-
-            if (aksz == 3 || (aksz > 4 && LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter))
-                ret.Append("P#");
-
-            if (LibNoDaveDataSource == TagDataSource.Datablock || LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+            get
             {
-                ret.Append("DB");
-                ret.Append(DatablockNumber);
-                ret.Append(".");
-                ret.Append("DB");
-                if (LibNoDaveDataType == TagDataType.Bool || aksz == 3 || aksz > 4)
-                    ret.Append("X");
-            }
+                int aksz = _internalGetSize();
+                StringBuilder ret = new StringBuilder();
 
-            switch (LibNoDaveDataSource)
-            {
-                case TagDataSource.Inputs:
-                    ret.Append("E");
-                    break;
-                case TagDataSource.Outputs:
-                    ret.Append("A");
-                    break;
-                case TagDataSource.Flags:
-                    ret.Append("M");
-                    break;
-                case TagDataSource.Timer:
-                    ret.Append("T");
-                    break;
-                case TagDataSource.Counter:
-                    ret.Append("Z");
-                    break;
-            }
+                if (aksz == 3 || (aksz > 4 && LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter))
+                    ret.Append("P#");
 
-            if (LibNoDaveDataType == TagDataType.Bool)
-            {                
-                ret.Append(ByteAddress);
-                if (LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter)
+                if (LibNoDaveDataSource == TagDataSource.Datablock || LibNoDaveDataSource == TagDataSource.InstanceDatablock)
                 {
+                    ret.Append("DB");
+                    ret.Append(DatablockNumber);
                     ret.Append(".");
-                    ret.Append(BitAddress);
+                    ret.Append("DB");
+                    if (LibNoDaveDataType == TagDataType.Bool || aksz == 3 || aksz > 4)
+                        ret.Append("X");
                 }
-            }
-            else if (LibNoDaveDataSource != TagDataSource.Counter && LibNoDaveDataSource != TagDataSource.Timer)
-            {
 
-                if (aksz == 3 || aksz > 4)
-                {                    
-                    ret.Append(ByteAddress);
-                    ret.Append(".");
-                    ret.Append(BitAddress);
-                    ret.Append(" BYTE ");
-                    ret.Append(_internalGetSize().ToString());
-                }
-                else if (aksz == 4)                
+                switch (LibNoDaveDataSource)
                 {
-                    ret.Append("D");
-                    ret.Append(ByteAddress);
+                    case TagDataSource.Inputs:
+                        ret.Append("E");
+                        break;
+                    case TagDataSource.Outputs:
+                        ret.Append("A");
+                        break;
+                    case TagDataSource.Flags:
+                        ret.Append("M");
+                        break;
+                    case TagDataSource.Timer:
+                        ret.Append("T");
+                        break;
+                    case TagDataSource.Counter:
+                        ret.Append("Z");
+                        break;
                 }
-                else if (aksz == 1)
+
+                if (LibNoDaveDataType == TagDataType.Bool)
                 {
-                    ret.Append("B");
                     ret.Append(ByteAddress);
+                    if (LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter)
+                    {
+                        ret.Append(".");
+                        ret.Append(BitAddress);
+                    }
+                }
+                else if (LibNoDaveDataSource != TagDataSource.Counter && LibNoDaveDataSource != TagDataSource.Timer)
+                {
+
+                    if (aksz == 3 || aksz > 4)
+                    {
+                        ret.Append(ByteAddress);
+                        ret.Append(".");
+                        ret.Append(BitAddress);
+                        ret.Append(" BYTE ");
+                        ret.Append(_internalGetSize().ToString());
+                    }
+                    else if (aksz == 4)
+                    {
+                        ret.Append("D");
+                        ret.Append(ByteAddress);
+                    }
+                    else if (aksz == 1)
+                    {
+                        ret.Append("B");
+                        ret.Append(ByteAddress);
+                    }
+                    else
+                    {
+                        ret.Append("W");
+                        ret.Append(ByteAddress);
+                    }
                 }
                 else
                 {
-                    ret.Append("W");
                     ret.Append(ByteAddress);
                 }
+
+                return ret.ToString();
             }
-            else
-            {
-                ret.Append(ByteAddress);
-            }
-         
-            return ret.ToString();
         }
 
         public string GetControlValueAsString()
@@ -620,9 +623,9 @@ namespace LibNoDaveConnectionLibrary
 
             if (Value != null)
             {                
-                return GetS7FormatAddress() + " = " + GetValueAsString() + old;
+                return S7FormatAddress + " = " + GetValueAsString() + old;
             }
-            return GetS7FormatAddress();
+            return S7FormatAddress;
         }
 
         public void ChangeAddressFromString(String plcAddress)

@@ -266,7 +266,8 @@
                 <HierarchicalDataTemplate DataType="{x:Type Projects:ProjectFolder}" ItemsSource="{Binding SubItems}">
                 <StackPanel Orientation="Horizontal">
                      <WPFToolboxForPLCs:WinFormsImage ImageSource="{Binding FolderClosedImage}"></WPFToolboxForPLCs:WinFormsImage>
-                     <TextBlock VerticalAlignment="Center" FontFamily="Courier New" Text="{Binding Name}"></TextBlock>
+                        <TextBlock Text=" " />
+                        <TextBlock VerticalAlignment="Center" FontFamily="Courier New" Text="{Binding Name}"></TextBlock>
                 </StackPanel>
             </HierarchicalDataTemplate>
             </ResourceDictionary>

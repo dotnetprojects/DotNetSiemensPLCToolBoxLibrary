@@ -230,7 +230,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
                 }                
             }
 
-            string aa = System.Text.Encoding.ASCII.GetString(comments);
+            //string aa = System.Text.Encoding.ASCII.GetString(comments);
 
             int commentsRow = 12;
             int akLine = -1;

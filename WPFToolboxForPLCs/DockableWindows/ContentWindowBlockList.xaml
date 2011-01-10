@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown">
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="ObjectName" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ObjectName">
                 <DataGridTemplateColumn.CellTemplate>

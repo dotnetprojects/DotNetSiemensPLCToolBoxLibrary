@@ -11,8 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AvalonDock;
 using LibNoDaveConnectionLibrary.Projectfiles;
 using Microsoft.Win32;
+using WPFToolboxForPLCs.DockableWindows;
 
 namespace WPFToolboxForPLCs
 {
@@ -53,11 +55,23 @@ namespace WPFToolboxForPLCs
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            /*
-            if (winConnections)
+            if (winConnections.State == DockableContentState.Hidden)
             {
+                //show content as docked content
+                winConnections.Show(DockManager, AnchorStyle.Right);
             }
-             * */
+
+            winConnections.Activate();           
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            ContentWindowDiffWindow tmp = new ContentWindowDiffWindow();
+            //tmp.parentDockingManager = parentDockingManager;
+            tmp.Title = "DiffWindow";
+            //tmp.ToolTip = fld.ToString();
+            tmp.Show(DockManager);
+            DockManager.ActiveDocument = tmp;
         }
     }
 }

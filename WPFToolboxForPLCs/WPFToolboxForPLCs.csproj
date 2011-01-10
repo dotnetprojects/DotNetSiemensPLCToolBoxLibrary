@@ -83,6 +83,9 @@
     <Compile Include="DockableWindows\ContentWindowChart.xaml.cs">
       <DependentUpon>ContentWindowChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DockableWindows\ContentWindowVarTab.xaml.cs">
+      <DependentUpon>ContentWindowVarTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DockableWindows\DockableContentOnlineConnections.xaml.cs">
       <DependentUpon>DockableContentOnlineConnections.xaml</DependentUpon>
     </Compile>
@@ -92,7 +95,8 @@
     <Compile Include="DockableWindows\DockableContentProjectList.xaml.cs">
       <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WinFormsImage.cs" />
+    <Compile Include="WPF-Addons\UIHelpers.cs" />
+    <Compile Include="WPF-Addons\WinFormsImage.cs" />
     <Page Include="DockableWindows\ContentWindowBlockList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +110,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DockableWindows\ContentWindowChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\ContentWindowVarTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

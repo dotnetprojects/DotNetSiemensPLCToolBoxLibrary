@@ -57,9 +57,15 @@ namespace LibNoDaveConnectionLibrary.MC7
 
             parameterTEMP.isRootBlock = true;
 
+            bool tempAdded = false;
+
             if (txt == null)
-                return null;
-            
+            {
+                if (blkTP != PLCBlockType.DB)
+                    parameterRoot.Add(parameterTEMP);
+                return parameterRoot;
+            }
+
             //Todo: read the complete DB from mc5 code first.
             //Read the containing UDTs
             //compare the UDTs with the Structs
@@ -87,7 +93,10 @@ namespace LibNoDaveConnectionLibrary.MC7
                     case "VAR_TEMP":
                         akDataRow = parameterTEMP;
                         if (blkTP != PLCBlockType.DB)
+                        {
+                            tempAdded = true;
                             parameterRoot.Add(parameterTEMP);
+                        }
                         break;
                     case "VAR": //Static Data on a FB
                         akDataRow = parameterSTAT;
@@ -321,6 +330,10 @@ namespace LibNoDaveConnectionLibrary.MC7
                             //      "P_AKL1 : ARRAY  [0 .. 3 ] OF CHAR  := 'A', 'K', 'L', '1';"
                         */                       
                 }
+            }
+            if (blkTP != PLCBlockType.DB && tempAdded == false)
+            {               
+                parameterRoot.Add(parameterTEMP);
             }
             return parameterRoot;
         }

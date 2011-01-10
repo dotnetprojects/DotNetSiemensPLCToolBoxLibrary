@@ -4,9 +4,167 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
-    
-        <DataGrid AutoGenerateColumns="False" Name="dtagrdSymbolTable" />
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Name="mainGridA" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Name="toppanelA">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TreeView Grid.Column="0" Name="myTreeA" ItemsSource="{Binding}" AllowDrop="True">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <GridSplitter Grid.Column="0" Width="3"></GridSplitter>
+                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridA" ItemsSource="{Binding Children}" AllowDrop="True">
+                    <DataGrid.Columns>
+                        <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
+                                           Binding="{Binding Id}" 
+                                           CanUserSort="False"
+                                           IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Type" 
+                                           Binding="{Binding Date, StringFormat=d}" 
+                                           CanUserSort="False" />-->
+                        <DataGridTextColumn Header="Array" MinWidth="30" 
+                                           Binding="{Binding IsArray}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrSt" MinWidth="30" 
+                                           Binding="{Binding ArrayStart}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrStp" MinWidth="30" 
+                                           Binding="{Binding ArrayStop}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Name" MinWidth="100" 
+                                           Binding="{Binding Name}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Datatype" MinWidth="80" 
+                                           Binding="{Binding DataType}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="StartValue" MinWidth="80" 
+                                           Binding="{Binding StartValue}"
+                                           CanUserSort="False" />
+                        <!--<DataGridTextColumn Header="Adress" MinWidth="60" 
+                                           Binding="{Binding Adress}"
+                                           CanUserSort="False"
+                                           IsReadOnly="True"
+                                           />-->
+                        <DataGridTextColumn Header="Comment" MinWidth="100" Width="300"
+                                           Binding="{Binding Comment}"
+                                           CanUserSort="False" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+            <GridSplitter 
+            ResizeDirection="Rows" 
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Width="Auto" 
+            Height="3" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch" 
+            Margin="0"/>
+            <avalonEdit:TextEditor  Grid.Row="2"                        
+				Name="textEditorA"
+				FontFamily="Consolas"
+				FontSize="10pt"				
+                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True"></avalonEdit:TextEditor>
+        </Grid>
+
+        <Grid Name="mainGridB" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Name="toppanelB">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TreeView Grid.Column="0" Name="myTree" ItemsSource="{Binding}" AllowDrop="True">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <GridSplitter Grid.Column="0" Width="3"></GridSplitter>
+                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridB" ItemsSource="{Binding Children}" AllowDrop="True">
+                    <DataGrid.Columns>
+                        <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
+                                           Binding="{Binding Id}" 
+                                           CanUserSort="False"
+                                           IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Type" 
+                                           Binding="{Binding Date, StringFormat=d}" 
+                                           CanUserSort="False" />-->
+                        <DataGridTextColumn Header="Array" MinWidth="30" 
+                                           Binding="{Binding IsArray}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrSt" MinWidth="30" 
+                                           Binding="{Binding ArrayStart}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="ArrStp" MinWidth="30" 
+                                           Binding="{Binding ArrayStop}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Name" MinWidth="100" 
+                                           Binding="{Binding Name}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="Datatype" MinWidth="80" 
+                                           Binding="{Binding DataType}"
+                                           CanUserSort="False" />
+                        <DataGridTextColumn Header="StartValue" MinWidth="80" 
+                                           Binding="{Binding StartValue}"
+                                           CanUserSort="False" />
+                        <!--<DataGridTextColumn Header="Adress" MinWidth="60" 
+                                           Binding="{Binding Adress}"
+                                           CanUserSort="False"
+                                           IsReadOnly="True"
+                                           />-->
+                        <DataGridTextColumn Header="Comment" MinWidth="100" Width="300"
+                                           Binding="{Binding Comment}"
+                                           CanUserSort="False" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+            <GridSplitter 
+            ResizeDirection="Rows" 
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Width="Auto" 
+            Height="3" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch" 
+            Margin="0"/>
+            <avalonEdit:TextEditor  Grid.Row="2"                        
+				Name="textEditorB"
+				FontFamily="Consolas"
+				FontSize="10pt"				
+                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True"></avalonEdit:TextEditor>
+        </Grid>
+
+    </Grid>
+
     
 </ad:DocumentContent>

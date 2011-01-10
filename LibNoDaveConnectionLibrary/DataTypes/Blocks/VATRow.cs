@@ -12,7 +12,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
 
         public override string ToString()
         {
-            return LibNoDaveValue.GetS7FormatAddress();
+            return LibNoDaveValue.S7FormatAddress;
         }
     }
 }

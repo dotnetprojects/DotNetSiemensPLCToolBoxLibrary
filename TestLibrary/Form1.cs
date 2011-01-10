@@ -323,7 +323,7 @@ namespace JFK_VarTab
             if (listBox1.SelectedItem != null)
             {
                 var tmp = (LibNoDaveValue) listBox1.SelectedItem;
-                txtByteAddress.Text = tmp.GetS7FormatAddress();
+                txtByteAddress.Text = tmp.S7FormatAddress;
                 EnumListBoxExtensions.SelectEnumListItem(cmbDataType, (int) tmp.LibNoDaveDataType);
             }
         }        
@@ -394,7 +394,7 @@ namespace JFK_VarTab
             if (listBox1.SelectedItem!=null)
             {
                 var itm = (LibNoDaveValue) listBox1.SelectedItem;
-                string ret = itm.GetS7FormatAddress() + "\n";
+                string ret = itm.S7FormatAddress + "\n";
                 foreach (var oldValue in itm.OldValues)
                 {
                     ret += oldValue.ToString() + "\n";

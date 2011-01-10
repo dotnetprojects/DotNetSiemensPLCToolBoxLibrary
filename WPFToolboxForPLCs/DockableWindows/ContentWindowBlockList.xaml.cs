@@ -1,4 +1,6 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using AvalonDock;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
@@ -56,7 +58,29 @@ namespace WPFToolboxForPLCs.DockableWindows
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }
+                else if (blk is VATBlock)
+                {
+                    e.Handled = true;
+                    ContentWindowVarTab tmp = new ContentWindowVarTab((VATBlock)blk);
+                    tmp.Title = blk.BlockName;
+                    tmp.ToolTip = myFld.ToString() + "\\" + tmp.Title;
+                    tmp.Show(parentDockingManager);
+                    parentDockingManager.ActiveDocument = tmp;
+                }
             }
+        }
+
+        private void myDataGrid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            /*
+            var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement) sender, e.GetPosition(myDataGrid));
+            if (row != null)
+            {               
+                DataObject dragData = new DataObject("dataRow", row);
+                dragData=new DataObject(DataFormats.Text);
+                DragDrop.DoDragDrop((DependencyObject) sender, dragData, DragDropEffects.Copy);
+            }
+            */
         }
 
         

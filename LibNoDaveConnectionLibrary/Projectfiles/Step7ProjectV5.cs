@@ -160,7 +160,7 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
                     {
                         if ((int)row["OBJTYP"] == 1314969 || (int)row["OBJTYP"] == 1314970 || (int)row["OBJTYP"] == 1315650)
                         {
-                            var x = new StationConfigurationFolder() { Project = this };
+                            var x = new StationConfigurationFolder() { Project = this, Parent = ProjectStructure};
                             x.Name = ((string)row["Name"]).Replace("\0", "");
                             if ((bool) row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
                             x.ID = (int) row["ID"];
@@ -566,6 +566,7 @@ namespace LibNoDaveConnectionLibrary.Projectfiles
             //Add the BlockFolders without CPU to the Ground project
             foreach (var z in tmpS7ProgrammFolders)
             {
+                z.Parent = ProjectStructure;
                 ProjectStructure.SubItems.Add(z);
             }
 
