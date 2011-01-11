@@ -74,8 +74,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
-    <Compile Include="DockableWindows\ContentWindowBlockList.xaml.cs">
-      <DependentUpon>ContentWindowBlockList.xaml</DependentUpon>
+    <Compile Include="DockableWindows\DockableContentBlockList.xaml.cs">
+      <DependentUpon>DockableContentBlockList.xaml</DependentUpon>
     </Compile>
     <Compile Include="DockableWindows\ContentWindowDataBlockEditor.xaml.cs">
       <DependentUpon>ContentWindowDataBlockEditor.xaml</DependentUpon>
@@ -97,7 +97,7 @@
     </Compile>
     <Compile Include="WPF-Addons\UIHelpers.cs" />
     <Compile Include="WPF-Addons\WinFormsImage.cs" />
-    <Page Include="DockableWindows\ContentWindowBlockList.xaml">
+    <Page Include="DockableWindows\DockableContentBlockList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -191,6 +191,9 @@
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>LibNoDaveConnectionLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

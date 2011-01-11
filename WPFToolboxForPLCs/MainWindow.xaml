@@ -35,7 +35,7 @@
                 <!--<MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>-->
                 <MenuItem Header="Connections" Click="MenuItem_Click_2"></MenuItem>
             </MenuItem>
-            <!-- <MenuItem Header="DiffWindow" Click="MenuItem_Click_3"></MenuItem> -->
+            <MenuItem Header="DiffWindow" Click="MenuItem_Click_3"></MenuItem>
         </Menu>
     
     <ad:DockingManager x:Name="DockManager" IsAnimationEnabled="True" Grid.Row="1" Margin="0,4,0,0"

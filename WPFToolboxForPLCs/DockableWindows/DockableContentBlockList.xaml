@@ -1,5 +1,5 @@
-﻿<ad:DocumentContent
-    x:Class="WPFToolboxForPLCs.DockableWindows.ContentWindowBlockList"
+﻿<ad:DockableContent
+    x:Class="WPFToolboxForPLCs.DockableWindows.DockableContentBlockList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove">
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="ObjectName" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ObjectName">
                 <DataGridTemplateColumn.CellTemplate>
@@ -73,4 +73,4 @@
         </DataGrid.GroupStyle>
     </DataGrid>
 
-</ad:DocumentContent>
+</ad:DockableContent>

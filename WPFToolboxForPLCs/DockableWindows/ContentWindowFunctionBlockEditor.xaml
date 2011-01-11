@@ -34,7 +34,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-            <GridSplitter Grid.Column="0" Width="3"></GridSplitter>
+            <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
             <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGrid" ItemsSource="{Binding Children}">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
@@ -80,7 +80,7 @@
             Grid.ColumnSpan="2"
             Grid.Row="1"
             Width="Auto" 
-            Height="3" 
+            Height="5" 
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
             Margin="0"/>           

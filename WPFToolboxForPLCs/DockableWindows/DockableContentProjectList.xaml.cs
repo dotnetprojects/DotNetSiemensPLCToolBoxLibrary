@@ -40,11 +40,12 @@ namespace WPFToolboxForPLCs.DockableWindows
                 if (myTreeView.SelectedItem is IBlocksFolder)
                 {
                     IBlocksFolder fld = (IBlocksFolder) myTreeView.SelectedItem;
-                    ContentWindowBlockList tmp = new ContentWindowBlockList(fld);
+                    DockableContentBlockList tmp = new DockableContentBlockList(fld);
                     tmp.parentDockingManager = parentDockingManager;
                     tmp.Title = fld.ToString().Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();
                     tmp.Show(parentDockingManager);
+                    tmp.ToggleAutoHide();
                     parentDockingManager.ActiveDocument = tmp;
 
                 }

@@ -1,4 +1,5 @@
-﻿using AvalonDock;
+﻿using System.Windows;
+using AvalonDock;
 
 namespace WPFToolboxForPLCs.DockableWindows
 {
@@ -12,6 +13,11 @@ namespace WPFToolboxForPLCs.DockableWindows
             InitializeComponent();
 
             this.DataContext = this;
+        }
+
+        private void textEditorA_DragOver(object sender, System.Windows.DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.All;
         }
     }
 }

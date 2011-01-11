@@ -6,17 +6,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
-    <Grid>
+    <Grid Grid.IsSharedSizeScope="False">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition SharedSizeGroup="col1"></ColumnDefinition>
+            <ColumnDefinition SharedSizeGroup="col2"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid Name="mainGridA" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.3*" SharedSizeGroup="FirstRow"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition SharedSizeGroup="SecondRow"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Name="toppanelA">
 
@@ -31,7 +31,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-                <GridSplitter Grid.Column="0" Width="3"></GridSplitter>
+                <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
                 <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridA" ItemsSource="{Binding Children}" AllowDrop="True">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
@@ -77,22 +77,22 @@
             Grid.ColumnSpan="2"
             Grid.Row="1"
             Width="Auto" 
-            Height="3" 
+            Height="5" 
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
             Margin="0"/>
-            <avalonEdit:TextEditor  Grid.Row="2"                        
+            <avalonEdit:TextEditor Grid.Row="2"                        
 				Name="textEditorA"
 				FontFamily="Consolas"
 				FontSize="10pt"				
-                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True"></avalonEdit:TextEditor>
+                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True" DragOver="textEditorA_DragOver"></avalonEdit:TextEditor>
         </Grid>
 
         <Grid Name="mainGridB" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"></RowDefinition>
+                <RowDefinition Height="0.3*" SharedSizeGroup="FirstRow"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition SharedSizeGroup="SecondRow"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Name="toppanelB">
 
@@ -107,7 +107,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-                <GridSplitter Grid.Column="0" Width="3"></GridSplitter>
+                <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
                 <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridB" ItemsSource="{Binding Children}" AllowDrop="True">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
@@ -153,7 +153,7 @@
             Grid.ColumnSpan="2"
             Grid.Row="1"
             Width="Auto" 
-            Height="3" 
+            Height="5" 
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
             Margin="0"/>

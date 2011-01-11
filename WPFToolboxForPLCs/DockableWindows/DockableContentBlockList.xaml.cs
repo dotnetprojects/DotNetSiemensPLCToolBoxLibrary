@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using AvalonDock;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
@@ -9,13 +11,13 @@ using LibNoDaveConnectionLibrary.General;
 
 namespace WPFToolboxForPLCs.DockableWindows
 {
-    public partial class ContentWindowBlockList : DocumentContent
+    public partial class DockableContentBlockList : DockableContent
     {
         public DockingManager parentDockingManager { get; set; }
 
         private IBlocksFolder myFld;
 
-        public ContentWindowBlockList(IBlocksFolder fld)
+        public DockableContentBlockList(IBlocksFolder fld)
         {
             InitializeComponent();
 
@@ -70,8 +72,13 @@ namespace WPFToolboxForPLCs.DockableWindows
             }
         }
 
+
+        private Point _startPoint;
+        private bool IsDragging;
         private void myDataGrid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            _startPoint = e.GetPosition(null);
+             
             /*
             var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement) sender, e.GetPosition(myDataGrid));
             if (row != null)
@@ -81,6 +88,29 @@ namespace WPFToolboxForPLCs.DockableWindows
                 DragDrop.DoDragDrop((DependencyObject) sender, dragData, DragDropEffects.Copy);
             }
             */
+        }
+
+        private void myDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !IsDragging)
+            {
+                Point position = e.GetPosition(null);
+
+                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    //Start DragDrop Action!
+                    {
+                        var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(myDataGrid));
+                        if (row != null)
+                        {
+                            DataObject dragData = new DataObject("dataRow", row);
+                            //dragData = new DataObject(DataFormats.Text,row.ToString());
+                            DragDrop.DoDragDrop((DependencyObject)sender, dragData, DragDropEffects.Copy);
+                        }
+                    }                  
+                }
+            }  
         }
 
         
