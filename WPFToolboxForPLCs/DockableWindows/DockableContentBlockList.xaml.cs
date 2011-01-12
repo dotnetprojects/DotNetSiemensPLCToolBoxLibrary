@@ -24,14 +24,22 @@ namespace WPFToolboxForPLCs.DockableWindows
             myFld = fld;
 
             this.DataContext = this;
+            try
+            {
+                var tmp = fld.readPlcBlocksList(true);
+                tmp.Sort(new NumericComparer<ProjectBlockInfo>());
 
-            var tmp = fld.readPlcBlocksList(true);
-            tmp.Sort(new NumericComparer<ProjectBlockInfo>());
+                var groupedItems = new ListCollectionView(tmp);
+                groupedItems.GroupDescriptions.Add(new PropertyGroupDescription("BlockTypeString"));
 
-            var groupedItems = new ListCollectionView(tmp);
-            groupedItems.GroupDescriptions.Add(new PropertyGroupDescription("BlockTypeString"));
-
-            this.myDataGrid.ItemsSource = groupedItems;
+                this.myDataGrid.ItemsSource = groupedItems;
+            }
+            catch (Exception ex)
+            {
+               //parentDockingManager. 
+                App.clientForm.lblStatus.Text = ex.Message;
+            }
+            
 
             
         }

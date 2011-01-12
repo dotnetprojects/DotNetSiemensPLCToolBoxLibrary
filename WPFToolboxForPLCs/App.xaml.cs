@@ -12,5 +12,15 @@ namespace WPFToolboxForPLCs
     /// </summary>
     public partial class App : Application
     {
+        public static MainWindow clientForm;
+ 
+        void Main(object sender, StartupEventArgs e)
+        {
+
+            clientForm = new MainWindow();
+
+            clientForm.Show();
+
+        }
     }
 }

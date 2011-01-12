@@ -66,6 +66,9 @@
                     <TextBlock Text="A" FontSize="20" VerticalAlignment="Center"/>
                 </StackPanel>
             </StatusBarItem>
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <TextBlock Name="lblStatus"></TextBlock>                
+            </StatusBarItem>
         </StatusBar>
 </Grid>
 </Window>

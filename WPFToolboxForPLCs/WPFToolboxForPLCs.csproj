@@ -95,6 +95,7 @@
       <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF-Addons\GhostCursor.cs" />
+    <Compile Include="WPF-Addons\TreeViewExtensions.cs" />
     <Compile Include="WPF-Addons\TreeViewLineConverter.cs" />
     <Compile Include="WPF-Addons\UIHelpers.cs" />
     <Compile Include="WPF-Addons\WinFormsImage.cs" />

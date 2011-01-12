@@ -3,9 +3,11 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using AvalonDock;
+using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.Projectfiles;
+using WPFToolboxForPLCs.WPF_Addons;
 
 namespace WPFToolboxForPLCs.DockableWindows
 {
@@ -65,9 +67,29 @@ namespace WPFToolboxForPLCs.DockableWindows
         private void myTreeView_Drop(object sender, DragEventArgs e)
         {
             TreeViewItem row = UIHelpers.TryFindFromPoint<TreeViewItem>((UIElement)sender, e.GetPosition(myTreeView));
-            IBlocksFolder blkFld = null;
 
-            //while (blkFld!=)
+            ProjectFolder blkFld = (ProjectFolder) myTreeView.ItemFromContainer(row);
+
+            while (blkFld != null && !(blkFld is S7ProgrammFolder))
+            {
+                blkFld = ((ProjectFolder) blkFld).Parent;
+                row = row.TryFindParent<TreeViewItem>();
+            }
+
+            if (blkFld!=null)
+            {
+                string connName = (string)e.Data.GetData("ConnectionName");
+                OnlineBlocksFolder oldFld = null;
+                foreach (var projectFolder in blkFld.SubItems)
+                {
+                    if (projectFolder is OnlineBlocksFolder)
+                        oldFld = (OnlineBlocksFolder) projectFolder;
+                }
+                if (oldFld != null)
+                    blkFld.SubItems.Remove(oldFld);
+                blkFld.SubItems.Add(new OnlineBlocksFolder(connName){Parent = blkFld});                
+                row.Items.Refresh();                
+            }          
 
         }       
     }

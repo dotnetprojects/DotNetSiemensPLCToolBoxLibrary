@@ -121,7 +121,7 @@ namespace LibNoDaveConnectionLibrary
         {
             _NeedDispose = true;
             //Debugging for LibNoDave
-            libnodave.daveSetDebug(0x1ffff);
+            //libnodave.daveSetDebug(0x1ffff);
 
             _myConfig.ReloadConfiguration();
 
@@ -682,7 +682,7 @@ namespace LibNoDaveConnectionLibrary
             if (_dc != null)
                 lock (_dc)
                 {
-                    List<string> myRet = new List<string>();
+                    List<string> myRet = new List<string>();                    
 
                     byte[] blocks = new byte[2048 * 4];
 
