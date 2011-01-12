@@ -41,7 +41,6 @@ namespace WPFToolboxForPLCs.DockableWindows
                 textEditor.Text = myBlock.ToString();                
             }
            
-
             
             using (Stream s = typeof(MainWindow).Assembly.GetManifestResourceStream(highlighterFile))
             {
@@ -53,6 +52,7 @@ namespace WPFToolboxForPLCs.DockableWindows
                         HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
+
             HighlightingManager.Instance.RegisterHighlighting("Custom Highlighting", new string[] { ".cool" }, customHighlighting);
 
             textEditor.SyntaxHighlighting = customHighlighting;

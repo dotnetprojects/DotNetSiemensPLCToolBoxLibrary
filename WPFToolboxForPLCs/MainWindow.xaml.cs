@@ -73,5 +73,10 @@ namespace WPFToolboxForPLCs
             tmp.Show(DockManager);
             DockManager.ActiveDocument = tmp;
         }
+
+        private void DockablePane_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

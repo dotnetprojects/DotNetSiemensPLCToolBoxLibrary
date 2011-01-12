@@ -5,10 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" ad:ResizingPanel.ResizeWidth="400">
 
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove" AllowDrop="False" GiveFeedback="myDataGrid_GiveFeedback">
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="ObjectName" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ObjectName">
                 <DataGridTemplateColumn.CellTemplate>

@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="180"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TreeView Grid.Column="0" Name="myTreeA" ItemsSource="{Binding}" AllowDrop="True">
+                <TreeView Grid.Column="0" Name="myTreeA" ItemsSource="{Binding}" AllowDrop="True" Drop="myTreeA_Drop" SelectedItemChanged="myTreeA_SelectedItemChanged">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
@@ -32,7 +32,7 @@
                     </TreeView.ItemTemplate>
                 </TreeView>
                 <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
-                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridA" ItemsSource="{Binding Children}" AllowDrop="True">
+                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridA" ItemsSource="{Binding Children}" AllowDrop="True" Drop="myDGridA_Drop">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
                                            Binding="{Binding Id}" 
@@ -85,7 +85,7 @@
 				Name="textEditorA"
 				FontFamily="Consolas"
 				FontSize="10pt"				
-                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True" DragOver="textEditorA_DragOver"></avalonEdit:TextEditor>
+                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True" DragOver="textEditorA_DragOver" Drop="textEditorA_Drop"></avalonEdit:TextEditor>
         </Grid>
 
         <Grid Name="mainGridB" Grid.Column="1">
@@ -100,7 +100,7 @@
                     <ColumnDefinition Width="180"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TreeView Grid.Column="0" Name="myTree" ItemsSource="{Binding}" AllowDrop="True">
+                <TreeView Grid.Column="0" Name="myTreeB" ItemsSource="{Binding}" AllowDrop="True" Drop="myTreeB_Drop" SelectedItemChanged="myTreeB_SelectedItemChanged">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Name}" />
@@ -108,7 +108,7 @@
                     </TreeView.ItemTemplate>
                 </TreeView>
                 <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
-                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridB" ItemsSource="{Binding Children}" AllowDrop="True">
+                <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGridB" ItemsSource="{Binding Children}" AllowDrop="True" Drop="myDGridB_Drop">
                     <DataGrid.Columns>
                         <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
                                            Binding="{Binding Id}" 
@@ -161,7 +161,7 @@
 				Name="textEditorB"
 				FontFamily="Consolas"
 				FontSize="10pt"				
-                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True"></avalonEdit:TextEditor>
+                ShowLineNumbers="True" Visibility="Visible" AllowDrop="True" Drop="textEditorB_Drop" DragOver="textEditorB_DragOver"></avalonEdit:TextEditor>
         </Grid>
 
     </Grid>

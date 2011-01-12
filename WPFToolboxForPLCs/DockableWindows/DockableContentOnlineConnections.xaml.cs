@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using AvalonDock;
 using LibNoDaveConnectionLibrary;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
@@ -40,30 +43,54 @@ namespace WPFToolboxForPLCs.DockableWindows
 
         }
 
-        /*
-        private void TreeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (myTreeView.SelectedItem!=null)
-            {
-                if (myTreeView.SelectedItem is IBlocksFolder)
-                {
-                    IBlocksFolder fld = (IBlocksFolder) myTreeView.SelectedItem;
-                    BlockList tmp = new BlockList(fld);
-                    tmp.parentDockingManager = parentDockingManager;
-                    tmp.Title = fld.ToString();
-                    tmp.Show(parentDockingManager);
-
-                }
-                else if (myTreeView.SelectedItem is SymbolTable)
-                {
-                    SymbolTable fld = (SymbolTable)myTreeView.SelectedItem;
-                    ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
-                    tmp.Title = fld.ToString();
-                    tmp.Show(parentDockingManager);
-
-                }
-            }
+            Configuration.ShowConfiguration();
         }
-        */      
+
+        private Point _startPoint;
+        private bool IsDragging;
+        private Cursor dragDropCursor;
+        private void myConnectionsList_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _startPoint = e.GetPosition(null);          
+        }
+
+        private void myConnectionsList_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !IsDragging)
+            {
+                Point position = e.GetPosition(null);
+
+                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    //Start DragDrop Action!
+                    {
+                        var row = UIHelpers.TryFindFromPoint<ListBoxItem>((UIElement)sender, e.GetPosition(myConnectionsList));
+                        if (row != null)
+                        {
+                            DataObject dragData = new DataObject("ConnectionName", myConnectionsList.SelectedItem);                            
+                            Mouse.OverrideCursor = dragDropCursor = new GhostCursor(row).Cursor;
+
+                            DragDrop.DoDragDrop((DependencyObject)sender, dragData, DragDropEffects.Copy);
+                            Mouse.OverrideCursor = null;
+                        }
+                    }
+                }
+            }  
+        }
+
+        private void myConnectionsList_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if ((e.Effects & DragDropEffects.Copy) != DragDropEffects.None)
+            {
+                Mouse.OverrideCursor = dragDropCursor;
+                e.Handled = true;
+            }
+            else
+                Mouse.OverrideCursor = null;
+        }
+          
     }
 }

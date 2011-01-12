@@ -5,8 +5,14 @@ using System.Windows.Media.Imaging;
 
 namespace WPFToolboxForPLCs
 {
+    /// <summary>
+    /// This class can directly display a WinForms Image
+    /// </summary>
     class WinFormsImage : Image
     {
+        /// <summary>
+        /// Bind this to the WinForms Image
+        /// </summary>
         public System.Drawing.Image ImageSource
         {
             get { return (System.Drawing.Image)GetValue(ImageSourceProperty); }

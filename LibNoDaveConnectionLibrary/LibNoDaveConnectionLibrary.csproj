@@ -50,6 +50,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />
     <Compile Include="DataTypes\Blocks\Block.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\OnlineBlocksFolder.cs" />
     <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
     <Compile Include="DataTypes\Blocks\PLCDataBlockExpandOptions.cs" />
     <Compile Include="DataTypes\Blocks\ProjectBlockInfo.cs" />
@@ -66,25 +67,25 @@
     <Compile Include="DataTypes\LibNoDaveConnectionLibraryException.cs" />
     <Compile Include="DataTypes\Blocks\VATBlock.cs" />
     <Compile Include="DataTypes\LibNoDaveConnectionLibraryExceptionType.cs" />
-    <Compile Include="DataTypes\Projectfolders\IBlocksFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\ProjectFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step5\Step5BlocksFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step5\Step5ProjectFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\IBlocksFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\ProjectFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step5\Step5BlocksFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step5\Step5ProjectFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step5\SymbolTable.cs" />
     <Compile Include="DataTypes\Step7Attribute.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\CPFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\CPFolder.cs" />
     <Compile Include="DataTypes\TagDataSource.cs" />
     <Compile Include="DataTypes\PLCType.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\CommunicationProcessorFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\CPUFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\HardwareConfigFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\S7ProgrammFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\SourceFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\StationConfigurationFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\BlocksOfflineFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\Step7ProjectFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTable.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTableEntry.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\CommunicationProcessorFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\CPUFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\HardwareConfigFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\S7ProgrammFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\SourceFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\StationConfigurationFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\BlocksOfflineFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\Step7ProjectFolder.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Blocks\Projectfolders\Step7V5\SymbolTableEntry.cs" />
     <Compile Include="DataTypes\Step7ProjectSourceInfo.cs" />
     <Compile Include="DataTypes\DiagnosticEntry.cs" />
     <Compile Include="DataTypes\PLCBlockType.cs" />
@@ -173,7 +174,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTypes\Projectfolders\Step7V11\" />
+    <Folder Include="DataTypes\Blocks\Projectfolders\Step7V11\" />
     <Folder Include="PLCs\S7_1xxx\" />
   </ItemGroup>
   <ItemGroup>

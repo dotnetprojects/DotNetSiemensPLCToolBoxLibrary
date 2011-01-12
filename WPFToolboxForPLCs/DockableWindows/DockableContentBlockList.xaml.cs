@@ -75,19 +75,10 @@ namespace WPFToolboxForPLCs.DockableWindows
 
         private Point _startPoint;
         private bool IsDragging;
+        private Cursor dragDropCursor;
         private void myDataGrid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _startPoint = e.GetPosition(null);
-             
-            /*
-            var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement) sender, e.GetPosition(myDataGrid));
-            if (row != null)
-            {               
-                DataObject dragData = new DataObject("dataRow", row);
-                dragData=new DataObject(DataFormats.Text);
-                DragDrop.DoDragDrop((DependencyObject) sender, dragData, DragDropEffects.Copy);
-            }
-            */
+            _startPoint = e.GetPosition(null);                         
         }
 
         private void myDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -104,15 +95,34 @@ namespace WPFToolboxForPLCs.DockableWindows
                         var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(myDataGrid));
                         if (row != null)
                         {
+                            
+                                
                             DataObject dragData = new DataObject("dataRow", row);
+                            dragData.SetData("ProjectBlockInfo", myDataGrid.SelectedItem);
                             //dragData = new DataObject(DataFormats.Text,row.ToString());
+                            Mouse.OverrideCursor = dragDropCursor = new GhostCursor(row).Cursor;
+                                                                                    
                             DragDrop.DoDragDrop((DependencyObject)sender, dragData, DragDropEffects.Copy);
+                            Mouse.OverrideCursor = null;
                         }
                     }                  
                 }
             }  
         }
 
-        
+        private void myDataGrid_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+
+
+            if ((e.Effects & DragDropEffects.Copy) != DragDropEffects.None)
+            {
+                Mouse.OverrideCursor = dragDropCursor;
+                e.Handled = true;
+            }
+            else
+                Mouse.OverrideCursor = null;
+        }
+
+
     }
 }

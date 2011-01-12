@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using AvalonDock;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
@@ -42,7 +43,7 @@ namespace WPFToolboxForPLCs.DockableWindows
                     IBlocksFolder fld = (IBlocksFolder) myTreeView.SelectedItem;
                     DockableContentBlockList tmp = new DockableContentBlockList(fld);
                     tmp.parentDockingManager = parentDockingManager;
-                    tmp.Title = fld.ToString().Substring(fld.ToString().LastIndexOf("\\") + 1);
+                    tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();
                     tmp.Show(parentDockingManager);
                     tmp.ToggleAutoHide();
@@ -53,12 +54,21 @@ namespace WPFToolboxForPLCs.DockableWindows
                 {
                     SymbolTable fld = (SymbolTable)myTreeView.SelectedItem;
                     ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
-                    tmp.Title = fld.ToString().Substring(fld.ToString().LastIndexOf("\\") + 1);
+                    tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }
             }
+        }
+
+        private void myTreeView_Drop(object sender, DragEventArgs e)
+        {
+            TreeViewItem row = UIHelpers.TryFindFromPoint<TreeViewItem>((UIElement)sender, e.GetPosition(myTreeView));
+            IBlocksFolder blkFld = null;
+
+            //while (blkFld!=)
+
         }       
     }
 }

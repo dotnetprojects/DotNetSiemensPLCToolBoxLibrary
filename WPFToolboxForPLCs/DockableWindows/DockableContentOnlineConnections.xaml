@@ -6,7 +6,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projects="clr-namespace:LibNoDaveConnectionLibrary.DataTypes.Projects;assembly=LibNoDaveConnectionLibrary" xmlns:Projectfiles="clr-namespace:LibNoDaveConnectionLibrary.Projectfiles;assembly=LibNoDaveConnectionLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
-    <ListBox Name="myConnectionsList" ItemsSource="{Binding Connections}" MouseDoubleClick="myConnectionsList_MouseDoubleClick">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0" VerticalAlignment="Stretch" Name="myConnectionsList" ItemsSource="{Binding Connections}" MouseDoubleClick="myConnectionsList_MouseDoubleClick" PreviewMouseDown="myConnectionsList_PreviewMouseDown" PreviewMouseMove="myConnectionsList_PreviewMouseMove" GiveFeedback="myConnectionsList_GiveFeedback">
     </ListBox>
+        <Button Grid.Row="1" DockPanel.Dock="Bottom" Height="20" Click="Button_Click">Config Connections</Button>
+    </Grid> 
 
 </ad:DockableContent>

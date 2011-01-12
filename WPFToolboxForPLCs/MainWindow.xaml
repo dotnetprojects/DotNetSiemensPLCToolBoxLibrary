@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 
-        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="MainWindow" Height="420" Width="709">
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="MainWindow" Height="800" Width="1000">
 <Window.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
@@ -47,7 +47,7 @@
         </ad:DockingManager.LayoutTransform>
             <ad:ResizingPanel Orientation="Horizontal" >
                 <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.28*">
-                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.9*">
+                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.9*" SelectionChanged="DockablePane_SelectionChanged">
                         <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" IsCloseable="False" />                      
                     </ad:DockablePane>
                     <ad:DockablePane SelectedIndex="1" >
