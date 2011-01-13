@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 
-namespace WPFToolboxForPLCs.DockableWindows.DataBlockViewControl
+namespace WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl
 {
     public class TreeviewDepthWidthConverter : IValueConverter
     {

@@ -10,9 +10,9 @@ using AvalonDock;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using WPFToolboxForPLCs.AvalonEdit;
+using WPFToolboxForSiemensPLCs.AvalonEdit;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     public partial class ContentWindowDataBlockEditor : DocumentContent
     {

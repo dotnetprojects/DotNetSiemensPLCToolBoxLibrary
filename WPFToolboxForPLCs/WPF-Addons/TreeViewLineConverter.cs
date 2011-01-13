@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace WPFToolboxForPLCs.WPF_Addons
+namespace WPFToolboxForSiemensPLCs.WPF_Addons
 {
     class TreeViewLineConverter : IValueConverter
     {

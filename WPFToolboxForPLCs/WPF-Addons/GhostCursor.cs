@@ -12,7 +12,7 @@ using System.Windows.Interop;
 // Please write coder @ wiredprairie dot us if you use this code or find it useful!
 
 
-namespace WPFToolboxForPLCs
+namespace WPFToolboxForSiemensPLCs
 {
 
     internal class IconHandle : SafeHandle

@@ -10,9 +10,9 @@ using AvalonDock;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using WPFToolboxForPLCs.AvalonEdit;
+using WPFToolboxForSiemensPLCs.AvalonEdit;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     public partial class ContentWindowFunctionBlockEditor : DocumentContent
     {
@@ -26,7 +26,7 @@ namespace WPFToolboxForPLCs.DockableWindows
 
             if (myBlock is PLCFunctionBlock)
             {
-                highlighterFile="WPFToolboxForPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
+                highlighterFile="WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
 
                 if (((PLCFunctionBlock) myBlock).Parameter != null)
                     myTree.DataContext = ((PLCFunctionBlock) myBlock).Parameter.Children;
@@ -37,7 +37,7 @@ namespace WPFToolboxForPLCs.DockableWindows
             {
                 mainGrid.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
                 //toppanel.Visibility = System.Windows.Visibility.Collapsed;
-                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
+                highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
                 textEditor.Text = myBlock.ToString();                
             }
            

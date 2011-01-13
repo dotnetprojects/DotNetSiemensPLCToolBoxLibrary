@@ -7,9 +7,9 @@ using AvalonDock;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using WPFToolboxForPLCs.AvalonEdit;
+using WPFToolboxForSiemensPLCs.AvalonEdit;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     /// <summary>
     /// Interaction logic for SampleDockableContent.xaml
@@ -151,7 +151,7 @@ namespace WPFToolboxForPLCs.DockableWindows
             
             if (myBlock is PLCFunctionBlock)
             {
-                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
+                highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
 
                 if (((PLCFunctionBlock)myBlock).Parameter != null)
                     myTreeA.DataContext = ((PLCFunctionBlock)myBlock).Parameter.Children;
@@ -162,7 +162,7 @@ namespace WPFToolboxForPLCs.DockableWindows
             {
                 mainGridA.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
                 //toppanel.Visibility = System.Windows.Visibility.Collapsed;
-                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
+                highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
                 textEditorA.Text = myBlock.ToString();
             }
 
@@ -195,7 +195,7 @@ namespace WPFToolboxForPLCs.DockableWindows
 
             if (myBlock is PLCFunctionBlock)
             {
-                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
+                highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
 
                 if (((PLCFunctionBlock)myBlock).Parameter != null)
                     myTreeB.DataContext = ((PLCFunctionBlock)myBlock).Parameter.Children;
@@ -206,7 +206,7 @@ namespace WPFToolboxForPLCs.DockableWindows
             {
                 mainGridB.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
                 //toppanel.Visibility = System.Windows.Visibility.Collapsed;
-                highlighterFile = "WPFToolboxForPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
+                highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";
                 textEditorB.Text = myBlock.ToString();
             }
 

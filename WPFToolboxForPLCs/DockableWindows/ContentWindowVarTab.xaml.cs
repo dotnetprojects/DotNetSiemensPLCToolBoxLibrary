@@ -2,7 +2,7 @@
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     /// <summary>
     /// Interaction logic for SampleDockableContent.xaml

@@ -1,4 +1,4 @@
-﻿<ad:DockableContent x:Class="WPFToolboxForPLCs.DockableWindows.DockableContentProjectList" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projects="clr-namespace:LibNoDaveConnectionLibrary.DataTypes.Projects;assembly=LibNoDaveConnectionLibrary" xmlns:Projectfiles="clr-namespace:LibNoDaveConnectionLibrary.Projectfiles;assembly=LibNoDaveConnectionLibrary" xmlns:WPFToolboxForPLCs="clr-namespace:WPFToolboxForPLCs" xmlns:local="clr-namespace:WPFToolboxForPLCs.WPF_Addons" xmlns:s="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+﻿<ad:DockableContent x:Class="WPFToolboxForSiemensPLCs.DockableWindows.DockableContentProjectList" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projects="clr-namespace:LibNoDaveConnectionLibrary.DataTypes.Projects;assembly=LibNoDaveConnectionLibrary" xmlns:Projectfiles="clr-namespace:LibNoDaveConnectionLibrary.Projectfiles;assembly=LibNoDaveConnectionLibrary" xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" xmlns:s="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
 	<ad:DockableContent.Resources>		
 		<local:TreeViewLineConverter x:Key="LineConverter" />
@@ -141,7 +141,7 @@
 						</Style>
 					</HierarchicalDataTemplate.ItemContainerStyle>
 					<StackPanel Orientation="Horizontal">
-						<WPFToolboxForPLCs:WinFormsImage ImageSource="{Binding FolderClosedImage}"></WPFToolboxForPLCs:WinFormsImage>
+						<WPFToolboxForSiemensPLCs:WinFormsImage ImageSource="{Binding FolderClosedImage}"></WPFToolboxForSiemensPLCs:WinFormsImage>
 						<TextBlock Text=" " />
 						<TextBlock VerticalAlignment="Center" FontFamily="Courier New" Text="{Binding Name}"></TextBlock>
 					</StackPanel>

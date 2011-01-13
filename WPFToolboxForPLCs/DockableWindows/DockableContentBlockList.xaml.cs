@@ -9,7 +9,7 @@ using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.General;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     public partial class DockableContentBlockList : DockableContent
     {

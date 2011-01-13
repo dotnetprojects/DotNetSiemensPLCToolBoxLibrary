@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WPFToolboxForPLCs.WPF_Addons
+namespace WPFToolboxForSiemensPLCs.WPF_Addons
 {
     public static class TreeViewExtensions
     {

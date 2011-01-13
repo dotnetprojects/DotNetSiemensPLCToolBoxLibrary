@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace WPFToolboxForPLCs
+namespace WPFToolboxForSiemensPLCs
 {
     /// <summary>
     /// This class can directly display a WinForms Image

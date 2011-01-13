@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
-namespace WPFToolboxForPLCs
+namespace WPFToolboxForSiemensPLCs
 {
     public static class UIHelpers
     {

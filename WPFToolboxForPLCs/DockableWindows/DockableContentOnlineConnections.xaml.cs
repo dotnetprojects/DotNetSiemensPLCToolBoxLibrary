@@ -7,11 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AvalonDock;
 using LibNoDaveConnectionLibrary;
+using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using LibNoDaveConnectionLibrary.DataTypes.Projects;
 using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
 using LibNoDaveConnectionLibrary.Projectfiles;
 
-namespace WPFToolboxForPLCs.DockableWindows
+namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
     /// <summary>
     /// Interaction logic for SampleDockableContent.xaml
@@ -40,12 +41,29 @@ namespace WPFToolboxForPLCs.DockableWindows
 
         private void myConnectionsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (myConnectionsList.SelectedItem != null)
+            {
+                OnlineBlocksFolder onl = new OnlineBlocksFolder((string) myConnectionsList.SelectedItem);
+                IBlocksFolder fld = (IBlocksFolder) onl;
+                DockableContentBlockList tmp = new DockableContentBlockList(fld);
+                tmp.parentDockingManager = parentDockingManager;
+                tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
+                tmp.ToolTip = fld.ToString();
+                tmp.Show(parentDockingManager);
+                tmp.ToggleAutoHide();
 
+                //Set size of the parent DockablePane (it's automaticly been created!)
+                DockablePane tmpPane = tmp.TryFindParent<DockablePane>();
+                ResizingPanel.SetEffectiveSize(tmpPane, new Size(350, 0));
+
+                parentDockingManager.ActiveDocument = tmp;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.ShowConfiguration();
+            this.Connections = new ObservableCollection<string>((IEnumerable<string>)LibNoDaveConnectionConfiguration.GetConfigurationNames());         
         }
 
         private Point _startPoint;

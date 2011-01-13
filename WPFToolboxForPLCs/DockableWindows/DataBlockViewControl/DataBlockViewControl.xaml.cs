@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 
-namespace WPFToolboxForPLCs.DockableWindows.DataBlockViewControl
+namespace WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl
 {
     /// <summary>
     /// Interaction logic for DatabBlockViewControl.xaml

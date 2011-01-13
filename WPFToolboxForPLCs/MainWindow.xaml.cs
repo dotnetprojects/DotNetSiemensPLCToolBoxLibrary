@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 using AvalonDock;
 using LibNoDaveConnectionLibrary.Projectfiles;
 using Microsoft.Win32;
-using WPFToolboxForPLCs.DockableWindows;
+using WPFToolboxForSiemensPLCs.DockableWindows;
 
-namespace WPFToolboxForPLCs
+namespace WPFToolboxForSiemensPLCs
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -28,6 +28,7 @@ namespace WPFToolboxForPLCs
         {
             InitializeComponent();
             lblVersion.Text = "Version: "+ String.Format("{0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            winConnections.parentDockingManager = DockManager;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

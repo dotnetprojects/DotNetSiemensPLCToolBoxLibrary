@@ -22,7 +22,9 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
 
         public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
         {
-            SymbolTable symtab = ((S7ProgrammFolder)Parent).SymbolTable;
+            SymbolTable symtab = null;
+            if (((S7ProgrammFolder)Parent) != null)
+                symtab = ((S7ProgrammFolder) Parent).SymbolTable;
 
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 

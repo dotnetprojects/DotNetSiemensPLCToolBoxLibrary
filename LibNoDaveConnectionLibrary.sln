@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "old_JFK-VarTab", "jfkvartab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "old_ToolboxForSiemensPLCs", "TestProjectFileFunctions\old_ToolboxForSiemensPLCs.csproj", "{9EB7BDB5-FDEE-466A-B2FF-63F087B160CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFToolboxForPLCs", "WPFToolboxForPLCs\WPFToolboxForPLCs.csproj", "{383B1EB0-E39D-41D4-BAE8-FFC619C33AD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFToolboxForSiemensPLCs", "WPFToolboxForPLCs\WPFToolboxForSiemensPLCs.csproj", "{383B1EB0-E39D-41D4-BAE8-FFC619C33AD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E32FDB6-4CFE-448E-9223-C0F7DA793A7A}"
 	ProjectSection(SolutionItems) = preProject
