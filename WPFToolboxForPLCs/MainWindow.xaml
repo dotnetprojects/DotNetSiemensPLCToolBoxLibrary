@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 
-        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="MainWindow" Height="800" Width="1000">
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000">
 <Window.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
@@ -60,7 +60,7 @@
             </ad:ResizingPanel>
     </ad:DockingManager>
         <StatusBar Grid.Row="2">
-            <StatusBarItem>
+            <StatusBarItem HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock Text="A" VerticalAlignment="Center"/>
                     <Slider x:Name="zoomSlider" VerticalAlignment="Center" Value="1" IsSnapToTickEnabled="True" TickFrequency="0.2" TickPlacement="Both" Minimum="0.5" Maximum="3" SmallChange="0.5" LargeChange="0.5" Width="100"/>
@@ -68,8 +68,15 @@
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem HorizontalContentAlignment="Right">
-                <TextBlock Name="lblStatus"></TextBlock>                
+                <DockPanel HorizontalAlignment="Stretch">
+                <TextBlock Name="lblStatus"></TextBlock>
+                <TextBlock Text="  "></TextBlock>
+                <TextBlock Name="lblVersion">1.0</TextBlock>
+                </DockPanel>
             </StatusBarItem>
+            
+            
+            
         </StatusBar>
 </Grid>
 </Window>

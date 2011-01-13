@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ namespace WPFToolboxForPLCs
         public MainWindow()
         {
             InitializeComponent();
+            lblVersion.Text = "Version: "+ String.Format("{0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
