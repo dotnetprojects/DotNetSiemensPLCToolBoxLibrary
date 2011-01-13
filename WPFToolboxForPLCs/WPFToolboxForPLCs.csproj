@@ -49,12 +49,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\externalDlls\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.HMIGENOBJECTSLib">
+      <HintPath>..\externalDlls\Interop.HMIGENOBJECTSLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
       <HintPath>..\externalDlls\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -73,6 +78,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
+    <Compile Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml.cs">
+      <DependentUpon>ContentWindowWinCCTagVarCreator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DockableWindows\DockableContentBlockList.xaml.cs">
       <DependentUpon>DockableContentBlockList.xaml</DependentUpon>
     </Compile>
@@ -99,6 +107,10 @@
     <Compile Include="WPF-Addons\TreeViewLineConverter.cs" />
     <Compile Include="WPF-Addons\UIHelpers.cs" />
     <Compile Include="WPF-Addons\WinFormsImage.cs" />
+    <Page Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DockableWindows\DockableContentBlockList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -37,6 +37,8 @@ namespace WPFToolboxForPLCs.WPF_Addons
 
         public static object ItemFromContainer(this TreeView treeView, TreeViewItem container)
         {
+            if (container == null)
+                return null;
             var itemThatMightBelongToContainer = treeView.ItemContainerGenerator.ItemFromContainer(container);
             if (itemThatMightBelongToContainer != null && itemThatMightBelongToContainer != DependencyProperty.UnsetValue)
                 return itemThatMightBelongToContainer;

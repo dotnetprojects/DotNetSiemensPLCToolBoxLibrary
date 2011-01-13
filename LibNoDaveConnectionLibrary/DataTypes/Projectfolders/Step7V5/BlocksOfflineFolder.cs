@@ -51,15 +51,9 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
                         
                         if (symtab != null && useSymbolTable)
                         {
-                            string tmpname = tmp.ToString().Replace(" ", "");
-                            foreach (var step7SymbolTableEntry in symtab.Step7SymbolTableEntrys)
-                            {
-                                if (step7SymbolTableEntry.Operand.Replace(" ", "") == tmpname)
-                                {
-                                    tmp.Symbol = step7SymbolTableEntry.Symbol;
-                                    break;
-                                }
-                            }
+                            SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
+                            if (sym != null)
+                                tmp.Symbol = sym.Symbol;                            
                         }
 
                         if (tmp.BlockType == PLCBlockType.SFB || tmp.BlockType == PLCBlockType.SFC || tmp.BlockType == PLCBlockType.DB || tmp.BlockType == PLCBlockType.VAT || tmp.BlockType == PLCBlockType.FB || tmp.BlockType == PLCBlockType.FC || tmp.BlockType == PLCBlockType.OB || tmp.BlockType == PLCBlockType.UDT)

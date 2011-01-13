@@ -11,7 +11,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="0" VerticalAlignment="Stretch" Name="myConnectionsList" ItemsSource="{Binding Connections}" MouseDoubleClick="myConnectionsList_MouseDoubleClick" PreviewMouseDown="myConnectionsList_PreviewMouseDown" PreviewMouseMove="myConnectionsList_PreviewMouseMove" GiveFeedback="myConnectionsList_GiveFeedback">
+        <ListBox Grid.Row="0" VerticalAlignment="Stretch" Name="myConnectionsList" ItemsSource="{Binding Connections}" MouseDoubleClick="myConnectionsList_MouseDoubleClick" PreviewMouseDown="myConnectionsList_PreviewMouseDown" PreviewMouseMove="myConnectionsList_PreviewMouseMove" GiveFeedback="myConnectionsList_GiveFeedback" ToolTip="Drag-Drop the Connection you want to use on the S7ProgrammFolder you wish to use!">
     </ListBox>
         <Button Grid.Row="1" DockPanel.Dock="Bottom" Height="20" Click="Button_Click">Config Connections</Button>
     </Grid> 

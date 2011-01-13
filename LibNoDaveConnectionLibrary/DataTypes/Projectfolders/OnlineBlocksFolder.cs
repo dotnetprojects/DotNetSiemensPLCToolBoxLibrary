@@ -22,6 +22,8 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
 
         public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
         {
+            SymbolTable symtab = ((S7ProgrammFolder)Parent).SymbolTable;
+
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 
             myConn=new LibNoDaveConnection(ConnectionConfig);
@@ -62,8 +64,17 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
                     tmp.BlockType = PLCBlockType.SDB;
                     tmp.BlockNumber = Convert.ToInt32(blk.Substring(3));
                 }
+
+                if (symtab != null && useSymbolTable)
+                {
+                    SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
+                    if (sym != null)
+                        tmp.Symbol = sym.Symbol;
+                }
                 retVal.Add(tmp);
             }
+
+
             return retVal;
         }
 

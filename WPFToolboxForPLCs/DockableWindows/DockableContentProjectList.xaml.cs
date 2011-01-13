@@ -46,9 +46,14 @@ namespace WPFToolboxForPLCs.DockableWindows
                     DockableContentBlockList tmp = new DockableContentBlockList(fld);
                     tmp.parentDockingManager = parentDockingManager;
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
-                    tmp.ToolTip = fld.ToString();
+                    tmp.ToolTip = fld.ToString();                    
                     tmp.Show(parentDockingManager);
                     tmp.ToggleAutoHide();
+
+                    //Set size of the parent DockablePane (it's automaticly been created!)
+                    DockablePane tmpPane = tmp.TryFindParent<DockablePane>();                    
+                    ResizingPanel.SetEffectiveSize(tmpPane,new Size(350,0));
+
                     parentDockingManager.ActiveDocument = tmp;
 
                 }
@@ -58,6 +63,7 @@ namespace WPFToolboxForPLCs.DockableWindows
                     ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();
+                    tmp.Name = fld.ToString();
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }

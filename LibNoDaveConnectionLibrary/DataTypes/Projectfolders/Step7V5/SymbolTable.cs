@@ -24,6 +24,19 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
 
         internal bool showDeleted { get; set;}
 
+        public SymbolTableEntry GetEntry(string operand)
+        {
+            string tmpname = operand.ToString().Replace(" ", "");
+            foreach (var step7SymbolTableEntry in Step7SymbolTableEntrys)
+                {
+                    if (step7SymbolTableEntry.Operand.Replace(" ", "") == tmpname)
+                    {
+                        return step7SymbolTableEntry;
+                    }
+                }
+            return null;
+        }
+
         public SymbolTable()
         {
             //Step7SymbolTableEntrys = new List<SymbolTableEntry>();

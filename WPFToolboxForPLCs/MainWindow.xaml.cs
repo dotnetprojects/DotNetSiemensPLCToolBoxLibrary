@@ -78,5 +78,15 @@ namespace WPFToolboxForPLCs
         {
 
         }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {            
+            ContentWindowWinCCTagVarCreator tmp = new ContentWindowWinCCTagVarCreator();
+            //tmp.parentDockingManager = parentDockingManager;
+            tmp.Title = "DB2WinCC Converter";
+            //tmp.ToolTip = fld.ToString();
+            tmp.Show(DockManager);
+            DockManager.ActiveDocument = tmp;
+        }
     }
 }

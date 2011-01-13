@@ -1,0 +1,48 @@
+﻿<ad:DocumentContent
+    x:Class="WPFToolboxForPLCs.DockableWindows.ContentWindowWinCCTagVarCreator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+             mc:Ignorable="d" d:DesignHeight="707" d:DesignWidth="591">
+    <StackPanel>
+        <StackPanel.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF8D8D8D" Offset="0" />
+                <GradientStop Color="#FF585858" Offset="1" />
+                <GradientStop Color="#FFE2E2E2" Offset="0.5" />
+            </LinearGradientBrush>
+        </StackPanel.Background>
+        <TextBlock Foreground="White">Drop the Blocks you want to be Converted in the ListBox</TextBlock>
+        <TextBlock></TextBlock>
+        <ListBox AllowDrop="True" Name="myBlockList" Height="200" Width="300" DragOver="ListBox_DragOver" Drop="ListBox_Drop"></ListBox>
+        <TextBlock></TextBlock>
+        <StackPanel Orientation="Horizontal" Width="300">
+            <TextBlock Text="Connection Name: " VerticalAlignment="Center" />
+            <TextBox Width="200" Text="Verbindung_1" Name="txtConnectionName"></TextBox>
+        </StackPanel>
+        <TextBlock></TextBlock>
+        <StackPanel Orientation="Horizontal" Width="300">
+            <TextBlock Text="Start Error Number: " VerticalAlignment="Center" />
+            <TextBox Width="60" Text="1" Name="txtStartErrorNumber"></TextBox>
+        </StackPanel>
+        <TextBlock></TextBlock>
+        <CheckBox Content="Fixed error Number" Width="300" Name="chkFixedErrorNumber" IsChecked="False"></CheckBox>
+        <TextBlock></TextBlock>
+        <TextBlock></TextBlock>
+        <Button Width="300" Content="Create WinCC Flexible Error &amp; Tags .csv" Click="Button_Click"></Button>
+        <TextBlock></TextBlock>                
+        <Button Width="300" Click="Button_Click_1">Create WinCC Error Messages &amp; Tags</Button>
+        <TextBlock></TextBlock>
+        <TextBlock></TextBlock>
+        <StackPanel Orientation="Horizontal" Width="300">
+            <TextBlock Text="Tags Prefix: " VerticalAlignment="Center" />
+            <TextBox Width="200" Name="txtTagsPrefix"></TextBox>
+        </StackPanel>
+        <TextBlock></TextBlock>
+        <CheckBox Content="Expand Arrays" Width="300" Name="chkExpandArrays" IsChecked="False"></CheckBox>
+        <TextBlock></TextBlock>
+        <Button Width="300" Click="Button_Click_2">Create WinCC Tags</Button>
+    </StackPanel>
+</ad:DocumentContent>
