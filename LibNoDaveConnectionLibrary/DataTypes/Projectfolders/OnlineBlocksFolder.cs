@@ -7,7 +7,7 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
-    public class OnlineBlocksFolder : ProjectFolder
+    public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
     {
         public LibNoDaveConnectionConfiguration ConnectionConfig { get; set;}
         private LibNoDaveConnection myConn;

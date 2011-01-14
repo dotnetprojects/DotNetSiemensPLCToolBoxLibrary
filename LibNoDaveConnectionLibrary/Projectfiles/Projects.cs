@@ -20,7 +20,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 string[] fls = System.IO.Directory.GetFiles(dirname, "*.s5d");
                 foreach (var fl in fls)
                 {
-                    retVal.Add(new Step5Project(fl));    
+                    retVal.Add(new Step5Project(fl, false));
                 }                
                     
             }
@@ -43,7 +43,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
-                            retVal.Add(new Step5Project(fls[0]));    
+                            retVal.Add(new Step5Project(fls[0], false));
                     }
                     catch (Exception)
                     { }
@@ -58,7 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                     entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
                     if (entr != null)
-                        retVal.Add(new Step5Project(zip));
+                        retVal.Add(new Step5Project(zip, false));
                 }                                    
             }
             catch(Exception)
@@ -70,11 +70,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         static public Project LoadProject(string file, bool showDeleted)
         {
             if (file.ToLower().EndsWith(".s5d"))
-                return new Step5Project(file);
+                return new Step5Project(file, showDeleted);
             else if (file.ToLower().EndsWith(".s7p"))
                 return new Step7ProjectV5(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
-                return new Step5Project(file);
+                return new Step5Project(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))
                 return new Step7ProjectV5(file, showDeleted);
             return null;

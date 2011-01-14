@@ -18,8 +18,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
         internal object _zipfile;
 
-        public Step5Project(string filename)
+        public Step5Project(string filename, bool showDeleted)
         {
+            _showDeleted = showDeleted;
+
             _projectfilename = filename;
 
             if (filename.ToLower().EndsWith("zip"))
@@ -42,7 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal override void LoadProject()
         {
             _projectLoaded = true;
-         
+
             //Read Step5 Project into a Byte-Array
             Stream fsProject = ZipHelper.GetReadStream(_zipfile, _projectfilename);
             s5ProjectByteArray = new byte[ZipHelper.GetStreamLength(_zipfile, _projectfilename, fsProject)];
@@ -53,10 +55,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             ProjectName = System.Text.Encoding.UTF7.GetString(s5ProjectByteArray, 0x08, 8);
 
             //Read the Project Size
-            Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15] * 0x100;
+            Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15]*0x100;
 
             //Create the main Project Folder
-            ProjectStructure = new Step5ProjectFolder() { Project = this, Name = ProjectName };
+            ProjectStructure = new Step5ProjectFolder() {Project = this, Name = this.ToString()};
 
             //int startpos = s5ProjectByteArray[0x12] * 0x80;
 
@@ -66,22 +68,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             for (int j = 0; j < anz_sections; j++)
             {
-                int pos = 0x44 + j * 19;
-                sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16] * 0x100);
+                int pos = 0x44 + j*19;
+                sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16]*0x100);
             }
 
-            Step5BlocksFolder blkFld = new Step5BlocksFolder() { Name = "Blocks", Project = this, Parent = ProjectStructure};
+            Step5BlocksFolder blkFld = new Step5BlocksFolder()
+                                           {Name = "Blocks", Project = this, Parent = ProjectStructure};
             ProjectStructure.SubItems.Add(blkFld);
 
             //int section_start = startpos;
 
             int n = 0;
 
-            foreach (int secpos in sections_lst)
+            List<int> ByteAddressOFExistingBlocks = new List<int>();
 
-            //while (section_start < s5ProjectByteArray.Length)
+            foreach (int secpos in sections_lst)
             {
-                int section_start = secpos * 0x80;
+                int section_start = secpos*0x80;
                 /* The len for a Section is not always calculated right, so if the Section does not begin with the filename add 0x80 until it works */
                 /* But I don't know why it's wrong */
 
@@ -110,7 +113,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 for (int j = 0; j < anzbst; j++)
                 {
                     byte[] tmp = new byte[15];
-                    Array.Copy(s5ProjectByteArray, section_start + 68 + j * 15, tmp, 0, 15);
+                    Array.Copy(s5ProjectByteArray, section_start + 68 + j*15, tmp, 0, 15);
                     bstHeaders.Add(tmp);
                 }
 
@@ -124,25 +127,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 int section_header_size = anzbst * 15 + 68;
                 section_header_size = (section_header_size / 0x80) * 0x80;
                 if ((anzbst * 15 + 68) % 0x80 != 0)
-                	section_header_size += 0x80;
+                    section_header_size += 0x80;
                 */
 
                 //Don't know wich Information is in the Section Header!
-                int section_header_size = s5ProjectByteArray[section_start + 18] * 0x80;
+                int section_header_size = s5ProjectByteArray[section_start + 18]*0x80;
 
 
 
-                //if (section_header_typ != 0x20)
+                //Read the Block normaly (using the Section-Headers)
                 {
                     //for (int n = blkstart + blkheadersize; n < blkstart + blksize /* s5ProjectByteArray.Length - 2 */; n++)
                     n = section_start + section_header_size;
                     //while (s5ProjectByteArray[n] == 0x00 && s5ProjectByteArray[n + 1] == 0x00)
                     //    n += 0x80;
 
-                    while (akanz < anzbst && n+1<s5ProjectByteArray.Length ) //n < section_start + section_size)                       
+                    while (akanz < anzbst && n + 1 < s5ProjectByteArray.Length)
+                        //n < section_start + section_size)                       
                     {
                         akanz++;
                         int len = 0;
+
+                        ByteAddressOFExistingBlocks.Add(n);
+                        blkFld.step5BlocksinfoList.Add(AddBlockInfo(s5ProjectByteArray, ref n, blkFld,
+                                                                    bstHeaders[akanz - 1]));
+
+                        /*
                         if (s5ProjectByteArray[n] == 0x70 && s5ProjectByteArray[n + 1] == 0x70) //Step5 Block
                         // && s5ProjectByteArray[n - 1] == 0x00)
                         {
@@ -249,12 +259,163 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         n += (len / 0x80) * 0x80;
                         if (len % 0x80 != 0)
                             n += 0x80;
+                        */
                     }
                 }
                 section_start = n;
                 //section_start += section_size;
             }
+
+            if (_showDeleted)
+            {
+                //Read also the deleted Blocks, that means, don't use the Section Headers ...
+                int akpos = s5ProjectByteArray[0x12]*0x80;
+
+                while (akpos <= s5ProjectByteArray.Length - 0x80)
+                {
+                    while (!IsCurrentPosABlockStart(s5ProjectByteArray, akpos) &&
+                           akpos <= s5ProjectByteArray.Length - 0x80)
+                        akpos += 0x80;
+                    
+                    if (akpos <= s5ProjectByteArray.Length - 0x80)
+                    {
+                        bool blkExists = ByteAddressOFExistingBlocks.Contains(akpos);
+                        var tmp=AddBlockInfo(s5ProjectByteArray, ref akpos, blkFld, null);
+                        if (!blkExists)
+                        {
+                            tmp.Deleted = true;
+                            blkFld.step5BlocksinfoList.Add(tmp);
+                        }                        
+                    }
+                }
+            }
         }
 
-    }
+        private bool IsCurrentPosABlockStart(byte[] s5ProjectByteArray, int n)
+        {
+            if (s5ProjectByteArray[n] == 0x70 && s5ProjectByteArray[n + 1] == 0x70)
+                return true;
+            else if (s5ProjectByteArray[n] == 0x06) //DB - Vorkopf
+                return true;
+            else if (s5ProjectByteArray[n] == 0x11) //DX - Vorkopf
+                return true;
+            else if (s5ProjectByteArray[n] == 0x0D) //FB - Vorkopf
+                return true;
+            else if (s5ProjectByteArray[n] == 0x0A) //FX - Vorkopf
+                return true;
+            return false;
+        }
+
+        private Step5ProjectBlockInfo AddBlockInfo(byte[] s5ProjectByteArray, ref int pos, Step5BlocksFolder blkFld, byte[] header)
+        {
+            int len = 0;
+            Step5ProjectBlockInfo tmpBlk = new Step5ProjectBlockInfo();
+            tmpBlk._blkHeaderByte = header;
+
+            if (s5ProjectByteArray[pos] == 0x70 && s5ProjectByteArray[pos + 1] == 0x70) //Step5 Block
+            // && s5ProjectByteArray[n - 1] == 0x00)
+            {
+                len = (s5ProjectByteArray[pos + 8] * 0x100 + s5ProjectByteArray[pos + 9]) * 2;
+                
+                tmpBlk.BlockType = (PLCBlockType)(s5ProjectByteArray[pos + 2] | 0xf00);
+                
+                tmpBlk.BlockNumber = s5ProjectByteArray[pos + 3];
+
+                //byte n+4 -> kennungen für das programiergerät
+                //byte n+5,6,7 -> bib nummer
+
+                byte[] code = new byte[len];
+                Array.Copy(s5ProjectByteArray, pos, code, 0, len);
+                tmpBlk._blkByte = code;
+                tmpBlk.ParentFolder = blkFld;
+
+                //blkFld.step5BlocksinfoList.Add(tmpBlk);
+                //string aa = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(code);                        
+            }
+            else if (s5ProjectByteArray[pos] == 0x06) //DB - Vorkopf
+            {
+                len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
+                
+                tmpBlk.BlockType = PLCBlockType.S5_DV;
+
+                tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
+
+                byte[] code = new byte[len];
+                Array.Copy(s5ProjectByteArray, pos, code, 0, len);
+                tmpBlk._blkByte = code;
+                tmpBlk.ParentFolder = blkFld;
+
+                //blkFld.step5BlocksinfoList.Add(tmpBlk);
+            }
+            else if (s5ProjectByteArray[pos] == 0x11) //DX - Vorkopf
+            {
+                len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
+                
+                tmpBlk.BlockType = PLCBlockType.S5_DVX;
+
+                tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
+
+                byte[] code = new byte[len];
+                Array.Copy(s5ProjectByteArray, pos, code, 0, len);
+                tmpBlk._blkByte = code;
+                tmpBlk.ParentFolder = blkFld;
+
+                //blkFld.step5BlocksinfoList.Add(tmpBlk);
+            }
+            else if (s5ProjectByteArray[pos] == 0x0D) //FB - Vorkopf
+            {
+                len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
+               
+                tmpBlk.BlockType = PLCBlockType.S5_FV;
+
+                tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
+
+                byte[] code = new byte[len];
+                Array.Copy(s5ProjectByteArray, pos, code, 0, len);
+                tmpBlk._blkByte = code;
+                tmpBlk.ParentFolder = blkFld;
+
+                //blkFld.step5BlocksinfoList.Add(tmpBlk);
+            }
+            else if (s5ProjectByteArray[pos] == 0x0A) //FX - Vorkopf
+            {
+                len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
+                
+                tmpBlk.BlockType = PLCBlockType.S5_FVX;
+
+                tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
+
+                byte[] code = new byte[len];
+                Array.Copy(s5ProjectByteArray, pos, code, 0, len);
+                tmpBlk._blkByte = code;
+                tmpBlk.ParentFolder = blkFld;
+
+                //blkFld.step5BlocksinfoList.Add(tmpBlk);
+            }
+            else
+            {
+                //Here are the $ Blocks woch are not yet implemented!
+                //akanz--;
+                len = 0x80;
+            }
+
+            if (len == 0) len = 0x80;
+
+            pos += (len / 0x80) * 0x80;
+            if (len % 0x80 != 0)
+                pos += 0x80;
+
+            return tmpBlk;
+        }
+
+        public override string ToString()
+        {
+            string retVal = base.ToString();
+            if (_zipfile != null)
+                retVal += "(zipped)";
+            if (_showDeleted == true)
+                retVal += " (show deleted)";
+            return retVal;            
+        }
+    }    
 }
