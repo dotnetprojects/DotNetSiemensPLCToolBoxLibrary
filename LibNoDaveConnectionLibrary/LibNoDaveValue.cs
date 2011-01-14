@@ -40,13 +40,37 @@ namespace DotNetSiemensPLCToolBoxLibrary
 	[Serializable]
     public class LibNoDaveValue: INotifyPropertyChanged
     {
+        private string _valueName;
+
         /// <summary>
         /// This is a Property wich addresses the values you've read with a Name
         /// </summary>
-        public String ValueName { get; set; }
-        public int ByteAddress { get; set; }
-        public int BitAddress { get; set; }
-                
+        public String ValueName
+        {
+            get { return _valueName; }
+            set { _valueName = value;
+            NotifyPropertyChanged("ValueName");
+            }
+        }
+
+        private int _byteAddress;
+        public int ByteAddress
+        {
+            get { return _byteAddress; }
+            set { _byteAddress = value;
+            NotifyPropertyChanged("ByteAddress");
+            }
+        }
+
+        private int _bitAddress;
+        public int BitAddress
+        {
+            get { return _bitAddress; }
+            set { _bitAddress = value;
+            NotifyPropertyChanged("BitAddress");
+            }
+        }
+
         public bool ItemDoesNotExist { get; set;}
 
         public LibNoDaveValue()
@@ -69,7 +93,9 @@ namespace DotNetSiemensPLCToolBoxLibrary
                 else
                     return 0;
             }
-            set { _datablockNumber = value; }
+            set { _datablockNumber = value;
+            NotifyPropertyChanged("DatablockNumber");
+            }
         }
 
         private TagDataSource _LibNoDaveDataSource = TagDataSource.Datablock;
@@ -192,6 +218,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
                     _oldvalues = new List<object>();
                 else if (value == 0)
                     _oldvalues = null;
+                NotifyPropertyChanged("BackupValuesCount");
             }
         }
 
@@ -211,7 +238,9 @@ namespace DotNetSiemensPLCToolBoxLibrary
         public int ArraySize
         {
             get { return _arraySize; }
-            set { _arraySize = value == 0 ? 1 : value; }
+            set { _arraySize = value == 0 ? 1 : value;
+                NotifyPropertyChanged("ArraySize");
+            }
         }
 
         private Object _value;

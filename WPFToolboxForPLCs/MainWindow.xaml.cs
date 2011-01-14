@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AvalonDock;
-using LibNoDaveConnectionLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using Microsoft.Win32;
 using WPFToolboxForSiemensPLCs.DockableWindows;
 

@@ -25,6 +25,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
@@ -41,8 +42,18 @@ using Microsoft.Win32;
  */
 namespace DotNetSiemensPLCToolBoxLibrary
 {
-    public class LibNoDaveConnection : IDisposable
+    public class LibNoDaveConnection : IDisposable, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
+
         //Locking Object for Multithreaded Calls of LibNoDave...
         private static object _MultiThreadLocking = new object();
 
@@ -76,10 +87,20 @@ namespace DotNetSiemensPLCToolBoxLibrary
         }
 
 
+        private bool _connected;
+
         /// <summary>
         /// Is the Connection established?
         /// </summary>
-        public bool Connected { get; set; }
+        public bool Connected
+        {
+            get { return _connected; }
+            set
+            {
+                _connected = value;
+                NotifyPropertyChanged("Connected");
+            }
+        }
 
         private bool _netlinkReseted = false;
 

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
-    public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
+    public class OnlineBlocksFolder : ProjectFolder
     {
-
         public LibNoDaveConnectionConfiguration ConnectionConfig { get; set;}
         private LibNoDaveConnection myConn;
 

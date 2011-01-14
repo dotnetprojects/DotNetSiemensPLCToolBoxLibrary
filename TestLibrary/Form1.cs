@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using LibNoDaveConnectionLibrary;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.MC7;
+using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace JFK_VarTab
 {
