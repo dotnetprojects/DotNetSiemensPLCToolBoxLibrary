@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-#if SHARPZIPLIB
+﻿using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
+#if SHARPZIPLIB
+
 #endif
 
-namespace LibNoDaveConnectionLibrary.General
+namespace DotNetSiemensPLCToolBoxLibrary.General
 {
     public static class ZipHelper
     {

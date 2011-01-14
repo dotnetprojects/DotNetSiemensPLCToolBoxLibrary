@@ -1,4 +1,4 @@
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public enum SelectPartType
     {

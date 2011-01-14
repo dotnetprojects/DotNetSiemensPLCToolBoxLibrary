@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     [Serializable()]
     public class S5FunctionBlock : S5Block

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     public class S5Block : Block
     {

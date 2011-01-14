@@ -1,8 +1,8 @@
 #if !IPHONE
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public static class SelectProjectPart
     {

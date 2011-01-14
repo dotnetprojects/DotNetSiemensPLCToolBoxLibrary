@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class S7ProgrammFolder : Step7ProjectFolder
     {

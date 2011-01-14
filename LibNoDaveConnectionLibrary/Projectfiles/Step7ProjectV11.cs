@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step7ProjectV11 : Project
     {

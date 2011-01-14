@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
-using LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5;
-using LibNoDaveConnectionLibrary.MC7;
-using LibNoDaveConnectionLibrary.PLCs.S5.MC5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
 
-namespace LibNoDaveConnectionLibrary.PLCs.S5.MC5
+namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
     public static class MC5toAWL
     {

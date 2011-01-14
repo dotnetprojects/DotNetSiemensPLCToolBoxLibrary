@@ -6,9 +6,7 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System;
-
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
 	/// <summary>
 	/// Description of S5ParameterFormat.

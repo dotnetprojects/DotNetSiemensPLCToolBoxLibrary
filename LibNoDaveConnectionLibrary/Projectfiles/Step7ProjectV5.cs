@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.IO;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-using LibNoDaveConnectionLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step7ProjectV5 : Project, IDisposable
     {        

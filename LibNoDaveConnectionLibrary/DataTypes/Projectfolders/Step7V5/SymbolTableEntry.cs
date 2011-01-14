@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class SymbolTableEntry : Step7ProjectFolder
     {

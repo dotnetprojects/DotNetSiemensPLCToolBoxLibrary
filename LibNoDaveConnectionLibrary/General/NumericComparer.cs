@@ -1,10 +1,11 @@
 // (c) Vasian Cepa 2005
 // Version 2
 
-using System;
-using System.Collections; // required for NumericComparer : IComparer only
+using System.Collections;
 
-namespace LibNoDaveConnectionLibrary.General
+// required for NumericComparer : IComparer only
+
+namespace DotNetSiemensPLCToolBoxLibrary.General
 {
 
 	public class NumericComparer<T> : System.Collections.Generic.IComparer<T>

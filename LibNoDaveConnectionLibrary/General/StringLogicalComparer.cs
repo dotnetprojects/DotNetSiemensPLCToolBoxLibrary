@@ -3,7 +3,7 @@
 
 using System;
 
-namespace LibNoDaveConnectionLibrary.General
+namespace DotNetSiemensPLCToolBoxLibrary.General
 {
 
 	// emulates StrCmpLogicalW, but not fully

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     public class MC5FunctionBlockRow
     {

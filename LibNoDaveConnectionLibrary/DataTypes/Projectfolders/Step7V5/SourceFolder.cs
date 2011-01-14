@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class SourceFolder : Step7ProjectFolder
     {

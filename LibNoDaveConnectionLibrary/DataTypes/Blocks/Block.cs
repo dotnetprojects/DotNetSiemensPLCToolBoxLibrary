@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
     /// <summary>
     /// Base Block for all Blocks, Subblocks are VATBlock, FunctionBlock, DataBlock, (DataBlockS5, FunctionBlockS5 maybe)

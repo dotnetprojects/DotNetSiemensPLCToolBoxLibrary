@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
-using LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5;
-using LibNoDaveConnectionLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step5Project : Project
     {

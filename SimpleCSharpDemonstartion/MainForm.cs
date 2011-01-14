@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary;
 
 namespace SimpleCSharpDemonstration
 {
@@ -16,23 +17,36 @@ namespace SimpleCSharpDemonstration
             InitializeComponent();
         }
 
-        private DotNetSiemensPLCToolBoxLibrary.LibNoDaveConnection myConn = null;
-        //private DotNetSiemensPLCToolBoxLibrary.LibNoDaveValue myValue=new LibNoDaveValue();
+        private LibNoDaveConnection myConn = null;
+
+        private LibNoDaveValue myValue = new LibNoDaveValue()
+                                             {
+                                                 ByteAddress = 0,
+                                                 BitAddress = 0,
+                                                 LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String,
+                                                 ArraySize = 10
+                                             };
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DotNetSiemensPLCToolBoxLibrary.Configuration.ShowConfiguration("SimpleCSharpDemonstrationConnection", true);
+            Configuration.ShowConfiguration("SimpleCSharpDemonstrationConnection", true);
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-
-           
+            myConn.ReadValue(myValue);
+            lblString.Text = myValue.GetValueAsString();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                myConn.Connect();
+                timer.Enabled = true;
+            }
+            catch(Exception ex)
+            { }
         }
     }
 }

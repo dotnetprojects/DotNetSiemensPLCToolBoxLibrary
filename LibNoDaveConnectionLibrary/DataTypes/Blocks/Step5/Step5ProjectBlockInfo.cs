@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     public class Step5ProjectBlockInfo:ProjectBlockInfo
     {

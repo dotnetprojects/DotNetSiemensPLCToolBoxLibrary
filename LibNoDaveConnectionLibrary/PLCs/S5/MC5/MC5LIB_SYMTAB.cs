@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.PLCs.S5.MC5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
     static class MC5LIB_SYMTAB
     {

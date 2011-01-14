@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.General;
-using LibNoDaveConnectionLibrary.MC7;
-using LibNoDaveConnectionLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Step7Project
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class BlocksOfflineFolder : Step7ProjectFolder, IBlocksFolder
     {

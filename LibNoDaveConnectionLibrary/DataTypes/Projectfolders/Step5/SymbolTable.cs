@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
     class SymbolTable
     {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public abstract class Project
     {

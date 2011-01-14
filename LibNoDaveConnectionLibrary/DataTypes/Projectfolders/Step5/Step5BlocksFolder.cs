@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.General;
-using LibNoDaveConnectionLibrary.PLCs.S5.MC5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
     class Step5BlocksFolder : ProjectFolder, IBlocksFolder
     {

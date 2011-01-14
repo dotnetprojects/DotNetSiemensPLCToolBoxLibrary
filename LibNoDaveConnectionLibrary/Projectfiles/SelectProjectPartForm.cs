@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     internal partial class SelectProjectPartForm : Form
     {
