@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:DockableWindows="clr-namespace:WPFToolboxForSiemensPLCs.DockableWindows" xmlns:DataBlockViewControl="clr-namespace:WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:DockableWindows="clr-namespace:WPFToolboxForSiemensPLCs.DockableWindows" xmlns:DataBlockViewControl="clr-namespace:WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged">
     <DataBlockViewControl:DataBlockViewControl x:Name="dtaViewControl"></DataBlockViewControl:DataBlockViewControl>
 
 </ad:DocumentContent>

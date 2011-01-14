@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -18,9 +19,15 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
     {
         IHighlightingDefinition customHighlighting;
 
+        private Block myBlock;
+        private string myBlockString;
+
         public ContentWindowFunctionBlockEditor(object myBlock)
         {
             InitializeComponent();
+
+            this.myBlock = (Block)myBlock;
+            myBlockString = this.myBlock.ToString();
 
             string highlighterFile = "";
 
@@ -164,6 +171,14 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 catch (Exception)
                 { }
             }
+        }
+
+        private void DocumentContent_IsActiveDocumentChanged(object sender, EventArgs e)
+        {
+            if (this.IsActiveDocument)
+                App.clientForm.PrintData = myBlockString;
+            else
+                App.clientForm.PrintData = null;
         }
     }
 }

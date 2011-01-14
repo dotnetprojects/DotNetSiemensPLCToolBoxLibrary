@@ -149,8 +149,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         int len = 0;
 
                         ByteAddressOFExistingBlocks.Add(n);
-                        blkFld.step5BlocksinfoList.Add(AddBlockInfo(s5ProjectByteArray, ref n, blkFld,
-                                                                    bstHeaders[akanz - 1]));
+                        var tmp = AddBlockInfo(s5ProjectByteArray, ref n, blkFld,
+                                               bstHeaders[akanz - 1]);
+                        if (tmp != null)
+                            blkFld.step5BlocksinfoList.Add(tmp);
 
                         /*
                         if (s5ProjectByteArray[n] == 0x70 && s5ProjectByteArray[n + 1] == 0x70) //Step5 Block
@@ -397,6 +399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 //Here are the $ Blocks woch are not yet implemented!
                 //akanz--;
                 len = 0x80;
+                tmpBlk = null;
             }
 
             if (len == 0) len = 0x80;

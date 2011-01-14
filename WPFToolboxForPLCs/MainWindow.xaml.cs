@@ -14,8 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
-using Microsoft.Win32;
 using WPFToolboxForSiemensPLCs.DockableWindows;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace WPFToolboxForSiemensPLCs
 {
@@ -24,6 +24,8 @@ namespace WPFToolboxForSiemensPLCs
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string PrintData { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -90,6 +92,34 @@ namespace WPFToolboxForSiemensPLCs
             //tmp.ToolTip = fld.ToString();
             tmp.Show(DockManager);
             DockManager.ActiveDocument = tmp;
+        }
+
+        private void mnuPrint_Click(object sender, RoutedEventArgs e)
+        {
+            if (PrintData != null)
+            {
+                Paragraph p = new Paragraph();
+                p.Inlines.Add(PrintData);
+                FlowDocument fd = new FlowDocument(p);
+                fd.FontFamily = new FontFamily("Courier New");
+                fd.FontSize = 14.0;
+
+                PrintDialog pd = new PrintDialog();
+                fd.PageHeight = pd.PrintableAreaHeight;
+                fd.PageWidth = pd.PrintableAreaWidth;
+                fd.PagePadding = new Thickness(50);
+                fd.ColumnGap = 0;
+                fd.ColumnWidth = pd.PrintableAreaWidth;
+
+                IDocumentPaginatorSource dps = fd;
+                if (pd.ShowDialog().Value == true)
+                    pd.PrintDocument(dps.DocumentPaginator, "WPFToolboxForSiemensPLCs");
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Activate the Window with the Block you wish to Print, maybe the current Window doesn't support printing!");
+            }
         }
     }
 }

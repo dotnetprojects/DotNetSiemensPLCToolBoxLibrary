@@ -29,7 +29,9 @@
         <Menu>
             <MenuItem Header="Main">
                 <MenuItem Header="Open-Project" Click="MenuItem_Click"></MenuItem>
-                <MenuItem Header="Open-Project (show deleted)" Click="MenuItem_Click_1"></MenuItem>                                    
+                <MenuItem Header="Open-Project (show deleted)" Click="MenuItem_Click_1"></MenuItem>  
+                <Separator></Separator>
+                <MenuItem Header="Print" Name="mnuPrint" Click="mnuPrint_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Windows">
                 <!--<MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>-->
