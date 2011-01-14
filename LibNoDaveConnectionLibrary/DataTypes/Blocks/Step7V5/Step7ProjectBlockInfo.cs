@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-
-namespace LibNoDaveConnectionLibrary.DataTypes
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public class Step7ProjectBlockInfo:ProjectBlockInfo
     {

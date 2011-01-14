@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projects="clr-namespace:LibNoDaveConnectionLibrary.DataTypes.Projects;assembly=LibNoDaveConnectionLibrary" xmlns:Projectfiles="clr-namespace:LibNoDaveConnectionLibrary.Projectfiles;assembly=LibNoDaveConnectionLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projectfiles="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Projectfiles;assembly=DotNetSiemensPLCToolBoxLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
     <Grid>
         <Grid.RowDefinitions>

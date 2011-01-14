@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace LibNoDaveConnectionLibrary.DataTypes
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
-    class LibNoDaveConnectionLibraryException:Exception
+    class WPFToolboxForSiemensPLCsException:Exception
     {
-        public LibNoDaveConnectionLibraryExceptionType ExceptionType;
+        public WPFToolboxForSiemensPLCsExceptionType ExceptionType;
 
-        public LibNoDaveConnectionLibraryException(LibNoDaveConnectionLibraryExceptionType ExceptionType)
+        public WPFToolboxForSiemensPLCsException(WPFToolboxForSiemensPLCsExceptionType ExceptionType)
         {
             this.ExceptionType = ExceptionType;
         }

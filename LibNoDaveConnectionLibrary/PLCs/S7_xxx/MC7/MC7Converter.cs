@@ -9,12 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
- LibNoDaveConnectionLibrary is free software; you can redistribute it and/or modify
+ WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
  any later version.
 
- LibNoDaveConnectionLibrary is distributed in the hope that it will be useful,
+ WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -25,10 +25,10 @@
 */
 using System;
 using System.Collections.Generic;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.MC7
+namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     /*
      * These functions to Convert from MC7 to AWL could not be done withou the help of Steffen Krayer ! 

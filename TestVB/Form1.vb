@@ -1,13 +1,13 @@
-﻿Imports LibNoDaveConnectionLibrary.DataTypes
-Imports LibNoDaveConnectionLibrary
+﻿Imports DotNetSiemensPLCToolBoxLibrary.DataTypes
+Imports DotNetSiemensPLCToolBoxLibrary
 
 Public Class Form1
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        LibNoDaveConnectionLibrary.Configuration.ShowConfiguration("", False)
+        Configuration.ShowConfiguration("", False)
 
         'Verbindungen auflisten...
-        'LibNoDaveConnectionLibrary.LibNoDaveConnectionConfiguration.GetConfigurationNames()
+        'WPFToolboxForSiemensPLCs.LibNoDaveConnectionConfiguration.GetConfigurationNames()
 
         Dim myConn1 As New LibNoDaveConnection("aaaa")
         Dim myConn2 As New LibNoDaveConnection("bbbb")

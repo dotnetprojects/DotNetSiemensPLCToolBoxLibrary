@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.DataTypes
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
-    public enum LibNoDaveConnectionLibraryExceptionType
+    public enum WPFToolboxForSiemensPLCsExceptionType
     {
         ErrorReadingSZL=100,
     }

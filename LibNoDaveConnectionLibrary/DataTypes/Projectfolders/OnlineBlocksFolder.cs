@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
     {
@@ -18,6 +18,11 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
         {
             ConnectionConfig=new LibNoDaveConnectionConfiguration(ConnectionName);
             this.Name = "Online Blocks (" + ConnectionConfig.ConnectionName + ")";
+        }
+
+        public void UploadBlock(Block myBlk)
+        {
+
         }
 
         public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
@@ -83,7 +88,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Blocks
         public Block GetBlock(string BlockName)
         {
             byte[] tmp=myConn.PLCGetBlockInMC7(BlockName);
-            return LibNoDaveConnectionLibrary.MC7.MC7Converter.GetAWLBlock(tmp, 0, (S7ProgrammFolder) Parent);
+            return MC7Converter.GetAWLBlock(tmp, 0, (S7ProgrammFolder) Parent);
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo)

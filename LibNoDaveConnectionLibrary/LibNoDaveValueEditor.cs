@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using LibNoDaveConnectionLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {
     public partial class LibNoDaveValueEditor : Form
     {

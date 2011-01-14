@@ -9,12 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
- LibNoDaveConnectionLibrary is free software; you can redistribute it and/or modify
+ WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
  any later version.
 
- LibNoDaveConnectionLibrary is distributed in the hope that it will be useful,
+ WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -27,10 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Microsoft.Win32;
-using LibNoDaveConnectionLibrary.MC7;
 
 /*
  * Todo: List Online Partners
@@ -39,7 +39,7 @@ using LibNoDaveConnectionLibrary.MC7;
  * Todo: Memory of the CPU
  * Todo: Compress Memory
  */
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {
     public class LibNoDaveConnection : IDisposable
     {
@@ -627,7 +627,7 @@ namespace LibNoDaveConnectionLibrary
                     if (ret < 0)
                         throw new Exception("Error: " + libnodave._daveStrerror(ret));
                     if (buffer[1] != 0x04)
-                        throw new LibNoDaveConnectionLibraryException(LibNoDaveConnectionLibraryExceptionType.ErrorReadingSZL);
+                        throw new WPFToolboxForSiemensPLCsException(WPFToolboxForSiemensPLCsExceptionType.ErrorReadingSZL);
 
 
                     //byte 2,3 betriebsartschalter

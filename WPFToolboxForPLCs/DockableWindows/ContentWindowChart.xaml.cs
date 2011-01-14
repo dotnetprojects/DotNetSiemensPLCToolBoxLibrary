@@ -1,9 +1,6 @@
 ﻿using System.Windows.Data;
 using AvalonDock;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks.Step5;
-using LibNoDaveConnectionLibrary.DataTypes.Projects;
-using LibNoDaveConnectionLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {

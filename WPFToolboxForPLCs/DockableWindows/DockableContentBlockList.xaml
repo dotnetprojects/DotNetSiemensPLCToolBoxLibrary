@@ -10,28 +10,28 @@
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
               AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove" AllowDrop="False" GiveFeedback="myDataGrid_GiveFeedback">
         <DataGrid.Columns>
-            <DataGridTemplateColumn Header="ObjectName" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ObjectName">
+            <DataGridTemplateColumn Header="ObjectName" Width="Auto" IsReadOnly="True" SortMemberPath="ObjectName">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding BlockName}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Symbol">
+            <DataGridTemplateColumn Header="Symbol" Width="Auto" IsReadOnly="True" SortMemberPath="Symbol">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Symbol}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Name" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Name">
+            <DataGridTemplateColumn Header="Name" Width="Auto" IsReadOnly="True" SortMemberPath="Name">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Type" Width="SizeToCells" IsReadOnly="True" SortMemberPath="BlockTypeString">
+            <DataGridTemplateColumn Header="Type" Width="Auto" IsReadOnly="True" SortMemberPath="BlockTypeString">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding BlockTypeString}" />

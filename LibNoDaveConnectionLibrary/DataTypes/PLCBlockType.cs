@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary.DataTypes
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
     public enum PLCBlockType
     {

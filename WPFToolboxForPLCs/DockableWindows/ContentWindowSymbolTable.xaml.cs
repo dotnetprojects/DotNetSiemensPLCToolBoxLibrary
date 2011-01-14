@@ -1,5 +1,5 @@
 ﻿using AvalonDock;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {

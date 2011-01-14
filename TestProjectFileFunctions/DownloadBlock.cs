@@ -6,15 +6,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using LibNoDaveConnectionLibrary;
-using LibNoDaveConnectionLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace TestProjectFileFunctions
 {
     public partial class DownloadBlock : Form
     {
         private string ConnectionName = "";
-        private LibNoDaveConnectionLibrary.LibNoDaveConnection myConn;
+        private LibNoDaveConnection myConn;
         public DownloadBlock(string ConnectionName)
         {
             this.ConnectionName = ConnectionName;

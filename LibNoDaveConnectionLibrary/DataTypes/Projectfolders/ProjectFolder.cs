@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Projectfolders.Step5;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Projects
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     /// <summary>
     /// Base Abstract Class for every Project Folder.
@@ -21,22 +20,22 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Projects
                 if (this is StationConfigurationFolder)
                 {
                     if (((StationConfigurationFolder)this).StationType == PLCType.Simatic300)
-                        return "LibNoDaveConnectionLibrary.Resources.FolderImages.s7_300_rack.ico"; 
+                        return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s7_300_rack.ico"; 
                     else if (((StationConfigurationFolder)this).StationType == PLCType.Simatic400 || ((StationConfigurationFolder)this).StationType == PLCType.Simatic400H)
-                        return "LibNoDaveConnectionLibrary.Resources.FolderImages.s7_400_rack.ico"; 
+                        return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s7_400_rack.ico"; 
                 }
                 else if (this is CPUFolder)
                 {
                     if (((CPUFolder)this).CpuType == PLCType.Simatic300)
-                        return "LibNoDaveConnectionLibrary.Resources.FolderImages.s7_300.ico"; 
+                        return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s7_300.ico"; 
                     else if (((CPUFolder)this).CpuType == PLCType.Simatic400 || ((CPUFolder)this).CpuType == PLCType.Simatic400H)
-                        return "LibNoDaveConnectionLibrary.Resources.FolderImages.s7_400.ico"; 
+                        return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s7_400.ico"; 
                 }
                 else if (this is Step5ProjectFolder)
-                {                  
-                    return "LibNoDaveConnectionLibrary.Resources.FolderImages.s5.ico";
+                {
+                    return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s5.ico";
                 }
-                return "LibNoDaveConnectionLibrary.Resources.FolderImages.closed_folder.ico";             
+                return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.closed_folder.ico";             
             }
         }
 
@@ -57,7 +56,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Projects
         {
             get
             {
-                return "LibNoDaveConnectionLibrary.Resources.FolderImages.opened_folder.ico";
+                return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.opened_folder.ico";
             }
         }
         public Image FolderOpenedImage
@@ -76,7 +75,7 @@ namespace LibNoDaveConnectionLibrary.DataTypes.Projects
         public List<ProjectFolder> SubItems { get; set; }
         public ProjectFolder Parent { get; set; }
 
-        public LibNoDaveConnectionLibrary.Projectfiles.Project Project { get; set; }
+        public Project Project { get; set; }
 
         //This is the ID of the Folder in the Database (not everyone has one)
         //Only for internal use.

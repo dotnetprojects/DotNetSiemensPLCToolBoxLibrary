@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {    
     public partial class ConnectionEditor : Form
     {        
@@ -35,7 +35,7 @@ namespace LibNoDaveConnectionLibrary
 
             FillEntryPointsList();
 
-            lstConnectionList.Items.AddRange(LibNoDaveConnectionLibrary.LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
 
             lblConnectionName.Text = DefaultConnectionName;            
             lstConnectionList.Text = DefaultConnectionName;
@@ -514,7 +514,7 @@ namespace LibNoDaveConnectionLibrary
                     tmp.SaveConfiguration();
 
                     lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(LibNoDaveConnectionLibrary.LibNoDaveConnectionConfiguration.GetConfigurationNames());
+                    lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
                     lstConnectionList.SelectedItem = cfgName;
                     lstLIBNODAVEConnectionType.Enabled = true;
                     
@@ -541,7 +541,7 @@ namespace LibNoDaveConnectionLibrary
 
                     LibNoDaveConnectionConfiguration.DeleteConfiguration(lstConnectionList.SelectedItem.ToString());
                     lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(LibNoDaveConnectionLibrary.LibNoDaveConnectionConfiguration.GetConfigurationNames());
+                    lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
                     if (lstConnectionList.Items.Count > 0)
                     {
                         lstConnectionList.SelectedItem = lstConnectionList.Items[0];

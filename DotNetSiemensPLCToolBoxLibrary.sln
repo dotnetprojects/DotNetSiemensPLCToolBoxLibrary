@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibNoDaveConnectionLibrary", "LibNoDaveConnectionLibrary\LibNoDaveConnectionLibrary.csproj", "{E3ED87E8-B550-46AC-9196-9688D30EFD29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary", "LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj", "{E3ED87E8-B550-46AC-9196-9688D30EFD29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary", "TestLibrary\TestLibrary.csproj", "{D5525AD8-E501-45A8-BEA5-F9BDB468B427}"
 EndProject

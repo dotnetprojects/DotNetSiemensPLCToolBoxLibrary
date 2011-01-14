@@ -1,4 +1,4 @@
-﻿Info about LibNoDaveConnectionLibrary
+﻿Info about WPFToolboxForSiemensPLCs
 
 It is a Library for Connecting to PLCs with LibNoDave!
 

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-#if !IPHONE
 using System.Windows.Forms;
 using System.Drawing;
+#if !IPHONE
 
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {
     static class InputBox
     {

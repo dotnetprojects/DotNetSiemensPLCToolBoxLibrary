@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl
 {

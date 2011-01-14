@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.MC7
+namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     static class LocalDataConverter
     {

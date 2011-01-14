@@ -6,13 +6,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
-using LibNoDaveConnectionLibrary;
+using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary;
-using LibNoDaveConnectionLibrary.Projectfiles;
 
 namespace TestWpfC
 {
@@ -60,13 +61,13 @@ namespace TestWpfC
             foldingUpdateTimer.Start();
         }
 
-        private LibNoDaveConnectionLibrary.LibNoDaveConnection _myconn;
+        private LibNoDaveConnection _myconn;
 
         private const string _connname = "AWLEditPad";
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            LibNoDaveConnectionLibrary.Configuration.ShowConfiguration(_connname, true);
+            Configuration.ShowConfiguration(_connname, true);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -76,7 +77,7 @@ namespace TestWpfC
                 _myconn = new LibNoDaveConnection(_connname);
                 _myconn.Connect(1);
 
-                foreach (string itm in _myconn.PLCListBlocks(LibNoDaveConnectionLibrary.DataTypes.PLCBlockType.AllEditableBlocks))
+                foreach (string itm in _myconn.PLCListBlocks(PLCBlockType.AllEditableBlocks))
                     BlockList.Items.Add(itm);
             }
             else
@@ -113,10 +114,10 @@ namespace TestWpfC
                 myDiag.Close();
                 myDiag = null;
             }
-            myBlock = LibNoDaveConnectionLibrary.MC7.MC7Converter.GetAWLBlock(_myconn.PLCGetBlockInMC7(nm), 0, myblkFld);
+            myBlock = MC7Converter.GetAWLBlock(_myconn.PLCGetBlockInMC7(nm), 0, myblkFld);
             if (myBlock != null)
             {
-                if (myBlock.BlockType == LibNoDaveConnectionLibrary.DataTypes.PLCBlockType.DB)
+                if (myBlock.BlockType == PLCBlockType.DB)
                 {
                     toppanel.ClearValue(HeightProperty);
                     toppanel.ClearValue(DockPanel.DockProperty);
@@ -136,7 +137,7 @@ namespace TestWpfC
                 Optimize.IsEnabled = true;
                 Diag.IsEnabled = true;
 
-                if (myBlock.BlockType == LibNoDaveConnectionLibrary.DataTypes.PLCBlockType.DB)
+                if (myBlock.BlockType == PLCBlockType.DB)
                     myTree.DataContext = ((PLCDataBlock)myBlock).Structure.Children;
                 else
                     myTree.DataContext = ((PLCFunctionBlock)myBlock).Parameter.Children;
@@ -212,7 +213,7 @@ namespace TestWpfC
 
         private void Optimize_Click(object sender, RoutedEventArgs e)
         {
-            LibNoDaveConnectionLibrary.MC7.AWLCodeOptimizer.OptimizeAWL((LibNoDaveConnectionLibrary.DataTypes.Blocks.PLCFunctionBlock) myBlock, 0);
+            AWLCodeOptimizer.OptimizeAWL((PLCFunctionBlock) myBlock, 0);
             textEditor.Text = myBlock.ToString();
         }
 
@@ -250,7 +251,7 @@ namespace TestWpfC
 
         private void Upload_Click(object sender, RoutedEventArgs e)
         {
-            byte[] val = LibNoDaveConnectionLibrary.MC7.MC7Converter.GetMC7Block(myBlock);
+            byte[] val = MC7Converter.GetMC7Block(myBlock);
 
         }
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
+﻿using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
-namespace LibNoDaveConnectionLibrary.DataTypes.Projects
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     public interface IBlocksFolder
     {

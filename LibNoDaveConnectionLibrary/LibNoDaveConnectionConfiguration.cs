@@ -9,12 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
- LibNoDaveConnectionLibrary is free software; you can redistribute it and/or modify
+ WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
  any later version.
 
- LibNoDaveConnectionLibrary is distributed in the hope that it will be useful,
+ WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -26,7 +26,7 @@
 using System;
 using Microsoft.Win32;
 
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(LibNoDaveConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
@@ -66,7 +66,7 @@ namespace LibNoDaveConnectionLibrary
         public static String[] GetConfigurationNames()
         {
 #if !IPHONE
-            RegistryKey myConnectionKey = Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\LibNoDaveConnectionLibrary\\Connections");
+            RegistryKey myConnectionKey = Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
             return myConnectionKey.GetSubKeyNames();  
 #else
 			return null;
@@ -119,7 +119,7 @@ namespace LibNoDaveConnectionLibrary
 #if !IPHONE
                 RegistryKey myConnectionKey =
                     Registry.CurrentUser.CreateSubKey(
-                        "Software\\JFKSolutions\\LibNoDaveConnectionLibrary\\Connections\\" + ConnectionName);
+                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
                 if (myConnectionKey != null)
                 {
                     this.EntryPoint = (String) myConnectionKey.GetValue("EntryPoint", "S7ONLINE");
@@ -171,7 +171,7 @@ namespace LibNoDaveConnectionLibrary
         {
             #if !IPHONE
             Registry.CurrentUser.DeleteSubKeyTree(
-                        "Software\\JFKSolutions\\LibNoDaveConnectionLibrary\\Connections\\" + ConnectionName);
+                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
             #endif 
         }
 
@@ -182,7 +182,7 @@ namespace LibNoDaveConnectionLibrary
 #if !IPHONE
                 RegistryKey myConnectionKey =
                     Registry.CurrentUser.CreateSubKey(
-                        "Software\\JFKSolutions\\LibNoDaveConnectionLibrary\\Connections\\" + ConnectionName);
+                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
                 if (myConnectionKey != null)
                 {
                     myConnectionKey.SetValue("EntryPoint", this.EntryPoint);

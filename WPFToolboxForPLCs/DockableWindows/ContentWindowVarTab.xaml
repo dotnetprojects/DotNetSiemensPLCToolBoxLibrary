@@ -9,42 +9,42 @@
     <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True" CanUserAddRows="False"
               AlternatingRowBackground="Gainsboro"  AlternationCount="2">
         <DataGrid.Columns>
-            <DataGridTemplateColumn Header="Comment" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Comment">
+            <DataGridTemplateColumn Header="Comment" Width="Auto" IsReadOnly="True" SortMemberPath="Comment" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Comment}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Address" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
+            <DataGridTemplateColumn Header="Address" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LibNoDaveValue.S7FormatAddress}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="DataType" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
+            <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LibNoDaveValue.LibNoDaveDataType}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="DisplayFormat" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LibNoDaveValue.DataTypeStringFormat">
+            <DataGridTemplateColumn Header="DisplayFormat" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.DataTypeStringFormat">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LibNoDaveValue.DataTypeStringFormat}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Value" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LibNoDaveValue.Value">
+            <DataGridTemplateColumn Header="Value" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.Value">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LibNoDaveValue.Value}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="ControlValue" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LibNoDaveValue.ControlValue">
+            <DataGridTemplateColumn Header="ControlValue" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.ControlValue">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding LibNoDaveValue.ControlValue}" />

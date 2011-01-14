@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibNoDaveConnectionLibrary.MC7
+﻿namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     public class MC7ConvertingOptions
     {

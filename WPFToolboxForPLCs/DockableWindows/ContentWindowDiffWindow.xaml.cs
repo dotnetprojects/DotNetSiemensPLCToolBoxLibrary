@@ -4,9 +4,10 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
 using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
 using WPFToolboxForSiemensPLCs.AvalonEdit;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows

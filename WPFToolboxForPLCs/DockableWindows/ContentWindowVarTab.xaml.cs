@@ -1,6 +1,5 @@
 ﻿using AvalonDock;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
@@ -13,7 +12,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         {
             InitializeComponent();
 
-            myDataGrid.ItemsSource = varTab.VATRows;
+            myDataGrid.ItemsSource = varTab.VATRows;           
         }
 
     }

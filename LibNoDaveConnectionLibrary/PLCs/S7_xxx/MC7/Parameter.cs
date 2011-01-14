@@ -10,12 +10,12 @@
  * Zottel         -> For LibNoDave
  * Thomas_V2.1    -> For the S7 Protocol Plugin for Wireshark and Information on Step7 Projectfiles
 
- LibNoDaveConnectionLibrary is free software; you can redistribute it and/or modify
+ WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
  any later version.
 
- LibNoDaveConnectionLibrary is distributed in the hope that it will be useful,
+ WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -25,13 +25,12 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using LibNoDaveConnectionLibrary.DataTypes;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
-namespace LibNoDaveConnectionLibrary.MC7
+namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class Parameter
     {
@@ -43,7 +42,7 @@ namespace LibNoDaveConnectionLibrary.MC7
         //This functions get the PLCDataRow Structure.
 
 
-        internal static PLCDataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, LibNoDaveConnectionLibrary.DataTypes.PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, PLCBlock myBlk)
+        internal static PLCDataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, PLCBlock myBlk)
         {
             PLCDataRow parameterRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT, myBlk);
             PLCDataRow parameterIN = new PLCDataRow("IN", PLCDataRowType.STRUCT,myBlk);

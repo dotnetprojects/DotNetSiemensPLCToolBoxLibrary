@@ -9,12 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
- LibNoDaveConnectionLibrary is free software; you can redistribute it and/or modify
+ WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
  any later version.
 
- LibNoDaveConnectionLibrary is distributed in the hope that it will be useful,
+ WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
@@ -29,9 +29,10 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using LibNoDaveConnectionLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
-namespace LibNoDaveConnectionLibrary
+namespace DotNetSiemensPLCToolBoxLibrary
 {
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(LibNoDaveValueUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
@@ -345,58 +346,58 @@ namespace LibNoDaveConnectionLibrary
                 case TagDataType.S5Time:
                 case TagDataType.Time:
                     if (myValueStrip.Contains("t#") || myValueStrip.Contains("s5t#"))
-                        Controlvalue = MC7.Helper.GetTimespanFromS5TimeorTime(myValue);
+                        Controlvalue = Helper.GetTimespanFromS5TimeorTime(myValue);
                     else
                         try { Controlvalue = TimeSpan.Parse(myValue); } catch (Exception) {}
                     break;
                 case TagDataType.Int:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToInt16(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToInt16(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToInt16(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToInt16(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = Int16.Parse(myValue); } catch (Exception) {}
                     break;
                 case TagDataType.Dint:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToInt32(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToInt32(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToInt32(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToInt32(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = Int32.Parse(myValue); } catch (Exception) {}
                     break;
                 case TagDataType.BCDByte:
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToByte(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToByte(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToByte(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToByte(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = Byte.Parse(myValue); } catch (Exception) {}
                     break;
                 case TagDataType.SByte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToSByte(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToSByte(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToSByte(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToSByte(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = SByte.Parse(myValue); } catch (Exception) {}
                     break;               
                 case TagDataType.BCDWord:
                 case TagDataType.Word:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToUInt16(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToUInt16(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToUInt16(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToUInt16(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = UInt16.Parse(myValue); } catch (Exception) {}
                     break;              
                 case TagDataType.BCDDWord:
                 case TagDataType.Dword:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
-                        Controlvalue = Convert.ToUInt32(MC7.Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToUInt32(Helper.GetIntFromHexString(myValue));
                     else if (myValue.StartsWith("2#"))
-                        Controlvalue = Convert.ToUInt32(MC7.Helper.GetIntFromBinString(myValue));
+                        Controlvalue = Convert.ToUInt32(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = UInt32.Parse(myValue); } catch (Exception) { }
                     break;
@@ -416,11 +417,11 @@ namespace LibNoDaveConnectionLibrary
                 case TagDataType.Date:
                 case TagDataType.TimeOfDay:
                     if (myValueStrip.StartsWith("d#"))
-                        Controlvalue = MC7.Helper.GetDateTimeFromDateString(myValue);
+                        Controlvalue = Helper.GetDateTimeFromDateString(myValue);
                     else if (myValueStrip.StartsWith("tod#"))
-                        Controlvalue = MC7.Helper.GetDateTimeFromTimeOfDayString(myValue);
+                        Controlvalue = Helper.GetDateTimeFromTimeOfDayString(myValue);
                     else if (myValueStrip.StartsWith("dt#"))
-                        Controlvalue = MC7.Helper.GetDateTimeFromDateAndTimeString(myValue);
+                        Controlvalue = Helper.GetDateTimeFromDateAndTimeString(myValue);
                     else
                         try { Controlvalue = DateTime.Parse(myValue); }
                         catch (Exception) { }
@@ -443,7 +444,7 @@ namespace LibNoDaveConnectionLibrary
                             var bt = new byte[2];
                             libnodave.putS5Timeat(bt, 0, (TimeSpan) myValue);
                             if (DataTypeStringFormat == TagDisplayDataType.S5Time)
-                                return MC7.Helper.GetS5Time(bt[0], bt[1]);
+                                return Helper.GetS5Time(bt[0], bt[1]);
                             return libnodave.getS5Timefrom(bt, 0).ToString();
                         }
                     case TagDataType.Time:

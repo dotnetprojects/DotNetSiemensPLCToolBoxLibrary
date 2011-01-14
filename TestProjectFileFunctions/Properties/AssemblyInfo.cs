@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("S7ProjectToolbox")]
-[assembly: AssemblyDescription("This is a programm wich shows the power of the LibNoDaveConnectionLibrary.")]
+[assembly: AssemblyDescription("This is a programm wich shows the power of the WPFToolboxForSiemensPLCs.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JFK-Solutions")]
 [assembly: AssemblyProduct("S7ProjectToolbox")]

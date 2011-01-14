@@ -1,4 +1,4 @@
-﻿namespace LibNoDaveConnectionLibrary
+﻿namespace DotNetSiemensPLCToolBoxLibrary
 {
     partial class ConnectionEditor
     {

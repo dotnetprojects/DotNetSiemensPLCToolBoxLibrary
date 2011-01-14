@@ -7,23 +7,23 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using LibNoDaveConnectionLibrary;
-using LibNoDaveConnectionLibrary.DataTypes.Blocks;
-using LibNoDaveConnectionLibrary.DataTypes.Step7Project;
-using LibNoDaveConnectionLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace JFK_VarTab
 {
     public partial class Vartab : Form
     {
-        private LibNoDaveConnectionLibrary.LibNoDaveConnection myConn;
+        private LibNoDaveConnection myConn;
         public Vartab()
         {
             InitializeComponent();
         }
 
         //List of the Rows in the VarTab
-        //List<LibNoDaveConnectionLibrary.LibNoDaveValue> myValues = new List<LibNoDaveValue>();
+        //List<WPFToolboxForSiemensPLCs.LibNoDaveValue> myValues = new List<LibNoDaveValue>();
         private List<VATRow> myValues = new List<VATRow>();
 
 

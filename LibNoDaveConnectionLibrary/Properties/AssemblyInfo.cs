@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LibNoDaveConnectionLibrary")]
+[assembly: AssemblyTitle("WPFToolboxForSiemensPLCs")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TOSHIBA")]
-[assembly: AssemblyProduct("LibNoDaveConnectionLibrary")]
+[assembly: AssemblyProduct("WPFToolboxForSiemensPLCs")]
 [assembly: AssemblyCopyright("Copyright © TOSHIBA 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

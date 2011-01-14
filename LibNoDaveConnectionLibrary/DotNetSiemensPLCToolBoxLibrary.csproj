@@ -8,8 +8,8 @@
     <ProjectGuid>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LibNoDaveConnectionLibrary</RootNamespace>
-    <AssemblyName>LibNoDaveConnectionLibrary</AssemblyName>
+    <RootNamespace>DotNetSiemensPLCToolBoxLibrary</RootNamespace>
+    <AssemblyName>DotNetSiemensPLCToolBoxLibrary</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -52,7 +52,7 @@
     <Compile Include="DataTypes\Blocks\Block.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
     <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
-    <Compile Include="DataTypes\Blocks\PLCDataBlockExpandOptions.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCDataBlockExpandOptions.cs" />
     <Compile Include="DataTypes\Blocks\ProjectBlockInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step5\MC5FunctionBlockRow.cs" />
     <Compile Include="DataTypes\Blocks\Step5\S5CommentBlock.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="DataTypes\Blocks\Step5\Step5ProjectBlockInfo.cs" />
     <Compile Include="DataTypes\ConnectionTargetPLCType.cs" />
     <Compile Include="DataTypes\LibNoDaveConnectionLibraryException.cs" />
-    <Compile Include="DataTypes\Blocks\VATBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\VATBlock.cs" />
     <Compile Include="DataTypes\LibNoDaveConnectionLibraryExceptionType.cs" />
     <Compile Include="DataTypes\Projectfolders\IBlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\ProjectFolder.cs" />
@@ -135,15 +135,15 @@
     <Compile Include="PLCs\S7_xxx\MC7\Memnoic.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\NetWork.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\Parameter.cs" />
-    <Compile Include="DataTypes\Blocks\PLCBlock.cs" />
-    <Compile Include="DataTypes\Blocks\PLCDataBlock.cs" />
-    <Compile Include="DataTypes\Blocks\PLCDataRow.cs" />
-    <Compile Include="DataTypes\Blocks\PLCDataRowSubType.cs" />
-    <Compile Include="DataTypes\Blocks\PLCDataRowType.cs" />
-    <Compile Include="DataTypes\Blocks\PLCFunctionBlock.cs" />
-    <Compile Include="DataTypes\Blocks\PLCFunctionBlockRow.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCDataBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCDataRow.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCDataRowSubType.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCDataRowType.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlockRow.cs" />
     <Compile Include="DBF\ParseDBF.cs" />
-    <Compile Include="DataTypes\Blocks\VATRow.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\VATRow.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LibNoDaveValue.cs" />
