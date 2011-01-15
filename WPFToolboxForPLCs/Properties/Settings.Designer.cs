@@ -22,5 +22,17 @@ namespace WPFToolboxForSiemensPLCs.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AllowChangeOfKnowHowProtection {
+            get {
+                return ((bool)(this["AllowChangeOfKnowHowProtection"]));
+            }
+            set {
+                this["AllowChangeOfKnowHowProtection"] = value;
+            }
+        }
     }
 }

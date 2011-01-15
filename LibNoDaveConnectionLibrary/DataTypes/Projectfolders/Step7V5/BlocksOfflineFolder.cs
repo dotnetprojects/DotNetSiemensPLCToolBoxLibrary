@@ -97,15 +97,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         private Dictionary<string, tmpBlock> tmpBlocks;
 
-        public Block GetBlock(string BlockName)
+        public ProjectBlockInfo GetProjectBlockInfoFromBlockName(string BlockName)
         {
             var tmp = readPlcBlocksList(true);
             foreach (var step7ProjectBlockInfo in tmp)
             {
                 if (step7ProjectBlockInfo.BlockType.ToString() + step7ProjectBlockInfo.BlockNumber.ToString() == BlockName.ToUpper())
-                    return GetBlock(step7ProjectBlockInfo);
+                    return step7ProjectBlockInfo;
             }
             return null;
+        }
+
+        public Block GetBlock(string BlockName)
+        {
+            var prjBlkInf = GetProjectBlockInfoFromBlockName(BlockName);
+            if (prjBlkInf != null)
+                return GetBlock(prjBlkInf);
+            return null;            
         }
 
         public void ChangeKnowHowProtection(Step7ProjectBlockInfo blkInfo, bool KnowHowProtection)
@@ -168,18 +176,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             }
         }
 
-        public Block GetBlock(ProjectBlockInfo blkInfo)
+        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
         {
-            tmpBlock myTmpBlk = new tmpBlock();
-
             if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                tmpBlock myTmpBlk = new tmpBlock();
+
+                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5) Project)._zipfile,
+                                                  ((Step7ProjectV5) Project)._DirSeperator);
                 foreach (DataRow row in dbfTbl.Rows)
                 {
 
                     int subblktype = Convert.ToInt32(row["SUBBLKTYP"]);
-                    int objid = (int)row["OBJECTID"];
+                    int objid = (int) row["OBJECTID"];
 
                     if (objid == blkInfo.id)
                     {
@@ -188,14 +197,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         byte[] addinfo = null;
 
                         if (row["MC5CODE"] != DBNull.Value)
-                            mc5code = (byte[])row["MC5CODE"];
+                            mc5code = (byte[]) row["MC5CODE"];
                         if (row["SSBPART"] != DBNull.Value)
-                            ssbpart = (byte[])row["SSBPART"];
+                            ssbpart = (byte[]) row["SSBPART"];
                         if (row["ADDINFO"] != DBNull.Value)
-                            addinfo = (byte[])row["ADDINFO"];
-                        int mc5codelen = (int)row["MC5LEN"];
-                        int ssbpartlen = (int)row["SSBLEN"];
-                        int addinfolen = (int)row["ADDLEN"];
+                            addinfo = (byte[]) row["ADDINFO"];
+                        int mc5codelen = (int) row["MC5LEN"];
+                        int ssbpartlen = (int) row["SSBLEN"];
+                        int addinfolen = (int) row["ADDLEN"];
 
                         if (mc5code != null && mc5code.Length > mc5codelen)
                             Array.Resize<byte>(ref mc5code, mc5codelen);
@@ -233,38 +242,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             aa.Write(addinfo, 0, addinfo.Length);
                             aa.Close();
                         }
-                        */ 
+                        */
 
 
-                        if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 || subblktype == 15) //FC, OB, FB, SFC, SFB
-                        {                           
+                        if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 ||
+                            subblktype == 15) //FC, OB, FB, SFC, SFB
+                        {
                             if (row["PASSWORD"] != DBNull.Value && (int) row["PASSWORD"] == 3)
                                 myTmpBlk.knowHowProtection = true;
                             //MC7 Code in mc5code
                             myTmpBlk.mc7code = mc5code;
                             //Network Information in addinfo
-                            myTmpBlk.nwinfo = addinfo; //This line contains Network Information, and after it the Position of the JumpMarks
+                            myTmpBlk.nwinfo = addinfo;
+                                //This line contains Network Information, and after it the Position of the JumpMarks
                         }
-                        else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 || subblktype == 9) //FC, OB, FB, SFC, SFB
+                        else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 ||
+                                 subblktype == 9) //FC, OB, FB, SFC, SFB
                         {
                             //Interface in mc5code
                             if (mc5code != null)
-                                myTmpBlk.blkinterface = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(mc5code);                                                    
+                                myTmpBlk.blkinterface =
+                                    System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(mc5code);
                         }
-                        else if (subblktype == 19 || subblktype == 17 || subblktype == 18 || subblktype == 22 || subblktype == 21) //FC, OB, FB, SFC, SFB
-                        {                                                
+                        else if (subblktype == 19 || subblktype == 17 || subblktype == 18 || subblktype == 22 ||
+                                 subblktype == 21) //FC, OB, FB, SFC, SFB
+                        {
                             myTmpBlk.comments = mc5code; //Comments of the Block
                             myTmpBlk.blockdescription = ssbpart; //Description of the Block
-                            myTmpBlk.jumpmarks = addinfo; //The Text of the Jump Marks, Before the Jumpmarks there is some Network Information, but don't know what!                        
+                            myTmpBlk.jumpmarks = addinfo;
+                                //The Text of the Jump Marks, Before the Jumpmarks there is some Network Information, but don't know what!                        
                         }
 
                         else if (subblktype == 6 || subblktype == 1) //DB, UDT
                         {
                             //DB Structure in Plain Text (Structure and StartValues!)
                             if (mc5code != null)
-                                myTmpBlk.blkinterface = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(mc5code);
+                                myTmpBlk.blkinterface =
+                                    System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(mc5code);
                             //Maybe compiled DB Structure?                            
-                            myTmpBlk.addinfo = addinfo; 
+                            myTmpBlk.addinfo = addinfo;
                         }
                         else if (subblktype == 10) //DB
                         {
@@ -277,16 +293,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             //VAT in MC5Code (Absolut adressed)
                             myTmpBlk.mc7code = mc5code;
                             //VAT in ADDINFO (Symbolic adressed)
-                            myTmpBlk.nwinfo = addinfo;                            
+                            myTmpBlk.nwinfo = addinfo;
                         }
                         else if (subblktype == 38) //VAT
                         {
                             //VAT Comments in MC5Code
-                            myTmpBlk.comments = mc5code;                            
+                            myTmpBlk.comments = mc5code;
                         }
                     }
                 }
+                return myTmpBlk;
+            }
+            return null;
+        }
 
+        public PLCDataRow GetInterface(string blkName)
+        {
+            var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
+            if (blkInfo == null)
+                return null;
+            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
+            List<string> tmpPar = new List<string>();
+            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null);                    
+        }
+
+        public Block GetBlock(ProjectBlockInfo blkInfo)
+        {
+            //tmpBlock myTmpBlk = new tmpBlock();
+
+            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
+
+            if (myTmpBlk != null ) 
+            {
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
                 {

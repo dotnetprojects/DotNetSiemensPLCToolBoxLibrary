@@ -888,7 +888,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         return Result;
                         break;
                 }
-            Result = Result + Convert.ToString(tmp / 8) + "." + Convert.ToString(tmp % 8);
+            Result = Result + Convert.ToString(((int)tmp / 8)) + "." + Convert.ToString(tmp % 8);
 
             return Result;
         }

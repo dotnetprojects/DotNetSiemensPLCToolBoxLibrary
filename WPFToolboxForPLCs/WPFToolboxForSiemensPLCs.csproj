@@ -209,6 +209,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AvalonEdit\AWL_Step7_Highlighting.xshd" />
     <EmbeddedResource Include="AvalonEdit\AWL_Step5_Highlighting.xshd" />
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

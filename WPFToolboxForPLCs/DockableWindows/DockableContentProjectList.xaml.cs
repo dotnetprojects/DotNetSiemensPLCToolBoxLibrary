@@ -60,8 +60,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     SymbolTable fld = (SymbolTable)myTreeView.SelectedItem;
                     ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
-                    tmp.ToolTip = fld.ToString();
-                    tmp.Name = fld.ToString();
+                    tmp.ToolTip = fld.ToString();                   
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }

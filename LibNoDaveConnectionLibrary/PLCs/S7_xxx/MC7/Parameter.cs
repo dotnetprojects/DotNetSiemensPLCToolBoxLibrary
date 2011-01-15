@@ -42,6 +42,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         //This functions get the PLCDataRow Structure.
 
 
+        internal static PLCDataRow GetFunctionParameterFromNumber(PLCDataRow parameters, int index)
+        {
+            int n = 0;
+            int akIdx = index;
+            while (n < parameters.Children.Count)
+            {
+                PLCDataRow tmp = parameters.Children[n];
+                if (akIdx >= tmp.Children.Count)
+                {
+                    akIdx -= tmp.Children.Count;
+                    n++;
+                }
+                else
+                {
+                    return tmp.Children[akIdx];
+                }
+            }
+            return null;
+        }
+
         internal static PLCDataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, PLCBlock myBlk)
         {
             PLCDataRow parameterRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT, myBlk);
