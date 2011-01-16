@@ -4,9 +4,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
     public interface IDataBlock
     {
-        PLCDataRow Structure { get; set;}
+        S7DataRow Structure { get; set;}
 
-        PLCDataRow GetArrayExpandedStructure(PLCDataBlockExpandOptions myExpOpt);
-        PLCDataRow GetArrayExpandedStructure();        
+        S7DataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt);
+        S7DataRow GetArrayExpandedStructure();        
     }
 }

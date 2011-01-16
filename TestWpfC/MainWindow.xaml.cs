@@ -103,7 +103,7 @@ namespace TestWpfC
 
         }
 
-        private PLCBlock myBlock;
+        private S7Block myBlock;
 
         private void BlockList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -139,9 +139,9 @@ namespace TestWpfC
                 Diag.IsEnabled = true;
 
                 if (myBlock.BlockType == PLCBlockType.DB)
-                    myTree.DataContext = ((PLCDataBlock)myBlock).Structure.Children;
+                    myTree.DataContext = ((S7DataBlock)myBlock).Structure.Children;
                 else
-                    myTree.DataContext = ((PLCFunctionBlock)myBlock).Parameter.Children;
+                    myTree.DataContext = ((S7FunctionBlock)myBlock).Parameter.Children;
                 
             }
         }
@@ -214,7 +214,7 @@ namespace TestWpfC
 
         private void Optimize_Click(object sender, RoutedEventArgs e)
         {
-            AWLCodeOptimizer.OptimizeAWL((PLCFunctionBlock) myBlock, 0);
+            AWLCodeOptimizer.OptimizeAWL((S7FunctionBlock) myBlock, 0);
             textEditor.Text = myBlock.ToString();
         }
 
@@ -264,20 +264,20 @@ namespace TestWpfC
         {
             errors.Content = "";
 
-            PLCFunctionBlockRow.SelectedStatusValues tmp = 0;
-            tmp |= (bool)stw.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.STW : 0;
-            tmp |= (bool)akku1.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.Akku1 : 0;
-            tmp |= (bool)akku2.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.Akku2 : 0;
-            tmp |= (bool)ar1.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.AR1 : 0;
-            tmp |= (bool)ar2.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.AR2 : 0;
-            tmp |= (bool)db.IsChecked ? PLCFunctionBlockRow.SelectedStatusValues.DB : 0;
+            S7FunctionBlockRow.SelectedStatusValues tmp = 0;
+            tmp |= (bool)stw.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.STW : 0;
+            tmp |= (bool)akku1.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.Akku1 : 0;
+            tmp |= (bool)akku2.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.Akku2 : 0;
+            tmp |= (bool)ar1.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.AR1 : 0;
+            tmp |= (bool)ar2.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.AR2 : 0;
+            tmp |= (bool)db.IsChecked ? S7FunctionBlockRow.SelectedStatusValues.DB : 0;
 
             if (myDiag == null)
             {
                 try
                 {
                     if (myDiag == null)
-                        myDiag = _myconn.startRequestDiagnosticData((PLCFunctionBlock) myBlock,
+                        myDiag = _myconn.startRequestDiagnosticData((S7FunctionBlock) myBlock,
                                                                     Int32.Parse(startRow.Text), tmp);
                     myDiag.RequestDiagnosticData();
                     textEditor.Text = myBlock.ToString();
@@ -339,7 +339,7 @@ namespace TestWpfC
             {
                 try
                 {
-                    var tmp = (PLCDataRow)myTree.SelectedItem;
+                    var tmp = (S7DataRow)myTree.SelectedItem;
                     if (tmp.Children != null && tmp.Children.Count >= 1)
                         myDGrid.DataContext = tmp;
                     else

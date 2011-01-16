@@ -31,12 +31,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (SymbolTable)myFrm.retVal;
         }
         
-        public static VATBlock SelectVAT()
+        public static S7VATBlock SelectVAT()
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm();
             myFrm.SelectPart = SelectPartType.VariableTable;
             myFrm.ShowDialog();
-            return (VATBlock)myFrm.retVal;
+            return (S7VATBlock)myFrm.retVal;
         }
 
         //This selects a Tag From a Step 7 Project

@@ -34,10 +34,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
     public static class AWLCodeOptimizer
     {
-        public static void OptimizeAWL(PLCFunctionBlock myPLCBlock, int akMemnoic)
+        public static void OptimizeAWL(S7FunctionBlock myPLCBlock, int akMemnoic)
         {
             int MN = 0;
-            List<PLCFunctionBlockRow> delLst = new List<PLCFunctionBlockRow>();
+            List<S7FunctionBlockRow> delLst = new List<S7FunctionBlockRow>();
 
             string akdb = "";
 

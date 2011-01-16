@@ -28,11 +28,11 @@ using System;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class PLCDataBlock : PLCBlock, IDataBlock
+    public class S7DataBlock : S7Block, IDataBlock
     {
         public int FBNumber { get; set;}  //If it is a Instance DB
         public bool IsInstanceDB { get; set; }
-        public PLCDataRow Structure { get; set; }
+        public S7DataRow Structure { get; set; }
 
         /*
         public List<PLCDataRow> GetRowsAsList()
@@ -77,14 +77,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// With this function you get the Structure with expanden Arrays!
         /// </summary>
         /// <returns></returns>
-        public PLCDataRow GetArrayExpandedStructure(PLCDataBlockExpandOptions myExpOpt)
+        public S7DataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
         {
             return Structure._GetExpandedChlidren(myExpOpt)[0];
         }
 
-        public PLCDataRow GetArrayExpandedStructure()
+        public S7DataRow GetArrayExpandedStructure()
         {
-            return GetArrayExpandedStructure(new PLCDataBlockExpandOptions());
+            return GetArrayExpandedStructure(new S7DataBlockExpandOptions());
         }
 
         /*

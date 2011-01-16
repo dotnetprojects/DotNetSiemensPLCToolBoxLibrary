@@ -1,6 +1,6 @@
 ﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
-    public class Step5ProjectBlockInfo:ProjectBlockInfo
+    public class S5ProjectBlockInfo:ProjectBlockInfo
     {
         //internal int id;
 

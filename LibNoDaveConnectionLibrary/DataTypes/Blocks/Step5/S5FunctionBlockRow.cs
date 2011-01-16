@@ -3,12 +3,12 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
-    public class MC5FunctionBlockRow
+    public class S5FunctionBlockRow
     {
          public string Label { get; set; }
 
         //These Commands are Combined...
-        public List<PLCFunctionBlockRow> CombinedCommands { get; internal set; }
+        public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
 
         private string _command;
         public string Command
@@ -95,7 +95,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             return PLCFunctionBlockAdressType.Direct;
         }
 
-        public MC5FunctionBlockRow()
+        public S5FunctionBlockRow()
         {
             Label = "";
             Command = "";

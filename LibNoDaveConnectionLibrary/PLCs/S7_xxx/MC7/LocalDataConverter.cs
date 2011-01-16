@@ -6,11 +6,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     static class LocalDataConverter
     {
-        public static void ConvertLocaldataToSymbols(PLCFunctionBlock myFct, MC7ConvertingOptions myOpt)
+        public static void ConvertLocaldataToSymbols(S7FunctionBlock myFct, MC7ConvertingOptions myOpt)
         {          
             if (myOpt.ReplaceLokalDataAddressesWithSymbolNames)
             {
-                List<PLCDataRow> rows = null;
+                List<S7DataRow> rows = null;
                 Dictionary<String, String> parLst = new Dictionary<string, string>();
 
                 if (myFct.Parameter != null && myFct.Parameter.Children!=null)
@@ -18,8 +18,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (plcDataRow.Name == "TEMP")
                         {
-                            PLCDataRow tmpRw = plcDataRow._GetExpandedChlidren(new PLCDataBlockExpandOptions() {ExpandCharArrays = true})[0];
-                            rows = PLCDataRow.GetChildrowsAsList(tmpRw);
+                            S7DataRow tmpRw = plcDataRow._GetExpandedChlidren(new S7DataBlockExpandOptions() {ExpandCharArrays = true})[0];
+                            rows = S7DataRow.GetChildrowsAsList(tmpRw);
                             break;
                         }
                     }
@@ -28,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     foreach (var plcDataRow in rows)
                     {
-                        if (plcDataRow.DataType != PLCDataRowType.STRUCT && plcDataRow.DataType != PLCDataRowType.UDT && plcDataRow.DataType != PLCDataRowType.FB)
+                        if (plcDataRow.DataType != S7DataRowType.STRUCT && plcDataRow.DataType != S7DataRowType.UDT && plcDataRow.DataType != S7DataRowType.FB)
                             parLst.Add("P#L" + plcDataRow.BlockAddress.ToString(), "P##" + plcDataRow.StructuredName);
                         string tmp = plcDataRow.GetSymbolicAddress();
                         if (tmp != null)

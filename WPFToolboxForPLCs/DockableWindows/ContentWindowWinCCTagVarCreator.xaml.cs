@@ -57,7 +57,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
             foreach (var projectBlockInfo in ConvertBlocks)
             {
-                PLCDataBlock myDB = (PLCDataBlock)projectBlockInfo.GetBlock();
+                S7DataBlock myDB = (S7DataBlock)projectBlockInfo.GetBlock();
 
                 int cnt = 0;
 
@@ -71,10 +71,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
                 int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                foreach (PLCDataRow plcDataRow in PLCDataRow.GetChildrowsAsList(myDB.Structure))
+                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure))
                 // myDB.GetRowsAsList())
                 {
-                    if (plcDataRow.DataType == PLCDataRowType.BOOL)
+                    if (plcDataRow.DataType == S7DataRowType.BOOL)
                     {
                         ByteBitAddress akAddr = plcDataRow.BlockAddress;
 
@@ -136,7 +136,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             {
                 foreach (var projectBlockInfo in ConvertBlocks)
                 {
-                    PLCDataBlock myDB = (PLCDataBlock)projectBlockInfo.GetBlock();
+                    S7DataBlock myDB = (S7DataBlock)projectBlockInfo.GetBlock();
 
 
                     int cnt = 0;
@@ -167,10 +167,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
                     int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                    foreach (PLCDataRow plcDataRow in PLCDataRow.GetChildrowsAsList(myDB.Structure))
+                    foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure))
                     // myDB.GetRowsAsList())
                     {
-                        if (plcDataRow.DataType == PLCDataRowType.BOOL)
+                        if (plcDataRow.DataType == S7DataRowType.BOOL)
                         {
                             ByteBitAddress akAddr = plcDataRow.BlockAddress;
                             int varnr = (akAddr.ByteAddress / 2) + 1;
@@ -244,21 +244,21 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
             foreach (var projectBlockInfo in ConvertBlocks)
             {
-                PLCDataBlock myDB = (PLCDataBlock)projectBlockInfo.GetBlock();
+                S7DataBlock myDB = (S7DataBlock)projectBlockInfo.GetBlock();
 
-                List<PLCDataRow> myLst = null;
+                List<S7DataRow> myLst = null;
                 if (chkExpandArrays.IsChecked.Value)
                     myLst =
-                        PLCDataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new PLCDataBlockExpandOptions()));
+                        S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions()));
                 // ) myDB.GetRowsAsArrayExpandedList(ne);
                 else
-                    myLst = PLCDataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+                    myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
 
                 int cnt = 0;
 
                 try
                 {
-                    foreach (PLCDataRow plcDataRow in myLst)
+                    foreach (S7DataRow plcDataRow in myLst)
                     {
                         string tagName = txtTagsPrefix.Text +
                                          plcDataRow.StructuredName.Replace(".", "_").Replace("[", "_").Replace("]", "").
@@ -267,14 +267,14 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                         {
                             switch (plcDataRow.DataType)
                             {
-                                case PLCDataRowType.BOOL:
+                                case S7DataRowType.BOOL:
                                     HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_BINARY_TAG,
                                                           txtConnectionName.Text,
                                                           "DB" + myDB.BlockNumber + ",D" +
                                                           plcDataRow.BlockAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.INT:
+                                case S7DataRowType.INT:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_SIGNED_16BIT_VALUE,
                                                           txtConnectionName.Text,
@@ -282,7 +282,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                                                           plcDataRow.BlockAddress.ByteAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.DINT:
+                                case S7DataRowType.DINT:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_SIGNED_32BIT_VALUE,
                                                           txtConnectionName.Text,
@@ -290,7 +290,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                                                           plcDataRow.BlockAddress.ByteAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.WORD:
+                                case S7DataRowType.WORD:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_16BIT_VALUE,
                                                           txtConnectionName.Text,
@@ -298,7 +298,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                                                           plcDataRow.BlockAddress.ByteAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.DWORD:
+                                case S7DataRowType.DWORD:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_32BIT_VALUE,
                                                           txtConnectionName.Text,
@@ -306,7 +306,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                                                           plcDataRow.BlockAddress.ByteAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.BYTE:
+                                case S7DataRowType.BYTE:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_8BIT_VALUE,
                                                           txtConnectionName.Text,
@@ -314,7 +314,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                                                           plcDataRow.BlockAddress.ByteAddress.ToString(),
                                                           "TAGS_DB" + myDB.BlockNumber);
                                     break;
-                                case PLCDataRowType.REAL:
+                                case S7DataRowType.REAL:
                                     HMIGOObject.CreateTag(tagName,
                                                           HMIGENOBJECTSLib.HMIGO_TAG_TYPE.
                                                               TAG_FLOATINGPOINT_NUMBER_32BIT_IEEE_754,

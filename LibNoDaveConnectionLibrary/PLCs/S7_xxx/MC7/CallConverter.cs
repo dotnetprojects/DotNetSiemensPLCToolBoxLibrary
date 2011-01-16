@@ -8,16 +8,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     static class CallConverter
     {
         //In this Class a UC is converted to a Call and also backwards...
-        public static void ConvertUCToCall(PLCFunctionBlock myFct, S7ProgrammFolder myFld, MC7ConvertingOptions myOpt, byte[] addInfoFromBlock)
+        public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, MC7ConvertingOptions myOpt, byte[] addInfoFromBlock)
         {
             if (myOpt.GenerateCallsfromUCs)
             {
                 int inBld = 0; //1=nach BLD 1
-                PLCFunctionBlockRow newRow = null;
+                S7FunctionBlockRow newRow = null;
 
                 Dictionary<string, string> Parameters = new Dictionary<string, string>();
-                List<PLCFunctionBlockRow> retVal = new List<PLCFunctionBlockRow>();
-                List<PLCFunctionBlockRow> tempList = new List<PLCFunctionBlockRow>();
+                List<S7FunctionBlockRow> retVal = new List<S7FunctionBlockRow>();
+                List<S7FunctionBlockRow> tempList = new List<S7FunctionBlockRow>();
 
                 string akPar = "";
 
@@ -25,7 +25,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 for (int n = 0; n < myFct.AWLCode.Count; n++)
                 {
-                    PLCFunctionBlockRow row = myFct.AWLCode[n];
+                    S7FunctionBlockRow row = myFct.AWLCode[n];
                     if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && ( row.Parameter == "1" ||  row.Parameter == "7") && inBld==0)
                     {
                         retVal.AddRange(tempList);
@@ -87,9 +87,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
                             //myFld.BlocksOfflineFolder.GetBlock()
-                            PLCDataRow para = myFld.BlocksOfflineFolder.GetInterface(row.Parameter);
+                            S7DataRow para = myFld.BlocksOfflineFolder.GetInterface(row.Parameter);
 
-                            newRow = new PLCFunctionBlockRow();
+                            newRow = new S7FunctionBlockRow();
                             newRow.Command = Memnoic.opCALL[myOpt.Memnoic];
                             newRow.Parameter = row.Parameter;
                             newRow.ExtParameter = new List<string>();
@@ -98,7 +98,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 string s = row.ExtParameter[i];
 
                                 string parnm = "";
-                                PLCDataRow akRow = Parameter.GetFunctionParameterFromNumber(para, i);
+                                S7DataRow akRow = Parameter.GetFunctionParameterFromNumber(para, i);
                                 if (akRow != null)
                                     parnm = akRow.Name + ":=";
                                 else
@@ -120,9 +120,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     if (s.Substring(0, 3) == "P#V")
                                         lokaldata_address = Convert.ToInt32(s.Substring(4).Split('.')[0]);
 
-                                    if (akRow.DataType == PLCDataRowType.STRING || akRow.DataType == PLCDataRowType.DATE_AND_TIME ||
-                                        akRow.DataType == PLCDataRowType.STRUCT || akRow.DataType == PLCDataRowType.UDT ||
-                                        akRow.DataType == PLCDataRowType.POINTER || akRow.IsArray)
+                                    if (akRow.DataType == S7DataRowType.STRING || akRow.DataType == S7DataRowType.DATE_AND_TIME ||
+                                        akRow.DataType == S7DataRowType.STRUCT || akRow.DataType == S7DataRowType.UDT ||
+                                        akRow.DataType == S7DataRowType.POINTER || akRow.IsArray)
                                     {
                                         string p1 = Parameters["P#V " + (lokaldata_address + 0).ToString() + ".0"];
                                         string p2 = Parameters["P#V " + (lokaldata_address + 2).ToString() + ".0"];
@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         tmp += p2;
                                         newRow.ExtParameter.Add(parnm + tmp);
                                     }
-                                    else if (akRow.DataType == PLCDataRowType.ANY)
+                                    else if (akRow.DataType == S7DataRowType.ANY)
                                     {
                                         string tmp = s;
                                         if (Parameters.ContainsKey("P#V " + (lokaldata_address + 0).ToString() + ".0") &&
@@ -159,19 +159,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         if (Parameters.ContainsKey(s))
                                         {
                                             string par = Parameters[s];
-                                            if (akRow.DataType == PLCDataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
+                                            if (akRow.DataType == S7DataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
                                             {
                                                 newRow.ExtParameter.Add(parnm +
                                                                         Helper.GetS5Time(
                                                                             BitConverter.GetBytes(Convert.ToInt32(par))[1],
                                                                             BitConverter.GetBytes(Convert.ToInt32(par))[0]));
                                             }
-                                            else if (akRow.DataType == PLCDataRowType.TIME && par[0] >= '0' && par[0] <= '9')
+                                            else if (akRow.DataType == S7DataRowType.TIME && par[0] >= '0' && par[0] <= '9')
                                             {
                                                 newRow.ExtParameter.Add(parnm +
                                                                         Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)),0));
                                             }
-                                            else if (akRow.DataType == PLCDataRowType.CHAR && par[0] == 'B')
+                                            else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
                                             {
                                                 newRow.ExtParameter.Add(parnm + "'" +
                                                                         (char) Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'");                                                
@@ -181,19 +181,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         else
                                         {
-                                            if (akRow.DataType == PLCDataRowType.BOOL)
+                                            if (akRow.DataType == S7DataRowType.BOOL)
                                                 newRow.ExtParameter.Add(parnm + s.Substring(2));
-                                            else if (akRow.DataType == PLCDataRowType.BLOCK_DB)
+                                            else if (akRow.DataType == S7DataRowType.BLOCK_DB)
                                                 newRow.ExtParameter.Add(parnm + "DB" + ak_address.ToString());
-                                            else if (akRow.DataType == PLCDataRowType.BLOCK_FB)
+                                            else if (akRow.DataType == S7DataRowType.BLOCK_FB)
                                                 newRow.ExtParameter.Add(parnm + "FB" + ak_address.ToString());
-                                            else if (akRow.DataType == PLCDataRowType.BLOCK_FC)
+                                            else if (akRow.DataType == S7DataRowType.BLOCK_FC)
                                                 newRow.ExtParameter.Add(parnm + "FC" + ak_address.ToString());
-                                            else if (akRow.DataType == PLCDataRowType.BLOCK_SDB)
+                                            else if (akRow.DataType == S7DataRowType.BLOCK_SDB)
                                                 newRow.ExtParameter.Add(parnm + "SDB" + ak_address.ToString());
-                                            else if (akRow.DataType == PLCDataRowType.TIMER)
+                                            else if (akRow.DataType == S7DataRowType.TIMER)
                                                 newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString());
-                                            else if (akRow.DataType == PLCDataRowType.COUNTER)
+                                            else if (akRow.DataType == S7DataRowType.COUNTER)
                                                 newRow.ExtParameter.Add(parnm + "Z" + ak_address.ToString()); //todo use memnoic for Z                                                                                        
                                             else
                                             {                                                
@@ -228,7 +228,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow.CombinedCommands = tempList;
                             retVal.Add(newRow);
                             Parameters.Clear();
-                            tempList = new List<PLCFunctionBlockRow>();                            
+                            tempList = new List<S7FunctionBlockRow>();                            
                         }
                         else
                         {

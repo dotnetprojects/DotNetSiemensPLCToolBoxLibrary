@@ -235,7 +235,7 @@ namespace JFK_VarTab
         }
 
         private IDataBlock myBlk = null;
-        private PLCDataRow expRow = null;
+        private S7DataRow expRow = null;
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
@@ -257,7 +257,7 @@ namespace JFK_VarTab
                         myBlk = (IDataBlock)tmp;
                         expRow = myBlk.Structure;
                         if (mnuExpandDatablockArrays.Checked)
-                            expRow = myBlk.GetArrayExpandedStructure(new PLCDataBlockExpandOptions() { ExpandCharArrays = false });
+                            expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
                         dataBlockViewControl.DataBlockRows = expRow;
                         
                         datablockView.Visible = true;
@@ -293,9 +293,9 @@ namespace JFK_VarTab
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstListBox.SelectedItem != null)
-                if (lstListBox.SelectedItem.GetType() == typeof(Step7ProjectBlockInfo))
+                if (lstListBox.SelectedItem.GetType() == typeof(S7ProjectBlockInfo))
                 {
-                    var tmp = (Step7ProjectBlockInfo)lstListBox.SelectedItem;
+                    var tmp = (S7ProjectBlockInfo)lstListBox.SelectedItem;
                     if (tmp.BlockType == PLCBlockType.DB)
                         tableLayoutPanelVisu.ColumnStyles[1].Width = 255;
                     //grpVisu.Visible = true;
@@ -325,9 +325,9 @@ namespace JFK_VarTab
         private void button2_Click(object sender, EventArgs e)
         {
             if (lstListBox.SelectedItem != null)
-                if (lstListBox.SelectedItem.GetType() == typeof(Step7ProjectBlockInfo))
+                if (lstListBox.SelectedItem.GetType() == typeof(S7ProjectBlockInfo))
                 {
-                    ((BlocksOfflineFolder) blkFld).ChangeKnowHowProtection((Step7ProjectBlockInfo)lstListBox.SelectedItem, true);
+                    ((BlocksOfflineFolder) blkFld).ChangeKnowHowProtection((S7ProjectBlockInfo)lstListBox.SelectedItem, true);
                     lstListBox.Items.Clear();
                     lstListBox.Items.AddRange(blkFld.readPlcBlocksList(true).ToArray());
                 }
@@ -337,9 +337,9 @@ namespace JFK_VarTab
         private void button3_Click(object sender, EventArgs e)
         {
             if (lstListBox.SelectedItem != null)
-                if (lstListBox.SelectedItem.GetType() == typeof(Step7ProjectBlockInfo))
+                if (lstListBox.SelectedItem.GetType() == typeof(S7ProjectBlockInfo))
                 {
-                    ((BlocksOfflineFolder)blkFld).ChangeKnowHowProtection((Step7ProjectBlockInfo)lstListBox.SelectedItem, false);
+                    ((BlocksOfflineFolder)blkFld).ChangeKnowHowProtection((S7ProjectBlockInfo)lstListBox.SelectedItem, false);
                     lstListBox.Items.Clear();
                     lstListBox.Items.AddRange(blkFld.readPlcBlocksList(true).ToArray());
                 }
@@ -352,9 +352,9 @@ namespace JFK_VarTab
             //This Button is not showed, because it does not work.
             //After undeleteion of a Block you have to recreate the mdx File of the database, and this needs to be implemented
             if (lstListBox.SelectedItem != null)
-                if (lstListBox.SelectedItem.GetType() == typeof(Step7ProjectBlockInfo))
+                if (lstListBox.SelectedItem.GetType() == typeof(S7ProjectBlockInfo))
                 {
-                    ((BlocksOfflineFolder)blkFld).UndeleteBlock((Step7ProjectBlockInfo)lstListBox.SelectedItem, Convert.ToInt32(txtUndeleteName.Text));
+                    ((BlocksOfflineFolder)blkFld).UndeleteBlock((S7ProjectBlockInfo)lstListBox.SelectedItem, Convert.ToInt32(txtUndeleteName.Text));
                     treeView1_AfterSelect(sender, null);
                 }
         }
@@ -372,7 +372,7 @@ namespace JFK_VarTab
 
         private void cmdCreateFlexibleErrorMessages_Click(object sender, EventArgs e)
         {
-            PLCDataBlock myDB = (PLCDataBlock)((BlocksOfflineFolder)blkFld).GetBlock((Step7ProjectBlockInfo)lstListBox.SelectedItem);
+            S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
             int cnt = 0;
 
@@ -387,9 +387,9 @@ namespace JFK_VarTab
 
             int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-            foreach (PLCDataRow plcDataRow in PLCDataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
+            foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
             {
-                if (plcDataRow.DataType == PLCDataRowType.BOOL)
+                if (plcDataRow.DataType == S7DataRowType.BOOL)
                 {
                     ByteBitAddress akAddr = plcDataRow.BlockAddress;
 
@@ -458,7 +458,7 @@ namespace JFK_VarTab
 
             try
             {
-                PLCDataBlock myDB = (PLCDataBlock)((BlocksOfflineFolder)blkFld).GetBlock((Step7ProjectBlockInfo)lstListBox.SelectedItem);
+                S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
                 int cnt = 0;
 
@@ -485,9 +485,9 @@ namespace JFK_VarTab
 
                 int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                foreach (PLCDataRow plcDataRow in PLCDataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
+                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
                 {
-                    if (plcDataRow.DataType == PLCDataRowType.BOOL)
+                    if (plcDataRow.DataType == S7DataRowType.BOOL)
                     {
                         ByteBitAddress akAddr = plcDataRow.BlockAddress;
                         int varnr = (akAddr.ByteAddress / 2) + 1;
@@ -553,44 +553,44 @@ namespace JFK_VarTab
             {
                 MessageBox.Show("The WinCC Object could not be created!\n\n Error:" + ex.Message);
             }
-            PLCDataBlock myDB = (PLCDataBlock)((BlocksOfflineFolder)blkFld).GetBlock((Step7ProjectBlockInfo)lstListBox.SelectedItem);
+            S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
-            List<PLCDataRow> myLst = null;
+            List<S7DataRow> myLst = null;
             if (chkExpandArrays.Checked)
-                myLst = PLCDataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new PLCDataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
+                myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
             else
-                myLst = PLCDataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+                myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
 
             int cnt = 0;
 
             try
             {
-                foreach (PLCDataRow plcDataRow in myLst)
+                foreach (S7DataRow plcDataRow in myLst)
                 {
                     string tagName = txtTagsPrefix.Text + plcDataRow.StructuredName.Replace(".", "_").Replace("[", "_").Replace("]", "").Replace(" ", "").Replace(",", "_");
                     try
                     {
                         switch (plcDataRow.DataType)
                         {
-                            case PLCDataRowType.BOOL:
+                            case S7DataRowType.BOOL:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_BINARY_TAG, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",D" + plcDataRow.BlockAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.INT:
+                            case S7DataRowType.INT:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_SIGNED_16BIT_VALUE, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DW" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.DINT:
+                            case S7DataRowType.DINT:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_SIGNED_32BIT_VALUE, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DD" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.WORD:
+                            case S7DataRowType.WORD:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_16BIT_VALUE, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DW" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.DWORD:
+                            case S7DataRowType.DWORD:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_32BIT_VALUE, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DD" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.BYTE:
+                            case S7DataRowType.BYTE:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_UNSIGNED_8BIT_VALUE, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DBB" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
-                            case PLCDataRowType.REAL:
+                            case S7DataRowType.REAL:
                                 HMIGOObject.CreateTag(tagName, HMIGENOBJECTSLib.HMIGO_TAG_TYPE.TAG_FLOATINGPOINT_NUMBER_32BIT_IEEE_754, txtConnectionName.Text, "DB" + myDB.BlockNumber + ",DD" + plcDataRow.BlockAddress.ByteAddress.ToString(), "TAGS_DB" + myDB.BlockNumber);
                                 break;
                         }
@@ -660,8 +660,8 @@ namespace JFK_VarTab
                     int start = (int) myScrollViewer.VerticalOffset/20;
                     if (valueList == null || start!=oldPos)
                     {
-                        List<PLCDataRow> tmpLst = PLCDataRow.GetChildrowsAsList(expRow);
-                        List<PLCDataRow> askLst=new List<PLCDataRow>();
+                        List<S7DataRow> tmpLst = S7DataRow.GetChildrowsAsList(expRow);
+                        List<S7DataRow> askLst=new List<S7DataRow>();
                         for (int n = 0; n < tmpLst.Count;n++ )
                         {
                             if (n>=start&&n<start+24)
@@ -669,7 +669,7 @@ namespace JFK_VarTab
                                 askLst.Add(tmpLst[n]);
                             }
                         }
-                        valueList = PLCDataRow.GetLibnoDaveValues(askLst);
+                        valueList = S7DataRow.GetLibnoDaveValues(askLst);
                         oldPos = start;
                     }
                     myConn.ReadValues(valueList);
@@ -854,7 +854,7 @@ namespace JFK_VarTab
             unwatchToolStripMenuItem_Click(sender, e);
             expRow = myBlk.Structure;
             if (mnuExpandDatablockArrays.Checked)
-                expRow = myBlk.GetArrayExpandedStructure(new PLCDataBlockExpandOptions() { ExpandCharArrays = false });
+                expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
             dataBlockViewControl.DataBlockRows = expRow;
         }
 

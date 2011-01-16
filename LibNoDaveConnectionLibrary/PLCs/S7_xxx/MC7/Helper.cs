@@ -65,7 +65,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return res;
         }
 
-        public static bool IsNetwork(PLCFunctionBlockRow row)
+        public static bool IsNetwork(S7FunctionBlockRow row)
         {
             return row.Command == "NETWORK";
         }
@@ -327,13 +327,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return new byte[] {BitConverter.GetBytes(nr)[0], BitConverter.GetBytes(nr)[1], Convert.ToByte(nr2)};
         }
 
-        static public List<PLCFunctionBlockRow> GenerateFBParameterUsesFromAR2Calls(PLCFunctionBlock myBlk, int Memnoic)
+        static public List<S7FunctionBlockRow> GenerateFBParameterUsesFromAR2Calls(S7FunctionBlock myBlk, int Memnoic)
         {
-            List<PLCFunctionBlockRow> retVal = new List<PLCFunctionBlockRow>();
+            List<S7FunctionBlockRow> retVal = new List<S7FunctionBlockRow>();
 
             //In this list the Values are stored when we try to combine them,
             //when we are succesfull, this list is cleard, when not, it is added to the retVal
-            List<PLCFunctionBlockRow> tmpVal = new List<PLCFunctionBlockRow>();
+            List<S7FunctionBlockRow> tmpVal = new List<S7FunctionBlockRow>();
 
             //if the command is a TAR xx this will be set!
             int combineStep = 0;
@@ -371,7 +371,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             //check if command is a lar2 from the lokaldata used before
             //if not role back!
 
-            foreach (PLCFunctionBlockRow plcFunctionBlockRow in myBlk.AWLCode)
+            foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk.AWLCode)
             {
                 if (plcFunctionBlockRow.Command == MC7.Memnoic.opTAR2[Memnoic] && plcFunctionBlockRow.Parameter.Contains("LD"))
                 {
@@ -402,10 +402,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //And add the Byte Sequence from the old commands to the new.
                     List<byte> bytes =new List<byte>();
 
-                    foreach (PLCFunctionBlockRow tmpFunctionBlockRow in tmpVal)                    
+                    foreach (S7FunctionBlockRow tmpFunctionBlockRow in tmpVal)                    
                         bytes.AddRange(tmpFunctionBlockRow.MC7);
 
-                    retVal.Add(new PLCFunctionBlockRow() {MC7 = bytes.ToArray()});
+                    retVal.Add(new S7FunctionBlockRow() {MC7 = bytes.ToArray()});
 
                     tmpVal.Clear();
                     combineStep = 0;
@@ -429,20 +429,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// </summary>
         /// <param name="myBlk"></param>
         /// <param name="myFld"></param>
-        static public void GenerateCallsFromUCs(PLCFunctionBlock myBlk, S7ProgrammFolder myFld)
+        static public void GenerateCallsFromUCs(S7FunctionBlock myBlk, S7ProgrammFolder myFld)
         {
 
         }
 
         //Todo: Check if Jump label is used in the Block!
-        static public bool IsJumpTarget(PLCFunctionBlockRow myCmd, PLCFunctionBlock myBlk)
+        static public bool IsJumpTarget(S7FunctionBlockRow myCmd, S7FunctionBlock myBlk)
         {
             if (!string.IsNullOrEmpty(myCmd.Label))
                 return true;
             return false;
         }
 
-        static public bool IsJump(PLCFunctionBlockRow myCmd, int akMemnoic)
+        static public bool IsJump(S7FunctionBlockRow myCmd, int akMemnoic)
         {
             if (myCmd == null)
                 return false;

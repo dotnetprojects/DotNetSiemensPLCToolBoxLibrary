@@ -4,13 +4,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     public class S5DataBlock: S5Block,IDataBlock
     {
-        public PLCDataRow Structure { get; set; }
-        public PLCDataRow GetArrayExpandedStructure(PLCDataBlockExpandOptions myExpOpt)
+        public S7DataRow Structure { get; set; }
+        public S7DataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
         {
             return Structure;
         }
 
-        public PLCDataRow GetArrayExpandedStructure()
+        public S7DataRow GetArrayExpandedStructure()
         {
             return Structure;
         }

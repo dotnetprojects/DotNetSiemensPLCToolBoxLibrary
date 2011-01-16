@@ -12,7 +12,7 @@ namespace TestProjectFileFunctions
 {
     public class TreeviewDepthWidthConverter : IValueConverter
     {
-        public static int GetDepth(PLCDataRow item)
+        public static int GetDepth(S7DataRow item)
         {
             int cnt = 0;
             while (item.Parent != null)
@@ -28,7 +28,7 @@ namespace TestProjectFileFunctions
 
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var item = value as PLCDataRow;
+                var item = value as S7DataRow;
                 if (item == null)
                     return 0; // new Thickness(0);
 

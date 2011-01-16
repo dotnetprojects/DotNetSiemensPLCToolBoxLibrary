@@ -132,12 +132,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 			return retVal;            
         }
         
-        private static List<MC5FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
+        private static List<S5FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
         {
-            List<MC5FunctionBlockRow> retVal=new List<MC5FunctionBlockRow>();
+            List<S5FunctionBlockRow> retVal=new List<S5FunctionBlockRow>();
             int codepos = codestart;
 
-            retVal.Add(new MC5FunctionBlockRow() {Command = "BLD", Parameter = "255"}); //Command for first Network does not exist!
+            retVal.Add(new S5FunctionBlockRow() {Command = "BLD", Parameter = "255"}); //Command for first Network does not exist!
                                                                                         //This needs to be removen when written back to S5D!
 
             while (codepos < code.Length)
@@ -150,7 +150,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                 
 
-                MC5FunctionBlockRow newRow = new MC5FunctionBlockRow();                   
+                S5FunctionBlockRow newRow = new S5FunctionBlockRow();                   
                 
                 if (index >= 0)
                 {
@@ -407,7 +407,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             #region Build the Jumpsmarks....
             int JumpCount = 1;
             int akBytePos = 0;
-            Dictionary<int, MC5FunctionBlockRow> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, MC5FunctionBlockRow>();
+            Dictionary<int, S5FunctionBlockRow> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, S5FunctionBlockRow>();
             foreach (var tmp in retVal)
             {
                 if (tmp.ByteSize > 0)

@@ -51,7 +51,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             {
                 Block blk = ((ProjectBlockInfo) myDataGrid.SelectedItem).GetBlock();
 
-                if (blk is PLCFunctionBlock || blk is S5FunctionBlock)
+                if (blk is S7FunctionBlock || blk is S5FunctionBlock)
                 {
                     e.Handled = true;
                     ContentWindowFunctionBlockEditor tmp = new ContentWindowFunctionBlockEditor(blk);
@@ -60,7 +60,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }
-                else if (blk is PLCDataBlock || blk is S5DataBlock)
+                else if (blk is S7DataBlock || blk is S5DataBlock)
                 {
                     e.Handled = true;
                     ContentWindowDataBlockEditor tmp = new ContentWindowDataBlockEditor(blk);
@@ -69,10 +69,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }
-                else if (blk is VATBlock)
+                else if (blk is S7VATBlock)
                 {
                     e.Handled = true;
-                    ContentWindowVarTab tmp = new ContentWindowVarTab((VATBlock)blk);
+                    ContentWindowVarTab tmp = new ContentWindowVarTab((S7VATBlock)blk);
                     tmp.Title = blk.BlockName;
                     tmp.ToolTip = myFld.ToString() + "\\" + tmp.Title;
                     tmp.Show(parentDockingManager);

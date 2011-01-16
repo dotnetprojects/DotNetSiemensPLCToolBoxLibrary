@@ -4,7 +4,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class VATRow
+    public class S7VATRow
     {
         public PLCTag LibNoDaveValue { get; set; }
         public string Comment { get; set; }

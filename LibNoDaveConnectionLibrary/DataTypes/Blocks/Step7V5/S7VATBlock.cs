@@ -4,12 +4,12 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public class VATBlock : Block
+    public class S7VATBlock : Block
     {                
         public List<PLCTag> Rows{ get; set;}
-        public List<VATRow> VATRows { get; set; }
+        public List<S7VATRow> VATRows { get; set; }
 
-        public VATBlock(byte[] hexCode, byte[] comments, int blocknumber)
+        public S7VATBlock(byte[] hexCode, byte[] comments, int blocknumber)
         {
             BlockType = PLCBlockType.VAT;
             //BlockLanguage=
@@ -20,7 +20,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             //0020 20 36 30 00 32 20 33 20 38 38 20 30 20 30 20 30     60.
 
             Rows = new List<PLCTag>();
-            VATRows = new List<VATRow>();
+            VATRows = new List<S7VATRow>();
 
             int akAddr = 36;
             
@@ -220,13 +220,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                     akAddr++;
                     Rows.Add(tmp);
-                    VATRows.Add(new VATRow() { LibNoDaveValue = tmp });
+                    VATRows.Add(new S7VATRow() { LibNoDaveValue = tmp });
                     
                 }
                 else
                 {
                     akAddr++;
-                    VATRows.Add(new VATRow() {});
+                    VATRows.Add(new S7VATRow() {});
                 }                
             }
 

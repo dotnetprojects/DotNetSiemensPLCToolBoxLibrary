@@ -304,9 +304,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public class DiagnosticData : IDisposable
         {
-            internal PLCFunctionBlock myBlock;
-            internal PLCFunctionBlockRow.SelectedStatusValues selRegister;
-            internal Dictionary<int, List<PLCFunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks;
+            internal S7FunctionBlock myBlock;
+            internal S7FunctionBlockRow.SelectedStatusValues selRegister;
+            internal Dictionary<int, List<S7FunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks;
             internal short ReqestID;
             internal PLCConnection myConn;
             internal int readLineCounter;
@@ -339,28 +339,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 int answLen = rdata[6] * 0x100 + rdata[7];
 
-                var prev = new PLCFunctionBlockRow.BlockStatus();
+                var prev = new S7FunctionBlockRow.BlockStatus();
                 int linenr = 14;
                 
                 //In the 0x01 Telegramm, only Akku1 and 2 can be selected and STW is always Selected!
-                if (DiagDataTeletype == 0x01 && ((selRegister & PLCFunctionBlockRow.SelectedStatusValues.Akku1) > 0 || (selRegister & PLCFunctionBlockRow.SelectedStatusValues.Akku2) > 0))
-                    selRegister |= PLCFunctionBlockRow.SelectedStatusValues.Akku1 | PLCFunctionBlockRow.SelectedStatusValues.Akku2;
+                if (DiagDataTeletype == 0x01 && ((selRegister & S7FunctionBlockRow.SelectedStatusValues.Akku1) > 0 || (selRegister & S7FunctionBlockRow.SelectedStatusValues.Akku2) > 0))
+                    selRegister |= S7FunctionBlockRow.SelectedStatusValues.Akku1 | S7FunctionBlockRow.SelectedStatusValues.Akku2;
                 if (DiagDataTeletype == 0x01)
-                    selRegister |= PLCFunctionBlockRow.SelectedStatusValues.STW;
+                    selRegister |= S7FunctionBlockRow.SelectedStatusValues.STW;
 
-                prev = PLCFunctionBlockRow.BlockStatus.ReadBlockStatus(rdata, linenr, selRegister, prev);
+                prev = S7FunctionBlockRow.BlockStatus.ReadBlockStatus(rdata, linenr, selRegister, prev);
 
-                List<PLCFunctionBlockRow> akRow;                
+                List<S7FunctionBlockRow> akRow;                
                 
                     //In 
                     if (ByteAdressNumerPLCFunctionBlocks.ContainsKey(0))
                     {
                         akRow = ByteAdressNumerPLCFunctionBlocks[0];
-                        foreach (PLCFunctionBlockRow tmp in akRow)
+                        foreach (S7FunctionBlockRow tmp in akRow)
                             tmp.ActualBlockStatus = prev;
                     }
 
-                    linenr += PLCFunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype);
+                    linenr += S7FunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype);
                     for (int n = 1; n <= readLineCounter; n++)
                     {
 
@@ -378,15 +378,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             akSelRegister = PLCFunctionBlockRow.SelectedStatusValues.STW;
                         */
 
-                        PLCFunctionBlockRow.SelectedStatusValues akSelRegister = akRow[0].askedStatusValues;
+                        S7FunctionBlockRow.SelectedStatusValues akSelRegister = akRow[0].askedStatusValues;
 
-                        int akAskSize = PLCFunctionBlockRow._GetCommandStatusAskSize(akSelRegister, DiagDataTeletype);                                                    
+                        int akAskSize = S7FunctionBlockRow._GetCommandStatusAskSize(akSelRegister, DiagDataTeletype);                                                    
 
                         if (linenr + akAskSize - 14 > answLen)
                             return;
 
-                        prev = PLCFunctionBlockRow.BlockStatus.ReadBlockStatus(rdata, linenr + 2, akSelRegister, prev);
-                        foreach (PLCFunctionBlockRow tmp in akRow)
+                        prev = S7FunctionBlockRow.BlockStatus.ReadBlockStatus(rdata, linenr + 2, akSelRegister, prev);
+                        foreach (S7FunctionBlockRow tmp in akRow)
                             tmp.ActualBlockStatus = prev;
                         linenr += akAskSize + 2;
                     }                               
@@ -422,7 +422,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
 
-        private byte GetByteForSelectedRegisters(PLCFunctionBlockRow.SelectedStatusValues mySel, byte telegrammType)            
+        private byte GetByteForSelectedRegisters(S7FunctionBlockRow.SelectedStatusValues mySel, byte telegrammType)            
         {
             byte retval = 0x00;
 
@@ -430,12 +430,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return (byte) mySel;
             else
             {
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.STW) > 0 ? (byte)0x00 : (byte)0x00;
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.Akku1) > 0 ? (byte)0x01 : (byte)0x00;
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.Akku2) > 0 ? (byte)0x01 : (byte)0x00;
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.AR1) > 0 ? (byte)0x02 : (byte)0x00;
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.AR2) > 0 ? (byte)0x04 : (byte)0x00;
-                retval |= (mySel & PLCFunctionBlockRow.SelectedStatusValues.DB) > 0 ? (byte)0x08 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.STW) > 0 ? (byte)0x00 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.Akku1) > 0 ? (byte)0x01 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.Akku2) > 0 ? (byte)0x01 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.AR1) > 0 ? (byte)0x02 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.AR2) > 0 ? (byte)0x04 : (byte)0x00;
+                retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.DB) > 0 ? (byte)0x08 : (byte)0x00;
                 return retval;
             }
         }
@@ -448,7 +448,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="StartAWLByteAdress"></param>
         /// <param name="selRegister"></param>
         /// <returns></returns>
-        public DiagnosticData startRequestDiagnosticData(PLCFunctionBlock myBlock, int StartAWLByteAdress, PLCFunctionBlockRow.SelectedStatusValues selRegister /*Count of the Rows wich should be read, Registers wich should be read! */)
+        public DiagnosticData startRequestDiagnosticData(S7FunctionBlock myBlock, int StartAWLByteAdress, S7FunctionBlockRow.SelectedStatusValues selRegister /*Count of the Rows wich should be read, Registers wich should be read! */)
         {
             if (_dc != null)
                 lock (_dc)
@@ -469,7 +469,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     DiagDataTeletype = 0x01;
 
                     //len of the AnswBlock Block in the PDU
-                    short answSize = (short)(PLCFunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype) + 2);
+                    short answSize = (short)(S7FunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype) + 2);
 
 
                     int askSize = 4; //This is minimum 4 (For the Start Registers)
@@ -479,7 +479,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //These are the Bytes in wich the Selected Registers for each Row are stored!
                     //When in a Row there is no Change for the selected Registers, these Row is added to the previous, so no extra Status for this row is necessary
                     List<byte> LinesSelectedRegisters = new List<byte>();
-                    Dictionary<int, List<PLCFunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, List<PLCFunctionBlockRow>>();
+                    Dictionary<int, List<S7FunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, List<S7FunctionBlockRow>>();
 
                     //Number of Lines wich are Read from the PLC
                     int cnt = 0;                    
@@ -487,7 +487,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //Adress of the lastByte wich was added to a Row
                     int lastByteAddress = 0;
 
-                    PLCFunctionBlockRow prevFunctionBlock = null;
+                    S7FunctionBlockRow prevFunctionBlock = null;
 
                     foreach (var plcFunctionBlockRow in myBlock.AWLCode)
                     {
@@ -495,19 +495,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         if (commandSize > 0)
                         {
-                            PLCFunctionBlockRow.SelectedStatusValues askRegister = plcFunctionBlockRow._GetCommandStatusAskValues(selRegister, DiagDataTeletype);
+                            S7FunctionBlockRow.SelectedStatusValues askRegister = plcFunctionBlockRow._GetCommandStatusAskValues(selRegister, DiagDataTeletype);
                     
-                            int akAskSize = PLCFunctionBlockRow._GetCommandStatusAskSize(askRegister, DiagDataTeletype);
+                            int akAskSize = S7FunctionBlockRow._GetCommandStatusAskSize(askRegister, DiagDataTeletype);
 
                             if ((answSize + akAskSize) < 182) //Max Size of the Answer Len! (In Step 7 this is 202 i think, have to try it...)
                             {                              
                                 if (StartAWLByteAdress <= rowByteAdress)
                                 {
                                     //Fill every asked Row with an empty status!
-                                    plcFunctionBlockRow.ActualBlockStatus = new PLCFunctionBlockRow.BlockStatus();
+                                    plcFunctionBlockRow.ActualBlockStatus = new S7FunctionBlockRow.BlockStatus();
                                     
                                     if (Helper.IsJump(prevFunctionBlock, 0) && askRegister == 0)
-                                        askRegister = PLCFunctionBlockRow.SelectedStatusValues.STW;
+                                        askRegister = S7FunctionBlockRow.SelectedStatusValues.STW;
 
                                     //When is jump target is true, we need to ask for every register again, don't know from where we jump!
                                     if (Helper.IsJumpTarget(plcFunctionBlockRow, myBlock))
@@ -515,7 +515,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     plcFunctionBlockRow.askedStatusValues = askRegister;
 
-                                    akAskSize = PLCFunctionBlockRow._GetCommandStatusAskSize(askRegister, DiagDataTeletype);
+                                    akAskSize = S7FunctionBlockRow._GetCommandStatusAskSize(askRegister, DiagDataTeletype);
 
                                     /*
                                     if (akAskSize > 0 && plcFunctionBlockRow.Command == Call und parameter ist fc dann)
@@ -533,7 +533,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                         lastByteAddress = rowByteAdress;
 
-                                        var newLst = new List<PLCFunctionBlockRow> { plcFunctionBlockRow };
+                                        var newLst = new List<S7FunctionBlockRow> { plcFunctionBlockRow };
                                         //This is a List of the Byte Address and the Coresponing Command List.
                                         //The Corresponding Commands are a List, because not every Command changes every Value,
                                         //So when not asked for all Registers, it can be that 2 commands have the same Status values and it's only asked for that one times!
@@ -583,7 +583,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                         if (ByteAdressNumerPLCFunctionBlocks.Count == 0)
                                         {
-                                            var newLst = new List<PLCFunctionBlockRow> { plcFunctionBlockRow };
+                                            var newLst = new List<S7FunctionBlockRow> { plcFunctionBlockRow };
                                             ByteAdressNumerPLCFunctionBlocks.Add(rowByteAdress, newLst);
                                         }
                                         else

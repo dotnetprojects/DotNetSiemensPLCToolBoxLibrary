@@ -308,10 +308,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return false;
         }
 
-        private Step5ProjectBlockInfo AddBlockInfo(byte[] s5ProjectByteArray, ref int pos, Step5BlocksFolder blkFld, byte[] header)
+        private S5ProjectBlockInfo AddBlockInfo(byte[] s5ProjectByteArray, ref int pos, Step5BlocksFolder blkFld, byte[] header)
         {
             int len = 0;
-            Step5ProjectBlockInfo tmpBlk = new Step5ProjectBlockInfo();
+            S5ProjectBlockInfo tmpBlk = new S5ProjectBlockInfo();
             tmpBlk._blkHeaderByte = header;
 
             if (s5ProjectByteArray[pos] == 0x70 && s5ProjectByteArray[pos + 1] == 0x70) //Step5 Block

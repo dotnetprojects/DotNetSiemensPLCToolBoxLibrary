@@ -1,6 +1,6 @@
 ﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public enum PLCDataRowSubType
+    public enum S7DataRowSubType
     {
         IN_VAR = 0x01,
         OUT_VAR = 0x02,

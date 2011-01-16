@@ -31,14 +31,14 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
             string highlighterFile = "";
 
-            if (myBlock is PLCFunctionBlock)
+            if (myBlock is S7FunctionBlock)
             {
                 highlighterFile="WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step7_Highlighting.xshd";
 
-                if (((PLCFunctionBlock) myBlock).Parameter != null)
-                    myTree.DataContext = ((PLCFunctionBlock) myBlock).Parameter.Children;
+                if (((S7FunctionBlock) myBlock).Parameter != null)
+                    myTree.DataContext = ((S7FunctionBlock) myBlock).Parameter.Children;
 
-                textEditor.Text = ((PLCFunctionBlock) myBlock).ToString(false);
+                textEditor.Text = ((S7FunctionBlock) myBlock).ToString(false);
             }
             else
             {
@@ -159,7 +159,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             {
                 try
                 {
-                    var tmp = (PLCDataRow)myTree.SelectedItem;
+                    var tmp = (S7DataRow)myTree.SelectedItem;
                     if (tmp.Children != null && tmp.Children.Count >= 1)
                         myDGrid.DataContext = tmp;
                     else

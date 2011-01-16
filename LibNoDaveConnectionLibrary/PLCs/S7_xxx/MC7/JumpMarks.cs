@@ -30,10 +30,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
-        public static List<PLCFunctionBlockRow> AddJumpmarks(List<PLCFunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos )
+        public static List<S7FunctionBlockRow> AddJumpmarks(List<S7FunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos )
         {
             int NetworkCount = 0;
-            foreach (PLCFunctionBlockRow plcFunctionBlockRow in myBlk)
+            foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
                 if (Helper.IsNetwork(plcFunctionBlockRow))
                     NetworkCount++;   
@@ -78,7 +78,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             Dictionary<string, string> ChangeLabelList = new Dictionary<string, string>();
             int pos = 0;
-            foreach (PLCFunctionBlockRow plcFunctionBlockRow in myBlk)
+            foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
 
                 if (Helper.IsJump(plcFunctionBlockRow, 0))
@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 pos += plcFunctionBlockRow.ByteSize;
             }
 
-            foreach (PLCFunctionBlockRow plcFunctionBlockRow in myBlk)
+            foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
                 if (ChangeLabelList.ContainsKey(plcFunctionBlockRow.Label))
                     plcFunctionBlockRow.Label = ChangeLabelList[plcFunctionBlockRow.Label];

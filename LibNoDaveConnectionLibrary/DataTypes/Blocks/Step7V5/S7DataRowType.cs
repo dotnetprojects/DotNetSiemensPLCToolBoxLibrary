@@ -25,7 +25,7 @@
 */
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public enum PLCDataRowType
+    public enum S7DataRowType
     {
         BOOL = 0x01,
         BYTE = 0x02,

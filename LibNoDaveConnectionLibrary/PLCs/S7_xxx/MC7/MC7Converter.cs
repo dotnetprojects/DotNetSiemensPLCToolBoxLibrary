@@ -37,13 +37,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
      */
     public static class MC7Converter
     {
-        public static PLCBlock GetAWLBlock(byte[] MC7Code, int MnemoricLanguage)
+        public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage)
         {
             return GetAWLBlock(MC7Code, MnemoricLanguage, null);
         }
 
 
-        public static PLCBlock GetAWLBlock(byte[] MC7Code, int MnemoricLanguage, S7ProgrammFolder prjBlkFld)
+        public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage, S7ProgrammFolder prjBlkFld)
 		{
             
             /*
@@ -56,13 +56,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             Clipboard.SetText(ttmp);
             */
 
-            PLCBlock retBlock = null;
+            S7Block retBlock = null;
             if (MC7Code != null)
             {                
                 if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b))  
-                    retBlock = (PLCBlock) new PLCDataBlock();
+                    retBlock = (S7Block) new S7DataBlock();
                 else
-                    retBlock = (PLCBlock)new PLCFunctionBlock();
+                    retBlock = (S7Block)new S7FunctionBlock();
 
                 const int MC7Start_or_DBBodyStart = 36;
 
@@ -142,28 +142,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //Instance DB??
                     if (MC7Code[MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength] == 0x0a)
                     {
-                        ((PLCDataBlock) retBlock).IsInstanceDB = true;
-                        ((PLCDataBlock)retBlock).FBNumber = BitConverter.ToUInt16(MC7Code, MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 1);
+                        ((S7DataBlock) retBlock).IsInstanceDB = true;
+                        ((S7DataBlock)retBlock).FBNumber = BitConverter.ToUInt16(MC7Code, MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 1);
                     }                                   
                     //((PLCDataBlock) retBlock).Structure = MC7toDB.GetDBInterface(IntfStart + 1, IntfLength, AWLStart, IntfValStart, MC7Code);
                     List<string> tmp = new List<string>();
-                    ((PLCDataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((PLCDataBlock)retBlock).IsInstanceDB, retBlock);
+                    ((S7DataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
                     //GetDBInterface(IntfStart+1, IntfLength, AWLStart, IntfValStart, SGDB);
                 }
                 else
                 {                
                     List<string> ParaList = new List<string>();
-                    ((PLCFunctionBlock)retBlock).Parameter = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref ParaList, retBlock.BlockType, 0, false, retBlock);
+                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref ParaList, retBlock.BlockType, 0, false, retBlock);
 
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + InterfaceLength_or_DBActualValuesLength, MC7Code);
-                    ((PLCFunctionBlock) retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, MC7Length_or_DBBodyLength - 2, MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld);
+                    ((S7FunctionBlock) retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, MC7Length_or_DBBodyLength - 2, MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld);
                 }
             }
             return retBlock;
 		}
 
-        static public byte[] GetMC7Block(PLCBlock myBlock)
+        static public byte[] GetMC7Block(S7Block myBlock)
         {
             byte[] retByte = AWLtoMC7.GetMC7(myBlock);
 

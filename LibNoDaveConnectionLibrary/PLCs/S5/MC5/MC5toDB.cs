@@ -13,13 +13,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             retVal.BlockType = blkInfo.BlockType;
             retVal.BlockNumber = blkInfo.BlockNumber;
 
-            PLCDataRow main = new PLCDataRow("STATIC", PLCDataRowType.STRUCT, retVal);
+            S7DataRow main = new S7DataRow("STATIC", S7DataRowType.STRUCT, retVal);
             retVal.Structure = main;
 
             if (preHeader != null)
             {
                 int akcnt = 0;
-                PLCDataRowType akRwTp = (PLCDataRowType) (preHeader[9] | 0xf00);
+                S7DataRowType akRwTp = (S7DataRowType) (preHeader[9] | 0xf00);
                 int anzTypes = ((preHeader[7] - 2)/2); //How many different Types are in the Header
                 for (int n = 1; n <= anzTypes; n++)
                 {
@@ -29,7 +29,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         int crcnt = rowcnt - akcnt;
                         for (int p = 0; p < crcnt; p++)
                         {
-                            PLCDataRow addRw = new PLCDataRow("", akRwTp, retVal);
+                            S7DataRow addRw = new S7DataRow("", akRwTp, retVal);
                             main.Add(addRw);
                         }
                     }
@@ -38,11 +38,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         int rowcnt = preHeader[n*4 + 11];
                         for (int p = akcnt; p < rowcnt; p++)
                         {
-                            PLCDataRow addRw = new PLCDataRow("", akRwTp, retVal);
+                            S7DataRow addRw = new S7DataRow("", akRwTp, retVal);
                             main.Add(addRw);
                         }
                         akcnt = rowcnt;
-                        akRwTp = (PLCDataRowType) (preHeader[9 + n*4] | 0xf00);
+                        akRwTp = (S7DataRowType) (preHeader[9 + n*4] | 0xf00);
                     }
                 }
 

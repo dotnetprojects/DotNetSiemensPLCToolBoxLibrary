@@ -8,7 +8,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
     /// </summary>
     public partial class ContentWindowVarTab : DocumentContent
     {
-        public ContentWindowVarTab(VATBlock varTab)
+        public ContentWindowVarTab(S7VATBlock varTab)
         {
             InitializeComponent();
 

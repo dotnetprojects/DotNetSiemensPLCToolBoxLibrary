@@ -36,7 +36,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         int blocknumber = Convert.ToInt32(row["NUMMER"]);
                         int blocktype = Convert.ToInt32(row["TYP"]);
 
-                        Step7ProjectBlockInfo tmp = new Step7ProjectBlockInfo();
+                        S7ProjectBlockInfo tmp = new S7ProjectBlockInfo();
                         tmp.ParentFolder = this;
                         tmp.Deleted = (bool)row["DELETED_FLAG"];
                         tmp.BlockNumber = blocknumber;
@@ -63,7 +63,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
 
-                foreach (Step7ProjectBlockInfo step7ProjectBlockInfo in tmpBlocks)
+                foreach (S7ProjectBlockInfo step7ProjectBlockInfo in tmpBlocks)
                 {
                     foreach (DataRow row in dbfTbl.Rows)
                     {
@@ -116,7 +116,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return null;            
         }
 
-        public void ChangeKnowHowProtection(Step7ProjectBlockInfo blkInfo, bool KnowHowProtection)
+        public void ChangeKnowHowProtection(S7ProjectBlockInfo blkInfo, bool KnowHowProtection)
         {
             tmpBlock myTmpBlk = new tmpBlock();
 
@@ -141,7 +141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             }
         }
         
-        public void UndeleteBlock(Step7ProjectBlockInfo blkInfo, int newBlockNumber)
+        public void UndeleteBlock(S7ProjectBlockInfo blkInfo, int newBlockNumber)
         {
             tmpBlock myTmpBlk = new tmpBlock();
 
@@ -307,7 +307,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return null;
         }
 
-        public PLCDataRow GetInterface(string blkName)
+        public S7DataRow GetInterface(string blkName)
         {
             var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
             if (blkInfo == null)
@@ -328,12 +328,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
                 {
-                    return new VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, blkInfo.BlockNumber);
+                    return new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, blkInfo.BlockNumber);
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
                 {
                     List<string> tmpList = new List<string>();
-                    PLCDataBlock retVal=new PLCDataBlock();
+                    S7DataBlock retVal=new S7DataBlock();
                     retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);                    
                     retVal.BlockNumber = blkInfo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
@@ -345,7 +345,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     List<string> ParaList = new List<string>();
 
-                    PLCFunctionBlock retVal = new PLCFunctionBlock();
+                    S7FunctionBlock retVal = new S7FunctionBlock();
                     retVal.BlockNumber = blkInfo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
@@ -372,7 +372,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         #region UseComments from Block
                         if (myConvOpt.UseComments)
                         {
-                            List<PLCFunctionBlockRow> newAwlCode = new List<PLCFunctionBlockRow>();
+                            List<S7FunctionBlockRow> newAwlCode = new List<S7FunctionBlockRow>();
 
                             int n = 0;
                             int j = 0;
@@ -411,7 +411,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     }
                                     else
                                     {
-                                        PLCFunctionBlockRow lastRow = null;
+                                        S7FunctionBlockRow lastRow = null;
 
                                         //Anzahl der Anweisungen vor diesem Kommentar (inklusive aktueller Zeile!)
                                         for (int q = 0; q < (anzUebsprungZeilen); q++)
@@ -426,7 +426,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                                         if (lastRow == null || cmt[n + 4] != 0x80)
                                         {
-                                            lastRow = new PLCFunctionBlockRow();
+                                            lastRow = new S7FunctionBlockRow();
                                             newAwlCode.Add(lastRow);
                                         }
 

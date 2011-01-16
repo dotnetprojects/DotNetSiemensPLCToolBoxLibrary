@@ -31,12 +31,12 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class PLCFunctionBlockRow : FunctionBlockRow
+    public class S7FunctionBlockRow : FunctionBlockRow
     {
         public string Label { get; set; }
 
         //These Commands are Combined...
-        public List<PLCFunctionBlockRow> CombinedCommands { get; internal set; }
+        public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
 
         private string _command;
         public string Command
@@ -413,7 +413,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
         #endregion
 
-        public PLCFunctionBlockRow()
+        public S7FunctionBlockRow()
         {
             Label = "";
             Command = "";

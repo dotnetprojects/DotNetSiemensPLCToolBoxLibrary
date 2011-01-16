@@ -25,7 +25,7 @@ namespace JFK_VarTab
 
         //List of the Rows in the VarTab
         //List<WPFToolboxForSiemensPLCs.LibNoDaveValue> myValues = new List<LibNoDaveValue>();
-        private List<VATRow> myValues = new List<VATRow>();
+        private List<S7VATRow> myValues = new List<S7VATRow>();
 
 
         private void Vartab_Load(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace JFK_VarTab
             {
                 int nr = e.RowIndex;
                 if (myValues.Count <= nr)
-                    myValues.Add(new VATRow());
+                    myValues.Add(new S7VATRow());
                     //myValues.Add(new LibNoDaveValue());
 
                 myValues[myValues.Count - 1].LibNoDaveValue = new PLCTag();
@@ -118,7 +118,7 @@ namespace JFK_VarTab
         private List<PLCTag> getListVal()
         {
             List<PLCTag> retVal=new List<PLCTag>();
-            foreach (VATRow myValue in myValues)
+            foreach (S7VATRow myValue in myValues)
             {
                 if (myValue.LibNoDaveValue != null)
                     retVal.Add(myValue.LibNoDaveValue);
@@ -225,7 +225,7 @@ namespace JFK_VarTab
         [Serializable()]
         public class saveVal
         {
-            public List<VATRow> myValues;
+            public List<S7VATRow> myValues;
         }
 
         private void cmdLoad_Click(object sender, EventArgs e)
@@ -303,7 +303,7 @@ namespace JFK_VarTab
         
         private void cmdLoadVat_Click(object sender, EventArgs e)
         {            
-            VATBlock tmpVat = SelectProjectPart.SelectVAT();
+            S7VATBlock tmpVat = SelectProjectPart.SelectVAT();
             if (tmpVat!=null)
             {
                 

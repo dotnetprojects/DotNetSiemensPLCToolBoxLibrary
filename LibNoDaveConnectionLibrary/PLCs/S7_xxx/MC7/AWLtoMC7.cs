@@ -31,13 +31,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class AWLtoMC7
     {
-        static public byte[] GetMC7(PLCBlock myCmd)
+        static public byte[] GetMC7(S7Block myCmd)
         {
             //if (myCmd.GetType() == typeof(PLCFunctionBlock))
             //    return GetMC7((PLCFunctionBlock) myCmd);
             List<byte> retVal = new List<byte>();
 
-            foreach (var myLine in ((PLCFunctionBlock)myCmd).AWLCode)
+            foreach (var myLine in ((S7FunctionBlock)myCmd).AWLCode)
             {
                 if (myLine.MC7 != null)
                     retVal.AddRange(myLine.MC7);
@@ -67,7 +67,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
         }*/
 
-        static public byte[] GetMC7(PLCFunctionBlockRow myCmd)
+        static public byte[] GetMC7(S7FunctionBlockRow myCmd)
         {
             int MN=0; //Memnoic still needs to be implemented!
 

@@ -8,7 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
     public class S5FunctionBlock : S5Block
     {
         public List<S5Parameter> Parameter { get; set; }
-        public List<MC5FunctionBlockRow> AWLCode { get; set; }
+        public List<S5FunctionBlockRow> AWLCode { get; set; }
 
         public string Description { get; set; }
 

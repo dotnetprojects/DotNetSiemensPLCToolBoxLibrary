@@ -42,7 +42,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         //This functions get the PLCDataRow Structure.
 
 
-        internal static PLCDataRow GetFunctionParameterFromNumber(PLCDataRow parameters, int index)
+        internal static S7DataRow GetFunctionParameterFromNumber(S7DataRow parameters, int index)
         {
             if (parameters==null || parameters.Children==null)
                 return null;
@@ -50,7 +50,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             int akIdx = index;
             while (n < parameters.Children.Count)
             {
-                PLCDataRow tmp = parameters.Children[n];
+                S7DataRow tmp = parameters.Children[n];
                 if (akIdx >= tmp.Children.Count)
                 {
                     akIdx -= tmp.Children.Count;
@@ -64,17 +64,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
-        internal static PLCDataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, PLCBlock myBlk)
+        internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk)
         {
-            PLCDataRow parameterRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterIN = new PLCDataRow("IN", PLCDataRowType.STRUCT,myBlk);
-            PLCDataRow parameterOUT = new PLCDataRow("OUT", PLCDataRowType.STRUCT,myBlk);
-            PLCDataRow parameterINOUT = new PLCDataRow("IN_OUT", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterSTAT = new PLCDataRow("STATIC", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterTEMP = new PLCDataRow("TEMP", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterRETVAL = new PLCDataRow("RET_VAL", PLCDataRowType.STRUCT, myBlk);
+            S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterIN = new S7DataRow("IN", S7DataRowType.STRUCT,myBlk);
+            S7DataRow parameterOUT = new S7DataRow("OUT", S7DataRowType.STRUCT,myBlk);
+            S7DataRow parameterINOUT = new S7DataRow("IN_OUT", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterSTAT = new S7DataRow("STATIC", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterTEMP = new S7DataRow("TEMP", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterRETVAL = new S7DataRow("RET_VAL", S7DataRowType.STRUCT, myBlk);
 
-            PLCDataRow akDataRow = parameterRoot;
+            S7DataRow akDataRow = parameterRoot;
 
             parameterTEMP.isRootBlock = true;
 
@@ -240,7 +240,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
 
 
-                        PLCDataRow addRW = new PLCDataRow(tmpName, PLCDataRowType.UNKNOWN, myBlk);
+                        S7DataRow addRW = new S7DataRow(tmpName, S7DataRowType.UNKNOWN, myBlk);
                    
                         if (tmpType.Contains("ARRAY  [") || tmpType.Contains("ARRAY [")  )
                         {                           
@@ -275,26 +275,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         int akRowTypeNumber = 0;
                         if (tmpType.Contains("SFB"))
                         {
-                            addRW.DataType = PLCDataRowType.SFB;
+                            addRW.DataType = S7DataRowType.SFB;
                             akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
 
-                            PLCFunctionBlock tmpBlk = ((PLCFunctionBlock)myFld.GetBlock("SFB" + akRowTypeNumber.ToString()));
+                            S7FunctionBlock tmpBlk = ((S7FunctionBlock)myFld.GetBlock("SFB" + akRowTypeNumber.ToString()));
                             if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
                                 addRW.AddRange(tmpBlk.Parameter.Children);
                         }
                         else if (tmpType.Contains("UDT"))
                         {
-                            addRW.DataType = PLCDataRowType.UDT;
+                            addRW.DataType = S7DataRowType.UDT;
                             akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
 
-                            PLCDataBlock tmpBlk = ((PLCDataBlock) myFld.GetBlock("UDT" + akRowTypeNumber.ToString()));
+                            S7DataBlock tmpBlk = ((S7DataBlock) myFld.GetBlock("UDT" + akRowTypeNumber.ToString()));
                             if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
                                 addRW.AddRange(tmpBlk.Structure.Children);
                             
                         }
                         else if (tmpType.Contains("BLOCK_FB"))
                         {
-                            addRW.DataType = PLCDataRowType.BLOCK_FB;
+                            addRW.DataType = S7DataRowType.BLOCK_FB;
                             //akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
 
                             //PLCFunctionBlock tmpBlk = ((PLCFunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
@@ -303,22 +303,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         else if (tmpType.Contains("FB"))
                         {
-                            addRW.DataType = PLCDataRowType.FB;
+                            addRW.DataType = S7DataRowType.FB;
                             akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
 
-                            PLCFunctionBlock tmpBlk = ((PLCFunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
+                            S7FunctionBlock tmpBlk = ((S7FunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
                             if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
                                 addRW.AddRange(tmpBlk.Parameter.Children);
                         }
                         else if (tmpType.Contains("STRING"))
                         {
-                            addRW.DataType = PLCDataRowType.STRING;
+                            addRW.DataType = S7DataRowType.STRING;
                             int pos1 = tmpType.IndexOf("[");
                             int pos2 = tmpType.IndexOf("]", pos1);
                             addRW.StringSize = Convert.ToInt32(tmpType.Substring(pos1 + 1, pos2 - pos1 - 2));
                         }
                         else
-                            addRW.DataType = (PLCDataRowType)Enum.Parse(typeof (PLCDataRowType), tmpType.ToUpper());
+                            addRW.DataType = (S7DataRowType)Enum.Parse(typeof (S7DataRowType), tmpType.ToUpper());
                        
                         addRW.DataTypeBlockNumber = akRowTypeNumber;
                        
@@ -326,7 +326,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         akDataRow.Add(addRW);
                         ParaList.Add(tmpName);
 
-                        if (addRW.DataType==PLCDataRowType.STRUCT)
+                        if (addRW.DataType==S7DataRowType.STRUCT)
                             akDataRow = addRW;
 
                         break;
@@ -361,15 +361,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
 
         //
-        internal static PLCDataRow GetInterface(int Start, int Count, int ValStart, byte[] BD, ref List<String> ParaList, DataTypes.PLCBlockType blkTP, int DB_Actual_Values_Start, bool isInstanceDB, PLCBlock myBlk)        
+        internal static S7DataRow GetInterface(int Start, int Count, int ValStart, byte[] BD, ref List<String> ParaList, DataTypes.PLCBlockType blkTP, int DB_Actual_Values_Start, bool isInstanceDB, S7Block myBlk)        
         {
-            PLCDataRow parameterRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterIN = new PLCDataRow("IN", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterOUT = new PLCDataRow("OUT", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterINOUT = new PLCDataRow("IN_OUT", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterSTAT = new PLCDataRow("STATIC", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterTEMP = new PLCDataRow("TEMP", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterRETVAL = new PLCDataRow("RET_VAL", PLCDataRowType.STRUCT, myBlk);
+            S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterIN = new S7DataRow("IN", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterOUT = new S7DataRow("OUT", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterINOUT = new S7DataRow("IN_OUT", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterSTAT = new S7DataRow("STATIC", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterTEMP = new S7DataRow("TEMP", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterRETVAL = new S7DataRow("RET_VAL", S7DataRowType.STRUCT, myBlk);
 
 
             parameterRoot.Add(parameterIN);
@@ -396,7 +396,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             int pos = Start + 4;
             int Valpos = ValStart;
 
-            PLCDataRow akParameter = parameterRoot;
+            S7DataRow akParameter = parameterRoot;
 
             ParaList.Clear();
            
@@ -463,15 +463,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return parameterRoot;
         }
 
-        internal static PLCDataRow GetInterface(int Start, int Count, byte[] BD, DataTypes.PLCBlockType blkTP, bool isInstanceDB, PLCBlock myBlk)        
+        internal static S7DataRow GetInterface(int Start, int Count, byte[] BD, DataTypes.PLCBlockType blkTP, bool isInstanceDB, S7Block myBlk)        
         {
-            PLCDataRow parameterRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterIN = new PLCDataRow("IN", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterOUT = new PLCDataRow("OUT", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterINOUT = new PLCDataRow("IN_OUT", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterSTAT = new PLCDataRow("STATIC", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterTEMP = new PLCDataRow("TEMP", PLCDataRowType.STRUCT, myBlk);
-            PLCDataRow parameterRETVAL = new PLCDataRow("RET_VAL", PLCDataRowType.STRUCT, myBlk);
+            S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterIN = new S7DataRow("IN", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterOUT = new S7DataRow("OUT", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterINOUT = new S7DataRow("IN_OUT", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterSTAT = new S7DataRow("STATIC", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterTEMP = new S7DataRow("TEMP", S7DataRowType.STRUCT, myBlk);
+            S7DataRow parameterRETVAL = new S7DataRow("RET_VAL", S7DataRowType.STRUCT, myBlk);
 
 
             parameterRoot.Add(parameterIN);
@@ -499,7 +499,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             int pos = Start + 4;
             string parNm = "";
 
-            PLCDataRow akParameter = parameterRoot;
+            S7DataRow akParameter = parameterRoot;
 
 
             while (pos <= (Start + Count))
@@ -545,77 +545,77 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         //internal PLCDataRow GetInterfaceSubrows(PLCDataRow currRow)
 
 
-        internal static void GetVarTypeEN(PLCDataRow currPar, string startVal, byte b, bool Struct, bool Arry, string VarName, byte[] BD, ref int pos, ref List<string> ParaList, ref int StackNr, string VarNamePrefix, ref int VarCounter, ref int Valpos, PLCBlock myBlk)
+        internal static void GetVarTypeEN(S7DataRow currPar, string startVal, byte b, bool Struct, bool Arry, string VarName, byte[] BD, ref int pos, ref List<string> ParaList, ref int StackNr, string VarNamePrefix, ref int VarCounter, ref int Valpos, S7Block myBlk)
         {
             int i, max, dim;
 
-            PLCDataRowType Result = PLCDataRowType.BOOL;
+            S7DataRowType Result = S7DataRowType.BOOL;
 
             switch (b)
             {
                 case 0x01:
-                    Result = PLCDataRowType.BOOL;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BOOL;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x02:
-                    Result = PLCDataRowType.BYTE;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BYTE;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x03:
-                    Result = PLCDataRowType.CHAR;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.CHAR;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x04:
-                    Result = PLCDataRowType.WORD;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.WORD;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x05:
-                    Result = PLCDataRowType.INT;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.INT;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x06:
-                    Result = PLCDataRowType.DWORD;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.DWORD;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x07:
-                    Result = PLCDataRowType.DINT;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.DINT;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x08:
-                    Result = PLCDataRowType.REAL;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.REAL;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x09:
-                    Result = PLCDataRowType.DATE;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.DATE;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x0A:
-                    Result = PLCDataRowType.TIME_OF_DAY;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.TIME_OF_DAY;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x0b:
-                    Result = PLCDataRowType.TIME;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.TIME;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x0C:
-                    Result = PLCDataRowType.S5TIME;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.S5TIME;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x0E:
-                    Result = PLCDataRowType.DATE_AND_TIME;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.DATE_AND_TIME;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
 
@@ -641,8 +641,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case 0x11: //Struct
                     {
                         if (Arry) pos += 7;
-                        Result = PLCDataRowType.STRUCT;
-                        var akPar = new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal };
+                        Result = S7DataRowType.STRUCT;
+                        var akPar = new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal };
                         currPar.Add(akPar);
                         VarCounter++;
                         max = BD[pos + 2] - 1;
@@ -699,54 +699,54 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 case 0x13:
                     {
-                        Result = PLCDataRowType.STRING;
-                        currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                        Result = S7DataRowType.STRING;
+                        currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                         if (Arry)
-                            currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal, StringSize = BD[pos + 9] });
+                            currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal, StringSize = BD[pos + 9] });
                         else
-                            currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal, StringSize = BD[pos + 2] });
+                            currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal, StringSize = BD[pos + 2] });
                         pos += 1;
                         VarCounter++;
                     }
                     break;
                 case 0x14:
-                    Result = PLCDataRowType.POINTER;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.POINTER;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x16:
-                    Result = PLCDataRowType.ANY;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.ANY;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x17:
-                    Result = PLCDataRowType.BLOCK_FB;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BLOCK_FB;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x18:
-                    Result = PLCDataRowType.BLOCK_FC;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BLOCK_FC;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x19:
-                    Result = PLCDataRowType.BLOCK_DB;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BLOCK_DB;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x1A:
-                    Result = PLCDataRowType.BLOCK_SDB;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.BLOCK_SDB;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x1C:
-                    Result = PLCDataRowType.COUNTER;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.COUNTER;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 case 0x1D:
-                    Result = PLCDataRowType.TIMER;
-                    currPar.Add(new PLCDataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
+                    Result = S7DataRowType.TIMER;
+                    currPar.Add(new S7DataRow(VarNamePrefix + VarCounter.ToString(), Result, myBlk) { StartValue = startVal });
                     VarCounter++;
                     break;
                 //default: Result = "UNKNOWN (" + Convert.ToString(b) + ")"; break;

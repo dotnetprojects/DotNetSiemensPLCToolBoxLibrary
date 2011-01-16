@@ -67,7 +67,7 @@
             
                 <TreeView Padding="0" Margin="0" Name="MyTree">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type Step7V51:PLCDataRow}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type Step7V51:S7DataRow}" ItemsSource="{Binding Children}">
                         <Grid Margin="0">
                         <!--<Thumb x:Name="PART_Thumb" HorizontalAlignment="Left" Width="5" Margin="7 0 0 0" Cursor="SizeWE">
                             <Thumb.RenderTransform>

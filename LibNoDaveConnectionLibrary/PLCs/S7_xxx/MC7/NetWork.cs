@@ -51,13 +51,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
 
 
-        public static void NetworkCheck(ref int[] Networks, ref List<PLCFunctionBlockRow> myVal, ref int counter, int oldpos, int pos, ref int NNr)
+        public static void NetworkCheck(ref int[] Networks, ref List<S7FunctionBlockRow> myVal, ref int counter, int oldpos, int pos, ref int NNr)
         {
             counter += pos - oldpos;
 
             while (NNr <= Networks.Length && counter - Networks[NNr - 1] == 0)
             {
-                myVal.Add(new PLCFunctionBlockRow() {Command = "NETWORK", Parameter = NNr.ToString()});
+                myVal.Add(new S7FunctionBlockRow() {Command = "NETWORK", Parameter = NNr.ToString()});
                 counter = 0;
                 NNr++;
             }

@@ -28,7 +28,7 @@ using System;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class PLCBlock:Block
+    public class S7Block:Block
     {               
         public string BlockVersion;
         public String BlockAttribute;

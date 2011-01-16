@@ -151,7 +151,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (lstProjectFolder.SelectedItem != null)
                 {
                     this.Hide();
-                    Step7ProjectBlockInfo tmp = (Step7ProjectBlockInfo) lstProjectFolder.SelectedItem;
+                    S7ProjectBlockInfo tmp = (S7ProjectBlockInfo) lstProjectFolder.SelectedItem;
                     retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
                     ((Block) retVal).ParentFolder = tmp.ParentFolder;
                 }

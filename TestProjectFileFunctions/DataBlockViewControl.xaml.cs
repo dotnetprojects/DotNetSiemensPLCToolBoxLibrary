@@ -9,14 +9,14 @@ namespace TestProjectFileFunctions
     /// </summary>
     public partial class DataBlockViewControl : UserControl
     {
-        private PLCDataRow _DataBlockRows;
-        public PLCDataRow DataBlockRows
+        private S7DataRow _DataBlockRows;
+        public S7DataRow DataBlockRows
         {
             get { return _DataBlockRows; }
             set
             {
                 _DataBlockRows = value;
-                MyTree.ItemsSource = new List<PLCDataRow>() {value};
+                MyTree.ItemsSource = new List<S7DataRow>() {value};
                 
             }
         }     
