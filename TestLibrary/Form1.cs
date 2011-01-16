@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace JFK_VarTab
 {
@@ -19,10 +21,10 @@ namespace JFK_VarTab
         {
             Configuration.ShowConfiguration("JFK-TestConnection", true);
             //Configuration.ShowConfiguration( )
-            label10.Text = (new LibNoDaveConnectionConfiguration("JFK-TestConnection")).ToString();
+            label10.Text = (new PLCConnectionConfiguration("JFK-TestConnection")).ToString();
         }
 
-        private LibNoDaveConnection myConn = new LibNoDaveConnection("JFK-TestConnection");
+        private PLCConnection myConn = new PLCConnection("JFK-TestConnection");
 
         private void button2_Click(object sender, EventArgs e)
         {             
@@ -75,15 +77,15 @@ namespace JFK_VarTab
             cmbSource.SelectedIndex = 9;
             cmbType.SelectedIndex = 4;
 
-            label10.Text = (new LibNoDaveConnectionConfiguration("JFK-TestConnection")).ToString();
+            label10.Text = (new PLCConnectionConfiguration("JFK-TestConnection")).ToString();
         }
 
-        private List<LibNoDaveValue> myValues = new List<LibNoDaveValue>();
+        private List<PLCTag> myValues = new List<PLCTag>();
 
         private void button7_Click(object sender, EventArgs e)
         {
             
-            myValues.Add(new LibNoDaveValue
+            myValues.Add(new PLCTag
                                    {
                                        LibNoDaveDataSource = (TagDataSource)((EnumListItem)cmbSource.SelectedItem).Value,
                                        ByteAddress = Convert.ToInt32(txtByte.Text) ,
@@ -161,7 +163,7 @@ namespace JFK_VarTab
                 if (var1.SelectedItem != null && var1.SelectedItem.ToString() != "(none)")
                 {
                     chart1.Series["Series1"].Points.Clear();
-                    var tmp = (LibNoDaveValue) var1.SelectedItem;
+                    var tmp = (PLCTag) var1.SelectedItem;
                     foreach (var oldValue in tmp.OldValues)
                     {
                         double wrt = (float) Convert.ToDouble(oldValue);
@@ -172,7 +174,7 @@ namespace JFK_VarTab
                 if (var2.SelectedItem != null && var2.SelectedItem.ToString() != "(none)")
                 {
                     chart1.Series["Series2"].Points.Clear();
-                    var tmp = (LibNoDaveValue)var2.SelectedItem;
+                    var tmp = (PLCTag)var2.SelectedItem;
                     foreach (var oldValue in tmp.OldValues)
                     {
                         double wrt = (float)Convert.ToDouble(oldValue);
@@ -202,7 +204,7 @@ namespace JFK_VarTab
 
             if (listBox1.SelectedIndex >= 0 && timer1.Enabled == false)
             {
-                LibNoDaveValue myAkValue = myValues[listBox1.SelectedIndex];
+                PLCTag myAkValue = myValues[listBox1.SelectedIndex];
                 String newVal = myAkValue.Value.ToString();
                 System.Windows.Forms.DialogResult ret = Form1.InputBox("SPS Wert ändern", "Neuer Wert:", ref newVal);
                 if (ret == DialogResult.OK)
@@ -321,7 +323,7 @@ namespace JFK_VarTab
         {
             if (listBox1.SelectedItem != null)
             {
-                var tmp = (LibNoDaveValue) listBox1.SelectedItem;
+                var tmp = (PLCTag) listBox1.SelectedItem;
                 txtByteAddress.Text = tmp.S7FormatAddress;
                 EnumListBoxExtensions.SelectEnumListItem(cmbDataType, (int) tmp.LibNoDaveDataType);
             }
@@ -392,7 +394,7 @@ namespace JFK_VarTab
         {
             if (listBox1.SelectedItem!=null)
             {
-                var itm = (LibNoDaveValue) listBox1.SelectedItem;
+                var itm = (PLCTag) listBox1.SelectedItem;
                 string ret = itm.S7FormatAddress + "\n";
                 foreach (var oldValue in itm.OldValues)
                 {
@@ -440,7 +442,7 @@ namespace JFK_VarTab
         {
             if (listBox1.SelectedItem != null)
             {
-                var tmp = (LibNoDaveValue)listBox1.SelectedItem;
+                var tmp = (PLCTag)listBox1.SelectedItem;
                 tmp.ChangeAddressFromString(txtByteAddress.Text);
                 //txtByteAddress.Text = tmp.GetS7FormatAddress();
 
@@ -461,7 +463,7 @@ namespace JFK_VarTab
         {
             if (listBox1.SelectedItem != null)
             {
-                var tmp = (LibNoDaveValue)listBox1.SelectedItem;
+                var tmp = (PLCTag)listBox1.SelectedItem;
                 var bb = (EnumListItem) cmbDataType.SelectedItem;
 
                 tmp.LibNoDaveDataType = (TagDataType) bb.Value;

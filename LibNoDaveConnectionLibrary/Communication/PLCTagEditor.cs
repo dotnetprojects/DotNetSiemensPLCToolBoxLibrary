@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
-    public partial class LibNoDaveValueEditor : Form
+    public partial class PLCTagEditor : Form
     {
-        public LibNoDaveValueEditor(LibNoDaveValue value)
+        public PLCTagEditor(PLCTag value)
         {
             _libnodavevalue = value;
             InitializeComponent();
         }
         
-        private LibNoDaveValue _libnodavevalue;
+        private PLCTag _libnodavevalue;
 
         private void LibNoDaveValueEditor_Load(object sender, EventArgs e)
         {
@@ -23,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         private void cmdOK_Click(object sender, EventArgs e)
         {
             if (_libnodavevalue==null)
-                _libnodavevalue = new LibNoDaveValue();
+                _libnodavevalue = new PLCTag();
 
             if ((TagDataSource)((EnumListItem)cmbSource.SelectedItem).Value == TagDataSource.Datablock || (TagDataSource)((EnumListItem)cmbSource.SelectedItem).Value == TagDataSource.InstanceDatablock)
                 _libnodavevalue.DatablockNumber = int.Parse(txtDB.Text);

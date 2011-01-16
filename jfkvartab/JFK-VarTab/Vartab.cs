@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
@@ -16,7 +17,7 @@ namespace JFK_VarTab
 {
     public partial class Vartab : Form
     {
-        private LibNoDaveConnection myConn;
+        private PLCConnection myConn;
         public Vartab()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace JFK_VarTab
         private void Vartab_Load(object sender, EventArgs e)
         {
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
             if (lstConnections.Items.Count > 0)
                 lstConnections.SelectedItem = lstConnections.Items[0];      
@@ -45,7 +46,7 @@ namespace JFK_VarTab
                     myValues.Add(new VATRow());
                     //myValues.Add(new LibNoDaveValue());
 
-                myValues[myValues.Count - 1].LibNoDaveValue = new LibNoDaveValue();
+                myValues[myValues.Count - 1].LibNoDaveValue = new PLCTag();
 
                 if (dataGridViewVarTab.Rows[nr].Cells[e.ColumnIndex].Value != null)
                 {
@@ -114,9 +115,9 @@ namespace JFK_VarTab
         }
 
 
-        private List<LibNoDaveValue> getListVal()
+        private List<PLCTag> getListVal()
         {
-            List<LibNoDaveValue> retVal=new List<LibNoDaveValue>();
+            List<PLCTag> retVal=new List<PLCTag>();
             foreach (VATRow myValue in myValues)
             {
                 if (myValue.LibNoDaveValue != null)
@@ -162,7 +163,7 @@ namespace JFK_VarTab
             Configuration.ShowConfiguration("Verbindung_1", false);
             
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
             if (tmp!=null && lstConnections.Items.Contains(tmp))
                 lstConnections.SelectedItem = tmp;
@@ -174,7 +175,7 @@ namespace JFK_VarTab
             {
                 if (lstConnections.SelectedItem != null)
                 {
-                    this.myConn = new LibNoDaveConnection(lstConnections.SelectedItem.ToString());
+                    this.myConn = new PLCConnection(lstConnections.SelectedItem.ToString());
                     this.myConn.Connect(this.Handle.ToInt32());
                     cmdConnect.BackColor = Color.LightGreen;
                 }
@@ -257,7 +258,7 @@ namespace JFK_VarTab
                 if (myConn != null)
                 {
                     int i = 0;
-                    List<LibNoDaveValue> steu = new List<LibNoDaveValue>();
+                    List<PLCTag> steu = new List<PLCTag>();
                     foreach (var row in myValues)
                     {
                         if (dataGridViewVarTab.Rows[i].Cells[4].Value != null && dataGridViewVarTab.Rows[i].Cells[4].Value.ToString() != "")
@@ -334,7 +335,7 @@ namespace JFK_VarTab
         private void lstConnections_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstConnections.SelectedItem != null)
-                conninfo.Text = new LibNoDaveConnectionConfiguration((string)lstConnections.SelectedItem).ToString();
+                conninfo.Text = new PLCConnectionConfiguration((string)lstConnections.SelectedItem).ToString();
         }
 
         private SymbolTable mySymtable;

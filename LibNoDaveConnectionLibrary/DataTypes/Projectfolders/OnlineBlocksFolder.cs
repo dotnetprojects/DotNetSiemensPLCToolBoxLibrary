@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
@@ -9,14 +10,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
     {
-        public LibNoDaveConnectionConfiguration ConnectionConfig { get; set;}
-        private LibNoDaveConnection myConn;
+        public PLCConnectionConfiguration ConnectionConfig { get; set;}
+        private PLCConnection myConn;
 
         public bool IsOnline { get; set; }
 
         public OnlineBlocksFolder(string ConnectionName)
         {
-            ConnectionConfig=new LibNoDaveConnectionConfiguration(ConnectionName);
+            ConnectionConfig=new PLCConnectionConfiguration(ConnectionName);
             this.Name = "Online Blocks (" + ConnectionConfig.ConnectionName + ")";
         }
 
@@ -33,7 +34,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 
-            myConn=new LibNoDaveConnection(ConnectionConfig);
+            myConn=new PLCConnection(ConnectionConfig);
             myConn.Connect();
             List<string> blks = myConn.PLCListBlocks(PLCBlockType.AllBlocks);
 

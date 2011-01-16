@@ -28,7 +28,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.General
 {
     public static class EnumListBoxExtensions
     {

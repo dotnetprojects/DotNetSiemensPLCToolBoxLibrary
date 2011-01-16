@@ -723,8 +723,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         #region Helper Functions
         /// <summary>
         /// Simple function to test is a string can be parsed. There may be a better way, but this works
-        /// If you port this to .NET 2.0, use the new TryParse methods instead of this
-        ///   *Thanks to wu.qingman on code project for fixing a bug in this for me
+        /// If you port this to .NET 2.0, use the new TryParse methods instead of this        
         /// </summary>
         /// <param name="number">string to test for parsing</param>
         /// <returns>true if string can be parsed</returns>

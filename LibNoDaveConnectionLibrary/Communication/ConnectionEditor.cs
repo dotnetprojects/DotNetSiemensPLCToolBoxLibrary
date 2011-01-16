@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {    
     public partial class ConnectionEditor : Form
     {        
@@ -35,7 +36,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
             FillEntryPointsList();
 
-            lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
             lblConnectionName.Text = DefaultConnectionName;            
             lstConnectionList.Text = DefaultConnectionName;
@@ -118,7 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
             //var myConfig = new LibNoDaveConnectionConfiguration(name);
             if (!ObjectSavedConfiguration)
             {
-                myConfig = new LibNoDaveConnectionConfiguration(name);
+                myConfig = new PLCConnectionConfiguration(name);
             }
 
             lstListEntryPoints.SelectedItem = myConfig.EntryPoint;
@@ -157,7 +158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
             cmdSave.Visible = false;
         }
 
-        public LibNoDaveConnectionConfiguration myConfig { get; set; }
+        public PLCConnectionConfiguration myConfig { get; set; }
 
         private void SaveSettings()
         {
@@ -169,7 +170,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
             //var myConfig = new LibNoDaveConnectionConfiguration(name);
             if (myConfig == null)
-                myConfig = new LibNoDaveConnectionConfiguration(name);
+                myConfig = new PLCConnectionConfiguration(name);
 
             if (lstListEntryPoints.SelectedItem != null)
                 myConfig.EntryPoint = lstListEntryPoints.SelectedItem.ToString();
@@ -510,11 +511,11 @@ namespace DotNetSiemensPLCToolBoxLibrary
             {
                 if (cfgName != "")
                 {
-                    LibNoDaveConnectionConfiguration tmp=new LibNoDaveConnectionConfiguration(cfgName);
+                    PLCConnectionConfiguration tmp=new PLCConnectionConfiguration(cfgName);
                     tmp.SaveConfiguration();
 
                     lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+                    lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
                     lstConnectionList.SelectedItem = cfgName;
                     lstLIBNODAVEConnectionType.Enabled = true;
                     
@@ -539,9 +540,9 @@ namespace DotNetSiemensPLCToolBoxLibrary
                 {
                     LockControls();
 
-                    LibNoDaveConnectionConfiguration.DeleteConfiguration(lstConnectionList.SelectedItem.ToString());
+                    PLCConnectionConfiguration.DeleteConfiguration(lstConnectionList.SelectedItem.ToString());
                     lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+                    lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
                     if (lstConnectionList.Items.Count > 0)
                     {
                         lstConnectionList.SelectedItem = lstConnectionList.Items[0];

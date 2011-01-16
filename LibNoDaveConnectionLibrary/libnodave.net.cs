@@ -1783,10 +1783,3 @@ This was just here to check inheritance
     
     }
 }
-
-/* Changes:
-    03/30/2006	bug fix: removed double calls to daveFree in nested destructors.
-    11/21/2006	bug fix: applied patches from Johann Gail.
-Version 0.8.4.5    
-    07/10/09  	Added closeSocket()
-*/    

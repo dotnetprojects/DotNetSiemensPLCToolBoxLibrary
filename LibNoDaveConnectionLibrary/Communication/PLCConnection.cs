@@ -36,13 +36,12 @@ using Microsoft.Win32;
 /*
  * Todo: List Online Partners
  * Todo: (Maybe) Read the Routing SDB (write it also)
- * Todo: Finish AWL to MC7
  * Todo: Memory of the CPU
  * Todo: Compress Memory
  */
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
-    public class LibNoDaveConnection : IDisposable, INotifyPropertyChanged
+    public class PLCConnection : IDisposable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -59,7 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
         private bool _NeedDispose = false;        
 
-        private readonly LibNoDaveConnectionConfiguration _myConfig;
+        private readonly PLCConnectionConfiguration _myConfig;
 
         private ConnectionTargetPLCType _connectionTargetPlcType;
         ConnectionTargetPLCType ConnectionTargetPLCType
@@ -67,12 +66,12 @@ namespace DotNetSiemensPLCToolBoxLibrary
             get { return _connectionTargetPlcType; }            
         }
 
-        public LibNoDaveConnection(String name)
+        public PLCConnection(String name)
         {
             if (name == "")
                 throw new Exception("No Connection Name specified!");
 
-            _myConfig = new LibNoDaveConnectionConfiguration(name);
+            _myConfig = new PLCConnectionConfiguration(name);
 
             _connectionTargetPlcType = ConnectionTargetPLCType.S7;
         }
@@ -81,7 +80,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// Constructor wich uses a LibNoDavaeConnectionConfiguration from outside.
         /// </summary>
         /// <param name="akConfig"></param>
-        public LibNoDaveConnection(LibNoDaveConnectionConfiguration akConfig)
+        public PLCConnection(PLCConnectionConfiguration akConfig)
         {
             _myConfig = akConfig;
         }
@@ -309,7 +308,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
             internal PLCFunctionBlockRow.SelectedStatusValues selRegister;
             internal Dictionary<int, List<PLCFunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks;
             internal short ReqestID;
-            internal LibNoDaveConnection myConn;
+            internal PLCConnection myConn;
             internal int readLineCounter;
             internal byte DiagDataTeletype;
 
@@ -572,7 +571,6 @@ namespace DotNetSiemensPLCToolBoxLibrary
                                         if (DiagDataTeletype == 0x01)
                                         {
                                             //Add for every Command, that asks for no Register a 0x80 0x80 to the ask Command!
-                                            //Todo: Look what happens with a 4 Byte Command
                                             LinesSelectedRegisters.AddRange(new byte[] { 0x80, 0x80 });
 
                                             for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2) / 2); g++)
@@ -899,18 +897,18 @@ namespace DotNetSiemensPLCToolBoxLibrary
         }
 
 
-        //Todo: Implement intelligent reading, not only Group Values, combine Addresses
+        //Todo: Implement this an then Implement intelligent reading, not only Group Values, combine Addresses
 
         /// <summary>
         /// Group Values with Same address, so that they are only Read once from the PLC!
         /// </summary>
         /// <param name="valueList"></param>
         /// <returns></returns>
-        private  Dictionary<LibNoDaveValue, List<LibNoDaveValue>> GroupReadValuesFromSameAddress(IEnumerable<LibNoDaveValue> valueList)
+        private  Dictionary<PLCTag, List<PLCTag>> GroupReadValuesFromSameAddress(IEnumerable<PLCTag> valueList)
         {
             //When DB-Number, Byte-Number, Bit-Number and Readsize are the same, they read the identical Data!
  
-            Dictionary<LibNoDaveValue, List<LibNoDaveValue>> doubleReadList = new Dictionary<LibNoDaveValue, List<LibNoDaveValue>>();
+            Dictionary<PLCTag, List<PLCTag>> doubleReadList = new Dictionary<PLCTag, List<PLCTag>>();
            
             return doubleReadList;
         }
@@ -921,7 +919,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// It tries to Optimize how the Values are Read from the PLC
         /// </summary>
         /// <param name="valueList"></param>        
-        public void ReadValues(IEnumerable<LibNoDaveValue> valueList)
+        public void ReadValues(IEnumerable<PLCTag> valueList)
         {
             
             if (_dc != null)
@@ -1085,7 +1083,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public void ReadValue(LibNoDaveValue value)
+        public void ReadValue(PLCTag value)
         {
             if (_dc != null)
                 lock (_dc)
@@ -1121,7 +1119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// <param name="values">List of the Values</param>
         /// <param name="bytearray">ByteArray</param>
         /// <returns></returns>
-        public void ReadValuesFromByteArray(IEnumerable<LibNoDaveValue> values, byte[] bytearray)
+        public void ReadValuesFromByteArray(IEnumerable<PLCTag> values, byte[] bytearray)
         {
             if (_dc != null)
                 lock (_dc)
@@ -1143,7 +1141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// Writes a single Value to the PLC
         /// </summary>
         /// <param name="value"></param>
-        public void WriteValue(LibNoDaveValue value)
+        public void WriteValue(PLCTag value)
         {
             if (_dc != null)
                 lock (_dc)
@@ -1167,7 +1165,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
                 }
         }
 
-        public void WriteValues(IEnumerable<LibNoDaveValue> valueList)
+        public void WriteValues(IEnumerable<PLCTag> valueList)
         {
             if (_dc != null)
                 lock (_dc)

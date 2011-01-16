@@ -44,6 +44,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         internal static PLCDataRow GetFunctionParameterFromNumber(PLCDataRow parameters, int index)
         {
+            if (parameters==null || parameters.Children==null)
+                return null;
             int n = 0;
             int akIdx = index;
             while (n < parameters.Children.Count)

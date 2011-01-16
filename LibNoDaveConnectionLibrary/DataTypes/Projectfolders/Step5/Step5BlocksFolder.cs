@@ -19,8 +19,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
         }
 
         public Block GetBlock(string BlockName)
-        {         
-            throw new NotImplementedException();
+        {
+            var tmp = GetBlockInfo(BlockName);
+            if (tmp != null)
+                return GetBlock(tmp);
+            return null;
         }
 
         internal Step5ProjectBlockInfo GetBlockInfo(string BlockName)

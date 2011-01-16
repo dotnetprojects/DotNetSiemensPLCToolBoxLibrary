@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -40,7 +41,7 @@ namespace JFK_VarTab
             tableLayoutPanelVisu.ColumnStyles[1].Width = 0;
 
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
             if (lstConnections.Items.Count > 0)
                 lstConnections.SelectedItem = lstConnections.Items[0];
@@ -621,10 +622,10 @@ namespace JFK_VarTab
 
         }
 
-        LibNoDaveConnection myConn;
+        PLCConnection myConn;
        
 
-        private List<LibNoDaveValue> valueList = null;
+        private List<PLCTag> valueList = null;
         private ScrollViewer myScrollViewer = null;
         private int oldPos = 0;
         private void fetchPLCData_Tick(object sender, EventArgs e)
@@ -806,7 +807,7 @@ namespace JFK_VarTab
             Configuration.ShowConfiguration("Verbindung_1", false);
 
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
             if (tmp != null && lstConnections.Items.Contains(tmp))
                 lstConnections.SelectedItem = tmp;
@@ -814,9 +815,9 @@ namespace JFK_VarTab
 
         private void lstConnections_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            myConn = new LibNoDaveConnection((string)lstConnections.SelectedItem);
+            myConn = new PLCConnection((string)lstConnections.SelectedItem);
             if (lstConnections.SelectedItem != null)
-                lblConnInfo.Text = new LibNoDaveConnectionConfiguration((string)lstConnections.SelectedItem).ToString();
+                lblConnInfo.Text = new PLCConnectionConfiguration((string)lstConnections.SelectedItem).ToString();
         }
 
         private void watchToolStripMenuItem_Click(object sender, EventArgs e)
@@ -826,7 +827,7 @@ namespace JFK_VarTab
             {
                 if (myConn != null)
                     myConn.Dispose();
-                myConn = new LibNoDaveConnection((string)lstConnections.SelectedItem);
+                myConn = new PLCConnection((string)lstConnections.SelectedItem);
                 myConn.Connect();
                 fetchPLCData.Enabled = true;
             }

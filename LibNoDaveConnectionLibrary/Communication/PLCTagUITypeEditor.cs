@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
     /// <summary>
     /// Stellt einen UI Type Editor der für einen String aus einer Liste von Werten auswählen lässt!
     /// </summary>
-    public class LibNoDaveValueUITypeEditor : System.Drawing.Design.UITypeEditor
+    public class PLCTagUITypeEditor : System.Drawing.Design.UITypeEditor
     {
         System.Windows.Forms.Design.IWindowsFormsEditorService m_objService;
 
@@ -24,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
                 if (m_objService != null)
                 {
-                    LibNoDaveValueEditor akVal = new LibNoDaveValueEditor((LibNoDaveValue)value);
+                    PLCTagEditor akVal = new PLCTagEditor((PLCTag)value);
                     akVal.ShowDialog();
                 }
             }

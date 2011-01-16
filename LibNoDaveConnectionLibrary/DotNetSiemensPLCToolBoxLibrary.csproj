@@ -47,9 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Communication\Configuration.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />
     <Compile Include="DataTypes\Blocks\Block.cs" />
+    <Compile Include="DataTypes\Blocks\FunctionBlockRow.cs" />
+    <Compile Include="DataTypes\Blocks\Network.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockNetwork.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
     <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\PLCDataBlockExpandOptions.cs" />
@@ -98,24 +101,24 @@
     <Compile Include="General\NumericComparer.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
     <Compile Include="General\ZipHelper.cs" />
-    <Compile Include="InputBox.cs" />
-    <Compile Include="LibNoDaveValueUITypeEditor.cs" />
-    <Compile Include="EnumListBoxExtensions.cs" />
-    <Compile Include="LibNoDaveConnection.cs" />
-    <Compile Include="ConnectionEditor.cs">
+    <Compile Include="General\InputBox.cs" />
+    <Compile Include="Communication\PLCTagUITypeEditor.cs" />
+    <Compile Include="General\EnumListBoxExtensions.cs" />
+    <Compile Include="Communication\PLCConnection.cs" />
+    <Compile Include="Communication\ConnectionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectionEditor.Designer.cs">
+    <Compile Include="Communication\ConnectionEditor.Designer.cs">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="libnodave.net.cs" />
-    <Compile Include="LibNoDaveConnectionConfiguration.cs" />
-    <Compile Include="LibNoDaveConnectionUITypeEditor.cs" />
-    <Compile Include="LibNoDaveValueEditor.cs">
+    <Compile Include="Communication\PLCConnectionConfiguration.cs" />
+    <Compile Include="Communication\PLCConnectionUITypeEditor.cs" />
+    <Compile Include="Communication\PLCTagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LibNoDaveValueEditor.Designer.cs">
-      <DependentUpon>LibNoDaveValueEditor.cs</DependentUpon>
+    <Compile Include="Communication\PLCTagEditor.Designer.cs">
+      <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PLCs\S5\MC5\MC5toComment.cs" />
     <Compile Include="PLCs\S5\MC5\MC5LIB_SYMTAB.cs" />
@@ -146,7 +149,7 @@
     <Compile Include="DataTypes\Blocks\Step7V5\VATRow.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LibNoDaveValue.cs" />
+    <Compile Include="Communication\PLCTag.cs" />
     <Compile Include="Projectfiles\SelectPartType.cs" />
     <Compile Include="Projectfiles\SelectProjectPart.cs" />
     <Compile Include="Projectfiles\SelectProjectPartForm.cs">
@@ -162,12 +165,13 @@
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConnectionEditor.resx">
+    <EmbeddedResource Include="Communication\ConnectionEditor.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LibNoDaveValueEditor.resx">
-      <DependentUpon>LibNoDaveValueEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Communication\PLCTagEditor.resx">
+      <DependentUpon>PLCTagEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Projectfiles\SelectProjectPartForm.resx">
       <DependentUpon>SelectProjectPartForm.cs</DependentUpon>

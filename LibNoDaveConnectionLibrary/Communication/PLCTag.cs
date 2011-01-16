@@ -32,13 +32,13 @@ using System.Text.RegularExpressions;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
-    [System.ComponentModel.Editor(typeof(LibNoDaveValueUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [System.ComponentModel.Editor(typeof(PLCTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
 	[Serializable]
-    public class LibNoDaveValue: INotifyPropertyChanged
+    public class PLCTag: INotifyPropertyChanged
     {
         private string _valueName;
 
@@ -73,12 +73,12 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
         public bool ItemDoesNotExist { get; set;}
 
-        public LibNoDaveValue()
+        public PLCTag()
         {      
       
         }
 
-        public LibNoDaveValue(string address)
+        public PLCTag(string address)
         {
             this.ChangeAddressFromString(address);
         }
@@ -951,9 +951,9 @@ namespace DotNetSiemensPLCToolBoxLibrary
             this.DataTypeStringFormat = tp;
         }
 
-        public static LibNoDaveValue GetLibNoDaveValueFromString(String plcAddress)
+        public static PLCTag GetLibNoDaveValueFromString(String plcAddress)
         {
-            LibNoDaveValue retValue = new LibNoDaveValue();
+            PLCTag retValue = new PLCTag();
             retValue.ChangeAddressFromString(plcAddress);
             return retValue;
         }

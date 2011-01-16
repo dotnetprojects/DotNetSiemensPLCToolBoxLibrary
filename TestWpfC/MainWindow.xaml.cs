@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -61,7 +62,7 @@ namespace TestWpfC
             foldingUpdateTimer.Start();
         }
 
-        private LibNoDaveConnection _myconn;
+        private PLCConnection _myconn;
 
         private const string _connname = "AWLEditPad";
 
@@ -74,7 +75,7 @@ namespace TestWpfC
         {
             if (_myconn == null)
             {
-                _myconn = new LibNoDaveConnection(_connname);
+                _myconn = new PLCConnection(_connname);
                 _myconn.Connect(1);
 
                 foreach (string itm in _myconn.PLCListBlocks(PLCBlockType.AllEditableBlocks))
@@ -255,7 +256,7 @@ namespace TestWpfC
 
         }
 
-        private LibNoDaveConnection.DiagnosticData myDiag;
+        private PLCConnection.DiagnosticData myDiag;
 
         private DispatcherTimer dispatcherTimer;
         

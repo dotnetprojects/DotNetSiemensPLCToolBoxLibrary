@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -104,8 +105,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        private LibNoDaveValue _LibNoDaveValue;
-        public LibNoDaveValue LibNoDaveValue
+        private PLCTag _LibNoDaveValue;
+        public PLCTag LibNoDaveValue
         {
             get
             {
@@ -115,41 +116,41 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 switch (DataType)
                 {
                     case PLCDataRowType.BOOL:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Bool;
                         _LibNoDaveValue.BitAddress = BlockAddress.BitAddress;
                         break;
                     case PLCDataRowType.WORD:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Word;                        
                         break;
                     case PLCDataRowType.DWORD:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Dword;
                         break;
                     case PLCDataRowType.INT:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Int;
                         break;
                     case PLCDataRowType.DINT:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Dint;
                         break;
                     case PLCDataRowType.REAL:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.Float;
                         break;
                     case PLCDataRowType.DATE_AND_TIME:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.DateTime;
                         break;
                     case PLCDataRowType.CHAR:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.CharArray;
                         _LibNoDaveValue.ArraySize = this.GetArrayLines();
                         break;
                     case PLCDataRowType.STRING:
-                        _LibNoDaveValue = new LibNoDaveValue() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _LibNoDaveValue = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _LibNoDaveValue.LibNoDaveDataType = TagDataType.String;
                         _LibNoDaveValue.ArraySize = this.StringSize;
                         break;
@@ -536,9 +537,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return retVal;
         }
 
-        public static List<LibNoDaveValue> GetLibnoDaveValues(List<PLCDataRow> rowList)
+        public static List<PLCTag> GetLibnoDaveValues(List<PLCDataRow> rowList)
         {
-            List<LibNoDaveValue> retVal = new List<LibNoDaveValue>();
+            List<PLCTag> retVal = new List<PLCTag>();
             foreach (PLCDataRow plcDataRow in rowList)
             {
                 if (plcDataRow.LibNoDaveValue != null)

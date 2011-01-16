@@ -36,37 +36,19 @@
                 </TreeView>
             <GridSplitter Grid.Column="0" Width="5"></GridSplitter>
             <DataGrid  Grid.Column="1" DockPanel.Dock="Right" AutoGenerateColumns="False" Name="myDGrid" ItemsSource="{Binding Children}">
-                    <DataGrid.Columns>
-                        <!--<DataGridTextColumn Header="ID" Width="SizeToCells"  
-                                           Binding="{Binding Id}" 
-                                           CanUserSort="False"
-                                           IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Type" 
-                                           Binding="{Binding Date, StringFormat=d}" 
-                                           CanUserSort="False" />-->
-                        <DataGridTextColumn Header="Array" MinWidth="30" 
-                                           Binding="{Binding IsArray}"
-                                           CanUserSort="False" />
-                        <DataGridTextColumn Header="ArrSt" MinWidth="30" 
-                                           Binding="{Binding ArrayStart}"
-                                           CanUserSort="False" />
-                        <DataGridTextColumn Header="ArrStp" MinWidth="30" 
-                                           Binding="{Binding ArrayStop}"
-                                           CanUserSort="False" />
+                    <DataGrid.Columns>                      
+                        <DataGridTextColumn Header="Address" MinWidth="30" 
+                                           Binding="{Binding BlockAddress}"
+                                           CanUserSort="False" />                        
                         <DataGridTextColumn Header="Name" MinWidth="100" 
                                            Binding="{Binding Name}"
                                            CanUserSort="False" />
                         <DataGridTextColumn Header="Datatype" MinWidth="80" 
-                                           Binding="{Binding DataType}"
+                                           Binding="{Binding DataTypeAsString}"
                                            CanUserSort="False" />
                         <DataGridTextColumn Header="StartValue" MinWidth="80" 
                                            Binding="{Binding StartValue}"
-                                           CanUserSort="False" />
-                        <!--<DataGridTextColumn Header="Adress" MinWidth="60" 
-                                           Binding="{Binding Adress}"
-                                           CanUserSort="False"
-                                           IsReadOnly="True"
-                                           />-->
+                                           CanUserSort="False" />                       
                         <DataGridTextColumn Header="Comment" MinWidth="100" Width="300"
                                            Binding="{Binding Comment}"
                                            CanUserSort="False" />

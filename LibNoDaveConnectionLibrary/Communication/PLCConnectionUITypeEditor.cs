@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
     /// <summary>
     /// Stellt einen UI Type Editor der für einen String aus einer Liste von Werten auswählen lässt!
     /// </summary>
-    public class LibNoDaveConnectionUITypeEditor : System.Drawing.Design.UITypeEditor
+    public class PLCConnectionUITypeEditor : System.Drawing.Design.UITypeEditor
     {
         System.Windows.Forms.Design.IWindowsFormsEditorService m_objService;
 
@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
                 m_objService = (System.Windows.Forms.Design.IWindowsFormsEditorService)provider.GetService(typeof(System.Windows.Forms.Design.IWindowsFormsEditorService));
 
                 if (m_objService != null)
-                    Configuration.ShowConfiguration((LibNoDaveConnectionConfiguration) value);
+                    Configuration.ShowConfiguration((PLCConnectionConfiguration) value);
             }
             return value;
         }       

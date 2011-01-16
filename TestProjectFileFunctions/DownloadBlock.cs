@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace TestProjectFileFunctions
@@ -14,7 +15,7 @@ namespace TestProjectFileFunctions
     public partial class DownloadBlock : Form
     {
         private string ConnectionName = "";
-        private LibNoDaveConnection myConn;
+        private PLCConnection myConn;
         public DownloadBlock(string ConnectionName)
         {
             this.ConnectionName = ConnectionName;
@@ -25,9 +26,9 @@ namespace TestProjectFileFunctions
         {            
             try
             {
-                myConn = new LibNoDaveConnection(ConnectionName);
+                myConn = new PLCConnection(ConnectionName);
                 label1.Text = ConnectionName + "\r\n" +
-                              (new LibNoDaveConnectionConfiguration(ConnectionName)).ToString();
+                              (new PLCConnectionConfiguration(ConnectionName)).ToString();
                 myConn.Connect();
                 listBox1.Items.AddRange(myConn.PLCListBlocks(PLCBlockType.AllEditableBlocks).ToArray());
             }

@@ -9,8 +9,8 @@
             this.ReplaceDBAccessesWithSymbolNames = true;
             this.ReplaceDIAccessesWithSymbolNames = true;
             this.ReplaceLokalDataAddressesWithSymbolNames = true;
-            this.GenerateCallsfromUCs = false;
-            this.UseInFCStoredFCsForCalls = true;
+            this.GenerateCallsfromUCs = true;
+            this.UseInFCStoredFCsForCalls = true; //todo implement the reading of them in the step7 project
             this.UseComments = true;
         }
 

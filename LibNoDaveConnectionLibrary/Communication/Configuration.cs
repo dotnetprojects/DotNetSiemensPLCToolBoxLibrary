@@ -25,7 +25,7 @@
 */
 using System;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
     public class Configuration
     {
@@ -47,10 +47,10 @@ namespace DotNetSiemensPLCToolBoxLibrary
             myConnectionEditor.ShowDialog();
         }
 
-        public static void ShowConfiguration(LibNoDaveConnectionConfiguration myConfig)
+        public static void ShowConfiguration(PLCConnectionConfiguration myConfig)
         {
             if (myConfig == null)
-                myConfig = new LibNoDaveConnectionConfiguration("PLC-Connection", LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
+                myConfig = new PLCConnectionConfiguration("PLC-Connection", LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
 
             var myConnectionEditor = new ConnectionEditor { ConnectionNameFixed = true, DefaultConnectionName = myConfig.ConnectionName, ObjectSavedConfiguration = true };
             myConnectionEditor.myConfig = myConfig;

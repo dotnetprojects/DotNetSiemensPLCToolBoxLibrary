@@ -26,13 +26,13 @@
 using System;
 using Microsoft.Win32;
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
-    [System.ComponentModel.Editor(typeof(LibNoDaveConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [System.ComponentModel.Editor(typeof(PLCConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
     [Serializable]
-    public class LibNoDaveConnectionConfiguration
+    public class PLCConnectionConfiguration
     {        
         public String ConnectionName { get; set; }
         public string EntryPoint { get; set; }
@@ -76,14 +76,14 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// <summary>
         /// Empty Constructor for Serialization
         /// </summary>
-        public LibNoDaveConnectionConfiguration()
+        public PLCConnectionConfiguration()
         { }
 
         /// <summary>
         /// Normal Constructor of the Config Object
         /// </summary>
         /// <param name="ConnectionName"></param>
-        public LibNoDaveConnectionConfiguration(String ConnectionName)
+        public PLCConnectionConfiguration(String ConnectionName)
         {
             if (ConnectionName == "")
                 this.ConnectionName = "tmpConnection1";
@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         /// Normal Constructor of the Config Object
         /// </summary>
         /// <param name="ConnectionName"></param>
-        public LibNoDaveConnectionConfiguration(String ConnectionName, LibNodaveConnectionConfigurationType configurationType)
+        public PLCConnectionConfiguration(String ConnectionName, LibNodaveConnectionConfigurationType configurationType)
         {
             if (ConnectionName == "")
                 this.ConnectionName = "tmpConnection1";

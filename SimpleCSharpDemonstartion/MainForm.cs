@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace SimpleCSharpDemonstration
 {
@@ -17,9 +18,9 @@ namespace SimpleCSharpDemonstration
             InitializeComponent();
         }
 
-        private LibNoDaveConnection myConn = null;
+        private PLCConnection myConn = null;
 
-        private LibNoDaveValue myValue = new LibNoDaveValue()
+        private PLCTag myValue = new PLCTag()
                                              {
                                                  ByteAddress = 0,
                                                  BitAddress = 0,

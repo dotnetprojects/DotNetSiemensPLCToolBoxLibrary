@@ -1,6 +1,6 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
-    partial class LibNoDaveValueEditor
+    partial class PLCTagEditor
     {
         /// <summary>
         /// Required designer variable.

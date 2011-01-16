@@ -35,6 +35,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public PLCDataRow Parameter { get; set; }
         public List<PLCFunctionBlockRow> AWLCode { get; set; }
 
+        public List<S7FunctionBlockNetwork> Networks { get; set; }
+
         public string Description{ get; set; }
 
         //Todo: Implement this

@@ -29,3 +29,8 @@ as this Library is also!
 
 Additional Info
 When you want to use the communication Functions, be sure, that you copy libnodave.dll from the externalDlls Directory to your Project!
+
+
+Global Todo List:
+- 2 Versions of WPF ToolBox, one only for reading (Compile Switch)
+- Implement use of Converting Options

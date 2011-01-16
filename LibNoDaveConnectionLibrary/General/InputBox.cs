@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+
 #if !IPHONE
 
-namespace DotNetSiemensPLCToolBoxLibrary
+namespace DotNetSiemensPLCToolBoxLibrary.General
 {
     static class InputBox
     {

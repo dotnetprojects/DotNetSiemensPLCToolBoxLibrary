@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
@@ -30,7 +31,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         public DockableContentOnlineConnections()
         {
-            this.Connections = new ObservableCollection<string>((IEnumerable<string>)LibNoDaveConnectionConfiguration.GetConfigurationNames());
+            this.Connections = new ObservableCollection<string>((IEnumerable<string>)PLCConnectionConfiguration.GetConfigurationNames());
          
             InitializeComponent();
             this.DataContext = this;
@@ -60,7 +61,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.ShowConfiguration();
-            this.Connections = new ObservableCollection<string>((IEnumerable<string>)LibNoDaveConnectionConfiguration.GetConfigurationNames());         
+            this.Connections = new ObservableCollection<string>((IEnumerable<string>)PLCConnectionConfiguration.GetConfigurationNames());         
         }
 
         private Point _startPoint;

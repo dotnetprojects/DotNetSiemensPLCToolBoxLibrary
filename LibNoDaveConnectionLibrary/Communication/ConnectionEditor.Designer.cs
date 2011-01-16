@@ -1,4 +1,4 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
     partial class ConnectionEditor
     {

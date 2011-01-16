@@ -1,4 +1,5 @@
 #if !IPHONE
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -39,12 +40,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         }
 
         //This selects a Tag From a Step 7 Project
-        public static LibNoDaveValue SelectTAG()
+        public static PLCTag SelectTAG()
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm();
             myFrm.SelectPart = SelectPartType.LibNoDaveValue;
             myFrm.ShowDialog();
-            return (LibNoDaveValue)myFrm.retVal;
+            return (PLCTag)myFrm.retVal;
         }
     }
 }

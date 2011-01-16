@@ -31,7 +31,7 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class PLCFunctionBlockRow
+    public class PLCFunctionBlockRow : FunctionBlockRow
     {
         public string Label { get; set; }
 

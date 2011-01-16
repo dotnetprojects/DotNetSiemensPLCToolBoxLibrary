@@ -1,4 +1,5 @@
-﻿Imports DotNetSiemensPLCToolBoxLibrary.DataTypes
+﻿Imports DotNetSiemensPLCToolBoxLibrary.Communication
+Imports DotNetSiemensPLCToolBoxLibrary.DataTypes
 Imports DotNetSiemensPLCToolBoxLibrary
 
 Public Class Form1
@@ -9,13 +10,13 @@ Public Class Form1
         'Verbindungen auflisten...
         'WPFToolboxForSiemensPLCs.LibNoDaveConnectionConfiguration.GetConfigurationNames()
 
-        Dim myConn1 As New LibNoDaveConnection("aaaa")
-        Dim myConn2 As New LibNoDaveConnection("bbbb")
+        Dim myConn1 As New PLCConnection("aaaa")
+        Dim myConn2 As New PLCConnection("bbbb")
         myConn1.Connect()
         myConn2.Connect()
 
 
-        Dim val As New LibNoDaveValue
+        Dim val As New PLCTag
         val.ByteAddress = 10
         val.DatablockNumber = 2
         val.LibNoDaveDataType = TagDataType.Byte

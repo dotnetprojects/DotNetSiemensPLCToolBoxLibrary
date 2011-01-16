@@ -56,8 +56,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         COUNTER = 0x1c,
         TIMER = 0x1d,
         UNKNOWN = 0xff,
-
-        //Todo: look for the hex code
+        
         //This are also Special Values
         UDT = 0x20,
         SFB = 0x21,

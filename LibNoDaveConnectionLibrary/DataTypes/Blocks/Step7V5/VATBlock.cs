@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public class VATBlock : Block
     {                
-        public List<LibNoDaveValue> Rows{ get; set;}
+        public List<PLCTag> Rows{ get; set;}
         public List<VATRow> VATRows { get; set; }
 
         public VATBlock(byte[] hexCode, byte[] comments, int blocknumber)
@@ -18,7 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             //0010 30 20 31 20 33 30 20 31 20 34 30 20 31 20 35 30    0 1 30 1 40 1 50
             //0020 20 36 30 00 32 20 33 20 38 38 20 30 20 30 20 30     60.
 
-            Rows = new List<LibNoDaveValue>();
+            Rows = new List<PLCTag>();
             VATRows = new List<VATRow>();
 
             int akAddr = 36;
@@ -27,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 if (hexCode[akAddr] != 0x00)
                 {
-                    LibNoDaveValue tmp = new LibNoDaveValue();
+                    PLCTag tmp = new PLCTag();
                     string var = "";
                     string type = "";
                     string addr = "";
