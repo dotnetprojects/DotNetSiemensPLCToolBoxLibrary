@@ -9,6 +9,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     {
         public String Folder { get; set; }
 
+        private Dictionary<string, SymbolTableEntry> operandIndexList = new Dictionary<string, SymbolTableEntry>();
+        private Dictionary<string, SymbolTableEntry> symbolIndexList = new Dictionary<string, SymbolTableEntry>();
+
         private List<SymbolTableEntry> _step7SymbolTableEntrys;
         public List<SymbolTableEntry> Step7SymbolTableEntrys
         {
@@ -23,17 +26,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         internal bool showDeleted { get; set;}
 
-        public SymbolTableEntry GetEntry(string operand)
+        public SymbolTableEntry GetEntryFromOperand(string operand)
         {
-            string tmpname = operand.ToString().Replace(" ", "");
-            foreach (var step7SymbolTableEntry in Step7SymbolTableEntrys)
-                {
-                    if (step7SymbolTableEntry.Operand.Replace(" ", "") == tmpname)
-                    {
-                        return step7SymbolTableEntry;
-                    }
-                }
-            return null;
+            string tmpname = operand.Replace(" ", "");
+            SymbolTableEntry retval = null;
+            operandIndexList.TryGetValue(tmpname, out retval);
+            return retval;
+        }
+
+        public SymbolTableEntry GetEntryFromSymbol(string symbol)
+        {
+            string tmpname = symbol.Trim().ToUpper();
+            SymbolTableEntry retval = null;
+            symbolIndexList.TryGetValue(tmpname, out retval);
+            return retval;
         }
 
         public SymbolTable()
@@ -62,6 +68,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             sym.Comment = (string) row["_COMMENT"];
                             if ((bool) row["DELETED_FLAG"]) sym.Comment = "(deleted) " + sym.Comment;
                             _step7SymbolTableEntrys.Add(sym);
+                            operandIndexList.Add(sym.Operand.Replace(" ", ""), sym);
+                            symbolIndexList.Add(sym.Symbol.ToUpper().Trim(), sym);
                         }
                     }
                 }

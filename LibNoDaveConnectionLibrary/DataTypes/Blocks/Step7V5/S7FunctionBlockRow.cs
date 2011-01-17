@@ -85,6 +85,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        internal int GetNumberOfLines()
+        {
+            if ((Command == "UC" || Command == "CC") && ExtParameter != null)
+                return 1 + ExtParameter.Count;
+            else            if (Command == "CALL" && CallParameter != null)
+                return 1 + CallParameter.Count;
+            return 1;
+        }
+
+        private List<S7FunctionBlockParameter> _callparameter;
+        public List<S7FunctionBlockParameter> CallParameter
+        {
+            get { return _callparameter; }
+            set
+            {
+                _callparameter = value;
+                _MC7 = null;
+                CombinedCommands = null;
+            }
+        }
+
+
         public string Comment { get; set; }
 
         public string NetworkName { get; set; }
@@ -454,10 +476,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 cmt = "//" + Comment;
 
             string ext = "";
-            if (ExtParameter != null && ExtParameter.Count > 0)
+            
+            if (ExtParameter != null && ExtParameter.Count > 0 && (Command=="UC" || Command=="CC"))
             {
                 foreach (string myStr in ExtParameter)
                     ext += "\r\n" + " ".PadLeft(12) + myStr;
+            }
+
+            if (CallParameter != null && CallParameter.Count > 0 && (Command == "CALL"))
+            {
+                int len = 0;
+                foreach (var cpar in CallParameter)
+                    len = cpar.Name.Length > len ? cpar.Name.Length : len;
+                foreach (var cpar in CallParameter)
+                {
+                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + ":=" + cpar.Value;
+                    if (!string.IsNullOrEmpty(cpar.Comment))
+                        ext += "  //" + cpar.Comment;
+                }
             }
 
             if (ActualBlockStatus != null)

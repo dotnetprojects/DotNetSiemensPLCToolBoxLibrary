@@ -91,7 +91,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         
                         if (symtab != null)
                         {
-                            SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
+                            SymbolTableEntry sym = symtab.GetEntryFromOperand(tmp.ToString());
                             if (sym != null)
                                 tmp.Symbol = sym.Symbol;                            
                         }
@@ -421,6 +421,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         
                         retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, 0, myTmpBlk.mc7code, Networks, ParaList, (S7ProgrammFolder)this.Parent);
 
+                        retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);    
+
                         CallConverter.ConvertUCToCall(retVal, (S7ProgrammFolder) this.Parent, myConvOpt, null);
 
                         LocalDataConverter.ConvertLocaldataToSymbols(retVal, myConvOpt);
@@ -432,6 +434,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                             int n = 0;
                             int j = 0;
+                            int subCnt = 0; //Counter wich line in Command (for Calls and UCs)
 
                             if (myTmpBlk.comments != null)
                             {
@@ -442,8 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     int kommLen = cmt[n + 0];
                                     int startNWKomm = cmt[n + 1];
                                     int anzUebsprungZeilen = cmt[n + 2] + cmt[n + 3]*0x100;
-                                    int lenNWKommZeile = cmt[n + 3] + cmt[n + 4]*0x100;
-
+                                    int lenNWKommZeile = cmt[n + 3] + cmt[n + 4]*0x100;                                   
 
                                     if (cmt[n + 5] == 0x06)
                                     {
@@ -464,45 +466,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             newAwlCode.Add(retVal.AWLCode[j]);
                                         }
                                         j++;
+
+                                        subCnt = 0;
                                     }
                                     else
                                     {
                                         S7FunctionBlockRow lastRow = null;
-
+                                                                                
                                         //Anzahl der Anweisungen vor diesem Kommentar (inklusive aktueller Zeile!)
                                         for (int q = 0; q < (anzUebsprungZeilen); q++)
                                         {
-                                            if (retVal.AWLCode.Count > j)
+                                            if (retVal.AWLCode[j].GetNumberOfLines() == 1)
+                                            {
+                                                subCnt = 0;
+                                                if (retVal.AWLCode.Count > j)
+                                                {
+                                                    lastRow = retVal.AWLCode[j];
+                                                    newAwlCode.Add(retVal.AWLCode[j]);
+                                                }
+                                                j++;
+                                            }
+                                            else
                                             {
                                                 lastRow = retVal.AWLCode[j];
-                                                newAwlCode.Add(retVal.AWLCode[j]);
-                                            }
-                                            j++;
+                                                if (retVal.AWLCode.Count > j && subCnt==0)
+                                                {                                                    
+                                                    newAwlCode.Add(retVal.AWLCode[j]);
+                                                }
+
+                                                if (retVal.AWLCode[j].GetNumberOfLines() - 1 == subCnt)
+                                                {
+                                                    j++;
+                                                    //subCnt = 0;
+                                                    subCnt++;
+                                                }
+                                                else
+                                                {
+                                                    subCnt++;
+                                                }
+                                            }                                                                                    
                                         }
 
                                         if (lastRow == null || cmt[n + 4] != 0x80)
                                         {
                                             lastRow = new S7FunctionBlockRow();
                                             newAwlCode.Add(lastRow);
+                                            subCnt = 0;
                                         }
 
                                         string tx1 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(cmt, n + 6, kommLen);
-                                        lastRow.Comment = tx1;
+                                        if (subCnt == 0)
+                                            lastRow.Comment = tx1;
+                                        else
+                                            if (lastRow.Command == "CALL")
+                                                lastRow.CallParameter[subCnt - 2].Comment = tx1;
                                         n += kommLen + 6;
+
+                                        //subCnt = 0;
                                     }
                                 }
                             }
-
                             while (j < retVal.AWLCode.Count)
                             {
                                 newAwlCode.Add(retVal.AWLCode[j]);
-                                j++;
+                                j++;                                
                             }
                             retVal.AWLCode = newAwlCode;
                         }
-                        #endregion
-
-                        retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);                        
+                        #endregion                                          
                     }                                                           
                     return retVal;
                 }

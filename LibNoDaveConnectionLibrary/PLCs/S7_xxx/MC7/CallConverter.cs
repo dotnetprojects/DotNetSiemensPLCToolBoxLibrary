@@ -22,6 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 string akPar = "";
                 string db = "";
+                string label = "";
                 bool afterCall = false;
                 S7FunctionBlockRow callRow = null;
 
@@ -35,6 +36,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                         Parameters.Clear();
                         db = "";
+
+                        label = row.Label;
 
                         inBld = Convert.ToInt32(row.Parameter);
                         newRow = null;
@@ -118,7 +121,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow = new S7FunctionBlockRow();
                             newRow.Command = Memnoic.opCALL[myOpt.Memnoic];
                             newRow.Parameter = callRow.Parameter;
-                            newRow.ExtParameter = new List<string>();
+                            //newRow.ExtParameter = new List<string>();
+                            newRow.CallParameter=new List<S7FunctionBlockParameter>();
+
                             for (int i = 0; i < callRow.ExtParameter.Count; i++)
                             {
                                 string s = callRow.ExtParameter[i];
@@ -126,9 +131,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 string parnm = "";
                                 S7DataRow akRow = Parameter.GetFunctionParameterFromNumber(para, i);
                                 if (akRow != null)
-                                    parnm = akRow.Name + ":=";
+                                    parnm = akRow.Name + "";
                                 else
-                                    parnm = "$$undef:=";
+                                    parnm = "$$undef";
+
+
+                                S7FunctionBlockParameter newPar = new S7FunctionBlockParameter();
+                                newPar.Name = parnm;
+                                newPar.ParameterDataType = akRow.DataType;
+                                if (akRow.Parent.Name == "OUT")
+                                    newPar.ParameterType = S7FunctionBlockParameterDirection.OUT;
+                                else if (akRow.Parent.Name == "IN_OUT")
+                                    newPar.ParameterType = S7FunctionBlockParameterDirection.IN_OUT;
+                                else
+                                    newPar.ParameterType = S7FunctionBlockParameterDirection.IN;
+                                //newPar.ParameterType
+
 
                                 if (akRow != null)
                                 {
@@ -153,10 +171,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         string p1 = Parameters["P#V " + (lokaldata_address + 0).ToString() + ".0"];
                                         string p2 = Parameters["P#V " + (lokaldata_address + 2).ToString() + ".0"];
                                         
+                                        
                                         string tmp = "";
-                                        //tmp += p4.Substring(2);
-                                        tmp += p2;
-                                        newRow.ExtParameter.Add(parnm + tmp);
+                                        if (p1 != "" && p1 != "0")
+                                            tmp += "P#DB" + p1 + "." + p2.Substring(2);
+                                        else
+                                            tmp += p2;
+                                        newPar.Value = tmp;
+                                        newRow.CallParameter.Add(newPar);
+                                        //newRow.ExtParameter.Add(parnm + tmp);
                                     }
                                     else if (akRow.DataType == S7DataRowType.ANY)
                                     {
@@ -178,7 +201,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             tmp += " BYTE "; //Todo Byte 1 noch auswerten ob typ überhaupt BYTE!
                                             tmp += p2;
                                         }
-                                        newRow.ExtParameter.Add(parnm + tmp);
+                                        newPar.Value = tmp;
+                                        newRow.CallParameter.Add(newPar);
+                                        //newRow.ExtParameter.Add(parnm + tmp);
                                     }
                                     else
                                     {
@@ -187,46 +212,90 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             string par = Parameters[s];
                                             if (akRow.DataType == S7DataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
                                             {
-                                                newRow.ExtParameter.Add(parnm +
-                                                                        Helper.GetS5Time(
+                                                newPar.Value = Helper.GetS5Time(
                                                                             BitConverter.GetBytes(Convert.ToInt32(par))[1],
-                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[0]));
+                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[0]);
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm +
+                                                //                        Helper.GetS5Time(
+                                                //                            BitConverter.GetBytes(Convert.ToInt32(par))[1],
+                                                //                            BitConverter.GetBytes(Convert.ToInt32(par))[0]));
                                             }
                                             else if (akRow.DataType == S7DataRowType.TIME && par[0] >= '0' && par[0] <= '9')
                                             {
-                                                newRow.ExtParameter.Add(parnm +
-                                                                        Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)),0));
+                                                newPar.Value = Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)),0);
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm +
+                                                //                        Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)),0));
                                             }
                                             else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
                                             {
-                                                newRow.ExtParameter.Add(parnm + "'" +
-                                                                        (char) Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'");                                                
+                                                newPar.Value =
+                                                    (char)
+                                                    Int32.Parse(par.Substring(5),
+                                                                System.Globalization.NumberStyles.AllowHexSpecifier) +
+                                                    "'";
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "'" +
+                                                //                        (char)Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'");
                                             }
                                             else
-                                                newRow.ExtParameter.Add(parnm + Parameters[s]);
+                                            {
+                                                newPar.Value = Parameters[s];
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + Parameters[s]);
+                                            }
                                         }
                                         else
                                         {
                                             if (akRow.DataType == S7DataRowType.BOOL)
-                                                newRow.ExtParameter.Add(parnm + s.Substring(2));
+                                            {
+                                                newPar.Value = s.Substring(2).Replace('V', 'L');
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + s.Substring(2).Replace('V', 'L'));
+                                            }
                                             else if (akRow.DataType == S7DataRowType.BLOCK_DB)
-                                                newRow.ExtParameter.Add(parnm + "DB" + ak_address.ToString());
+                                            {
+                                                newPar.Value = "DB" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "DB" + ak_address.ToString());
+                                            }
                                             else if (akRow.DataType == S7DataRowType.BLOCK_FB)
-                                                newRow.ExtParameter.Add(parnm + "FB" + ak_address.ToString());
+                                            {
+                                                newPar.Value = "FB" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "FB" + ak_address.ToString());
+                                            }
                                             else if (akRow.DataType == S7DataRowType.BLOCK_FC)
-                                                newRow.ExtParameter.Add(parnm + "FC" + ak_address.ToString());
+                                            {
+                                                newPar.Value = "FC" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "FC" + ak_address.ToString());                                            
+                                            }
                                             else if (akRow.DataType == S7DataRowType.BLOCK_SDB)
-                                                newRow.ExtParameter.Add(parnm + "SDB" + ak_address.ToString());
+                                            {
+                                                newPar.Value = "SDB" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "SDB" + ak_address.ToString());
+                                            }
                                             else if (akRow.DataType == S7DataRowType.TIMER)
-                                                newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString());
+                                            {
+                                                newPar.Value = "T" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString());
+                                            }
                                             else if (akRow.DataType == S7DataRowType.COUNTER)
-                                                newRow.ExtParameter.Add(parnm + "Z" + ak_address.ToString()); //todo use memnoic for Z                                                                                        
+                                            {
+                                                newPar.Value = "Z" + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                               // newRow.ExtParameter.Add(parnm + "Z" + ak_address.ToString());  //todo use memnoic for Z                                                                                        
+                                            }
                                             else
-                                            {                                                
+                                            {
                                                 string ber = "";
-                                                if (s.Substring(0,5) == "P#DBX")
+                                                if (s.Substring(0, 5) == "P#DBX")
                                                     ber = "DB";
-                                                else if (s.Substring(0,5) == "P#DIX")
+                                                else if (s.Substring(0, 5) == "P#DIX")
                                                     ber = "DI";
                                                 else
                                                     ber = s.Substring(2, 1);
@@ -237,10 +306,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                     ber += "W";
                                                 else if (akRow.ByteLength == 4)
                                                     ber += "D";
-                                                
-                                                newRow.ExtParameter.Add(parnm +
-                                                                        ber.Replace('V', 'L') +
-                                                                        ak_address.ToString());
+
+                                                newPar.Value = ber.Replace('V', 'L') + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);
+                                                //newRow.ExtParameter.Add(parnm +
+                                                //                        ber.Replace('V', 'L') +
+                                                //                        ak_address.ToString());
 
                                             }
 
@@ -250,6 +321,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             }
 
                             newRow.CombinedCommands = tempList;
+                            newRow.Label = label;
+
                             retVal.Add(newRow);
                             Parameters.Clear();
                             tempList = new List<S7FunctionBlockRow>();

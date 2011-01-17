@@ -75,7 +75,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
                 if (symtab != null)
                 {
-                    SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
+                    SymbolTableEntry sym = symtab.GetEntryFromOperand(tmp.ToString());
                     if (sym != null)
                         tmp.Symbol = sym.Symbol;
                 }

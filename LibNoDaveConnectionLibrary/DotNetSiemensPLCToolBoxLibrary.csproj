@@ -53,6 +53,8 @@
     <Compile Include="DataTypes\Blocks\FunctionBlockRow.cs" />
     <Compile Include="DataTypes\Blocks\Network.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockNetwork.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameter.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameterDirection.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
     <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7DataBlockExpandOptions.cs" />
