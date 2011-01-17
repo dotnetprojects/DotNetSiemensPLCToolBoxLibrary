@@ -27,7 +27,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             this.DataContext = this;
             try
             {
-                var tmp = fld.readPlcBlocksList(true);
+                var tmp = fld.readPlcBlocksList();
                 tmp.Sort(new NumericComparer<ProjectBlockInfo>());
 
                 var groupedItems = new ListCollectionView(tmp);

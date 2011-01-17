@@ -211,7 +211,7 @@ namespace JFK_VarTab
                         //ProjectBlockInfo[] arr = 
                         //NumericComparer nc = new NumericComparer();
                         //Array.Sort(arr, nc);
-                        lstListBox.Items.AddRange(blkFld.readPlcBlocksList(true).ToArray());
+                        lstListBox.Items.AddRange(blkFld.readPlcBlocksList().ToArray());
                     }
                     viewBlockList.Visible = true;
 
@@ -329,7 +329,7 @@ namespace JFK_VarTab
                 {
                     ((BlocksOfflineFolder) blkFld).ChangeKnowHowProtection((S7ProjectBlockInfo)lstListBox.SelectedItem, true);
                     lstListBox.Items.Clear();
-                    lstListBox.Items.AddRange(blkFld.readPlcBlocksList(true).ToArray());
+                    lstListBox.Items.AddRange(blkFld.readPlcBlocksList().ToArray());
                 }
 
         }
@@ -341,7 +341,7 @@ namespace JFK_VarTab
                 {
                     ((BlocksOfflineFolder)blkFld).ChangeKnowHowProtection((S7ProjectBlockInfo)lstListBox.SelectedItem, false);
                     lstListBox.Items.Clear();
-                    lstListBox.Items.AddRange(blkFld.readPlcBlocksList(true).ToArray());
+                    lstListBox.Items.AddRange(blkFld.readPlcBlocksList().ToArray());
                 }
 
 

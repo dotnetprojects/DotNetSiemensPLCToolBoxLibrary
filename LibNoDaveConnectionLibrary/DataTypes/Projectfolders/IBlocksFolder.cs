@@ -5,7 +5,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     public interface IBlocksFolder
     {
-        List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable);
+        List<ProjectBlockInfo> readPlcBlocksList();
 
         Block GetBlock(string BlockName);
         Block GetBlock(ProjectBlockInfo blkInfo);

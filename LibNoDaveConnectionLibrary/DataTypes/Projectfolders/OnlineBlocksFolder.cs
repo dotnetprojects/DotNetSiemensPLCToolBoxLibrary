@@ -26,7 +26,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
         }
 
-        public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
+        public List<ProjectBlockInfo> readPlcBlocksList()
         {
             SymbolTable symtab = null;
             if (((S7ProgrammFolder)Parent) != null)
@@ -73,7 +73,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                     tmp.BlockNumber = Convert.ToInt32(blk.Substring(3));
                 }
 
-                if (symtab != null && useSymbolTable)
+                if (symtab != null)
                 {
                     SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
                     if (sym != null)

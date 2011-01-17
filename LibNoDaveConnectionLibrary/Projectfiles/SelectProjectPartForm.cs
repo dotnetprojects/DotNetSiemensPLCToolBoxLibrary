@@ -101,7 +101,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 BlocksOfflineFolder blkFld = (BlocksOfflineFolder) tmp.myObject;
                 if (SelectPart == SelectPartType.VariableTable)
                 {
-                    List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList(true);
+                    List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList();
                     foreach (ProjectBlockInfo step7ProjectBlockInfo in blocks)
                     {
                         if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT)

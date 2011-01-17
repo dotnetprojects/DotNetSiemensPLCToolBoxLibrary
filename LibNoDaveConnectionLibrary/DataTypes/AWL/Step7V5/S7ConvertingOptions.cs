@@ -1,8 +1,10 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
 {
-    public class MC7ConvertingOptions
+    public class S7ConvertingOptions
     {
-        public MC7ConvertingOptions()
+        public S7ConvertingOptions()
         {
             this.Memnoic = 0;
             this.CombineDBOpenAndDBAccess = true;

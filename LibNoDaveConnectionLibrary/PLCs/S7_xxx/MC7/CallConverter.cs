@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -8,7 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     static class CallConverter
     {
         //In this Class a UC is converted to a Call and also backwards...
-        public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, MC7ConvertingOptions myOpt, byte[] addInfoFromBlock)
+        public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, S7ConvertingOptions myOpt, byte[] addInfoFromBlock)
         {
             if (myOpt.GenerateCallsfromUCs)
             {
@@ -20,8 +21,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 List<S7FunctionBlockRow> tempList = new List<S7FunctionBlockRow>();
 
                 string akPar = "";
-
                 string db = "";
+                bool afterCall = false;
+                S7FunctionBlockRow callRow = null;
 
                 for (int n = 0; n < myFct.AWLCode.Count; n++)
                 {
@@ -36,6 +38,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                         inBld = Convert.ToInt32(row.Parameter);
                         newRow = null;
+                        afterCall = false;
+                        callRow = null;
                         tempList.Add(row);
                     }
                     else if (inBld > 0)
@@ -67,35 +71,57 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         else if ((row.Command == "=") && akPar != "")
                         {
-                            Parameters.Add(
-                                "P#V " +
-                                (row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "")),
-                                db + akPar);
+                            if (afterCall == false)
+                            {
+                                string key = row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
+                                if (!Parameters.ContainsKey(key))
+                                    Parameters.Add("P#V " + key, db + akPar);
+                            }
+                            else
+                            {
+                                string key = akPar.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
+                                if (!Parameters.ContainsKey(key))
+                                    Parameters.Add("P#V " + key, db + row.Parameter);
+                            }
                             akPar = "";
                             db = "";
                         }
                         else if (row.Command == Memnoic.opT[myOpt.Memnoic] && akPar != "")
                         {
-                            Parameters.Add(
-                                "P#V " +
-                                (row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "")) + ".0",
-                                db + akPar);
+                            if (afterCall == false)
+                            {
+                                string key = row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
+                                if (!Parameters.ContainsKey(key))
+                                    Parameters.Add("P#V " + key + ".0", db + akPar);
+                            }
+                            else
+                            {
+                                string key = akPar.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
+                                if (!Parameters.ContainsKey(key))
+                                    Parameters.Add("P#V " + key, db + row.Parameter);
+                            }
                             akPar = "";
                             db = "";
                         }
-                        else if (row.Command == Memnoic.opUC[myOpt.Memnoic] && newRow == null)
+                        else if (row.Command == Memnoic.opUC[myOpt.Memnoic])
+                        {
+                            //Commands after a Call --> Out-Para
+                            callRow = row;
+                            afterCall = true;
+                        }
+                        else if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && (row.Parameter == "2" || row.Parameter == "8"))
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
                             //myFld.BlocksOfflineFolder.GetBlock()
-                            S7DataRow para = myFld.BlocksOfflineFolder.GetInterface(row.Parameter);
+                            S7DataRow para = myFld.BlocksOfflineFolder.GetInterface(callRow.Parameter);
 
                             newRow = new S7FunctionBlockRow();
                             newRow.Command = Memnoic.opCALL[myOpt.Memnoic];
-                            newRow.Parameter = row.Parameter;
+                            newRow.Parameter = callRow.Parameter;
                             newRow.ExtParameter = new List<string>();
-                            for (int i = 0; i < row.ExtParameter.Count; i++)
+                            for (int i = 0; i < callRow.ExtParameter.Count; i++)
                             {
-                                string s = row.ExtParameter[i];
+                                string s = callRow.ExtParameter[i];
 
                                 string parnm = "";
                                 S7DataRow akRow = Parameter.GetFunctionParameterFromNumber(para, i);
@@ -222,14 +248,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     }
                                 }
                             }
-                        }
-                        else if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && (row.Parameter == "2" || row.Parameter == "8") && newRow != null)
-                        {
+
                             newRow.CombinedCommands = tempList;
                             retVal.Add(newRow);
                             Parameters.Clear();
-                            tempList = new List<S7FunctionBlockRow>();                            
-                        }
+                            tempList = new List<S7FunctionBlockRow>();
+                            inBld = 0;
+                        }                                              
                         else
                         {
                             retVal.AddRange(tempList);

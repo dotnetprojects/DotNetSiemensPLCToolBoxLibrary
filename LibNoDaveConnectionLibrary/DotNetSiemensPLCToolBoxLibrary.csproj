@@ -132,7 +132,7 @@
     <Compile Include="PLCs\S7_xxx\MC7\JumpMarks.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\LocalDataConverter.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\MC7Converter.cs" />
-    <Compile Include="PLCs\S7_xxx\MC7\MC7ConvertingOptions.cs" />
+    <Compile Include="DataTypes\AWL\Step7V5\S7ConvertingOptions.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\MC7toAWL.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\MC7toDB.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\Memnoic.cs" />

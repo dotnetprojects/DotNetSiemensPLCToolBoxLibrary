@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
@@ -14,16 +15,57 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
        
         public string Folder { get; set; }
 
-        public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
+        private DataTable _bausteinDbf;
+        private DataTable bausteinDBF
         {
-           
-            
+            get
+            {
+                if (_bausteinDbf == null)
+                    if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
+                        _bausteinDbf = DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5) Project)._zipfile,
+                                                            ((Step7ProjectV5) Project)._DirSeperator);
+                return _bausteinDbf;
+            }
+        }
+
+        private DataTable _subblkDbf;
+        private DataTable subblkDBF
+        {
+            get
+            {
+                if (_subblkDbf == null)
+                    if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+                        _subblkDbf = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5) Project)._zipfile,
+                                                          ((Step7ProjectV5) Project)._DirSeperator);
+                return _subblkDbf;
+            }            
+        }
+
+
+        private List<ProjectBlockInfo> _intBlockList;
+        private List<ProjectBlockInfo> intBlockList
+        {
+            get
+            {
+                if (_intBlockList == null)
+                    _intBlockList = intReadPlcBlocksList();
+                return _intBlockList;
+            }           
+        }
+
+        public List<ProjectBlockInfo> readPlcBlocksList()
+        {
+            return intBlockList;
+        }
+        
+        private List<ProjectBlockInfo> intReadPlcBlocksList()
+        {
             bool showDeleted = ((Step7ProjectV5) this.Project)._showDeleted;
 
             List<ProjectBlockInfo> tmpBlocks = new List<ProjectBlockInfo>();
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
+            if (bausteinDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = bausteinDBF; //DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
 
                 SymbolTable symtab = ((S7ProgrammFolder)Parent).SymbolTable;
 
@@ -47,7 +89,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             tmp.BlockType = (PLCBlockType)blocktype;
 
                         
-                        if (symtab != null && useSymbolTable)
+                        if (symtab != null)
                         {
                             SymbolTableEntry sym = symtab.GetEntry(tmp.ToString());
                             if (sym != null)
@@ -59,13 +101,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     }
                 }
             }
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
 
                 foreach (S7ProjectBlockInfo step7ProjectBlockInfo in tmpBlocks)
                 {
-                    foreach (DataRow row in dbfTbl.Rows)
+                    var rows = dbfTbl.Select("OBJECTID = " + step7ProjectBlockInfo.id.ToString());
+                    foreach (DataRow row in rows)
                     {
                         int subblktyp = Convert.ToInt32(row["SUBBLKTYP"]);
                         if ((int)row["OBJECTID"] == step7ProjectBlockInfo.id && (subblktyp == 12 || subblktyp == 8 || subblktyp == 14))
@@ -99,7 +142,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public ProjectBlockInfo GetProjectBlockInfoFromBlockName(string BlockName)
         {
-            var tmp = readPlcBlocksList(true);
+            var tmp = readPlcBlocksList();
             foreach (var step7ProjectBlockInfo in tmp)
             {
                 if (step7ProjectBlockInfo.BlockType.ToString() + step7ProjectBlockInfo.BlockNumber.ToString() == BlockName.ToUpper())
@@ -116,13 +159,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return null;            
         }
 
+        public Block GetBlock(string BlockName, S7ConvertingOptions myConvOpt)
+        {
+            var prjBlkInf = GetProjectBlockInfoFromBlockName(BlockName);
+            if (prjBlkInf != null)
+                return GetBlock(prjBlkInf, myConvOpt);
+            return null;
+        }
+
         public void ChangeKnowHowProtection(S7ProjectBlockInfo blkInfo, bool KnowHowProtection)
         {
             tmpBlock myTmpBlk = new tmpBlock();
 
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF!=null)// ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
                 foreach (DataRow row in dbfTbl.Rows)
                 {
 
@@ -178,13 +229,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
         {
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
                 tmpBlock myTmpBlk = new tmpBlock();
 
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5) Project)._zipfile,
-                                                  ((Step7ProjectV5) Project)._DirSeperator);
-                foreach (DataRow row in dbfTbl.Rows)
+                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5) Project)._DirSeperator);
+
+                DataRow[] rows = dbfTbl.Select("OBJECTID = " + blkInfo.id);
+                
+                foreach (DataRow row in rows)// dbfTbl.Rows)
                 {
 
                     int subblktype = Convert.ToInt32(row["SUBBLKTYP"]);
@@ -318,6 +371,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
+        {            
+            return GetBlock(blkInfo, new S7ConvertingOptions());
+        }
+
+        public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
         {
             //tmpBlock myTmpBlk = new tmpBlock();
 
@@ -341,8 +399,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB ||blkInfo.BlockType == PLCBlockType.SFC)
                 {
-                    MC7ConvertingOptions myConvOpt = new MC7ConvertingOptions();
-
                     List<string> ParaList = new List<string>();
 
                     S7FunctionBlock retVal = new S7FunctionBlock();
@@ -398,7 +454,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                                         if (retVal.AWLCode.Count > j)
                                         {
-                                            while (retVal.AWLCode[j].Command != "NETWORK")
+                                            while (retVal.AWLCode.Count - 1> j && retVal.AWLCode[j].Command != "NETWORK")
                                             {
                                                 newAwlCode.Add(retVal.AWLCode[j]);
                                                 j++;

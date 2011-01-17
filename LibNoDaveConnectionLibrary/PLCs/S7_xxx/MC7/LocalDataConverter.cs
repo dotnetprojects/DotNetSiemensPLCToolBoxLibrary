@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     static class LocalDataConverter
     {
-        public static void ConvertLocaldataToSymbols(S7FunctionBlock myFct, MC7ConvertingOptions myOpt)
+        public static void ConvertLocaldataToSymbols(S7FunctionBlock myFct, S7ConvertingOptions myOpt)
         {          
             if (myOpt.ReplaceLokalDataAddressesWithSymbolNames)
             {

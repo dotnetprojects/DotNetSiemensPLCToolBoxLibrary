@@ -11,7 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
     {
         internal List<ProjectBlockInfo> step5BlocksinfoList =new List<ProjectBlockInfo>();
 
-        public List<ProjectBlockInfo> readPlcBlocksList(bool useSymbolTable)
+        public List<ProjectBlockInfo> readPlcBlocksList()
         {
             NumericComparer<ProjectBlockInfo> nc = new NumericComparer<ProjectBlockInfo>();
             step5BlocksinfoList.Sort(nc);
