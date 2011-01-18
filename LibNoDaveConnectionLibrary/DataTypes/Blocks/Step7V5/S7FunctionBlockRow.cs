@@ -33,23 +33,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     [Serializable()]
     public class S7FunctionBlockRow : FunctionBlockRow
     {
-        public string Label { get; set; }
-
-        //These Commands are Combined...
-        public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
-
-        private string _command;
-        public string Command
+        internal override void resetByte()
         {
-            get { return _command.Trim().ToUpper(); }
-            set
-            {
-                _command = value.Trim().ToUpper();
-                _MC7 = null;
-                CombinedCommands = null;
-            }
+            _MC7 = null;
+            CombinedCommands = null;
         }
 
+        //These Commands are Combined...
+        public List<FunctionBlockRow> CombinedCommands { get; internal set; }
+      
         private string _parameter;
         public string Parameter
         {

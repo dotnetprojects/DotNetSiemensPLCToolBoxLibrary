@@ -30,12 +30,12 @@ using System.Text;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class S7FunctionBlock : S7Block
+    public class S7FunctionBlock : S7Block, IFunctionBlock
     {
         public S7DataRow Parameter { get; set; }
-        public List<S7FunctionBlockRow> AWLCode { get; set; }
+        public List<FunctionBlockRow> AWLCode { get; set; }
 
-        public List<S7FunctionBlockNetwork> Networks { get; set; }
+        public List<Network> Networks { get; set; }
 
         public string Description{ get; set; }
 

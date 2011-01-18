@@ -41,6 +41,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 retVal.Parameter = pars;
 
                 retVal.AWLCode = GetMC5Rows(block, /*10 + spa*2*/ 10 + ((pars.Count * 3) + 5) * 2, pars, (Step5BlocksFolder)blkInfo.ParentFolder);
+
+
+                //todo only use the networks structure!
+                retVal.Networks = new List<Network>();
+
+                S5FunctionBlockNetwork nw = new S5FunctionBlockNetwork();
+                nw.Parent = retVal;
+                nw.AWLCode = new List<FunctionBlockRow>();
+                retVal.Networks.Add(nw);
+                
+                if (retVal.AWLCode != null)
+                    foreach (S5FunctionBlockRow s5FunctionBlockRow in retVal.AWLCode)
+                    {
+                        if (s5FunctionBlockRow.Command == "BLD" && s5FunctionBlockRow.Parameter=="255")
+                        {
+                            nw = new S5FunctionBlockNetwork();
+                            nw.Parent = retVal;
+                            nw.AWLCode = new List<FunctionBlockRow>();
+                            retVal.Networks.Add(nw);                           
+                        }
+                        else
+                        {
+                            nw.AWLCode.Add(s5FunctionBlockRow);
+                        }
+
+                    }
+
             }
             return retVal;
         }
@@ -132,9 +159,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 			return retVal;            
         }
         
-        private static List<S5FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
+        private static List<FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
         {
-            List<S5FunctionBlockRow> retVal=new List<S5FunctionBlockRow>();
+            List<FunctionBlockRow> retVal=new List<FunctionBlockRow>();
             int codepos = codestart;
 
             retVal.Add(new S5FunctionBlockRow() {Command = "BLD", Parameter = "255"}); //Command for first Network does not exist!
@@ -408,7 +435,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             int JumpCount = 1;
             int akBytePos = 0;
             Dictionary<int, S5FunctionBlockRow> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, S5FunctionBlockRow>();
-            foreach (var tmp in retVal)
+            foreach (S5FunctionBlockRow tmp in retVal)
             {
                 if (tmp.ByteSize > 0)
                 {
@@ -418,7 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             }
 
             akBytePos = 0;
-            foreach (var tmp in retVal)
+            foreach (S5FunctionBlockRow tmp in retVal)
             {
                 if (tmp.Command == "SPA=" || tmp.Command == "SPB=" || tmp.Command == "SPZ=" || tmp.Command == "SPN=" || tmp.Command == "SPP=" || tmp.Command == "SPM=" || tmp.Command == "SPO=")
                 {
@@ -456,7 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 }
                 akBytePos += tmp.ByteSize;
             }
-            #endregion
+            #endregion            
 
             return retVal;
         }

@@ -3,24 +3,14 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
-    public class S5FunctionBlockRow
+    public class S5FunctionBlockRow : FunctionBlockRow
     {
-         public string Label { get; set; }
-
+         internal override void resetByte()
+         {
+             _MC5 = null;
+         }
         //These Commands are Combined...
         public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
-
-        private string _command;
-        public string Command
-        {
-            get { return _command.Trim().ToUpper(); }
-            set
-            {
-                _command = value.Trim().ToUpper();
-                _MC5 = null;
-                CombinedCommands = null;
-            }
-        }
 
         private string _parameter;
         public string Parameter
@@ -117,7 +107,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 
         public override string ToString()
         {
-            if (Command == "BLD" && Parameter == "255")
+            /*if (Command == "BLD" && Parameter == "255")
             {
                 string lbl = "";
                 if (!string.IsNullOrEmpty(Label))
@@ -128,7 +118,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                     return lbl+"Netzwerk " + " : " + NetworkName + "\r\n\t Comment : " +
                            Comment.Replace("\n", "\r\n\t           ");
             }
-            else if (Command == "BLD" && Parameter == "130")
+            else*/ if (Command == "BLD" && Parameter == "130")
             {
                 return ""; // +"Sz:" + ByteSize.ToString();
             }

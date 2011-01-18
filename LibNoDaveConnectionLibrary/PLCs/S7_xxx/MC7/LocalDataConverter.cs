@@ -38,7 +38,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                     }
                 }
-                foreach (var plcFunctionBlockRow in myFct.AWLCode)
+                foreach (S7FunctionBlockRow plcFunctionBlockRow in myFct.AWLCode)
                 {
                     if (!plcFunctionBlockRow.Parameter.Contains("'") && !plcFunctionBlockRow.Parameter.Contains("[AR")  && plcFunctionBlockRow.Parameter.Contains("["))
                     {

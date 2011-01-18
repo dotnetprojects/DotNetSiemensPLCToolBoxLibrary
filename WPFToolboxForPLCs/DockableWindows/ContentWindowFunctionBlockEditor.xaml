@@ -4,8 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:NetworkEditor="clr-namespace:WPFToolboxForSiemensPLCs.Controls.NetworkEditor" xmlns:Blocks="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged">
     <ad:DocumentContent.Resources>
+        <Style TargetType="ListBoxItem">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGreen"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue"/>
+            </Style.Resources>
+        </Style>
+        <local:DatabindingDebugConverter x:Key="debugConverter" />
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
             <ControlTemplate.Triggers>
@@ -65,12 +72,22 @@
             Height="5" 
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch" 
-            Margin="0"/>           
-        <avalonEdit:TextEditor  Grid.Row="2"                        
+            Margin="0"/>
+        
+            <!--
+            <avalonEdit:TextEditor  Grid.Row="2"                        
 				Name="textEditor"
 				FontFamily="Consolas"
 				FontSize="10pt"				
-                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>        
+                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>
+            -->
+        <ListBox Name="myLst" Grid.Row="2" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Stretch" >
+           <ListBox.ItemTemplate>               
+                <DataTemplate>
+                    <NetworkEditor:NetworkEditor DisplayNetwork="{Binding}"></NetworkEditor:NetworkEditor>
+                </DataTemplate>          
+            </ListBox.ItemTemplate> 
+        </ListBox>
     </Grid>
 
 </ad:DocumentContent>

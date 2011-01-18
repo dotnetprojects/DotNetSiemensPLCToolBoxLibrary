@@ -401,5 +401,92 @@ namespace WPFToolboxForSiemensPLCs
             bitmap.CopyPixels(Int32Rect.Empty, pixels, stride, 0);
             return pixels;
         }
+
+        /*
+         * Code zum überlagern von 2 Cursor:
+         * http://blog.m-ri.de/index.php/2008/12/07/aus-zwei-mach-eins-wie-man-zwei-cursor-kombinieren-kann/
+         * 
+         * HICON CombineIcons(HICON hIcon1, HICON hIcon2)
+{
+ // Remember that HCURSOR and HICON are identical!
+ // hIcon1 is overlayed by hIcon2.
+ // hIcon2 isn't adjusted in size or position.
+ // It just overlays hIcon1
+ // Get bitmaps of icon 1
+ ICONINFO iconInfo;
+ ::ZeroMemory(&iconInfo,sizeof(iconInfo));
+ if (!GetIconInfo(hIcon1,&iconInfo))
+  return NULL;
+ 
+ // Attach the bitmaps to get them automatically freed
+ // upon error.
+ CBitmap bitmap, mask;
+ bitmap.Attach(iconInfo.hbmColor);
+ mask.Attach(iconInfo.hbmMask);
+ 
+ // Get size and width
+ BITMAP bm;
+ if (bitmap.m_hObject)
+  bitmap.GetObject(sizeof(bm),&bm);
+ else
+  mask.GetObject(sizeof(bm),&bm);
+ 
+ // Get the color depth from the icon and create an image list
+ // Remember we need a
+ UINT flags = 0;
+ switch (bm.bmBitsPixel)
+ {
+ case 4:  flags = ILC_COLOR4;  break;
+ case 8:  flags = ILC_COLOR8;  break;
+ case 16: flags = ILC_COLOR16; break;
+ case 24: flags = ILC_COLOR24; break;
+ case 32: flags = ILC_COLOR32; break;
+ default: flags = ILC_COLOR4;  break;  
+ }
+ CImageList il;
+ // be ware that the monochrom cursor bitmap is twice the height
+ if (!il.Create(bm.bmWidth,
+      bm.bmHeight/(iconInfo.hbmColor!=NULL ? 1 : 2),
+      ILC_MASK|flags,2,2))
+  return NULL;
+ 
+ // Load the both icons into the image list
+ il.Add(hIcon1);
+ il.Add(hIcon2);
+ 
+ // Define the second icon as an overlay image
+ il.SetOverlayImage(1,1);
+ 
+ // Get a new icon with icon 2 overlayed
+ HICON hCombined = ImageList_GetIcon(il.m_hImageList,0,
+              ILD_NORMAL|INDEXTOOVERLAYMASK(1));
+ if (!hCombined)
+  return NULL;
+ 
+ // Need the icon infos for this new icon
+ ICONINFO iconInfoCombined;
+ ::ZeroMemory(&iconInfoCombined,sizeof(iconInfo));
+ if (!GetIconInfo(hCombined,&iconInfoCombined))
+  return NULL;
+ 
+ // Destroy the combined icon, we just have the bitmap and the mask
+ ::DestroyIcon(hCombined);
+ 
+ // Get the bitmaps into objects to get them automatically freed
+ CBitmap bitmapCombined, maskCombined;
+ bitmapCombined.Attach(iconInfo.hbmColor);
+ maskCombined.Attach(iconInfo.hbmMask);
+ 
+ // Get the hotspotinto and cursor data from
+ // the ICONINFO of hCursor1
+ iconInfoCombined.fIcon = iconInfo.fIcon;
+ iconInfoCombined.xHotspot = iconInfo.xHotspot;
+ iconInfoCombined.yHotspot = iconInfo.yHotspot;
+ 
+ // OK we have can create a new Cursor out of the target
+ // Don't forget to use DestroyIcon for the new Cursor/Icon
+ return ::CreateIconIndirect(&iconInfoCombined);
+}
+         * */
     }
 }

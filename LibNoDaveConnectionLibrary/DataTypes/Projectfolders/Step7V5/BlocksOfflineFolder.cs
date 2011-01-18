@@ -430,7 +430,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         #region UseComments from Block
                         if (myConvOpt.UseComments)
                         {
-                            List<S7FunctionBlockRow> newAwlCode = new List<S7FunctionBlockRow>();
+                            List<FunctionBlockRow> newAwlCode = new List<FunctionBlockRow>();
 
                             int n = 0;
                             int j = 0;
@@ -461,8 +461,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                 newAwlCode.Add(retVal.AWLCode[j]);
                                                 j++;
                                             }
-                                            retVal.AWLCode[j].NetworkName = tx1;
-                                            retVal.AWLCode[j].Comment = tx2;
+                                            ((S7FunctionBlockRow)retVal.AWLCode[j]).NetworkName = tx1;
+                                            ((S7FunctionBlockRow)retVal.AWLCode[j]).Comment = tx2;
                                             newAwlCode.Add(retVal.AWLCode[j]);
                                         }
                                         j++;
@@ -476,35 +476,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         //Anzahl der Anweisungen vor diesem Kommentar (inklusive aktueller Zeile!)
                                         for (int q = 0; q < (anzUebsprungZeilen); q++)
                                         {
-                                            if (retVal.AWLCode[j].GetNumberOfLines() == 1)
+                                            if (retVal.AWLCode.Count > j)
                                             {
-                                                subCnt = 0;
-                                                if (retVal.AWLCode.Count > j)
+                                                if (((S7FunctionBlockRow)retVal.AWLCode[j]).GetNumberOfLines() == 1)
                                                 {
-                                                    lastRow = retVal.AWLCode[j];
+                                                    subCnt = 0;
+                                                    lastRow = (S7FunctionBlockRow)retVal.AWLCode[j];
                                                     newAwlCode.Add(retVal.AWLCode[j]);
-                                                }
-                                                j++;
-                                            }
-                                            else
-                                            {
-                                                lastRow = retVal.AWLCode[j];
-                                                if (retVal.AWLCode.Count > j && subCnt==0)
-                                                {                                                    
-                                                    newAwlCode.Add(retVal.AWLCode[j]);
-                                                }
-
-                                                if (retVal.AWLCode[j].GetNumberOfLines() - 1 == subCnt)
-                                                {
                                                     j++;
-                                                    //subCnt = 0;
-                                                    subCnt++;
                                                 }
                                                 else
                                                 {
-                                                    subCnt++;
+                                                    lastRow = (S7FunctionBlockRow)retVal.AWLCode[j];
+                                                    if (subCnt == 0)
+                                                    {
+                                                        newAwlCode.Add(retVal.AWLCode[j]);
+                                                    }
+
+                                                    if (((S7FunctionBlockRow)retVal.AWLCode[j]).GetNumberOfLines() - 1 == subCnt)
+                                                    {
+                                                        j++;
+                                                        //subCnt = 0;
+                                                        subCnt++;
+                                                    }
+                                                    else
+                                                    {
+                                                        subCnt++;
+                                                    }
                                                 }
-                                            }                                                                                    
+                                            }
                                         }
 
                                         if (lastRow == null || cmt[n + 4] != 0x80)
@@ -519,7 +519,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             lastRow.Comment = tx1;
                                         else
                                             if (lastRow.Command == "CALL")
-                                                lastRow.CallParameter[subCnt - 2].Comment = tx1;
+                                                if (subCnt == 1) lastRow.Comment = tx1;
+                                                else
+                                                    lastRow.CallParameter[subCnt - 2].Comment = tx1;
                                         n += kommLen + 6;
 
                                         //subCnt = 0;
@@ -534,7 +536,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             retVal.AWLCode = newAwlCode;
                         }
                         #endregion                                          
-                    }                                                           
+                    }
+
+                    //todo only use the networks structure!
+                    retVal.Networks = new List<Network>();
+                    S7FunctionBlockNetwork nw = null;
+                    if (retVal.AWLCode != null)
+                        foreach (S7FunctionBlockRow s7FunctionBlockRow in retVal.AWLCode)
+                        {
+                            if (s7FunctionBlockRow.Command == "NETWORK")
+                            {
+                                nw = new S7FunctionBlockNetwork();
+                                nw.Parent = retVal;
+                                nw.AWLCode = new List<FunctionBlockRow>();
+                                retVal.Networks.Add(nw);
+                                nw.Name = s7FunctionBlockRow.NetworkName;
+                                nw.Comment = s7FunctionBlockRow.Comment;
+                            }
+                            else
+                            {
+                                nw.AWLCode.Add(s7FunctionBlockRow);
+                            }
+
+                        }
+                        
                     return retVal;
                 }
             }

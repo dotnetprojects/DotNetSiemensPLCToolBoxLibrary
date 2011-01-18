@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -17,8 +18,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 S7FunctionBlockRow newRow = null;
 
                 Dictionary<string, string> Parameters = new Dictionary<string, string>();
-                List<S7FunctionBlockRow> retVal = new List<S7FunctionBlockRow>();
-                List<S7FunctionBlockRow> tempList = new List<S7FunctionBlockRow>();
+                List<FunctionBlockRow> retVal = new List<FunctionBlockRow>();
+                List<FunctionBlockRow> tempList = new List<FunctionBlockRow>();
 
                 string akPar = "";
                 string db = "";
@@ -28,7 +29,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 for (int n = 0; n < myFct.AWLCode.Count; n++)
                 {
-                    S7FunctionBlockRow row = myFct.AWLCode[n];
+                    S7FunctionBlockRow row = (S7FunctionBlockRow)myFct.AWLCode[n];
                     if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && ( row.Parameter == "1" ||  row.Parameter == "7") && inBld==0)
                     {
                         retVal.AddRange(tempList);
@@ -138,15 +139,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                                 S7FunctionBlockParameter newPar = new S7FunctionBlockParameter();
                                 newPar.Name = parnm;
-                                newPar.ParameterDataType = akRow.DataType;
-                                if (akRow.Parent.Name == "OUT")
-                                    newPar.ParameterType = S7FunctionBlockParameterDirection.OUT;
-                                else if (akRow.Parent.Name == "IN_OUT")
-                                    newPar.ParameterType = S7FunctionBlockParameterDirection.IN_OUT;
-                                else
-                                    newPar.ParameterType = S7FunctionBlockParameterDirection.IN;
-                                //newPar.ParameterType
-
+                                if (akRow != null)
+                                {
+                                    newPar.ParameterDataType = akRow.DataType;
+                                    if (akRow.Parent.Name == "OUT")
+                                        newPar.ParameterType = S7FunctionBlockParameterDirection.OUT;
+                                    else if (akRow.Parent.Name == "IN_OUT")
+                                        newPar.ParameterType = S7FunctionBlockParameterDirection.IN_OUT;
+                                    else
+                                        newPar.ParameterType = S7FunctionBlockParameterDirection.IN;
+                                    //newPar.ParameterType
+                                }
 
                                 if (akRow != null)
                                 {
@@ -325,7 +328,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             retVal.Add(newRow);
                             Parameters.Clear();
-                            tempList = new List<S7FunctionBlockRow>();
+                            tempList = new List<FunctionBlockRow>();
                             inBld = 0;
                         }                                              
                         else

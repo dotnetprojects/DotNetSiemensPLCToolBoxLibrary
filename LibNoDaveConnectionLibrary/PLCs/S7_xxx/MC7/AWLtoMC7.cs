@@ -39,8 +39,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             foreach (var myLine in ((S7FunctionBlock)myCmd).AWLCode)
             {
-                if (myLine.MC7 != null)
-                    retVal.AddRange(myLine.MC7);
+                if (((S7FunctionBlockRow) myLine).MC7 != null)
+                    retVal.AddRange(((S7FunctionBlockRow)myLine).MC7);
             }
             return retVal.ToArray();
         }

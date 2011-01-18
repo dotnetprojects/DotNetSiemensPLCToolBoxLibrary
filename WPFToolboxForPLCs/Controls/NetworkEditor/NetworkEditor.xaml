@@ -1,0 +1,40 @@
+﻿<UserControl 
+    x:Class="WPFToolboxForSiemensPLCs.Controls.NetworkEditor.NetworkEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+             mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
+             HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+    >
+    <UserControl.Resources>
+        <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
+            <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
+            <ControlTemplate.Triggers>
+                <Trigger Property="avalonEdit:TextEditor.WordWrap" Value="True">
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" TargetName="PART_ScrollViewer" Value="Disabled" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+</UserControl.Resources>
+    <Expander Grid.Row="2" IsExpanded="False" HorizontalAlignment="Stretch">  
+        <Expander.Header>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Netzwerk: "></TextBlock>
+            <TextBlock Text="{Binding Name}"></TextBlock>
+            </StackPanel>
+        </Expander.Header>
+        
+        <StackPanel>
+        <TextBlock Text="{Binding Comment}" Margin="25,4,0,3"/>
+        
+        <avalonEdit:TextEditor HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1"                       
+				Name="textEditor"
+				FontFamily="Consolas"
+				FontSize="10pt"				
+                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>
+        </StackPanel>
+    </Expander>    
+</UserControl>

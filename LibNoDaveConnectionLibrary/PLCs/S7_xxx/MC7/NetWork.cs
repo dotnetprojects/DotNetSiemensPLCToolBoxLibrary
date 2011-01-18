@@ -26,6 +26,7 @@
 */
 using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
@@ -51,7 +52,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
 
 
-        public static void NetworkCheck(ref int[] Networks, ref List<S7FunctionBlockRow> myVal, ref int counter, int oldpos, int pos, ref int NNr)
+        public static void NetworkCheck(ref int[] Networks, ref List<FunctionBlockRow> myVal, ref int counter, int oldpos, int pos, ref int NNr)
         {
             counter += pos - oldpos;
 

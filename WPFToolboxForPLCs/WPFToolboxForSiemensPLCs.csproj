@@ -93,6 +93,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
+    <Compile Include="Controls\NetworkEditor\NetworkEditor.xaml.cs">
+      <DependentUpon>NetworkEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml.cs">
       <DependentUpon>ContentWindowWinCCTagVarCreator.xaml</DependentUpon>
     </Compile>
@@ -117,11 +120,16 @@
     <Compile Include="DockableWindows\DockableContentProjectList.xaml.cs">
       <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF-Addons\DatabindingDebugConverter.cs" />
     <Compile Include="WPF-Addons\GhostCursor.cs" />
     <Compile Include="WPF-Addons\TreeViewExtensions.cs" />
     <Compile Include="WPF-Addons\TreeViewLineConverter.cs" />
     <Compile Include="WPF-Addons\UIHelpers.cs" />
     <Compile Include="WPF-Addons\WinFormsImage.cs" />
+    <Page Include="Controls\NetworkEditor\NetworkEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -223,7 +231,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\NetworkEditor\" />
     <Folder Include="Plugins\" />
   </ItemGroup>
   <ItemGroup>

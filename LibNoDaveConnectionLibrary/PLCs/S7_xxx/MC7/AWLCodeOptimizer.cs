@@ -44,7 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             for (int n = 0; n < myPLCBlock.AWLCode.Count; n++)
             //foreach (var myAkVal in myPLCBlock.AWLCode)
             {
-                var myAkVal = myPLCBlock.AWLCode[n];
+                S7FunctionBlockRow myAkVal = (S7FunctionBlockRow)myPLCBlock.AWLCode[n];
 
                 if (myAkVal.Command == Memnoic.opNOP[MN] || myAkVal.Command == Memnoic.opBLD[MN])
                 {

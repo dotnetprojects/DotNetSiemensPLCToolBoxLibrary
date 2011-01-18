@@ -489,7 +489,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     S7FunctionBlockRow prevFunctionBlock = null;
 
-                    foreach (var plcFunctionBlockRow in myBlock.AWLCode)
+                    foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlock.AWLCode)
                     {
                         int commandSize = plcFunctionBlockRow.ByteSize;
 

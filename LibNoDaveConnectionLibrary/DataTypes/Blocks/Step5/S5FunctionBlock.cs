@@ -5,10 +5,12 @@ using System.Text;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     [Serializable()]
-    public class S5FunctionBlock : S5Block
+    public class S5FunctionBlock : S5Block, IFunctionBlock
     {
         public List<S5Parameter> Parameter { get; set; }
-        public List<S5FunctionBlockRow> AWLCode { get; set; }
+        public List<FunctionBlockRow> AWLCode { get; set; }
+
+        public List<Network> Networks { get; set; }
 
         public string Description { get; set; }
 

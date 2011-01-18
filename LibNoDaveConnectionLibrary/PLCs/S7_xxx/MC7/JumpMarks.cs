@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
@@ -30,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
-        public static List<S7FunctionBlockRow> AddJumpmarks(List<S7FunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos )
+        public static List<FunctionBlockRow> AddJumpmarks(List<FunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos )
         {
             int NetworkCount = 0;
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
