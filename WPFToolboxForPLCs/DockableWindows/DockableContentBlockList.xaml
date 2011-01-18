@@ -20,7 +20,7 @@
             <DataGridTemplateColumn Header="Symbol" Width="Auto" IsReadOnly="True" SortMemberPath="Symbol">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Symbol}" />
+                        <TextBlock Text="{Binding SymbolTabelEntry.Symbol}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

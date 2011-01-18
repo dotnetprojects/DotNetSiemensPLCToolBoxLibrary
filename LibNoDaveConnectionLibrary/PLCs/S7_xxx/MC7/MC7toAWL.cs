@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 
@@ -5471,14 +5472,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     foreach (S7FunctionBlockRow awlRow in retVal)
                     {
                         string para = awlRow.Parameter.Replace(" ", "");
-                        foreach (SymbolTableEntry entry in prjBlkFld.SymbolTable.Step7SymbolTableEntrys)
-                        {
-                            if (entry.Operand.Replace(" ", "") == para)
-                            {                                
-                                awlRow.Symbol = "\"" + entry.Symbol + "\"";                               
-                                break;
-                            }
-                        }
+
+                        awlRow.SymbolTableEntry = prjBlkFld.SymbolTable.GetEntryFromOperand(para);
                     }
                 }
             }

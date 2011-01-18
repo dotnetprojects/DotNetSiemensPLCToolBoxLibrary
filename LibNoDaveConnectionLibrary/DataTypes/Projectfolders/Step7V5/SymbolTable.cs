@@ -5,7 +5,7 @@ using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
-    public class SymbolTable : Step7ProjectFolder
+    public class SymbolTable : Step7ProjectFolder, ISymbolTable
     {
         public String Folder { get; set; }
 
@@ -28,6 +28,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public SymbolTableEntry GetEntryFromOperand(string operand)
         {
+            if (_step7SymbolTableEntrys == null)
+                LoadSymboltable();
             string tmpname = operand.Replace(" ", "");
             SymbolTableEntry retval = null;
             operandIndexList.TryGetValue(tmpname, out retval);
@@ -36,6 +38,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public SymbolTableEntry GetEntryFromSymbol(string symbol)
         {
+            if (_step7SymbolTableEntrys==null)
+                LoadSymboltable();
             string tmpname = symbol.Trim().ToUpper();
             SymbolTableEntry retval = null;
             symbolIndexList.TryGetValue(tmpname, out retval);

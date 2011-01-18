@@ -30,7 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
         {
             SymbolTable symtab = null;
             if (((S7ProgrammFolder)Parent) != null)
-                symtab = ((S7ProgrammFolder) Parent).SymbolTable;
+                symtab = (SymbolTable)((S7ProgrammFolder) Parent).SymbolTable;
 
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 
@@ -73,12 +73,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                     tmp.BlockNumber = Convert.ToInt32(blk.Substring(3));
                 }
 
+                /*
                 if (symtab != null)
                 {
                     SymbolTableEntry sym = symtab.GetEntryFromOperand(tmp.ToString());
                     if (sym != null)
                         tmp.Symbol = sym.Symbol;
                 }
+                */
                 retVal.Add(tmp);
             }
 

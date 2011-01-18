@@ -309,7 +309,7 @@ namespace JFK_VarTab
                 
                 myValues = tmpVat.VATRows;
                 reload();
-                mySymtable = ((S7ProgrammFolder) tmpVat.ParentFolder.Parent).SymbolTable;
+                mySymtable = (SymbolTable)((S7ProgrammFolder) tmpVat.ParentFolder.Parent).SymbolTable;
                 refresh();
             }
         }

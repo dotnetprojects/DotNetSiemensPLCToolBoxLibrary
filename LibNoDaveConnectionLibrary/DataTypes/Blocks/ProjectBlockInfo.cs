@@ -99,16 +99,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         public bool Deleted { get; set; }
-        
-        public string Symbol { get; set; }
+
+        public SymbolTableEntry SymbolTabelEntry
+        {
+            get
+            {
+                ISymbolTable tmp = ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
+                if (tmp != null)
+                    return tmp.GetEntryFromOperand(BlockName);
+                return null;
+            }
+        }
        
         public override string ToString()
         {
             string retVal = "";           
             if (Deleted)
                 retVal += "$$_";
-            if (!string.IsNullOrEmpty(Symbol))
-                retVal += BlockName + " (" + Symbol + ")";
+            if (SymbolTabelEntry != null)
+                retVal += BlockName + " (" + SymbolTabelEntry.Symbol + ")";
             else
                 retVal += BlockName;
             return retVal;

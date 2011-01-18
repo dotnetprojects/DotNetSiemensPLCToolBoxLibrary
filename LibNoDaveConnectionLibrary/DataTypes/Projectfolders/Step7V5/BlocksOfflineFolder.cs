@@ -67,7 +67,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             {
                 var dbfTbl = bausteinDBF; //DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
 
-                SymbolTable symtab = ((S7ProgrammFolder)Parent).SymbolTable;
+                SymbolTable symtab = (SymbolTable)((S7ProgrammFolder)Parent).SymbolTable;
 
                 foreach (DataRow row in dbfTbl.Rows)
                 {
@@ -88,13 +88,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         else
                             tmp.BlockType = (PLCBlockType)blocktype;
 
-                        
+                        /*
                         if (symtab != null)
                         {
                             SymbolTableEntry sym = symtab.GetEntryFromOperand(tmp.ToString());
                             if (sym != null)
                                 tmp.Symbol = sym.Symbol;                            
                         }
+                        */
 
                         if (tmp.BlockType == PLCBlockType.SFB || tmp.BlockType == PLCBlockType.SFC || tmp.BlockType == PLCBlockType.DB || tmp.BlockType == PLCBlockType.VAT || tmp.BlockType == PLCBlockType.FB || tmp.BlockType == PLCBlockType.FC || tmp.BlockType == PLCBlockType.OB || tmp.BlockType == PLCBlockType.UDT)
                             tmpBlocks.Add(tmp);

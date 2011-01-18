@@ -1,6 +1,6 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
-    public class SymbolTableEntry : Step7ProjectFolder
+    public class SymbolTableEntry
     {
         public string Symbol { get; set; }
         public string Comment { get; set; }

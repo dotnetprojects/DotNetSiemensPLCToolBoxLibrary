@@ -8,6 +8,7 @@
              xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
              mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+             Name="NetworkEditorWindow"
     >
     <UserControl.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
@@ -22,7 +23,9 @@
     <Expander Grid.Row="2" IsExpanded="False" HorizontalAlignment="Stretch">  
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Netzwerk: "></TextBlock>
+                <TextBlock Text="Netzwerk "></TextBlock>
+                <TextBlock Text="{Binding NetworkNumber,ElementName=NetworkEditorWindow}" />
+                <TextBlock Text=" : " />
             <TextBlock Text="{Binding Name}"></TextBlock>
             </StackPanel>
         </Expander.Header>
@@ -33,8 +36,9 @@
         <avalonEdit:TextEditor HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1"                       
 				Name="textEditor"
 				FontFamily="Consolas"
-				FontSize="10pt"				
-                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>
+				FontSize="10pt"		
+                               
+                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"></avalonEdit:TextEditor>
         </StackPanel>
     </Expander>    
 </UserControl>

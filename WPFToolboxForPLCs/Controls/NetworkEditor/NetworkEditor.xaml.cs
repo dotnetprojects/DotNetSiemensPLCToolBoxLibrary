@@ -18,6 +18,20 @@ namespace WPFToolboxForSiemensPLCs.Controls.NetworkEditor
     public partial class NetworkEditor : UserControl 
     {
 
+
+
+        public int NetworkNumber
+        {
+            get { return (int)GetValue(NetworkNumberProperty); }
+            set { SetValue(NetworkNumberProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NetworkNumber.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NetworkNumberProperty =
+            DependencyProperty.Register("NetworkNumber", typeof(int), typeof(NetworkEditor), new UIPropertyMetadata(0));
+
+        
+
         public Network DisplayNetwork
         {
             get { return (Network)GetValue(DisplayNetworkProperty); }

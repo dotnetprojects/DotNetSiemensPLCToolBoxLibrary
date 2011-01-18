@@ -57,6 +57,7 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockNetwork.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameter.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameterDirection.cs" />
+    <Compile Include="DataTypes\Projectfolders\ISymbolTable.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
     <Compile Include="DataTypes\Blocks\IDataBlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7DataBlockExpandOptions.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="DataTypes\Projectfolders\Step5\Step5BlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step5\Step5ProjectFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Projectfolders\IProgrammFolder.cs" />
     <Compile Include="DataTypes\Step7Attribute.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\CPFolder.cs" />
     <Compile Include="DataTypes\TagDataSource.cs" />
@@ -92,7 +94,7 @@
     <Compile Include="DataTypes\Projectfolders\Step7V5\BlocksOfflineFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\Step7ProjectFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTable.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step7V5\SymbolTableEntry.cs" />
+    <Compile Include="DataTypes\Projectfolders\SymbolTableEntry.cs" />
     <Compile Include="DataTypes\Step7ProjectSourceInfo.cs" />
     <Compile Include="DataTypes\DiagnosticEntry.cs" />
     <Compile Include="DataTypes\PLCBlockType.cs" />

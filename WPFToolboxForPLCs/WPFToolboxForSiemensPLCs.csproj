@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="WPF-Addons\DatabindingDebugConverter.cs" />
     <Compile Include="WPF-Addons\GhostCursor.cs" />
+    <Compile Include="WPF-Addons\ItemLineNumbersConverter.cs" />
     <Compile Include="WPF-Addons\TreeViewExtensions.cs" />
     <Compile Include="WPF-Addons\TreeViewLineConverter.cs" />
     <Compile Include="WPF-Addons\UIHelpers.cs" />

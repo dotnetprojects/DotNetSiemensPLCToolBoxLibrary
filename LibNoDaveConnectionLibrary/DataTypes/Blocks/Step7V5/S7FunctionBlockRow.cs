@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -49,19 +50,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             set
             {
                 _parameter = value;
-                _symbol = null;
+                _SymbolTableEntry = null;
                 _MC7 = null;
                 CombinedCommands = null;
             }
         }
 
-        private string _symbol;
-        public string Symbol
+        private SymbolTableEntry _SymbolTableEntry;
+        public SymbolTableEntry SymbolTableEntry
         {
-            get { return _symbol; }
+            get { return _SymbolTableEntry; }
             set
             {
-                _symbol = value;                
+                _SymbolTableEntry = value;                
             }
         }
 
@@ -497,8 +498,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string par = "";
             if (Parameter != null)
                 par = Parameter;
-            if (Symbol != null && Symbol != "")
-                par = Symbol;
+            if (_SymbolTableEntry != null)
+                par = SymbolTableEntry.Symbol;
 
             return retVal + Command.PadRight(6) + par.PadRight(14) + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }
