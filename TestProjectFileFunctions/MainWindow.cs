@@ -190,7 +190,7 @@ namespace JFK_VarTab
                     {
 
                         dtaSymbolTable.Rows.Clear();
-                        foreach (var step7SymbolTableEntry in tmp2.Step7SymbolTableEntrys)
+                        foreach (var step7SymbolTableEntry in tmp2.SymbolTableEntrys)
                         {
                             dtaSymbolTable.Rows.Add(new object[]
                                                         {

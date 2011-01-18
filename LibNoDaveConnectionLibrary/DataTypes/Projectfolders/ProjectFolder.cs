@@ -31,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                     else if (((CPUFolder)this).CpuType == PLCType.Simatic400 || ((CPUFolder)this).CpuType == PLCType.Simatic400H)
                         return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s7_400.ico"; 
                 }
-                else if (this is Step5ProjectFolder)
+                else if (this is Step5ProgrammFolder)
                 {
                     return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.s5.ico";
                 }

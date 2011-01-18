@@ -55,9 +55,9 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     parentDockingManager.ActiveDocument = tmp;
 
                 }
-                else if (myTreeView.SelectedItem is SymbolTable)
+                else if (myTreeView.SelectedItem is ISymbolTable)
                 {
-                    SymbolTable fld = (SymbolTable)myTreeView.SelectedItem;
+                    ISymbolTable fld = (ISymbolTable)myTreeView.SelectedItem;
                     ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();                   

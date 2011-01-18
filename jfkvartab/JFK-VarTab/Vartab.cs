@@ -73,7 +73,7 @@ namespace JFK_VarTab
 
                 
                 if (mySymtable != null)
-                    foreach (var it in mySymtable.Step7SymbolTableEntrys)
+                    foreach (var it in mySymtable.SymbolTableEntrys)
                     {
                         if (it.Operand.Trim().ToLower() == dataGridViewVarTab.Rows[nr].Cells[0].Value.ToString().Trim().ToLower())
                         {
@@ -101,7 +101,7 @@ namespace JFK_VarTab
                 //Symboltabelle
                 
                 if (mySymtable != null)
-                    foreach (var it in mySymtable.Step7SymbolTableEntrys)
+                    foreach (var it in mySymtable.SymbolTableEntrys)
                     {
                         string a = it.Operand.Trim().ToLower().Replace(" ", "");
                         string b = dataGridViewVarTab.Rows[nr].Cells[0].Value.ToString().Trim().ToLower().Replace(" ", "");

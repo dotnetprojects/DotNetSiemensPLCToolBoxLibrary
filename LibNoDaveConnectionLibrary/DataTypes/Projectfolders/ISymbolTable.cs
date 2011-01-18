@@ -10,5 +10,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
         
         SymbolTableEntry GetEntryFromOperand(string operand);
         SymbolTableEntry GetEntryFromSymbol(string symbol);
+
+        List<SymbolTableEntry> SymbolTableEntrys { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
@@ -8,11 +9,11 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
     /// </summary>
     public partial class ContentWindowSymbolTable : DocumentContent
     {
-        public ContentWindowSymbolTable(SymbolTable symTab)
+        public ContentWindowSymbolTable(ISymbolTable symTab)
         {
             InitializeComponent();
 
-            myDataGrid.ItemsSource = symTab.Step7SymbolTableEntrys;
+            myDataGrid.ItemsSource = symTab.SymbolTableEntrys;
         }
 
     }

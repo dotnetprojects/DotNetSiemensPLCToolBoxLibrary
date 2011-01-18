@@ -58,7 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15]*0x100;
 
             //Create the main Project Folder
-            ProjectStructure = new Step5ProjectFolder() {Project = this, Name = this.ToString()};
+            ProjectStructure = new Step5ProgrammFolder() {Project = this, Name = this.ToString()};
 
             //int startpos = s5ProjectByteArray[0x12] * 0x80;
 
@@ -291,6 +291,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
+
+            if (ZipHelper.FileExists(_zipfile, _projectfilename.ToLower().Replace("st.s5d","z0.seq")))
+            {
+                Stream symTabStream = ZipHelper.GetReadStream(_zipfile,
+                                                        _projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
+
+                SymbolTable symtab=new SymbolTable();
+                symtab.LoadSymboltable(symTabStream);               
+                symTabStream.Close();
+
+                ProjectStructure.SubItems.Add(symtab);
+            }
+
         }
 
         private bool IsCurrentPosABlockStart(byte[] s5ProjectByteArray, int n)
