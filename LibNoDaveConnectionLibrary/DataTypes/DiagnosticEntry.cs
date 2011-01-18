@@ -251,11 +251,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 80;
                     break;
                 case (0x3921):
-                    Message = "BATTF: Ausfall mindestens einer Pufferbatterie im Zentralgerät/ beseitigt Hinweis: Das kommende Ereignis tritt nur beim Ausfall einer der Batterien (bei redundanten Pufferbatterien) auf. Fällt anschließend auch noch die andere Batterie aus, tritt das Ereignis nicht nochmals auf.";
+                    Message =
+                        "BATTF: Ausfall mindestens einer Pufferbatterie im Zentralgerät/ beseitigt Hinweis: Das kommende Ereignis tritt nur beim Ausfall einer der Batterien (bei redundanten Pufferbatterien) auf. Fällt anschließend auch noch die andere Batterie aus, tritt das Ereignis nicht nochmals auf.";
                     _ob = 81;
                     break;
                 case (0x3821):
-                    Message = "BATTF: Ausfall mindestens einer Pufferbatterie im Zentralgerät/ beseitigt Hinweis: Das kommende Ereignis tritt nur beim Ausfall einer der Batterien (bei redundanten Pufferbatterien) auf. Fällt anschließend auch noch die andere Batterie aus, tritt das Ereignis nicht nochmals auf.";
+                    Message =
+                        "BATTF: Ausfall mindestens einer Pufferbatterie im Zentralgerät/ beseitigt Hinweis: Das kommende Ereignis tritt nur beim Ausfall einer der Batterien (bei redundanten Pufferbatterien) auf. Fällt anschließend auch noch die andere Batterie aus, tritt das Ereignis nicht nochmals auf.";
                     _ob = 81;
                     break;
                 case (0x3922):
@@ -270,7 +272,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     break;
                 case (0x3925):
                 case (0x3825):
-                    Message = "BATTF: Ausfall mindestens einer Pufferbatterie in einem redundanten Zentralgerät/ beseitigt";
+                    Message =
+                        "BATTF: Ausfall mindestens einer Pufferbatterie in einem redundanten Zentralgerät/ beseitigt";
                     _ob = 81;
                     break;
                 case (0x3926):
@@ -285,7 +288,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     break;
                 case (0x3931):
                 case (0x3831):
-                    Message = "BATTF: Ausfall mindestens einer Pufferbatterie in mindestens einem Erweiterungsgerät/ beseitigt";
+                    Message =
+                        "BATTF: Ausfall mindestens einer Pufferbatterie in mindestens einem Erweiterungsgerät/ beseitigt";
                     _ob = 81;
                     break;
                 case (0x3932):
@@ -319,7 +323,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 83;
                     break;
                 case (0x3855):
-                    Message = "PROFINET IO-Submodul/Modul gesteckt, entspricht aber nicht dem parametrierten Submodul/Modul";
+                    Message =
+                        "PROFINET IO-Submodul/Modul gesteckt, entspricht aber nicht dem parametrierten Submodul/Modul";
                     _ob = 83;
                     break;
                 case (0x3856):
@@ -343,7 +348,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 83;
                     break;
                 case (0x3864):
-                    Message = "Baugruppe / Schnittstellenmodul gesteckt, jedoch gestört (Baugruppenkennung nicht lesbar)";
+                    Message =
+                        "Baugruppe / Schnittstellenmodul gesteckt, jedoch gestört (Baugruppenkennung nicht lesbar)";
                     _ob = 83;
                     break;
                 case (0x3865):
@@ -640,7 +646,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "DEFEKT: Betriebsartenschalter defekt";
                     break;
                 case (0x4540):
-                    Message = "STOP:Speichererweiterung desinternen Arbeitsspeichers nicht lückenlos. Erste Speichererweiterung ist zu klein oder fehlt.";
+                    Message =
+                        "STOP:Speichererweiterung desinternen Arbeitsspeichers nicht lückenlos. Erste Speichererweiterung ist zu klein oder fehlt.";
                     break;
                 case (0x4541):
                     Message = "STOP durch das Prioritätsklassen-Ablaufsystem";
@@ -670,7 +677,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "STOP wegen Dauer-Prozeßalarm";
                     break;
                 case (0x454A):
-                    Message = "STOP durch Projektierung: Ein mit STEP 7 abgewählter OB war beim Anlauf in der CPU geladen.";
+                    Message =
+                        "STOP durch Projektierung: Ein mit STEP 7 abgewählter OB war beim Anlauf in der CPU geladen.";
                     break;
                 case (0x494D):
                     Message = "STOP durch Peripheriefehler";
@@ -763,7 +771,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "STOP durch integrierte Technologie";
                     break;
                 case (0x457D):
-                    Message = "Urlöschanforderung, weil die Version der internen Schnittstelle zur integrierten Technologie geändert wurde";
+                    Message =
+                        "Urlöschanforderung, weil die Version der internen Schnittstelle zur integrierten Technologie geändert wurde";
                     break;
                 case (0x457F):
                     Message = "STOP durch STOP-Befehl";
@@ -775,7 +784,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "STOP wegen Überlast der Internen Funktionen";
                     break;
                 case (0x49A0):
-                    Message = "STOP wegen Parametrierfehler oder unzulässige Differenz zwischen Soll- und Istausbau: Anlauf gesperrt";
+                    Message =
+                        "STOP wegen Parametrierfehler oder unzulässige Differenz zwischen Soll- und Istausbau: Anlauf gesperrt";
                     break;
                 case (0x49A1):
                     Message = "STOP wegen Parametrierfehler: Urlöschanforderung";
@@ -859,10 +869,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "Abweisung ANKOPPELN wegen laufender Test- oder anderer Online-Funktionen";
                     break;
                 case (0x43DE):
-                    Message = "Abbruch des Aufdatvorgangs wegen Überschreitung einer Überwachungszeit beim nten Versuch, erneuter Aufdatversuch initiiert";
+                    Message =
+                        "Abbruch des Aufdatvorgangs wegen Überschreitung einer Überwachungszeit beim nten Versuch, erneuter Aufdatversuch initiiert";
                     break;
                 case (0x43DF):
-                    Message = "Endgültiger Abbruch des Aufdatvorgangs wegen Überschreitung einer Überwachungszeit nach der maximalen Anzahl von Versuchen, erneute Bedienung erforderlich";
+                    Message =
+                        "Endgültiger Abbruch des Aufdatvorgangs wegen Überschreitung einer Überwachungszeit nach der maximalen Anzahl von Versuchen, erneute Bedienung erforderlich";
                     break;
                 case (0x43E0):
                     Message = "Wechsel von Solobetrieb nach Ankoppeln";
@@ -946,7 +958,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "Name einer Ethernet-Schnittstelle bereits vorhanden";
                     break;
                 case (0x596D):
-                    Message = "Die vorhandene Netzkonfiguration passt nicht zu den Systemanforderungen oder der Projektierung.";
+                    Message =
+                        "Die vorhandene Netzkonfiguration passt nicht zu den Systemanforderungen oder der Projektierung.";
                     break;
                 case (0x5371):
                     Message = "Dezentrale Peripherie: Ende der Synchronisation mit einem DP-Master";
@@ -1107,7 +1120,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "Maximale Anzahl der Projektierbausteine erreicht";
                     break;
                 case (0x6547):
-                    Message = "Parametrierfehler beim Parametrieren von Baugruppen (nicht über P-Bus, sondern Abbruch Download)";
+                    Message =
+                        "Parametrierfehler beim Parametrieren von Baugruppen (nicht über P-Bus, sondern Abbruch Download)";
                     break;
                 case (0x6548):
                     Message = "Plausibilitätsfehler bei Bausteinprüfung";
@@ -1196,11 +1210,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 72;
                     break;
                 case (0x7341):
-                    Message = "Synchronisationsfehler im Anwenderprogramm durch Warten an unterschiedlichen Synchronisationspunkten";
+                    Message =
+                        "Synchronisationsfehler im Anwenderprogramm durch Warten an unterschiedlichen Synchronisationspunkten";
                     _ob = 72;
                     break;
                 case (0x7342):
-                    Message = "Synchronisationsfehler im Betriebssystem durch Warten an unterschiedlichen Synchronisationspunkten";
+                    Message =
+                        "Synchronisationsfehler im Betriebssystem durch Warten an unterschiedlichen Synchronisationspunkten";
                     _ob = 72;
                     break;
                 case (0x7343):
@@ -1242,10 +1258,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 72;
                     break;
                 case (0x7960):
-                    Message = "Redundante Peripherie: Diskrepanzzeit bei Digitaleingang abgelaufen, Fehler noch nicht lokalisiert";
+                    Message =
+                        "Redundante Peripherie: Diskrepanzzeit bei Digitaleingang abgelaufen, Fehler noch nicht lokalisiert";
                     break;
                 case (0x7961):
-                    Message = "Redundante Peripherie, Digitaleingabe-Fehler: Signalwechsel nach Ablauf der Diskrepanzzeit";
+                    Message =
+                        "Redundante Peripherie, Digitaleingabe-Fehler: Signalwechsel nach Ablauf der Diskrepanzzeit";
                     break;
                 case (0x7962):
                     Message = "Redundante Peripherie: Digitaleingabe-Fehler -";
@@ -1270,7 +1288,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 72;
                     break;
                 case (0x73C2):
-                    Message = "Abbruch des Aufdatvorgangs wegen Überschreiten einer Überwachungszeit beim n-ten Versuch (1 ≤ n ≤ max. mögliche Anzahl der Aufdatversuche nach Abbruch durch Zeitüberschreitung)";
+                    Message =
+                        "Abbruch des Aufdatvorgangs wegen Überschreiten einer Überwachungszeit beim n-ten Versuch (1 ≤ n ≤ max. mögliche Anzahl der Aufdatversuche nach Abbruch durch Zeitüberschreitung)";
                     _ob = 72;
                     break;
                 case (0x75D1):
@@ -1326,7 +1345,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     Message = "Initialisierung F-Programm Beginn/Ende -";
                     break;
                 case (0x75E1):
-                    Message = "Sicherheitsprogramm: Fehler im FB \"F_PLK\" oder \"F_PLK_O\" oder \"F_CYC_CO\" oder \"F_TEST\" oder \"F_TESTC\"";
+                    Message =
+                        "Sicherheitsprogramm: Fehler im FB \"F_PLK\" oder \"F_PLK_O\" oder \"F_CYC_CO\" oder \"F_TEST\" oder \"F_TESTC\"";
                     break;
                 case (0x75E2):
                     Message = "Sicherheitsprogramm: Bereichslängenfehler -";
@@ -1355,6 +1375,244 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x79E7):
                     Message = "Simulationsbaustein (F-Systembaustein) geladen -";
                     break;
+
+
+
+                #region VIPA Additional Errorcodes
+                case (0xE003):
+                    Message = "VIPA-Fehler: Fehler beim Zugriff auf Peripherie";
+                    break;
+                case (0xE004):
+                    Message = "VIPA-Fehler: Mehrfach-Parametrierung einer Peripherieadresse";
+                    break;
+                case (0xE005):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline!";
+                    break;
+                case (0xE006):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline!";
+                    break;
+                case (0xE007):
+                    Message = "VIPA-Fehler: Konfigurierte Ein-/Ausgangsbytes passen nicht in Peripheriebereich";
+                    break;
+                case (0xE008):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline!";
+                    break;
+                case (0xE009):
+                    Message = "VIPA-Fehler: Fehler beim Zugriff auf Standard-Rückwandbus";
+                    break;
+                case (0xE010):
+                    Message = "VIPA-Fehler: Nicht definierte Baugruppe am Rückwandbus erkannt";
+                    break;
+                case (0xE011):
+                    Message =
+                        "VIPA-Fehler: Masterprojektierung auf Slave-CPU nicht möglich oder fehlerhafte Slavekonfiguration ";
+                    break;
+                case (0xE012):
+                    Message = "VIPA-Fehler: Fehler bei Parametrierung ";
+                    break;
+                case (0xE013):
+                    Message = "VIPA-Fehler: Fehler bei Schieberegisterzugriff auf Standardbus-Digitalmodule ";
+                    break;
+                case (0xE014):
+                    Message = "VIPA-Fehler: Fehler bei Check_Sys ";
+                    break;
+                case (0xE015):
+                    Message = "VIPA-Fehler: Fehler beim Zugriff auf Master ";
+                    break;
+                case (0xE016):
+                    Message = "VIPA-Fehler: Maximale Blockgröße bei Mastertransfer überschritten ";
+                    break;
+                case (0xE017):
+                    Message = "VIPA-Fehler: Fehler beim Zugriff auf integrierten Slave ";
+                    break;
+                case (0xE018):
+                    Message = "VIPA-Fehler: Fehler beim Mappen der Masterperipherie";
+                    break;
+                case (0xE019):
+                    Message = "VIPA-Fehler: Fehler bei Erkennung des Standard Rückwandbus Systems ";
+                    break;
+                case (0xE01A):
+                    Message = "VIPA-Fehler: Fehler bei Erkennung der Betriebsart (8 / 9Bit) ";
+                    break;
+                case (0xE01B):
+                    Message = "VIPA-Fehler: Fehler - maximale Anzahl steckbarer Baugruppen überschritten ";
+                    break;
+                case (0xE030):
+                    Message = "VIPA-Fehler: Fehler am Standard-Bus ";
+                    break;
+                case (0xE0B0):
+                    Message =
+                        "VIPA-Fehler: SPEED7 kann nicht mehr gestoppt werden (evtl. undefinierter BCD-Wert bei Timer)";
+                    break;
+                case (0xE0C0):
+                    Message =
+                        "VIPA-Fehler: Nicht genug Speicherplatz im Arbeitsspeicher für Codebaustein (Baustein zu groß) ";
+                    break;
+                case (0xE0CC):
+                    Message = "VIPA-Fehler: Kommunikationsfehler MPI / Seriell ";
+                    break;
+                case (0xE0CD):
+                    Message = "VIPA-Fehler: Fehler bei DPV1 Auftragsverwaltung ";
+                    break;
+                case (0xE0CE):
+                    Message = "VIPA-Fehler: Fehler: Timeout beim Senden der i-Slave Diagnose ";
+                    break;
+                case (0xE100):
+                    Message = "VIPA-Fehler: MMC-Zugriffsfehler ";
+                    break;
+                case (0xE101):
+                    Message = "VIPA-Fehler: MMC-Fehler Filesystem ";
+                    break;
+                case (0xE102):
+                    Message = "VIPA-Fehler: MMC-Fehler FAT ";
+                    break;
+                case (0xE104):
+                    Message = "VIPA-Fehler: MMC Fehler beim Speichern ";
+                    break;
+                case (0xE200):
+                    Message = "VIPA-Fehler: MMC schreiben beendet (Copy Ram2Rom) ";
+                    break;
+                case (0xE210):
+                    Message = "VIPA-Fehler: MMC Lesen beendet (Nachladen nach Urlöschen) ";
+                    break;
+                case (0xE21F):
+                    Message =
+                        "VIPA-Fehler: MMC Lesen: Fehler beim Nachladen (nach Urlöschen), Lesefehler, Speicher voll    ";
+                    break;
+                case (0xE400):
+                    Message = "VIPA-Fehler: Speichererweiterungs-MCC wurde gesteckt  ";
+                    break;
+                case (0xE401):
+                    Message = "VIPA-Fehler: Speichererweiterungs-MCC wurde gezogen   ";
+                    break;
+                case (0xE801):
+                    Message = "VIPA-Fehler: MMC-Cmd: CMD_START erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE802):
+                    Message = "VIPA-Fehler: MMC-Cmd: CMD_END erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE803):
+                    Message = "VIPA-Fehler: MMC-Cmd: WAIT1SECOND erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE804):
+                    Message = "VIPA-Fehler: MMC-Cmd: WEBPAGE erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE805):
+                    Message = "VIPA-Fehler: MMC-Cmd: LOAD_PROJECT erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE806):
+                    Message = "VIPA-Fehler: MMC-Cmd: SAVE_ PROJECT erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE807):
+                    Message = "VIPA-Fehler: MMC-Cmd: FACTORY_RESET erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE80B):
+                    Message = "VIPA-Fehler: MMC-Cmd: DIAGBUF erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE80E):
+                    Message = "VIPA-Fehler: MMC-Cmd: SET_NETWORK erkannt und erfolgreich ausgeführt ";
+                    break;
+                case (0xE8FB):
+                    Message =
+                        "VIPA-Fehler: MMC-Cmd: Fehler: Initialisierung des Ethernet-PG/OP-Kanals mittels SET_NETWORK fehlerhaft. ";
+                    break;
+                case (0xE8FC):
+                    Message = "VIPA-Fehler: MMC-Cmd: Fehler: In SET_NETWORK wurden nicht alle IP-Parameter angegeben.";
+                    break;
+                case (0xE8FE):
+                    Message = "VIPA-Fehler: MMC-Cmd: Fehler: CMD_START nicht gefunden ";
+                    break;
+                case (0xE8FF):
+                    Message = "VIPA-Fehler: MMC-Cmd: Fehler: Fehler beim Lesen des CMD-Files (MMC-Fehler)    ";
+                    break;
+                case (0xE901):
+                    Message = "VIPA-Fehler: Checksummen-Fehler    ";
+                    break;
+                case (0xEA00):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA01):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA02):
+                    Message = "VIPA-Fehler: SBUS: Interner Fehler (intern gestecktes Submodul nicht erkannt) ";
+                    break;
+                case (0xEA04):
+                    Message = "VIPA-Fehler: SBUS: Mehrfach-Parametrierung einer Peripherieadresse ";
+                    break;
+                case (0xEA05):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA07):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA08):
+                    Message =
+                        "VIPA-Fehler: SBUS: Parametrierte Eingangsdatenbreite ungleich der gesteckten Eingangsdatenbreite ";
+                    break;
+                case (0xEA09):
+                    Message =
+                        "VIPA-Fehler: SBUS: Parametrierte Ausgangsdatenbreite ungleich der gesteckten Ausgangsdatenbreite ";
+                    break;
+                case (0xEA10):
+                    Message = "VIPA-Fehler: SBUS: Eingangs-Peripherieadresse außerhalb des Peripheriebereiches ";
+                    break;
+                case (0xEA11):
+                    Message = "VIPA-Fehler: SBUS: Ausgangs-Peripherieadresse außerhalb des Peripheriebereiches ";
+                    break;
+                case (0xEA12):
+                    Message = "VIPA-Fehler: SBUS: Fehler beim Datensatz schreiben ";
+                    break;
+                case (0xEA14):
+                    Message = "VIPA-Fehler: SBUS: Mehrfach-Parametrierung einer Peripherieadresse (Diagnoseadresse) ";
+                    break;
+                case (0xEA15):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA18):
+                    Message = "VIPA-Fehler: SBUS: Fehler beim Mappen der Masterperipherie ";
+                    break;
+                case (0xEA19):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA20):
+                    Message =
+                        "VIPA-Fehler: Fehler - RS485-Schnittstelle ist nicht auf Profibus DP-Master eingestellt aber es ist ein Profibus DP-Master projektiert.  ";
+                    break;
+                case (0xEA21):
+                    Message =
+                        "VIPA-Fehler: Fehler - Projektierung RS485-Schnittstelle X2/X3: Profibus DP-Master ist projektiert aber nicht vorhanden ";
+                    break;
+                case (0xEA22):
+                    Message = "VIPA-Fehler: Fehler - RS485-Schnittstelle X2 - Wert ist außerhalb der Grenzen ";
+                    break;
+                case (0xEA23):
+                    Message = "VIPA-Fehler: Fehler - RS485-Schnittstelle X3 - Wert ist außerhalb der Grenzen ";
+                    break;
+                case (0xEA24):
+                    Message =
+                        "VIPA-Fehler: Fehler - Projektierung RS485-Schnittstelle X2/X3: Schnittstelle/Protokoll ist nicht vorhanden, die Defaulteinstellungen werden verwendet. ";
+                    break;
+                case (0xEA30):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA40):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+                case (0xEA41):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline!    ";
+                    break;
+                case (0xEA98):
+                    Message = "VIPA-Fehler: Timeout beim Warten, dass ein SBUS-Modul (Server) rebootet hat ";
+                    break;
+                case (0xEA99):
+                    Message = "VIPA-Fehler: Fehler beim File-Lesen über SBUS    ";
+                    break;
+                case (0xEE00):
+                    Message = "VIPA-Fehler: Interner Fehler - Kontaktieren Sie bitte die VIPA-Hotline! ";
+                    break;
+#endregion
+
             }
 
         }
