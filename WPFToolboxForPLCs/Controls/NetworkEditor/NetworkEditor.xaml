@@ -10,7 +10,15 @@
              Name="NetworkEditorWindow"
     >
     <UserControl.Resources>
-       
+
+        <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
+            <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
+            <ControlTemplate.Triggers>
+                <Trigger Property="avalonEdit:TextEditor.WordWrap" Value="True">
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" TargetName="PART_ScrollViewer" Value="Disabled" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
 
         <Style TargetType="{x:Type avalonEdit:TextEditor}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />

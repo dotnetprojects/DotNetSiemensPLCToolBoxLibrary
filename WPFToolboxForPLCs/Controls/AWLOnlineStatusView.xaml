@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="False"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False">
+              AlternatingRowBackground="Gainsboro" AlternationCount="2" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="VKE" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
                     <DataGridTemplateColumn.CellTemplate>
