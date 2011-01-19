@@ -38,7 +38,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         }
 
         private void myConnectionsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
+        {            
             if (myConnectionsList.SelectedItem != null)
             {
                 OnlineBlocksFolder onl = new OnlineBlocksFolder((string) myConnectionsList.SelectedItem);
