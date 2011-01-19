@@ -93,6 +93,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
+    <Compile Include="Controls\AWLOnlineStatusView.xaml.cs">
+      <DependentUpon>AWLOnlineStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NetworkEditor\NetworkEditor.xaml.cs">
       <DependentUpon>NetworkEditor.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
     <Compile Include="WPF-Addons\TreeViewLineConverter.cs" />
     <Compile Include="WPF-Addons\UIHelpers.cs" />
     <Compile Include="WPF-Addons\WinFormsImage.cs" />
+    <Page Include="Controls\AWLOnlineStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NetworkEditor\NetworkEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

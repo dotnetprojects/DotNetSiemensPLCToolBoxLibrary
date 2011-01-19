@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using WPFToolboxForSiemensPLCs.WPF_Addons;
@@ -61,6 +62,15 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     ContentWindowSymbolTable tmp = new ContentWindowSymbolTable(fld);
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();                   
+                    tmp.Show(parentDockingManager);
+                    parentDockingManager.ActiveDocument = tmp;
+                }
+                else if (myTreeView.SelectedItem is S7VATBlock)
+                {
+                    S7VATBlock fld = (S7VATBlock)myTreeView.SelectedItem;
+                    ContentWindowVarTab tmp = new ContentWindowVarTab(fld);
+                    tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
+                    tmp.ToolTip = fld.ToString();
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }

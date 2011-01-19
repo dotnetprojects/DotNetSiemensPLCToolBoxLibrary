@@ -38,7 +38,14 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-        </DataGrid.Columns>
+            <DataGridTemplateColumn Header="KnowHow" Width="Auto" IsReadOnly="True" SortMemberPath="KnowHowProtection">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding KnowHowProtection}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns> 
         <DataGrid.GroupStyle>
             <GroupStyle>
                 <GroupStyle.HeaderTemplate>

@@ -49,5 +49,17 @@ namespace SimpleCSharpDemonstration
             catch(Exception ex)
             { }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
+            symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();
+            
+            if (symTab!=null)
+                foreach (var symbolTableEntry in symTab.SymbolTableEntrys)
+                {
+
+                }
+        }
     }
 }

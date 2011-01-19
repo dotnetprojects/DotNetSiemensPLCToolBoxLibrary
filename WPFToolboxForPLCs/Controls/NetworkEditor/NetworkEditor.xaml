@@ -5,22 +5,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-             mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
              Name="NetworkEditorWindow"
     >
     <UserControl.Resources>
-        <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
-            <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
-            <ControlTemplate.Triggers>
-                <Trigger Property="avalonEdit:TextEditor.WordWrap" Value="True">
-                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" TargetName="PART_ScrollViewer" Value="Disabled" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-</UserControl.Resources>
-    <Expander Grid.Row="2" IsExpanded="False" HorizontalAlignment="Stretch">  
+       
+
+        <Style TargetType="{x:Type avalonEdit:TextEditor}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="FlowDirection" Value="LeftToRight"/>
+            <!-- AvalonEdit does not support RTL, so ensure we use LTR by default -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type avalonEdit:TextEditor}">
+                        <ContentPresenter Focusable="False"
+                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}">
+                        </ContentPresenter>                                               
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+    </UserControl.Resources>
+    <Expander Grid.Row="2" HorizontalAlignment="Stretch">  
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Netzwerk "></TextBlock>
@@ -32,13 +42,14 @@
         
         <StackPanel>
         <TextBlock Text="{Binding Comment}" Margin="25,4,0,3"/>
-        
+
+            
         <avalonEdit:TextEditor HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1"                       
 				Name="textEditor"
 				FontFamily="Consolas"
 				FontSize="10pt"		
                                
-                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"></avalonEdit:TextEditor>
+                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"></avalonEdit:TextEditor> 
         </StackPanel>
     </Expander>    
 </UserControl>
