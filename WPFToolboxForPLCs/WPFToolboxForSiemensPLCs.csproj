@@ -123,6 +123,7 @@
     <Compile Include="DockableWindows\DockableContentProjectList.xaml.cs">
       <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF-Addons\BoolToValueConverter.cs" />
     <Compile Include="WPF-Addons\DatabindingDebugConverter.cs" />
     <Compile Include="WPF-Addons\GhostCursor.cs" />
     <Compile Include="WPF-Addons\ItemLineNumbersConverter.cs" />

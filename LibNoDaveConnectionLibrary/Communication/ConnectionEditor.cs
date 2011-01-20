@@ -5,9 +5,9 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
-{    
+{
     public partial class ConnectionEditor : Form
-    {        
+    {
         public String DefaultConnectionName { get; set; }
         public bool ConnectionNameFixed { get; set; }
 
@@ -27,18 +27,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             LockControls();
 
             foreach (string myType in Enum.GetNames(typeof(LibNodaveConnectionTypes)))
-                lstLIBNODAVEConnectionType.Items.Add(new EnumListItem(myType, (int)Enum.Parse(typeof (LibNodaveConnectionTypes),myType)));
+                lstLIBNODAVEConnectionType.Items.Add(new EnumListItem(myType, (int)Enum.Parse(typeof(LibNodaveConnectionTypes), myType)));
 
             foreach (string myType in Enum.GetNames(typeof(LibNodaveConnectionBusSpeed)))
                 lstLIBNODAVEBusSpeed.Items.Add(new EnumListItem(myType, (int)Enum.Parse(typeof(LibNodaveConnectionBusSpeed), myType)));
-           
+
             lstLIBNODAVELokalCOMPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
 
             FillEntryPointsList();
 
             lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
 
-            lblConnectionName.Text = DefaultConnectionName;            
+            lblConnectionName.Text = DefaultConnectionName;
             lstConnectionList.Text = DefaultConnectionName;
 
             if (!ConnectionNameFixed && lstConnectionList.Items.Count <= 0)
@@ -57,7 +57,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        
+
 
         private void LockControls()
         {
@@ -113,9 +113,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             String name;
             if (lblConnectionName.Visible)
                 name = lblConnectionName.Text;
-            else            
+            else
                 name = lstConnectionList.Text;
-            
+
             //var myConfig = new LibNoDaveConnectionConfiguration(name);
             if (!ObjectSavedConfiguration)
             {
@@ -160,7 +160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public PLCConnectionConfiguration myConfig { get; set; }
 
-        private void SaveSettings()
+        private void updateConfig()
         {
             String name;
             if (lblConnectionName.Visible)
@@ -192,9 +192,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             else
                 myConfig.ComPortParity = 'n';
 
-            myConfig.ConnectionType = lstLIBNODAVEConnectionType.SelectedItem != null ? ((EnumListItem) lstLIBNODAVEConnectionType.SelectedItem).Value : 0;
+            myConfig.ConnectionType = lstLIBNODAVEConnectionType.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEConnectionType.SelectedItem).Value : 0;
 
-            myConfig.BusSpeed = lstLIBNODAVEBusSpeed.SelectedItem != null ? ((EnumListItem) lstLIBNODAVEBusSpeed.SelectedItem).Value : 0;
+            myConfig.BusSpeed = lstLIBNODAVEBusSpeed.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEBusSpeed.SelectedItem).Value : 0;
 
             myConfig.NetLinkReset = chkNetlinkReset.Checked;
 
@@ -207,6 +207,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             myConfig.Timeout = Convert.ToInt32(txtTimeout.Text);
             myConfig.TimeoutIPConnect = Convert.ToInt32(txtTimeoutIPConnect.Text);
+        }
+
+        private void SaveSettings()
+        {
+            updateConfig();
 
             if (!ObjectSavedConfiguration)
                 myConfig.SaveConfiguration();
@@ -272,7 +277,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         btnConfigEntryPoint.Enabled = true;
                         lblLIBNODAVECPUMPI.Enabled = true;
                         txtLIBNODAVECPUMPI.Enabled = true;
-                        FillEntryPointsList(); 
+                        FillEntryPointsList();
                         EnableDestinationWithEntryPointType();
                         chkRouting.Enabled = true;
                         break;
@@ -295,10 +300,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         lblTimeoutDescr.Enabled = true;
                         txtLIBNODAVECPUPort.Text = "102";
                         chkRouting.Enabled = true;
-                        break;                 
+                        break;
 
                     case 223:
-                    case 224:                   
+                    case 224:
                         chkNetlinkReset.Enabled = true;
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
@@ -321,7 +326,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         txtLIBNODAVECPUPort.Text = "1099";
                         chkRouting.Enabled = true;
                         break;
-         
+
                     case 230:
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
@@ -349,8 +354,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             cmdSave.Visible = true;
             cmdUndo.Visible = true;
         }
-             
-        
+
+
 
         private void ValueChanged(object sender, EventArgs e)
         {
@@ -382,7 +387,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 txtRoutingSlot.Enabled = false;
                 txtRoutingSubnetFirst.Enabled = false;
                 txtRoutingSubnetSecond.Enabled = false;
-            }            
+            }
         }
 
         private void cmdOK_Click(object sender, EventArgs e)
@@ -405,7 +410,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private void lstConnectionList_SelectedIndexChanged(object sender, EventArgs e)
-        {            
+        {
             LoadSettings();
         }
 
@@ -416,7 +421,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             myProc.StartInfo.Arguments = "shell32.dll, Control_RunDLL S7EPATDX.CPL "; // +lstListEntryPoints.SelectedItem.ToString();
             myProc.Start();
             myProc.WaitForExit();
-            FillEntryPointsList();            
+            FillEntryPointsList();
         }
 
         public void FillEntryPointsList()
@@ -427,12 +432,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             RegistryKey myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames");
             if (myConnectionKey != null) lstListEntryPoints.Items.AddRange(myConnectionKey.GetSubKeyNames());
 
-            
+
             lstListEntryPoints.SelectedItem = selItem;
 
             EnumListItem tmp = (EnumListItem)lstLIBNODAVEConnectionType.SelectedItem;
             LibNodaveConnectionTypes connTp = 0;
-            if (tmp!=null) connTp = (LibNodaveConnectionTypes) tmp.Value;
+            if (tmp != null) connTp = (LibNodaveConnectionTypes)tmp.Value;
             if (lstConnectionList.SelectedIndex >= 0 && connTp == LibNodaveConnectionTypes.Use_Step7_DLL)
                 EnableDestinationWithEntryPointType();
         }
@@ -449,14 +454,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             RegistryKey myConnectionKey =
                 Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + akItem
                                                    );
-            string tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
+            string tmpDevice = (string)myConnectionKey.GetValue("LogDevice");
 
             string retVal = "";
             if (tmpDevice != "")
             {
                 lblS7OnlineDevice.Text = tmpDevice;
                 myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
-                retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
+                retVal = (string)myConnectionKey.GetValue("L4_PROTOCOL");
             }
 
             if (retVal == "TCPIP" || retVal == "ISO")
@@ -507,19 +512,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             string cfgName = "";
             DialogResult ret = InputBox.Show("Enter Name...", "Enter the Name of the new Connection:", ref cfgName);
 
-            if (ret==DialogResult.OK)
+            if (ret == DialogResult.OK)
             {
                 if (cfgName != "")
                 {
-                    PLCConnectionConfiguration tmp=new PLCConnectionConfiguration(cfgName);
+                    PLCConnectionConfiguration tmp = new PLCConnectionConfiguration(cfgName);
                     tmp.SaveConfiguration();
 
                     lstConnectionList.Items.Clear();
                     lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
                     lstConnectionList.SelectedItem = cfgName;
                     lstLIBNODAVEConnectionType.Enabled = true;
-                    
-                }                
+
+                }
             }
         }
 
@@ -530,13 +535,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private void cmdConnectionDelete_Click(object sender, EventArgs e)
         {
-            if (lstConnectionList.SelectedItem!=null)
+            if (lstConnectionList.SelectedItem != null)
             {
                 cmdSave.Visible = false;
                 cmdUndo.Visible = false;
 
                 System.Windows.Forms.DialogResult res = MessageBox.Show("Are you sure that you want to delete the Connection : " + lstConnectionList.SelectedItem.ToString(), "Delete realy?", MessageBoxButtons.YesNo);
-                if (res==DialogResult.Yes)
+                if (res == DialogResult.Yes)
                 {
                     LockControls();
 
@@ -551,11 +556,61 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         lstLIBNODAVEConnectionType.Enabled = false;
                 }
-            }            
-        }       
+            }
+        }
+
+        private void cmdTest_Click(object sender, EventArgs e)
+        {
+            cmdTest.Text = "Verbinde...";
+            updateConfig();            
+            cmdTest.Enabled = false;
+
+            tryConnect.RunWorkerAsync();
+        }
+
+
+
+        delegate void del(string txt);
+        private void changeStatusLabel(string txt)
+        {
+            if (lblState.InvokeRequired)
+            {
+                del d = new del(changeStatusLabel);
+                this.Invoke(d, new object[] { txt });
+                return;
+            }
+            lblState.Text = txt;
+        }
+
+        public void enableCmdTest()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(enableCmdTest));
+                return;
+            }
+            cmdTest.Enabled = true;
+        }
+
+        private void tryConnect_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {               
+                myConfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
+                var tmp = new PLCConnection(myConfig);
+                
+                tmp.Connect();
+                tmp.Dispose();
+                changeStatusLabel("Verbindung erfolgreich!");
+            }
+            catch (Exception ex)
+            {
+                changeStatusLabel(ex.Message);
+            }
+            finally
+            {
+                enableCmdTest();
+            }
+        }
     }
-
-    
-
-   
 }

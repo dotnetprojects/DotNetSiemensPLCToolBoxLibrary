@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace WPFToolboxForSiemensPLCs.Controls
 {
@@ -19,9 +20,21 @@ namespace WPFToolboxForSiemensPLCs.Controls
     /// </summary>
     public partial class AWLOnlineStatusView : UserControl
     {
+        public Network DisplayNetwork
+        {
+            get { return (Network)GetValue(DisplayNetworkProperty); }
+            set { SetValue(DisplayNetworkProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DisplayNetwork.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DisplayNetworkProperty =
+            DependencyProperty.Register("DisplayNetwork", typeof(Network), typeof(AWLOnlineStatusView), new FrameworkPropertyMetadata(null));
+        
         public AWLOnlineStatusView()
         {
             InitializeComponent();
+
+            this.DataContext = this;
         }
     }
 }

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using WPFToolboxForSiemensPLCs.DockableWindows;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -24,13 +26,28 @@ namespace WPFToolboxForSiemensPLCs
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public PLCConnection Connection
+        {
+            get { return (PLCConnection)GetValue(ConnectionProperty); }
+            set { SetValue(ConnectionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Connection.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConnectionProperty =
+            DependencyProperty.Register("Connection", typeof(PLCConnection), typeof(MainWindow), new UIPropertyMetadata(null));
+
+
         public string PrintData { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             lblVersion.Text = "Version: "+ String.Format("{0}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            winConnections.parentDockingManager = DockManager;
+
+            this.DataContext = this;
+
+            Connection = new PLCConnection("WPFToolboxForSiemensPLCs");           
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -58,17 +75,7 @@ namespace WPFToolboxForSiemensPLCs
             OpenProject(true);
         }
 
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            if (winConnections.State == DockableContentState.Hidden)
-            {
-                //show content as docked content
-                winConnections.Show(DockManager, AnchorStyle.Right);
-            }
-
-            winConnections.Activate();           
-        }
-
+       
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             ContentWindowDiffWindow tmp = new ContentWindowDiffWindow();
@@ -120,6 +127,45 @@ namespace WPFToolboxForSiemensPLCs
                 MessageBox.Show(
                     "Activate the Window with the Block you wish to Print, maybe the current Window doesn't support printing!");
             }
+        }
+
+        private void mnuConfig_Click(object sender, RoutedEventArgs e)
+        {
+            Configuration.ShowConfiguration("WPFToolboxForSiemensPLCs",true);
+            Connection = new PLCConnection("WPFToolboxForSiemensPLCs");
+        }
+
+        private void mnuOnlineBlocks_Click(object sender, RoutedEventArgs e)
+        {
+            OnlineBlocksFolder onl = new OnlineBlocksFolder("WPFToolboxForSiemensPLCs");
+            IBlocksFolder fld = (IBlocksFolder)onl;
+            DockableContentBlockList tmp = new DockableContentBlockList(fld);
+            tmp.parentDockingManager = DockManager;
+            tmp.Title = fld.ToString();
+            tmp.ToolTip = fld.ToString();
+            tmp.Show(DockManager);
+            tmp.ToggleAutoHide();
+
+            //Set size of the parent DockablePane (it's automaticly been created!)
+            DockablePane tmpPane = tmp.TryFindParent<DockablePane>();
+            ResizingPanel.SetEffectiveSize(tmpPane, new Size(350, 0));
+
+            DockManager.ActiveDocument = tmp;
+        }
+
+        private void mnuConnect_Click(object sender, RoutedEventArgs e)
+        {
+            Connection.Connect();
+        }
+
+        private void mnuDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            Connection.Disconnect();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Connection.Dispose();
         }
     }
 }

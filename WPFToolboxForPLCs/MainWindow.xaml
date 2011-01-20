@@ -5,8 +5,8 @@
         mc:Ignorable="d" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-
-        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000" Icon="/WPFToolboxForSiemensPLCs;component/Images/1.png">
+        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" 
+        xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs" Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000" Icon="/WPFToolboxForSiemensPLCs;component/Images/1.png" Closing="Window_Closing">
 <Window.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
@@ -16,7 +16,8 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-       
+        <local:BoolToBrushConverter x:Key="ConnectedConverter" FalseValue="Red" TrueValue="Green" />
+
     </Window.Resources>
     
     <Grid>
@@ -34,8 +35,15 @@
                 <MenuItem Header="Print" Name="mnuPrint" Click="mnuPrint_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Windows">
-                <!--<MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>-->
-                <MenuItem Header="Connections" Click="MenuItem_Click_2"></MenuItem>
+                <!--<MenuItem Header="ProjectTree" IsChecked="True"></MenuItem>-->              
+            </MenuItem>
+            <MenuItem Header="Connection">
+                <MenuItem Header="Config" Name="mnuConfig" Click="mnuConfig_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Connect" Name="mnuConnect" Click="mnuConnect_Click"></MenuItem>
+                <MenuItem Header="Disconnect" Name="mnuDisconnect" Click="mnuDisconnect_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Show Online Blocks" Name="mnuOnlineBlocks" Click="mnuOnlineBlocks_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="DiffWindow" Click="MenuItem_Click_3"></MenuItem>
             <MenuItem Header="DB2WinCC" Click="MenuItem_Click_4"></MenuItem>
@@ -49,14 +57,10 @@
                     ScaleY="{Binding Value, ElementName=zoomSlider}"/>
         </ad:DockingManager.LayoutTransform>
             <ad:ResizingPanel Orientation="Horizontal" >
-                <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.28*">
+                <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.25*">
                     <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.9*" SelectionChanged="DockablePane_SelectionChanged">
                         <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" IsCloseable="False" />                      
-                    </ad:DockablePane>
-                    <ad:DockablePane SelectedIndex="1" >
-                        <dockwin:DockableContentOnlineConnections x:Name="winConnections" Title="Connections" IsCloseable="true">                           
-                        </dockwin:DockableContentOnlineConnections>
-                    </ad:DockablePane>
+                    </ad:DockablePane>                  
                 </ad:ResizingPanel>
                 <ad:DocumentPane x:Name="DocumentHost">
                 </ad:DocumentPane>
@@ -72,9 +76,14 @@
             </StatusBarItem>
             <StatusBarItem HorizontalContentAlignment="Right">
                 <DockPanel HorizontalAlignment="Stretch">
+                    
                 <TextBlock Name="lblStatus"></TextBlock>
                 <TextBlock Text="  "></TextBlock>
-                <TextBlock Name="lblVersion">1.0</TextBlock>
+                <TextBlock Text="{Binding Connection.Configuration}"></TextBlock>
+                <TextBlock Text="  "></TextBlock>
+                    <Rectangle DockPanel.Dock="Left" Fill="{Binding Connection.Connected, Converter={StaticResource ConnectedConverter}}" Width="20" Height="20"></Rectangle>
+                    <TextBlock Text="  "></TextBlock>
+                    <TextBlock Name="lblVersion">1.0</TextBlock>
                 </DockPanel>
             </StatusBarItem>
             

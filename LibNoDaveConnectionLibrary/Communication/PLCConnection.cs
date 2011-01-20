@@ -56,9 +56,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //Locking Object for Multithreaded Calls of LibNoDave...
         private static object _MultiThreadLocking = new object();
 
-        private bool _NeedDispose = false;        
+        private bool _NeedDispose = false;
 
-        private readonly PLCConnectionConfiguration _myConfig;
+        private PLCConnectionConfiguration _configuration;
+        public PLCConnectionConfiguration Configuration
+        {
+            get { return _configuration; }            
+        }
 
         private ConnectionTargetPLCType _connectionTargetPlcType;
         ConnectionTargetPLCType ConnectionTargetPLCType
@@ -71,7 +75,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (name == "")
                 throw new Exception("No Connection Name specified!");
 
-            _myConfig = new PLCConnectionConfiguration(name);
+            _configuration = new PLCConnectionConfiguration(name);
 
             _connectionTargetPlcType = ConnectionTargetPLCType.S7;
         }
@@ -82,7 +86,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="akConfig"></param>
         public PLCConnection(PLCConnectionConfiguration akConfig)
         {
-            _myConfig = akConfig;
+            _configuration = akConfig;
         }
 
 
@@ -116,7 +120,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         public void Connect()
         {
-
             Connect(0);
         }
 
@@ -130,7 +133,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void socket_Thread()
         {
             _fds.rfd = -999;
-            _fds.rfd = libnodave.openSocket(_myConfig.Port, _myConfig.CpuIP);
+            _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
         }
 
         /// <summary>
@@ -143,29 +146,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //Debugging for LibNoDave
             //libnodave.daveSetDebug(0x1ffff);
 
-            _myConfig.ReloadConfiguration();
+            //_configuration.ReloadConfiguration();
 
-            if (hwnd == 0 && _myConfig.ConnectionType == 50)
+            if (hwnd == 0 && _configuration.ConnectionType == 50)
                 throw new Exception("Error: You can only use the S7Online Connection when you specify the HWND Parameter on the Connect Function");
 
             //This Jump mark is used when the Netlink Reset is activated!
         NLAgain:
 
             //LibNodave Verbindung aufbauen
-            switch (_myConfig.ConnectionType)
+            switch (_configuration.ConnectionType)
             {
                 case 1:
                 case 2:
                 case 3:
                 case 4:
                 case 10:
-                    _fds.rfd = libnodave.setPort(_myConfig.ComPort, _myConfig.ComPortSpeed, _myConfig.ComPortParity);
+                    _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
                     break;
                 case 20:   //AS511            
-                    _fds.rfd = libnodave.setPort(_myConfig.ComPort, "9600" /*_myConfig.ComPortSpeed*/, 'E' /*_myConfig.ComPortParity*/);
+                    _fds.rfd = libnodave.setPort(_configuration.ComPort, "9600" /*_configuration.ComPortSpeed*/, 'E' /*_configuration.ComPortParity*/);
                     break;
                 case 50:
-                    _fds.rfd = libnodave.openS7online(_myConfig.EntryPoint, hwnd);
+                    _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, hwnd);
                     if (_fds.rfd == -1)
                     {
                         _NeedDispose = false;
@@ -178,7 +181,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 223:
                 case 224:
                 case 230:
-                    socketTimer = new System.Timers.Timer(_myConfig.TimeoutIPConnect);
+                    socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
                     socketTimer.Elapsed += new ElapsedEventHandler(socketTimer_Elapsed);
                     socketTimer.Start();
                     socketThread = new Thread(new ThreadStart(this.socket_Thread));
@@ -189,7 +192,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     socketThread.Abort();
                     socketTimer = null;
                     socketThread = null;
-                    //_fds.rfd = libnodave.openSocket(_myConfig.Port, _myConfig.CpuIP););
+                    //_fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP););
                     break;
             }
 
@@ -199,7 +202,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 throw new Exception("Error: Timeout Connecting the IP");
             }
 
-            if ((!(_myConfig.ConnectionType == 50) && _fds.rfd == 0) || _fds.rfd < 0)
+            if ((!(_configuration.ConnectionType == 50) && _fds.rfd == 0) || _fds.rfd < 0)
             {
                 _NeedDispose = false;
                 throw new Exception(
@@ -210,10 +213,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _fds.wfd = _fds.rfd;
             
             //Dave Interface Erzeugen
-            _di = new libnodave.daveInterface(_fds, _myConfig.ConnectionName, _myConfig.LokalMpi, _myConfig.ConnectionType, _myConfig.BusSpeed);
+            _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
 
             //Timeout setzen...
-            _di.setTimeout(_myConfig.Timeout);
+            _di.setTimeout(_configuration.Timeout);
             //_di.setTimeout(500000);
             //Dave Interface initialisieren
             int ret = _di.initAdapter();
@@ -223,10 +226,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //Get S7OnlineType - To detect if is a IPConnection 
             bool IPConnection = false;
 #if !IPHONE
-            if (_myConfig.ConnectionType == 50)
+            if (_configuration.ConnectionType == 50)
             {
                 RegistryKey myConnectionKey =
-                    Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + _myConfig.EntryPoint);
+                    Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + _configuration.EntryPoint);
                 string tmpDevice = (string)myConnectionKey.GetValue("LogDevice");
                 string retVal = "";
                 if (tmpDevice != "")
@@ -243,16 +246,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
             //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
-            if (_myConfig.Routing || IPConnection)
-                _dc = new libnodave.daveConnection(_di, _myConfig.CpuMpi, _myConfig.CpuIP, IPConnection,
-                                                   _myConfig.CpuRack, _myConfig.CpuSlot, _myConfig.Routing,
-                                                   _myConfig.RoutingSubnet1, _myConfig.RoutingSubnet2,
-                                                   _myConfig.RoutingDestinationRack, _myConfig.RoutingDestinationSlot,
-                                                   _myConfig.RoutingDestination);
+            if (_configuration.Routing || IPConnection)
+                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
+                                                   _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
+                                                   _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
+                                                   _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
+                                                   _configuration.RoutingDestination);
             else
-                _dc = new libnodave.daveConnection(_di, _myConfig.CpuMpi, _myConfig.CpuRack, _myConfig.CpuSlot);
+                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
 
-            if (_myConfig.NetLinkReset && !_netlinkReseted && (_myConfig.ConnectionType == 223 || _myConfig.ConnectionType == 224))
+            if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
             {
                 _dc.resetIBH();
                 _netlinkReseted = true;
@@ -307,6 +310,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             internal S7FunctionBlock myBlock;
             internal S7FunctionBlockRow.SelectedStatusValues selRegister;
             internal Dictionary<int, List<S7FunctionBlockRow>> ByteAdressNumerPLCFunctionBlocks;
+
+            //todo call parameters in diag
+            //internal Dictionary<int, List<S7FunctionBlockParameter>> NumberOfCallParameter;
+
             internal short ReqestID;
             internal PLCConnection myConn;
             internal int readLineCounter;
@@ -705,22 +712,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     byte[] blocks = new byte[2048 * 4];
 
-                    //_myConfig.ConnectionTyp
+                    //_configuration.ConnectionTyp
 
                     if (myBlk == DataTypes.PLCBlockType.AllBlocks && ConnectionTargetPLCType==ConnectionTargetPLCType.S7)                        
                         {
-                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.DB));
+                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.OB));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.FC));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.FB));
+                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.DB));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.SFC));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.SFB));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.SDB));                            
                         }
                     else if (myBlk == DataTypes.PLCBlockType.AllEditableBlocks && ConnectionTargetPLCType == ConnectionTargetPLCType.S7)                        
                         {
-                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.DB));
+                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.OB));                            
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.FC));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.FB));
+                            myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.DB));
                             myRet.AddRange(PLCListBlocks(DataTypes.PLCBlockType.SDB));               
                         }
                     else
@@ -1260,7 +1269,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _di.disconnectAdapter();
                 _di = null;
 
-                switch (_myConfig.ConnectionType)
+                switch (_configuration.ConnectionType)
                 {
                     case 1:
                     case 2:

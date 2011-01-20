@@ -1,18 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Xml;
 using AvalonDock;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
-using WPFToolboxForSiemensPLCs.AvalonEdit;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
@@ -20,6 +13,8 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
     {
         IHighlightingDefinition customHighlighting;
 
+      
+        
         private Block myBlock;
         private string myBlockString;
 
@@ -35,18 +30,13 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 if (((S7FunctionBlock) myBlock).Parameter != null)
                     myTree.DataContext = ((S7FunctionBlock) myBlock).Parameter.Children;
 
-                //textEditor.Text = ((S7FunctionBlock) myBlock).ToString(false);
                 myLst.ItemsSource = ((S7FunctionBlock) myBlock).Networks;
             }
             else
             {
                 mainGrid.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
                 myLst.ItemsSource = ((S5FunctionBlock)myBlock).Networks;
-                //toppanel.Visibility = System.Windows.Visibility.Collapsed;
-                //textEditor.Text = myBlock.ToString();                
             }
-           
-            
             this.DataContext = this;
         }
 

@@ -63,5 +63,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 NNr++;
             }
         }
+
+        //todo only use the networks structure!
+
+        public static List<Network> GetNetworksList(S7FunctionBlock blk)
+        {
+
+            var retVal = new List<Network>();
+            
+            S7FunctionBlockNetwork nw = null;
+            if (blk.AWLCode != null)
+                foreach (S7FunctionBlockRow s7FunctionBlockRow in blk.AWLCode)
+                {
+                    if (s7FunctionBlockRow.Command == "NETWORK")
+                    {
+                        nw = new S7FunctionBlockNetwork();
+                        nw.Parent = blk;
+                        nw.AWLCode = new List<FunctionBlockRow>();
+                        retVal.Add(nw);
+                        nw.Name = s7FunctionBlockRow.NetworkName;
+                        nw.Comment = s7FunctionBlockRow.Comment;
+                    }
+                    else
+                    {
+                        nw.AWLCode.Add(s7FunctionBlockRow);
+                    }
+
+                }
+
+            return retVal;
+        }
     }
 }

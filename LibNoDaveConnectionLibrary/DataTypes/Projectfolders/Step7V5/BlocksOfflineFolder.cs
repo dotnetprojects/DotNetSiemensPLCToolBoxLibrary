@@ -539,6 +539,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         #endregion                                          
                     }
 
+                    /*
                     //todo only use the networks structure!
                     retVal.Networks = new List<Network>();
                     S7FunctionBlockNetwork nw = null;
@@ -560,7 +561,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             }
 
                         }
-                        
+                       */
+
+                    retVal.Networks = NetWork.GetNetworksList(retVal);
+
                     return retVal;
                 }
             }

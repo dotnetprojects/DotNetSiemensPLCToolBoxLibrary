@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
              Name="NetworkEditorWindow"
     >
@@ -30,34 +30,53 @@
                     <ControlTemplate TargetType="{x:Type avalonEdit:TextEditor}">
                         <ContentPresenter Focusable="False"
                         Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}">
-                        </ContentPresenter>                                               
+                        </ContentPresenter>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        
+
     </UserControl.Resources>
-    <Expander Grid.Row="2" HorizontalAlignment="Stretch">  
+    <Expander Grid.Row="2" HorizontalAlignment="Stretch">
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Netzwerk "></TextBlock>
-                <TextBlock Text="{Binding NetworkNumber,ElementName=NetworkEditorWindow}" />
-                <TextBlock Text=" : " />
-            <TextBlock Text="{Binding Name}"></TextBlock>
+                <TextBlock VerticalAlignment="Center" Text="Netzwerk "></TextBlock>
+                <TextBlock VerticalAlignment="Center" Text="{Binding NetworkNumber,ElementName=NetworkEditorWindow}" />
+                <TextBlock VerticalAlignment="Center" Text=" : " />
+                <TextBox VerticalAlignment="Center" BorderThickness="0" Text="{Binding Name}"></TextBox>
             </StackPanel>
         </Expander.Header>
-        
-        <StackPanel>
-        <TextBlock Text="{Binding Comment}" Margin="25,4,0,3"/>
 
-            
-        <avalonEdit:TextEditor HorizontalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="1"                       
+        <StackPanel>
+            <TextBox IsReadOnly="True" BorderThickness="0" Text="{Binding Comment}" Margin="25,4,0,3"/>
+
+            <DockPanel LastChildFill="True">
+                <Controls:AWLOnlineStatusView 
+                    Margin="0 -20 0 0" 
+                    DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right" 
+                    Visibility="Collapsed"
+                    DisplayNetwork="{Binding DisplayNetwork}">
+                </Controls:AWLOnlineStatusView>
+
+                <avalonEdit:TextEditor 
+                HorizontalAlignment="Stretch"
+                BorderBrush="DarkGray"
+                BorderThickness="1"
 				Name="textEditor"
 				FontFamily="Consolas"
-				FontSize="10pt"		
-                               
-                ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"></avalonEdit:TextEditor> 
+				FontSize="10pt"
+                IsReadOnly="True"
+                ShowLineNumbers="True"
+                MouseHover="textEditor_MouseHover"
+                MouseHoverStopped="textEditor_MouseHoverStopped"
+                Visibility="Visible"
+                VerticalScrollBarVisibility="Hidden"
+                HorizontalScrollBarVisibility="Hidden">
+                </avalonEdit:TextEditor>
+            </DockPanel>
+
         </StackPanel>
-    </Expander>    
+    </Expander>
 </UserControl>

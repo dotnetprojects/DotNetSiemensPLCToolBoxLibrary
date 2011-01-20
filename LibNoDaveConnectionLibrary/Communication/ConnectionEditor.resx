@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>128, 17</value>
   </metadata>
   <data name="chkNetlinkReset.ToolTip" xml:space="preserve">
     <value>Es kann beim Netlink vorkommen das wenn eine Verbindung nicht richtig beendet wird, die
@@ -127,6 +127,9 @@ dies das zweite mal passiert der Netlink nicht mehr erreichbar. Deshalb kann hie
 Verbindung ein Reset ausgeführt werden. 
 Achtung: Verbindungen von anderer Software zum Netlink wird dann auch getrennt!</value>
   </data>
+  <metadata name="tryConnect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>29</value>
   </metadata>

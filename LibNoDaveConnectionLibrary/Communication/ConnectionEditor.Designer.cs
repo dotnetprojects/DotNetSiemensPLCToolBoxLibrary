@@ -84,6 +84,9 @@
             this.lblLIBNODAVECPUPort = new System.Windows.Forms.Label();
             this.lblTimeoutDescr = new System.Windows.Forms.Label();
             this.lblTimeoutIPConnectDescr = new System.Windows.Forms.Label();
+            this.cmdTest = new System.Windows.Forms.Button();
+            this.lblState = new System.Windows.Forms.Label();
+            this.tryConnect = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +96,7 @@
             this.lstConnectionList.FormattingEnabled = true;
             this.lstConnectionList.Location = new System.Drawing.Point(14, 27);
             this.lstConnectionList.Name = "lstConnectionList";
-            this.lstConnectionList.Size = new System.Drawing.Size(277, 21);
+            this.lstConnectionList.Size = new System.Drawing.Size(336, 21);
             this.lstConnectionList.TabIndex = 0;
             this.lstConnectionList.SelectedIndexChanged += new System.EventHandler(this.lstConnectionList_SelectedIndexChanged);
             // 
@@ -108,7 +111,7 @@
             // 
             // cmdConnectionAdd
             // 
-            this.cmdConnectionAdd.Location = new System.Drawing.Point(297, 18);
+            this.cmdConnectionAdd.Location = new System.Drawing.Point(356, 18);
             this.cmdConnectionAdd.Name = "cmdConnectionAdd";
             this.cmdConnectionAdd.Size = new System.Drawing.Size(76, 19);
             this.cmdConnectionAdd.TabIndex = 26;
@@ -118,7 +121,7 @@
             // 
             // cmdConnectionDelete
             // 
-            this.cmdConnectionDelete.Location = new System.Drawing.Point(297, 43);
+            this.cmdConnectionDelete.Location = new System.Drawing.Point(356, 43);
             this.cmdConnectionDelete.Name = "cmdConnectionDelete";
             this.cmdConnectionDelete.Size = new System.Drawing.Size(76, 19);
             this.cmdConnectionDelete.TabIndex = 27;
@@ -295,7 +298,7 @@
             this.lblConnectionName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblConnectionName.Location = new System.Drawing.Point(14, 27);
             this.lblConnectionName.Name = "lblConnectionName";
-            this.lblConnectionName.Size = new System.Drawing.Size(241, 21);
+            this.lblConnectionName.Size = new System.Drawing.Size(333, 21);
             this.lblConnectionName.TabIndex = 7;
             this.lblConnectionName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblConnectionName.Visible = false;
@@ -639,12 +642,37 @@
             this.lblTimeoutIPConnectDescr.TabIndex = 13;
             this.lblTimeoutIPConnectDescr.Text = "mS";
             // 
+            // cmdTest
+            // 
+            this.cmdTest.Location = new System.Drawing.Point(14, 475);
+            this.cmdTest.Name = "cmdTest";
+            this.cmdTest.Size = new System.Drawing.Size(89, 38);
+            this.cmdTest.TabIndex = 25;
+            this.cmdTest.Text = "Verbindung testen";
+            this.cmdTest.UseVisualStyleBackColor = true;
+            this.cmdTest.Click += new System.EventHandler(this.cmdTest_Click);
+            // 
+            // lblState
+            // 
+            this.lblState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblState.Location = new System.Drawing.Point(109, 482);
+            this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(433, 25);
+            this.lblState.TabIndex = 28;
+            this.lblState.Text = "Status";
+            this.lblState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tryConnect
+            // 
+            this.tryConnect.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tryConnect_DoWork);
+            // 
             // ConnectionEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 478);
+            this.ClientSize = new System.Drawing.Size(553, 522);
             this.ControlBox = false;
+            this.Controls.Add(this.lblState);
             this.Controls.Add(this.lblTimeoutIPConnectDescr);
             this.Controls.Add(this.lblTimeoutDescr);
             this.Controls.Add(this.lblTimeoutIPConnect);
@@ -658,6 +686,7 @@
             this.Controls.Add(this.lblConnectionName);
             this.Controls.Add(this.cmdUndo);
             this.Controls.Add(this.cmdSave);
+            this.Controls.Add(this.cmdTest);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.lstLIBNODAVELokalComParity);
             this.Controls.Add(this.lstLIBNODAVELokalComSpeed);
@@ -756,5 +785,8 @@
         private System.Windows.Forms.TextBox txtTimeoutIPConnect;
         private System.Windows.Forms.Label lblTimeoutIPConnect;
         private System.Windows.Forms.Label lblTimeoutIPConnectDescr;
+        private System.Windows.Forms.Button cmdTest;
+        private System.Windows.Forms.Label lblState;
+        private System.ComponentModel.BackgroundWorker tryConnect;
     }
 }

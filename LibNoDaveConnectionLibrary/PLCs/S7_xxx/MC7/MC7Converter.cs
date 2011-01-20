@@ -158,7 +158,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + InterfaceLength_or_DBActualValuesLength, MC7Code);
                     ((S7FunctionBlock) retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, MC7Length_or_DBBodyLength - 2, MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld);
+
+                    ((S7FunctionBlock) retBlock).Networks = NetWork.GetNetworksList((S7FunctionBlock) retBlock);
                 }
+
+                
             }
             return retBlock;
 		}

@@ -20,5 +20,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             get { return (IBlocksFolder)SubItems[0]; }
             set { SubItems[0] = (ProjectFolder)value; }
         }
+
+        public OnlineBlocksFolder OnlineBlocksFolder { get { return null; } set { } }
+
     }
 }

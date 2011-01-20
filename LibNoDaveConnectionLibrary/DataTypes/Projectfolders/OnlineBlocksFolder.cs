@@ -11,7 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
     {
         public PLCConnectionConfiguration ConnectionConfig { get; set;}
-        private PLCConnection myConn;
+        public PLCConnection Connection;
 
         public bool IsOnline { get; set; }
 
@@ -34,9 +34,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 
-            myConn=new PLCConnection(ConnectionConfig);
-            myConn.Connect();
-            List<string> blks = myConn.PLCListBlocks(PLCBlockType.AllBlocks);
+            Connection = new PLCConnection(ConnectionConfig);
+            Connection.Connect();
+            List<string> blks = Connection.PLCListBlocks(PLCBlockType.AllBlocks);
 
             foreach (var blk in blks)
             {
@@ -45,6 +45,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                 if (blk.Substring(0, 2) == "DB")
                 {
                     tmp.BlockType = PLCBlockType.DB;
+                    tmp.BlockNumber = Convert.ToInt32(blk.Substring(2));
+                }
+                else if (blk.Substring(0, 2) == "OB")
+                {
+                    tmp.BlockType = PLCBlockType.OB;
                     tmp.BlockNumber = Convert.ToInt32(blk.Substring(2));
                 }
                 else if (blk.Substring(0, 2) == "FC")
@@ -90,7 +95,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
         public Block GetBlock(string BlockName)
         {
-            byte[] tmp=myConn.PLCGetBlockInMC7(BlockName);
+            byte[] tmp = Connection.PLCGetBlockInMC7(BlockName);
             return MC7Converter.GetAWLBlock(tmp, 0, (S7ProgrammFolder) Parent);
         }
 

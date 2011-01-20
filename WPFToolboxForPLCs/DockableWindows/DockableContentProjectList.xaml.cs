@@ -89,9 +89,9 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 row = row.TryFindParent<TreeViewItem>();
             }
 
-            if (blkFld!=null)
+            if (blkFld != null)
             {
-                string connName = (string)e.Data.GetData("ConnectionName");
+                string connName = (string) e.Data.GetData("ConnectionName");
                 OnlineBlocksFolder oldFld = null;
                 foreach (var projectFolder in blkFld.SubItems)
                 {
@@ -100,9 +100,13 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 }
                 if (oldFld != null)
                     blkFld.SubItems.Remove(oldFld);
-                blkFld.SubItems.Add(new OnlineBlocksFolder(connName){Parent = blkFld});                
-                row.Items.Refresh();                
-            }          
+
+                var onlBlkFld = new OnlineBlocksFolder(connName) {Parent = blkFld};
+                blkFld.SubItems.Add(onlBlkFld);
+                ((IProgrammFolder) blkFld).OnlineBlocksFolder = onlBlkFld;
+
+                row.Items.Refresh();
+            }
 
         }       
     }

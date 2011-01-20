@@ -7,5 +7,6 @@
     {
         ISymbolTable SymbolTable { get; set; }
         IBlocksFolder BlocksFolder { get; set; }
+        OnlineBlocksFolder OnlineBlocksFolder { get; set; }
     }
 }
