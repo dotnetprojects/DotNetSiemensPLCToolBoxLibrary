@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communication\Configuration.cs" />
+    <Compile Include="Communication\S7_xxx\SZLData.cs" />
+    <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />
     <Compile Include="DataTypes\Blocks\Block.cs" />
     <Compile Include="DataTypes\Blocks\FunctionBlockRow.cs" />
@@ -211,6 +213,9 @@
     <EmbeddedResource Include="Resources\FolderImages\s7_im151_rack.ico" />
     <EmbeddedResource Include="Resources\FolderImages\s7_im151.ico" />
     <EmbeddedResource Include="Resources\FolderImages\s7_cp.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Documentation\System Software for S7-300 and S7-400 System and Standard Functions.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

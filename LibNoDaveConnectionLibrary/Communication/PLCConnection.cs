@@ -26,8 +26,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
+using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
@@ -516,7 +518,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int rowByteAdress = 0;
 
                     //There are 2 Telegram types for Requesting Diag Data (0x01 and 0x13)
-                    byte DiagDataTeletype = 0x13;
+                    byte DiagDataTeletype = 0x01;
+
+                    //Look in SZL wich Status Telegramm is supported!
+                    SZLData szlData = PLCGetSZL(0x0131, 2);
+                    ISZLDataset[] szlDatasets = szlData.SZLDaten;
+                    if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
+                        DiagDataTeletype = 0x13;
+
+
                     //DiagDataTeletype = 0x01;
 
                     //len of the AnswBlock Block in the PDU
@@ -915,6 +925,93 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _dc.deleteProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr);
                 }
         }
+
+        public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
+        {
+            if (AutoConnect && !Connected)
+                Connect();
+
+            if (_dc != null)
+                lock (_dc)
+                {
+                    SZLData retVal = new SZLData();
+
+                    byte[] buffer = new byte[65536];
+                    int ret = _dc.readSZL(SZLNummer, Index, buffer);
+
+                    //SZL:
+                    //SZL-ID(WORD) 0,1
+                    //INDEX(WORD) 2,3
+                    //SIZE(WORD) 4,5
+                    //COUNT(WORD) 6,7
+
+                    if (ret < 0)
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
+
+                    retVal.SzlId = (short) (buffer[1] + buffer[0]*256);
+                    retVal.Index = (short) (buffer[3] + buffer[2]*256);
+                    retVal.Size = (short) (buffer[5] + buffer[4]*256);
+                    retVal.Count = (short) (buffer[7] + buffer[6]*256);
+
+                    List<ISZLDataset> datsets = new List<ISZLDataset>();
+                  
+                    for (int n = 0; n < retVal.Count; n++)
+                    {
+                        byte[] objBuffer = new byte[retVal.Size];
+                        Array.Copy(buffer, (n*retVal.Size) + 8, objBuffer, 0, retVal.Size);
+                        GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+
+                        switch (retVal.SzlId & 0x00ff)
+                        {
+                            case 0x0011:
+                                datsets.Add((xy11Dataset) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (xy11Dataset)));
+                                break;
+                            case 0x0012:
+                                datsets.Add((xy12Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy12Dataset)));
+                                break;
+                            case 0x0013:
+                                datsets.Add((xy13Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy13Dataset)));
+                                break;
+                            case 0x0014:
+                                datsets.Add((xy14Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy14Dataset)));
+                                break;
+                            case 0x0015:
+                                datsets.Add((xy15Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy15Dataset)));
+                                break;
+                            case 0x001C:
+                                datsets.Add((xy1CDataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy1CDataset)));
+                                break;
+                            case 0x0022:
+                                datsets.Add((xy22Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy22Dataset)));
+                                break;
+                            case 0x0025:
+                                datsets.Add((xy25Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy25Dataset)));
+                                break;
+                            case 0x0071:
+                                datsets.Add((xy71Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy71Dataset)));
+                                break;
+                            case 0x0074:
+                                datsets.Add((xy74Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy74Dataset)));
+                                break;
+                            default:
+                                DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                tmp.Bytes = objBuffer;
+                                datsets.Add(tmp);
+                                break;
+                        }
+
+                        handle.Free();
+                    }
+
+                    retVal.SZLDaten = datsets.ToArray();
+
+                    return retVal;
+                }
+            return null;
+        }
+
+
+
 
         public List<DataTypes.DiagnosticEntry> PLCGetDiagnosticBuffer()
         {
