@@ -7,6 +7,6 @@
         FUP = 3,
         SCL = 4,
         DB = 5,
-        GRAPH = 6,
+        GRAPH = 6,       
     }
 }

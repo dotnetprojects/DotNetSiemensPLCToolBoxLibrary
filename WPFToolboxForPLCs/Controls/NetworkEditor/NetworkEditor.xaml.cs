@@ -97,7 +97,7 @@ namespace WPFToolboxForSiemensPLCs.Controls.NetworkEditor
 
             foldingUpdateTimer = new DispatcherTimer();
             foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
-            foldingUpdateTimer.Tick += foldingUpdateTimer_Tick;
+            foldingUpdateTimer.Tick += foldingUpdateTimer_Tick;           
         }
 
         /*

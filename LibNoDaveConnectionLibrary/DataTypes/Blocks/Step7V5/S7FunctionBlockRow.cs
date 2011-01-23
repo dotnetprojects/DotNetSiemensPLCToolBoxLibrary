@@ -25,6 +25,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
@@ -32,8 +33,18 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class S7FunctionBlockRow : FunctionBlockRow
+    public class S7FunctionBlockRow : FunctionBlockRow, INotifyPropertyChanged
     {
+         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
+
         internal override void resetByte()
         {
             _MC7 = null;
@@ -316,10 +327,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return retVal;            
         }
 
-        public BlockStatus ActualBlockStatus;
-        public class BlockStatus
+        private BlockStatus _actualBlockStatus;
+        public BlockStatus ActualBlockStatus
         {
-            public short? STW;
+            get { return _actualBlockStatus; }
+            set { _actualBlockStatus = value;
+            NotifyPropertyChanged("ActualBlockStatus");
+            }
+        }
+
+        public class BlockStatus : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            private
+            void NotifyPropertyChanged(String info)
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(info));
+                }
+            }
+
+
+            private short? _stw;
+            public short? STW
+            {
+                get { return _stw; }
+                set { _stw = value;
+                NotifyPropertyChanged("STW");
+                NotifyPropertyChanged("VKE");
+                NotifyPropertyChanged("STA");
+                NotifyPropertyChanged("OR");
+                NotifyPropertyChanged("OS");
+                NotifyPropertyChanged("OV");
+                NotifyPropertyChanged("A1");
+                NotifyPropertyChanged("A0");
+                NotifyPropertyChanged("BIE");
+                }
+            }
+
             public bool? VKE { get { return Convert.ToBoolean(STW & 2); } }
             public bool? STA { get { return Convert.ToBoolean(STW & 4); } }
             public bool? OR { get { return Convert.ToBoolean(STW & 8); } }
@@ -329,12 +376,59 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public bool? A0 { get { return Convert.ToBoolean(STW & 128); } }
             public bool? BIE { get { return Convert.ToBoolean(STW & 256); } }
 
-            public int? Akku1;
-            public int? Akku2;
-            public int? AR1;
-            public int? AR2;
-            public int? DB;
-            public int? DI;
+            private int? _akku1;
+            public int? Akku1
+            {
+                get { return _akku1; }
+                set { _akku1 = value;
+                    NotifyPropertyChanged("Akku1");
+                }
+            }
+
+            private int? _akku2;
+            public int? Akku2
+            {
+                get { return _akku2; }
+                set { _akku2 = value;
+                NotifyPropertyChanged("Akku2");
+                }
+            }
+
+            private int? _ar1;
+            public int? AR1
+            {
+                get { return _ar1; }
+                set { _ar1 = value;
+                NotifyPropertyChanged("AR1");
+                }
+            }
+
+            private int? _ar2;
+            public int? AR2
+            {
+                get { return _ar2; }
+                set { _ar2 = value;
+                NotifyPropertyChanged("AR2");
+                }
+            }
+
+            private int? _db;
+            public int? DB
+            {
+                get { return _db; }
+                set { _db = value;
+                NotifyPropertyChanged("DB");
+                }
+            }
+
+            private int? _di;
+            public int? DI
+            {
+                get { return _di; }
+                set { _di = value;
+                NotifyPropertyChanged("DI");
+                }
+            }
 
             public override string ToString()
             {
@@ -418,9 +512,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if ((selStat & SelectedStatusValues.DB) > 0)
                 {
                     //if (daten[pos] > 0)
-                        ret.DB = libnodave.getU16from(daten, pos + 2);
+                    ret.DB = libnodave.getU16from(daten, pos + 2);
                     //if (daten[pos + 1] > 0)
-                        ret.DI = libnodave.getU16from(daten, pos + 4);
+                    ret.DI = libnodave.getU16from(daten, pos + 4);
                     pos += 6;
                 }
                 return ret;

@@ -665,7 +665,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case 3: Result = "FUP"; break;
                 case 4: Result = "SCL"; break;
                 case 5: Result = "DB"; break;
-                case 6: Result = "GRAPH"; break;
+                case 6: Result = "GRAPH"; break;               
                 default: Result = "unbekannt(0x" + (b).ToString("X") + ")";
                     break;
             }

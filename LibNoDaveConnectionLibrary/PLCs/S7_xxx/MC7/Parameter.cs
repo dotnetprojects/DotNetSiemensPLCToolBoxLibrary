@@ -399,8 +399,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             S7DataRow akParameter = parameterRoot;
 
             ParaList.Clear();
-           
-            while (pos <= (Start + Count))
+
+            while (pos <= (Start + Count) && pos < BD.Length - 2)  //pos<BD.Length-2 was added so SDBs can be converted!! but is this needed?
             {
                 string startVal;
                 if (Helper.IsWithStartVal(BD[pos + 1]))

@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
              Name="NetworkEditorWindow"
     >
@@ -20,6 +20,9 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+        <local:BoolToVisibilityConverter x:Key="TrueVisibleConverter" FalseValue="Collapsed" TrueValue="Visible" />
+        <local:NullToCollapsedConverter x:Key="NullCollapsedConverter" />
+        
         <Style TargetType="{x:Type avalonEdit:TextEditor}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
@@ -56,8 +59,9 @@
                     Margin="0 -20 0 0" 
                     DockPanel.Dock="Right" 
                     HorizontalAlignment="Right" 
-                    Visibility="Collapsed"
-                    DisplayNetwork="{Binding DisplayNetwork}">
+                    Visibility="{Binding aa,Converter={StaticResource NullCollapsedConverter}}"
+                    
+                    DisplayNetwork="{Binding DisplayNetwork,ElementName=NetworkEditorWindow}">
                 </Controls:AWLOnlineStatusView>
 
                 <avalonEdit:TextEditor 

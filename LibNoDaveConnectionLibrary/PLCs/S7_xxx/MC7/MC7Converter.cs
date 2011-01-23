@@ -111,7 +111,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);
                 retBlock.BlockAttribute = Convert.ToString(MC7Code[3] - 1);
-                retBlock.BlockLanguage = (DataTypes.PLCLanguage)Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
+                retBlock.BlockLanguage = (DataTypes.PLCLanguage) MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);                           
                 retBlock.BlockNumber = (MC7Code[6]*0x100) + MC7Code[7];
                 retBlock.Length = libnodave.getU32from(MC7Code, 8);

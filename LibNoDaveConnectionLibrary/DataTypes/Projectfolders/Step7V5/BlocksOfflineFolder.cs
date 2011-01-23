@@ -422,11 +422,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         
                         retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, 0, myTmpBlk.mc7code, Networks, ParaList, (S7ProgrammFolder)this.Parent);
 
-                        retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);    
-
-                        CallConverter.ConvertUCToCall(retVal, (S7ProgrammFolder) this.Parent, myConvOpt, null);
+                        retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);
 
                         LocalDataConverter.ConvertLocaldataToSymbols(retVal, myConvOpt);
+
+                        FBStaticAccessConverter.ReplaceStaticAccess(retVal, (S7ProgrammFolder) this.Parent, myConvOpt);
+
+                        CallConverter.ConvertUCToCall(retVal, (S7ProgrammFolder) this.Parent, myConvOpt, null);
 
                         #region UseComments from Block
                         if (myConvOpt.UseComments)

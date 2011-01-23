@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using AvalonDock;
 
 namespace WPFToolboxForSiemensPLCs
 {
@@ -13,6 +14,7 @@ namespace WPFToolboxForSiemensPLCs
     public partial class App : Application
     {
         public static MainWindow clientForm;
+        public static DocumentContent activeDocument;
  
         void Main(object sender, StartupEventArgs e)
         {

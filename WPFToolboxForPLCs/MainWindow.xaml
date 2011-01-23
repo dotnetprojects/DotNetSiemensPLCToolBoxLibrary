@@ -44,6 +44,8 @@
                 <MenuItem Header="Disconnect" Name="mnuDisconnect" Click="mnuDisconnect_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Show Online Blocks" Name="mnuOnlineBlocks" Click="mnuOnlineBlocks_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="View Block" Name="mnuViewBlock" Click="mnuViewBlock_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="DiffWindow" Click="MenuItem_Click_3"></MenuItem>
             <MenuItem Header="DB2WinCC" Click="MenuItem_Click_4"></MenuItem>

@@ -6,7 +6,12 @@ SZL-ID 305 (0x131) Subindex 0002
 http://spsnet.de/showthread.php?s=b9f2e5500714c7fabd5c6b017fc5d5b7&t=17901&page=2
 
 
-SZL partial list data: (VIPA 313SC)
+SZL partial list data: (VIPA 313SC) //kan nur tele 01 für status
+0000   00 02 be fd 47 00 00 00 00 00 00 00 00 00 3c 01
+0010   00 00 00 00 7d 00 00 05 03 04 00 00 00 00 00 0c
+0020   00 0a 00 00 00 09 00 00
+
+SZL partial list data: (VIPA 315-SN) //kan nur tele 01 für status
 0000   00 02 be fd 47 00 00 00 00 00 00 00 00 00 3c 01
 0010   00 00 00 00 7d 00 00 05 03 04 00 00 00 00 00 0c
 0020   00 0a 00 00 00 09 00 00
@@ -16,9 +21,12 @@ SZL partial list data: (Siemens 3xx)
 0010   00 00 00 00 7d 00 00 05 03 07 00 00 00 00 00 0c
 0020   00 0a 00 00 00 09 00 00
 
-SZL partial list data: (Siemens @home)
+SZL partial list data: (Siemens 315-2DP (2AG10)) //kann beide, nutzt 0x13
 0000   00 02 be fd 0f 00 00 00 00 00 00 00 00 00 3c 01
 0010   00 00 00 00 7d 00 00 05 03 04 00 00 00 00 00 0c
 0020   00 0a 00 00 00 09 00 00
 
-
+SZL partial list data: (Siemens 315-2PN/DP (2EH14)) //kann nur tele 13 für status!
+0000   00 02 be fd 4f 00 00 00 00 00 00 00 00 00 3c 01
+0010   08 00 00 00 7d 00 00 05 03 0f 00 00 08 00 00 0c
+0020   00 0a 00 00 00 01 00 00

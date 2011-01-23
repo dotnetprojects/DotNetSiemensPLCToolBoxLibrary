@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
+using System.Timers;
 using System.Windows;
+using System.Windows.Threading;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -16,7 +19,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
       
         
         private Block myBlock;
-        private string myBlockString;
+        private string myBlockString;         
 
         public ContentWindowFunctionBlockEditor(object myBlock)
         {
@@ -61,12 +64,82 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             }
         }
 
+        private PLCConnection.DiagnosticData MyDiagnosticData;
+        
+        DispatcherTimer diagTimer = null;
+
+        /*
+        {
+            get { return (PLCConnection.DiagnosticData)GetValue(MyDiagnosticDataProperty); }
+            set { SetValue(MyDiagnosticDataProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyDiagnosticData.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MyDiagnosticDataProperty =
+            DependencyProperty.Register("MyDiagnosticData", typeof(PLCConnection.DiagnosticData), typeof(ContentWindowFunctionBlockEditor), new UIPropertyMetadata(null));
+        */
+
+        public void viewBlockStatus()
+        {
+            if (myBlock is S7FunctionBlock)
+            {
+                try
+                {
+                    S7FunctionBlock myS7Blk = (S7FunctionBlock) myBlock;
+                    MyDiagnosticData = App.clientForm.Connection.PLCstartRequestDiagnosticData(myS7Blk, 0,
+                                                                                               S7FunctionBlockRow.
+                                                                                                   SelectedStatusValues.
+                                                                                                   ALL);
+
+                    if (diagTimer == null)
+                    {
+                        diagTimer = new DispatcherTimer(); // DispatcherTimer();
+                        diagTimer.Tick += new EventHandler(diagTimer_Tick);
+                        diagTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                    }
+                    diagTimer.Start();
+                }
+                catch(Exception ex)
+                {
+                    App.clientForm.lblStatus.Text = ex.Message;
+                    if (diagTimer != null)
+                    {
+                        diagTimer.Stop();
+                        diagTimer = null;
+                    }
+                }
+                //diagTimer.Start();                                               
+            }
+        }
+
+        void diagTimer_Tick(object sender, EventArgs e)
+        {
+            diagTimer.Stop();
+            MyDiagnosticData.RequestDiagnosticData();
+            diagTimer.Start();
+        }
+
+        public void unviewBlockStatus()
+        {
+            diagTimer.Start();
+            diagTimer = null;
+            MyDiagnosticData.Close();
+            MyDiagnosticData.RemoveDiagnosticData();
+            MyDiagnosticData = null;
+        }
+
         private void DocumentContent_IsActiveDocumentChanged(object sender, EventArgs e)
         {
             if (this.IsActiveDocument)
+            {
+                App.activeDocument = this;
                 App.clientForm.PrintData = myBlockString;
+            }
             else
+            {
+                App.activeDocument = null;
                 App.clientForm.PrintData = null;
+            }
         }
     }
 }

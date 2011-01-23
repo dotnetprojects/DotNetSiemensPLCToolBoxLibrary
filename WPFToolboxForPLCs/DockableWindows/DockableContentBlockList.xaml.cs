@@ -103,9 +103,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     {
                         var row = UIHelpers.TryFindFromPoint<DataGridRow>((UIElement)sender, e.GetPosition(myDataGrid));
                         if (row != null)
-                        {
-                            
-                                
+                        { 
                             DataObject dragData = new DataObject("dataRow", row);
                             dragData.SetData("ProjectBlockInfo", myDataGrid.SelectedItem);
                             //dragData = new DataObject(DataFormats.Text,row.ToString());

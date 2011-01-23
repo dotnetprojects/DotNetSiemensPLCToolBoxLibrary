@@ -137,7 +137,7 @@ namespace WPFToolboxForSiemensPLCs
 
         private void mnuOnlineBlocks_Click(object sender, RoutedEventArgs e)
         {
-            OnlineBlocksFolder onl = new OnlineBlocksFolder("WPFToolboxForSiemensPLCs");
+            OnlineBlocksFolder onl = new OnlineBlocksFolder(Connection);
             IBlocksFolder fld = (IBlocksFolder)onl;
             DockableContentBlockList tmp = new DockableContentBlockList(fld);
             tmp.parentDockingManager = DockManager;
@@ -166,6 +166,15 @@ namespace WPFToolboxForSiemensPLCs
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Connection.Dispose();
+        }
+
+        private void mnuViewBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if ( App.activeDocument is ContentWindowFunctionBlockEditor)
+            {
+                ContentWindowFunctionBlockEditor blkEdit = (ContentWindowFunctionBlockEditor) App.activeDocument;
+                blkEdit.viewBlockStatus();
+            }
         }
     }
 }

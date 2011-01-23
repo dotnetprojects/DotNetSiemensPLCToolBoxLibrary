@@ -10,15 +10,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     public class OnlineBlocksFolder : ProjectFolder, IBlocksFolder
     {
-        public PLCConnectionConfiguration ConnectionConfig { get; set;}
         public PLCConnection Connection;
 
         public bool IsOnline { get; set; }
 
         public OnlineBlocksFolder(string ConnectionName)
         {
-            ConnectionConfig=new PLCConnectionConfiguration(ConnectionName);
-            this.Name = "Online Blocks (" + ConnectionConfig.ConnectionName + ")";
+            Connection = new PLCConnection(ConnectionName);
+            this.Name = "Online Blocks (" + Connection.Configuration.ConnectionName + ")";
+        }
+
+        public OnlineBlocksFolder(PLCConnection conn)
+        {
+            Connection = conn;
+            this.Name = "Online Blocks (" + Connection.Configuration.ConnectionName + ")";
         }
 
         public void UploadBlock(Block myBlk)
@@ -34,7 +39,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
             List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
 
-            Connection = new PLCConnection(ConnectionConfig);
             Connection.Connect();
             List<string> blks = Connection.PLCListBlocks(PLCBlockType.AllBlocks);
 

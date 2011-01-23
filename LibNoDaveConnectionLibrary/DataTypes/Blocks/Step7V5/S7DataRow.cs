@@ -34,6 +34,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     
     public class S7DataRow : INotifyPropertyChanged
     {
+        //ToDo: Optimize this function, that it first checks if the next row is bigger then the address, so that not so many
+        //recursions are needed!
+        public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
+        {
+            foreach (var s7DataRow in startRow.Children)
+            {
+                if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0))
+                    return s7DataRow;
+                var tmp = GetDataRowWithAddress(s7DataRow, address);
+                if (tmp != null)
+                    return tmp;
+            }
+            return null;
+        }
+
         public S7DataRow(string name, S7DataRowType datatype, Block plcblock)
         {
             this.PlcBlock = plcblock;
