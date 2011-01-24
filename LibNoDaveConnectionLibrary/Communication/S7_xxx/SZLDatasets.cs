@@ -904,6 +904,414 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy31_4Dataset : SZLDataset
+    {
+        [Endian(Endianness.BigEndian)]
+        private ushort _index;
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        private byte _funkt0;
+        public byte funkt_0
+        {
+            get { return _funkt0; }
+            set { _funkt0 = value; }
+        }
+
+        private byte _funkt1;
+        public byte funkt_1
+        {
+            get { return _funkt1; }
+            set { _funkt1 = value; }
+        }
+
+        private byte _funkt2;
+        public byte funkt_2
+        {
+            get { return _funkt2; }
+            set { _funkt2 = value; }
+        }
+
+        private byte _funkt3;
+        public byte funkt_3
+        {
+            get { return _funkt3; }
+            set { _funkt3 = value; }
+        }
+
+        private byte _funkt4;
+        public byte funkt_4
+        {
+            get { return _funkt4; }
+            set { _funkt4 = value; }
+        }
+
+        private byte _funkt5;
+        public byte funkt_5
+        {
+            get { return _funkt5; }
+            set { _funkt5 = value; }
+        }
+
+        private byte _funkt6;
+        public byte funkt_6
+        {
+            get { return _funkt6; }
+            set { _funkt6 = value; }
+        }
+
+        private byte _funkt7;
+        public byte funkt_7
+        {
+            get { return _funkt7; }
+            set { _funkt7 = value; }
+        }
+
+        private byte _kop;
+        public byte kop
+        {
+            get { return _kop; }
+            set { _kop = value; }
+        }
+
+        private byte _del;
+        public byte del
+        {
+            get { return _del; }
+            set { _del = value; }
+        }
+
+        private byte _kett;
+        public byte kett
+        {
+            get { return _kett; }
+            set { _kett = value; }
+        }
+
+        private byte _hoch;
+        public byte hoch
+        {
+            get { return _hoch; }
+            set { _hoch = value; }
+        }
+
+        private byte _ver;
+        public byte ver
+        {
+            get { return _ver; }
+            set { _ver = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 25)]        
+        private byte[] _res;
+        public byte[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy31_5Dataset : SZLDataset
+    {
+        [Endian(Endianness.BigEndian)]
+        private ushort _index;
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        private byte _funkt0;
+        public byte funkt_0
+        {
+            get { return _funkt0; }
+            set { _funkt0 = value; }
+        }
+
+        private byte _funkt1;
+        public byte funkt_1
+        {
+            get { return _funkt1; }
+            set { _funkt1 = value; }
+        }
+
+        private byte _funkt2;
+        public byte funkt_2
+        {
+            get { return _funkt2; }
+            set { _funkt2 = value; }
+        }
+
+        private byte _funkt3;
+        public byte funkt_3
+        {
+            get { return _funkt3; }
+            set { _funkt3 = value; }
+        }
+
+        private byte _funkt4;
+        public byte funkt_4
+        {
+            get { return _funkt4; }
+            set { _funkt4 = value; }
+        }
+
+        private byte _funkt5;
+        public byte funkt_5
+        {
+            get { return _funkt5; }
+            set { _funkt5 = value; }
+        }
+
+        private byte _funkt6;
+        public byte funkt_6
+        {
+            get { return _funkt6; }
+            set { _funkt6 = value; }
+        }
+
+        private byte _funkt7;
+        public byte funkt_7
+        {
+            get { return _funkt7; }
+            set { _funkt7 = value; }
+        }
+
+        private byte _anzSen;
+        public byte anz_sen
+        {
+            get { return _anzSen; }
+            set { _anzSen = value; }
+        }
+
+        private byte _anzEin;
+        public byte anz_ein
+        {
+            get { return _anzEin; }
+            set { _anzEin = value; }
+        }
+
+        private byte _anzMel;
+        public byte anz_mel
+        {
+            get { return _anzMel; }
+            set { _anzMel = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+        private byte[] _res;
+        public byte[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy31_6Dataset : SZLDataset
+    {
+        [Endian(Endianness.BigEndian)]
+        private ushort _index;
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        private byte _funkt0;
+        public byte funkt_0
+        {
+            get { return _funkt0; }
+            set { _funkt0 = value; }
+        }
+
+        private byte _funkt1;
+        public byte funkt_1
+        {
+            get { return _funkt1; }
+            set { _funkt1 = value; }
+        }
+
+        private byte _funkt2;
+        public byte funkt_2
+        {
+            get { return _funkt2; }
+            set { _funkt2 = value; }
+        }
+
+        private byte _funkt3;
+        public byte funkt_3
+        {
+            get { return _funkt3; }
+            set { _funkt3 = value; }
+        }
+
+        private byte _funkt4;
+        public byte funkt_4
+        {
+            get { return _funkt4; }
+            set { _funkt4 = value; }
+        }
+
+        private byte _funkt5;
+        public byte funkt_5
+        {
+            get { return _funkt5; }
+            set { _funkt5 = value; }
+        }
+
+        private byte _funkt6;
+        public byte funkt_6
+        {
+            get { return _funkt6; }
+            set { _funkt6 = value; }
+        }
+
+        private byte _funkt7;
+        public byte funkt_7
+        {
+            get { return _funkt7; }
+            set { _funkt7 = value; }
+        }
+
+        private byte _schnell;
+        public byte schnell
+        {
+            get { return _schnell; }
+            set { _schnell = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private int _zugTyp;
+        public Int32 zug_typ
+        {
+            get { return _zugTyp; }
+            set { _zugTyp = value; }
+        }
+
+        private byte _zugtyp0;
+        public byte zugtyp_0
+        {
+            get { return _zugtyp0; }
+            set { _zugtyp0 = value; }
+        }
+
+        private byte _zugtyp1;
+        public byte zugtyp_1
+        {
+            get { return _zugtyp1; }
+            set { _zugtyp1 = value; }
+        }
+
+        private byte _zugtyp2;
+        public byte zugtyp_2
+        {
+            get { return _zugtyp2; }
+            set { _zugtyp2 = value; }
+        }
+
+        private byte _zugtyp3;
+        public byte zugtyp_3
+        {
+            get { return _zugtyp3; }
+            set { _zugtyp3 = value; }
+        }
+
+        private byte _zugtyp4;
+        public byte zugtyp_4
+        {
+            get { return _zugtyp4; }
+            set { _zugtyp4 = value; }
+        }
+
+        private byte _zugtyp5;
+        public byte zugtyp_5
+        {
+            get { return _zugtyp5; }
+            set { _zugtyp5 = value; }
+        }
+
+        private byte _zugtyp6;
+        public byte zugtyp_6
+        {
+            get { return _zugtyp6; }
+            set { _zugtyp6 = value; }
+        }
+
+        private byte _zugtyp7;
+        public byte zugtyp_7
+        {
+            get { return _zugtyp7; }
+            set { _zugtyp7 = value; }
+        }
+
+        private short _res1;
+        public Int16 res1
+        {
+            get { return _res1; }
+            set { _res1 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private short _maxSdEmpf;
+        public Int16 max_sd_empf
+        {
+            get { return _maxSdEmpf; }
+            set { _maxSdEmpf = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private short _maxSdAl8P;
+        public Int16 max_sd_al8p
+        {
+            get { return _maxSdAl8P; }
+            set { _maxSdAl8P = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private short _maxInst;
+        public Int16 max_inst
+        {
+            get { return _maxInst; }
+            set { _maxInst = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private short _res2;
+        public Int16 res2
+        {
+            get { return _res2; }
+            set { _res2 = value; }
+        }
+
+        private byte _verbProj;
+        public byte verb_proj
+        {
+            get { return _verbProj; }
+            set { _verbProj = value; }
+        }
+
+        private byte _verbProg;
+        public byte verb_prog
+        {
+            get { return _verbProg; }
+            set { _verbProg = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+        private byte[] _res;
+        public byte[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy71Dataset : SZLDataset
     {
         [Endian(Endianness.BigEndian)]

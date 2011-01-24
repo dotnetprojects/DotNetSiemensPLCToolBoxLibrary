@@ -1025,6 +1025,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case 3:
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy31_3Dataset>(objBuffer));
                                         break;
+                                    case 4:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_4Dataset>(objBuffer));
+                                        break;
+                                    case 5:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_5Dataset>(objBuffer));
+                                        break;
+                                    case 6:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_6Dataset>(objBuffer));
+                                        break;                                   
                                     default:
                                         {
                                             DefaultSZLDataset tmp = new DefaultSZLDataset();
