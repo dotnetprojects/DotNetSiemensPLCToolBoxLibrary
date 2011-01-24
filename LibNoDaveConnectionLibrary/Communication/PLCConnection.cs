@@ -1003,6 +1003,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             case 0x0023:
                                 datsets.Add((xy23Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy23Dataset)));
                                 break;
+                            case 0x0024:
+                                datsets.Add((xy24Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy24Dataset)));
+                                break;
                             case 0x0025:
                                 datsets.Add((xy25Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy25Dataset)));
                                 break;
@@ -1014,6 +1017,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         break;
                                     case 2:
                                         datsets.Add((xy31_2Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy31_2Dataset)));
+                                        break;
+                                    case 3:
+                                        datsets.Add((xy31_3Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy31_3Dataset)));
                                         break;
                                     default:
                                         {

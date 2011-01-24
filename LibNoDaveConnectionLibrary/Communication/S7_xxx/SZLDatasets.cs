@@ -184,6 +184,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy24Dataset : SZLDataset
+    {
+        public UInt16 Ereig { get; set; }
+        public byte Ae { get; set; }
+        public byte bzü_id { get; set; }
+        public UInt32 Res { get; set; }
+        public byte AnlInfo1 { get; set; }
+        public byte AnlInfo2 { get; set; }
+        public byte AnlInfo3 { get; set; }
+        public byte AnlInfo4 { get; set; }
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        private UInt16[] _time;
+        public UInt16[] Time
+        {
+            get { return _time; }
+            set { _time = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy25Dataset : SZLDataset
     {
         public byte tpa_nr { get; set; }
@@ -275,6 +295,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         public UInt16 time { get; set; }
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        private UInt16[] _res;
+        public UInt16[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy31_3Dataset : SZLDataset
+    {
+        public UInt16 Index { get; set; }
+
+        public byte funkt_0 { get; set; }
+
+        public byte funkt_1 { get; set; }
+
+        public byte funkt_2 { get; set; }
+
+        public byte funkt_3 { get; set; }
+        
+        public Int16 Data {get; set; }
+
+        public Int16 Anz { get; set; }
+
+        public Int16 Per_Min { get; set; }
+
+        public Int16 Per_Max { get; set; }        
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 13)]
         private UInt16[] _res;
         public UInt16[] res
         {
