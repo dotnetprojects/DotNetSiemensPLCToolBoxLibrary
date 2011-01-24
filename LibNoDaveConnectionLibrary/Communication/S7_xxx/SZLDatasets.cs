@@ -5,112 +5,154 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 {
-    public interface ISZLDataset
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]    
+    public abstract class SZLDataset
     {
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct DefaultSZLDataset : ISZLDataset
+    public class DefaultSZLDataset : SZLDataset
     {
-        public byte[] Bytes;        
+        public byte[] Bytes { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy11Dataset: ISZLDataset
+    public class xy11Dataset : SZLDataset
     {
-        public Int16 Index;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)] public string MlfB;
-        public Int16 BGTyp;
-        public Int16 Ausbg1;
-        public Int16 Ausbg2;
+        public short Index { get; set; }
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+        private string _mlfB;     
+        public string MlfB
+        {
+            get { return _mlfB; }
+            set { _mlfB = value; }
+        }
+
+        public short BGTyp { get; set; }
+
+        public short Ausbg1 { get; set; }
+
+        public short Ausbg2 { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy12Dataset : ISZLDataset
+    public class xy12Dataset : SZLDataset
     {
-        public Int16 Feature;        
-    }
-
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy13Dataset : ISZLDataset
-    {
-        public Int16 Index;
-        public Int16 Code;
-        public Int32 Size;
-        public Int16 Mode;
-        public Int16 Granu; //Allways zero
-        public Int32 Ber1;
-        public Int32 Belegt1;
-        public Int32 Block1;
-        public Int32 Ber2;
-        public Int32 Belegt2;
-        public Int32 Block2;        
+        public short Feature { get; set; }
     }
 
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy14Dataset : ISZLDataset
+    public class xy13Dataset : SZLDataset
     {
-        public Int16 Index;
-        public Int16 Code;
-        public Int16 Count;
-        public Int16 Reman;        
+        public short Index { get; set; }
+
+        public short Code { get; set; }
+
+        public int Size { get; set; }
+
+        public short Mode { get; set; }
+
+        public short Granu { get; set; }
+
+        public int Ber1 { get; set; }
+
+        public int Belegt1 { get; set; }
+
+        public int Block1 { get; set; }
+
+        public int Ber2 { get; set; }
+
+        public int Belegt2 { get; set; }
+
+        public int Block2 { get; set; }
+    }
+
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy14Dataset : SZLDataset
+    {
+        public short Index { get; set; }
+
+        public short Code { get; set; }
+
+        public short Count { get; set; }
+
+        public short Reman { get; set; }
+    }
+    
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy15Dataset : SZLDataset
+    {
+        public short Index { get; set; }
+
+        public short MaxCount { get; set; }
+
+        public short MaxSize { get; set; }
+
+        public short Maxabl { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy15Dataset : ISZLDataset
+    public class xy1CDataset : SZLDataset
     {
-        public Int16 Index;
-        public Int16 MaxCount;
-        public Int16 MaxSize;
-        public Int16 Maxabl;
+        public Int16 Index { get; set; }
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        private string _text;
+        public string Text
+        {
+            get { return _text; }
+            set { _text = value; }
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy1CDataset : ISZLDataset
+    public class xy22Dataset : SZLDataset
     {
-        public Int16 Index;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string Text;        
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
+        private short[] _info;
+        public Int16[] Info
+        {
+            get { return _info; }
+            set { _info = value; }
+        }
+
+        public Int16 Al1 { get; set; }
+        public Int16 Al2 { get; set; }
+        public Int32 Al3 { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy22Dataset : ISZLDataset
+    public class xy25Dataset : SZLDataset
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)] public Int16[] Info;
-        public Int16 Al1;
-        public Int16 Al2;
-        public Int32 Al3;        
+        public byte tpa_nr { get; set; }
+
+        public byte tpa_use { get; set; }
+
+        public byte ob_nr { get; set; }
+
+        public byte res { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy25Dataset : ISZLDataset
-    {        
-        public byte tpa_nr;
-        public byte tpa_use;
-        public byte ob_nr;
-        public byte res;
+    public class xy71Dataset : SZLDataset
+    {
+        public Int16 redinf { get; set; }
+        public byte mwstat1 { get; set; }
+        public byte mwstat2 { get; set; }
+        public Int16 hsfcinfo { get; set; }
+        public Int16 samfehl { get; set; }
+        public Int16 bz_cpu_0 { get; set; }
+        public Int16 bz_cpu_1 { get; set; }
+        public byte cpu_valid { get; set; }
+        public byte hsync_f { get; set; }
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy71Dataset : ISZLDataset
+    public class xy74Dataset : SZLDataset
     {
-        public Int16 redinf;
-        public byte mwstat1;
-        public byte mwstat2;
-        public Int16 hsfcinfo;
-        public Int16 samfehl;
-        public Int16 bz_cpu_0;
-        public Int16 bz_cpu_1;
-        public byte cpu_valid;
-        public byte hsync_f;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-    public struct xy74Dataset : ISZLDataset
-    {
-        public Int16 led_kennung;
-        public byte led_on;
-        public byte led_blink;        
+        public Int16 led_kennung { get; set; }
+        public byte led_on { get; set; }
+        public byte led_blink { get; set; }
     }
 }

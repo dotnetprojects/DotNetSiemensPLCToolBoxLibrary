@@ -880,9 +880,10 @@ This was just here to check inheritance
 #else
 	[DllImport ("__Internal")]
 #endif
-            protected static extern int daveUseResult(IntPtr dc, IntPtr rs, int number);	
-            public int useResult(resultSet rs, int number) {
-                return daveUseResult(pointer, rs.pointer, number);
+            protected static extern int daveUseResult(IntPtr dc, IntPtr rs, int number, byte[] buffer);
+            public int useResult(resultSet rs, int number, byte[] buffer)
+            {
+                return daveUseResult(pointer, rs.pointer, number, buffer);
             }
 
 	

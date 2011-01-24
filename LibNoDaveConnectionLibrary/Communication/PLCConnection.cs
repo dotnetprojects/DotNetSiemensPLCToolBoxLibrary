@@ -522,7 +522,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //Look in SZL wich Status Telegramm is supported!
                     SZLData szlData = PLCGetSZL(0x0131, 2);
-                    ISZLDataset[] szlDatasets = szlData.SZLDaten;
+                    SZLDataset[] szlDatasets = (SZLDataset[])szlData.SZLDaten;
                     if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
                         DiagDataTeletype = 0x13;
 
@@ -953,7 +953,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     retVal.Size = (short) (buffer[5] + buffer[4]*256);
                     retVal.Count = (short) (buffer[7] + buffer[6]*256);
 
-                    List<ISZLDataset> datsets = new List<ISZLDataset>();
+                    List<SZLDataset> datsets = new List<SZLDataset>();
                   
                     for (int n = 0; n < retVal.Count; n++)
                     {
@@ -1192,7 +1192,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)                    
                             for (akVar = 0; akVar < anzVar; akVar++)
                             {
-                                res = _dc.useResult(rs, akVar);
+                                byte[] myBuff = new byte[gesReadSize];
+
+                                res = _dc.useResult(rs, akVar, myBuff);
                                 if (res == 10 || res == 5)
                                     NotExistedValue.Add(true);
                                 else if (res != 0)
@@ -1200,10 +1202,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                    for (int n = 0; n < readenSizes[akVar]; n++)
-                                    {
-                                        completeData[positionInCompleteData++] = Convert.ToByte(_dc.getU8());
-                                    }
+
+                                    Array.Copy(myBuff, 0, completeData, positionInCompleteData, readenSizes[akVar]);
+                                    positionInCompleteData += readenSizes[akVar];
+                                    //for (int n = 0; n < readenSizes[akVar]; n++)
+                                    //{
+                                    //    completeData[positionInCompleteData++] = myBuff[n]; //Convert.ToByte(_dc.getU8());
+                                    //}
                                 }
                             }
                             //rs = null;
@@ -1235,7 +1240,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
                         for (akVar = 0; akVar < anzVar; akVar++)
                         {
-                            res = _dc.useResult(rs, akVar);
+                            byte[] myBuff = new byte[gesReadSize];
+
+                            res = _dc.useResult(rs, akVar, myBuff);
                             if (res == 10 || res == 5)
                                 NotExistedValue.Add(true);
                             else if (res != 0)
@@ -1243,10 +1250,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             else
                             {
                                 NotExistedValue.Add(false);
-                                for (int n = 0; n < readenSizes[akVar]; n++)
-                                {
-                                    completeData[positionInCompleteData++] = Convert.ToByte(_dc.getU8());
-                                }
+
+                                Array.Copy(myBuff, 0, completeData, positionInCompleteData, readenSizes[akVar]);
+                                positionInCompleteData += readenSizes[akVar];
+
+                                //for (int n = 0; n < readenSizes[akVar]; n++)
+                                //{
+                                //    completeData[positionInCompleteData++] = myBuff[n]; // Convert.ToByte(_dc.getU8());
+                                //}
                             }
                         }
                     }

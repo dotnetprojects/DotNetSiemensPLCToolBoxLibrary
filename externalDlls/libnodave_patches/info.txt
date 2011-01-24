@@ -1,5 +1,8 @@
 In this director are only the files I changed from the original libnodave!
 
+0.8.4.5.6
+  - Changed the UseResult Funtion, so that it supports a own Byte Array
+
 0.8.4.5.5
   - Timeout in TCP Connections was fix 1,5s wich was too short for some tasks.
     Now, Stanadrt Timeout is 2.5s for every Connection, but can be changed via settimeout

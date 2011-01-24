@@ -176,5 +176,15 @@ namespace WPFToolboxForSiemensPLCs
                 blkEdit.viewBlockStatus();
             }
         }
+
+        private void mnuSZLWindow_Click(object sender, RoutedEventArgs e)
+        {
+            ContentWindowSZL tmp = new ContentWindowSZL();
+            //tmp.parentDockingManager = parentDockingManager;
+            tmp.Title = "SZL-Window";
+            //tmp.ToolTip = fld.ToString();
+            tmp.Show(DockManager);
+            DockManager.ActiveDocument = tmp;
+        }
     }
 }

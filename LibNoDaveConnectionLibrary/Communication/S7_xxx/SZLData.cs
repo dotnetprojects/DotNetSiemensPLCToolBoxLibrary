@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         public Int16 Index;
         public Int16 Size;
         public Int16 Count;
-        public ISZLDataset[] SZLDaten;
+        public IEnumerable /*SZLDataset[]*/ SZLDaten;
     }
 }

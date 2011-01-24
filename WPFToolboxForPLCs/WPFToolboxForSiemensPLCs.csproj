@@ -102,6 +102,9 @@
     <Compile Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml.cs">
       <DependentUpon>ContentWindowWinCCTagVarCreator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DockableWindows\ContentWindowSZL.xaml.cs">
+      <DependentUpon>ContentWindowSZL.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DockableWindows\DockableContentBlockList.xaml.cs">
       <DependentUpon>DockableContentBlockList.xaml</DependentUpon>
     </Compile>
@@ -141,6 +144,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DockableWindows\ContentWindowWinCCTagVarCreator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\ContentWindowSZL.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

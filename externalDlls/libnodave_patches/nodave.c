@@ -169,7 +169,7 @@ daveInterface * DECL2 daveNewInterface(_daveOSserialType nfd, char * nname, int 
 		di->fd=nfd;
 		di->localMPI=localMPI;
 		di->protocol=protocol;
-		di->timeout=1000000; /* 1 second */
+		di->timeout=2500000; /* 2.5 second */
 		di->nextConnection=0x14;
 		di->speed=speed;
 #ifndef AVR_NOOS
@@ -273,18 +273,7 @@ daveInterface * DECL2 daveNewInterface(_daveOSserialType nfd, char * nname, int 
 			di->getResponse=_daveGetResponseNLPro;
 			di->listReachablePartners=_daveListReachablePartnersNLPro;
 			break;
-#endif
-		/*
-		case daveProtoNLProFamily:
-			di->initAdapter=_daveInitAdapterNLProFamily;
-			di->connectPLC=_daveConnectPLCNLProFamily;
-			di->disconnectPLC=_daveDisconnectPLCNLProFamily;
-			di->disconnectAdapter=_daveDisconnectAdapterNLProFamily;
-			di->exchange=_daveExchangeNLProFamily;
-			di->getResponse=_daveGetResponseNLProFamily_TCP;
-			di->listReachablePartners=_daveListReachablePartnersNLProFamily;
-			break;			
-		*/
+#endif		
 		}
 #ifdef BCCWIN
 		setTimeOut(di, di->timeout);
@@ -1523,7 +1512,7 @@ int DECL2 daveExecWriteRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 }
 
 
-int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n){
+int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * buffer){
 	daveResult * dr;
 #ifdef DEBUG_CALLS
 	LOG4("daveUseResult(dc:%p, result set:%p, number:%d)\n", dc, rl, n);
@@ -1544,7 +1533,8 @@ int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n){
 	dr = &(rl->results[n]);
 	if (dr->error!=0) return dr->error;
 	if (dr->length<=0) return daveEmptyResultError;
-
+	
+	if (buffer!=NULL) memcpy(buffer,dr->bytes,dr->length);
 	dc->resultPointer=dr->bytes;
 	dc->_resultPointer=dr->bytes;
 	return 0;
@@ -1714,7 +1704,7 @@ daveConnection * DECL2 _daveNewConnection(daveConnection * dc) {
 		case daveProtoISOTCP243:
 			dc->PDUstartO=7;	/* position of PDU in outgoing messages */
 			dc->PDUstartI=7;	/* position of PDU in incoming messages */
-			dc->iface->timeout=1500000;
+			//dc->iface->timeout=1500000;
 			break;	
 		case daveProtoMPI_IBH:	
 			dc->maxPDUlength=240;	// limit for NetLink as reported by AFK 
@@ -3785,12 +3775,17 @@ int DECL2 _daveConnectPLCMPI1(daveConnection * dc) {
 	int res;
 	PDU p1;
 	uc b4[]={
-		0x04,0x80,0x80,0x0D,0x00,0x14,0xE0,0x04,
-		0x00,0x80,0x00,0x02,
-		0x00,
-		0x02,
-		0x01,0x00,
-		0x01,0x00,
+		0x04,0x80,0x80,0x0D,0x00,0x14,0xE0,0x04,0x00,0x80,0x00,0x02,0x00,0x02,0x01,0x00,0x01,0x00,
+	};
+
+	uc b4R[]={                   
+		        //7E 11 1F E0 04 82 00 0D 00 14 E0 04 00 80 00 02 01 0F 01 00 06 04 02 AA BB 00 00 CC DD C0 A8 02 BC 01 03 18 87 7E 	
+		 //Step7//7E 00 1F E0 04 86 00 0D 00 14 E0 04 00 80 00 02 01 0F 01 00 06 04 02 AA BB 00 00 CC DD C0 A8 02 BC 01 03 8C 60 7E 	
+
+		 //    MPI                 connr                                                                 SUBNET              SUBNET
+          0x04,0x80,0x00,0x0D,0x00,0x14,0xE0,0x04,0x00,0x80,0x00,0x02,0x01,0x0F,0x01,0x00,0x06,0x04,0x02,0xAA,0xBB,0x00,0x00,0xCC,0xDD,0xC0,0xA8,0x02,0xBC,0x01,0x03,0x18,0x87,0x7E 	
+
+		//0x04,0x80,0x80,0x0D,0x00,0x14,0xE0,0x04,0x00,0x80,0x00,0x02,0x00,0x02,0x01,0x00,0x01,0x00,
 	};
 
 	us t4[]={
@@ -3920,6 +3915,7 @@ int DECL2 _daveReadIBHPacket(daveInterface * di,uc *b) {
 	struct timeval t;
 	fd_set FDS,EFDS;
 	int res,length;
+	
 	t.tv_sec = di->timeout / 1000000;
 	t.tv_usec = di->timeout % 1000000;
 
@@ -3978,10 +3974,16 @@ int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	FD_ZERO(&FDS);
 	FD_SET((SOCKET)(di->fd.rfd), &FDS);
 
+	//di->timeout=10000000;
+	//LOG2("timeout wrt: %d \n",di->timeout);
 	t.tv_sec = di->timeout / 1000000;
 	t.tv_usec = di->timeout % 1000000;
+	//LOG2("timeout s: %d \n",t.tv_sec);
+	//LOG2("timeout ms: %d \n",t.tv_usec );
+	printf("Socket: %d\n",di->fd.rfd);
 	if (select(/*di->fd.rfd +*/ 1, &FDS, NULL, NULL, &t) <= 0) {
-		if (daveDebug & daveDebugByte) LOG1("timeout in ReadIBHPacket.\n");
+		LOG2("WSAGetLastError: %d \n",WSAGetLastError());
+		if (daveDebug & daveDebugByte) LOG1("timeout in ReadISOPacket.\n");
 		return 0;
 	} else {
 		i=recv((SOCKET)(di->fd.rfd), b, 4, 0);
@@ -4019,6 +4021,7 @@ int DECL2 _daveReadIBHPacket(daveInterface * di,uc *b) {
 
 	t.tv_sec = di->timeout / 1000000;
 	t.tv_usec = di->timeout % 1000000;
+	
 	if (select(/*di->fd.rfd +*/ 1, &FDS, NULL, NULL, &t) <= 0) {
 		if (daveDebug & daveDebugByte) LOG1("timeout in ReadIBHPacket.\n");
 		return 0;
@@ -4088,7 +4091,8 @@ int DECL2 _daveSendISOPacket(daveConnection * dc, int size) {
 	daveWriteFile(dc->iface->fd.wfd, dc->msgOut, size, i);
 #endif    
 #ifdef BCCWIN
-	send((unsigned int)(dc->iface->fd.wfd), dc->msgOut, size, 0);
+	//printf("sendsock %d\n",dc->iface->fd.wfd);
+	send((SOCKET)(dc->iface->fd.wfd), dc->msgOut, size, 0); //(unsigned int)
 #endif
 	return 0;
 }
@@ -7760,279 +7764,6 @@ int DECL2 _daveListReachablePartnersNLPro(daveInterface * di,char * buf) {
 }   
 
 #endif
-
-/***
-NetLink Pro Family
-***/
-/*
-int DECL2 _daveSendNLProFamilyPacket(daveConnection * dc, int size) {
-	unsigned long i;
-	if (daveDebug & daveDebugByte) 
-		_daveDump("send packet: ",dc->msgOut,size);
-#ifdef HAVE_SELECT
-	daveWriteFile(dc->iface->fd.wfd, dc->msgOut, size, i);
-#endif    
-#ifdef BCCWIN
-	send((unsigned int)(dc->iface->fd.wfd), dc->msgOut, size, 0);
-#endif
-	return 0;
-}
-
-int DECL2 _daveReadNLProFamilyPacket(daveInterface * di,uc *b) {
-	int res,i,length;
-	fd_set FDS;
-	struct timeval t;
-	FD_ZERO(&FDS);
-	FD_SET((SOCKET)(di->fd.rfd), &FDS);
-
-	t.tv_sec = di->timeout / 1000000;
-	t.tv_usec = di->timeout % 1000000;
-
-	if (select(1, &FDS, NULL, NULL, &t) <= 0) {
-		if (daveDebug & daveDebugByte) LOG1("timeout in ReadNLProFamilyPacket.\n");
-		return 0;
-	} else {
-		i=recv((SOCKET)(di->fd.rfd), b, 2, 0);
-		res=i;
-		if (res <= 0) {
-			if (daveDebug & daveDebugByte) LOG1("timeout in ReadNLProFamilyPacket.\n");
-			return 0;
-		} else {
-			if (res<2) {
-				if (daveDebug & daveDebugByte) {
-					LOG2("res %d ",res);
-					_daveDump("readNLProFamilypacket: short packet", b, res);
-				}
-				return (0);
-			}
-			length=b[1]+0x100*b[0];
-			i=recv((SOCKET)(di->fd.rfd), b+2, length, 0);
-			res+=i;
-			if (daveDebug & daveDebugByte) {
-				LOG3("readNLProFamilypacket: %d bytes read, %d needed\n",res, length+2);
-				_daveDump("readNLProFamilypacket: packet", b, res);    
-			}
-			return (res);
-		}
-	}
-}
-
-
-#define ISOTCPminPacketLength 16
-int DECL2 _daveGetResponseNLProFamily_TCP(daveConnection * dc) {
-	int res;
-	res=_daveReadNLProFamilyPacket(dc->iface,dc->msgIn);
-	if (res==0) return daveResTimeout; 
-	return 0;
-}
-
-int DECL2 _daveExchangeNLProFamily(daveConnection * dc, PDU * p) {
-	int res;
-	if (daveDebug & daveDebugExchange) {
-		LOG2("%s enter _daveExchangeTCP\n", dc->iface->name);
-	}    
-	*(dc->msgOut+0)=0x00;
-	*(dc->msgOut+1)=8-2+p->hlen+p->plen+p->dlen; //The first 2 Bytes are the data counter, so these do not count!
-	*(dc->msgOut+2)=0x14;
-	*(dc->msgOut+3)=0x82;
-	*(dc->msgOut+4)=0x80;
-	*(dc->msgOut+5)=0x0c;
-	*(dc->msgOut+6)=0x14;
-	*(dc->msgOut+7)=0x14;
-
-	_daveSendNLProFamilyPacket(dc,8+p->hlen+p->plen+p->dlen);
-	res=_daveReadNLProFamilyPacket(dc->iface,dc->msgIn);
-	if (res==0) return daveResTimeout; 
-	return 0;
-}
-
-int DECL2 _daveInitAdapterNLProFamily(daveInterface * di) 
-{
-	int res;
-	uc t1[]={
-		0x00, 0x17, 0x01, 0x03, 0x02, 0x27, 0x00, 0x9f, 0x01, 0x14, 0x00, 0x3c, 0x00, 0x0c, 0x00, 0x00,
-		0x05, 0x02, 0x00, 0x1f, 0x02, 0x01, 0x01, 0x03, 0x81
-	};
-
-	uc r1[]= {
-		0x00, 0x09, 0x01, 0x03, 0x20, 0x56, 0x30, 0x30, 0x2e, 0x38, 0x30
-	};
-
-	uc b1[daveMaxRawLen];
-			
-	send((unsigned int)(di->fd.wfd), t1, sizeof(t1), 0);
-	res=_daveReadNLProFamilyPacket(di,b1);
-
-	return 0;
-}
-
-int DECL2 _daveConnectPLCNLProFamily(daveConnection * dc) {
-	int res, success, retries;
-
-	PDU p1;		
-
-	uc t3[]={
-		0x00, //00
-		0x12, //01
-		0x04, //02
-		0x82, //03
-		0x80, //04
-		0x0d, //05
-		0x00, //06
-		0x14, //07
-		0xe0, //08
-		0x04, //09
-		0x00, //10
-		0x80, //11
-		0x00, //12
-		0x02, //13 MPI (maybe)
-		0x00, //14
-		0x02, //15 
-		0x01, //16 Connection Type
-		0x00, //17 
-		0x01, //18 also Connection Type!
-		0x00  //19
-	};
-
-	uc t3R[]={
-		0x00, //00
-		0x1f, //01  //1c when only Routing to MPI
-		0x04, //02
-		0x82, //03
-		0x80, //04
-		0x0d, //05
-		0x00, //06
-		0x14, //07
-		0xe0, //08
-		0x04, //09
-		0x00, //10
-		0x80, //11
-		0x00, //12
-		0x02, //13 MPI
-		0x01, //14
-		0x0f, //15 //0c when only Routing to MPI
-		0x02, //16 //Connection Type
-		0x00, //17
-		0x06, //18
-		0x04, //19 //01 when only Routing to MPI (size of Destination Address)
-		0x02, //20
-		0xaa, //21 subnet1
-		0xaa, //22 subnet1
-		0x00, //23
-		0x00, //24
-		0xbb, //25 subnet2
-		0xbb, //26 subnet2
-		0xc0, //27 IP1 or MPI
-		0xa8, //28 IP2 //Byte not present when Routing to MPI
-		0x01, //29 IP3 //Byte not present when Routing to MPI
-		0xbc, //30 IP4 //Byte not present when Routing to MPI
-		0x02, //31 Connection Type Routing
-		0x04  //32 Rack, Slot
-	};
-
-	uc t4[]={
-		0x00, 0x08, 0x04, 0x82, 0x80, 0x0c, 0x14, 0x14, 0x05, 0x07
-	};
-
-	t3[13] = dc->MPIAdr;
-	t3R[13] = dc->MPIAdr;
-		
-	if (dc->routing)
-	{	
-		t3R[13] = dc->MPIAdr;
-		t3R[21] = dc->routingSubnetFirst;
-		t3R[22] = dc->routingSubnetFirst >> 8;
-		t3R[25] = dc->routingSubnetSecond;
-		t3R[26] = dc->routingSubnetSecond >> 8;
-		t3R[27] = dc->_routingDestination1;
-
-		if (dc->routingDestinationIsIP)
-		{
-			t3R[1] = 0x1f;
-			t3R[15] = 0x0f;
-			t3R[19] = 0x04;
-			t3R[28] = dc->_routingDestination2;
-			t3R[29] = dc->_routingDestination3;
-			t3R[30] = dc->_routingDestination4;
-			t3R[31] = 1; //Connection type
-			t3R[32] = dc->routingSlot + dc->routingRack*32;			
-		}
-		else
-		{
-			t3R[1] = 0x1c;
-			t3R[15] = 0x0c;
-			t3R[19] = 0x01;
-			t3R[28] = 1; //Connection type
-			t3R[29] = dc->routingSlot + dc->routingRack*32;		
-		}
-	}
-
-	if (!dc->routing)
-	{
-		memcpy(dc->msgOut, t3, sizeof(t3));	
-			_daveSendNLProFamilyPacket(dc, sizeof(t3)); 
-	}
-	else
-	{
-		memcpy(dc->msgOut, t3R, sizeof(t3R));	
-		if (dc->routingDestinationIsIP)
-			_daveSendNLProFamilyPacket(dc, sizeof(t3R)); 
-		else
-			_daveSendNLProFamilyPacket(dc, sizeof(t3R)-3); 
-	}
-	res=_daveReadNLProFamilyPacket(dc->iface,dc->msgIn);
-
-	memcpy(dc->msgOut, t4, sizeof(t4));	
-		_daveSendNLProFamilyPacket(dc, sizeof(t4)); 
-	res=_daveReadNLProFamilyPacket(dc->iface,dc->msgIn);
-
-	res= _daveNegPDUlengthRequest(dc, &p1);
-
-	return 0;
-}
-
-int DECL2 _daveListReachablePartnersNLProFamily(daveInterface * di,char * buf) {
-	int res;
-	uc b1[daveMaxRawLen];
-
-	uc t2[]={ //Get Life List Telegramm!
-		0x00, 0x03, 0x01, 0x07, 0x02 
-	};
-			
-	send((unsigned int)(di->fd.wfd), t2, sizeof(t2), 0);
-	res=_daveReadNLProFamilyPacket(di,b1);
-
-	if(135==res){
-		memcpy(buf,b1+8,126);
-		return 126;
-	} else
-		return 0;	
-}   
-
-
-int DECL2 _daveDisconnectPLCNLProFamily(daveConnection * dc)
-{
-	int res;
-	uc t1[] = {0x00, 0x07, 0x04, 0x82, 0x80, 0x0c, 0x14, 0x14, 0x80};
-
-	memcpy(dc->msgOut, t1, sizeof(t1));	
-		_daveSendNLProFamilyPacket(dc, sizeof(t1)); 
-	res=_daveReadNLProFamilyPacket(dc->iface,dc->msgIn);
-
-	return 0;
-}    
-
-int DECL2 _daveDisconnectAdapterNLProFamily(daveInterface * di) {
-	int res;
-	uc t1[] = {0x00, 0x03, 0x01, 0x04, 0x02};
-	uc b1[daveMaxRawLen];
-
-	send((unsigned int)(di->fd.wfd), t1, sizeof(t1), 0);
-	res=_daveReadNLProFamilyPacket(di,b1);
-
-	return 0;
-}
-*/
 
 _openFunc SCP_open;
 _closeFunc SCP_close;
