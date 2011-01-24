@@ -595,10 +595,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private void tryConnect_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             try
-            {               
+            {
+                var backup = myConfig.ConfigurationType;
                 myConfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
                 var tmp = new PLCConnection(myConfig);
-                
+                myConfig.ConfigurationType = backup;
+
                 tmp.Connect();
                 tmp.Dispose();
                 changeStatusLabel("Verbindung erfolgreich!");

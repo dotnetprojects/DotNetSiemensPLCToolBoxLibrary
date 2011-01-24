@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Data;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
@@ -24,9 +26,21 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         {
             int szlid = Helper.GetIntFromHexString(txtSZLid.Text);
             int szlindex = Helper.GetIntFromHexString(txtSZLindex.Text);
+
+            App.clientForm.lblStatus.Text = "";
             try
             {
                 SZLData szlData = App.clientForm.Connection.PLCGetSZL((short) szlid, (short) szlindex);
+
+                myDataGrid.Columns.Clear();
+
+                if (szlData.SZLDaten.Length>0)
+                {
+                    foreach (var prpInfo in szlData.SZLDaten[0].GetType().GetProperties())
+                    {
+                        myDataGrid.Columns.Add(new DataGridTextColumn() {Binding = new Binding(prpInfo.Name){Converter = new ByteIntArrayConverter() }, Header = prpInfo.Name});
+                    } 
+                }
                 myDataGrid.ItemsSource = szlData.SZLDaten;
             }
             catch(Exception ex)

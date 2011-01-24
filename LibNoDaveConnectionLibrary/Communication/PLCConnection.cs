@@ -522,8 +522,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //Look in SZL wich Status Telegramm is supported!
                     SZLData szlData = PLCGetSZL(0x0131, 2);
-                    SZLDataset[] szlDatasets = (SZLDataset[])szlData.SZLDaten;
-                    if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
+                    SZLDataset[] szlDatasets = szlData.SZLDaten;
+                    //if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
+                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
                         DiagDataTeletype = 0x13;
 
 
@@ -959,7 +960,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         byte[] objBuffer = new byte[retVal.Size];
                         Array.Copy(buffer, (n*retVal.Size) + 8, objBuffer, 0, retVal.Size);
-                        GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                        GCHandle handle = GCHandle.Alloc(objBuffer, GCHandleType.Pinned);
 
                         switch (retVal.SzlId & 0x00ff)
                         {
@@ -978,14 +979,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             case 0x0015:
                                 datsets.Add((xy15Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy15Dataset)));
                                 break;
+                            case 0x0016:
+                                datsets.Add((xy16Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy16Dataset)));
+                                break;
+                            case 0x0017:
+                                datsets.Add((xy17Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy17Dataset)));
+                                break;
+                            case 0x0018:
+                                datsets.Add((xy18Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy18Dataset)));
+                                break;
+                            case 0x0019:
+                                datsets.Add((xy19Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy19Dataset)));
+                                break;
+                            case 0x0021:
+                                datsets.Add((xy21Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy21Dataset)));
+                                break;
                             case 0x001C:
                                 datsets.Add((xy1CDataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy1CDataset)));
                                 break;
                             case 0x0022:
                                 datsets.Add((xy22Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy22Dataset)));
                                 break;
+                            case 0x0023:
+                                datsets.Add((xy23Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy23Dataset)));
+                                break;
                             case 0x0025:
                                 datsets.Add((xy25Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy25Dataset)));
+                                break;
+                            case 0x0031:
+                                switch (retVal.Index)
+                                {
+                                    case 1:
+                                        datsets.Add((xy31_1Dataset) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (xy31_1Dataset)));
+                                        break;
+                                    case 2:
+                                        datsets.Add((xy31_2Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy31_2Dataset)));
+                                        break;
+                                    default:
+                                        {
+                                            DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                            tmp.Bytes = objBuffer;
+                                            datsets.Add(tmp);
+                                        }
+                                        break;
+                                }
                                 break;
                             case 0x0071:
                                 datsets.Add((xy71Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy71Dataset)));
@@ -994,9 +1031,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 datsets.Add((xy74Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy74Dataset)));
                                 break;
                             default:
-                                DefaultSZLDataset tmp = new DefaultSZLDataset();
-                                tmp.Bytes = objBuffer;
-                                datsets.Add(tmp);
+                                {
+                                    DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                    tmp.Bytes = objBuffer;
+                                    datsets.Add(tmp);                                   
+                                }
                                 break;
                         }
 

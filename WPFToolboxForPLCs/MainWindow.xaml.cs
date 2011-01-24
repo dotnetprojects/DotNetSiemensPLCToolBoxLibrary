@@ -131,8 +131,12 @@ namespace WPFToolboxForSiemensPLCs
 
         private void mnuConfig_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.ShowConfiguration("WPFToolboxForSiemensPLCs",true);
-            Connection = new PLCConnection("WPFToolboxForSiemensPLCs");
+            App.clientForm.lblStatus.Text = "";
+            
+                Configuration.ShowConfiguration("WPFToolboxForSiemensPLCs", true);
+                Connection = new PLCConnection("WPFToolboxForSiemensPLCs");
+            
+            
         }
 
         private void mnuOnlineBlocks_Click(object sender, RoutedEventArgs e)
@@ -155,7 +159,15 @@ namespace WPFToolboxForSiemensPLCs
 
         private void mnuConnect_Click(object sender, RoutedEventArgs e)
         {
-            Connection.Connect();
+            App.clientForm.lblStatus.Text = "";
+            try
+            {
+                Connection.Connect();
+            }
+            catch (Exception ex)
+            {
+                App.clientForm.lblStatus.Text = ex.Message;
+            }
         }
 
         private void mnuDisconnect_Click(object sender, RoutedEventArgs e)
