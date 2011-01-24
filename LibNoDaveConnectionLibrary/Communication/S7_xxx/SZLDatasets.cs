@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 {
@@ -18,6 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy00Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]        
         private ushort _szlId;
         public UInt16 SZL_id
         {
@@ -29,6 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy11Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]        
         private short _index;
         public short Index
         {
@@ -44,6 +47,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _mlfB = value; }
         }
 
+        [Endian(Endianness.BigEndian)]      
         private ushort _bgTyp;
         public UInt16 BGTyp
         {
@@ -51,6 +55,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _bgTyp = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _ausbg1;
         public UInt16 Ausbg1
         {
@@ -58,6 +63,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ausbg1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _ausbg2;
         public UInt16 Ausbg2
         {
@@ -69,6 +75,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy12Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _feature;
         public UInt16 Feature
         {
@@ -81,6 +88,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy13Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -88,6 +96,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _code;
         public UInt16 Code
         {
@@ -95,6 +104,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _code = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _size;
         public UInt32 Size
         {
@@ -102,6 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _size = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _mode;
         public UInt16 Mode
         {
@@ -109,6 +120,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _mode = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _granu;
         public UInt16 Granu
         {
@@ -116,6 +128,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _granu = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _ber1;
         public UInt32 Ber1
         {
@@ -123,6 +136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ber1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _belegt1;
         public UInt32 Belegt1
         {
@@ -130,6 +144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _belegt1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _block1;
         public UInt32 Block1
         {
@@ -137,6 +152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _block1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _ber2;
         public UInt32 Ber2
         {
@@ -144,6 +160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ber2 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _belegt2;
         public UInt32 Belegt2
         {
@@ -151,6 +168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _belegt2 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _block2;
         public UInt32 Block2
         {
@@ -163,6 +181,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy14Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -170,6 +189,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _code;
         public UInt16 Code
         {
@@ -177,6 +197,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _code = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _anzahl;
         public UInt16 Anzahl
         {
@@ -184,6 +205,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _anzahl = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _reman;
         public UInt16 Reman
         {
@@ -195,6 +217,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy15Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -202,6 +225,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _maxAnz;
         public UInt16 MaxAnz
         {
@@ -209,6 +233,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _maxAnz = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _maxLng;
         public UInt16 MaxLng
         {
@@ -216,6 +241,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _maxLng = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _maxabl;
         public UInt32 Maxabl
         {
@@ -227,6 +253,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy16Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -234,6 +261,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _maxAnz;
         public UInt16 MaxAnz
         {
@@ -241,6 +269,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _maxAnz = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _anzAkt;
         public UInt16 AnzAkt
         {
@@ -252,6 +281,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy17Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _sdbNr;
         public UInt16 SDBNr
         {
@@ -259,6 +289,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _sdbNr = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _state;
         public UInt16 State
         {
@@ -277,6 +308,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _rackNr = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _anzSt;
         public UInt16 AnzSt
         {
@@ -288,6 +320,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy19Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -313,6 +346,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy21Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _ereig;
         public UInt16 ereig
         {
@@ -338,6 +372,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy1CDataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -357,14 +392,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy22Dataset : SZLDataset
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-        private UInt16[] _info;
-        public UInt16[] Info
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        private byte[] _info;
+        public byte[] Info
         {
             get { return _info; }
             set { _info = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _al1;
         public UInt16 Al1
         {
@@ -372,6 +408,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _al1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _al2;
         public UInt16 Al2
         {
@@ -379,6 +416,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _al2 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _al3;
         public UInt32 Al3
         {
@@ -404,6 +442,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _aeStat = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _aefstat;
         public UInt16 Aefstat
         {
@@ -439,6 +478,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _aktSib = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _grld;
         public UInt16 Grld
         {
@@ -446,6 +486,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _grld = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _progFm;
         public UInt32 ProgFm
         {
@@ -453,6 +494,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _progFm = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _syncFm;
         public UInt32 SyncFm
         {
@@ -464,6 +506,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy24Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _ereig;
         public UInt16 Ereig
         {
@@ -485,6 +528,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _bzüId = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _res;
         public UInt32 Res
         {
@@ -520,9 +564,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _anlInfo4 = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        private UInt16[] _time;
-        public UInt16[] Time
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        private byte[] _time;
+        public byte[] Time
         {
             get { return _time; }
             set { _time = value; }
@@ -564,6 +608,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy31_1Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -571,6 +616,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _pdu;
         public UInt16 Pdu
         {
@@ -578,6 +624,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _pdu = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _anz;
         public UInt16 Anz
         {
@@ -585,6 +632,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _anz = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _mpiBps;
         public UInt32 Mpi_bps
         {
@@ -592,6 +640,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _mpiBps = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private uint _kbusBps;
         public UInt32 Kbus_bps
         {
@@ -599,9 +648,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _kbusBps = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 13)]
-        private UInt16[] _res;
-        public UInt16[] res
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+        private byte[] _res;
+        public byte[] res
         {
             get { return _res; }
             set { _res = value; }
@@ -611,6 +660,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy31_2Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -732,6 +782,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ergPar = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _ergPat1;
         public UInt16 erg_pat_1
         {
@@ -739,6 +790,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ergPat1 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _ergPat2;
         public UInt16 erg_pat_2
         {
@@ -746,6 +798,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ergPat2 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _force;
         public UInt16 force
         {
@@ -753,6 +806,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _force = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _time;
         public UInt16 time
         {
@@ -760,9 +814,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _time = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        private UInt16[] _res;
-        public UInt16[] res
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        private byte[] _res;
+        public byte[] res
         {
             get { return _res; }
             set { _res = value; }
@@ -772,6 +826,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy31_3Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _index;
         public UInt16 Index
         {
@@ -807,6 +862,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _funkt3 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private short _data;
         public Int16 Data
         {
@@ -814,6 +870,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _data = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private short _anz;
         public Int16 Anz
         {
@@ -821,6 +878,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _anz = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private short _perMin;
         public Int16 Per_Min
         {
@@ -828,6 +886,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _perMin = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private short _perMax;
         public Int16 Per_Max
         {
@@ -835,9 +894,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _perMax = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 13)]
-        private UInt16[] _res;
-        public UInt16[] res
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+        private byte[] _res;
+        public byte[] res
         {
             get { return _res; }
             set { _res = value; }
@@ -847,6 +906,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy71Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _redinf;
         public UInt16 redinf
         {
@@ -868,6 +928,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _mwstat2 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _hsfcinfo;
         public UInt16 hsfcinfo
         {
@@ -875,6 +936,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _hsfcinfo = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _samfehl;
         public UInt16 samfehl
         {
@@ -882,6 +944,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _samfehl = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _bzCpu0;
         public UInt16 bz_cpu_0
         {
@@ -889,6 +952,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _bzCpu0 = value; }
         }
 
+        [Endian(Endianness.BigEndian)]
         private ushort _bzCpu1;
         public UInt16 bz_cpu_1
         {
@@ -914,6 +978,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy74Dataset : SZLDataset
     {
+        [Endian(Endianness.BigEndian)]
         private ushort _ledKennung;
         public UInt16 led_kennung
         {

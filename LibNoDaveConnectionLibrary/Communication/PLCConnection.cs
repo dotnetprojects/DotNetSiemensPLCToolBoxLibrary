@@ -32,6 +32,7 @@ using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Microsoft.Win32;
 
@@ -960,69 +961,69 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         byte[] objBuffer = new byte[retVal.Size];
                         Array.Copy(buffer, (n*retVal.Size) + 8, objBuffer, 0, retVal.Size);
-                        GCHandle handle = GCHandle.Alloc(objBuffer, GCHandleType.Pinned);
+                        //GCHandle handle = GCHandle.Alloc(objBuffer, GCHandleType.Pinned);
 
                         switch (retVal.SzlId & 0x00ff)
                         {
                             case 0x0000:
-                                datsets.Add((xy00Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy00Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy00Dataset>(objBuffer));
                                 break;
                             case 0x0011:
-                                datsets.Add((xy11Dataset) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (xy11Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy11Dataset>(objBuffer));
                                 break;
                             case 0x0012:
-                                datsets.Add((xy12Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy12Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy12Dataset>(objBuffer));
                                 break;
                             case 0x0013:
-                                datsets.Add((xy13Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy13Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy13Dataset>(objBuffer));
                                 break;
                             case 0x0014:
-                                datsets.Add((xy14Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy14Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy14Dataset>(objBuffer));
                                 break;
                             case 0x0015:
-                                datsets.Add((xy15Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy15Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy15Dataset>(objBuffer));
                                 break;
                             case 0x0016:
-                                datsets.Add((xy16Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy16Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy16Dataset>(objBuffer));
                                 break;
                             case 0x0017:
-                                datsets.Add((xy17Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy17Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy17Dataset>(objBuffer));
                                 break;
                             case 0x0018:
-                                datsets.Add((xy18Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy18Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy18Dataset>(objBuffer));
                                 break;
                             case 0x0019:
-                                datsets.Add((xy19Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy19Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy19Dataset>(objBuffer));
                                 break;
                             case 0x0021:
-                                datsets.Add((xy21Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy21Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy21Dataset>(objBuffer));
                                 break;
                             case 0x001C:
-                                datsets.Add((xy1CDataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy1CDataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy1CDataset>(objBuffer));
                                 break;
                             case 0x0022:
-                                datsets.Add((xy22Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy22Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy22Dataset>(objBuffer));
                                 break;
                             case 0x0023:
-                                datsets.Add((xy23Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy23Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy23Dataset>(objBuffer));
                                 break;
                             case 0x0024:
-                                datsets.Add((xy24Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy24Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy24Dataset>(objBuffer));
                                 break;
                             case 0x0025:
-                                datsets.Add((xy25Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy25Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy25Dataset>(objBuffer));
                                 break;
                             case 0x0031:
                                 switch (retVal.Index)
                                 {
                                     case 1:
-                                        datsets.Add((xy31_1Dataset) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (xy31_1Dataset)));
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_1Dataset>(objBuffer));
                                         break;
                                     case 2:
-                                        datsets.Add((xy31_2Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy31_2Dataset)));
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_2Dataset>(objBuffer));
                                         break;
                                     case 3:
-                                        datsets.Add((xy31_3Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy31_3Dataset)));
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy31_3Dataset>(objBuffer));
                                         break;
                                     default:
                                         {
@@ -1034,10 +1035,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                                 break;
                             case 0x0071:
-                                datsets.Add((xy71Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy71Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy71Dataset>(objBuffer));
                                 break;
                             case 0x0074:
-                                datsets.Add((xy74Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy74Dataset)));
+                                datsets.Add(EndianessMarshaler.BytesToStruct<xy74Dataset>(objBuffer));
                                 break;
                             default:
                                 {
@@ -1048,7 +1049,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 break;
                         }
 
-                        handle.Free();
+                        //handle.Free();
                     }
 
                     retVal.SZLDaten = datsets.ToArray();

@@ -108,6 +108,7 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7ProjectBlockInfo.cs" />
     <Compile Include="DataTypes\TagDataType.cs" />
     <Compile Include="DataTypes\TagDisplayDataType.cs" />
+    <Compile Include="General\EndianAttribute.cs" />
     <Compile Include="General\NumericComparer.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
     <Compile Include="General\ZipHelper.cs" />
