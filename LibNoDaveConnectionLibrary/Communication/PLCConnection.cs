@@ -964,6 +964,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         switch (retVal.SzlId & 0x00ff)
                         {
+                            case 0x0000:
+                                datsets.Add((xy00Dataset)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(xy00Dataset)));
+                                break;
                             case 0x0011:
                                 datsets.Add((xy11Dataset) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (xy11Dataset)));
                                 break;
