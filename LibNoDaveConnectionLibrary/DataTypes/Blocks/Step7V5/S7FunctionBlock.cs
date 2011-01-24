@@ -1,43 +1,68 @@
-﻿/*
- This implements a high level Wrapper between libnodave.dll and applications written
- in MS .Net languages.
- 
- This ConnectionLibrary was written by Jochen Kuehner
- * http://jfk-solutuions.de/
- * 
- * Thanks go to:
- * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
- * Zottel         -> For LibNoDave
-
- WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
- it under the terms of the GNU Library General Public License as published by
- the Free Software Foundation; either version 2, or (at your option)
- any later version.
-
- WPFToolboxForSiemensPLCs is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU Library General Public License
- along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
-*/
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class S7FunctionBlock : S7Block, IFunctionBlock
+    public class S7FunctionBlock : S7Block, IFunctionBlock, INotifyPropertyChanged
     {
-        public S7DataRow Parameter { get; set; }
-        public List<FunctionBlockRow> AWLCode { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public List<Network> Networks { get; set; }
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
 
-        public string Description{ get; set; }
+        private S7DataRow _parameter;
+        public S7DataRow Parameter
+        {
+            get { return _parameter; }
+            set { _parameter = value;
+            NotifyPropertyChanged("Parameter");
+            }
+        }
+
+        private List<FunctionBlockRow> _awlCode;
+        public List<FunctionBlockRow> AWLCode
+        {
+            get { return _awlCode; }
+            set { _awlCode = value;
+            NotifyPropertyChanged("AWLCode");
+            }
+        }
+
+        private List<Network> _networks;
+        public List<Network> Networks
+        {
+            get { return _networks; }
+            set { _networks = value;
+            NotifyPropertyChanged("Networks");
+            }
+        }
+
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value;
+            NotifyPropertyChanged("Description");
+            }
+        }
+
+        private PLCConnection.DiagnosticData _diagnosticData;
+        public PLCConnection.DiagnosticData DiagnosticData
+        {
+            get { return _diagnosticData; }
+            set { _diagnosticData = value;
+                NotifyPropertyChanged("DiagnosticData");
+            }
+        }
 
         //Todo: Implement this
         public void RenameParameter(string oldName, string newName)

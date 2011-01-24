@@ -56,10 +56,10 @@
 
             <DockPanel LastChildFill="True">
                 <Controls:AWLOnlineStatusView 
-                    Margin="0 -20 0 0" 
+                    Margin="0 -23 0 0" 
                     DockPanel.Dock="Right" 
                     HorizontalAlignment="Right" 
-                    Visibility="{Binding aa,Converter={StaticResource NullCollapsedConverter}}"
+                    Visibility="{Binding DisplayNetwork.Parent.DiagnosticData,ElementName=NetworkEditorWindow,Converter={StaticResource NullCollapsedConverter}}"
                     
                     DisplayNetwork="{Binding DisplayNetwork,ElementName=NetworkEditorWindow}">
                 </Controls:AWLOnlineStatusView>

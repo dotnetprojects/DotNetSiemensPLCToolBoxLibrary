@@ -46,6 +46,7 @@
                 <MenuItem Header="Show Online Blocks" Name="mnuOnlineBlocks" Click="mnuOnlineBlocks_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="View Block" Name="mnuViewBlock" Click="mnuViewBlock_Click"></MenuItem>
+                <MenuItem Header="Unview Block" Name="mnuUnViewBlock" Click="mnuUnViewBlock_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="SZL Window" Name="mnuSZLWindow" Click="mnuSZLWindow_Click"></MenuItem>
             </MenuItem>

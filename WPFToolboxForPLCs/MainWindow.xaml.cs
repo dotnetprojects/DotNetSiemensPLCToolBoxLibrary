@@ -64,7 +64,8 @@ namespace WPFToolboxForSiemensPLCs
             if (ret == true)
             {
                 Project prj = Projects.LoadProject(op.FileName, showDeleted);
-                ProjectTree.Projects.Add(prj.ProjectStructure);
+                if (prj != null)
+                    ProjectTree.Projects.Add(prj.ProjectStructure);
             }
 
             ProjectTree.parentDockingManager = DockManager;
@@ -197,6 +198,16 @@ namespace WPFToolboxForSiemensPLCs
             //tmp.ToolTip = fld.ToString();
             tmp.Show(DockManager);
             DockManager.ActiveDocument = tmp;
+        }
+
+        private void mnuUnViewBlock_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (App.activeDocument is ContentWindowFunctionBlockEditor)
+            {
+                ContentWindowFunctionBlockEditor blkEdit = (ContentWindowFunctionBlockEditor)App.activeDocument;
+                blkEdit.unviewBlockStatus();
+            }
         }
     }
 }

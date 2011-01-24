@@ -81,6 +81,8 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         public void viewBlockStatus()
         {
+            App.clientForm.lblStatus.Text = "";
+
             if (myBlock is S7FunctionBlock)
             {
                 try
@@ -121,11 +123,14 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         public void unviewBlockStatus()
         {
-            diagTimer.Start();
+            diagTimer.Stop();
             diagTimer = null;
-            MyDiagnosticData.Close();
-            MyDiagnosticData.RemoveDiagnosticData();
-            MyDiagnosticData = null;
+            if (MyDiagnosticData != null)
+            {
+                MyDiagnosticData.Close();
+                MyDiagnosticData.RemoveDiagnosticData();
+                MyDiagnosticData = null;
+            }
         }
 
         private void DocumentContent_IsActiveDocumentChanged(object sender, EventArgs e)
@@ -140,6 +145,11 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 App.activeDocument = null;
                 App.clientForm.PrintData = null;
             }
+        }
+
+        private void DocumentContent_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            unviewBlockStatus();
         }
     }
 }

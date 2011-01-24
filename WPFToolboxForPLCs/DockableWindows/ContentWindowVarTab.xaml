@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
              mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
-    <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True" CanUserAddRows="False"
+    <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True" CanUserAddRows="True"
               AlternatingRowBackground="Gainsboro"  AlternationCount="2">
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="Comment" Width="Auto" IsReadOnly="True" SortMemberPath="Comment" >

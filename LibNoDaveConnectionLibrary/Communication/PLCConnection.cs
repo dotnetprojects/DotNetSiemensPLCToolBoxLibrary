@@ -445,6 +445,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             public void RemoveDiagnosticData()
             {
+                this.myBlock.DiagnosticData = null;
+
                 foreach (var tmp in ByteAdressNumerPLCFunctionBlocks)
                     foreach (var tmp2 in tmp.Value)
                         tmp2.ActualBlockStatus = null;
@@ -705,6 +707,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     retDiagnosticData.DiagDataTeletype = DiagDataTeletype;
 
+                    myBlock.DiagnosticData = retDiagnosticData;
                     return retDiagnosticData;
                 }
             return null;

@@ -17,42 +17,42 @@
                 <DataGridTemplateColumn Header="VKE" Width="Auto" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding  ActualBlockStatus.VKE}" />
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.VKE}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="STA" Width="Auto" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding  ActualBlockStatus.STA}" />
+                            <TextBlock Height="10" Text="{Binding  ActualBlockStatus.STA}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>                               
                 <DataGridTemplateColumn Header="Akku 1" Width="Auto" IsReadOnly="True" Visibility="Visible" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ActualBlockStatus.Akku1}" />
+                            <TextBlock Height="10" Text="{Binding ActualBlockStatus.Akku1}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Akku 2" Width="Auto" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ActualBlockStatus.Akku2}" />
+                            <TextBlock Height="10" Text="{Binding ActualBlockStatus.Akku2}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="DB" Width="Auto" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding  ActualBlockStatus.DB}" />
+                            <TextBlock Height="10" Text="{Binding  ActualBlockStatus.DB}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="DI" Width="Auto" IsReadOnly="True" Visibility="Visible">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding  ActualBlockStatus.DI}" />
+                            <TextBlock Height="10" Text="{Binding  ActualBlockStatus.DI}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
