@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:NetworkEditor="clr-namespace:WPFToolboxForSiemensPLCs.Controls.NetworkEditor" xmlns:Blocks="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged" Closing="DocumentContent_Closing">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:NetworkEditor="clr-namespace:WPFToolboxForSiemensPLCs.Controls.NetworkEditor" xmlns:Blocks="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" xmlns:ExposeFirstVisibleItemBehavior="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons.ExposeFirstVisibleItemBehavior" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged" Closing="DocumentContent_Closing">
     <ad:DocumentContent.Resources>
         <Style TargetType="ListBoxItem">
             <Style.Resources>
@@ -81,7 +81,7 @@
 				FontSize="10pt"				
                 ShowLineNumbers="True" MouseHover="textEditor_MouseHover" MouseHoverStopped="textEditor_MouseHoverStopped" Visibility="Visible"></avalonEdit:TextEditor>
             -->
-        <ListBox ScrollViewer.CanContentScroll="False" Name="myLst" Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
+        <ListBox ScrollViewer.CanContentScroll="False" Name="myLst" Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.ScrollChanged="ScrollChanged" >
            <ListBox.ItemTemplate>               
                 <DataTemplate>
                     <NetworkEditor:NetworkEditor DisplayNetwork="{Binding}" NetworkNumber="{Binding Converter={StaticResource ItemLineNumbersConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}"></NetworkEditor:NetworkEditor>

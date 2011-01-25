@@ -41,6 +41,37 @@ namespace WPFToolboxForSiemensPLCs
         }
 
         /// <summary>
+        /// Finds a child of the given item on the visual tree.
+        /// </summary>
+        /// <typeparam name="T">The type of the queried item.</typeparam>
+        /// <param name="parent">A parent of the queried item.</param>
+        /// <returns>The first child item that matches the submitted
+        /// type parameter. If not matching item can be found, a null
+        /// reference is being returned.</returns>
+        public static T TryFindChild<T>(this DependencyObject parent)
+            where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T)
+                {
+                    return (T)child;
+                }
+                else
+                {
+                    child = TryFindChild<T>(child);
+                    if (child != null)
+                    {
+                        return (T)child;
+                    }
+                }
+            }
+            return null;
+        } 
+
+        /// <summary>
         /// This method is an alternative to WPF's
         /// <see cref="VisualTreeHelper.GetParent"/> method, which also
         /// supports content elements. Keep in mind that for content element,

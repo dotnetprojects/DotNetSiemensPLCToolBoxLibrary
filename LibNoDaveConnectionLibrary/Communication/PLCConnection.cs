@@ -527,7 +527,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     SZLData szlData = PLCGetSZL(0x0131, 2);
                     SZLDataset[] szlDatasets = szlData.SZLDaten;
                     //if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
-                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
+                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x0800) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
                         DiagDataTeletype = 0x13;
 
 
@@ -537,7 +537,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     short answSize = (short)(S7FunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype) + 2);
 
 
-                    int askSize = 4; //This is minimum 4 (For the Start Registers)
                     //Todo: Implement Callingpath
                     int askHeaderSize = 28; //This is 28 when no Callingpath is defined! (Callingpatth is not yet implemented)
 
@@ -551,6 +550,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //Adress of the lastByte wich was added to a Row
                     int lastByteAddress = 0;
+
+                    //int askSize = 4; //This is minimum 4 (For the Start Registers)
 
                     S7FunctionBlockRow prevFunctionBlock = null;
 
@@ -610,24 +611,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                             //Ausgewählte Register für die zeile in die Abfrage eintragen
                                             byte askRegisterByte = GetByteForSelectedRegisters(askRegister, DiagDataTeletype);
                                             LinesSelectedRegisters.AddRange(new byte[] { bt[1], bt[0], 0x00, askRegisterByte });
-
-                                            //Jede Anfrage braucht 4 Byte
-                                            askSize += 4;
+                                            //askSize += 4;
                                         }
                                         else
                                         {
                                             byte askRegisterByte = GetByteForSelectedRegisters(askRegister, DiagDataTeletype);
                                             LinesSelectedRegisters.AddRange(new byte[] { 0x80, askRegisterByte });
-
-                                            //Jede Anfrage braucht min 2 Byte
-                                            askSize += 2;
+                                            //askSize += 2;
 
                                             for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2) / 2); g++)
                                             {
                                                 byte wr = 0x00;
                                                 //if (g % 2 != 0) wr = 0x80;
                                                 LinesSelectedRegisters.AddRange(new byte[] { wr, wr });
-                                                askSize += 2;
+                                                //askSize += 2;
                                             }
                                         }
 
@@ -646,12 +643,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         {
                                             //Add for every Command, that asks for no Register a 0x80 0x80 to the ask Command!
                                             LinesSelectedRegisters.AddRange(new byte[] { 0x80, 0x80 });
+                                            //askSize += 2;
 
                                             for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2) / 2); g++)
                                             {
                                                 byte wr = 0x00;
                                                 //if (g % 2 != 0) wr = 0x80;
                                                 LinesSelectedRegisters.AddRange(new byte[] { wr, wr });
+                                                //askSize += 2;
                                             }
                                         }
 
@@ -672,6 +671,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         prevFunctionBlock = plcFunctionBlockRow;
                     }
+
+                    int askSize = LinesSelectedRegisters.Count + 2;
+                    if (DiagDataTeletype == 0x13)
+                        askSize += 2;
 
                     if (answSize <= 0)
                         return null;

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using WPFToolboxForSiemensPLCs.DockableWindows;
@@ -164,6 +165,9 @@ namespace WPFToolboxForSiemensPLCs
             try
             {
                 Connection.Connect();
+                var szl = Connection.PLCGetSZL(0x111, 1);
+                if (szl!=null && szl.SZLDaten[0] is xy11Dataset)
+                    lblStatus.Text = "MlfB der CPU: " + ((xy11Dataset) szl.SZLDaten[0]).MlfB;
             }
             catch (Exception ex)
             {

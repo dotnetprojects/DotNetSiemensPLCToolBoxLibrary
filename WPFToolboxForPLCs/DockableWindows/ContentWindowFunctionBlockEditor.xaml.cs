@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
@@ -16,11 +17,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
     {
         IHighlightingDefinition customHighlighting;
 
-      
-        
         private Block myBlock;
-        private string myBlockString;         
+        private string myBlockString;
 
+        
         public ContentWindowFunctionBlockEditor(object myBlock)
         {
             InitializeComponent();
@@ -28,12 +28,12 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             this.myBlock = (Block)myBlock;
             myBlockString = this.myBlock.ToString();
 
-           if (myBlock is S7FunctionBlock)
+            if (myBlock is S7FunctionBlock)
             {
-                if (((S7FunctionBlock) myBlock).Parameter != null)
-                    myTree.DataContext = ((S7FunctionBlock) myBlock).Parameter.Children;
+                if (((S7FunctionBlock)myBlock).Parameter != null)
+                    myTree.DataContext = ((S7FunctionBlock)myBlock).Parameter.Children;
 
-                myLst.ItemsSource = ((S7FunctionBlock) myBlock).Networks;
+                myLst.ItemsSource = ((S7FunctionBlock)myBlock).Networks;
             }
             else
             {
@@ -43,7 +43,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             this.DataContext = this;
         }
 
-      
+
         private void myTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (myTree.SelectedItem != null)
@@ -65,7 +65,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         }
 
         private PLCConnection.DiagnosticData MyDiagnosticData;
-        
+
         DispatcherTimer diagTimer = null;
 
         /*
@@ -79,15 +79,53 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             DependencyProperty.Register("MyDiagnosticData", typeof(PLCConnection.DiagnosticData), typeof(ContentWindowFunctionBlockEditor), new UIPropertyMetadata(null));
         */
 
+        private void ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            
+        }
+
+
+
+        public void getFirstVisbleExpandedItem()
+        {
+
+            Network nw = null;
+
+            VirtualizingStackPanel panel = UIHelpers.TryFindChild<VirtualizingStackPanel>(myLst);
+            if (myLst.Items.Count > 0 && panel != null)
+            {
+                int offset = (panel.Orientation == Orientation.Horizontal) ? (int) panel.HorizontalOffset : (int) panel.VerticalOffset;
+                var item = myLst.Items[offset];
+
+                int idx = myLst.Items.IndexOf(item);
+
+                for (int n=idx;n<myLst.Items.Count;n++)
+                {
+                    var exp = UIHelpers.TryFindChild<Expander>(myLst.ItemContainerGenerator.ContainerFromIndex(n));
+                    if (exp.IsExpanded)
+                    {
+                        nw = (Network)myLst.Items[n];
+                        break;
+                    }
+                }
+            }
+        }
+
         public void viewBlockStatus()
         {
             App.clientForm.lblStatus.Text = "";
+
+            //myLst.sc
 
             if (myBlock is S7FunctionBlock)
             {
                 try
                 {
-                    S7FunctionBlock myS7Blk = (S7FunctionBlock) myBlock;
+
+                    getFirstVisbleExpandedItem();
+
+
+                    S7FunctionBlock myS7Blk = (S7FunctionBlock)myBlock;
                     MyDiagnosticData = App.clientForm.Connection.PLCstartRequestDiagnosticData(myS7Blk, 0,
                                                                                                S7FunctionBlockRow.
                                                                                                    SelectedStatusValues.
@@ -101,7 +139,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     }
                     diagTimer.Start();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     App.clientForm.lblStatus.Text = ex.Message;
                     if (diagTimer != null)
