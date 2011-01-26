@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace SimpleCSharpDemonstration
 {
@@ -52,6 +53,9 @@ namespace SimpleCSharpDemonstration
 
         private void button3_Click(object sender, EventArgs e)
         {
+
+            S7DataBlock myDB = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectUDT();
+
             DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
             symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();
             

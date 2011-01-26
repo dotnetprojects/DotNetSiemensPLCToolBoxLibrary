@@ -40,6 +40,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (S7VATBlock)myFrm.retVal;
         }
 
+        public static S7DataBlock SelectUDT()
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            myFrm.SelectPart = SelectPartType.DataType;
+            myFrm.ShowDialog();
+            return (S7DataBlock)myFrm.retVal;
+        }
+
         //This selects a Tag From a Step 7 Project
         public static PLCTag SelectTAG()
         {

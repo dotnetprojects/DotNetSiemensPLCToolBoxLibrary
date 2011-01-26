@@ -99,12 +99,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (tmp.myObject.GetType() == typeof(BlocksOfflineFolder))
             {
                 BlocksOfflineFolder blkFld = (BlocksOfflineFolder) tmp.myObject;
-                if (SelectPart == SelectPartType.VariableTable)
+                if ((int)SelectPart>1000) 
                 {
                     List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList();
                     foreach (ProjectBlockInfo step7ProjectBlockInfo in blocks)
                     {
-                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT)
+                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT && SelectPart==SelectPartType.VariableTable)
+                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && SelectPart == SelectPartType.DataBlock)
+                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.UDT && SelectPart == SelectPartType.DataType)
+                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                        if ((step7ProjectBlockInfo.BlockType == PLCBlockType.FB || step7ProjectBlockInfo.BlockType == PLCBlockType.FC) && SelectPart == SelectPartType.FunctionBlock)
                             lstProjectFolder.Items.Add(step7ProjectBlockInfo);
                     }
                     
@@ -152,8 +158,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     this.Hide();
                     S7ProjectBlockInfo tmp = (S7ProjectBlockInfo) lstProjectFolder.SelectedItem;
-                    retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
-                    ((Block) retVal).ParentFolder = tmp.ParentFolder;
+                    if (tmp.BlockType == PLCBlockType.UDT)
+                    {
+                        retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
+                        ((Block) retVal).ParentFolder = tmp.ParentFolder;
+                    }
+                }
+            }
+            else if (SelectPart == SelectPartType.DataType)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    S7ProjectBlockInfo tmp = (S7ProjectBlockInfo)lstProjectFolder.SelectedItem;
+                    if (tmp.BlockType == PLCBlockType.UDT)
+                    {
+                        retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
+                        ((Block) retVal).ParentFolder = tmp.ParentFolder;
+                    }
                 }
             }
             else if (SelectPart == SelectPartType.SymbolTable)

@@ -86,29 +86,33 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
 
 
-        public void getFirstVisbleExpandedItem()
+        public S7FunctionBlockRow getFirstVisbleExpandedItem()
         {
 
             Network nw = null;
 
             VirtualizingStackPanel panel = UIHelpers.TryFindChild<VirtualizingStackPanel>(myLst);
+            //ScrollViewer panel = UIHelpers.TryFindChild<ScrollViewer>(myLst);
             if (myLst.Items.Count > 0 && panel != null)
             {
                 int offset = (panel.Orientation == Orientation.Horizontal) ? (int) panel.HorizontalOffset : (int) panel.VerticalOffset;
+
+                //var item = UIHelpers.TryFindFromPoint<ListBoxItem>(myLst, new Point(myLst.po,  panel.HorizontalOffset));
+
                 var item = myLst.Items[offset];
 
                 int idx = myLst.Items.IndexOf(item);
 
-                for (int n=idx;n<myLst.Items.Count;n++)
+                for (int n = idx; n < myLst.Items.Count; n++)
                 {
                     var exp = UIHelpers.TryFindChild<Expander>(myLst.ItemContainerGenerator.ContainerFromIndex(n));
                     if (exp.IsExpanded)
                     {
-                        nw = (Network)myLst.Items[n];
-                        break;
+                        return (S7FunctionBlockRow) ((S7FunctionBlockNetwork) myLst.Items[n]).AWLCode[0];
                     }
                 }
             }
+            return null;
         }
 
         public void viewBlockStatus()
@@ -122,20 +126,27 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 try
                 {
 
-                    getFirstVisbleExpandedItem();
+                    var visRow = getFirstVisbleExpandedItem();
+                    
+                    int bytepos = 0;
+
+                    if (visRow!=null)
+                        foreach (var row in ((S7FunctionBlock)myBlock).AWLCode)
+                        {
+                            if (visRow == row)
+                                break;
+                            bytepos += ((S7FunctionBlockRow) row).ByteSize;
+                        }
 
 
                     S7FunctionBlock myS7Blk = (S7FunctionBlock)myBlock;
-                    MyDiagnosticData = App.clientForm.Connection.PLCstartRequestDiagnosticData(myS7Blk, 0,
-                                                                                               S7FunctionBlockRow.
-                                                                                                   SelectedStatusValues.
-                                                                                                   ALL);
+                    MyDiagnosticData = App.clientForm.Connection.PLCstartRequestDiagnosticData(myS7Blk, bytepos, S7FunctionBlockRow.SelectedStatusValues.ALL);
 
                     if (diagTimer == null)
                     {
                         diagTimer = new DispatcherTimer(); // DispatcherTimer();
                         diagTimer.Tick += new EventHandler(diagTimer_Tick);
-                        diagTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                        diagTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
                     }
                     diagTimer.Start();
                 }

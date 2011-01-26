@@ -729,6 +729,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         /// <returns>true if string can be parsed</returns>
         public static bool IsNumber(string numberString)
         {
+            Decimal dec;
+            return decimal.TryParse(numberString, out dec);
+
             char[] numbers = numberString.ToCharArray();
             int number_count = 0;
             int point_count = 0;
