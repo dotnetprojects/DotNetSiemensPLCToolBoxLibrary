@@ -26,7 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;

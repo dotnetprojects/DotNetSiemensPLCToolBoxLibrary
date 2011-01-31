@@ -49,6 +49,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communication\Configuration.cs" />
+    <Compile Include="Communication\Library\ByteFunctions.cs" />
+    <Compile Include="Communication\Library\Connection.cs" />
+    <Compile Include="Communication\Library\TagsPdu.cs" />
+    <Compile Include="Communication\Library\Interface.cs" />
+    <Compile Include="Communication\Library\internal\TCPConnection.cs" />
+    <Compile Include="Communication\Library\NetLinkLiteInterface.cs" />
+    <Compile Include="Communication\Library\NetLinkProInterface.cs" />
+    <Compile Include="Communication\Library\NetworkInterface.cs" />
+    <Compile Include="Communication\Library\Pdu.cs" />
+    <Compile Include="Communication\Library\S7OnlineInterface.cs" />
+    <Compile Include="Communication\Library\SerialInterface.cs" />
+    <Compile Include="Communication\Library\TCPInterface.cs" />
+    <Compile Include="Communication\Library\ResultSet.cs" />
     <Compile Include="Communication\S7_xxx\SZLData.cs" />
     <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />
