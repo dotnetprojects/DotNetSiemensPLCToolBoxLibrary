@@ -14,6 +14,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 	public class S5Parameter
 	{
 		public string Name {get; set;}
+        public string Comment { get; set; }
+        public string Value { get; set; }
 		public S5ParameterFormat S5ParameterFormat {get; set;}
 		public S5ParameterType S5ParameterType {get; set;}
 		

@@ -50,8 +50,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
             if (commentBlock != null &&  main._children != null && main._children.Count > 0)
             {
-                string aa = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock);
-           
                 int nr = 28;
                 int hdlen = 0x7f & commentBlock[nr];
 

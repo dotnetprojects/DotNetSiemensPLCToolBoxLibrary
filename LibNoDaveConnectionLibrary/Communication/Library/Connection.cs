@@ -10,6 +10,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         { }
 
         private byte[] ConnectionId;
+        
+        delegate void AsynchronDataArrivedDelegate(ResultSet resultSet);
+        private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
         internal Connection(byte[] ConnectionId)
         {

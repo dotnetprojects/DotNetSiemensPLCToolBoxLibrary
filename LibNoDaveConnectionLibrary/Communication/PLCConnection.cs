@@ -1048,6 +1048,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         break;
                                 }
                                 break;
+                            case 0x0032:
+                                switch (retVal.Index)
+                                {
+                                    case 1:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy32_1Dataset>(objBuffer));
+                                        break;                                    
+                                    default:
+                                        {
+                                            DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                            tmp.Bytes = objBuffer;
+                                            datsets.Add(tmp);
+                                        }
+                                        break;
+                                }
+                                break;
                             case 0x0071:
                                 datsets.Add(EndianessMarshaler.BytesToStruct<xy71Dataset>(objBuffer));
                                 break;

@@ -11,7 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             AWLCode = new List<FunctionBlockRow>();
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         public string Comment { get; set; }
         public List<FunctionBlockRow> AWLCode { get; set; }
 

@@ -37,5 +37,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             return null;
         }
+
+        /*
+        protected Pdu NegotiatePduLengthRequest()
+        {
+            Pdu myPdu=new Pdu();
+            myPdu.Param = new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xC0,};
+        }
+        */
     }
 }

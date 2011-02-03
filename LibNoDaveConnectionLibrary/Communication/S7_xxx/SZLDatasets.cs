@@ -1312,6 +1312,98 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy32_1Dataset : SZLDataset
+    {
+        [Endian(Endianness.BigEndian)]
+        private ushort _index;
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _res_pg;
+        public UInt16 Res_pg
+        {
+            get { return _res_pg; }
+            set { _res_pg = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _res_os;
+        public UInt16 Res_os
+        {
+            get { return _res_os; }
+            set { _res_os = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _u_pg;
+        public UInt16 U_pg
+        {
+            get { return _u_pg; }
+            set { _u_pg = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _u_os;
+        public UInt16 U_os
+        {
+            get { return _u_os; }
+            set { _u_os = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _proj;
+        public UInt16 Proj
+        {
+            get { return _proj; }
+            set { _proj = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _auf;
+        public UInt16 Auf
+        {
+            get { return _auf; }
+            set { _auf = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _free;
+        public UInt16 Free
+        {
+            get { return _free; }
+            set { _free = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _used;
+        public UInt16 Used
+        {
+            get { return _used; }
+            set { _used = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _last;
+        public UInt16 Last
+        {
+            get { return _last; }
+            set { _last = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+        private byte[] _res;
+        public byte[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy71Dataset : SZLDataset
     {
         [Endian(Endianness.BigEndian)]

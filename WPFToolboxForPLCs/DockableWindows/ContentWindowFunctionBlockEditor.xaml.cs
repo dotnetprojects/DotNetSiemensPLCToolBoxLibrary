@@ -172,8 +172,11 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         public void unviewBlockStatus()
         {
-            diagTimer.Stop();
-            diagTimer = null;
+            if (diagTimer != null)
+            {
+                diagTimer.Stop();
+                diagTimer = null;
+            }
             if (MyDiagnosticData != null)
             {
                 MyDiagnosticData.Close();

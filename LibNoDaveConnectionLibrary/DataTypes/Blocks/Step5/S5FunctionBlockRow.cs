@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
@@ -19,12 +20,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             set
             {
                 _parameter = value;
-                _symbol = null;
+                _SymbolTableEntry = null;
                 _MC5 = null;
                 CombinedCommands = null;
             }
         }
 
+        private SymbolTableEntry _SymbolTableEntry;
+        public SymbolTableEntry SymbolTableEntry
+        {
+            get { return _SymbolTableEntry; }
+            set
+            {
+                _SymbolTableEntry = value;
+            }
+        }
+
+        /*
         private string _symbol;
         public string Symbol
         {
@@ -34,9 +46,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 _symbol = value;                
             }
         }
+        */
 
-        private List<string> _extparameter;
-        public List<string> ExtParameter
+        private List<S5Parameter> _extparameter;
+        public List<S5Parameter> ExtParameter
         {
             get { return _extparameter; }
             set
@@ -135,8 +148,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             string ext = "";
             if (ExtParameter != null && ExtParameter.Count > 0)
             {
-                foreach (string myStr in ExtParameter)
-                    ext += "\r\n" + " ".PadLeft(12) + myStr;
+                foreach (S5Parameter myStr in ExtParameter)
+                {
+                    //newRow.ExtParameter.Add(s5Parameter.Name.PadRight(5, ' ') + ":  " + akOper);
+                    string akcmt = (myStr.Comment ?? "") == "" ? "" : "//" + myStr.Comment;
+                    ext += "\r\n" + (" ".PadLeft(12) + myStr.Name.PadRight(5, ' ') + ": " + (myStr.Value ?? "")).PadRight(35) + akcmt;
+                }
             }
 
             if (Command == "" && Parameter == "")
@@ -145,10 +162,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             string par = "";
             if (Parameter != null)
                 par = Parameter;
-            if (Symbol != null && Symbol != "")
-                par = Symbol;
 
-            return retVal + Command.PadRight(6) + par.PadRight(14) + cmt + ext; // +"Sz:" + ByteSize.ToString();
+            if (_SymbolTableEntry != null)
+                par = "-" + SymbolTableEntry.Symbol;
+
+            return (retVal + Command.PadRight(6) + par).PadRight(35) + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }
     }
 }

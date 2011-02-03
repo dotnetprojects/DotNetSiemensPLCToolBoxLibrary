@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
@@ -21,7 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
         
         static object[] sym = MC5LIB_SYMTAB.symtab;
 
-        public static S5FunctionBlock GetFunctionBlock(ProjectBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock)
+        public static S5FunctionBlock GetFunctionBlock(ProjectBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock, Step5ProgrammFolder prjBlkFld)
         {
             S5FunctionBlock retVal = new S5FunctionBlock();
 
@@ -29,46 +30,110 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             retVal.BlockNumber = blkInfo.BlockNumber;
 
             if (blkInfo.BlockType == PLCBlockType.S5_PB || blkInfo.BlockType == PLCBlockType.S5_SB || blkInfo.BlockType == PLCBlockType.S5_OB)
-                retVal.AWLCode = GetMC5Rows(block, 10, null, (Step5BlocksFolder)blkInfo.ParentFolder);
+                retVal.AWLCode = GetMC5Rows(block, 10, null, (Step5BlocksFolder) blkInfo.ParentFolder);
             else
             {
-            	string fbNM = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(block, 12, 8);
-            
-            	retVal.Name = fbNM;
-            	
+                string fbNM = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(block, 12, 8);
+
+                retVal.Name = fbNM;
+
                 List<S5Parameter> pars = GetParameters(block);
-				
+
                 retVal.Parameter = pars;
 
-                retVal.AWLCode = GetMC5Rows(block, /*10 + spa*2*/ 10 + ((pars.Count * 3) + 5) * 2, pars, (Step5BlocksFolder)blkInfo.ParentFolder);
-
-
-                //todo only use the networks structure!
-                retVal.Networks = new List<Network>();
-
-                S5FunctionBlockNetwork nw = new S5FunctionBlockNetwork();
-                nw.Parent = retVal;
-                nw.AWLCode = new List<FunctionBlockRow>();
-                retVal.Networks.Add(nw);
-                
-                if (retVal.AWLCode != null)
-                    foreach (S5FunctionBlockRow s5FunctionBlockRow in retVal.AWLCode)
+                retVal.AWLCode = GetMC5Rows(block, /*10 + spa*2*/ 10 + ((pars.Count*3) + 5)*2, pars, (Step5BlocksFolder) blkInfo.ParentFolder);
+            }
+            //Go throug retval and add Symbols...
+            if (prjBlkFld != null)
+            {
+                if (prjBlkFld.SymbolTable != null)
+                {
+                    foreach (S5FunctionBlockRow awlRow in retVal.AWLCode)
                     {
-                        if (s5FunctionBlockRow.Command == "BLD" && s5FunctionBlockRow.Parameter=="255")
+                        string para = awlRow.Parameter.Replace(" ", "");
+
+                        awlRow.SymbolTableEntry = prjBlkFld.SymbolTable.GetEntryFromOperand(para);
+                    }
+                }
+            }
+
+            //todo only use the networks structure!
+            retVal.Networks = new List<Network>();
+
+            S5FunctionBlockNetwork nw = null; // new S5FunctionBlockNetwork();
+            //nw.Parent = retVal;
+            //nw.AWLCode = new List<FunctionBlockRow>();
+            //retVal.Networks.Add(nw);
+
+            if (retVal.AWLCode != null)
+                foreach (S5FunctionBlockRow s5FunctionBlockRow in retVal.AWLCode)
+                {
+                    if (s5FunctionBlockRow.Command == "BLD" && s5FunctionBlockRow.Parameter == "255")
+                    {
+                        nw = new S5FunctionBlockNetwork();
+                        nw.Parent = retVal;
+                        nw.AWLCode = new List<FunctionBlockRow>();
+                        ((S5FunctionBlockNetwork) nw).NetworkFunctionBlockRow = s5FunctionBlockRow;
+                        retVal.Networks.Add(nw);
+                    }
+                    else
+                    {
+                        nw.AWLCode.Add(s5FunctionBlockRow);
+                    }
+
+                }
+
+            if (commentBlock != null)
+            {
+                int nr = 26;
+                int netzwnr = 0;
+                Dictionary<int, object> commandLineNumerList = new Dictionary<int, object>();
+                while (nr + 3 < commentBlock.Length)
+                {
+                    int zeile = commentBlock[nr];
+
+                    int len = 0x7f & commentBlock[nr + 2];
+                    string cmt = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 3, len);
+
+                    if (commentBlock[nr + 1] == 0x00)
+                    {
+                        netzwnr = zeile;
+                        ((S5FunctionBlockNetwork) retVal.Networks[netzwnr - 1]).Name = cmt;
+                        commandLineNumerList.Clear();
+                        int lineNr = 0;
+                        foreach (S5FunctionBlockRow akRow in retVal.Networks[netzwnr - 1].AWLCode)
                         {
-                            nw = new S5FunctionBlockNetwork();
-                            nw.Parent = retVal;
-                            nw.AWLCode = new List<FunctionBlockRow>();
-                            retVal.Networks.Add(nw);                           
-                        }
-                        else
-                        {
-                            nw.AWLCode.Add(s5FunctionBlockRow);
+
+                            commandLineNumerList.Add(lineNr, akRow);
+                            lineNr++;
+
+                            if (IsCall(akRow))
+                            {
+                                foreach (S5Parameter extPar in akRow.ExtParameter)
+                                {
+                                    commandLineNumerList.Add(lineNr, extPar);
+                                    lineNr++;
+                                }
+                            }
                         }
 
                     }
+                    else
+                    {
+                        if (commandLineNumerList.ContainsKey(zeile - 1))
+                        {
+                            object obj = commandLineNumerList[zeile - 1];
+                            if (obj is S5Parameter)
+                                ((S5Parameter) obj).Comment = cmt;
+                            else
+                                ((S5FunctionBlockRow) obj).Comment = cmt;
+                        }
+                    }
+                    nr += len + 3;
+                }
 
             }
+
             return retVal;
         }
 
@@ -158,7 +223,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             
 			return retVal;            
         }
-        
+
+
+        private static bool IsCall(S5FunctionBlockRow newRow)
+        {
+            if ((newRow.Command == "SPA" && newRow.Parameter.Substring(0,2) == "FB") ||
+                        (newRow.Command == "SPB" && newRow.Parameter.Substring(0, 2) == "FB") ||
+                        (newRow.Command == "BA" && newRow.Parameter.Substring(0, 2) == "FX") ||
+                        (newRow.Command == "BAB" && newRow.Parameter.Substring(0, 2) == "FX"))
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static List<FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
         {
             List<FunctionBlockRow> retVal=new List<FunctionBlockRow>();
@@ -181,8 +259,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 
                 if (index >= 0)
                 {
-                    bool fb = false;
 
+                    bool fb = false;
                    newRow.Command = (string) ((object[]) sym[index])[operation];
 
                     string oper = (string) ((object[]) sym[index])[operand];
@@ -199,13 +277,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     if (oper != null)
                         newRow.Parameter = oper;
 
-                    if ((newRow.Command=="SPA" && newRow.Parameter=="FB") ||
+                    fb = IsCall(newRow);    //false;
+                    /*if ((newRow.Command=="SPA" && newRow.Parameter=="FB") ||
                         (newRow.Command=="SPB" && newRow.Parameter=="FB") ||
                         (newRow.Command=="BA" && newRow.Parameter=="FX") ||
                         (newRow.Command=="BAB" && newRow.Parameter=="FX"))
                     {
                         fb = true;
-                    }
+                    }*/
 
                     int par = find_mc5_param(code, codepos, index);
 
@@ -274,21 +353,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             newRow.Command = "Error reading Jump after FB/FX Call!";
                         int spa = find_mc5_param(code, codepos, index);
 
-                        newRow.ExtParameter = new List<string>();
+                        newRow.ExtParameter=new List<S5Parameter>();
+                        
+                        //newRow.ExtParameter = new List<string>();
 
 
 
                         byte[] calledfb = blkFld.GetBlockInByte("S5_" + newRow.Parameter.Replace(" ", ""));
                         if (calledfb!=null)
                         {
+                            S5Parameter newPar = new S5Parameter();
+                            newRow.ExtParameter.Add(newPar);
+
                             string fbNM = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(calledfb, 12, 8);
-                            newRow.ExtParameter.Add("Name :" + fbNM);
+                            //newRow.ExtParameter.Add("Name :" + fbNM);
+
+                            newPar.Name = "Name :";
+                            newPar.Value = fbNM;
+
                             List<S5Parameter> par = GetParameters(calledfb);
                             int j = 0;
 
                       
                             foreach (var s5Parameter in par)
                             {
+                                newPar = new S5Parameter();
+                                newRow.ExtParameter.Add(newPar);
+
                                 j++;
                                 string akOper = "";
 
@@ -397,7 +488,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                         akOper += "Z " + code[pos + 1].ToString();
                                         break;
                                 }
-                                newRow.ExtParameter.Add(s5Parameter.Name.PadRight(5, ' ') + ":  " + akOper);
+                                newPar.Name = s5Parameter.Name;
+                                newPar.Value = akOper;
+                                //newRow.ExtParameter.Add(s5Parameter.Name.PadRight(5, ' ') + ":  " + akOper);
 
                             }
                         }
@@ -405,7 +498,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             for (int j = 1; j < spa; j++)
                             {
                                 int myPar = (code[codepos + j*2] << 8) | code[codepos + j*2 + 1];
-                                newRow.ExtParameter.Add(myPar.ToString());
+                                //newRow.ExtParameter.Add(myPar.ToString());
+                                S5Parameter newPar = new S5Parameter();
+                                newRow.ExtParameter.Add(newPar);
+                                newPar.Name = myPar.ToString();
                             }
 
                         btSize += spa * 2;
