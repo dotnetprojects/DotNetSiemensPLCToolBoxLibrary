@@ -3980,7 +3980,7 @@ int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	t.tv_usec = di->timeout % 1000000;
 	//LOG2("timeout s: %d \n",t.tv_sec);
 	//LOG2("timeout ms: %d \n",t.tv_usec );
-	printf("Socket: %d\n",di->fd.rfd);
+	//printf("Socket: %d\n",di->fd.rfd);
 	if (select(/*di->fd.rfd +*/ 1, &FDS, NULL, NULL, &t) <= 0) {
 		LOG2("WSAGetLastError: %d \n",WSAGetLastError());
 		if (daveDebug & daveDebugByte) LOG1("timeout in ReadISOPacket.\n");

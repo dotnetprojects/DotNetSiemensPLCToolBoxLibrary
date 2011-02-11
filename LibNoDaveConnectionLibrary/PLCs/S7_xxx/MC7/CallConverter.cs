@@ -326,6 +326,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow.CombinedCommands = tempList;
                             newRow.Label = label;
 
+                            int sz = 0;
+                            foreach (var functionBlockRow in newRow.CombinedCommands)
+                            {
+                                sz += ((S7FunctionBlockRow) functionBlockRow).ByteSize;
+                            }
+                            byte[] mcges=new byte[sz];
+                            sz = 0;
+                            foreach (var functionBlockRow in newRow.CombinedCommands)
+                            {
+                                Array.Copy(((S7FunctionBlockRow) functionBlockRow).MC7, 0, mcges, sz, ((S7FunctionBlockRow) functionBlockRow).ByteSize);
+                                sz += ((S7FunctionBlockRow)functionBlockRow).ByteSize;
+                            }
+                            newRow.MC7 = mcges;
+
                             retVal.Add(newRow);
                             Parameters.Clear();
                             tempList = new List<FunctionBlockRow>();

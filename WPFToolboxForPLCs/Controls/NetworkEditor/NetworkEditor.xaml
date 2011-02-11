@@ -60,7 +60,7 @@
                     DockPanel.Dock="Right" 
                     HorizontalAlignment="Right" 
                     Visibility="{Binding DisplayNetwork.Parent.DiagnosticData,ElementName=NetworkEditorWindow,TargetNullValue=Collapsed,FallbackValue=Collapsed, Converter={StaticResource NullCollapsedConverter}}"
-                    
+                    CorespondingTextEditor="{Binding ElementName=textEditor}"
                     DisplayNetwork="{Binding DisplayNetwork,ElementName=NetworkEditorWindow}">
                 </Controls:AWLOnlineStatusView>
 

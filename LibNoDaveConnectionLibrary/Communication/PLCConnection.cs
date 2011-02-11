@@ -526,7 +526,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     SZLData szlData = PLCGetSZL(0x0131, 2);
                     SZLDataset[] szlDatasets = szlData.SZLDaten;
                     //if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
-                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x0800) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
+                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
                         DiagDataTeletype = 0x13;
 
 
