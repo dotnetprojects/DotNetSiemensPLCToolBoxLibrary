@@ -1774,7 +1774,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                     break;
                                             }
                                             break;
-                                    }
+                                    }                                    
+
                                     if (BD[pos] == 0x7E)
                                         par += Convert.ToString(libnodave.getU16from(BD, pos + 2));
                                     else if (BD[pos] == 0xBE)
@@ -1784,9 +1785,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         else
                                             par += "[" + Memnoic.adAR2[MN] + "," +
                                                      Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
+
+
+                                    //new
+                                    byte[] DBByte = null;
+                                    if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && par.Substring(0, 2) == "DB" && CombineDBOpenAndCommand)
+                                    {
+                                        DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
+                                        par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + "." + par;
+                                        retVal.RemoveAt(retVal.Count - 1);
+                                    }
                                     retVal.Add(new S7FunctionBlockRow() { Command = cmd, Parameter = par });
                                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
+                                    if (DBByte != null)
+                                        ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = Helper.CombineByteArray(DBByte, ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7);
                                     pos += 4;
+
+                                    //old
+                                    //retVal.Add(new S7FunctionBlockRow() { Command = cmd, Parameter = par });
+                                    //((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
+                                    //pos += 4;
                                 }
 
                             }

@@ -22,7 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
         
         static object[] sym = MC5LIB_SYMTAB.symtab;
 
-        public static S5FunctionBlock GetFunctionBlock(ProjectBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock, Step5ProgrammFolder prjBlkFld)
+        public static S5FunctionBlock GetFunctionBlock(ProjectPlcBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock, Step5ProgrammFolder prjBlkFld)
         {
             S5FunctionBlock retVal = new S5FunctionBlock();
 

@@ -1,0 +1,22 @@
+﻿<ad:DocumentContent
+    x:Class="WPFToolboxForSiemensPLCs.DockableWindows.ContentWindowSourceBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+    
+    <avalonEdit:TextEditor 
+                HorizontalAlignment="Stretch"
+                BorderBrush="DarkGray"
+                BorderThickness="1"
+				Name="textEditor"
+				FontFamily="Consolas"
+				FontSize="10pt"
+                IsReadOnly="True"
+                ShowLineNumbers="True"
+                Visibility="Visible"
+                >
+    </avalonEdit:TextEditor>
+
+</ad:DocumentContent>

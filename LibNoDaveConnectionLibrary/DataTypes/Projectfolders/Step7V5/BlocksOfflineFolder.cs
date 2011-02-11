@@ -144,7 +144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public ProjectBlockInfo GetProjectBlockInfoFromBlockName(string BlockName)
         {
             var tmp = readPlcBlocksList();
-            foreach (var step7ProjectBlockInfo in tmp)
+            foreach (ProjectPlcBlockInfo step7ProjectBlockInfo in tmp)
             {
                 if (step7ProjectBlockInfo.BlockType.ToString() + step7ProjectBlockInfo.BlockNumber.ToString() == BlockName.ToUpper())
                     return step7ProjectBlockInfo;
@@ -380,6 +380,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         {
             //tmpBlock myTmpBlk = new tmpBlock();
 
+            ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo) blkInfo;
             tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
             if (myTmpBlk != null ) 
@@ -387,14 +388,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
                 {
-                    return new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, blkInfo.BlockNumber);
+                    return new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber);
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
                 {
                     List<string> tmpList = new List<string>();
                     S7DataBlock retVal=new S7DataBlock();
-                    retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);                    
-                    retVal.BlockNumber = blkInfo.BlockNumber;
+                    retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);
+                    retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     return retVal;
                 }
@@ -403,7 +404,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     List<string> ParaList = new List<string>();
 
                     S7FunctionBlock retVal = new S7FunctionBlock();
-                    retVal.BlockNumber = blkInfo.BlockNumber;
+                    retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
 

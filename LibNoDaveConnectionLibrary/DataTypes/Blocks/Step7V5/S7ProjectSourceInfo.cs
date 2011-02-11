@@ -1,10 +1,7 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public class Step7ProjectSourceInfo
+    public class S7ProjectSourceInfo : ProjectBlockInfo
     {
-        internal int id;
-        public bool Deleted { get; set; }
-        public string Name { get; set; }
         public string Filename { get; set; }
 
         public override string ToString()

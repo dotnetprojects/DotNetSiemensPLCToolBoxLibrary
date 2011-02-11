@@ -2,16 +2,18 @@
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
+    /// <summary>
+    /// This can be Information about a PLC Block (DB, FC,...) or a Block in the Source Folder
+    /// </summary>
     public class ProjectBlockInfo
     {
-        internal int id;
+       internal int id;
 
-        public ProjectFolder ParentFolder { get; set; }
+       public ProjectFolder ParentFolder { get; set; }
 
-        virtual public string Name { get; set;}
+       public virtual string Name { get; set;}
 
-        public int BlockNumber { get; set; }
-        public PLCBlockType BlockType { get; set; }
+       public PLCBlockType BlockType { get; set; }
 
         public Block GetBlock()
         {
@@ -81,45 +83,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                         return "S5-Organisationcommentblock";
                     case PLCBlockType.S5_BB:
                         return "S5-Variabletable";
+                    case PLCBlockType.SourceBlock:
+                        return "Sourceblock";                    
                 }
                 return "";
 
             }
         }
 
-        public string BlockName
-        {
-            get
-            {
-                string retVal = BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString();
-                if (Deleted)
-                    retVal = "$$_" + retVal;
-                return retVal;
-            }
-        }
+        
 
         public bool Deleted { get; set; }
 
-        public SymbolTableEntry SymbolTabelEntry
-        {
-            get
-            {
-                ISymbolTable tmp = null;// ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
-                if (tmp != null)
-                    return tmp.GetEntryFromOperand(BlockName);
-                return null;
-            }
-        }
+       
        
         public override string ToString()
         {
-            string retVal = "";           
+            string retVal = Name;           
             if (Deleted)
                 retVal += "$$_";
-            if (SymbolTabelEntry != null)
-                retVal += BlockName + " (" + SymbolTabelEntry.Symbol + ")";
-            else
-                retVal += BlockName;
+            
             return retVal;
         }
     }

@@ -44,7 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
             foreach (var blk in blks)
             {
-                ProjectBlockInfo tmp = new ProjectBlockInfo();
+                ProjectPlcBlockInfo tmp = new ProjectPlcBlockInfo();
                 tmp.ParentFolder = this;
                 if (blk.Substring(0, 2) == "DB")
                 {
@@ -105,7 +105,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
         {
-            return GetBlock(blkInfo.BlockName);
+            return GetBlock(((ProjectPlcBlockInfo)blkInfo).BlockName);
         }       
     }
 }

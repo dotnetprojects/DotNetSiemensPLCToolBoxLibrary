@@ -6,7 +6,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
     public static class MC5toDB
     {
-        public static S5DataBlock GetDB(ProjectBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock)
+        public static S5DataBlock GetDB(ProjectPlcBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock)
         {
             S5DataBlock retVal = new S5DataBlock();
 

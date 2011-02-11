@@ -224,7 +224,7 @@ namespace JFK_VarTab
                     if (oldNode != treeStep7Project.SelectedNode)
                     {
                         lstListBox.Items.Clear();
-                        lstListBox.Items.AddRange(src.readPlcBlocksList(chkShowDeleted.Checked).ToArray());
+                        lstListBox.Items.AddRange(src.readPlcBlocksList().ToArray());
                     }
                     viewBlockList.Visible = true;
 
@@ -271,9 +271,9 @@ namespace JFK_VarTab
                 }
 
             }
-            else if (lstListBox.SelectedItem.GetType() == typeof(Step7ProjectSourceInfo))
+            else if (lstListBox.SelectedItem.GetType() == typeof(S7ProjectSourceInfo))
             {
-                var tmp = (Step7ProjectSourceInfo)lstListBox.SelectedItem;
+                var tmp = (S7ProjectSourceInfo)lstListBox.SelectedItem;
 
                 if (tmp != null)
                 {

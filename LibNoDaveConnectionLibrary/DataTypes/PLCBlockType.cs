@@ -5,6 +5,8 @@
         AllBlocks = 0, //Change to 0xffff
         AllEditableBlocks = 1, //Change to 0xfffe
 
+        SourceBlock = 2, //This is a Source Block
+
         //Step 7 Types...
         OB = 0x08,
         DB = 0x0a,

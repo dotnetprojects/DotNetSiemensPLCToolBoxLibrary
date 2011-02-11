@@ -78,6 +78,16 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;
                 }
+                else if (blk is S7SourceBlock)
+                {
+                    e.Handled = true;
+                    ContentWindowSourceBlock tmp = new ContentWindowSourceBlock((S7SourceBlock)blk);
+                    tmp.Title = blk.BlockName;
+                    tmp.ToolTip = myFld.ToString() + "\\" + tmp.Title;
+                    tmp.Show(parentDockingManager);
+                    parentDockingManager.ActiveDocument = tmp;
+                }
+                
             }
         }
 
