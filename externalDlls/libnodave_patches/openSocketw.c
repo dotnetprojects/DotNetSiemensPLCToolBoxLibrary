@@ -130,7 +130,9 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
 	FLUSH;
     }	
    if (bind(fd, (struct sockaddr *) & addr, addrlen)) {
-	LOG2(ThisModule "bind Socket error: %s \n", strerror(errno));
+	   if (daveDebug & daveDebugOpen) {
+			LOG2(ThisModule "bind Socket error: %s \n", strerror(errno));
+	   }
     }
     if (connect(fd, (struct sockaddr *) & addr, addrlen)) {
 	if (daveDebug & daveDebugOpen) {
