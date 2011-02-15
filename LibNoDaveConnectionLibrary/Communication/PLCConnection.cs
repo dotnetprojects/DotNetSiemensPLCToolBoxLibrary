@@ -162,7 +162,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //This Jump mark is used when the Netlink Reset is activated!
         NLAgain:
-            libnodave.SCP_open(0);
+            //libnodave.SCP_open(0);
             //LibNodave Verbindung aufbauen
             switch (_configuration.ConnectionType)
             {
