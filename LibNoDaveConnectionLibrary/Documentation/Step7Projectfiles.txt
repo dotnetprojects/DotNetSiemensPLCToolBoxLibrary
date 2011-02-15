@@ -1,1 +1,43 @@
-﻿
+﻿Step7 Projekt Ordner und Dateiliste:
+
+AMOBJS		= WinCC in verb mit Step / ??? SYbase Datenbank (nicht sicher)
+APILOG		=
+				ApiLog\Step7Bas.ver -> Verwendete Programme
+CONN		= Verbindungen
+GLOBAL		=
+Hmies		= wincc flexible Projekte
+Homsave7	= hardwareconfig
+				Homsave7\s7hstatx\hobject1.dbf  Stationen
+hrs			= Programmaufbau?
+				hrs\S7RESOFF.DBF: (s7 Programmordner)
+				hrs\GNRESOFF.DBF: (Programmordner der CP’s)
+				linkhrs.lnk -> Zuordnung S7Programmordner zur CPU!
+LDBs		=
+meldeom		=
+ombstx		= bausteine ordner
+omgd		= globaldaten?
+pgs			= schriftfelder?
+s7arscom	= quellen
+s7extref	=
+S7Netze		=
+S7NFREMX	=
+S7PPLOMX	=
+S7200OMX	=
+sdb			= systemdaten
+siprom		=
+wincccom	=
+wincproj	=
+XDBs		= Konfigurationen (xdb Files) der PC Stationen
+XUTILs		=
+YDBs		= symbolik
+
+
+
+
+
+Beschreibung zu linkhrs.lnk:
+  Infos about Link file hrs\linkhrs.lnk
+  Size of a Structure in the Link File: 512 bytes
+  Offset of Linkfile is in hrs\S7RESOFF.DBF, Filed 12 (RSRVD3_L)
+  after 0x04, 0x20, 0x11 follows the Step7ProjectBlockFolder ID (2 Bytes) or maybe the source folder id
+  after 0x01, 0x60, 0x11 follows the Step7Programm ID (2 Bytes)

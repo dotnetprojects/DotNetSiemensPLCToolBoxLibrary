@@ -82,7 +82,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 {
                     e.Handled = true;
                     ContentWindowSourceBlock tmp = new ContentWindowSourceBlock((S7SourceBlock)blk);
-                    tmp.Title = blk.BlockName;
+                    tmp.Title = blk.Name;
                     tmp.ToolTip = myFld.ToString() + "\\" + tmp.Title;
                     tmp.Show(parentDockingManager);
                     parentDockingManager.ActiveDocument = tmp;

@@ -1238,6 +1238,10 @@ This was just here to check inheritance
             [MarshalAs(UnmanagedType.LPStr)] string portName
             );
 
+
+        [DllImport("S7onlinx.dll" /*, PreserveSig=false */ )]
+        public static extern int SCP_open(int hwnd);
+        
 #if !IPHONE	
         [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
         public static extern int openS7online(

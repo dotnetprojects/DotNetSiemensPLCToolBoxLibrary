@@ -43,7 +43,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             if (!ConnectionNameFixed && lstConnectionList.Items.Count <= 0)
                 lstLIBNODAVEConnectionType.Enabled = false;
-            else
+            else if (lstConnectionList.Items.Count > 0)
                 lstConnectionList.SelectedIndex = 0;
 
             if (ConnectionNameFixed)
