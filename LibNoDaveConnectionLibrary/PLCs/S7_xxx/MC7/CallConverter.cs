@@ -10,7 +10,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     static class CallConverter
     {
         //In this Class a UC is converted to a Call and also backwards...
-        public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, S7ConvertingOptions myOpt, byte[] addInfoFromBlock)
+        public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, BlocksOfflineFolder myblkFld, S7ConvertingOptions myOpt, byte[] addInfoFromBlock)
         {
             if (myOpt.GenerateCallsfromUCs)
             {
@@ -117,7 +117,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
                             //myFld.BlocksOfflineFolder.GetBlock()
-                            S7DataRow para = myFld.BlocksOfflineFolder.GetInterface(callRow.Parameter);
+                            S7DataRow para = myblkFld.GetInterface(callRow.Parameter);
 
                             newRow = new S7FunctionBlockRow();
                             newRow.Command = Memnoic.opCALL[myOpt.Memnoic];

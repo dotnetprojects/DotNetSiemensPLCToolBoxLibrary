@@ -45,7 +45,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     DockableContentBlockList tmp = new DockableContentBlockList(fld);
                     tmp.parentDockingManager = parentDockingManager;
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
-                    tmp.ToolTip = fld.ToString();                    
+                    if (myTreeView.SelectedItem is BlocksOfflineFolder)
+                        tmp.ToolTip = ((BlocksOfflineFolder) myTreeView.SelectedItem).Folder;
+                    else
+                        tmp.ToolTip = fld.ToString();                    
                     tmp.Show(parentDockingManager);
                     tmp.ToggleAutoHide();
 

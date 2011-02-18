@@ -630,11 +630,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             //after 0x01, 0x60, 0x11 follows the Step7Programm ID (2 Bytes)
 
             //Create the Link BlocksOfflineFolder Folder with S7ProgrammFolders...
-            if (ZipHelper.FileExists(_zipfile,ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk"))
+            if (ZipHelper.FileExists(_zipfile, ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk"))
             {
 
                 //FileStream hrsLink = new FileStream(ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk", FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite);
-                Stream hrsLink =ZipHelper.GetReadStream(_zipfile, ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk");
+                Stream hrsLink = ZipHelper.GetReadStream(_zipfile, ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk");
                 BinaryReader rd = new BinaryReader(hrsLink);
                 byte[] completeBuffer = rd.ReadBytes((int)ZipHelper.GetStreamLength(_zipfile, ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk", hrsLink));
                 rd.Close();
@@ -648,7 +648,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     hrsLink.Read(tmpLink, 0, 0x200);
 
                     int pos1 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x01, 0x60, 0x11 }));
-                    int wrt1 = tmpLink[pos1 + 3]*0x100 + tmpLink[pos1 + 4];
+                    int wrt1 = tmpLink[pos1 + 3] * 0x100 + tmpLink[pos1 + 4];
 
                     int pos2 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x04, 0x20, 0x11 }));
                     int wrt2 = tmpLink[pos2 + 3] * 0x100 + tmpLink[pos2 + 4];
@@ -671,13 +671,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             x.SubItems.Add(y);
                         }
                     }
-                    
-                }               
+
+                }
                 hrsLink.Close();
-
             }
+            else
+            {
+                foreach (var y in tmpBlocksOfflineFolders)
+                {
+                    y.Parent = ProjectStructure;
+                    ProjectStructure.SubItems.Add(y);
+                }
 
-            //BlocksOfflineFolders
+                foreach (var y in Step7ProjectTypeStep7Sources)
+                {
+                    y.Parent = ProjectStructure;
+                    ProjectStructure.SubItems.Add(y);
+                }
+            }
 
         }
 

@@ -26,9 +26,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         {
             get
             {
-                ISymbolTable tmp = ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
-                if (tmp != null)
-                    return tmp.GetEntryFromOperand(BlockName);
+                if (ParentFolder.Parent is IProgrammFolder)
+                {
+                    ISymbolTable tmp = ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
+                    if (tmp != null)
+                        return tmp.GetEntryFromOperand(BlockName);
+                }
                 return null;
             }
         }

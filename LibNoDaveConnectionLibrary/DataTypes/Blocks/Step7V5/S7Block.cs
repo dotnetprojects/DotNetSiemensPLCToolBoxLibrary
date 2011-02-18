@@ -33,7 +33,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public string BlockVersion;
         public String BlockAttribute;
         public double Length;
-        
+
+        public string Title { get; set; }
         public string Author { get; set; }
         public string Family { get; set; }
         public string Version { get; set; }

@@ -35,7 +35,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     [Serializable()]
     public class S7FunctionBlockRow : FunctionBlockRow, INotifyPropertyChanged
     {
-         public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(String info)
         {
@@ -53,7 +53,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         //These Commands are Combined...
         public List<FunctionBlockRow> CombinedCommands { get; internal set; }
-      
+
         private string _parameter;
         public string Parameter
         {
@@ -73,7 +73,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             get { return _SymbolTableEntry; }
             set
             {
-                _SymbolTableEntry = value;                
+                _SymbolTableEntry = value;
             }
         }
 
@@ -93,7 +93,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             if ((Command == "UC" || Command == "CC") && ExtParameter != null)
                 return 1 + ExtParameter.Count;
-            else            if (Command == "CALL" && CallParameter != null)
+            else if (Command == "CALL" && CallParameter != null)
                 return 1 + CallParameter.Count;
             return 1;
         }
@@ -235,7 +235,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 this.Command == Memnoic.opINC[MN] || this.Command == Memnoic.opINVD[MN] ||
                 this.Command == Memnoic.opINVI[MN] || this.Command == Memnoic.opITB[MN] ||
                 this.Command == Memnoic.opITD[MN] ||
-                
+
                 this.Command == Memnoic.opLC[MN] || this.Command == Memnoic.opLEAVE[MN] ||
                 this.Command == Memnoic.opLN[MN] || this.Command == Memnoic.opLOOP[MN] ||
                 this.Command == Memnoic.opMCRA[MN] || this.Command == Memnoic.opMCRC[MN] ||
@@ -254,7 +254,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 this.Command == Memnoic.opRRD[MN] || this.Command == Memnoic.opRRDA[MN] ||
                 this.Command == Memnoic.opSA[MN] ||
                 this.Command == Memnoic.opSAVE[MN] || this.Command == Memnoic.opSE[MN] ||
-                this.Command == Memnoic.opSI[MN] ||               
+                this.Command == Memnoic.opSI[MN] ||
                 this.Command == Memnoic.opSS[MN] || this.Command == Memnoic.opSSD[MN] ||
                 this.Command == Memnoic.opSSI[MN] || this.Command == Memnoic.opSV[MN] ||
                 this.Command == Memnoic.opTRUNC[MN] ||
@@ -267,14 +267,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.AR1 |
                         SelectedStatusValues.AR2 | SelectedStatusValues.DB | SelectedStatusValues.STW) & mySel;
             else if (this.Command == "+I" || this.Command == "-I" || this.Command == "*I" || this.Command == "/I" || this.Command == "+D" || this.Command == "-D" || this.Command == "*D" || this.Command == "/D" || this.Command == "+R" || this.Command == "-R" || this.Command == "*R" || this.Command == "/R" || this.Command == "MOD")
-                retVal=(SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.STW) & mySel;
+                retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.STW) & mySel;
             else if (this.Command == Memnoic.opPLU[MN] || this.Command == Memnoic.opABS[MN] || this.Command == Memnoic.opBTD[MN] ||
                 this.Command == Memnoic.opACOS[MN] || this.Command == Memnoic.opASIN[MN] || this.Command == Memnoic.opBTI[MN] ||
                 this.Command == Memnoic.opATAN[MN] || this.Command == Memnoic.opTAN[MN] || this.Command == Memnoic.opSIN[MN] ||
                 this.Command == Memnoic.opCOS[MN] || this.Command == Memnoic.opSQR[MN] || this.Command == Memnoic.opSQRT[MN] ||
                 this.Command == Memnoic.opDEC[MN] || this.Command == Memnoic.opTAW[MN] || this.Command == Memnoic.opTAD[MN] ||
                 this.Command == Memnoic.opDTB[MN] || this.Command == Memnoic.opDTR[MN] || this.Command == Memnoic.opSLD[MN] ||
-                this.Command == Memnoic.opSLW[MN] || this.Command == Memnoic.opSRD[MN] || this.Command == Memnoic.opSRW[MN] )
+                this.Command == Memnoic.opSLW[MN] || this.Command == Memnoic.opSRD[MN] || this.Command == Memnoic.opSRW[MN])
                 retVal = (SelectedStatusValues.Akku1) & mySel;
             else if (this.Command == Memnoic.opTAR[MN])
                 retVal = (SelectedStatusValues.AR1 | SelectedStatusValues.AR2) & mySel;
@@ -286,14 +286,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.DB) & mySel;
             else if ((this.Command == Memnoic.opT[MN]) && isDBcall)
                 retVal = (SelectedStatusValues.DB) & mySel;
-            else if (this.Command == Memnoic.opTAK[MN] || this.Command == Memnoic.opL[MN] ||  this.Command == Memnoic.opTAR1[MN] || this.Command == Memnoic.opTAR2[MN])
+            else if (this.Command == Memnoic.opTAK[MN] || this.Command == Memnoic.opL[MN] || this.Command == Memnoic.opTAR1[MN] || this.Command == Memnoic.opTAR2[MN])
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2) & mySel;
             else if ((this.Command == Memnoic.opU[MN] || this.Command == Memnoic.opUN[MN] || this.Command == Memnoic.opO[MN] || this.Command == Memnoic.opON[MN] || this.Command == Memnoic.opX[MN] || this.Command == Memnoic.opXN[MN] || this.Command == Memnoic.opFN[MN] || this.Command == Memnoic.opFP[MN] || this.Command == Memnoic.opZUW[MN] || this.Command == Memnoic.opS[MN] || this.Command == Memnoic.opR[MN] || this.Command == Memnoic.opT[MN]) && isDBcall)
                 retVal = (SelectedStatusValues.STW | SelectedStatusValues.DB) & mySel;
             else if (this.Command == Memnoic.opU[MN] || this.Command == Memnoic.opUN[MN] || this.Command == Memnoic.opO[MN] ||
                     this.Command == Memnoic.opON[MN] || this.Command == Memnoic.opX[MN] || this.Command == Memnoic.opXN[MN] ||
                     this.Command == Memnoic.opFN[MN] || this.Command == Memnoic.opFP[MN] || this.Command == Memnoic.opZUW[MN] ||
-                    this.Command == Memnoic.opS[MN] || this.Command == Memnoic.opR[MN] || this.Command == Memnoic.opBE[MN] || 
+                    this.Command == Memnoic.opS[MN] || this.Command == Memnoic.opR[MN] || this.Command == Memnoic.opBE[MN] ||
                     this.Command == Memnoic.opBEA[MN] || this.Command == Memnoic.opBEB[MN] || this.Command == ")")
                 retVal = (SelectedStatusValues.STW) & mySel;
             else if (this.Command == Memnoic.opT[MN] || this.Command == Memnoic.opBLD[MN] || this.Command == Memnoic.opNOP[MN] ||
@@ -310,7 +310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                      this.Command == Memnoic.opSPPZ[MN] || this.Command == Memnoic.opSPS[MN] ||
                      this.Command == Memnoic.opSPU[MN] || this.Command == Memnoic.opSPZ[MN] ||
                      this.Command == Memnoic.opSET[MN] || this.Command == Memnoic.opCLR[MN])
-                retVal = (SelectedStatusValues.STW) & mySel;           
+                retVal = (SelectedStatusValues.STW) & mySel;
             else
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.AR1 |
                       SelectedStatusValues.AR2 | SelectedStatusValues.DB | SelectedStatusValues.STW) & mySel;
@@ -324,15 +324,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (DiagDataTeletype == 0x01 && retVal != 0)
                 return retVal | SelectedStatusValues.STW;
 
-            return retVal;            
+            return retVal;
         }
 
         private BlockStatus _actualBlockStatus;
         public BlockStatus ActualBlockStatus
         {
             get { return _actualBlockStatus; }
-            set { _actualBlockStatus = value;
-            NotifyPropertyChanged("ActualBlockStatus");
+            set
+            {
+                _actualBlockStatus = value;
+                NotifyPropertyChanged("ActualBlockStatus");
             }
         }
 
@@ -354,16 +356,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public short? STW
             {
                 get { return _stw; }
-                set { _stw = value;
-                NotifyPropertyChanged("STW");
-                NotifyPropertyChanged("VKE");
-                NotifyPropertyChanged("STA");
-                NotifyPropertyChanged("OR");
-                NotifyPropertyChanged("OS");
-                NotifyPropertyChanged("OV");
-                NotifyPropertyChanged("A1");
-                NotifyPropertyChanged("A0");
-                NotifyPropertyChanged("BIE");
+                set
+                {
+                    _stw = value;
+                    NotifyPropertyChanged("STW");
+                    NotifyPropertyChanged("VKE");
+                    NotifyPropertyChanged("STA");
+                    NotifyPropertyChanged("OR");
+                    NotifyPropertyChanged("OS");
+                    NotifyPropertyChanged("OV");
+                    NotifyPropertyChanged("A1");
+                    NotifyPropertyChanged("A0");
+                    NotifyPropertyChanged("BIE");
                 }
             }
 
@@ -380,7 +384,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? Akku1
             {
                 get { return _akku1; }
-                set { _akku1 = value;
+                set
+                {
+                    _akku1 = value;
                     NotifyPropertyChanged("Akku1");
                 }
             }
@@ -389,8 +395,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? Akku2
             {
                 get { return _akku2; }
-                set { _akku2 = value;
-                NotifyPropertyChanged("Akku2");
+                set
+                {
+                    _akku2 = value;
+                    NotifyPropertyChanged("Akku2");
                 }
             }
 
@@ -398,8 +406,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? AR1
             {
                 get { return _ar1; }
-                set { _ar1 = value;
-                NotifyPropertyChanged("AR1");
+                set
+                {
+                    _ar1 = value;
+                    NotifyPropertyChanged("AR1");
                 }
             }
 
@@ -407,8 +417,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? AR2
             {
                 get { return _ar2; }
-                set { _ar2 = value;
-                NotifyPropertyChanged("AR2");
+                set
+                {
+                    _ar2 = value;
+                    NotifyPropertyChanged("AR2");
                 }
             }
 
@@ -416,8 +428,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? DB
             {
                 get { return _db; }
-                set { _db = value;
-                NotifyPropertyChanged("DB");
+                set
+                {
+                    _db = value;
+                    NotifyPropertyChanged("DB");
                 }
             }
 
@@ -425,8 +439,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             public int? DI
             {
                 get { return _di; }
-                set { _di = value;
-                NotifyPropertyChanged("DI");
+                set
+                {
+                    _di = value;
+                    NotifyPropertyChanged("DI");
                 }
             }
 
@@ -544,6 +560,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public override string ToString()
         {
+            return ToString(true,false);
+        }
+
+
+        public string ToString(bool useSymbol, bool addSemicolonAfterCommand)
+        {
             if (Command == "NETWORK")
             {
                 if (string.IsNullOrEmpty(Comment))
@@ -563,8 +585,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 cmt = "//" + Comment;
 
             string ext = "";
-            
-            if (ExtParameter != null && ExtParameter.Count > 0 && (Command=="UC" || Command=="CC"))
+
+            if (ExtParameter != null && ExtParameter.Count > 0 && (Command == "UC" || Command == "CC"))
             {
                 foreach (string myStr in ExtParameter)
                     ext += "\r\n" + " ".PadLeft(12) + myStr;
@@ -592,13 +614,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string par = "";
             if (Parameter != null)
                 par = Parameter;
-            if (_SymbolTableEntry != null)
+            if (_SymbolTableEntry != null && useSymbol)
                 par = SymbolTableEntry.Symbol;
-            
+
             if (!string.IsNullOrEmpty(cmt))
                 par = par.PadRight(14);
 
-            return retVal + Command.PadRight(6) + par + cmt + ext; // +"Sz:" + ByteSize.ToString();
+
+            return retVal + Command.PadRight(6) + par + (addSemicolonAfterCommand == true ? ";" : "") + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }
     }
 }

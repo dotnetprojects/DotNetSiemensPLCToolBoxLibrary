@@ -1,4 +1,5 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -20,6 +21,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             IBlocksFolder blkFld = (IBlocksFolder)ParentFolder;
             return blkFld.GetBlock(this);
         }
+
+        public string GetSourceBlock()
+        {
+            BlocksOfflineFolder blkFld = (BlocksOfflineFolder)ParentFolder;
+            return blkFld.GetSourceBlock(this);
+        }
+
 
         public string BlockTypeString
         {

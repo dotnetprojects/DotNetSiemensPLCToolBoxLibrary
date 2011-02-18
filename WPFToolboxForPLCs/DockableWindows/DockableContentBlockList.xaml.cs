@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -40,9 +42,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                //parentDockingManager. 
                 App.clientForm.lblStatus.Text = ex.Message;
             }
-            
 
-            
         }
 
         private void myDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -138,6 +138,43 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             }
             else
                 Mouse.OverrideCursor = null;
+        }
+
+        private void DockableContent_GotFocus(object sender, RoutedEventArgs e)
+        {
+            App.clientForm.lblStatus.Text = this.ToolTip.ToString();
+        }
+
+        private void myDataGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void menuCreateAwl_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is DependencyObject)
+            {
+                DependencyObject depObj = (DependencyObject) e.OriginalSource;
+                ContextMenu contextMenu = depObj.TryFindParent<ContextMenu>();
+                DataGridCell dataCell = (DataGridCell)contextMenu.PlacementTarget;
+                DataGridRow dataRow = dataCell.TryFindParent<DataGridRow>();
+                DataGrid dataGrid = dataCell.TryFindParent<DataGrid>();
+                ProjectBlockInfo prjBlkInfo = (ProjectBlockInfo)dataGrid.ItemContainerGenerator.ItemFromContainer(dataRow);
+
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.DefaultExt = ".AWL";
+                dlg.Filter = "AWL-Code (.AWL)|*.AWL";
+                if (dlg.ShowDialog() == true)
+                {
+                    string filename = dlg.FileName;
+                    StreamWriter wrt = new StreamWriter(filename, false, Encoding.GetEncoding("ISO-8859-1"));
+
+                    wrt.Write(prjBlkInfo.GetSourceBlock());
+                    wrt.Close();
+                }
+
+                //MessageBox.Show(prjBlkInfo.GetSourceBlock());
+            }
         }
 
 
