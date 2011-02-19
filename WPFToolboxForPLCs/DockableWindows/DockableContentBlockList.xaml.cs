@@ -116,6 +116,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                         { 
                             DataObject dragData = new DataObject("dataRow", row);
                             dragData.SetData("ProjectBlockInfo", myDataGrid.SelectedItem);
+                            if (myDataGrid.SelectedItem is S7ProjectBlockInfo)
+                            {
+                                S7ProjectBlockInfo blkInfo = (S7ProjectBlockInfo) myDataGrid.SelectedItem;
+                            }
                             //dragData = new DataObject(DataFormats.Text,row.ToString());
                             Mouse.OverrideCursor = dragDropCursor = new GhostCursor(row).Cursor;
                                                                                     
@@ -172,8 +176,6 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     wrt.Write(prjBlkInfo.GetSourceBlock());
                     wrt.Close();
                 }
-
-                //MessageBox.Show(prjBlkInfo.GetSourceBlock());
             }
         }
 

@@ -13,7 +13,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class BlocksOfflineFolder : Step7ProjectFolder, IBlocksFolder
     {
-       
+
         public string Folder { get; set; }
 
         private DataTable _bausteinDbf;
@@ -23,8 +23,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             {
                 if (_bausteinDbf == null)
                     if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
-                        _bausteinDbf = DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5) Project)._zipfile,
-                                                            ((Step7ProjectV5) Project)._DirSeperator);
+                        _bausteinDbf = DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5)Project)._zipfile,
+                                                            ((Step7ProjectV5)Project)._DirSeperator);
                 return _bausteinDbf;
             }
         }
@@ -36,10 +36,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             {
                 if (_subblkDbf == null)
                     if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
-                        _subblkDbf = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5) Project)._zipfile,
-                                                          ((Step7ProjectV5) Project)._DirSeperator);
+                        _subblkDbf = DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile,
+                                                          ((Step7ProjectV5)Project)._DirSeperator);
                 return _subblkDbf;
-            }            
+            }
         }
 
 
@@ -51,7 +51,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 if (_intBlockList == null)
                     _intBlockList = intReadPlcBlocksList();
                 return _intBlockList;
-            }           
+            }
         }
 
         public List<ProjectBlockInfo> readPlcBlocksList()
@@ -61,7 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         private List<ProjectBlockInfo> intReadPlcBlocksList()
         {
-            bool showDeleted = ((Step7ProjectV5) this.Project)._showDeleted;
+            bool showDeleted = ((Step7ProjectV5)this.Project)._showDeleted;
 
             List<ProjectBlockInfo> tmpBlocks = new List<ProjectBlockInfo>();
             if (bausteinDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
@@ -74,22 +74,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 //}
                 foreach (DataRow row in dbfTbl.Rows)
                 {
-                    if (!(bool) row["DELETED_FLAG"] || showDeleted)
+                    if (!(bool)row["DELETED_FLAG"] || showDeleted)
                     {
-                        int id = (int) row["ID"];
+                        int id = (int)row["ID"];
 
                         int blocknumber = Convert.ToInt32(row["NUMMER"]);
                         int blocktype = Convert.ToInt32(row["TYP"]);
 
                         S7ProjectBlockInfo tmp = new S7ProjectBlockInfo();
                         tmp.ParentFolder = this;
-                        tmp.Deleted = (bool) row["DELETED_FLAG"];
+                        tmp.Deleted = (bool)row["DELETED_FLAG"];
                         tmp.BlockNumber = blocknumber;
                         tmp.id = id;
                         if (blocktype == 0x00)
                             tmp.BlockType = PLCBlockType.UDT;
                         else
-                            tmp.BlockType = (PLCBlockType) blocktype;
+                            tmp.BlockType = (PLCBlockType)blocktype;
 
                         /*
                         if (symtab != null)
@@ -116,9 +116,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     foreach (DataRow row in rows)
                     {
                         int subblktyp = Convert.ToInt32(row["SUBBLKTYP"]);
-                        if ((int) row["OBJECTID"] == step7ProjectBlockInfo.id && (subblktyp == 12 || subblktyp == 8 || subblktyp == 14))
+                        if ((int)row["OBJECTID"] == step7ProjectBlockInfo.id && (subblktyp == 12 || subblktyp == 8 || subblktyp == 14))
                         {
-                            if ((int) row["PASSWORD"] == 3)
+                            if ((int)row["PASSWORD"] == 3)
                                 step7ProjectBlockInfo.KnowHowProtection = true;
                         }
                     }
@@ -163,7 +163,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             var prjBlkInf = GetProjectBlockInfoFromBlockName(BlockName);
             if (prjBlkInf != null)
                 return GetBlock(prjBlkInf);
-            return null;            
+            return null;
         }
 
         public Block GetBlock(string BlockName, S7ConvertingOptions myConvOpt)
@@ -178,7 +178,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         {
             tmpBlock myTmpBlk = new tmpBlock();
 
-            if (subblkDBF!=null)// ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF != null)// ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
                 var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
                 foreach (DataRow row in dbfTbl.Rows)
@@ -198,7 +198,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 }
             }
         }
-        
+
         public void UndeleteBlock(S7ProjectBlockInfo blkInfo, int newBlockNumber)
         {
             tmpBlock myTmpBlk = new tmpBlock();
@@ -243,12 +243,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5) Project)._DirSeperator);
 
                 DataRow[] rows = dbfTbl.Select("OBJECTID = " + blkInfo.id);
-                
+
                 foreach (DataRow row in rows)// dbfTbl.Rows)
                 {
 
                     int subblktype = Convert.ToInt32(row["SUBBLKTYP"]);
-                    int objid = (int) row["OBJECTID"];
+                    int objid = (int)row["OBJECTID"];
 
                     if (objid == blkInfo.id)
                     {
@@ -257,14 +257,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         byte[] addinfo = null;
 
                         if (row["MC5CODE"] != DBNull.Value)
-                            mc5code = (byte[]) row["MC5CODE"];
+                            mc5code = (byte[])row["MC5CODE"];
                         if (row["SSBPART"] != DBNull.Value)
-                            ssbpart = (byte[]) row["SSBPART"];
+                            ssbpart = (byte[])row["SSBPART"];
                         if (row["ADDINFO"] != DBNull.Value)
-                            addinfo = (byte[]) row["ADDINFO"];
-                        int mc5codelen = (int) row["MC5LEN"];
-                        int ssbpartlen = (int) row["SSBLEN"];
-                        int addinfolen = (int) row["ADDLEN"];
+                            addinfo = (byte[])row["ADDINFO"];
+                        int mc5codelen = (int)row["MC5LEN"];
+                        int ssbpartlen = (int)row["SSBLEN"];
+                        int addinfolen = (int)row["ADDLEN"];
 
                         if (mc5code != null && mc5code.Length > mc5codelen)
                             Array.Resize<byte>(ref mc5code, mc5codelen);
@@ -308,18 +308,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 ||
                             subblktype == 15) //FC, OB, FB, SFC, SFB
                         {
-                            if (row["PASSWORD"] != DBNull.Value && (int) row["PASSWORD"] == 3)
+                            if (row["PASSWORD"] != DBNull.Value && (int)row["PASSWORD"] == 3)
                                 myTmpBlk.knowHowProtection = true;
                             //MC7 Code in mc5code
                             myTmpBlk.mc7code = mc5code;
                             myTmpBlk.username = ((string)row["USERNAME"]).Replace("\0", "").Trim();
 
-                            int ver = ((int) row["VERSION"]);
-                            myTmpBlk.version = (ver/15).ToString() + "." + (ver%15).ToString();
+                            int ver = ((int)row["VERSION"]);
+                            myTmpBlk.version = (ver / 15).ToString() + "." + (ver % 15).ToString();
 
                             //Network Information in addinfo
                             myTmpBlk.nwinfo = addinfo;
-                                //This line contains Network Information, and after it the Position of the JumpMarks
+                            //This line contains Network Information, and after it the Position of the JumpMarks
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 ||
                                  subblktype == 9) //FC, OB, FB, SFC, SFB
@@ -335,7 +335,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.comments = mc5code; //Comments of the Block
                             myTmpBlk.blockdescription = ssbpart; //Description of the Block
                             myTmpBlk.jumpmarks = addinfo;
-                                //The Text of the Jump Marks, Before the Jumpmarks there is some Network Information, but don't know what!                        
+                            //The Text of the Jump Marks, Before the Jumpmarks there is some Network Information, but don't know what!                        
                         }
 
                         else if (subblktype == 6 || subblktype == 1) //DB, UDT
@@ -379,11 +379,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 return null;
             tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
             List<string> tmpPar = new List<string>();
-            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null);                    
+            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null);
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
-        {            
+        {
             return GetBlock(blkInfo, new S7ConvertingOptions());
         }
 
@@ -391,10 +391,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         {
             //tmpBlock myTmpBlk = new tmpBlock();
 
-            ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo) blkInfo;
+            ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
             tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
-            if (myTmpBlk != null ) 
+            if (myTmpBlk != null)
             {
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
@@ -404,13 +404,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
                 {
                     List<string> tmpList = new List<string>();
-                    S7DataBlock retVal=new S7DataBlock();
+                    S7DataBlock retVal = new S7DataBlock();
                     retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     return retVal;
                 }
-                else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB ||blkInfo.BlockType == PLCBlockType.SFC)
+                else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
                 {
                     List<string> ParaList = new List<string>();
 
@@ -422,9 +422,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
 
-                    retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal);                    
+                    retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal);
 
-                    if (myTmpBlk.blockdescription!=null)
+                    if (myTmpBlk.blockdescription != null)
                     {
                         retVal.Title = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(myTmpBlk.blockdescription, 3, myTmpBlk.blockdescription[1] - 4);
                         retVal.Description = System.Text.Encoding.UTF7.GetString(myTmpBlk.blockdescription, myTmpBlk.blockdescription[1], myTmpBlk.blockdescription.Length - myTmpBlk.blockdescription[1] - 1).Replace("\n", Environment.NewLine);
@@ -434,8 +434,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     {
                         int[] Networks;
                         Networks = NetWork.GetNetworks(0, myTmpBlk.nwinfo);
-                        
-                        S7ProgrammFolder prgFld=null;
+
+                        S7ProgrammFolder prgFld = null;
                         if (this.Parent is S7ProgrammFolder)
                             prgFld = (S7ProgrammFolder)this.Parent;
 
@@ -466,8 +466,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                 {
                                     int kommLen = cmt[n + 0];
                                     int startNWKomm = cmt[n + 1];
-                                    int anzUebsprungZeilen = cmt[n + 2] + cmt[n + 3]*0x100;
-                                    int lenNWKommZeile = cmt[n + 3] + cmt[n + 4]*0x100;                                   
+                                    int anzUebsprungZeilen = cmt[n + 2] + cmt[n + 3] * 0x100;
+                                    int lenNWKommZeile = cmt[n + 3] + cmt[n + 4] * 0x100;
 
                                     if (cmt[n + 5] == 0x06)
                                     {
@@ -478,7 +478,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                                         if (retVal.AWLCode.Count > j)
                                         {
-                                            while (retVal.AWLCode.Count - 1> j && retVal.AWLCode[j].Command != "NETWORK")
+                                            while (retVal.AWLCode.Count - 1 > j && retVal.AWLCode[j].Command != "NETWORK")
                                             {
                                                 newAwlCode.Add(retVal.AWLCode[j]);
                                                 j++;
@@ -494,7 +494,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     else
                                     {
                                         S7FunctionBlockRow lastRow = null;
-                                                                                
+
                                         //Anzahl der Anweisungen vor diesem Kommentar (inklusive aktueller Zeile!)
                                         for (int q = 0; q < (anzUebsprungZeilen); q++)
                                         {
@@ -553,11 +553,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             while (j < retVal.AWLCode.Count)
                             {
                                 newAwlCode.Add(retVal.AWLCode[j]);
-                                j++;                                
+                                j++;
                             }
                             retVal.AWLCode = newAwlCode;
                         }
-                        #endregion                                          
+                        #endregion
                     }
 
                     /*
@@ -593,62 +593,117 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         }
 
 
+        /// <summary>
+        /// This is a Helper Function wich is used by GetSourceBlock
+        /// </summary>
+        /// <param name="datrw"></param>
+        /// <param name="leerz"></param>
+        /// <returns></returns>
         private string GetSubParas(S7DataRow datrw, string leerz)
         {
             string retval = "";
             foreach (S7DataRow s7DataRow in datrw.Children)
             {
+                string arr = "";
+                string val = "";
+                string cmt = "";
+                if (s7DataRow.IsArray)
+                {
+                    arr += "ARRAY  [";
+                    for (int i = 0; i < s7DataRow.ArrayStart.Count; i++)
+                    {
+                        if (i > 1) arr += ", ";
+                        arr += s7DataRow.ArrayStart[i].ToString() + " .. " + s7DataRow.ArrayStop[i].ToString() + " ";
+                    }
+                    arr += "] OF ";
+                }
+                if (s7DataRow.StartValue != null)
+                    val += " := " + s7DataRow.StartValue.ToString();
+                if (!string.IsNullOrEmpty(s7DataRow.Comment))
+                    cmt += "    //" + s7DataRow.Comment;
                 if (s7DataRow.DataType == S7DataRowType.STRUCT)
                 {
-                    retval += leerz + s7DataRow.Name + " : " + s7DataRow.DataType + Environment.NewLine;
+                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + cmt + Environment.NewLine;
                     retval += GetSubParas(s7DataRow, leerz + " ");
                     retval += leerz + "END_STRUCT ;" + Environment.NewLine;
                 }
                 else
                 {
-                    retval += leerz + s7DataRow.Name + " : " + s7DataRow.DataType + " ;" + Environment.NewLine;
+                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + " " + val + ";" + cmt + Environment.NewLine;
                 }
             }
             return retval;
         }
 
+        /// <summary>
+        /// With this Function you get the AWL Source of a Block, so that it can be imported into Step7
+        /// </summary>
+        /// <param name="blkInfo">The BlockInfo from the Block you wish to get the Source of!</param>
+        /// <returns></returns>
         public string GetSourceBlock(ProjectBlockInfo blkInfo)
         {
             StringBuilder retVal = new StringBuilder();
-            Block blk = GetBlock(blkInfo, new S7ConvertingOptions() {CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true});
-            
+            Block blk = GetBlock(blkInfo, new S7ConvertingOptions() { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
+
+
+            S7Block fblk = (S7Block)blk;
+            S7FunctionBlock fcblk = null;
+
+            if (blk is S7FunctionBlock)
+                retVal.Append("FUNCTION " + blk.BlockName + " : VOID" + Environment.NewLine);
+            else
+                retVal.Append("DATA_BLOCK " + blk.BlockName + Environment.NewLine);
+            retVal.Append("TITLE =" + fblk.Title + Environment.NewLine);
             if (blk is S7FunctionBlock)
             {
-                S7FunctionBlock fblk = (S7FunctionBlock) blk;
-                retVal.Append("FUNCTION " + fblk.BlockName + " : VOID" + Environment.NewLine);
-                retVal.Append("TITLE =" + fblk.Title + Environment.NewLine);
-                if (!String.IsNullOrEmpty(fblk.Description))
-                    retVal.Append("//" + fblk.Description.Replace(Environment.NewLine, Environment.NewLine + "//") + Environment.NewLine);
-                if (!string.IsNullOrEmpty(fblk.Author))
-                    retVal.Append("AUTHOR : " + fblk.Author + Environment.NewLine);
-                if (!string.IsNullOrEmpty(fblk.Name))
-                    retVal.Append("NAME : " + fblk.Name + Environment.NewLine);
-                if (!string.IsNullOrEmpty(fblk.Version))
-                    retVal.Append("VERSION : " + fblk.Version + Environment.NewLine);
-                retVal.Append(Environment.NewLine);
-                retVal.Append(Environment.NewLine);
-                if (fblk.Parameter.Children != null)
+                fcblk = (S7FunctionBlock)blk;
+                if (!String.IsNullOrEmpty(fcblk.Description))
+                    retVal.Append("//" + fcblk.Description.Replace(Environment.NewLine, Environment.NewLine + "//") + Environment.NewLine);
+            }
+            if (!string.IsNullOrEmpty(fblk.Author))
+                retVal.Append("AUTHOR : " + fblk.Author + Environment.NewLine);
+            if (!string.IsNullOrEmpty(fblk.Name))
+                retVal.Append("NAME : " + fblk.Name + Environment.NewLine);
+            if (!string.IsNullOrEmpty(fblk.Version))
+                retVal.Append("VERSION : " + fblk.Version + Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+
+            if (blk is S7DataBlock)
+            {
+                S7DataBlock dtaBlk = (S7DataBlock)fblk;
+                if (dtaBlk.Structure.Children != null && !dtaBlk.IsInstanceDB)
                 {
-                    foreach (S7DataRow s7DataRow in fblk.Parameter.Children)
+                    retVal.Append("  STRUCT" + Environment.NewLine);
+                    retVal.Append(GetSubParas(dtaBlk.Structure, "    "));
+                    retVal.Append("  END_STRUCT ;" + Environment.NewLine);
+
+
+                }
+                else if (dtaBlk.IsInstanceDB)
+                    retVal.Append(" FB " + dtaBlk.FBNumber + Environment.NewLine);
+                retVal.Append("BEGIN" + Environment.NewLine);
+                retVal.Append("END_DATA_BLOCK" + Environment.NewLine);
+            }
+            else if (blk is S7FunctionBlock)
+            {
+                if (fcblk.Parameter.Children != null)
+                {
+                    foreach (S7DataRow s7DataRow in fcblk.Parameter.Children)
                     {
                         string parnm = s7DataRow.Name;
-                        if (parnm=="IN")
-                            parnm="INPUT";
+                        if (parnm == "IN")
+                            parnm = "INPUT";
                         else if (parnm == "OUT")
                             parnm = "OUTPUT";
                         retVal.Append("VAR_" + parnm + Environment.NewLine);
                         retVal.Append(GetSubParas(s7DataRow, "  "));
                         retVal.Append("END_VAR" + Environment.NewLine);
                     }
-                    
+
                 }
                 retVal.Append("BEGIN" + Environment.NewLine);
-                foreach (Network network in fblk.Networks)
+                foreach (Network network in fcblk.Networks)
                 {
                     retVal.Append("NETWORK" + Environment.NewLine);
                     retVal.Append("TITLE = " + network.Name + Environment.NewLine);
@@ -658,7 +713,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         retVal.Append(Environment.NewLine);
                     foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                     {
-                        if (functionBlockRow.ToString(false,false) == "")
+                        if (functionBlockRow.ToString(false, false) == "")
                             retVal.Append(Environment.NewLine);
                         else
                         {
@@ -667,13 +722,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     }
                 }
                 retVal.Append("END_FUNCTION");
-
-
             }
+                
             return retVal.ToString();
         }
-
-        
     }
 }
 
