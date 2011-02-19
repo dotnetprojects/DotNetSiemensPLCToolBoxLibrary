@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -117,8 +118,20 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                             DataObject dragData = new DataObject("dataRow", row);
                             dragData.SetData("ProjectBlockInfo", myDataGrid.SelectedItem);
                             if (myDataGrid.SelectedItem is S7ProjectBlockInfo)
-                            {
+                            {                               
                                 S7ProjectBlockInfo blkInfo = (S7ProjectBlockInfo) myDataGrid.SelectedItem;
+                                string awlblk = blkInfo.GetSourceBlock();
+
+                                dragData.SetData(FileDragDropHelper.CFSTR_FILEDESCRIPTORW, FileDragDropHelper.GetFileDescriptor(blkInfo.BlockName + ".awl", awlblk));
+                                dragData.SetData(FileDragDropHelper.CFSTR_FILECONTENTS, FileDragDropHelper.GetFileContents(awlblk));                                                              
+                                
+                                byte[] unicodeText = Encoding.Unicode.GetBytes(awlblk); // UTF-16
+                                byte[] utf8Text = Encoding.UTF8.GetBytes(awlblk);
+                                byte[] utf32Text = Encoding.UTF32.GetBytes(awlblk);
+                                dragData.SetData(DataFormats.Text,awlblk);
+                                dragData.SetData(DataFormats.UnicodeText, unicodeText);
+                                dragData.SetData("UTF-8", utf8Text);
+                                dragData.SetData("UTF-32", utf32Text);
                             }
                             //dragData = new DataObject(DataFormats.Text,row.ToString());
                             Mouse.OverrideCursor = dragDropCursor = new GhostCursor(row).Cursor;

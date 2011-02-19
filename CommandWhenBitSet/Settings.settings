@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CommandWhenBitSet" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CommandToRun" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Windows\System32\shutdown.exe</Value>
+    </Setting>
+    <Setting Name="CommandParameter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/s /c "blabla"</Value>
+    </Setting>
+    <Setting Name="PLCVar" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DB1.DBX0.0</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

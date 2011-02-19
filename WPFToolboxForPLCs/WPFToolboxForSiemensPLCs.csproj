@@ -129,6 +129,7 @@
     <Compile Include="DockableWindows\DockableContentProjectList.xaml.cs">
       <DependentUpon>DockableContentProjectList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileDragDropHelper.cs" />
     <Compile Include="WPF-Addons\BoolToValueConverter.cs" />
     <Compile Include="WPF-Addons\ByteIntArrayConverter.cs" />
     <Compile Include="WPF-Addons\ExposeFirstVisibleItemBehavior\ListBoxExtension.cs" />

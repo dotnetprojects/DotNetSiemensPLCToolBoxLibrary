@@ -629,7 +629,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 }
                 else
                 {
-                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + " " + val + ";" + cmt + Environment.NewLine;
+                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + (s7DataRow.DataTypeBlockNumber != 0 ? s7DataRow.DataTypeBlockNumber.ToString() : "") + " " + val + ";" + cmt + Environment.NewLine;
                 }
             }
             return retval;
@@ -650,13 +650,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             S7FunctionBlock fcblk = null;
 
             if (blk is S7FunctionBlock)
-                retVal.Append("FUNCTION " + blk.BlockName + " : VOID" + Environment.NewLine);
+            {
+                fcblk = (S7FunctionBlock) blk;
+                if (fcblk.BlockType == PLCBlockType.FC)
+                    retVal.Append("FUNCTION " + blk.BlockName + " : VOID" + Environment.NewLine);
+                else
+                    retVal.Append("FUNCTION_BLOCK " + blk.BlockName + Environment.NewLine);
+            }
             else
                 retVal.Append("DATA_BLOCK " + blk.BlockName + Environment.NewLine);
             retVal.Append("TITLE =" + fblk.Title + Environment.NewLine);
             if (blk is S7FunctionBlock)
             {
-                fcblk = (S7FunctionBlock)blk;
+                
                 if (!String.IsNullOrEmpty(fcblk.Description))
                     retVal.Append("//" + fcblk.Description.Replace(Environment.NewLine, Environment.NewLine + "//") + Environment.NewLine);
             }
@@ -678,7 +684,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Append(GetSubParas(dtaBlk.Structure, "    "));
                     retVal.Append("  END_STRUCT ;" + Environment.NewLine);
 
-
                 }
                 else if (dtaBlk.IsInstanceDB)
                     retVal.Append(" FB " + dtaBlk.FBNumber + Environment.NewLine);
@@ -692,11 +697,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     foreach (S7DataRow s7DataRow in fcblk.Parameter.Children)
                     {
                         string parnm = s7DataRow.Name;
+                        string ber = "VAR_" + parnm;
                         if (parnm == "IN")
-                            parnm = "INPUT";
+                            ber = "VAR_INPUT";
                         else if (parnm == "OUT")
-                            parnm = "OUTPUT";
-                        retVal.Append("VAR_" + parnm + Environment.NewLine);
+                            ber = "VAR_OUTPUT";
+                        else if (parnm == "STATIC")
+                            ber = "VAR";
+                        retVal.Append(ber + Environment.NewLine);
                         retVal.Append(GetSubParas(s7DataRow, "  "));
                         retVal.Append("END_VAR" + Environment.NewLine);
                     }

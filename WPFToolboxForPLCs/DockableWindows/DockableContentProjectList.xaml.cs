@@ -82,6 +82,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         private void myTreeView_Drop(object sender, DragEventArgs e)
         {
+            
             TreeViewItem row = UIHelpers.TryFindFromPoint<TreeViewItem>((UIElement)sender, e.GetPosition(myTreeView));
 
             ProjectFolder blkFld = (ProjectFolder) myTreeView.ItemFromContainer(row);
