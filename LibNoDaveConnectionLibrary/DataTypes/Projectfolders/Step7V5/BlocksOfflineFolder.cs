@@ -384,7 +384,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
         {
-            return GetBlock(blkInfo, new S7ConvertingOptions());
+            return GetBlock(blkInfo, new S7ConvertingOptions(){GenerateCallsfromUCs = false});
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)

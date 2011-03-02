@@ -484,6 +484,21 @@ namespace JFK_VarTab
                 myConn.PLCSendPassword(pwd);
         }
 
+        private PLCConnection.VarTabData vtab = null;
+        private void button18_Click(object sender, EventArgs e)
+        {
+            vtab = myConn.ReadValuesWithVarTabFunctions(myValues, PLCReadTriggerVarTab.EndOfCycle);
+            vtab.RequestData();
+            timer3.Enabled = true;
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            vtab.RequestData();
+            listBox1.Items.Clear();
+            listBox1.Items.AddRange(myValues.ToArray());
+        }
+
        
         
        

@@ -41,7 +41,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 ByteAddress = 0;
                 BitAddress = 0;
             }
-            
+
+        }
+        public static bool operator <(ByteBitAddress b1, ByteBitAddress b2)
+        {
+            if (b1.ByteAddress * 8 + b1.BitAddress < b2.ByteAddress * 8 + b2.BitAddress)
+                return true;
+            return false;
+        }
+
+        public static bool operator >(ByteBitAddress b1, ByteBitAddress b2)
+        {
+            if (b1.ByteAddress * 8 + b1.BitAddress > b2.ByteAddress * 8 + b2.BitAddress)
+                return true;
+            return false;
         }
 
         public override string ToString()

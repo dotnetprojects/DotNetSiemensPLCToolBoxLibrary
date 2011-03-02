@@ -34,18 +34,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     
     public class S7DataRow : INotifyPropertyChanged
     {
-        //ToDo: Optimize this function, that it first checks if the next row is bigger then the address, so that not so many
-        //recursions are needed!
         public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
         {
-            foreach (var s7DataRow in startRow.Children)
-            {
-                if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0))
-                    return s7DataRow;
-                var tmp = GetDataRowWithAddress(s7DataRow, address);
-                if (tmp != null)
-                    return tmp;
-            }
+                for (int n = 0; n < startRow.Children.Count;n++)
+                //foreach (var s7DataRow in startRow.Children)
+                {
+                    var s7DataRow = startRow.Children[n];
+                    if (n == startRow.Children.Count - 1 || address < startRow.Children[n + 1].BlockAddress)
+                    {
+                        if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0))
+                            return s7DataRow;
+                        var tmp = GetDataRowWithAddress(s7DataRow, address);
+                        if (tmp != null)
+                            return tmp;
+                    }
+                }
             return null;
         }
 
@@ -231,6 +234,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public List<Step7Attribute> Attributes { get; set; }
 
+
+        //Contains the Length of a Structure or UDT...
+        //private int _structLength = 0;
+
         //This Returns the Length in Bytes
         public int ByteLength
         {
@@ -395,6 +402,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     if (akAddr.ByteAddress%2 != 0)
                         akAddr.ByteAddress++;
 
+                    //int structlen = 0;
                     foreach (S7DataRow plcDataRow in Children)
                     {
                         if (akAddr.BitAddress != 0 && plcDataRow._datatype != S7DataRowType.BOOL)
@@ -436,7 +444,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             }
                             plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
                         }
+                        //structlen += plcDataRow.ByteLength;
                     }
+                    //this. = structlen;
                 }
             }
             return akAddr;
@@ -451,6 +461,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 _BlockAddress = null;
                 _parentOldAddress = null;
+                //_structureLength = null;
 
                 if (Children!=null)
                     foreach (S7DataRow plcDataRow in Children)

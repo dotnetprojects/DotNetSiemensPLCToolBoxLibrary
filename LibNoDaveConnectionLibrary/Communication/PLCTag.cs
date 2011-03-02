@@ -1111,6 +1111,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         }
 
+        public int ReadByteSize { get { return _internalGetSize(); } }
         internal int _internalGetSize()
         {            
             switch (LibNoDaveDataType)

@@ -76,6 +76,7 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameterDirection.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7ProjectSourceInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7SourceBlock.cs" />
+    <Compile Include="DataTypes\PLCReadTriggerVarTab.cs" />
     <Compile Include="DataTypes\Projectfolders\IPLCBlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\ISymbolTable.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="DataTypes\TagDataType.cs" />
     <Compile Include="DataTypes\TagDisplayDataType.cs" />
     <Compile Include="General\EndianAttribute.cs" />
+    <Compile Include="General\IEnumerableExtensions.cs" />
     <Compile Include="General\NumericComparer.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
     <Compile Include="General\ZipHelper.cs" />

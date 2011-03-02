@@ -34,45 +34,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public bool IsInstanceDB { get; set; }
         public S7DataRow Structure { get; set; }
 
-        /*
-        public List<PLCDataRow> GetRowsAsList()
-        {
-            List<PLCDataRow> retVal = new List<PLCDataRow>();
-            if (Structure != null && Structure.Children != null && Structure.DataType == PLCDataRowType.STRUCT)
-                foreach (PLCDataRow plcDataRow in Structure.Children)
-                    retVal.AddRange(_GetRowsAsList(plcDataRow));
-            return retVal;
-        }
-        */
-
-        /*
-        public List<PLCDataRow> GetRowsAsArrayExpandedList()
-        {
-            return GetRowsAsArrayExpandedList(new PLCDataBlockExpandOptions());
-        }
-
-        public List<PLCDataRow> GetRowsAsArrayExpandedList(PLCDataBlockExpandOptions myExpOpt)
-        {
-            List<PLCDataRow> retVal = new List<PLCDataRow>();
-            if (Structure != null && Structure.Children != null && Structure.DataType == PLCDataRowType.STRUCT)
-                foreach (PLCDataRow plcDataRow in GetArrayExpandedStructure().Children)
-                    retVal.AddRange(_GetRowsAsList(plcDataRow));
-            return retVal;
-        }
-        */
-        /*
-        public List<LibNoDaveValue> GetLibnoDaveValues()
-        {
-            List<LibNoDaveValue> retVal = new List<LibNoDaveValue>();
-            var tmp = GetRowsAsList();
-            foreach (PLCDataRow plcDataRow in tmp)
-            {
-                if (plcDataRow.LibNoDaveValue != null)
-                    retVal.Add(plcDataRow.LibNoDaveValue);
-            }
-            return retVal;
-        }
-        */
         /// <summary>
         /// With this function you get the Structure with expanden Arrays!
         /// </summary>
@@ -86,18 +47,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             return GetArrayExpandedStructure(new S7DataBlockExpandOptions());
         }
-
-        /*
-        internal List<PLCDataRow> _GetRowsAsList(PLCDataRow currRow)
-        {
-            List<PLCDataRow> retVal = new List<PLCDataRow>();
-            retVal.Add(currRow);
-            if (currRow.Children != null && currRow.DataType == PLCDataRowType.STRUCT)
-                foreach (PLCDataRow plcDataRow in currRow.Children)
-                    retVal.AddRange(_GetRowsAsList(plcDataRow));
-            return retVal;
-        }
-        */
 
         public override string ToString()
         {
