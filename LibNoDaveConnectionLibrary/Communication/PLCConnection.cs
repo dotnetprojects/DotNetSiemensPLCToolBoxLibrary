@@ -1187,7 +1187,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             internal PLCConnection myConn;
             
             private PLCTag[] _plcTags;
-            private PLCTag[] PLCTags
+            public PLCTag[] PLCTags
             {
                 get { return _plcTags; }                
             }
@@ -1224,7 +1224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         //Todo: Look what error codes exist when using vartab, the following ones are from Diag Data!
                         if (rparam[10] == 0xd0 && rparam[11] == 0xa5)
-                            throw new Exception("Error, the Commands are not excetuted");
+                            throw new Exception("The Trigger Situation has not yet happened!");
                         else if (rparam[10] == 0xd0)
                             throw new Exception("Error, the Trigger is already in use. Err. Code: " +
                                                 rparam[11].ToString("X"));

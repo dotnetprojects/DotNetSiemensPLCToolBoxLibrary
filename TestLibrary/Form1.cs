@@ -494,10 +494,17 @@ namespace JFK_VarTab
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-            vtab.RequestData();
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(myValues.ToArray());
-            
+            try
+            {
+                vtab.RequestData();
+                listBox1.Items.Clear();
+                listBox1.Items.AddRange(myValues.ToArray());
+            }
+            catch(Exception ex)
+            {
+                label2.Text = ex.Message;
+            }
+
         }
 
        
