@@ -1222,6 +1222,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         byte[] rdata, rparam;
                         int res = myConn._dc.daveRecieveData(out rdata, out rparam);
 
+                        //Todo: Look what error codes exist when using vartab, the following ones are from Diag Data!
                         if (rparam[10] == 0xd0 && rparam[11] == 0xa5)
                             throw new Exception("Error, the Commands are not excetuted");
                         else if (rparam[10] == 0xd0)
@@ -1234,20 +1235,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         int answLen = rdata[6] * 0x100 + rdata[7];
 
-                        List<byte> valueBytes = new List<byte>();
                         int pos = 14;
                         for (int i = 0; i < PLCTags.Length; i++)
                         {
-                            int len = rdata[pos + 2]*0x100 + rdata[pos + 3];
-                            byte[] bt = new byte[len];
-                            Array.Copy(rdata, pos + 4, bt, 0, len);
-                            valueBytes.AddRange(bt);
+                            int len = 0;
+                            if (rdata[pos + 0] == 0xff)
+                            {
+                                //rdata[pos + 1] == 4 means len is in BITS, maybe we need this???
+                                len = rdata[pos + 2]*0x100 + rdata[pos + 3];                                
+                                PLCTags[i]._readValueFromBuffer(rdata, pos + 4);
+                            }
+                            else                            
+                                PLCTags[i].ItemDoesNotExist = true;                           
                             pos += 4 + len;
-                        }
-                        //Ab Byte 10 beginnen die Werte!
-                        //Jeder Wert mit 4 Byte Header!
-                        myConn.ReadValuesFromByteArray(PLCTags, valueBytes.ToArray(), 0);
-
+                        }                       
                     }
             }
 

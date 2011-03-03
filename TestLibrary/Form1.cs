@@ -497,6 +497,7 @@ namespace JFK_VarTab
             vtab.RequestData();
             listBox1.Items.Clear();
             listBox1.Items.AddRange(myValues.ToArray());
+            
         }
 
        
