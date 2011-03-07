@@ -87,6 +87,8 @@
             this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.telegrammSimulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.varTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertCallsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -521,6 +523,7 @@
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.toolsToolStripMenuItem1,
+            this.optionsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -638,6 +641,23 @@
             this.varTabToolStripMenuItem.Name = "varTabToolStripMenuItem";
             this.varTabToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.varTabToolStripMenuItem.Text = "VarTab";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.convertCallsToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // convertCallsToolStripMenuItem
+            // 
+            this.convertCallsToolStripMenuItem.Checked = true;
+            this.convertCallsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.convertCallsToolStripMenuItem.Name = "convertCallsToolStripMenuItem";
+            this.convertCallsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.convertCallsToolStripMenuItem.Text = "Convert UCs to Calls";
+            this.convertCallsToolStripMenuItem.Click += new System.EventHandler(this.convertCallsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -913,6 +933,8 @@
         private System.Windows.Forms.ToolStripMenuItem telegrammSimulatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem varTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem downloadOnlineBlockToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertCallsToolStripMenuItem;
 
     }
 }

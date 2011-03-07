@@ -250,6 +250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         lstLIBNODAVELokalComSpeed.Enabled = true;
                         lblLIBNODAVELokalComParity.Enabled = true;
                         lstLIBNODAVELokalComParity.Enabled = true;
+                        chkRouting.Checked = false;
                         break;
                     case 20:
                         //lblLIBNODAVEEntryPoint.Enabled = true;

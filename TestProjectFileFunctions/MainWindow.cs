@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
@@ -247,11 +247,15 @@ namespace JFK_VarTab
 
                 lblStatus.Text = ((ProjectBlockInfo)lstListBox.SelectedItem).ToString();
 
-                var tmp = blkFld.GetBlock((ProjectBlockInfo)lstListBox.SelectedItem);
+                Block tmp;
+                if (blkFld is BlocksOfflineFolder)
+                    tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)lstListBox.SelectedItem, new S7ConvertingOptions() { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
+                else
+                    tmp = blkFld.GetBlock((ProjectBlockInfo) lstListBox.SelectedItem);
 
                 if (tmp != null)
                 {
-                    if (tmp.BlockType == PLCBlockType.DB || tmp.BlockType == PLCBlockType.S5_DV || tmp.BlockType == PLCBlockType.S5_DB)
+                    if (tmp.BlockType == PLCBlockType.UDT || tmp.BlockType == PLCBlockType.DB || tmp.BlockType == PLCBlockType.S5_DV || tmp.BlockType == PLCBlockType.S5_DB)
                     {
                         //dataBlockViewControl.DataBlockRows = ((PLCDataBlock) tmp).Structure;
                         myBlk = (IDataBlock)tmp;
@@ -872,6 +876,11 @@ namespace JFK_VarTab
             DownloadBlock myDown = new DownloadBlock((string)lstConnections.SelectedItem);
             myDown.ShowDialog();
             
+        }
+
+        private void convertCallsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            convertCallsToolStripMenuItem.Checked = !convertCallsToolStripMenuItem.Checked;
         }
 
        

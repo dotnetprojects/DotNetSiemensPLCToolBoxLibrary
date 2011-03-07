@@ -151,7 +151,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             // 
             this.lstProjectFolder.FormattingEnabled = true;
             this.lstProjectFolder.ItemHeight = 15;
-            this.lstProjectFolder.Location = new System.Drawing.Point(437, 130);
+            this.lstProjectFolder.Location = new System.Drawing.Point(438, 127);
             this.lstProjectFolder.Name = "lstProjectFolder";
             this.lstProjectFolder.Size = new System.Drawing.Size(418, 364);
             this.lstProjectFolder.TabIndex = 11;

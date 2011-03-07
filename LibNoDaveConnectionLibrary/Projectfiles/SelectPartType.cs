@@ -13,6 +13,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         FunctionBlock = 1021,
         DataBlock = 1022,
         
-        LibNoDaveValue = 2001,
+        Tag = 2001,
     }
 }

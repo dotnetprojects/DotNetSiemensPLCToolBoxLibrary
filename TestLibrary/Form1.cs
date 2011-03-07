@@ -507,6 +507,17 @@ namespace JFK_VarTab
 
         }
 
+        private void button19_Click(object sender, EventArgs e)
+        {
+            timer3.Enabled = false;
+
+            if (vtab != null)
+            {
+                vtab.Dispose();
+                vtab = null;
+            }
+        }
+
        
         
        

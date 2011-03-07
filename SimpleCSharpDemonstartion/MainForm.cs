@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
@@ -53,7 +52,6 @@ namespace SimpleCSharpDemonstration
 
         private void button3_Click(object sender, EventArgs e)
         {
-
             S7DataBlock myDB = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectUDT();
 
             DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
@@ -63,7 +61,7 @@ namespace SimpleCSharpDemonstration
                 foreach (var symbolTableEntry in symTab.SymbolTableEntrys)
                 {
 
-                }
+                }             
         }
     }
 }

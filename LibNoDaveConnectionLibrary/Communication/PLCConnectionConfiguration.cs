@@ -24,6 +24,7 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.ComponentModel;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -32,42 +33,202 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     [System.ComponentModel.Editor(typeof(PLCConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
     [Serializable]
-    public class PLCConnectionConfiguration
-    {        
-        public String ConnectionName { get; set; }
-        public string EntryPoint { get; set; }
-        public int CpuRack { get; set; }
-        public int CpuSlot { get; set; }
-        public int CpuMpi { get; set; }
-        public string CpuIP { get; set; }
-        public int Port { get; set; }
-        public int LokalMpi { get; set; }
-        public string ComPort { get; set; }
-        public int ConnectionType { get; set; }
-        public int BusSpeed { get; set; }
-        public bool NetLinkReset { get; set; }
-        public string ComPortSpeed { get; set; }
-        public int ComPortParity { get; set; }
+    public class PLCConnectionConfiguration : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool Routing { get; set;}
-        public string RoutingDestination { get; set; }
-        public int RoutingDestinationRack { get; set; }
-        public int RoutingDestinationSlot { get; set; }
-        public int RoutingSubnet1 { get; set; }
-        public int RoutingSubnet2 { get; set; }
+        private void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+            }
+        }
 
-        public int Timeout { get; set; }
-        public int TimeoutIPConnect { get; set; }
+        private string _connectionName;
+        public String ConnectionName
+        {
+            get { return _connectionName; }
+            set
+            {
+                _connectionName = value;
+                NotifyPropertyChanged("ConnectionName");
+                NotifyPropertyChanged("ObjectAsString");
+            }
+        }
 
-		private bool _initDone { get; set;}
-		
-        public LibNodaveConnectionConfigurationType ConfigurationType { get; set; }
+        private string _entryPoint;
+        public string EntryPoint
+        {
+            get { return _entryPoint; }
+            set { _entryPoint = value; NotifyPropertyChanged("EntryPoint"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _cpuRack;
+        public int CpuRack
+        {
+            get { return _cpuRack; }
+            set { _cpuRack = value; NotifyPropertyChanged("CpuRack"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _cpuSlot;
+        public int CpuSlot
+        {
+            get { return _cpuSlot; }
+            set { _cpuSlot = value; NotifyPropertyChanged("CpuSlot"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _cpuMpi;
+        public int CpuMpi
+        {
+            get { return _cpuMpi; }
+            set { _cpuMpi = value; NotifyPropertyChanged("CpuMpi"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private string _cpuIp;
+        public string CpuIP
+        {
+            get { return _cpuIp; }
+            set { _cpuIp = value; NotifyPropertyChanged("CpuIP"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _port;
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; NotifyPropertyChanged("Port"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _lokalMpi;
+        public int LokalMpi
+        {
+            get { return _lokalMpi; }
+            set { _lokalMpi = value; NotifyPropertyChanged("LokalMpi"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private string _comPort;
+        public string ComPort
+        {
+            get { return _comPort; }
+            set { _comPort = value; NotifyPropertyChanged("ComPort"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _connectionType;
+        public int ConnectionType
+        {
+            get { return _connectionType; }
+            set { _connectionType = value; NotifyPropertyChanged("ConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _busSpeed;
+        public int BusSpeed
+        {
+            get { return _busSpeed; }
+            set { _busSpeed = value; NotifyPropertyChanged("BusSpeed"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private bool _netLinkReset;
+        public bool NetLinkReset
+        {
+            get { return _netLinkReset; }
+            set { _netLinkReset = value; NotifyPropertyChanged("NetLinkReset"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private string _comPortSpeed;
+        public string ComPortSpeed
+        {
+            get { return _comPortSpeed; }
+            set { _comPortSpeed = value; NotifyPropertyChanged("ComPortSpeed"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _comPortParity;
+        public int ComPortParity
+        {
+            get { return _comPortParity; }
+            set
+            {
+                _comPortParity = value;
+                NotifyPropertyChanged("ComPortParity");
+                NotifyPropertyChanged("ObjectAsString");
+            }
+        }
+
+        private bool _routing;
+        public bool Routing
+        {
+            get { return _routing; }
+            set { _routing = value; NotifyPropertyChanged("Routing"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private string _routingDestination;
+        public string RoutingDestination
+        {
+            get { return _routingDestination; }
+            set { _routingDestination = value; NotifyPropertyChanged("RoutingDestination"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _routingDestinationRack;
+        public int RoutingDestinationRack
+        {
+            get { return _routingDestinationRack; }
+            set { _routingDestinationRack = value; NotifyPropertyChanged("RoutingDestinationRack"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _routingDestinationSlot;
+        public int RoutingDestinationSlot
+        {
+            get { return _routingDestinationSlot; }
+            set { _routingDestinationSlot = value; NotifyPropertyChanged("RoutingDestinationSlot"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _routingSubnet1;
+        public int RoutingSubnet1
+        {
+            get { return _routingSubnet1; }
+            set { _routingSubnet1 = value; NotifyPropertyChanged("RoutingSubnet1"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _routingSubnet2;
+        public int RoutingSubnet2
+        {
+            get { return _routingSubnet2; }
+            set { _routingSubnet2 = value; NotifyPropertyChanged("RoutingSubnet2"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _timeout;
+        public int Timeout
+        {
+            get { return _timeout; }
+            set { _timeout = value; NotifyPropertyChanged("Timeout"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _timeoutIpConnect;
+        public int TimeoutIPConnect
+        {
+            get { return _timeoutIpConnect; }
+            set { _timeoutIpConnect = value; NotifyPropertyChanged("TimeoutIPConnect"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private bool _initDone { get; set; }
+
+        private LibNodaveConnectionConfigurationType _configurationType;
+        public LibNodaveConnectionConfigurationType ConfigurationType
+        {
+            get { return _configurationType; }
+            set { _configurationType = value; NotifyPropertyChanged("ConfigurationType"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        public string ObjectAsString
+        {
+            get { return ToString(); }
+
+        }
 
         public static String[] GetConfigurationNames()
         {
 #if !IPHONE
             RegistryKey myConnectionKey = Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
-            return myConnectionKey.GetSubKeyNames();  
+            return myConnectionKey.GetSubKeyNames();
 #else
 			return null;
 #endif
@@ -89,7 +250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.ConnectionName = "tmpConnection1";
             else
                 this.ConnectionName = ConnectionName;
-            
+
             this.ConfigurationType = LibNodaveConnectionConfigurationType.RegistrySavedConfiguration;
 
             this.ReloadConfiguration();
@@ -122,17 +283,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
                 if (myConnectionKey != null)
                 {
-                    this.EntryPoint = (String) myConnectionKey.GetValue("EntryPoint", "S7ONLINE");
+                    this.EntryPoint = (String)myConnectionKey.GetValue("EntryPoint", "S7ONLINE");
                     this.CpuRack = Convert.ToInt32(myConnectionKey.GetValue("CpuRack", "0"));
                     this.CpuSlot = Convert.ToInt32(myConnectionKey.GetValue("CpuSlot", "2"));
                     this.CpuMpi = Convert.ToInt32(myConnectionKey.GetValue("CpuMpi", "2"));
-                    this.CpuIP = (String) myConnectionKey.GetValue("CpuIP", "192.168.1.1");
+                    this.CpuIP = (String)myConnectionKey.GetValue("CpuIP", "192.168.1.1");
                     this.LokalMpi = Convert.ToInt32(myConnectionKey.GetValue("LokalMpi", "0"));
-                    this.ComPort = (String) myConnectionKey.GetValue("ComPort", "");
+                    this.ComPort = (String)myConnectionKey.GetValue("ComPort", "");
                     this.ConnectionType = Convert.ToInt32(myConnectionKey.GetValue("ConnectionType", "1"));
                     this.BusSpeed = Convert.ToInt32(myConnectionKey.GetValue("BusSpeed", "2"));
                     this.NetLinkReset = Convert.ToBoolean(myConnectionKey.GetValue("NetLinkReset", "false"));
-                    this.ComPortSpeed = (String) myConnectionKey.GetValue("ComPortSpeed", "38400");
+                    this.ComPortSpeed = (String)myConnectionKey.GetValue("ComPortSpeed", "38400");
                     this.ComPortParity = Convert.ToInt32(myConnectionKey.GetValue("ComPortParity", "1"));
                     this.Routing = Convert.ToBoolean(myConnectionKey.GetValue("Routing", "false"));
                     this.RoutingDestinationRack =
@@ -151,28 +312,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             else
             {
-				if (!_initDone)
-				{
-                	this.ConnectionType = 122;
-                	this.CpuMpi = 2;
-                	this.EntryPoint = "S7ONLINE";
-                	this.CpuIP = "192.168.1.1";
-                	this.CpuRack = 0;
-                	this.CpuSlot = 2;
-					this.Port = 102;
-				    this.TimeoutIPConnect = 5000;
-					this.Timeout = 5000000;
-					_initDone = true;
-				}
+                if (!_initDone)
+                {
+                    this.ConnectionType = 122;
+                    this.CpuMpi = 2;
+                    this.EntryPoint = "S7ONLINE";
+                    this.CpuIP = "192.168.1.1";
+                    this.CpuRack = 0;
+                    this.CpuSlot = 2;
+                    this.Port = 102;
+                    this.TimeoutIPConnect = 5000;
+                    this.Timeout = 5000000;
+                    _initDone = true;
+                }
             }
         }
 
         public static void DeleteConfiguration(string ConnectionName)
         {
-            #if !IPHONE
+#if !IPHONE
             Registry.CurrentUser.DeleteSubKeyTree(
                         "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
-            #endif 
+#endif
         }
 
         public void SaveConfiguration()
@@ -210,7 +371,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 #endif
             }
         }
-        
+
         public override string ToString()
         {
             string retVal = "";
@@ -218,16 +379,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
 
                 case 1:
-                    retVal = "MPI über seriell" + " (MPI: " + CpuMpi.ToString() + ")";
+                    retVal = "MPI über seriell" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
                 case 2:
-                    retVal = "MPI über seriell (Andrews Version)" + " (MPI: " + CpuMpi.ToString() + ")";
+                    retVal = "MPI über seriell (Andrews Version)" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
                 case 3:
-                    retVal = "MPI über seriell (Step7 Version)" + " (MPI: " + CpuMpi.ToString() + ")";
+                    retVal = "MPI über seriell (Step7 Version)" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
                 case 4:
-                    retVal = "MPI über seriell" + " (MPI: " + CpuMpi.ToString() + ")";
+                    retVal = "MPI über seriell" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
                 case 10:
                     retVal = "PPI über seriell";
@@ -266,8 +427,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
     public enum LibNodaveConnectionConfigurationType
     {
-        RegistrySavedConfiguration=1,
-        ObjectSavedConfiguration=2
+        RegistrySavedConfiguration = 1,
+        ObjectSavedConfiguration = 2
     }
 
     public enum LibNodaveConnectionTypes
@@ -281,7 +442,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         AS_511 = 20,
         Use_Step7_DLL = 50,
         ISO_over_TCP = 122,
-        ISO_over_TCP_CP_243 = 123,        
+        ISO_over_TCP_CP_243 = 123,
         Netlink_lite = 223,
         Netlink_lite_PPI = 224,
         Netlink_Pro = 230,
@@ -297,8 +458,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Speed_500k = 3,
         Speed_1500k = 4,
         Speed_45k = 5,
-        Speed_93k = 6        
+        Speed_93k = 6
         // ReSharper restore InconsistentNaming
     }
-    
 }

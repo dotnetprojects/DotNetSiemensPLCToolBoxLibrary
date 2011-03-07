@@ -45,6 +45,8 @@
             this.lblPT2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.lblPT1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblBit
@@ -200,11 +202,27 @@
             this.lblPT1.TabIndex = 17;
             this.lblPT1.Text = ".";
             // 
-            // LibNoDaveValueEditor
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(15, 253);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(166, 20);
+            this.textBox1.TabIndex = 12;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 237);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "In S7 Schreibweise";
+            // 
+            // PLCTagEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(347, 242);
+            this.ClientSize = new System.Drawing.Size(347, 285);
             this.ControlBox = false;
             this.Controls.Add(this.txtByte);
             this.Controls.Add(this.txtBit);
@@ -212,6 +230,7 @@
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.lblPT2);
             this.Controls.Add(this.lblBit);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
@@ -219,12 +238,13 @@
             this.Controls.Add(this.lblLen);
             this.Controls.Add(this.lblDB);
             this.Controls.Add(this.txtLen);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txtDB);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.cmbSource);
             this.Controls.Add(this.lblPT1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "LibNoDaveValueEditor";
+            this.Name = "PLCTagEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "LibNoDaveValueEditor";
             this.Load += new System.EventHandler(this.LibNoDaveValueEditor_Load);
@@ -252,5 +272,7 @@
         private System.Windows.Forms.Label lblPT2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblPT1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label3;
     }
 }

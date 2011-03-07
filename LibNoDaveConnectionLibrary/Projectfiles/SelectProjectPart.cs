@@ -49,10 +49,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         }
 
         //This selects a Tag From a Step 7 Project
-        public static PLCTag SelectTAG()
+        public static PLCTag SelectTAG(string FileAndProjectInternalFolder)
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm();
-            myFrm.SelectPart = SelectPartType.LibNoDaveValue;
+            myFrm.SelectPart = SelectPartType.Tag;
             myFrm.ShowDialog();
             return (PLCTag)myFrm.retVal;
         }

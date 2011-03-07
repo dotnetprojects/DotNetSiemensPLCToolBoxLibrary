@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
-    static class InputBox
+    public static class InputBox
     {
 
 

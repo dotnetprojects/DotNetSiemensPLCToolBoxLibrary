@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -18,12 +19,57 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         Step7ProjectV5 tmpPrj;        
 
+
+        #region TreeNodes
+
         class myTreeNode : TreeNode
         {
             public object myObject;
         }
 
-        public void AddNodes(TreeNode nd, List<ProjectFolder> lst)
+         class DBValueTreeNode : TreeNode
+         {
+             public S7DataRow s7datarow;
+         }
+
+         class DBTreeNode : DBValueTreeNode
+         {
+             public ProjectPlcBlockInfo PLCBlockInfo;
+         }
+
+        class FakeNode:TreeNode
+        {}
+
+        #endregion
+
+        private void AddDBValueNodes(DBTreeNode nd)
+        {
+            if (nd.Nodes.Count > 0 && nd.Nodes[0] is FakeNode)
+            {
+                nd.Nodes.RemoveAt(0);
+                S7DataBlock blk = (S7DataBlock) nd.PLCBlockInfo.GetBlock();
+                nd.s7datarow=blk.Structure;
+                AddDBValueSubNodes(nd, blk.Structure);
+            }
+        }
+
+        private void AddDBValueSubNodes(TreeNode nd, S7DataRow row)
+        {
+            if (row.Children!=null)
+                foreach (S7DataRow s7DataRow in row.Children)
+                {
+                    if (s7DataRow._children!=null && s7DataRow.Children.Count>0)
+                    {
+                        DBValueTreeNode newNd = new DBValueTreeNode();
+                        newNd.Text = s7DataRow.Name;
+                        newNd.s7datarow = s7DataRow;
+                        nd.Nodes.Add(newNd);
+                        AddDBValueSubNodes(newNd, s7DataRow);
+                    }
+                }
+        }
+
+        private void AddNodes(TreeNode nd, List<ProjectFolder> lst)
         {
             foreach (var subitem in lst)
             {
@@ -52,6 +98,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                 if (subitem.SubItems != null)
                     AddNodes(tmpNode, subitem.SubItems);
+
+                if (subitem is BlocksOfflineFolder  && this.SelectPart==SelectPartType.Tag)
+                {
+                    BlocksOfflineFolder blkFld = (BlocksOfflineFolder) subitem;
+                    foreach (ProjectPlcBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
+                    {
+                        if (projectBlockInfo.BlockType == PLCBlockType.DB || projectBlockInfo.BlockType == PLCBlockType.S5_DB || projectBlockInfo.BlockType == PLCBlockType.S5_DX)
+                        {
+                            string nm = projectBlockInfo.BlockName;
+                            if (projectBlockInfo.SymbolTabelEntry != null)
+                                nm += " (" + projectBlockInfo.SymbolTabelEntry.Symbol + ")";
+                            DBTreeNode trnd = new DBTreeNode() {Text = nm, PLCBlockInfo = projectBlockInfo};
+                            trnd.Nodes.Add(new FakeNode());
+                            tmpNode.Nodes.Add(trnd);
+                        }
+                    }
+
+                }
             }
         }
 
@@ -90,33 +154,61 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        private class DBRowValue
+        {
+            public S7DataRow myRow;
+            public override string ToString()
+            {
+                return myRow.Name + " (" + myRow.DataType.ToString() + ")";
+            }
+        }
       
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             
             lstProjectFolder.Items.Clear();
-            var tmp = (myTreeNode) treeStep7Project.SelectedNode;
-            if (tmp.myObject.GetType() == typeof(BlocksOfflineFolder))
+
+            if(treeStep7Project.SelectedNode is myTreeNode)
             {
-                BlocksOfflineFolder blkFld = (BlocksOfflineFolder) tmp.myObject;
-                if ((int)SelectPart>1000) 
+                var tmp = (myTreeNode) treeStep7Project.SelectedNode;
+                if (tmp.myObject.GetType() == typeof (BlocksOfflineFolder))
                 {
-                    List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList();
-                    foreach (ProjectBlockInfo step7ProjectBlockInfo in blocks)
+                    BlocksOfflineFolder blkFld = (BlocksOfflineFolder) tmp.myObject;
+                    if ((int) SelectPart > 1000)
                     {
-                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT && SelectPart==SelectPartType.VariableTable)
-                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
-                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && SelectPart == SelectPartType.DataBlock)
-                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
-                        if (step7ProjectBlockInfo.BlockType == PLCBlockType.UDT && SelectPart == SelectPartType.DataType)
-                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
-                        if ((step7ProjectBlockInfo.BlockType == PLCBlockType.FB || step7ProjectBlockInfo.BlockType == PLCBlockType.FC) && SelectPart == SelectPartType.FunctionBlock)
-                            lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                        List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList();
+                        foreach (ProjectBlockInfo step7ProjectBlockInfo in blocks)
+                        {
+                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT && SelectPart == SelectPartType.VariableTable)
+                                lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && SelectPart == SelectPartType.DataBlock)
+                                lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.UDT && SelectPart == SelectPartType.DataType)
+                                lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                            if ((step7ProjectBlockInfo.BlockType == PLCBlockType.FB || step7ProjectBlockInfo.BlockType == PLCBlockType.FC) && SelectPart == SelectPartType.FunctionBlock)
+                                lstProjectFolder.Items.Add(step7ProjectBlockInfo);
+                        }
+
                     }
-                    
                 }
             }
-            
+            else if(treeStep7Project.SelectedNode is DBValueTreeNode)
+            {
+                //Maybe a DBTreeNode is not yet Expanded, then it need to be filled after select!
+                if (treeStep7Project.SelectedNode is DBTreeNode)
+                    AddDBValueNodes((DBTreeNode) treeStep7Project.SelectedNode);
+
+                DBValueTreeNode tmp = (DBValueTreeNode) treeStep7Project.SelectedNode;
+
+                foreach (S7DataRow s7DataRow in tmp.s7datarow.Children)
+                {
+                    if (s7DataRow.DataType != S7DataRowType.STRUCT && s7DataRow.DataType != S7DataRowType.UDT)
+                    {
+                        lstProjectFolder.Items.Add(new DBRowValue() {myRow = s7DataRow});
+                    }
+                }
+            }
+
         }
 
         
@@ -189,6 +281,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         retVal = null;                    
                 }
             }
+            else if (SelectPart == SelectPartType.Tag)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    DBRowValue tmp = (DBRowValue)lstProjectFolder.SelectedItem;
+                    retVal = tmp.myRow.PlcTag;                    
+                }
+            }
             if (retVal!=null)
             {
                 this.Close();
@@ -229,6 +330,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private void treeStep7Project_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
+            if (e.Node is DBTreeNode)
+                AddDBValueNodes((DBTreeNode) e.Node);
             if (e.Node.ImageIndex == 0)
                 e.Node.ImageIndex = 1;
         }
