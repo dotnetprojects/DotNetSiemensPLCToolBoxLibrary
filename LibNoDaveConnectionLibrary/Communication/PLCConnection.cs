@@ -255,14 +255,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
             //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
-            if (_configuration.Routing || IPConnection)
+            //if (_configuration.Routing || IPConnection)
+            //Immer die extended Connection benutzen!
                 _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
                                                    _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
                                                    _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
                                                    _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
-                                                   _configuration.RoutingDestination);
-            else
-                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
+                                                   _configuration.RoutingDestination, _configuration.PLCConnectionType, _configuration.RoutingPLCConnectionType);
+            //else
+            //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
 
             if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
             {

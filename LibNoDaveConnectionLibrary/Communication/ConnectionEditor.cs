@@ -479,12 +479,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             else
             {
                 txtLIBNODAVECPUIP.Enabled = false;
-                txtLIBNODAVECPURack.Enabled = false;
-                txtLIBNODAVECPUSlot.Enabled = false;
+                txtLIBNODAVECPURack.Enabled = true;
+                txtLIBNODAVECPUSlot.Enabled = true;
                 txtLIBNODAVECPUMPI.Enabled = true;
                 lblLIBNODAVECPUIP.Enabled = false;
-                lblLIBNODAVECPURack.Enabled = false;
-                lblLIBNODAVECPUSlot.Enabled = false;
+                lblLIBNODAVECPURack.Enabled = true;
+                lblLIBNODAVECPUSlot.Enabled = true;
                 lblLIBNODAVECPUMPI.Enabled = true;
             }
 

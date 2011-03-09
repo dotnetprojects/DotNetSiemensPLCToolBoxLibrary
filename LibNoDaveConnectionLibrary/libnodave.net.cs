@@ -440,7 +440,9 @@ This was just here to check inheritance
                 int routingRack,
                 int routingSlot,
                 byte[] routingDestination,
-                int routingDestinationIsIP
+                int routingDestinationIsIP,
+                int ConnectionType,
+                int routingConnectionType
                 );
 
             public daveConnection(
@@ -465,7 +467,9 @@ This was just here to check inheritance
                 int routingSubnetSecond,
                 int routingRack,
                 int routingSlot,
-                string routingDestination        
+                string routingDestination,
+                int PLCConnectionType,
+                int routingPLCConnectionType
                 )
             {
                 string[] ip = IP.Split('.');
@@ -505,7 +509,7 @@ This was just here to check inheritance
                 pointer = daveNewExtendedConnection(
                     di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond,
                     routingRack, routingSlot,
-                    myRoutingDestination, routingDestinationIsIP);
+                    myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
 
             }
 

@@ -113,6 +113,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _comPort = value; NotifyPropertyChanged("ComPort"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
+        private int _plcConnectionType = 1;
+        public int PLCConnectionType
+        {
+            get { return _plcConnectionType; }
+            set { _plcConnectionType = value; NotifyPropertyChanged("PLCConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        private int _routingplcConnectionType = 1;
+        public int RoutingPLCConnectionType
+        {
+            get { return _routingplcConnectionType; }
+            set { _routingplcConnectionType = value; NotifyPropertyChanged("RoutingPLCConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+        
         private int _connectionType;
         public int ConnectionType
         {
@@ -305,6 +319,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     this.RoutingDestination = Convert.ToString(myConnectionKey.GetValue("RoutingDestination", "2"));
                     this.Port = Convert.ToInt32(myConnectionKey.GetValue("Port", "102"));
 
+                    this.PLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("PLCConnectionType", "1"));
+                    this.RoutingPLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("RoutingPLCConnectionType", "1"));
+
                     this.Timeout = Convert.ToInt32(myConnectionKey.GetValue("Timeout", "5000000"));
                     this.TimeoutIPConnect = Convert.ToInt32(myConnectionKey.GetValue("TimeoutIPConnect", "5000"));
                 }
@@ -365,6 +382,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     myConnectionKey.SetValue("RoutingSubnet2", this.RoutingSubnet2);
                     myConnectionKey.SetValue("RoutingDestination", this.RoutingDestination);
                     myConnectionKey.SetValue("Port", this.Port);
+                    myConnectionKey.SetValue("PLCConnectionType", this.PLCConnectionType);
+                    myConnectionKey.SetValue("RoutingPLCConnectionType", this.RoutingPLCConnectionType);
                     myConnectionKey.SetValue("Timeout", this.Timeout);
                     myConnectionKey.SetValue("TimeoutIPConnect", this.TimeoutIPConnect);
                 }
