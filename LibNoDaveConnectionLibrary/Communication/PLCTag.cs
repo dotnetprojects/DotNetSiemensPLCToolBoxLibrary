@@ -470,7 +470,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         try { Controlvalue = DateTime.Parse(myValue); }
                         catch (Exception) { }
                     break;
-    /*                     
+                case TagDataType.ByteArray:
+                    {
+                        string[] vals = myValueStrip.Split(',');
+                        byte[] wrt = new byte[vals.Length];
+                        int i = 0;
+
+                        foreach (string val in vals)
+                        {
+                            try
+                            {
+                                wrt[i++] = Convert.ToByte(val);
+                            }
+                            catch (Exception)
+                            { }
+                        }
+                        Controlvalue = wrt;
+                    }
+                    break;
+
+                    /*                  case TagDataType.TimeOfDay:    
     case TagDataType.Float:
     case TagDataType.ByteArray:
     */

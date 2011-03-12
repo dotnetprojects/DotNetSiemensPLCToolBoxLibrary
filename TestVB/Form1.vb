@@ -33,7 +33,7 @@ Public Class Form1
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
         Dim myConn As New Communication.PLCConnection("sps1")
         Dim val1 As New Communication.PLCTag("P#M40.0 BYTE 10")
-        'val1.ParseControlValueFromString("1,2,3,4,5,6,7,8,9,0")
+        val1.ParseControlValueFromString("1,2,3,4,5,6,7,8,9,0")
         myConn.WriteValue(val1)
     End Sub
 End Class
