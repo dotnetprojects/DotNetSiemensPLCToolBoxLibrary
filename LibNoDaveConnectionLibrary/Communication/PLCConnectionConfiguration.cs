@@ -451,13 +451,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             string txt = General.SerializeToString<PLCConnectionConfiguration>.Serialize(this);
             StreamWriter strm=new StreamWriter(filename,false);
             strm.Write(txt);
+            strm.Flush();
+            strm.Close();
         }
 
         public static PLCConnectionConfiguration LoadConfigFromFile(string filename)
         {
             StreamReader strm = new StreamReader(filename);
             string txt = strm.ReadToEnd();
-            return General.SerializeToString<PLCConnectionConfiguration>.DeSerialize(txt);            
+            strm.Close();
+            return General.SerializeToString<PLCConnectionConfiguration>.DeSerialize(txt);              
         }
     }
 

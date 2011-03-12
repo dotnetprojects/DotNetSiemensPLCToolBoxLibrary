@@ -472,6 +472,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     break;
                 case TagDataType.ByteArray:
                     {
+                        if (myValueStrip.Length > 2 && myValueStrip[0] == '{' && myValueStrip[myValueStrip.Length - 1] == '}')
+                            myValueStrip = myValueStrip.Substring(1, myValueStrip.Length - 2);
                         string[] vals = myValueStrip.Split(',');
                         byte[] wrt = new byte[vals.Length];
                         int i = 0;
