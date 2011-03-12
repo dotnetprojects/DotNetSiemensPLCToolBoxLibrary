@@ -24,8 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 if (m_objService != null)
                 {
-                    PLCTagEditor akVal = new PLCTagEditor((PLCTag)value);
-                    akVal.ShowDialog();
+                    PLCTagEditor.ShowPLCTagEditor((PLCTag) value);
                 }
             }
             return value;

@@ -128,6 +128,7 @@
     <Compile Include="General\EndianAttribute.cs" />
     <Compile Include="General\IEnumerableExtensions.cs" />
     <Compile Include="General\NumericComparer.cs" />
+    <Compile Include="General\SerializeToString.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
     <Compile Include="General\ZipHelper.cs" />
     <Compile Include="General\InputBox.cs" />

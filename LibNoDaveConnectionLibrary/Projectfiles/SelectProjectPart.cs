@@ -54,7 +54,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             SelectProjectPartForm myFrm = new SelectProjectPartForm();
             myFrm.SelectPart = SelectPartType.Tag;
             myFrm.ShowDialog();
-            return (PLCTag)myFrm.retVal;
+            PLCTag retVal = (PLCTag) myFrm.retVal;
+            myFrm.Close();
+            myFrm.Dispose();
+            return retVal;
         }
     }
 }

@@ -25,6 +25,8 @@
 */
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Xml.Serialization;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -44,7 +46,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
-
+        
         private string _connectionName;
         public String ConnectionName
         {
@@ -441,6 +443,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 else
                     retVal += " (Routing: IP:" + RoutingDestination + ",Rack:" + RoutingDestinationRack.ToString() + ",Slot:" + RoutingDestinationSlot.ToString() + ",Netz:" + RoutingSubnet1.ToString("X") + "-" + RoutingSubnet2.ToString("X") + ")";
             return retVal;
+        }
+
+
+        public void SaveConfigToFile(string filename)
+        {
+            string txt = General.SerializeToString<PLCConnectionConfiguration>.Serialize(this);
+            StreamWriter strm=new StreamWriter(filename,false);
+            strm.Write(txt);
+        }
+
+        public static PLCConnectionConfiguration LoadConfigFromFile(string filename)
+        {
+            StreamReader strm = new StreamReader(filename);
+            string txt = strm.ReadToEnd();
+            return General.SerializeToString<PLCConnectionConfiguration>.DeSerialize(txt);            
         }
     }
 

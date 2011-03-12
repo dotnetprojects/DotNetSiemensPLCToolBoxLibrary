@@ -1,4 +1,6 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
+﻿using System;
+
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
     public enum TagDisplayDataType
     {

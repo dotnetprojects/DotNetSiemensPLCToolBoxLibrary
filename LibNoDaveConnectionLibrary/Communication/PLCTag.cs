@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
@@ -41,10 +42,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public class PLCTag: INotifyPropertyChanged
     {
         private string _valueName;
-
         /// <summary>
         /// This is a Property wich addresses the values you've read with a Name
-        /// </summary>
+        /// </summary>        
         public String ValueName
         {
             get { return _valueName; }
@@ -58,7 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get { return _byteAddress; }
             set { _byteAddress = value;
-            NotifyPropertyChanged("ByteAddress");
+            NotifyPropertyChanged("ByteAddress"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
@@ -67,16 +67,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get { return _bitAddress; }
             set { _bitAddress = value;
-            NotifyPropertyChanged("BitAddress");
+            NotifyPropertyChanged("BitAddress"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
-        public bool ItemDoesNotExist { get; set;}
+        private bool _itemDoesNotExist;
+        public bool ItemDoesNotExist
+        {
+            get { return _itemDoesNotExist; }
+            set { _itemDoesNotExist = value; NotifyPropertyChanged("ItemDoesNotExist"); }
+        }
 
         public PLCTag()
-        {      
-      
-        }
+        { }
 
         public PLCTag(string address)
         {
@@ -94,7 +97,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return 0;
             }
             set { _datablockNumber = value;
-            NotifyPropertyChanged("DatablockNumber");
+            NotifyPropertyChanged("DatablockNumber"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
@@ -111,6 +114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (value == TagDataSource.Timer || value == TagDataSource.Counter)
                     if (LibNoDaveDataType != TagDataType.Bool && LibNoDaveDataType != TagDataType.Int && LibNoDaveDataType != TagDataType.Word && LibNoDaveDataType != TagDataType.S5Time && LibNoDaveDataType != TagDataType.BCDWord)
                         _LibNoDaveDataType = value == TagDataSource.Timer ? TagDataType.S5Time : TagDataType.Int;
+                NotifyPropertyChanged("LibNoDaveDataSource"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
@@ -167,7 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 return TagDisplayDataType.Decimal;
             }
-            set { _dataTypeStringFormat = value; }
+            set { _dataTypeStringFormat = value; NotifyPropertyChanged("DataTypeStringFormat"); }
         }
 
         private TagDataType _LibNoDaveDataType;
@@ -195,15 +199,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else
                     _LibNoDaveDataType = value;
+                NotifyPropertyChanged("LibNoDaveDataType"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
         
         //For a List of old Values...
         private List<Object> _oldvalues;
+        [XmlIgnore]
         public List<Object> OldValues
         {
             get { return _oldvalues; }
         }
+
         private int _backupvaluescount = 0;
         public int BackupValuesCount
         {
@@ -223,13 +230,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
 
+        private bool _dontSplitValue = true;
         /// <summary>
         /// This Tag can not be splittet into more then one PDU (if there are a few rest Bytes in a PDU aviable)
         /// --> If this is set, the Tag is not allowed to be bigger!
         /// This bit should be set in all Tags wich are used for indirect Addressing! (Becaus eit could be you read 2 bytes of a double, then the value chages in the plc, then you read the rest!)
         /// This is also used when Writing the Value, and when set, it is not splitted. When the Value is bigger then a PDU, an error occurs
         /// </summary>
-        public bool DontSplitValue { get; set;} 
+        public bool DontSplitValue
+        {
+            get { return _dontSplitValue; }
+            set { _dontSplitValue = value; NotifyPropertyChanged("DontSplitValue"); }
+        }
 
         private int _arraySize = 2;
         /// <summary>
@@ -239,7 +251,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get { return _arraySize; }
             set { _arraySize = value == 0 ? 1 : value;
-                NotifyPropertyChanged("ArraySize");
+            NotifyPropertyChanged("ArraySize"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
@@ -273,11 +285,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_controlvalue == null || !_controlvalue.Equals(value))
                 {
                     _controlvalue = value;
-                    NotifyPropertyChanged("Controlvalue");
+                    NotifyPropertyChanged("Controlvalue");                        
                 }
             }
         }
 
+        [XmlIgnore]
         public string S7FormatAddress
         {
             get
@@ -360,6 +373,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 return ret.ToString();
             }
+
+            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); }
         }
 
         public string GetControlValueAsString()
@@ -960,77 +975,78 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                  
         internal void _putValueIntoBuffer(byte[] buff, int startpos)
         {
-            switch (LibNoDaveDataType)
-            {
-                case TagDataType.Word:
-                    libnodave.putU16at(buff, startpos, Convert.ToUInt16(Controlvalue));
-                    break;
-                case TagDataType.String:
-                    libnodave.putS7Stringat(buff, startpos, Controlvalue.ToString(), ArraySize);
-                    break;
-                case TagDataType.CharArray:
-                    libnodave.putStringat(buff, startpos, Controlvalue.ToString(), ArraySize);                    
-                    break;
-                case TagDataType.ByteArray:
-                    {
-                        byte[] tmp = (byte[]) Controlvalue;
-                        for (int n=0;n<ArraySize;n++)
+            if (Controlvalue!=null)
+                switch (LibNoDaveDataType)
+                {
+                    case TagDataType.Word:
+                        libnodave.putU16at(buff, startpos, Convert.ToUInt16(Controlvalue));
+                        break;
+                    case TagDataType.String:
+                        libnodave.putS7Stringat(buff, startpos, Controlvalue.ToString(), ArraySize);
+                        break;
+                    case TagDataType.CharArray:
+                        libnodave.putStringat(buff, startpos, Controlvalue.ToString(), ArraySize);
+                        break;
+                    case TagDataType.ByteArray:
                         {
-                            if (n > tmp.Length)
-                                buff[startpos + n] = 0x00;
-                            else
-                                buff[startpos + n] = tmp[n];
-                        }                        
-                    }
-                    break;
-                case TagDataType.Bool:
-                    bool tmp1 = false;                    
-                    tmp1 = Convert.ToBoolean(Controlvalue);
-                    buff[startpos] = Convert.ToByte(tmp1);
-                    break;
-                case TagDataType.Byte:
-                    buff[startpos] = Convert.ToByte(Controlvalue);                    
-                    break;
-                case TagDataType.SByte:
-                    buff[startpos] = Convert.ToByte(Controlvalue);                    
-                    break;
-                case TagDataType.Time:
-                    libnodave.putTimeat(buff, startpos, (TimeSpan)Controlvalue);
-                    break;
-                case TagDataType.TimeOfDay:
-                    libnodave.putTimeOfDayat(buff, startpos, (DateTime)Controlvalue);
-                    break;
-                case TagDataType.BCDByte:
-                    libnodave.putBCD8at(buff, startpos, Convert.ToInt32(Controlvalue));
-                    break;
-                case TagDataType.Int:
-                    libnodave.putS16at(buff, startpos, Convert.ToInt16(Controlvalue));
-                    break;
-                case TagDataType.S5Time:
-                    //if (Controlvalue.GetType() == typeof(TimeSpan))
-                        libnodave.putS5Timeat(buff, startpos, (TimeSpan)Controlvalue);
-                    //else
-                    //    libnodave.putS5Timeat(buff, startpos, TimeSpan.Parse(Controlvalue.ToString()));
-                    break;
-                case TagDataType.BCDWord:
-                    libnodave.putBCD16at(buff, startpos, Convert.ToInt32(Controlvalue));
-                    break;
-                case TagDataType.Dint:
-                    libnodave.putS32at(buff, startpos, Convert.ToInt32(Controlvalue));
-                    break;
-                case TagDataType.Dword:
-                    libnodave.putU32at(buff, startpos, Convert.ToUInt32(Controlvalue));
-                    break;
-                case TagDataType.Float:
-                    libnodave.putFloatat(buff, startpos, Convert.ToInt32(Controlvalue));
-                    break;
-                case TagDataType.DateTime:
-                    //if (Controlvalue.GetType() == typeof(DateTime))
-                    libnodave.putDateTimeat(buff, startpos, (DateTime)Controlvalue);
-                    //else
-                    //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
-                    break;                    
-            }
+                            byte[] tmp = (byte[]) Controlvalue;
+                            for (int n = 0; n < ArraySize; n++)
+                            {
+                                if (n > tmp.Length)
+                                    buff[startpos + n] = 0x00;
+                                else
+                                    buff[startpos + n] = tmp[n];
+                            }
+                        }
+                        break;
+                    case TagDataType.Bool:
+                        bool tmp1 = false;
+                        tmp1 = Convert.ToBoolean(Controlvalue);
+                        buff[startpos] = Convert.ToByte(tmp1);
+                        break;
+                    case TagDataType.Byte:
+                        buff[startpos] = Convert.ToByte(Controlvalue);
+                        break;
+                    case TagDataType.SByte:
+                        buff[startpos] = Convert.ToByte(Controlvalue);
+                        break;
+                    case TagDataType.Time:
+                        libnodave.putTimeat(buff, startpos, (TimeSpan) Controlvalue);
+                        break;
+                    case TagDataType.TimeOfDay:
+                        libnodave.putTimeOfDayat(buff, startpos, (DateTime) Controlvalue);
+                        break;
+                    case TagDataType.BCDByte:
+                        libnodave.putBCD8at(buff, startpos, Convert.ToInt32(Controlvalue));
+                        break;
+                    case TagDataType.Int:
+                        libnodave.putS16at(buff, startpos, Convert.ToInt16(Controlvalue));
+                        break;
+                    case TagDataType.S5Time:
+                        //if (Controlvalue.GetType() == typeof(TimeSpan))
+                        libnodave.putS5Timeat(buff, startpos, (TimeSpan) Controlvalue);
+                        //else
+                        //    libnodave.putS5Timeat(buff, startpos, TimeSpan.Parse(Controlvalue.ToString()));
+                        break;
+                    case TagDataType.BCDWord:
+                        libnodave.putBCD16at(buff, startpos, Convert.ToInt32(Controlvalue));
+                        break;
+                    case TagDataType.Dint:
+                        libnodave.putS32at(buff, startpos, Convert.ToInt32(Controlvalue));
+                        break;
+                    case TagDataType.Dword:
+                        libnodave.putU32at(buff, startpos, Convert.ToUInt32(Controlvalue));
+                        break;
+                    case TagDataType.Float:
+                        libnodave.putFloatat(buff, startpos, Convert.ToInt32(Controlvalue));
+                        break;
+                    case TagDataType.DateTime:
+                        //if (Controlvalue.GetType() == typeof(DateTime))
+                        libnodave.putDateTimeat(buff, startpos, (DateTime) Controlvalue);
+                        //else
+                        //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
+                        break;
+                }
         }
 
         internal void _readValueFromBuffer(byte[] buff, int startpos)
@@ -1111,7 +1127,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         }
 
+        [XmlIgnore]
         public int ReadByteSize { get { return _internalGetSize(); } }
+
         internal int _internalGetSize()
         {            
             switch (LibNoDaveDataType)
@@ -1143,6 +1161,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return 0;
         }
 
+       
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(String info)

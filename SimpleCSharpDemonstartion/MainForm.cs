@@ -52,7 +52,8 @@ namespace SimpleCSharpDemonstration
 
         private void button3_Click(object sender, EventArgs e)
         {
-            S7DataBlock myDB = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectUDT();
+            DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagEditor.ShowPLCTagEditor(new PLCTag());
+
 
             DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
             symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();
