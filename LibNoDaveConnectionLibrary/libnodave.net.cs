@@ -1553,7 +1553,7 @@ This was just here to check inheritance
         public static void putS7Stringat(byte[] b, int pos, string value, int length)
         {
             b[pos] = (byte) length;
-            b[pos + 1] = value.Length > length ? (byte) value.Length : (byte) length;
+            b[pos + 1] = length > value.Length ? (byte) value.Length : (byte) length;
             Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length);
         }
 

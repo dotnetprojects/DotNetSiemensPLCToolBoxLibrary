@@ -1079,8 +1079,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.String:                    
                     {
                         var sb = new StringBuilder();
-                        int size = ArraySize > buff[1] ? buff[1] : ArraySize;
-                        for (var n = 2; n < ArraySize; n++)
+                        int size = ArraySize > buff[startpos + 1] ? buff[startpos+1] : ArraySize;
+                        for (var n = 2; n < size+2; n++)
                             sb.Append((char) buff[n + startpos]);
                         Value = sb.ToString();
                     }

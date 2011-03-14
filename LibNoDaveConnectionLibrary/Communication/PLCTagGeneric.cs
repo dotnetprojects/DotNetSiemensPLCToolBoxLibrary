@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
@@ -115,6 +116,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         info.SetValue(structValue, (byte)(bytes[(int)numBytes]));
                         numBytes++;
                         break;
+                    case "String":
+                        {
+                            numBytes = Math.Ceiling(numBytes);
+                            if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
+                                numBytes++;
+
+                            MarshalAsAttribute mAttr = null;
+                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            if (attr.Length > 0)
+                                mAttr = (MarshalAsAttribute) attr[0];
+                            if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
+                                throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
+
+                            var sb = new StringBuilder();
+                            int size = mAttr.SizeConst > bytes[((int) numBytes) + 1] ? bytes[((int) numBytes) + 1] : mAttr.SizeConst;
+                            for (var n = 2; n < size+2; n++)
+                                sb.Append((char) bytes[n + (int) numBytes]);
+                            info.SetValue(structValue, (String) sb.ToString());
+
+                            numBytes += 2 + mAttr.SizeConst;
+                        }
+                        break;
                     case "Int16":
                          numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
@@ -202,8 +225,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             numBytes++;
                         numBytes += 4;
                         break;
+                    case "String":
+                        {
+                            MarshalAsAttribute mAttr=null;
+                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            if (attr.Length > 0)
+                                mAttr = (MarshalAsAttribute) attr[0];
+                            if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
+                                throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
 
-                    /*
+                            numBytes += mAttr.SizeConst + 2;
+                        }
+                        break;
+                        /*
                      * Typen welche noch fehlen
                      * 
                      * 
@@ -259,6 +293,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         bytePos = (int)numBytes;
                         bytes[bytePos] = (byte)info.GetValue(structValue);
                         numBytes++;
+                        break;
+                    case "String":
+                        {
+                            MarshalAsAttribute mAttr = null;
+                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            if (attr.Length > 0)
+                                mAttr = (MarshalAsAttribute) attr[0];
+                            if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
+                                throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
+
+                            bytes2 = new byte[mAttr.SizeConst + 2];
+                            libnodave.putS7Stringat(bytes2, 0, (string)info.GetValue(structValue), bytes2.Length);
+                            bytePos = (int)numBytes;
+                        }
                         break;
                     case "Int16":
                         bytes2 = new byte[2];

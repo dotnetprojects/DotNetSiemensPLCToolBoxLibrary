@@ -71,7 +71,9 @@ namespace SimpleCSharpDemonstration
             public Int16 bb;
             public Int16 cc;
             public Int32 ee;
-            public UInt16 ff;            
+            public UInt16 ff;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)] 
+            public string test;
         }
 
 
@@ -91,6 +93,7 @@ namespace SimpleCSharpDemonstration
             wrt.cc = 13;
             wrt.ee = 14;
             wrt.ff = 15;
+            wrt.test = "Bin da!";
             tst.Controlvalue = wrt;
             myConn.WriteValue(tst);
 
