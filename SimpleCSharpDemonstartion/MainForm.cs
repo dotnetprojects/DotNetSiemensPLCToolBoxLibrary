@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
@@ -43,6 +44,7 @@ namespace SimpleCSharpDemonstration
         {
             try
             {
+                myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
                 myConn.Connect();
                 timer.Enabled = true;
             }
@@ -52,9 +54,6 @@ namespace SimpleCSharpDemonstration
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagEditor.ShowPLCTagEditor(new PLCTag());
-
-
             DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
             symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();
             
@@ -63,6 +62,27 @@ namespace SimpleCSharpDemonstration
                 {
 
                 }             
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        private struct TestStruct
+        {
+            public Int16 aa;
+            public Int16 bb;
+            public Int16 cc;
+            public Int32 ee;
+            public UInt16 ff;            
+        }
+
+
+        private void cmdReadStruct_Click(object sender, EventArgs e)
+        {
+            myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
+            myConn.Connect();
+            //PLCTagGeneric
+            PLCTag<TestStruct> tst = new PLCTag<TestStruct>() {DatablockNumber = 97, ByteAddress = 0};
+            myConn.ReadValue(tst);
+
         }
     }
 }

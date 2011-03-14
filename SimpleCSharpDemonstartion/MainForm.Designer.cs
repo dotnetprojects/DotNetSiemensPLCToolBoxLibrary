@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblString = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.cmdReadStruct = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button2
@@ -92,11 +93,22 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // cmdReadStruct
+            // 
+            this.cmdReadStruct.Location = new System.Drawing.Point(12, 219);
+            this.cmdReadStruct.Name = "cmdReadStruct";
+            this.cmdReadStruct.Size = new System.Drawing.Size(157, 40);
+            this.cmdReadStruct.TabIndex = 6;
+            this.cmdReadStruct.Text = "Read Struct";
+            this.cmdReadStruct.UseVisualStyleBackColor = true;
+            this.cmdReadStruct.Click += new System.EventHandler(this.cmdReadStruct_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(416, 262);
+            this.Controls.Add(this.cmdReadStruct);
             this.Controls.Add(this.lblString);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
@@ -117,5 +129,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblString;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button cmdReadStruct;
     }
 }

@@ -20,6 +20,7 @@
         BCDDWord,
         TimeOfDay,
         ByteArray,
-        CharArray
+        CharArray,
+        Struct
     }
 }

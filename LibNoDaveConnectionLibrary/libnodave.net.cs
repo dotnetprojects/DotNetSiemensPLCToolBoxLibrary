@@ -1569,9 +1569,9 @@ This was just here to check inheritance
             Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos, value.Length > length ? length : value.Length);
         }
 
-        public static void putFloatat(byte[] b, int pos, int value)
+        public static void putFloatat(byte[] b, int pos, Single value)
         {
-            byte[] bytes = BitConverter.GetBytes(Convert.ToSingle(value));
+            byte[] bytes = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
             {
                 b[pos + 3] = bytes[0];

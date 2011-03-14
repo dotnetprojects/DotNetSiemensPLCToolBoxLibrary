@@ -175,7 +175,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private TagDataType _LibNoDaveDataType;
-        public TagDataType LibNoDaveDataType
+        public virtual TagDataType LibNoDaveDataType
         {
             get
             {
@@ -183,6 +183,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             set
             {
+                if (value == TagDataType.Struct)
+                    return;
                 if (value == TagDataType.DateTime)
                     ArraySize = 8;
                 else if (value != TagDataType.Bool)
@@ -204,14 +206,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
         
         //For a List of old Values...
-        private List<Object> _oldvalues;
+        protected List<Object> _oldvalues;
         [XmlIgnore]
         public List<Object> OldValues
         {
             get { return _oldvalues; }
         }
 
-        private int _backupvaluescount = 0;
+        protected int _backupvaluescount = 0;
         public int BackupValuesCount
         {
             get
@@ -256,7 +258,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private Object _value;
-        public Object Value
+        public virtual Object Value
         {
             get { return _value; }
             set
@@ -277,7 +279,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private Object _controlvalue;
-        public Object Controlvalue
+        public virtual Object Controlvalue
         {
             get { return _controlvalue; }
             set
@@ -993,8 +995,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             retValue.ChangeAddressFromString(plcAddress);
             return retValue;
         }
-                 
-        internal void _putValueIntoBuffer(byte[] buff, int startpos)
+
+        internal virtual void _putValueIntoBuffer(byte[] buff, int startpos)
         {
             if (Controlvalue!=null)
                 switch (LibNoDaveDataType)
@@ -1070,7 +1072,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
         }
 
-        internal void _readValueFromBuffer(byte[] buff, int startpos)
+        internal virtual void _readValueFromBuffer(byte[] buff, int startpos)
         {
             switch (LibNoDaveDataType)
             {
@@ -1151,7 +1153,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         [XmlIgnore]
         public int ReadByteSize { get { return _internalGetSize(); } }
 
-        internal int _internalGetSize()
+        internal virtual int _internalGetSize()
         {            
             switch (LibNoDaveDataType)
             {
@@ -1185,7 +1187,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
        
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged(String info)
+        protected void NotifyPropertyChanged(String info)
         {
             if (PropertyChanged != null)
             {

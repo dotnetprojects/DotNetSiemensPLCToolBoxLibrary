@@ -22,6 +22,7 @@ Included extern Librarys or Code from:
 libnodave.net.cs (part of LibNoDave)
 Load DBF into a Datatble from http://www.codeproject.com/KB/bugs/LoadDBF.aspx
 mc5decode -> http://sourceforge.net/projects/mc5decode/
+s7.net -> http://s7net.codeplex.com/ (Part of the Generic Reading funtions)
 
 All Librarys wich are used are under the LGPL,
 as this Library is also!

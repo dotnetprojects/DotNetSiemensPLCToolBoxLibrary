@@ -449,7 +449,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void SaveConfigToFile(string filename)
         {
             string txt = General.SerializeToString<PLCConnectionConfiguration>.Serialize(this);
-            StreamWriter strm=new StreamWriter(filename,false);
+            StreamWriter strm = new StreamWriter(filename, false);
             strm.Write(txt);
             strm.Flush();
             strm.Close();
