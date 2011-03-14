@@ -8,11 +8,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public class PLCTag<T> : PLCTag
     {
         private T _value;
-        private T _controlvalue;
+        //private T _controlvalue;
 
         internal override void _putValueIntoBuffer(byte[] buff, int startpos)
         {
-            byte[] tmp = ToBytes(this);
+            byte[] tmp = ToBytes(_controlvalue);
             Array.Copy(tmp, 0, buff, startpos, tmp.Length);
         }
 
@@ -229,8 +229,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <returns>A byte array or null if fails.</returns>
         public static byte[] ToBytes(object structValue)
         {
-            Type type = structValue.GetType();
-
+            Type type = typeof (T);
             int size = GetStructSize(type);
             byte[] bytes = new byte[size];
             byte[] bytes2 = null;
@@ -264,26 +263,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "Int16":
                         bytes2 = new byte[2];
                         libnodave.putS16at(bytes2, 0, (Int16) info.GetValue(structValue));
+                        bytePos = (int)numBytes;
                         break;
                     case "UInt16":
                         bytes2 = new byte[2];
                         libnodave.putU16at(bytes2, 0, (UInt16) info.GetValue(structValue));
+                        bytePos = (int)numBytes;
                         break;
                     case "Int32":
                         bytes2 = new byte[4];
                         libnodave.putS32at(bytes2, 0, (Int32) info.GetValue(structValue));
+                        bytePos = (int)numBytes;
                         break;
                     case "UInt32":
                         bytes2 = new byte[4];
-                        libnodave.putU32at(bytes2, 0, (UInt32) info.GetValue(structValue));                        
+                        libnodave.putU32at(bytes2, 0, (UInt32) info.GetValue(structValue));
+                        bytePos = (int)numBytes;
                         break;
                     case "Double":
                         bytes2 = new byte[4];
                         libnodave.putFloatat(bytes2, 0, Convert.ToSingle((double)info.GetValue(structValue)));
+                        bytePos = (int)numBytes;
                         break;
                     case "Single":
                         bytes2 = new byte[4];
                         libnodave.putFloatat(bytes2, 0, (Single)info.GetValue(structValue));
+                        bytePos = (int)numBytes;
                         break;
                 }
                 if (bytes2 != null)

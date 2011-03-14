@@ -65,7 +65,7 @@ namespace SimpleCSharpDemonstration
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct TestStruct
+        public struct TestStruct
         {
             public Int16 aa;
             public Int16 bb;
@@ -82,6 +82,17 @@ namespace SimpleCSharpDemonstration
             //PLCTagGeneric
             PLCTag<TestStruct> tst = new PLCTag<TestStruct>() {DatablockNumber = 97, ByteAddress = 0};
             myConn.ReadValue(tst);
+            TestStruct read = tst.GenericValue;
+
+
+            TestStruct wrt = new TestStruct();
+            wrt.aa = 11;
+            wrt.bb = 12;
+            wrt.cc = 13;
+            wrt.ee = 14;
+            wrt.ff = 15;
+            tst.Controlvalue = wrt;
+            myConn.WriteValue(tst);
 
         }
     }

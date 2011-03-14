@@ -278,7 +278,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private Object _controlvalue;
+        protected Object _controlvalue;
         public virtual Object Controlvalue
         {
             get { return _controlvalue; }
