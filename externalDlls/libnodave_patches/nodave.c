@@ -1571,7 +1571,7 @@ int DECL2 daveGetErrorOfResult(daveResultSet *rs, int number) {
 }
 
 
-daveConnection * DECL2 daveNewExtendedConnection(daveInterface * di,  void * Destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, void * routingDestination, int routingDestinationIsIP) {
+daveConnection * DECL2 daveNewExtendedConnection(daveInterface * di,  void * Destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, void * routingDestination, int routingDestinationIsIP, int ConnectionType, int routingConnectionType) {
 
 	daveConnection * dc=(daveConnection *) calloc(1,sizeof(daveConnection));
 	if (dc) {
@@ -1610,8 +1610,8 @@ daveConnection * DECL2 daveNewExtendedConnection(daveInterface * di,  void * Des
 		dc->routingRack=routingRack;
 		dc->routingSlot=routingSlot;
 
-		dc->CPUConnectiontype = 1;
-		dc->routingCPUConnectiontype = 1;
+		dc->ConnectionType = ConnectionType;
+		dc->routingConnectionType = routingConnectionType;
 
 		pbuf=(uc*) routingDestination;
 
@@ -1651,7 +1651,8 @@ daveConnection * DECL2 daveNewConnection(daveInterface * di, int MPI, int rack, 
 		dc->slot=slot;
 		dc->routing=0;
 
-		dc->CPUConnectiontype = 1;
+		dc->ConnectionType = 1;
+		dc->routingConnectionType = 1;
 	}
 	return _daveNewConnection(dc);
 }
@@ -4152,7 +4153,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 		0,			// Rack (Bit 7-5) and Slot (Bit 4-0)
 		0xC2,		// Parameter Destination-TSAP
 		2,			// Length of this parameter 
-		1, 			// Function (1=PG,2=OP,3=Step7Basic)
+		dc->ConnectionType, 			// Function (1=PG,2=OP,3=Step7Basic)
 		(dc->slot + dc->rack * 32),			// Rack (Bit 7-5) and Slot (Bit 4-0)
 		0xC0,		// Parameter requested TPDU-Size
 		1,			// Length of this parameter 
@@ -4177,7 +4178,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 		0,0,0,0,0,0,0,0,	// empty Data 
 		0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,
-		1,		// Function (1=PG,2=OP,3=Step7Basic)
+		dc->ConnectionType,		// Function (1=PG,2=OP,3=Step7Basic)
 		(dc->slot + dc->rack * 32),		// Rack (Bit 7-5) and Slot (Bit 4-0)
 
 		0xC2,		// Parameter Destination-TSAP
@@ -4201,7 +4202,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 		0,0,0,0,0,	// empty 
 		0,0,0,0,0,0,0,
 
-		1,		// Function (1=PG,2=OP,3=Step7Basic)
+		dc->routingConnectionType,		// Function (1=PG,2=OP,3=Step7Basic)
 		(dc->routingSlot + dc->routingRack*32),		// Rack (Bit 7-5) and Slot (Bit 4-0)
 		// 0 for slot = let select the plc itself the correct slotnumber
 
@@ -5482,9 +5483,9 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	0x02,
 	0x00,
 	0x02,
-	0x01, //Connection Type (1=PG)
-	0x00,
-	0x01, //Connection Type (1=PG) repeaded (only when not routing??, why? is 6 when routing)
+	dc->ConnectionType, //Connection Type (1=PG) was 0x01
+	(dc->slot + dc->rack * 32),	  // Hopefully Rack/Slot is at this position! Need to test! 0x00,
+    dc->ConnectionType, //Connection Type (1=PG) repeaded (only when not routing??, why? is 6 when routing)
 	0x00,};
 
 	uc chal8R[]={   //Routing
@@ -5509,7 +5510,7 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	0x02,
 	0x01,
 	0x0c,
-	0x01, //Verb art (1=PG)
+	dc->ConnectionType, //Verb art (1=PG)
 	0x00,
 	0x06, //Connection Type (1=PG) repeaded (only when not routing??, why? is 6 when routing)
 	0x01,
@@ -5521,7 +5522,7 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	0xbb, //subnet 3
 	0xbb, //subnet 4
 	0x07, //destination mpi
-	0x02, //Verb art zu routing cpu
+	dc->routingConnectionType, //0x02 //Verb art zu routing cpu
 	0x00, //rack/slot
 	};
 
@@ -5547,7 +5548,7 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	0x02,
 	0x01,
 	0x0f,
-	0x01, //Verb art (1=PG)
+	dc->ConnectionType, //Verb art (1=PG)
 	0x00,
 	0x06, //Connection Type (1=PG) repeaded (only when not routing??, why? is 6 when routing)
 	0x04,
@@ -5562,7 +5563,7 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	0x07, //ip2
 	0x07, //ip3
 	0x07, //ip4
-	0x02, //Verb art zu routing cpu
+	dc->routingConnectionType, //Verb art zu routing cpu
 	0x00, //rack/slot
 	};
 
@@ -6956,6 +6957,8 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	fdr->application_block_subsystem = rec->application_block_subsystem;  //When this is One it is a MP Connection, zero means TCP Connection!
 	//Maybe we remove the destination is IP Parameter and use the upper bit
 	
+	p2[19]=(dc->slot + dc->rack*32);	
+
 	//Destination IP or MPI
 	if (dc->DestinationIsIP)
 	{
@@ -6963,7 +6966,7 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 		p2[10]=dc->_Destination2;
 		p2[11]=dc->_Destination3;
 		p2[12]=dc->_Destination4;
-		p2[19]=(dc->slot + dc->rack*32);				
+		//p2[19]=(dc->slot + dc->rack*32);				
 	}
 	else
 		p2[9]=dc->MPIAdr;	
@@ -7489,9 +7492,9 @@ int DECL2 _daveConnectPLCNLPro(daveConnection * dc) {
 		0x02, //11 
 		0x00, //12 //01 ??? Routing???
 		0x02, //13 //02 = no routing / 0c = Routing to MPI / 0f Routing to IP (Bytecount to End-2)
-		0x01, //14 //Connection Type (01=PG/02=OP)
-		0x00, //15
-		0x01, //16 //also Connection Type (01=PG/02=OP)?? //06 when Routing??
+		dc->ConnectionType, //14 //Connection Type (01=PG/02=OP)
+		(dc->slot + dc->rack * 32),	// hopefully this is Rack/Slot was 0x00, //15
+		dc->ConnectionType, //16 //also Connection Type (01=PG/02=OP)?? //06 when Routing??
 		0x00, //17 //End of Telegram when no Routing (00) / 01 Routing to MPI / 04 Routing to IP
 
 		0x02, //18 
@@ -7552,7 +7555,7 @@ int DECL2 _daveConnectPLCNLPro(daveConnection * dc) {
 			b4[26] = dc->_routingDestination2;
 			b4[27] = dc->_routingDestination3;
 			b4[28] = dc->_routingDestination4;
-			b4[29] = 1; //Connection type
+			b4[29] = dc->routingConnectionType; //Connection type
 			b4[30] = dc->routingSlot + dc->routingRack*32;			
 		}
 		else
@@ -7560,7 +7563,7 @@ int DECL2 _daveConnectPLCNLPro(daveConnection * dc) {
 			length = sizeof(b4)-3;
 			b4[13] = 0x0c;
 			b4[17] = 0x01;
-			b4[26] = 1; //Connection type
+			b4[26] = dc->routingConnectionType; //Connection type
 			b4[27] = dc->routingSlot + dc->routingRack*32;		
 		}
 	}

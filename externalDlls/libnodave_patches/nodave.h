@@ -492,6 +492,8 @@ struct _daveConnection {
 	int _Destination3;
 	int _Destination4;
 	int _DestinationSize;
+
+	int ConnectionType; // 1=PG Conn, 2=OP Conn
 	
 	int routing;
 	unsigned int routingSubnetFirst; 
@@ -499,15 +501,13 @@ struct _daveConnection {
 	int routingRack;
 	int routingSlot;
 	int routingDestinationIsIP;
+	int routingConnectionType; // 1=PG Conn, 2=OP Conn
 
 	int _routingDestination1;
 	int _routingDestination2;
 	int _routingDestination3;
 	int _routingDestination4;
-	int _routingDestinationSize;
-
-	int CPUConnectiontype; // 1=PG Conn, 2=OP Conn
-	int routingCPUConnectiontype; // 1=PG Conn, 2=OP Conn //This is the type on the Routed CPU
+	int _routingDestinationSize;	
 }; 
 
 
@@ -522,7 +522,7 @@ daveConnection * DECL2 daveNewConnection(daveInterface * di, int MPI,int rack, i
     Setup a new Extended Connection (or a TCPIP Connection to
 */
 EXPORTSPEC 
-daveConnection * DECL2 daveNewExtendedConnection(daveInterface * di, void * Destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, void * routingDestination,  int routingDestinationIsIP);
+daveConnection * DECL2 daveNewExtendedConnection(daveInterface * di, void * Destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, void * routingDestination,  int routingDestinationIsIP, int ConnectionType, int routingConnectionType);
 
 /* 
     Setup a new connection structure using an daveConnection Structure
@@ -613,7 +613,7 @@ EXPORTSPEC int DECL2 daveGetResponse(daveConnection * dc);
 */
 EXPORTSPEC int DECL2 daveSendMessage(daveConnection * dc, PDU * p);
 
-EXPORTSPEC int DECL2 daveGetPDUData(daveConnection * dc,  PDU*p2, uc* buffer, int* length);
+EXPORTSPEC int DECL2 daveGetPDUData(daveConnection * dc,  PDU*p2, uc* data, int* ldata, uc* param, int* lparam);
 
 /******
     

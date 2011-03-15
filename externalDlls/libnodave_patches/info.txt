@@ -1,5 +1,11 @@
 In this director are only the files I changed from the original libnodave!
 
+0.8.4.5.8
+  - ExtendedConnection can now also specify the Connection Type (and also for routing!)
+
+0.8.4.5.7
+  - Changed the DLL so, that Rack/Slot Parameters are also used with S7Online, Netlink, IBHlink
+
 0.8.4.5.6
   - Changed the UseResult Funtion, so that it supports a own Byte Array
 
