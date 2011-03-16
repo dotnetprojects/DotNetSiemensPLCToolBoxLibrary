@@ -6,9 +6,8 @@
             <Communication:PLCTag x:Key="Tag1" S7FormatAddress="DB97.DBW0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBW4" DataTypeStringFormat="Hexadecimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBW6" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBX6.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag5" S7FormatAddress="DB97.DBW8" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -17,6 +16,6 @@
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" />
-        
+        <CheckBox Content="CheckBox" Height="25" HorizontalAlignment="Left" Margin="298,115,0,0" Name="checkBox1" IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />
     </Grid>
 </Window>

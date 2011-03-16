@@ -60,8 +60,9 @@ namespace ExampleWPFVisualization
 
         private void PLCTag_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Controlvalue")
-                myConn.WriteValue((PLCTag) sender);
+            if (myConn != null)
+                if (e.PropertyName == "Controlvalue")
+                    myConn.WriteValue((PLCTag) sender);
         }
 
       
