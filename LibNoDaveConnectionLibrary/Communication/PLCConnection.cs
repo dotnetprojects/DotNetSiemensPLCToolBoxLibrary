@@ -1243,7 +1243,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (rdata[pos + 0] == 0xff)
                             {
                                 //rdata[pos + 1] == 4 means len is in BITS, maybe we need this???
-                                len = rdata[pos + 2]*0x100 + rdata[pos + 3];                                
+                                len = rdata[pos + 2]*0x100 + rdata[pos + 3];
+                                if (len % 2 != 0) len++;
                                 PLCTags[i]._readValueFromBuffer(rdata, pos + 4);
                             }
                             else                            
@@ -1303,7 +1304,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         dtaTyp = 2;
                         break;
                     case TagDataSource.Datablock:
-                        dtaTyp = 0x0b;
+                        dtaTyp = 0x07;
                         dbNo = plcTag.DatablockNumber;
                         break;
                     case TagDataSource.Timer:

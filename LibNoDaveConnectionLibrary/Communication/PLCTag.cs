@@ -75,7 +75,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public bool ItemDoesNotExist
         {
             get { return _itemDoesNotExist; }
-            set { _itemDoesNotExist = value; NotifyPropertyChanged("ItemDoesNotExist"); }
+            set
+            {
+                _itemDoesNotExist = value; 
+                NotifyPropertyChanged("ItemDoesNotExist");                 
+                NotifyPropertyChanged("ValueAsString");
+            }
         }
 
         public PLCTag()

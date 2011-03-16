@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace ExampleWPFVisualization
 {
@@ -65,6 +66,9 @@ namespace ExampleWPFVisualization
                 worker.Dispose();
             }
 
+            //Uncomment this line, to use the VarTab Functions for Read
+            //PLCConnection.VarTabData vtab = myConn.ReadValuesWithVarTabFunctions(Tags, PLCReadTriggerVarTab.EndOfCycle);
+
             worker = new BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
@@ -74,6 +78,8 @@ namespace ExampleWPFVisualization
                                          try
                                          {
                                              myConn.ReadValues(Tags);
+                                             //Uncomment this line, to use the Vartab Functions for read, and comment the line above!
+                                             //vtab.RequestData();                                             
                                          }
                                          catch (Exception ex)
                                          {
