@@ -30,11 +30,13 @@ namespace ExampleWPFVisualization
 
         private void cmdConfig_Click(object sender, RoutedEventArgs e)
         {
+            //Verbindung konfigurieren
             DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration("ExampleWPFVisualization", true);
         }
 
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
         {
+            //Alle Tags in eine Liste packen
             List<PLCTag> Tags=new List<PLCTag>();
             foreach (DictionaryEntry dictionaryEntry in this.Resources)
             {
@@ -42,11 +44,12 @@ namespace ExampleWPFVisualization
                     Tags.Add((PLCTag) dictionaryEntry.Value);
             }
             
+            //Verbindungskonfig laden und Verbinden
             myConn = new PLCConnection("ExampleWPFVisualization");
             myConn.Connect();
 
+            //Tags im Hintergrund laden
             BackgroundWorker worker = new BackgroundWorker();
-
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
                                  {
                                      while (true)
@@ -60,6 +63,7 @@ namespace ExampleWPFVisualization
 
         private void PLCTag_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            //Bei Änderung des Controlvalue eines Tags, den Tag in die SPS schreiben
             if (myConn != null)
                 if (e.PropertyName == "Controlvalue")
                     myConn.WriteValue((PLCTag) sender);
