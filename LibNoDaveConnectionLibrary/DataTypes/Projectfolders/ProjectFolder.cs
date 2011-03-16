@@ -13,6 +13,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     {
         public string Name { get; set; }
 
+#if !IPHONE	
         public string FolderClosedImageName
         {
             get
@@ -71,6 +72,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                 return Image.FromStream(file);
             }
         }
+#endif
 
         public List<ProjectFolder> SubItems { get; set; }
         public ProjectFolder Parent { get; set; }

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCSharpDemonstration",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandWhenBitSet", "CommandWhenBitSet\CommandWhenBitSet.csproj", "{453EC845-36A3-4E3B-96D3-B94941C6B86C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWPFVisualization", "ExampleWPFVisualization\ExampleWPFVisualization.csproj", "{D1694580-B325-46AD-80A0-F12B9B3640AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,20 @@ Global
 		{453EC845-36A3-4E3B-96D3-B94941C6B86C}.Release|Mixed Platforms.Build.0 = Release|x86
 		{453EC845-36A3-4E3B-96D3-B94941C6B86C}.Release|x86.ActiveCfg = Release|x86
 		{453EC845-36A3-4E3B-96D3-B94941C6B86C}.Release|x86.Build.0 = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|iPhone.ActiveCfg = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|x86.ActiveCfg = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Debug|x86.Build.0 = Debug|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|Any CPU.ActiveCfg = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|iPhone.ActiveCfg = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|iPhoneSimulator.ActiveCfg = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|x86.ActiveCfg = Release|x86
+		{D1694580-B325-46AD-80A0-F12B9B3640AB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

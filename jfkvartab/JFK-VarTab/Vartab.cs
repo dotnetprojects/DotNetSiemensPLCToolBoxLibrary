@@ -263,7 +263,7 @@ namespace JFK_VarTab
                     {
                         if (dataGridViewVarTab.Rows[i].Cells[4].Value != null && dataGridViewVarTab.Rows[i].Cells[4].Value.ToString() != "")
                         {
-                            row.LibNoDaveValue.Value = dataGridViewVarTab.Rows[i].Cells[4].Value;
+                            row.LibNoDaveValue.Controlvalue = dataGridViewVarTab.Rows[i].Cells[4].Value;
                             steu.Add(row.LibNoDaveValue);
                         }
                         i++;

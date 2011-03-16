@@ -8,7 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
     public class PLCTag<T> : PLCTag
     {
-        private T _value;
+        //private T _value;
         //private T _controlvalue;
 
         internal override void _putValueIntoBuffer(byte[] buff, int startpos)
@@ -23,6 +23,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         }
 
+        protected internal override object _setValueProp
+        {
+            set
+            {
+                base._setValueProp = value;
+                NotifyPropertyChanged("GenericValue");
+            }
+        }
         public PLCTag()
         {
             if (typeof(T) == typeof(Int16))
@@ -37,35 +45,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.LibNoDaveDataType = TagDataType.Struct;
         }
 
-        public override object Value
-        {
-            get { return _value; }
-            set
-            {
-                if (_value == null || !_value.Equals(value))
-                {
-                    _value = (T)value;
-                    NotifyPropertyChanged("Value");
-                    NotifyPropertyChanged("GenericValue");
-                }
-
-                if (BackupValuesCount > 0 && _oldvalues != null)
-                {
-                    _oldvalues.Add(_value);
-                    if (_oldvalues.Count - _backupvaluescount > 0)
-                        _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
-                }
-            }
-        }
-
         public T GenericValue
         {
-            get { return _value; }
+            get { return (T)_value; }
             set
             {
-                this._value = (T)value; 
-                NotifyPropertyChanged("Value");
-                NotifyPropertyChanged("GenericValue");
+                Value = value;
+                //this._value = (T)value; 
+                //NotifyPropertyChanged("Value");
+                //NotifyPropertyChanged("GenericValue");
             }
         }
         internal override int _internalGetSize()

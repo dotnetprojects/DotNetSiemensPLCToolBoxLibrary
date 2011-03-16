@@ -257,7 +257,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private Object _value;
+
+
+        #region Read Write Value of the TAG
+        /// <summary>
+        /// Helper Property to Set the Value, because the Setter of the normal Value Sets Control Value!
+        /// </summary>
+        protected internal virtual Object _setValueProp
+        {
+            set
+            {
+                _value = value;
+                if (!_value.Equals(_oldvalue))
+                {
+                    NotifyPropertyChanged("Value");
+                    NotifyPropertyChanged("ValueAsString");
+                }
+                _oldvalue = _value;
+
+                if (BackupValuesCount > 0 && _oldvalues != null)
+                {
+                    _oldvalues.Add(_value);
+                    if (_oldvalues.Count - _backupvaluescount > 0)
+                        _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
+                    NotifyPropertyChanged("OldValues");
+                }
+            }
+        }
+
+        internal Object _value;
+        private Object _oldvalue;
+        /// <summary>
+        /// Value of the Tag. The Setter of this Property sets Controlvalue, because the Tag firstly got this Value when it's written!
+        /// </summary>
         public virtual Object Value
         {
             get { return _value; }
@@ -265,16 +297,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 if (_value == null || !_value.Equals(value))
                 {
-                    _value = value;
-                    NotifyPropertyChanged("Value");
-                }
+                    _controlvalue = value;
+                    NotifyPropertyChanged("Controlvalue");
+                }               
+            }
+        }
 
-                if (BackupValuesCount > 0 && _oldvalues != null)
-                {
-                    _oldvalues.Add(_value);
-                    if (_oldvalues.Count - _backupvaluescount > 0)
-                        _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
-                }
+        public String ValueAsString
+        {
+            get { return GetValueAsString(); }
+            set
+            {
+                ParseControlValueFromString((String) value);
+                NotifyPropertyChanged("Controlvalue");
             }
         }
 
@@ -291,6 +326,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+
+        #endregion
 
         [XmlIgnore]
         public string S7FormatAddress
@@ -1082,7 +1119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         int size = ArraySize > buff[startpos + 1] ? buff[startpos+1] : ArraySize;
                         for (var n = 2; n < size+2; n++)
                             sb.Append((char) buff[n + startpos]);
-                        Value = sb.ToString();
+                        _setValueProp = sb.ToString();
                     }
                     break;
                 case TagDataType.CharArray:
@@ -1090,7 +1127,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         var sb = new StringBuilder();
                         for (var n = 0; n < ArraySize; n++)
                             sb.Append((char)buff[n + startpos]);
-                        Value = sb.ToString();
+                        _setValueProp = sb.ToString();
                     }
                     break;
                 case TagDataType.ByteArray:
@@ -1098,53 +1135,53 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         var val = new Byte[ArraySize];
                         for (var n = 0; n < ArraySize; n++)
                             val[n] = buff[n + startpos];
-                        Value = val;
+                        _setValueProp = val;
                     }
                     break;
                 case TagDataType.Bool:
-                    Value = libnodave.getBit(buff[startpos], BitAddress);
+                    _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
                     break;
                 case TagDataType.Byte:
-                    Value = buff[startpos];                    
+                    _setValueProp = buff[startpos];                    
                     break;
                 case TagDataType.SByte:
-                    Value = libnodave.getS8from(buff, startpos);
+                    _setValueProp = libnodave.getS8from(buff, startpos);
                     break;
                 case TagDataType.Time:
-                    Value = libnodave.getTimefrom(buff, startpos);
+                    _setValueProp = libnodave.getTimefrom(buff, startpos);
                     break;
                 case TagDataType.Date:
-                    Value = libnodave.getDatefrom(buff, startpos);
+                    _setValueProp = libnodave.getDatefrom(buff, startpos);
                     break;
                 case TagDataType.TimeOfDay:
-                    Value = libnodave.getTimeOfDayfrom(buff, startpos);
+                    _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
                     break;
                 case TagDataType.Word:
-                    Value = libnodave.getU16from(buff, startpos);
+                    _setValueProp = libnodave.getU16from(buff, startpos);
                     break;
                 case TagDataType.BCDByte:
-                    Value = libnodave.getBCD8from(buff, startpos);
+                    _setValueProp = libnodave.getBCD8from(buff, startpos);
                     break;
                 case TagDataType.Int:
-                    Value = libnodave.getS16from(buff, startpos);
+                    _setValueProp = libnodave.getS16from(buff, startpos);
                     break;
                 case TagDataType.S5Time:
-                    Value = libnodave.getS5Timefrom(buff, startpos);
+                    _setValueProp = libnodave.getS5Timefrom(buff, startpos);
                     break;
                 case TagDataType.BCDWord:
-                    Value = libnodave.getBCD16from(buff, startpos);
+                    _setValueProp = libnodave.getBCD16from(buff, startpos);
                     break;
                 case TagDataType.Dint:
-                    Value = libnodave.getS32from(buff, startpos);
+                    _setValueProp = libnodave.getS32from(buff, startpos);
                     break;
                 case TagDataType.Dword:
-                    Value = libnodave.getU32from(buff, startpos);                    
+                    _setValueProp = libnodave.getU32from(buff, startpos);                    
                     break;
                 case TagDataType.Float:
-                    Value = libnodave.getFloatfrom(buff, startpos);
+                    _setValueProp = libnodave.getFloatfrom(buff, startpos);
                     break;
                 case TagDataType.DateTime:
-                    Value = libnodave.getDateTimefrom(buff, startpos);
+                    _setValueProp = libnodave.getDateTimefrom(buff, startpos);
                     break;
             }
 
