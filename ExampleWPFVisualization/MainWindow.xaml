@@ -27,7 +27,8 @@
     </Window.Resources>
     <Grid>
         <Button Content="Config Connection" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="110" Click="cmdConfig_Click" />
-        <Button Content="Connect" Height="25" HorizontalAlignment="Left" Margin="12,44,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="110" Click="cmdConnect_Click" />
+        <Button Content="Start Visu" Height="25" HorizontalAlignment="Left" Margin="12,44,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="110" Click="cmdConnect_Click" />
+        <Button Content="Stop Visu" Height="25" HorizontalAlignment="Left" Margin="12,75,0,0" Name="cmdStop" VerticalAlignment="Top" Width="110" Click="cmdStop_Click" IsEnabled="False" />
         <Label Height="26" HorizontalAlignment="Left" Margin="138,11,0,0" Name="lblStatus" VerticalAlignment="Top" Width="353" />
         
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" 

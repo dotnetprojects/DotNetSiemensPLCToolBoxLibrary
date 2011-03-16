@@ -38,6 +38,9 @@ namespace ExampleWPFVisualization
 
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
         {
+            cmdConnect.IsEnabled = false;
+            cmdStop.IsEnabled = true;
+
             //Alle Tags in eine Liste packen
             List<PLCTag> Tags = new List<PLCTag>();
             foreach (DictionaryEntry dictionaryEntry in this.Resources)
@@ -51,33 +54,34 @@ namespace ExampleWPFVisualization
                 //Verbindungskonfig laden und Verbinden
                 myConn = new PLCConnection("ExampleWPFVisualization");
                 myConn.Connect();
-
-                //Tags im Hintergrund laden
-                if (worker != null)
-                {
-                    worker.CancelAsync();
-                    worker.Dispose();
-                }
-                worker = new BackgroundWorker();
-                worker.DoWork += delegate(object s, DoWorkEventArgs args)
-                                     {
-                                         while (true)
-                                         {
-                                             try
-                                             {
-                                                 myConn.ReadValues(Tags);
-                                             }
-                                             catch(Exception ex)
-                                             { }
-                                         }
-                                     };
-
-                worker.RunWorkerAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 lblStatus.Content = ex.Message;
             }
+            //Tags im Hintergrund laden
+            if (worker != null)
+            {
+                worker.Dispose();
+            }
+
+            worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
+            worker.DoWork += delegate(object s, DoWorkEventArgs args)
+                                 {
+                                     while (!worker.CancellationPending)
+                                     {
+                                         try
+                                         {
+                                             myConn.ReadValues(Tags);
+                                         }
+                                         catch (Exception ex)
+                                         {
+                                         }
+                                     }
+                                 };
+
+            worker.RunWorkerAsync();
         }
 
         private void PLCTag_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -86,6 +90,13 @@ namespace ExampleWPFVisualization
             if (myConn != null)
                 if (e.PropertyName == "Controlvalue")
                     myConn.WriteValue((PLCTag) sender);
+        }
+
+        private void cmdStop_Click(object sender, RoutedEventArgs e)
+        {
+            worker.CancelAsync();            
+            cmdConnect.IsEnabled = true;
+            cmdStop.IsEnabled = false;
         }
 
       
