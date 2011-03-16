@@ -2,22 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
-        <ResourceDictionary>
-            <x:Array x:Key="Tags" Type="Communication:PLCTag">
-                <Communication:PLCTag S7FormatAddress="DB97.DBW0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-                <Communication:PLCTag S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-                <Communication:PLCTag S7FormatAddress="DB97.DBW4" DataTypeStringFormat="Hexadecimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-                <Communication:PLCTag S7FormatAddress="DB97.DBW6" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-                <Communication:PLCTag S7FormatAddress="DB97.DBW8" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            </x:Array>
+        <ResourceDictionary>            
+            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="DB97.DBW0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBW4" DataTypeStringFormat="Hexadecimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBW6" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag5" S7FormatAddress="DB97.DBW8" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Button Content="Config Connection" Height="48" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="126" Click="cmdConfig_Click" />
         <Button Content="Connect" Height="50" HorizontalAlignment="Left" Margin="144,12,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="126" Click="cmdConnect_Click" />
-        <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" Text="{Binding Source={StaticResource Tags}, Path=[0].ValueAsString}" />
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tags}, Path=[1].ValueAsString}" />
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tags}, Path=[2].ValueAsString}" />
+        <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" />
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" />
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" />
         
     </Grid>
 </Window>

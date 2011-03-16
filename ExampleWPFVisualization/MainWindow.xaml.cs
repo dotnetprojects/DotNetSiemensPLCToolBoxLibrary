@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -34,8 +35,13 @@ namespace ExampleWPFVisualization
 
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
         {
-            PLCTag[] Tags = (PLCTag[])this.Resources["Tags"];
-
+            List<PLCTag> Tags=new List<PLCTag>();
+            foreach (DictionaryEntry dictionaryEntry in this.Resources)
+            {
+                if (dictionaryEntry.Value is PLCTag)
+                    Tags.Add((PLCTag) dictionaryEntry.Value);
+            }
+            
             myConn = new PLCConnection("ExampleWPFVisualization");
             myConn.Connect();
 
