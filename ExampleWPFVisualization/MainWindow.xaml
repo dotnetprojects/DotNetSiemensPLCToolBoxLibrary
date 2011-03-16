@@ -27,7 +27,8 @@
         
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" 
                  Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" 
-                 Background="{Binding Source={StaticResource Tag1}, Path=Value, Converter={StaticResource FarbenConverter1}}" />
+                 Background="{Binding Source={StaticResource Tag1}, Path=Value, Converter={StaticResource FarbenConverter1}}"
+                 ExampleWPFVisualization:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"/>
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,262,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag5}, Path=ValueAsString}" />
