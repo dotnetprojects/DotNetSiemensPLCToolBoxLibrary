@@ -1,16 +1,18 @@
 ﻿<Window x:Class="ExampleWPFVisualization.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" Title="MainWindow" Height="350" Width="525">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters" xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours" Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
-            <ExampleWPFVisualization:IntRangeToBrushConverter x:Key="FarbenConverter1">
-                <ExampleWPFVisualization:IntRangeToBrushConverter.IntRangeBrushValues>                    
-                        <ExampleWPFVisualization:IntRangeBrushValue IntRange="0-99" Brush="Red" />
-                        <ExampleWPFVisualization:IntRangeBrushValue IntRange="100" Brush="Blue" />
-                        <ExampleWPFVisualization:IntRangeBrushValue IntRange="101-200" Brush="Green" />
-                        <ExampleWPFVisualization:IntRangeBrushValue IntRange=">200" Brush="Yellow" />
-                </ExampleWPFVisualization:IntRangeToBrushConverter.IntRangeBrushValues>
-            </ExampleWPFVisualization:IntRangeToBrushConverter>
+            <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">
+                <Converters:IntRangeToBrushConverter.IntRangeBrushValues>                    
+                        <Converters:IntRangeBrushValue IntRange="0-99" Brush="Red" />
+                        <Converters:IntRangeBrushValue IntRange="100" Brush="Blue" />
+                        <Converters:IntRangeBrushValue IntRange="101-200" Brush="Green" />
+                        <Converters:IntRangeBrushValue IntRange=">200" Brush="Yellow" />
+                </Converters:IntRangeToBrushConverter.IntRangeBrushValues>
+            </Converters:IntRangeToBrushConverter>
+
+            <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1" TrueValue="Green" FalseValue="Red"></Converters:BoolToBrushConverter>
             
             <Communication:PLCTag x:Key="Tag1" S7FormatAddress="DB97.DBW0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
@@ -28,11 +30,25 @@
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" 
                  Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" 
                  Background="{Binding Source={StaticResource Tag1}, Path=Value, Converter={StaticResource FarbenConverter1}}"
-                 ExampleWPFVisualization:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"/>
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" />
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" />
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,262,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag5}, Path=ValueAsString}" />
-        <CheckBox Content="CheckBox" Height="25" HorizontalAlignment="Left" Margin="298,115,0,0" Name="checkBox1" IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />        
-        <DatePicker Height="26" HorizontalAlignment="Left" Margin="298,146,0,0" Name="datePicker1" VerticalAlignment="Top" Width="170" SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" />
+                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"/>
+        
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" 
+                 Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" 
+                 Background="{Binding Source={StaticResource Tag4}, Path=Value, Converter={StaticResource BoolBrushConverter1}}" 
+                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
+        
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" 
+                 Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" 
+                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
+        
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,262,0,0" VerticalAlignment="Top" Width="238" 
+                 Text="{Binding Source={StaticResource Tag5}, Path=ValueAsString}" 
+                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
+        
+        <CheckBox Content="CheckBox" Height="25" HorizontalAlignment="Left" Margin="298,115,0,0" Name="checkBox1" 
+                  IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />        
+        
+        <DatePicker Height="26" HorizontalAlignment="Left" Margin="298,146,0,0" Name="datePicker1" VerticalAlignment="Top" Width="170" 
+                    SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" />
     </Grid>
 </Window>
