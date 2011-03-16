@@ -63,7 +63,12 @@ namespace ExampleWPFVisualization
                                      {
                                          while (true)
                                          {
-                                             myConn.ReadValues(Tags);
+                                             try
+                                             {
+                                                 myConn.ReadValues(Tags);
+                                             }
+                                             catch(Exception ex)
+                                             { }
                                          }
                                      };
 

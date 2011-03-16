@@ -4,22 +4,25 @@
     <Window.Resources>
         <ResourceDictionary>
             <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">
-                <Converters:IntRangeToBrushConverter.IntRangeBrushValues>                    
-                        <Converters:IntRangeBrushValue IntRange="0-99" Brush="Red" />
-                        <Converters:IntRangeBrushValue IntRange="100" Brush="Blue" />
-                        <Converters:IntRangeBrushValue IntRange="101-200" Brush="Green" />
-                        <Converters:IntRangeBrushValue IntRange=">200" Brush="Yellow" />
+                <Converters:IntRangeToBrushConverter.IntRangeBrushValues>
+                        <Converters:IntRangeBrushValue IntRange="0-5000" Brush="Red" />
+                        <Converters:IntRangeBrushValue IntRange="5001-10000" Brush="Blue" />
+                        <Converters:IntRangeBrushValue IntRange="10001-15000" Brush="Green" />
+                        <Converters:IntRangeBrushValue IntRange="15001-20000" Brush="Orange" />
+                        <Converters:IntRangeBrushValue IntRange="20001-25000" Brush="Purple" />
+                        <Converters:IntRangeBrushValue IntRange="25001-30000" Brush="Brown" />                        
+                        <Converters:IntRangeBrushValue IntRange=">30000" Brush="Yellow" />
                 </Converters:IntRangeToBrushConverter.IntRangeBrushValues>
             </Converters:IntRangeToBrushConverter>
 
             <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1" TrueValue="Green" FalseValue="Red"></Converters:BoolToBrushConverter>
             
-            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="DB97.DBW0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="MW0" LibNoDaveDataType="Word" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBW4" DataTypeStringFormat="Hexadecimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBX6.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag5" DatablockNumber="97" ByteAddress="8" ArraySize="10" LibNoDaveDataType="String" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag6" DatablockNumber="97" ByteAddress="20" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag6" DatablockNumber="97" ByteAddress="20" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>            
         </ResourceDictionary>
     </Window.Resources>
     <Grid>

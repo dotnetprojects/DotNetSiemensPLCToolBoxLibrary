@@ -1522,7 +1522,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         var rs = new libnodave.resultSet();
                         int res = _dc.execReadRequest(myPDU, rs);
-                        if (res != 0 && res != 10)
+
+                        if (res == -1025)
+                        {
+                            this.Disconnect();
+                            return;
+                        }
+                        else if (res != 0 && res != 10)
                             throw new Exception("Error: " + libnodave.daveStrerror(res));
 
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
@@ -1593,11 +1599,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     int res = _dc.readManyBytes(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress, readSize, ref myBuff);
 
+
                     int buffPos = 0;
                     if (res == 0)
                     {
                         value._readValueFromBuffer(myBuff, buffPos);
                         buffPos += value._internalGetSize();
+                    }
+                    else if (res == -1025)
+                    {
+                        this.Disconnect();
+                        return;
                     }
                     else
                         throw new Exception("Error: " + libnodave.daveStrerror(res));
@@ -1659,7 +1671,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     int res = _dc.writeManyBytes(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress, readSize, myBuff);
 
-                    if (res != 0)
+                    if (res == -1025)
+                    {
+                        this.Disconnect();
+                        return;
+                    }
+                    else if (res != 0)
                         throw new Exception("Error: " + libnodave.daveStrerror(res));
                 }
         }
@@ -1699,14 +1716,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else
                         {
                             rs = new libnodave.resultSet();
-                            res = _dc.execReadRequest(myPDU, rs);
+                            res = _dc.execWriteRequest(myPDU, rs);
+                            if (res == -1025)
+                            {
+                                this.Disconnect();
+                                return;
+                            }
                         }
                     }
 
                     if (gesWriteSize > 0)
                     {
                         rs = new libnodave.resultSet();
-                        res = _dc.execReadRequest(myPDU, rs);
+                        res = _dc.execWriteRequest(myPDU, rs);
+                        if (res == -1025)
+                        {
+                            this.Disconnect();
+                            return;
+                        }
                     }
                 }
         }
