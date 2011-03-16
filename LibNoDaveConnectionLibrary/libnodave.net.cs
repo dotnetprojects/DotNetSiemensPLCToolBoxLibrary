@@ -1438,28 +1438,28 @@ This was just here to check inheritance
             tmp = mydatetime.Year/100;
             tmp = tmp*100;
             tmp = mydatetime.Year - tmp;
-            b[pos] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Month;
-            b[pos + 1] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 1] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Day;
-            b[pos + 2] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 2] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Hour;
-            b[pos + 3] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 3] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Minute;
-            b[pos + 4] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 4] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Second;
-            b[pos + 5] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 5] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = mydatetime.Millisecond;
-            b[pos + 6] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 6] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
             tmp = (int) mydatetime.DayOfWeek;
-            b[pos + 7] = Convert.ToByte(tmp << 4 | tmp/10);
+            b[pos + 7] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
         }
 
         public static void putS5Timeat(byte[] b, int pos, TimeSpan value)
