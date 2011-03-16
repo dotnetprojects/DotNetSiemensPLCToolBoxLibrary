@@ -270,10 +270,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _value = value;
                 if (!_value.Equals(_oldvalue))
                 {
+                    _oldvalue = _value;
                     NotifyPropertyChanged("Value");
-                    NotifyPropertyChanged("ValueAsString");
-                }
-                _oldvalue = _value;
+                    NotifyPropertyChanged("ValueAsString");                    
+                }                
 
                 if (BackupValuesCount > 0 && _oldvalues != null)
                 {
@@ -295,11 +295,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return _value; }
             set
             {
-                if (_value == null || !_value.Equals(value))
+                if (_controlvalue == null || !_controlvalue.Equals(value))
                 {
                     _controlvalue = value;
                     NotifyPropertyChanged("Controlvalue");
-                }               
+                }
             }
         }
 
@@ -309,7 +309,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set
             {
                 ParseControlValueFromString((String) value);
-                NotifyPropertyChanged("Controlvalue");
             }
         }
 
@@ -322,6 +321,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_controlvalue == null || !_controlvalue.Equals(value))
                 {
                     _controlvalue = value;
+                    _oldvalue = null;
                     NotifyPropertyChanged("Controlvalue");                        
                 }
             }
