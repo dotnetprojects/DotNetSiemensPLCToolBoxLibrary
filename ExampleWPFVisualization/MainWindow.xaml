@@ -11,12 +11,13 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Button Content="Config Connection" Height="48" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="126" Click="cmdConfig_Click" />
-        <Button Content="Connect" Height="50" HorizontalAlignment="Left" Margin="144,12,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="126" Click="cmdConnect_Click" />
+        <Button Content="Config Connection" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="110" Click="cmdConfig_Click" />
+        <Button Content="Connect" Height="25" HorizontalAlignment="Left" Margin="12,44,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="110" Click="cmdConnect_Click" />
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,182,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" />
         <TextBox Height="26" HorizontalAlignment="Left" Margin="12,262,0,0" VerticalAlignment="Top" Width="238" Text="{Binding Source={StaticResource Tag5}, Path=ValueAsString}" />
         <CheckBox Content="CheckBox" Height="25" HorizontalAlignment="Left" Margin="298,115,0,0" Name="checkBox1" IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />
+        <Label Height="26" HorizontalAlignment="Left" Margin="138,11,0,0" Name="lblStatus" VerticalAlignment="Top" Width="353" />
     </Grid>
 </Window>

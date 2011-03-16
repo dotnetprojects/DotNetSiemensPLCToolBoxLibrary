@@ -34,31 +34,45 @@ namespace ExampleWPFVisualization
             DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration("ExampleWPFVisualization", true);
         }
 
+        private BackgroundWorker worker = null;
+
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
         {
             //Alle Tags in eine Liste packen
-            List<PLCTag> Tags=new List<PLCTag>();
+            List<PLCTag> Tags = new List<PLCTag>();
             foreach (DictionaryEntry dictionaryEntry in this.Resources)
             {
                 if (dictionaryEntry.Value is PLCTag)
                     Tags.Add((PLCTag) dictionaryEntry.Value);
             }
-            
-            //Verbindungskonfig laden und Verbinden
-            myConn = new PLCConnection("ExampleWPFVisualization");
-            myConn.Connect();
 
-            //Tags im Hintergrund laden
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs args)
-                                 {
-                                     while (true)
+            try
+            {
+                //Verbindungskonfig laden und Verbinden
+                myConn = new PLCConnection("ExampleWPFVisualization");
+                myConn.Connect();
+
+                //Tags im Hintergrund laden
+                if (worker != null)
+                {
+                    worker.CancelAsync();
+                    worker.Dispose();
+                }
+                worker = new BackgroundWorker();
+                worker.DoWork += delegate(object s, DoWorkEventArgs args)
                                      {
-                                         myConn.ReadValues(Tags);
-                                     }
-                                 };
+                                         while (true)
+                                         {
+                                             myConn.ReadValues(Tags);
+                                         }
+                                     };
 
-            worker.RunWorkerAsync();
+                worker.RunWorkerAsync();
+            }
+            catch(Exception ex)
+            {
+                lblStatus.Content = ex.Message;
+            }
         }
 
         private void PLCTag_PropertyChanged(object sender, PropertyChangedEventArgs e)
