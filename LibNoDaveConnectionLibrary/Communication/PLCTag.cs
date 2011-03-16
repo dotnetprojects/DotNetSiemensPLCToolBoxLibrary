@@ -77,9 +77,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return _itemDoesNotExist; }
             set
             {
-                _itemDoesNotExist = value; 
-                NotifyPropertyChanged("ItemDoesNotExist");                 
-                NotifyPropertyChanged("ValueAsString");
+                if (_itemDoesNotExist != value)
+                {
+                    _itemDoesNotExist = value;
+                    NotifyPropertyChanged("ItemDoesNotExist");
+                    NotifyPropertyChanged("ValueAsString");
+                }
             }
         }
 
@@ -534,10 +537,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = wrt;
                     }
                     break;
-
-                    /*                  case TagDataType.TimeOfDay:    
+                case TagDataType.Float:
+                    {
+                        Controlvalue = Convert.ToSingle(myValue);
+                    }
+                    break;
+/* 
+ *  case TagDataType.TimeOfDay:    
     case TagDataType.Float:
-    case TagDataType.ByteArray:
     */
             }
         }
@@ -1103,7 +1110,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         libnodave.putU32at(buff, startpos, Convert.ToUInt32(Controlvalue));
                         break;
                     case TagDataType.Float:
-                        libnodave.putFloatat(buff, startpos, Convert.ToInt32(Controlvalue));
+                        libnodave.putFloatat(buff, startpos, Convert.ToSingle(Controlvalue));
                         break;
                     case TagDataType.DateTime:
                         //if (Controlvalue.GetType() == typeof(DateTime))

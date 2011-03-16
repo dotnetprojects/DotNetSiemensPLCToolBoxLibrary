@@ -1577,7 +1577,7 @@ This was just here to check inheritance
                 b[pos + 3] = bytes[0];
                 b[pos + 2] = bytes[1];
                 b[pos + 1] = bytes[2];
-                b[pos] = bytes[4];
+                b[pos] = bytes[3];
             }
             else
                 Array.Copy(bytes, 0, b, pos, 4);
