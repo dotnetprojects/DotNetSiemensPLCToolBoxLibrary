@@ -208,6 +208,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             int d = 0, h = 0, m = 0, s = 0, ms = 0;
             int val = 0;
+            bool negativ = false;
             foreach (char tmp in time)
             {
                 if (tmp == 'd')
@@ -235,6 +236,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     ms = val;
                     val = 0;
                 }
+                else if (tmp == '-')
+                {
+                    negativ = true;
+                }
                 else
                 {
                     val *= 10;
@@ -250,7 +255,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 return max;
             if (retVal < min)
                 return min;*/
-            return retVal;
+            return negativ ? retVal.Negate() : retVal;
 
         }
 

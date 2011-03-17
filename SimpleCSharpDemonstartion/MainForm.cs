@@ -103,11 +103,11 @@ namespace SimpleCSharpDemonstration
         {
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
-            PLCTag tag = new PLCTag("MW200") {LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.S5Time};
+            PLCTag tag = new PLCTag("MD200") {LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.TimeOfDay};
             myConn.ReadValue(tag);
             lblString.Text = tag.ValueAsString;
 
-            tag.ParseControlValueFromString( "s5t#1h2m");
+            tag.ParseControlValueFromString("TOD#11:22:33.999");
             myConn.WriteValue(tag);
         }
     }

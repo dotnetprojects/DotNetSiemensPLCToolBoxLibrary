@@ -1504,13 +1504,13 @@ This was just here to check inheritance
 
         public static void putTimeat(byte[] b, int pos, TimeSpan value)
         {
-            putU32at(b, pos, Convert.ToUInt32(value.TotalMilliseconds));
+            putS32at(b, pos, Convert.ToInt32(value.TotalMilliseconds));
         }
 
         public static void putTimeOfDayat(byte[] b, int pos, DateTime value)
         {
             var tmp = new TimeSpan(0, value.Hour, value.Minute, value.Second, value.Millisecond);
-            putU32at(b, pos, Convert.ToUInt32(tmp.Milliseconds));
+            putU32at(b, pos, Convert.ToUInt32(tmp.TotalMilliseconds));
         }
 
         public static void putDateat(byte[] b, int pos, DateTime value)
@@ -1634,6 +1634,74 @@ This was just here to check inheritance
             b[pos + 1] = (byte) (b0 + b1*16);
         }
 
+        public static void putBCD32at(byte[] b, int pos, int value)
+        {
+            int b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, b7 = 0;
+            string chars = Convert.ToString(value);
+            if (chars.Length > 7)
+            {
+                b0 = Convert.ToInt32(chars[7].ToString());
+                b1 = Convert.ToInt32(chars[6].ToString());
+                b2 = Convert.ToInt32(chars[5].ToString());
+                b3 = Convert.ToInt32(chars[4].ToString());
+                b4 = Convert.ToInt32(chars[3].ToString());
+                b5 = Convert.ToInt32(chars[2].ToString());
+                b6 = Convert.ToInt32(chars[1].ToString());
+                b7 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 6)
+            {
+                b0 = Convert.ToInt32(chars[6].ToString());
+                b1 = Convert.ToInt32(chars[5].ToString());
+                b2 = Convert.ToInt32(chars[4].ToString());
+                b3 = Convert.ToInt32(chars[3].ToString());
+                b4 = Convert.ToInt32(chars[2].ToString());
+                b5 = Convert.ToInt32(chars[1].ToString());
+                b6 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 5)
+            {
+                b0 = Convert.ToInt32(chars[5].ToString());
+                b1 = Convert.ToInt32(chars[4].ToString());
+                b2 = Convert.ToInt32(chars[3].ToString());
+                b3 = Convert.ToInt32(chars[2].ToString());
+                b4 = Convert.ToInt32(chars[1].ToString());
+                b5 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 4)
+            {
+                b0 = Convert.ToInt32(chars[4].ToString());
+                b1 = Convert.ToInt32(chars[3].ToString());
+                b2 = Convert.ToInt32(chars[2].ToString());
+                b3 = Convert.ToInt32(chars[1].ToString());
+                b4 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 3)
+            {
+                b0 = Convert.ToInt32(chars[3].ToString());
+                b1 = Convert.ToInt32(chars[2].ToString());
+                b2 = Convert.ToInt32(chars[1].ToString());
+                b3 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 2)
+            {
+                b0 = Convert.ToInt32(chars[2].ToString());
+                b1 = Convert.ToInt32(chars[1].ToString());
+                b2 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 1)
+            {
+                b0 = Convert.ToInt32(chars[1].ToString());
+                b1 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 0)
+                b0 = Convert.ToInt32(chars[0].ToString());
+
+            b[pos] = (byte)(b6 + b7 * 16);
+            b[pos + 1] = (byte)(b4 + b5 * 16);
+            b[pos + 2] = (byte)(b2 + b3 * 16);
+            b[pos + 3] = (byte)(b0 + b1 * 16);
+        }
         public static int getBCD16from(byte[] b, int pos)
         {
             int bt1 = b[pos];
@@ -1641,6 +1709,19 @@ This was just here to check inheritance
             bt1 = (bt1/0x10)*10 + (bt1 %0x10);
             bt2 = (bt2 / 0x10)*10 + (bt2 % 0x10);
             return bt1*100 + bt2;
+        }
+
+        public static int getBCD32from(byte[] b, int pos)
+        {
+            int bt1 = b[pos];
+            int bt2 = b[pos + 1];
+            int bt3 = b[pos + 2];
+            int bt4 = b[pos + 3];
+            bt1 = (bt1 / 0x10) * 10 + (bt1 % 0x10);
+            bt2 = (bt2 / 0x10) * 10 + (bt2 % 0x10);
+            bt3 = (bt3 / 0x10) * 10 + (bt3 % 0x10);
+            bt4 = (bt4 / 0x10) * 10 + (bt4 % 0x10);
+            return bt1*1000000 + bt2*10000 + bt3*100 + bt4;
         }
 
         public static DateTime getDateTimefrom(byte[] b, int pos)

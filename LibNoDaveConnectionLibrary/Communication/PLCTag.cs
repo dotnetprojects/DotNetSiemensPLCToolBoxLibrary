@@ -1103,6 +1103,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDWord:
                         libnodave.putBCD16at(buff, startpos, Convert.ToInt32(Controlvalue));
                         break;
+                    case TagDataType.BCDDWord:
+                        libnodave.putBCD32at(buff, startpos, Convert.ToInt32(Controlvalue));
+                        break;
                     case TagDataType.Dint:
                         libnodave.putS32at(buff, startpos, Convert.ToInt32(Controlvalue));
                         break;
@@ -1189,6 +1192,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.BCDWord:
                     _setValueProp = libnodave.getBCD16from(buff, startpos);
                     break;
+                case TagDataType.BCDDWord:
+                    _setValueProp = libnodave.getBCD32from(buff, startpos);
+                    break;
                 case TagDataType.Dint:
                     _setValueProp = libnodave.getS32from(buff, startpos);
                     break;
@@ -1232,7 +1238,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Dword:
                 case TagDataType.Time:                
                 case TagDataType.TimeOfDay:
-                case TagDataType.Float:  
+                case TagDataType.Float: 
+                case TagDataType.BCDDWord:
                     return 4;                    
                 case TagDataType.DateTime:
                     return 8;                    
