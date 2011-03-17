@@ -21,7 +21,7 @@
             <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBD28" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBX6.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag5" DatablockNumber="97" ByteAddress="8" ArraySize="10" LibNoDaveDataType="String" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag5" S7FormatAddress="MW200" LibNoDaveDataType="BCDDWord" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag6" DatablockNumber="97" ByteAddress="20" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>            
         </ResourceDictionary>
     </Window.Resources>
@@ -41,11 +41,11 @@
                  Background="{Binding Source={StaticResource Tag4}, Path=Value, Converter={StaticResource BoolBrushConverter1}}" 
                  Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
         
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="238" 
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,214,0,0" VerticalAlignment="Top" Width="238" 
                  Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" 
                  Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
         
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,262,0,0" VerticalAlignment="Top" Width="238" 
+        <TextBox Height="26" HorizontalAlignment="Left" Margin="12,273,0,0" VerticalAlignment="Top" Width="238" 
                  Text="{Binding Source={StaticResource Tag5}, Path=ValueAsString}" 
                  Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
         

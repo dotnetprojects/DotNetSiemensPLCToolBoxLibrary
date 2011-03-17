@@ -1524,7 +1524,7 @@ This was just here to check inheritance
         {
             DateTime tmp = new DateTime(1990, 1, 1);
             var tmp2 = TimeSpan.FromDays(getU16from(b, pos));
-            tmp.Add(tmp2);
+            tmp = tmp.Add(tmp2);
             return tmp;
         }
 
@@ -1586,7 +1586,7 @@ This was just here to check inheritance
         public static int getBCD8from(byte[] b, int pos)
         {
             int bt1 = b[pos];
-            bt1 = (((bt1 >> 4))*10) + ((bt1 & 0x0f));
+            bt1 = (bt1 / 0x10) * 10 + (bt1 % 0x10);
             return bt1;
         }
 
@@ -1610,13 +1610,25 @@ This was just here to check inheritance
             int b0 = 0, b1 = 0, b2 = 0, b3 = 0;
             string chars = Convert.ToString(value);
             if (chars.Length > 3)
-                b3 = Convert.ToInt32(chars[0].ToString());
-            if (chars.Length > 2)
+            {
+                b0 = Convert.ToInt32(chars[3].ToString());
+                b1 = Convert.ToInt32(chars[2].ToString());
                 b2 = Convert.ToInt32(chars[1].ToString());
-            if (chars.Length > 1)
-                b1 = Convert.ToInt32(chars[3].ToString());
-            if (chars.Length > 0)
-                b0 = Convert.ToInt32(chars[4].ToString());
+                b3 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 2)
+            {
+                b0 = Convert.ToInt32(chars[2].ToString());
+                b1 = Convert.ToInt32(chars[1].ToString());
+                b2 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 1)
+            {
+                b0 = Convert.ToInt32(chars[1].ToString());
+                b1 = Convert.ToInt32(chars[0].ToString());
+            }
+            else if (chars.Length > 0)
+                b0 = Convert.ToInt32(chars[0].ToString());
 
             b[pos] = (byte) (b2 + b3*16);
             b[pos + 1] = (byte) (b0 + b1*16);
@@ -1626,9 +1638,9 @@ This was just here to check inheritance
         {
             int bt1 = b[pos];
             int bt2 = b[pos + 1];
-            bt1 = (((bt1 >> 4))*10) + ((bt1 & 0x0f));
-            bt2 = (((bt1 >> 4))*10) + ((bt1 & 0x0f));
-            return bt2*100 + bt1;
+            bt1 = (bt1/0x10)*10 + (bt1 %0x10);
+            bt2 = (bt2 / 0x10)*10 + (bt2 % 0x10);
+            return bt1*100 + bt2;
         }
 
         public static DateTime getDateTimefrom(byte[] b, int pos)

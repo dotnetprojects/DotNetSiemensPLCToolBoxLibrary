@@ -1080,7 +1080,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         buff[startpos] = Convert.ToByte(Controlvalue);
                         break;
                     case TagDataType.SByte:
-                        buff[startpos] = Convert.ToByte(Controlvalue);
+                        buff[startpos] = (Byte)Convert.ToSByte(Controlvalue);
                         break;
                     case TagDataType.Time:
                         libnodave.putTimeat(buff, startpos, (TimeSpan) Controlvalue);
@@ -1115,6 +1115,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.DateTime:
                         //if (Controlvalue.GetType() == typeof(DateTime))
                         libnodave.putDateTimeat(buff, startpos, (DateTime) Controlvalue);
+                        //else
+                        //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
+                        break;
+                    case TagDataType.Date:
+                        //if (Controlvalue.GetType() == typeof(DateTime))
+                        libnodave.putDateat(buff, startpos, (DateTime)Controlvalue);
                         //else
                         //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
                         break;
@@ -1220,6 +1226,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.BCDWord:
                 case TagDataType.Int:
                 case TagDataType.S5Time:
+                case TagDataType.Date:
                     return 2;                                    
                 case TagDataType.Dint:
                 case TagDataType.Dword:

@@ -98,5 +98,17 @@ namespace SimpleCSharpDemonstration
             myConn.WriteValue(tst);
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
+            myConn.Connect();
+            PLCTag tag = new PLCTag("MW200") {LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.S5Time};
+            myConn.ReadValue(tag);
+            lblString.Text = tag.ValueAsString;
+
+            tag.ParseControlValueFromString( "s5t#1h2m");
+            myConn.WriteValue(tag);
+        }
     }
 }
