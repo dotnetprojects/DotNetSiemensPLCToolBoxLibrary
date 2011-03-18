@@ -1593,6 +1593,9 @@ This was just here to check inheritance
 
         public static void putBCD8at(byte[] b, int pos, int value)
         {
+            //todo: Redo this function! this should be done without string functions!
+
+
             int b0 = 0, b1 = 0;
 
             //setze höchstes bit == negativer wert!
@@ -1611,6 +1614,9 @@ This was just here to check inheritance
 
         public static void putBCD16at(byte[] b, int pos, int value)
         {
+
+            //todo: Redo this function! this should be done without string functions!
+
             int b0 = 0, b1 = 0, b2 = 0, b3 = 0;
 
             //setze höchstes bit == negativer wert!
@@ -1642,6 +1648,9 @@ This was just here to check inheritance
 
         public static void putBCD32at(byte[] b, int pos, int value)
         {
+            //todo: Redo this function! this should be done without string functions!
+
+
             int b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, b7 = 0;
 
             //setze höchstes bit == negativer wert!
