@@ -46,7 +46,8 @@ namespace JFK_VarTab
                     myValues.Add(new S7VATRow());
                     //myValues.Add(new LibNoDaveValue());
 
-                myValues[myValues.Count - 1].LibNoDaveValue = new PLCTag();
+                if (myValues[myValues.Count - 1].LibNoDaveValue == null)
+                    myValues[myValues.Count - 1].LibNoDaveValue = new PLCTag();
 
                 if (dataGridViewVarTab.Rows[nr].Cells[e.ColumnIndex].Value != null)
                 {

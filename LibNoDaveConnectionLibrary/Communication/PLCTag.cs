@@ -441,6 +441,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         try { Controlvalue = TimeSpan.Parse(myValue); } catch (Exception) {}
                     break;
+                case TagDataType.BCDWord:                
                 case TagDataType.Int:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToInt16(Helper.GetIntFromHexString(myValue));
@@ -449,6 +450,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         try { Controlvalue = Int16.Parse(myValue); } catch (Exception) {}
                     break;
+                case TagDataType.BCDDWord:
                 case TagDataType.Dint:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToInt32(Helper.GetIntFromHexString(myValue));
@@ -456,8 +458,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = Convert.ToInt32(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = Int32.Parse(myValue); } catch (Exception) {}
-                    break;
-                case TagDataType.BCDByte:
+                    break;                
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToByte(Helper.GetIntFromHexString(myValue));
@@ -466,6 +467,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         try { Controlvalue = Byte.Parse(myValue); } catch (Exception) {}
                     break;
+                case TagDataType.BCDByte:
                 case TagDataType.SByte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToSByte(Helper.GetIntFromHexString(myValue));
@@ -473,8 +475,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = Convert.ToSByte(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = SByte.Parse(myValue); } catch (Exception) {}
-                    break;               
-                case TagDataType.BCDWord:
+                    break;                               
                 case TagDataType.Word:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToUInt16(Helper.GetIntFromHexString(myValue));
@@ -482,8 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = Convert.ToUInt16(Helper.GetIntFromBinString(myValue));
                     else
                         try { Controlvalue = UInt16.Parse(myValue); } catch (Exception) {}
-                    break;              
-                case TagDataType.BCDDWord:
+                    break;                              
                 case TagDataType.Dword:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToUInt32(Helper.GetIntFromHexString(myValue));

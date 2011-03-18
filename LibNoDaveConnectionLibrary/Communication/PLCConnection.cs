@@ -262,6 +262,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                                    _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
                                                    _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
                                                    _configuration.RoutingDestination, _configuration.PLCConnectionType, _configuration.RoutingPLCConnectionType);
+            
             //else
             //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
 
@@ -1399,6 +1400,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="valueList"></param>        
         public void ReadValues(IEnumerable<PLCTag> valueList)
         {
+
+            //Got through the list of values
+            //Order them at first with the DB, then the byte address
+            //If the Byte count of a tag is uneven, add 1
+            //Then Look if Some Values lay in othe values or if the byte adress difference is <= 4
+            //if it is so, create a replacement value wich reads the bytes and stores at wich tags are in this value and at wich adress
+            //read the tags!
+            //Look, that the byte count gets not bigger than a pdu!
+
+
             if (AutoConnect && !Connected)
                 Connect();
 
@@ -1535,7 +1546,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
                         for (akVar = 0; akVar < anzVar; akVar++)
                         {
-                            byte[] myBuff = new byte[gesReadSize];
+                            byte[] myBuff = new byte[ /* gesReadSize */ readenSizes[akVar]];
 
                             res = _dc.useResult(rs, akVar, myBuff);
                             if (res == 10 || res == 5)

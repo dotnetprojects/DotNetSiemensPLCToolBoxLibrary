@@ -22,7 +22,7 @@
             <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBD28" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBX6.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag5" S7FormatAddress="MW200" LibNoDaveDataType="BCDDWord" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag6" DatablockNumber="97" ByteAddress="20" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>            
+            <Communication:PLCTag x:Key="Tag6" DatablockNumber="1" ByteAddress="0" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>            
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
