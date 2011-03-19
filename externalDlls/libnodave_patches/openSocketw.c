@@ -88,6 +88,7 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
     he = gethostbyname(peer);
 	LOG1(ThisModule "4\n");
 	FLUSH;
+	if (!he) return 0;
 
     memcpy(&addr.sin_addr, he->h_addr_list[0], sizeof(addr.sin_addr));
     if (daveDebug & daveDebugOpen) {
@@ -111,7 +112,7 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
 
 #endif
 
-    fd = socket(AF_INET, SOCK_STREAM, 6);
+    fd = socket(AF_INET, SOCK_STREAM, AF_UNSPEC);
     if (daveDebug & daveDebugOpen) {
 	LOG1(ThisModule "7\n");
 	FLUSH;
@@ -129,11 +130,11 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
 	LOG1(ThisModule "8\n");
 	FLUSH;
     }	
-   if (bind(fd, (struct sockaddr *) & addr, addrlen)) {
-	   if (daveDebug & daveDebugOpen) {
-			LOG2(ThisModule "bind Socket error: %s \n", strerror(errno));
-	   }
-    }
+   //if (bind(fd, (struct sockaddr *) & addr, addrlen)) {
+	//   if (daveDebug & daveDebugOpen) {
+	//		LOG2(ThisModule "bind Socket error: %s \n", strerror(errno));
+	//   }
+    //}
     if (connect(fd, (struct sockaddr *) & addr, addrlen)) {
 	if (daveDebug & daveDebugOpen) {
 	    LOG2(ThisModule "connect Socket error: %s \n", strerror(errno));

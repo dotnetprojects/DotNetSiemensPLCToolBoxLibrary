@@ -2095,7 +2095,7 @@ float DECL2 toPLCfloat(float ff) {
 	f.b[1]=f.b[2];
 	f.b[2]=c;
 
-	f.a=ff;
+//	f.a=ff;
 #ifdef DEBUG_CALLS
 	LOG3("toPLCfloat(%0.6f) = %0.6f\n",ff,f.a);
 	FLUSH;
@@ -5588,7 +5588,8 @@ int DECL2 _daveConnectPLC_IBH(daveConnection*dc) {
 	dc->ibhDstConn=20-1;
 	retries=0;
 	do {
-		LOG1("trying next ID:\n");
+		if (daveDebug & daveDebugConnect) 
+			LOG1("trying next ID:\n");
 		dc->ibhSrcConn++;
 		chal3[8]=dc->ibhSrcConn;
 		a=_daveInitStepIBH(dc->iface, chal3,sizeof(chal3),resp3,sizeof(resp3),b);
@@ -6201,7 +6202,7 @@ int DECL2 daveSetPLCTimeToSystime(daveConnection * dc) {
 	localtime_r(&(t1.tv_sec),&systime);
 	t1.tv_usec/=100;		//tenth of miliseconds from microseconds
 	//    ts[1]=daveToBCD(systime.tm_year/100+19);
-	ts[2]=daveToBCD(systime.tm_year % 10);
+	ts[2]=daveToBCD(systime.tm_year % 100);
 	ts[3]=daveToBCD(systime.tm_mon+1);
 	ts[4]=daveToBCD(systime.tm_mday);
 	ts[5]=daveToBCD(systime.tm_hour);
@@ -6231,7 +6232,7 @@ int DECL2 daveSetPLCTimeToSystime(daveConnection * dc) {
 	WORD wSecond;
 	WORD wMilliseconds;
 	*/
-	ts[2]=daveToBCD(t1.wYear % 10);
+	ts[2]=daveToBCD(t1.wYear % 100);
 	ts[3]=daveToBCD(t1.wMonth);
 	ts[4]=daveToBCD(t1.wDay);
 	ts[5]=daveToBCD(t1.wHour);

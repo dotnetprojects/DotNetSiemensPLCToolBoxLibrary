@@ -1,5 +1,9 @@
 In this director are only the files I changed from the original libnodave!
 
+
+0.8.4.6.8
+  - Now the Base is libnodave 0.8.4.6
+
 0.8.4.5.8
   - ExtendedConnection can now also specify the Connection Type (and also for routing!)
 
