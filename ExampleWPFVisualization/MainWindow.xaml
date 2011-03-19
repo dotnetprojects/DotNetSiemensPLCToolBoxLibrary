@@ -53,6 +53,6 @@
                   IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />        
         
         <DatePicker Height="26" HorizontalAlignment="Left" Margin="298,146,0,0" Name="datePicker1" VerticalAlignment="Top" Width="170" 
-                    SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" />
+                    SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" FirstDayOfWeek="Monday" />
     </Grid>
 </Window>

@@ -1,5 +1,5 @@
 /*
- This implements a "glue" layer between libnodave.dll and applications written
+ This implements a "glue" layer between libnodave_jfkmod.dll and applications written
  in MS .Net languages.
  
  Part of Libnodave, a free communication libray for Siemens S7 200/300/400 via
@@ -152,13 +152,13 @@ namespace DotNetSiemensPLCToolBoxLibrary
     Call this function to get an explanation for error codes returned by other functions.
 */    
 /*
-    [DllImport("libnodave.dll")]
+    [DllImport("libnodave_jfkmod.dll")]
     public static extern string 
     daveStrerror(int res);
 */
 
 #if !IPHONE	
-        [DllImport("libnodave.dll", EntryPoint="daveStrerror" )]
+        [DllImport("libnodave_jfkmod.dll", EntryPoint="daveStrerror" )]
 #else
 	[DllImport ("__Internal", EntryPoint="daveStrerror")]
 #endif
@@ -264,14 +264,14 @@ namespace DotNetSiemensPLCToolBoxLibrary
 */
 	
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         public static extern void daveSetDebug(int newDebugLevel);
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -296,7 +296,7 @@ namespace DotNetSiemensPLCToolBoxLibrary
         public class pseudoPointer {
             public IntPtr pointer;
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -311,15 +311,15 @@ namespace DotNetSiemensPLCToolBoxLibrary
 
         public class daveInterface: pseudoPointer  {
 	
-//	[DllImport("libnodave.dll"//, PreserveSig=false)]
+//	[DllImport("libnodave_jfkmod.dll"//, PreserveSig=false)]
 /*
-	I cannot say why, but when I recompiled the existing code with latest libnodave.dll
+	I cannot say why, but when I recompiled the existing code with latest libnodave_jfkmod.dll
 	(after using stdcall so that VC++ producs these "decorated names", I got a runtime
 	error about not finding daveNewInterface. When I state full name entry point explicitly,
 	(like below) it runs. The most strange thing is that all other functions work well...
 */
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif	
@@ -348,7 +348,7 @@ This was just here to check inheritance
 */	
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -358,7 +358,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -368,7 +368,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -378,7 +378,7 @@ This was just here to check inheritance
             }    
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -388,7 +388,7 @@ This was just here to check inheritance
             }    
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -398,7 +398,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -412,7 +412,7 @@ This was just here to check inheritance
         public class daveConnection:pseudoPointer {
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -424,7 +424,7 @@ This was just here to check inheritance
                 );
        
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -521,7 +521,7 @@ This was just here to check inheritance
 	}
 */
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -531,7 +531,7 @@ This was just here to check inheritance
             }
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -541,7 +541,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -551,7 +551,7 @@ This was just here to check inheritance
             }
 
     
-            //[DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            //[DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
             //    protected static extern int daveReadManyBytes(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             //public int readManyBytes(int area, int DBnumber, int start, int len, byte[] buffer) {
             //    return daveReadManyBytes(pointer, area, DBnumber, start, len, buffer);
@@ -582,7 +582,7 @@ This was just here to check inheritance
             }    
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -592,7 +592,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -602,7 +602,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -612,7 +612,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -622,7 +622,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -635,7 +635,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -645,7 +645,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -655,7 +655,7 @@ This was just here to check inheritance
             }	
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -665,7 +665,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -675,7 +675,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -685,7 +685,7 @@ This was just here to check inheritance
             }
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -695,7 +695,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -705,7 +705,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -715,7 +715,7 @@ This was just here to check inheritance
             }
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -725,7 +725,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -735,7 +735,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -745,7 +745,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -755,7 +755,7 @@ This was just here to check inheritance
             }
     	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -765,7 +765,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -775,7 +775,7 @@ This was just here to check inheritance
             }
     	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -785,7 +785,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -795,7 +795,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -805,7 +805,7 @@ This was just here to check inheritance
             }
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -815,7 +815,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -825,7 +825,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -835,7 +835,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -847,7 +847,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -859,7 +859,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -870,7 +870,7 @@ This was just here to check inheritance
     
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -880,7 +880,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -892,7 +892,7 @@ This was just here to check inheritance
 
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -903,7 +903,7 @@ This was just here to check inheritance
             }	
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -913,7 +913,7 @@ This was just here to check inheritance
             }
     
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -923,7 +923,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -933,7 +933,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -943,7 +943,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -953,7 +953,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -963,7 +963,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -973,7 +973,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -984,7 +984,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -996,7 +996,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1008,7 +1008,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1018,7 +1018,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1039,7 +1039,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1076,7 +1076,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1096,7 +1096,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1123,7 +1123,7 @@ This was just here to check inheritance
         public class PDU : pseudoPointer
         {
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 		[DllImport ("__Internal")]
 #endif
@@ -1140,7 +1140,7 @@ This was just here to check inheritance
             }
         */
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 		[DllImport ("__Internal")]
 #endif
@@ -1151,7 +1151,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 		[DllImport ("__Internal")]
 #endif
@@ -1162,7 +1162,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 		[DllImport ("__Internal")]
 #endif
@@ -1173,7 +1173,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 		[DllImport ("__Internal")]
 #endif
@@ -1187,7 +1187,7 @@ This was just here to check inheritance
         public class resultSet:pseudoPointer {
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1197,7 +1197,7 @@ This was just here to check inheritance
             }
 
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1210,7 +1210,7 @@ This was just here to check inheritance
             }
 	
 #if !IPHONE	
-            [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1222,7 +1222,7 @@ This was just here to check inheritance
         }
 
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1233,7 +1233,7 @@ This was just here to check inheritance
             );
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1243,7 +1243,7 @@ This was just here to check inheritance
             );
         
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
         public static extern int openS7online(
             [MarshalAs(UnmanagedType.LPStr)] string portName,
             int hwnd
@@ -1261,7 +1261,7 @@ This was just here to check inheritance
     
 
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1270,7 +1270,7 @@ This was just here to check inheritance
             );
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1279,7 +1279,7 @@ This was just here to check inheritance
             );
 
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
         public static extern int closeS7online(
             int port
             );
@@ -1289,28 +1289,28 @@ This was just here to check inheritance
 
         
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         public static extern float toPLCfloat(float f);
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         public static extern int daveToPLCfloat(float f);
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         public static extern int daveSwapIed_32(int i);
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
@@ -1851,20 +1851,20 @@ This was just here to check inheritance
             return bitstring;
         }
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         private static extern int daveAreaName(int area);
     
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
         private static extern int daveBlockName(int blockType);
 #if !IPHONE	
-        [DllImport("libnodave.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif

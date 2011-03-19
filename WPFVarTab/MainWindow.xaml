@@ -1,0 +1,63 @@
+﻿<Window x:Class="WPFVarTab.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" Margin="0,65,0,21" Name="dataGrid">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Comment" Width="Auto" IsReadOnly="True" SortMemberPath="Comment" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Comment}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Address" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.S7FormatAddress}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Symbol" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.S7FormatAddress}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.LibNoDaveDataType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="DisplayFormat" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.DataTypeStringFormat">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.DataTypeStringFormat}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Value" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.Value">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.Value}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="ControlValue" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.ControlValue">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LibNoDaveValue.ControlValue}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <StatusBar Name="statusBar" Height="23" VerticalAlignment="Bottom" />
+        <ToolBar Height="26" Name="toolBar1" VerticalAlignment="Top" />
+    </Grid>
+</Window>
