@@ -883,8 +883,14 @@ namespace JFK_VarTab
             convertCallsToolStripMenuItem.Checked = !convertCallsToolStripMenuItem.Checked;
         }
 
-       
+        private void dBStructResizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DBStructresizer stRz = new DBStructresizer();
+            stRz.ShowDialog();
+        }
 
-        
+
+
+
     }
 }

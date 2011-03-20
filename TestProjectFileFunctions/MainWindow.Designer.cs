@@ -84,6 +84,8 @@
             this.mnuExpandDatablockArrays = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.downloadOnlineBlockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.dBStructResizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.telegrammSimulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.varTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -564,7 +566,9 @@
             this.unwatchToolStripMenuItem,
             this.mnuExpandDatablockArrays,
             this.toolStripSeparator2,
-            this.downloadOnlineBlockToolStripMenuItem});
+            this.downloadOnlineBlockToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.dBStructResizerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.toolsToolStripMenuItem.Text = "Online";
@@ -620,6 +624,18 @@
             this.downloadOnlineBlockToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.downloadOnlineBlockToolStripMenuItem.Text = "Download Online Block";
             this.downloadOnlineBlockToolStripMenuItem.Click += new System.EventHandler(this.downloadOnlineBlockToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
+            // 
+            // dBStructResizerToolStripMenuItem
+            // 
+            this.dBStructResizerToolStripMenuItem.Name = "dBStructResizerToolStripMenuItem";
+            this.dBStructResizerToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.dBStructResizerToolStripMenuItem.Text = "UDT-Array-Resizer";
+            this.dBStructResizerToolStripMenuItem.Click += new System.EventHandler(this.dBStructResizerToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem1
             // 
@@ -935,6 +951,8 @@
         private System.Windows.Forms.ToolStripMenuItem downloadOnlineBlockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem convertCallsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem dBStructResizerToolStripMenuItem;
 
     }
 }

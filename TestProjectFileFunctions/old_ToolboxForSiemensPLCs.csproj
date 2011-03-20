@@ -61,6 +61,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBStructresizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DBStructresizer.Designer.cs">
+      <DependentUpon>DBStructresizer.cs</DependentUpon>
+    </Compile>
     <Compile Include="DownloadBlock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,9 @@
       <DependentUpon>TelegrammSimulator.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeviewDepthWidthConverter.cs" />
+    <EmbeddedResource Include="DBStructresizer.resx">
+      <DependentUpon>DBStructresizer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DownloadBlock.resx">
       <DependentUpon>DownloadBlock.cs</DependentUpon>
     </EmbeddedResource>
