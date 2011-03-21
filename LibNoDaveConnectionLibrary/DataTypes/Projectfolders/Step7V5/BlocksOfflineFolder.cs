@@ -189,6 +189,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     if (objid == blkInfo.id && (subblktype == 12 || subblktype == 8 || subblktype == 14))
                     {
+                        _bausteinDbf = null;
+                        _subblkDbf = null;
+                        _intBlockList = null;
+
                         if (KnowHowProtection)
                             DBF.ParseDBF.WriteValue(Folder + "SUBBLK.DBF", "PASSWORD", dbfTbl.Rows.IndexOf(row), 3, ((Step7ProjectV5)Project)._zipfile);
                         else

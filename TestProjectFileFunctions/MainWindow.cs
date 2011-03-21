@@ -383,7 +383,7 @@ namespace JFK_VarTab
             if (myDB.Structure != null && myDB.Structure.Children != null)
                 cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
 
-            string varname = "STOERUNGEN_DB" + myDB.BlockNumber;
+            string varname = txtConnectionName + "_" + "STOERUNGEN_DB" + myDB.BlockNumber;
 
             string tags = varname + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW 0;Int;;" + ((cnt - 2) / 2).ToString() + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
 
@@ -786,7 +786,7 @@ namespace JFK_VarTab
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d)|*.s7p;*.zip;*.s5d|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p|Zipped Step5/Step7 Project|*.zip";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d)|*.s7p;*.zip;*.s5d;*.s7l|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip";
 
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)

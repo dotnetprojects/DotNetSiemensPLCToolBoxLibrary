@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
@@ -31,7 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     else if (functionBlockRow.Command == "+AR2" && LargeAccess)
                     {
                         tempList.Add(functionBlockRow);
-                        add_adresse += Convert.ToInt32(((S7FunctionBlockRow) functionBlockRow).Parameter.Substring(3));
+                        add_adresse += Convert.ToInt32(Convert.ToDouble(((S7FunctionBlockRow) functionBlockRow).Parameter.Substring(2), new NumberFormatInfo() {NumberDecimalSeparator = "."}));
                     }
                     else if (((S7FunctionBlockRow)functionBlockRow).Parameter.Contains("[AR2,P#") && ((S7FunctionBlockRow)functionBlockRow).Parameter.Substring(0, 2) == "DI" && !LargeAccess)
                     {

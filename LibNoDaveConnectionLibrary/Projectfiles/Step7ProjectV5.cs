@@ -30,16 +30,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 else
                     return '/';
             }
-        } 
-      
-        
+        }
+
+
         public Step7ProjectV5(string projectfile, bool showDeleted)
         {
             _projectfilename = projectfile;
-            
+
             if (projectfile.ToLower().EndsWith("zip"))
-            {                
+            {
                 _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7p");
+
+                if (string.IsNullOrEmpty(_projectfilename))
+                    _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7l");
+
                 if (string.IsNullOrEmpty(_projectfilename))
                     throw new Exception("Zip-File contains no valid Step7 Project !");
                 this._zipfile = ZipHelper.OpenZipfile(projectfile);

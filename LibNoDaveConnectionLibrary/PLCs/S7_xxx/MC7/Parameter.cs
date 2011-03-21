@@ -93,244 +93,267 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             //if the UDTs and Structs are not Equal, marke the PLCDataRow as TimeStampConflict
 
             string[] rows = txt.Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries);
+
+            S7DataRow lastrow = null;
+
             for (int n=0;n<rows.Length;n++) // (string row in rows)
             {
                 string rowTr = rows[n].Replace("\0", "").Trim();
-                switch (rowTr)
+                int poscm = rowTr.IndexOf("\t//");
+                if (poscm <= 0)
+                    poscm = rowTr.Length;
+
+                string switchrow = rowTr.Substring(0,poscm);
+                string commnew = "";
+                if (poscm != rowTr.Length)
+                    commnew = rowTr.Substring(poscm + 1);
+
+                if (rowTr.StartsWith("//"))
                 {
-                    
-                    case "VAR_INPUT":
-                        akDataRow = parameterIN;
-                        parameterRoot.Add(parameterIN);
-                        break;
-                    case "VAR_OUTPUT":
-                        akDataRow = parameterOUT;
-                        parameterRoot.Add(parameterOUT);
-                        break;
-                    case "VAR_IN_OUT":
-                        akDataRow = parameterINOUT;
-                        parameterRoot.Add(parameterINOUT);
-                        break;
-                    case "VAR_TEMP":
-                        akDataRow = parameterTEMP;
-                        if (blkTP != PLCBlockType.DB)
-                        {
-                            tempAdded = true;
-                            parameterRoot.Add(parameterTEMP);
-                        }
-                        break;
-                    case "VAR": //Static Data on a FB
-                        akDataRow = parameterSTAT;
-                        parameterRoot.Add(parameterSTAT);
-                        break;
-                    case "END_STRUCT ;":
-                        akDataRow = akDataRow.Parent;
-                        break;
-                    case "STRUCT":                    
-                    case "END_VAR":   
-                    case "":
-                        break;
-                    default:                        
-                        
-                        char oldChar = ' ';
+                    lastrow.Comment += rowTr;
+                }
+                else
+                {
+                    switch (switchrow)
+                    {
 
-                        List<Step7Attribute> Step7Attributes = new List<Step7Attribute>();
+                        case "VAR_INPUT":
+                            akDataRow = parameterIN;
+                            akDataRow.Comment = commnew;
+                            parameterRoot.Add(parameterIN);
+                            break;
+                        case "VAR_OUTPUT":
+                            akDataRow = parameterOUT;
+                            akDataRow.Comment = commnew;
+                            parameterRoot.Add(parameterOUT);
+                            break;
+                        case "VAR_IN_OUT":
+                            akDataRow = parameterINOUT;
+                            akDataRow.Comment = commnew;
 
-                        string tmpName = "";
-                        string tmpAttributeName = "";
-                        string tmpAttributeValue = "";
-                        string tmpType = "";
-                        string tmpComment = "";
-                        string tmpValue = "";
-
-                        int parseZustand = 0; //0=ParName, 1=AttributeName, 6=AfterAttributeName, 2=AttributeValue, 3=Type, 4=Value, 7=InnerValue (without '), 5=Comment
-
-
-                        if (!rows[n].Contains("\t"))
-                        {
-                            if (rows.Length>n+1)
+                            parameterRoot.Add(parameterINOUT);
+                            break;
+                        case "VAR_TEMP":
+                            akDataRow = parameterTEMP;
+                            if (blkTP != PLCBlockType.DB)
                             {
-                                if (rowTr.Contains("//"))
+                                tempAdded = true;
+                                parameterRoot.Add(parameterTEMP);
+                            }
+                            break;
+                        case "VAR": //Static Data on a FB
+                            akDataRow = parameterSTAT;
+                            parameterRoot.Add(parameterSTAT);
+                            break;
+                        case "END_STRUCT ;":
+                            akDataRow = akDataRow.Parent;
+                            break;
+                        case "STRUCT":
+                        case "END_VAR":
+                        case "":
+                            break;
+                        default:
+
+                            char oldChar = ' ';
+
+                            List<Step7Attribute> Step7Attributes = new List<Step7Attribute>();
+
+                            string tmpName = "";
+                            string tmpAttributeName = "";
+                            string tmpAttributeValue = "";
+                            string tmpType = "";
+                            string tmpComment = "";
+                            string tmpValue = "";
+
+                            int parseZustand = 0; //0=ParName, 1=AttributeName, 6=AfterAttributeName, 2=AttributeValue, 3=Type, 4=Value, 7=InnerValue (without '), 5=Comment
+
+
+                            if (!rows[n].Contains("\t"))
+                            {
+                                if (rows.Length > n + 1)
                                 {
-                                    int pos = rowTr.IndexOf("//");
-                                    rowTr = rowTr.Substring(0, pos) + " " + rows[n + 1].Trim() + rowTr.Substring(pos);
+                                    if (rowTr.Contains("//"))
+                                    {
+                                        int pos = rowTr.IndexOf("//");
+                                        rowTr = rowTr.Substring(0, pos) + " " + rows[n + 1].Trim() + rowTr.Substring(pos);
+                                    }
+                                    else
+                                    {
+                                        rowTr += " " + rows[n + 1].Trim();
+                                    }
+                                    n++;
                                 }
-                                else
+                            }
+
+                            for (int j = 0; j < rowTr.Length; j++)
+                            {
+                                char tmpChar = rowTr[j];
+
+                                if (parseZustand == 0 && tmpChar == '{')
+                                    parseZustand = 1;
+                                else if (parseZustand == 0 && tmpChar != ' ' && tmpChar != ':')
+                                    tmpName += tmpChar;
+                                else if (parseZustand == 6 && tmpChar == '\'')
+                                    parseZustand = 2;
+                                else if (parseZustand == 1 && tmpChar == ':' && rowTr[j + 1] == '=')
                                 {
-                                    rowTr += " " + rows[n + 1].Trim();
+                                    parseZustand = 6;
+                                    j++;
                                 }
-                                n++;
+                                else if (parseZustand == 1 && tmpChar != ' ' && tmpChar != ':' && tmpChar != '=' && tmpChar != '}' && tmpChar != '\'' && tmpChar != ';')
+                                    tmpAttributeName += tmpChar;
+                                else if (parseZustand == 1 && tmpChar == '}')
+                                    parseZustand = 0;
+                                else if (parseZustand == 0 && tmpChar == ':')
+                                    parseZustand = 3;
+                                else if (parseZustand == 2 && tmpChar == '$')
+                                {
+                                    tmpAttributeValue += rowTr[j + 1];
+                                    j++;
+                                }
+                                else if (parseZustand == 2 && tmpChar == '\'')
+                                {
+                                    parseZustand = 1;
+                                    Step7Attributes.Add(new Step7Attribute(tmpAttributeName, tmpAttributeValue));
+                                    tmpAttributeName = "";
+                                    tmpAttributeValue = "";
+                                }
+                                else if (parseZustand == 2)
+                                    tmpAttributeValue += tmpChar;
+                                    //else if (parseZustand == 3 && tmpChar == ':')
+                                    //    parseZustand = 2;
+                                else if (parseZustand == 3 && tmpChar == ':' && rowTr[j + 1] == '=')
+                                {
+                                    parseZustand = 4;
+                                    j++;
+                                }
+                                else if ((parseZustand == 3 || parseZustand == 4) && tmpChar == '/' && rowTr[j + 1] == '/')
+                                {
+                                    parseZustand = 5;
+                                    j++;
+                                }
+                                else if (parseZustand == 4 && tmpChar == '\'')
+                                {
+                                    tmpValue += tmpChar;
+                                    parseZustand = 7;
+                                }
+                                else if (parseZustand == 7 && tmpChar == '$')
+                                {
+                                    tmpValue += rowTr[j + 1];
+                                    j++;
+                                }
+                                else if (parseZustand == 7 && tmpChar == '\'')
+                                {
+                                    tmpValue += tmpChar;
+                                    parseZustand = 4;
+                                }
+                                else if (parseZustand == 3 && tmpChar != ';')
+                                    tmpType += tmpChar;
+                                else if (parseZustand == 4 && tmpChar != ';' && tmpChar != ' ')
+                                    tmpValue += tmpChar;
+                                else if (parseZustand == 7)
+                                    tmpValue += tmpChar;
+                                else if (parseZustand == 5)
+                                    tmpComment += tmpChar;
                             }
-                        }
 
-                        for (int j=0;j<rowTr.Length;j++)
-                        {
-                            char tmpChar = rowTr[j];
+                            tmpType = tmpType.Trim();
 
-                            if (parseZustand == 0 && tmpChar == '{')
-                                parseZustand = 1;
-                            else if (parseZustand == 0 && tmpChar != ' ' && tmpChar != ':')
-                                tmpName += tmpChar;
-                            else if (parseZustand == 6 && tmpChar == '\'')
-                                parseZustand = 2;
-                            else if (parseZustand == 1 && tmpChar == ':' && rowTr[j + 1] == '=')
+
+
+
+                            S7DataRow addRW = new S7DataRow(tmpName, S7DataRowType.UNKNOWN, myBlk);
+                            lastrow = addRW;
+
+                            if (tmpType.Contains("ARRAY  [") || tmpType.Contains("ARRAY ["))
                             {
-                                parseZustand = 6;
-                                j++;
+                                List<int> arrayStart = new List<int>();
+                                List<int> arrayStop = new List<int>();
+
+                                int pos1 = tmpType.IndexOf("[");
+                                int pos2 = tmpType.IndexOf("]", pos1);
+                                string[] arrays = tmpType.Substring(pos1 + 1, pos2 - pos1 - 2).Split(',');
+
+                                foreach (string array in arrays)
+                                {
+                                    string[] akar = array.Split(new string[] {".."}, StringSplitOptions.RemoveEmptyEntries);
+                                    arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
+                                    arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
+                                }
+
+                                addRW.ArrayStart = arrayStart;
+                                addRW.ArrayStop = arrayStop;
+                                addRW.IsArray = true;
+                                tmpType = tmpType.Substring(pos2 + 5);
                             }
-                            else if (parseZustand == 1 && tmpChar != ' ' && tmpChar != ':' && tmpChar != '=' && tmpChar != '}' && tmpChar != '\'' && tmpChar != ';')
-                                tmpAttributeName += tmpChar;
-                            else if (parseZustand == 1 && tmpChar == '}')
-                                parseZustand = 0;
-                            else if (parseZustand == 0 && tmpChar == ':')
-                                parseZustand = 3;
-                            else if (parseZustand == 2 && tmpChar == '$')
+
+                            if (tmpValue != "")
+                                addRW.StartValue = tmpValue;
+
+                            addRW.Comment = tmpComment.Replace("$'", "'").Replace("$$", "$");
+
+                            if (Step7Attributes.Count > 0)
+                                addRW.Attributes = Step7Attributes;
+
+                            int akRowTypeNumber = 0;
+                            if (tmpType.Contains("SFB"))
                             {
-                                tmpAttributeValue += rowTr[j + 1];
-                                j++;
+                                addRW.DataType = S7DataRowType.SFB;
+                                akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
+
+                                S7FunctionBlock tmpBlk = ((S7FunctionBlock) myFld.GetBlock("SFB" + akRowTypeNumber.ToString()));
+                                if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
+                                    addRW.AddRange(tmpBlk.Parameter.Children);
                             }
-                            else if (parseZustand == 2 && tmpChar == '\'')
+                            else if (tmpType.Contains("UDT"))
                             {
-                                parseZustand = 1;
-                                Step7Attributes.Add(new Step7Attribute(tmpAttributeName, tmpAttributeValue));
-                                tmpAttributeName = "";
-                                tmpAttributeValue = "";
+                                addRW.DataType = S7DataRowType.UDT;
+                                akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
+
+                                S7DataBlock tmpBlk = ((S7DataBlock) myFld.GetBlock("UDT" + akRowTypeNumber.ToString()));
+                                if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
+                                    addRW.AddRange(tmpBlk.Structure.Children);
+
                             }
-                            else if (parseZustand == 2)
-                                tmpAttributeValue += tmpChar;
-                            //else if (parseZustand == 3 && tmpChar == ':')
-                            //    parseZustand = 2;
-                            else if (parseZustand == 3 && tmpChar == ':' && rowTr[j + 1] == '=')
+                            else if (tmpType.Contains("BLOCK_FB"))
                             {
-                                parseZustand = 4;
-                                j++;
+                                addRW.DataType = S7DataRowType.BLOCK_FB;
+                                //akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
+
+                                //PLCFunctionBlock tmpBlk = ((PLCFunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
+                                //if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
+                                //    addRW.AddRange(tmpBlk.Parameter.Children);
                             }
-                            else if ((parseZustand == 3 || parseZustand == 4) && tmpChar == '/' && rowTr[j + 1] == '/')
+                            else if (tmpType.Contains("FB"))
                             {
-                                parseZustand = 5;
-                                j++;
+                                addRW.DataType = S7DataRowType.FB;
+                                akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
+
+                                S7FunctionBlock tmpBlk = ((S7FunctionBlock) myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
+                                if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
+                                    addRW.AddRange(tmpBlk.Parameter.Children);
                             }
-                            else if (parseZustand == 4 && tmpChar == '\'')
+                            else if (tmpType.Contains("STRING"))
                             {
-                                tmpValue += tmpChar;
-                                parseZustand = 7;
+                                addRW.DataType = S7DataRowType.STRING;
+                                int pos1 = tmpType.IndexOf("[");
+                                int pos2 = tmpType.IndexOf("]", pos1);
+                                addRW.StringSize = Convert.ToInt32(tmpType.Substring(pos1 + 1, pos2 - pos1 - 2));
                             }
-                            else if (parseZustand == 7 && tmpChar == '$')
-                            {
-                                tmpValue += rowTr[j + 1];
-                                j++;
-                            }
-                            else if (parseZustand == 7 && tmpChar == '\'')
-                            {
-                                tmpValue += tmpChar;
-                                parseZustand = 4;
-                            }
-                            else if (parseZustand == 3 && tmpChar != ';')
-                                tmpType += tmpChar;
-                            else if (parseZustand == 4 && tmpChar != ';' && tmpChar != ' ')
-                                tmpValue += tmpChar;
-                            else if (parseZustand == 7)
-                                tmpValue += tmpChar;
-                            else if (parseZustand == 5)
-                                tmpComment += tmpChar;
-                        }
+                            else
+                                addRW.DataType = (S7DataRowType) Enum.Parse(typeof (S7DataRowType), tmpType.ToUpper());
 
-                        tmpType = tmpType.Trim();
+                            addRW.DataTypeBlockNumber = akRowTypeNumber;
 
 
+                            akDataRow.Add(addRW);
+                            ParaList.Add(tmpName);
 
+                            if (addRW.DataType == S7DataRowType.STRUCT)
+                                akDataRow = addRW;
 
-                        S7DataRow addRW = new S7DataRow(tmpName, S7DataRowType.UNKNOWN, myBlk);
-                   
-                        if (tmpType.Contains("ARRAY  [") || tmpType.Contains("ARRAY [")  )
-                        {                           
-                            List<int> arrayStart = new List<int>();
-                            List<int> arrayStop = new List<int>();
-
-                            int pos1 = tmpType.IndexOf("[");
-                            int pos2 = tmpType.IndexOf("]", pos1);
-                            string[] arrays = tmpType.Substring(pos1 + 1, pos2 - pos1 - 2).Split(',');
-
-                            foreach (string array in arrays)
-                            {
-                                string[] akar = array.Split(new string[] {".."}, StringSplitOptions.RemoveEmptyEntries);
-                                arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
-                                arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
-                            }
-                            
-                            addRW.ArrayStart = arrayStart;
-                            addRW.ArrayStop = arrayStop;
-                            addRW.IsArray = true;
-                            tmpType = tmpType.Substring(pos2 + 5);
-                        }
-
-                        if (tmpValue != "")
-                            addRW.StartValue = tmpValue;
-
-                        addRW.Comment = tmpComment.Replace("$'", "'").Replace("$$", "$");
-
-                        if (Step7Attributes.Count > 0)
-                            addRW.Attributes = Step7Attributes;
-
-                        int akRowTypeNumber = 0;
-                        if (tmpType.Contains("SFB"))
-                        {
-                            addRW.DataType = S7DataRowType.SFB;
-                            akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
-
-                            S7FunctionBlock tmpBlk = ((S7FunctionBlock)myFld.GetBlock("SFB" + akRowTypeNumber.ToString()));
-                            if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                addRW.AddRange(tmpBlk.Parameter.Children);
-                        }
-                        else if (tmpType.Contains("UDT"))
-                        {
-                            addRW.DataType = S7DataRowType.UDT;
-                            akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
-
-                            S7DataBlock tmpBlk = ((S7DataBlock) myFld.GetBlock("UDT" + akRowTypeNumber.ToString()));
-                            if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
-                                addRW.AddRange(tmpBlk.Structure.Children);
-                            
-                        }
-                        else if (tmpType.Contains("BLOCK_FB"))
-                        {
-                            addRW.DataType = S7DataRowType.BLOCK_FB;
-                            //akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
-
-                            //PLCFunctionBlock tmpBlk = ((PLCFunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
-                            //if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                            //    addRW.AddRange(tmpBlk.Parameter.Children);
-                        }
-                        else if (tmpType.Contains("FB"))
-                        {
-                            addRW.DataType = S7DataRowType.FB;
-                            akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
-
-                            S7FunctionBlock tmpBlk = ((S7FunctionBlock)myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
-                            if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                addRW.AddRange(tmpBlk.Parameter.Children);
-                        }
-                        else if (tmpType.Contains("STRING"))
-                        {
-                            addRW.DataType = S7DataRowType.STRING;
-                            int pos1 = tmpType.IndexOf("[");
-                            int pos2 = tmpType.IndexOf("]", pos1);
-                            addRW.StringSize = Convert.ToInt32(tmpType.Substring(pos1 + 1, pos2 - pos1 - 2));
-                        }
-                        else
-                            addRW.DataType = (S7DataRowType)Enum.Parse(typeof (S7DataRowType), tmpType.ToUpper());
-                       
-                        addRW.DataTypeBlockNumber = akRowTypeNumber;
-                       
-                       
-                        akDataRow.Add(addRW);
-                        ParaList.Add(tmpName);
-
-                        if (addRW.DataType==S7DataRowType.STRUCT)
-                            akDataRow = addRW;
-
-                        break;
-                        /* 
+                            break;
+                            /* 
                          * Attributname kann nicht ' und } enthalten!
                          * In Attribt Values
                          * $$ zum ausmaskieren von $
@@ -349,7 +372,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             //"res : ARRAY  [1 .. 121 ] OF STRUCT"
                             //      "P_AKL1 : ARRAY  [0 .. 3 ] OF CHAR  := 'A', 'K', 'L', '1';"
-                        */                       
+                        */
+                    }
                 }
             }
             if (blkTP != PLCBlockType.DB && tempAdded == false)
