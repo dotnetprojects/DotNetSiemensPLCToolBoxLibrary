@@ -103,6 +103,7 @@ namespace ExampleWPFVisualization
             worker.CancelAsync();            
             cmdConnect.IsEnabled = true;
             cmdStop.IsEnabled = false;
+            myConn.Disconnect();
         }
 
       

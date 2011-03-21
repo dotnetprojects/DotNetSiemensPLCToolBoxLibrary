@@ -1445,9 +1445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     libnodave.PDU myPDU = _dc.prepareReadRequest();
 
                     foreach (var libNoDaveValue in valueList)
-                    {
-                        libNoDaveValue.ItemDoesNotExist = false;
-
+                    {                       
                         //Save the Byte Address in anthoer Variable, because if we split the Read Request, we need not the real Start Address
                         akByteAddress = libNoDaveValue.ByteAddress;
 
@@ -1574,6 +1572,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         if (!NotExistedValue[nr])
                         {
+                            value.ItemDoesNotExist = false;
                             value._readValueFromBuffer(completeData, buffPos);
                             buffPos += value._internalGetSize();
                         }
