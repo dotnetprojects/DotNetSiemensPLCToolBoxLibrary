@@ -141,7 +141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public void socket_Thread()
         {
-            _fds.rfd = -999;
+            _fds.rfd = new IntPtr(-999);
             _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
         }
 
@@ -174,11 +174,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
                     break;
                 case 20:   //AS511            
-                    _fds.rfd = libnodave.setPort(_configuration.ComPort, "9600" /*_configuration.ComPortSpeed*/, 'E' /*_configuration.ComPortParity*/);
+                    _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
                     break;
                 case 50:
                     _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, hwnd);
-                    if (_fds.rfd == -1)
+                    if (_fds.rfd.ToInt32() == -1)
                     {
                         _NeedDispose = false;
                         throw new Exception("Error: " + libnodave.daveStrS7onlineError());
@@ -205,13 +205,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     break;
             }
 
-            if (_fds.rfd == -999)
+            if (_fds.rfd.ToInt32() == -999)
             {
                 _NeedDispose = false;
                 throw new Exception("Error: Timeout Connecting the IP");
             }
 
-            if ((!(_configuration.ConnectionType == 50) && _fds.rfd == 0) || _fds.rfd < 0)
+            if ((!(_configuration.ConnectionType == 50) && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
             {
                 _NeedDispose = false;
                 throw new Exception(
@@ -220,17 +220,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //daveOSserialType Struktur befüllen
             _fds.wfd = _fds.rfd;
-            
+
+            //System.Windows.Forms.MessageBox.Show("Socket:" + _fds.rfd.ToString());
+
             //Dave Interface Erzeugen
             _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
 
+            //System.Windows.Forms.MessageBox.Show("DI:" + _di.ToString());
+
             //Timeout setzen...
             _di.setTimeout(_configuration.Timeout);
+
+            //System.Windows.Forms.MessageBox.Show("Timeout gesetzt" + _di.ToString());
+
             //_di.setTimeout(500000);
             //Dave Interface initialisieren
             int ret = _di.initAdapter();
             if (ret != 0)
                 throw new Exception("Error: " + libnodave.daveStrerror(ret));
+
+            //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
 
             //Get S7OnlineType - To detect if is a IPConnection 
             bool IPConnection = false;
@@ -283,6 +292,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             if (ret != 0)
                 throw new Exception("Error: " + libnodave.daveStrerror(ret));
+
+            //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
 
             Connected = true;
         }        
