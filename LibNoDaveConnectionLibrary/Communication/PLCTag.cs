@@ -293,7 +293,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        internal Object _value;
+        protected Object _value;
         private Object _oldvalue;
         /// <summary>
         /// Value of the Tag. The Setter of this Property sets Controlvalue, because the Tag firstly got this Value when it's written!

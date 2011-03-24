@@ -11,3 +11,5 @@ so that it builds with the 4.0 Framework:
 http://wpf.codeplex.com/
 
 Interop.HMIGENOBJECTSLib.dll : -> Wrapper for WinCC HMIGENOBJECTSLib.dll automaticly created by VS2010
+
+RibbonControlsLibrary -> From Microsoft for WPF

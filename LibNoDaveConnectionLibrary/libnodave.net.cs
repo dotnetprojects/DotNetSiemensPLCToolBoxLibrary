@@ -157,17 +157,28 @@ namespace DotNetSiemensPLCToolBoxLibrary
     daveStrerror(int res);
 */
 
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveStrerror")]
+#else
+	    [DllImport ("__Internal", EntryPoint="daveStrerror")]
+#endif
+        public static extern IntPtr
+            _daveStrerror64(int res);
+
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint="daveStrerror" )]
 #else
-	[DllImport ("__Internal", EntryPoint="daveStrerror")]
+	    [DllImport ("__Internal", EntryPoint="daveStrerror")]
 #endif
         public static extern IntPtr
-            _daveStrerror(int res);
+            _daveStrerror32(int res);
         public static string daveStrerror(int res) {
-            return Marshal.PtrToStringAnsi(_daveStrerror(res));
+            if (IntPtr.Size == 8)
+                return Marshal.PtrToStringAnsi(_daveStrerror64(res));
+            return Marshal.PtrToStringAnsi(_daveStrerror32(res));
         }
 
+        
         //Get's an Error for the Errors from S7 Online!
         public static string daveStrS7onlineError()
         {
@@ -264,18 +275,48 @@ namespace DotNetSiemensPLCToolBoxLibrary
 */
 	
 #if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetDebug")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal"), EntryPoint = "daveSetDebug"]
 #endif
-        public static extern void daveSetDebug(int newDebugLevel);
-    
+        public static extern void daveSetDebug64(int newDebugLevel);
+
 #if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetDebug")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal", EntryPoint = "daveSetDebug")]
 #endif
-        public static extern int daveGetDebug();
+        public static extern void daveSetDebug32(int newDebugLevel);
+
+        public static void daveSetDebug(int newDebugLevel)
+        {
+            if (IntPtr.Size == 8)
+                daveSetDebug64(newDebugLevel);
+            else
+                daveSetDebug32(newDebugLevel);
+        }
+
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetDebug")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "daveGetDebug")]
+#endif
+        public static extern int daveGetDebug64();
+
+#if !IPHONE	
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetDebug")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "daveGetDebug")]
+#endif
+        public static extern int daveGetDebug32();
+
+        public static int daveGetDebug()
+        {
+            if (IntPtr.Size == 8)
+                return daveGetDebug64();
+            return daveGetDebug32();
+        }
 
         public static int  daveMPIReachable = 0x30;
         public static int  daveMPIunused = 0x10;
@@ -295,222 +336,265 @@ namespace DotNetSiemensPLCToolBoxLibrary
 */    
         public class pseudoPointer {
             public IntPtr pointer;
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveFree")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal", EntryPoint = "daveFree")]
 #endif
-            protected static extern int daveFree(IntPtr p);
+            protected static extern int daveFree64(IntPtr p);
+
+#if !IPHONE	
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveFree")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "daveFree")]
+#endif
+        protected static extern int daveFree32(IntPtr p);
 	
             ~pseudoPointer(){
 //	    Console.WriteLine("~pseudoPointer()"+pointer);
-                daveFree(pointer);
+                if (IntPtr.Size == 8)
+                    daveFree64(pointer);
+                else
+                    daveFree32(pointer);
             }
 	
         }
 
-        public class daveInterface: pseudoPointer  {
-	
-//	[DllImport("libnodave_jfkmod.dll"//, PreserveSig=false)]
-/*
-	I cannot say why, but when I recompiled the existing code with latest libnodave_jfkmod.dll
-	(after using stdcall so that VC++ producs these "decorated names", I got a runtime
-	error about not finding daveNewInterface. When I state full name entry point explicitly,
-	(like below) it runs. The most strange thing is that all other functions work well...
-*/
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+        public class daveInterface : pseudoPointer
+        {
+
+            //	[DllImport("libnodave_jfkmod.dll"//, PreserveSig=false)]
+            /*
+                I cannot say why, but when I recompiled the existing code with latest libnodave_jfkmod.dll
+                (after using stdcall so that VC++ producs these "decorated names", I got a runtime
+                error about not finding daveNewInterface. When I state full name entry point explicitly,
+                (like below) it runs. The most strange thing is that all other functions work well...
+            */
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewInterface")]
 #else
-	[DllImport ("__Internal")]
-#endif	
-            static extern IntPtr daveNewInterface(
-                daveOSserialType fd,
-                string name,
-                int localMPI,
-                int  useProto,
-                int speed
-                );
-            public daveInterface(daveOSserialType fd,
-                                 string name,
-                                 int localMPI,
-                                 int  useProto,
-                                 int speed) {
-                pointer=daveNewInterface(fd, name, localMPI, useProto, speed);
-                                 }
-	
-/*
-This was just here to check inheritance	
-	~daveInterface(){
-	    Console.WriteLine("destructor("+daveGetName(pointer)+")");
-	    Console.WriteLine("~daveInterface()"+pointer);
-	    daveFree(pointer);
-	}
-*/	
-	
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveNewInterface")]
 #endif
-            protected static extern int daveInitAdapter(IntPtr di);
-            public int initAdapter() {
-                return daveInitAdapter(pointer);
-            }
-	
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+            private static extern IntPtr daveNewInterface64(daveOSserialType fd, string name, int localMPI, int useProto, int speed);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewInterface")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveNewInterface")]
 #endif
-            protected  static extern int daveListReachablePartners(IntPtr di, byte[] buffer);
-            public int listReachablePartners(byte[] buffer) {
-                return daveListReachablePartners(pointer,buffer);
+            private static extern IntPtr daveNewInterface32(daveOSserialType fd, string name, int localMPI, int useProto, int speed);
+
+
+            public daveInterface(daveOSserialType fd, string name, int localMPI, int useProto, int speed)
+            {
+                if (IntPtr.Size == 8)
+                    pointer = daveNewInterface64(fd, name, localMPI, useProto, speed);
+                else
+                    pointer = daveNewInterface32(fd, name, localMPI, useProto, speed);
             }
 
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-            protected static extern void daveSetTimeout(IntPtr di, int time);
-            public void setTimeout(int time) {
-                daveSetTimeout(pointer, time);
-            }    
+            /*
+            This was just here to check inheritance	
+                ~daveInterface(){
+                    Console.WriteLine("destructor("+daveGetName(pointer)+")");
+                    Console.WriteLine("~daveInterface()"+pointer);
+                    daveFree(pointer);
+                }
+            */
 
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveInitAdapter")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveInitAdapter")]
 #endif
-            protected static extern int daveGetTimeout(IntPtr di);
-            public int getTimeout() {
-                return daveGetTimeout(pointer);
-            }    
-	
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+            protected static extern int daveInitAdapter64(IntPtr di);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveInitAdapter")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveInitAdapter")]
 #endif
-            protected static extern IntPtr daveDisconnectAdapter(IntPtr di);
-            public IntPtr disconnectAdapter() {
-                return daveDisconnectAdapter(pointer);
+            protected static extern int daveInitAdapter32(IntPtr di);
+            public int initAdapter()
+            {
+                if (IntPtr.Size == 8)
+                    return daveInitAdapter64(pointer);
+                return daveInitAdapter32(pointer);
             }
-	
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveListReachablePartners")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveListReachablePartners")]
 #endif
-            protected static extern string daveGetName(IntPtr di);
-            public string getName() {
-                return daveGetName(pointer);
+            protected static extern int daveListReachablePartners64(IntPtr di, byte[] buffer);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveListReachablePartners")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveListReachablePartners")]
+#endif
+            protected static extern int daveListReachablePartners32(IntPtr di, byte[] buffer);
+            public int listReachablePartners(byte[] buffer)
+            {
+                if (IntPtr.Size == 8)
+                    return daveListReachablePartners64(pointer, buffer);
+                return daveListReachablePartners32(pointer, buffer);
             }
-	
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetTimeout")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveSetTimeout")]
+#endif
+            protected static extern void daveSetTimeout64(IntPtr di, int time);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetTimeout")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveSetTimeout")]
+#endif
+            protected static extern void daveSetTimeout32(IntPtr di, int time);
+            public void setTimeout(int time)
+            {
+                if (IntPtr.Size == 8)
+                    daveSetTimeout64(pointer, time);
+                else
+                    daveSetTimeout32(pointer, time);
+            }
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetTimeout")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveGetTimeout")]
+#endif
+            protected static extern int daveGetTimeout64(IntPtr di);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetTimeout")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveGetTimeout")]
+#endif
+            protected static extern int daveGetTimeout32(IntPtr di);
+            public int getTimeout()
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetTimeout64(pointer);
+                return daveGetTimeout32(pointer);
+            }
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveDisconnectAdapter")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveDisconnectAdapter")]
+#endif
+            protected static extern IntPtr daveDisconnectAdapter64(IntPtr di);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveDisconnectAdapter")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveDisconnectAdapter")]
+#endif
+            protected static extern IntPtr daveDisconnectAdapter32(IntPtr di);
+            public IntPtr disconnectAdapter()
+            {
+                if (IntPtr.Size == 8)
+                    return daveDisconnectAdapter64(pointer);
+                return daveDisconnectAdapter32(pointer);
+            }
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetName")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveGetName")]
+#endif
+            protected static extern string daveGetName64(IntPtr di);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetName")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveGetName")]
+#endif
+            protected static extern string daveGetName32(IntPtr di);
+            public string getName()
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetName64(pointer);
+                return daveGetName32(pointer);
+            }
+
         }
     
         public class daveConnection:pseudoPointer {
-	
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewConnection")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveNewConnection")]
 #endif
-            protected static extern IntPtr daveNewConnection(
-                IntPtr di,
-                int MPI,
-                int rack,
-                int slot
-                );
-       
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-            protected static extern IntPtr daveNewExtendedConnection(
-                IntPtr di,
-                byte[] destination,
-                int DestinationIsIP,
-                int rack,
-                int slot,
-                int routing,
-                int routingSubnetFirst,
-                int routingSubnetSecond,
-                int routingRack,
-                int routingSlot,
-                byte[] routingDestination,
-                int routingDestinationIsIP,
-                int ConnectionType,
-                int routingConnectionType
-                );
+            protected static extern IntPtr daveNewConnection64(IntPtr di, int MPI, int rack, int slot);
 
-            public daveConnection(
-                daveInterface di,
-                int MPI,
-                int rack,
-                int slot
-                ) {
-                pointer=daveNewConnection(
-                    di.pointer, MPI, rack, slot
-                    );
-                }
-            public daveConnection(
-                daveInterface di,
-                int MPI,
-                string IP,
-                bool DestinationIsIP,
-                int rack,
-                int slot,
-                bool routing,
-                int routingSubnetFirst,
-                int routingSubnetSecond,
-                int routingRack,
-                int routingSlot,
-                string routingDestination,
-                int PLCConnectionType,
-                int routingPLCConnectionType
-                )
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewConnection")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveNewConnection")]
+#endif
+            protected static extern IntPtr daveNewConnection32(IntPtr di, int MPI, int rack, int slot);
+
+
+            public daveConnection(daveInterface di, int MPI, int rack, int slot)
+            {
+                if (IntPtr.Size == 8)
+                    pointer = daveNewConnection64(di.pointer, MPI, rack, slot);
+                else
+                    pointer = daveNewConnection32(di.pointer, MPI, rack, slot);
+            }
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewExtendedConnection")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveNewExtendedConnection")]
+#endif
+            protected static extern IntPtr daveNewExtendedConnection64(IntPtr di, byte[] destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, byte[] routingDestination, int routingDestinationIsIP, int ConnectionType, int routingConnectionType);
+
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewExtendedConnection")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveNewExtendedConnection")]
+#endif
+            protected static extern IntPtr daveNewExtendedConnection32(IntPtr di, byte[] destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, byte[] routingDestination, int routingDestinationIsIP, int ConnectionType, int routingConnectionType);
+
+
+            public daveConnection(daveInterface di, int MPI, string IP, bool DestinationIsIP, int rack, int slot, bool routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, string routingDestination, int PLCConnectionType, int routingPLCConnectionType)
             {
                 string[] ip = IP.Split('.');
                 byte[] myDestination;
                 int myDestinationIsIP = 0;
                 if (ip.Length < 4 || !DestinationIsIP)
                 {
-                    myDestination = new byte[] { (byte)Convert.ToInt32(MPI) };
+                    myDestination = new byte[] {(byte) Convert.ToInt32(MPI)};
                 }
                 else
                 {
                     myDestinationIsIP = 1;
-                    myDestination = new byte[]
-                                        {
-                                            (byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]),
-                                            (byte) Convert.ToInt32(ip[2]),
-                                            (byte) Convert.ToInt32(ip[3])
-                                        };
+                    myDestination = new byte[] {(byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]), (byte) Convert.ToInt32(ip[2]), (byte) Convert.ToInt32(ip[3])};
                 }
                 ip = routingDestination.Split('.');
                 byte[] myRoutingDestination;
                 int routingDestinationIsIP = 0;
                 if (ip.Length < 4)
                 {
-                    myRoutingDestination = new byte[] { (byte)Convert.ToInt32(routingDestination) };
+                    myRoutingDestination = new byte[] {(byte) Convert.ToInt32(routingDestination)};
                 }
                 else
                 {
                     routingDestinationIsIP = 1;
-                    myRoutingDestination = new byte[]
-                                               {
-                                                   (byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]),
-                                                   (byte) Convert.ToInt32(ip[2]),
-                                                   (byte) Convert.ToInt32(ip[3])
-                                               };
+                    myRoutingDestination = new byte[] {(byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]), (byte) Convert.ToInt32(ip[2]), (byte) Convert.ToInt32(ip[3])};
                 }
-                pointer = daveNewExtendedConnection(
-                    di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond,
-                    routingRack, routingSlot,
-                    myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
-
+                if (IntPtr.Size == 8)
+                    pointer = daveNewExtendedConnection64(di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond, routingRack, routingSlot, myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
+                else
+                    pointer = daveNewExtendedConnection32(di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond, routingRack, routingSlot, myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
             }
 
 /* This wa here to test inheritance
@@ -520,26 +604,47 @@ This was just here to check inheritance
 	    daveFree(pointer);
 	}
 */
-#if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveConnectPLC")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveConnectPLC")]
 #endif
-            protected static extern int daveConnectPLC(IntPtr dc);
-            public int connectPLC(){
-                return daveConnectPLC(pointer);
-            }
-    
+            protected static extern int daveConnectPLC64(IntPtr dc);
+
 #if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveConnectPLC")]
 #else
-	[DllImport ("__Internal")]
+	        [DllImport ("__Internal", EntryPoint = "daveConnectPLC")]
 #endif
-            protected static extern int daveDisconnectPLC(IntPtr dc);
-            public int disconnectPLC() {
-                return daveDisconnectPLC(pointer);
+            protected static extern int daveConnectPLC32(IntPtr dc);
+            public int connectPLC()
+            {
+                if (IntPtr.Size == 8)
+                    return daveConnectPLC64(pointer);
+                else
+                    return daveConnectPLC32(pointer);
             }
-	
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveDisconnectPLC")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveDisconnectPLC")]
+#endif
+            protected static extern int daveDisconnectPLC64(IntPtr dc);
+
+#if !IPHONE	
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveDisconnectPLC")]
+#else
+	        [DllImport ("__Internal", EntryPoint = "daveDisconnectPLC")]
+#endif
+            protected static extern int daveDisconnectPLC32(IntPtr dc);
+            public int disconnectPLC()
+            {
+                if (IntPtr.Size == 8)
+                    return daveDisconnectPLC64(pointer);
+                return daveDisconnectPLC32(pointer);
+            }
+
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
@@ -1184,64 +1289,92 @@ This was just here to check inheritance
             }    
         } // class PDU
 
-        public class resultSet:pseudoPointer {
-	
-#if !IPHONE	
+        public class resultSet : pseudoPointer
+        {
+
+#if !IPHONE
             [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
             protected static extern IntPtr daveNewResultSet();
-            public resultSet() {
-                pointer=daveNewResultSet();
+            public resultSet()
+            {
+                pointer = daveNewResultSet();
             }
 
-#if !IPHONE	
+#if !IPHONE
             [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
             protected static extern void daveFreeResults(IntPtr rs);
-            ~resultSet(){
-//	    Console.WriteLine("~resultSet(1)");
+            ~resultSet()
+            {
                 daveFreeResults(pointer);
-//	    Console.WriteLine("~resultSet(2)");
-//	    daveFree(pointer);
             }
-	
-#if !IPHONE	
+
+#if !IPHONE
             [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
 #else
 	[DllImport ("__Internal")]
 #endif
             protected static extern int daveGetErrorOfResult(IntPtr rs, int number);
-            public int getErrorOfResult(int number) {
+            public int getErrorOfResult(int number)
+            {
                 return daveGetErrorOfResult(pointer, number);
-            }	
-    
+            }
+
         }
 
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "setPort")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal", EntryPoint = "setPort")]
 #endif
-        public static extern int setPort(
-            [MarshalAs(UnmanagedType.LPStr)] string portName,
-            [MarshalAs(UnmanagedType.LPStr)] string baud,
-            int parity
+        public static extern int setPort64([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "setPort")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "setPort")]
+#endif
+        public static extern int setPort32([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
+
+        public static int setPort(string portName, string baud, int parity)
+        {
+            if (IntPtr.Size == 8)
+                return setPort64(portName, baud, parity);
+            return setPort32(portName, baud, parity);
+        }
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "openSocket")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "openSocket")]
+#endif
+        protected static extern int openSocket64(
+            int port,
+            [MarshalAs(UnmanagedType.LPStr)] string portName
             );
-    
+
 #if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "openSocket")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal", EntryPoint = "openSocket")]
 #endif
-        public static extern int openSocket(
+        protected static extern int openSocket32(
             int port,
             [MarshalAs(UnmanagedType.LPStr)] string portName
             );
         
+        public static int openSocket(int port, string portName)
+        {
+            if (IntPtr.Size == 8)
+                return openSocket64(port, portName);
+            return openSocket32(port, portName);
+        }
+
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
         public static extern int openS7online(
@@ -1260,23 +1393,47 @@ This was just here to check inheritance
 #endif
     
 
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "closePort")]
 #else
-	[DllImport ("__Internal")]
+	[DllImport ("__Internal",EntryPoint = "closePort")]
 #endif
-        public static extern int closePort(
-            int port
-            );
+        protected static extern int closePort64(int port);
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "closePort")]
+#else
+	[DllImport ("__Internal",EntryPoint = "closePort")]
+#endif
+        protected static extern int closePort32(int port);
+
+        public static int closePort(int port)
+        {
+            if (IntPtr.Size == 8)
+                return closePort64(port);
+            return closePort32(port);
+        }
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "closeSocket")]
+#else
+	    [DllImport ("__Internal", EntryPoint = "closeSocket")]
+#endif
+        protected static extern int closeSocket64(int port);
     
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "closeSocket")]
 #else
-	[DllImport ("__Internal")]
+	    [DllImport ("__Internal", EntryPoint = "closeSocket")]
 #endif
-        public static extern int closeSocket(
-            int port
-            );
+        protected static extern int closeSocket32(int port);
+
+        public static int closeSocket(int port)
+        {
+            if (IntPtr.Size == 8)
+                return closeSocket64(port);
+            return closeSocket32(port);
+        }
 
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
@@ -1284,39 +1441,9 @@ This was just here to check inheritance
             int port
             );
 #else
-	public static int closeS7online(int port   ) {return 0; }
-#endif
-
+	    public static int closeS7online(int port   ) {return 0; }
+#endif        
         
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        public static extern float toPLCfloat(float f);
-    
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        public static extern int daveToPLCfloat(float f);
-    
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        public static extern int daveSwapIed_32(int i);
-    
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        public static extern int daveSwapIed_16(int i);
-
-
         public static byte getU8from(byte[] b, int pos)
         {
             return Convert.ToByte(b[pos]);
@@ -1849,52 +1976,6 @@ This was just here to check inheritance
                 bitstring += Convert.ToString(bits[Counter]);
             }
             return bitstring;
-        }
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        private static extern int daveAreaName(int area);
-    
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        private static extern int daveBlockName(int blockType);
-#if !IPHONE	
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-#else
-	[DllImport ("__Internal")]
-#endif
-        private static extern void daveStringCopy(int i, byte[] c);
-    
-        public static string blockName(int blockType) {
-            byte[] s=new byte[255];
-            int i=daveBlockName(blockType);
-            daveStringCopy(i, s);
-            string st="";
-            i=0;
-            while (s[i]!=0) {
-                st=st+(char)s[i];
-                i++;
-            }
-            return st;
-        }
-    
-        public static string areaName(int blockType) {
-            byte[] s=new byte[255];
-            int i=daveAreaName(blockType);
-            daveStringCopy(i, s);
-            string st="";
-            i=0;
-            while (s[i]!=0) {
-                st=st+(char)s[i];
-                i++;
-            }
-            return st;
-        }
-    
+        }    
     }
 }

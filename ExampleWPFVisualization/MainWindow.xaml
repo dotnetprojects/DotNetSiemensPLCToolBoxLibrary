@@ -17,10 +17,10 @@
 
             <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1" TrueValue="Green" FalseValue="Red"></Converters:BoolToBrushConverter>
             
-            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="MW0" LibNoDaveDataType="Word" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB97.DBW2" DataTypeStringFormat="Binary" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB97.DBD28" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB97.DBX6.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="EW32" LibNoDaveDataType="Word" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB1.DBW6" DataTypeStringFormat="Decimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB1.DBD0" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="DB1.DBX0.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag5" S7FormatAddress="MW200" LibNoDaveDataType="BCDDWord" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag6" DatablockNumber="1" ByteAddress="0" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>            
         </ResourceDictionary>
@@ -28,7 +28,7 @@
     <Grid>
         <Button Content="Config Connection" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="110" Click="cmdConfig_Click" />
         <Button Content="Start Visu" Height="25" HorizontalAlignment="Left" Margin="12,44,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="110" Click="cmdConnect_Click" />
-        <Button Content="Stop Visu" Height="25" HorizontalAlignment="Left" Margin="12,75,0,0" Name="cmdStop" VerticalAlignment="Top" Width="110" Click="cmdStop_Click" IsEnabled="False" />
+        <Button Content="Stop Visu" Height="25" HorizontalAlignment="Left" Margin="138,44,0,0" Name="cmdStop" VerticalAlignment="Top" Width="110" Click="cmdStop_Click" IsEnabled="False" />
         <Label Height="26" HorizontalAlignment="Left" Margin="138,11,0,0" Name="lblStatus" VerticalAlignment="Top" Width="353" />
         
         <TextBox Height="30" HorizontalAlignment="Left" Margin="12,132,0,0" VerticalAlignment="Top" Width="126" 
@@ -52,7 +52,7 @@
         <CheckBox Content="CheckBox" Height="25" HorizontalAlignment="Left" Margin="298,115,0,0" Name="checkBox1" 
                   IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" Width="128" />        
         
-        <DatePicker Height="26" HorizontalAlignment="Left" Margin="298,146,0,0" Name="datePicker1" VerticalAlignment="Top" Width="170" 
+        <DatePicker Height="26" HorizontalAlignment="Right" Margin="0,0,35,139" Name="datePicker1" VerticalAlignment="Bottom" Width="170" 
                     SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" FirstDayOfWeek="Monday" />
     </Grid>
 </Window>

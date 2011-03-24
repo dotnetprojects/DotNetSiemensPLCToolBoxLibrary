@@ -11,18 +11,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Windows.Controls.Ribbon;
 
 namespace WPFVarTab
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : RibbonWindow
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        private void _OnShowSystemMenuCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            Window _window = (Window)e.Parameter;
+            Point _point = new Point(_window.Left + 24, _window.Top + 24);
+
+            Microsoft.Windows.Shell.SystemCommands.ShowSystemMenu(_window, _point);
+        }
+
+        private void _OnSystemCommandCloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            Microsoft.Windows.Shell.SystemCommands.CloseWindow((Window)e.Parameter);
+        }
+
     }
+
+
 }

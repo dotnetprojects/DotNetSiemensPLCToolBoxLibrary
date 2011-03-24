@@ -729,7 +729,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int ret = _dc.readSZL(0x232, 4, buffer);
 
                     if (ret < 0)
-                        throw new Exception("Error: " + libnodave._daveStrerror(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
                     if (buffer[1] != 0x04)
                         throw new WPFToolboxForSiemensPLCsException(WPFToolboxForSiemensPLCsExceptionType.ErrorReadingSZL);
 
@@ -779,7 +779,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int ret = _dc.readSZL(0x174, 4, buffer); //SZL 0x174 is for PLC LEDs
 
                     if (ret < 0)
-                        throw new Exception("Error: " + libnodave._daveStrerror(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
                     if (buffer[10] == 1 && buffer[11] == 1)
                         return DataTypes.PLCState.Starting;
                     else if (buffer[10] == 1)
@@ -826,7 +826,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         int ret = _dc.ListBlocksOfType(Helper.GetPLCBlockTypeForBlockList(myBlk), blocks);
                         if (ret < 0 && ret != -53763  && ret != -53774 && ret != -255)
-                            throw new Exception("Error: " + libnodave._daveStrerror(ret));
+                            throw new Exception("Error: " + libnodave.daveStrerror(ret));
                         if (ret > 0)
                             for (int n = 0; n < ret * 4; n += 4)
                             {
@@ -1544,7 +1544,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
                         for (akVar = 0; akVar < anzVar; akVar++)
                         {
-                            byte[] myBuff = new byte[ /* gesReadSize */ readenSizes[akVar]];
+                            byte[] myBuff = new byte[ /* gesReadSize */ readenSizes[akVar]+1];
 
                             res = _dc.useResult(rs, akVar, myBuff);
                             if (res == 10 || res == 5)
