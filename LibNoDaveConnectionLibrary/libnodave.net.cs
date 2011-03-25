@@ -678,11 +678,13 @@ namespace DotNetSiemensPLCToolBoxLibrary
             public int readManyBytes(int area, int DBnumber, int start, int len, ref byte[] buffer)
             {
                 int res, readLen;
-                int pos = 0;        
+                int pos = 0;
+
+                int pdulen = getMaxPDULen();
 
                 while (len > 0)
                 {
-                    if (len > getMaxPDULen() - 18) readLen = getMaxPDULen() - 18; else readLen = len;
+                    if (len > pdulen - 18) readLen = pdulen - 18; else readLen = len;
 
                     byte[] tmp = new byte[readLen];
 

@@ -1154,8 +1154,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.ByteArray:
                     {
                         var val = new Byte[ArraySize];
+                        Array.Copy(buff, startpos, val, 0, ArraySize);
+
+                        /*
                         for (var n = 0; n < ArraySize; n++)
                             val[n] = buff[n + startpos];
+                        */
                         _setValueProp = val;
                     }
                     break;

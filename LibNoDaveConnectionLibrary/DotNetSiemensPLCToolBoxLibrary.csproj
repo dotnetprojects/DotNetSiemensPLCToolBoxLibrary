@@ -63,6 +63,7 @@
     <Compile Include="Communication\Library\SerialInterface.cs" />
     <Compile Include="Communication\Library\TCPInterface.cs" />
     <Compile Include="Communication\Library\ResultSet.cs" />
+    <Compile Include="Communication\PLCTagReadHelper.cs" />
     <Compile Include="Communication\S7_xxx\SZLData.cs" />
     <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />

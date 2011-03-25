@@ -24,8 +24,10 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
@@ -34,6 +36,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Microsoft.Win32;
+using ThreadState = System.Threading.ThreadState;
 
 /*
  * Todo: List Online Partners
@@ -1403,6 +1406,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
 
+        //Helper for Readvalues
+        //Sort the PLC TAGs
+        private class SorterForPLCTags : IComparer<PLCTag>
+        {
+            public int Compare(PLCTag pt1, PLCTag pt2)
+            {
+               //Beides DBs, vergleiche DBs
+                if (pt1.LibNoDaveDataSource==TagDataSource.Datablock && pt2.LibNoDaveDataSource==TagDataSource.Datablock)
+                {
+                    if (pt1.DatablockNumber == pt2.DatablockNumber)
+                        if (pt1.ByteAddress > pt2.ByteAddress)
+                            return 1;
+                        else if (pt1.ByteAddress < pt2.ByteAddress)
+                            return -1;
+                        else
+                            return 0;
+                    else
+                        if (pt1.DatablockNumber > pt2.DatablockNumber)
+                            return 1;
+                        else
+                            return -1;
+
+                    return 0;
+                }
+                //nicht beides DBs, vergleiche nur DataSource und danach Byte Adresse
+                else
+                {
+                    if (pt1.LibNoDaveDataSource == pt2.LibNoDaveDataSource)
+                        if (pt1.ByteAddress > pt2.ByteAddress)
+                            return 1;
+                        else if (pt1.ByteAddress < pt2.ByteAddress)
+                            return -1;
+                        else
+                            return 0;
+                    else
+                        if (pt1.LibNoDaveDataSource > pt2.LibNoDaveDataSource)
+                            return 1;
+                        else
+                            return -1;
+
+                }
+            }           
+        }
+
         // Todo: optimize reading, so that when not more then 4 bytes between a tag, read a lager block!
         /// <summary>
         /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
@@ -1426,12 +1473,83 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             if (_dc != null)
                 lock (_dc)
-                {                    
+                {
+
+                    //IEnumerable<PLCTag> readTagList = valueList;
+
+
+                    #region Optimize Reading List....                    
+                    List<PLCTag> orderedList = new List<PLCTag>();
+                    orderedList.AddRange(valueList);
+                    orderedList.Sort(new SorterForPLCTags());
+
+                    List<PLCTag> readTagList=new List<PLCTag>(); 
+
+                    //Go through the List of PLC Tags and Combine the ones, where the Byte Addres does not differ more than 4 Bytes...
+                    TagDataSource oldDataSource = 0;
+                    int oldDB=0, oldByteAddress=0, oldLen=0;
+                    int cntCombinedTags = 0;
+                    PLCTag lastTag = null;
+                    PLCTagReadHelper rdHlp = new PLCTagReadHelper() { LibNoDaveDataType = TagDataType.ByteArray };
+                    foreach (PLCTag plcTag in orderedList)
+                    {
+                        if (cntCombinedTags == 0)
+                        {
+                            oldDataSource = plcTag.LibNoDaveDataSource;
+                            oldDB = plcTag.DatablockNumber;
+                            oldByteAddress = plcTag.ByteAddress;
+                            oldLen = plcTag._internalGetSize();
+                            lastTag = plcTag;
+                            cntCombinedTags++;
+                        }
+                        else
+                        {
+                            if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress < oldByteAddress + oldLen + 4)
+                            {
+                                cntCombinedTags++;
+                                int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
+                                oldLen = oldLen < newlen ? newlen : oldLen;
+                                rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
+                                rdHlp.ByteAddress = oldByteAddress;
+                                rdHlp.ArraySize = oldLen;
+                            }
+                            else
+                            {
+                                if (cntCombinedTags > 1)
+                                {
+                                    readTagList.Add(rdHlp);
+                                    rdHlp = new PLCTagReadHelper() {LibNoDaveDataType = TagDataType.ByteArray};
+                                    cntCombinedTags = 0;
+                                }
+                                else
+                                {
+                                    readTagList.Add(lastTag);                                    
+                                    cntCombinedTags = 0;
+                                }
+
+                                oldDataSource = plcTag.LibNoDaveDataSource;
+                                oldDB = plcTag.DatablockNumber;
+                                oldByteAddress = plcTag.ByteAddress;
+                                oldLen = plcTag._internalGetSize();
+
+                                lastTag = plcTag;
+                                cntCombinedTags++;
+                            }
+                        }
+                        
+                    }
+                    if (cntCombinedTags > 1)
+                        readTagList.Add(rdHlp);
+                    else if (cntCombinedTags == 1)
+                        readTagList.Add(lastTag);                    
+                    #endregion
+
+
                     List<bool> NotExistedValue = new List<bool>();
 
                     //Count how Many Bytes from the PLC should be read and create a Byte Array for the Values
                     int completeReadSize = 0;
-                    foreach (var libNoDaveValue in valueList)
+                    foreach (var libNoDaveValue in readTagList)
                     {
                         completeReadSize += libNoDaveValue._internalGetSize();
                     }
@@ -1455,7 +1573,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     libnodave.PDU myPDU = _dc.prepareReadRequest();
 
-                    foreach (var libNoDaveValue in valueList)
+                    foreach (var libNoDaveValue in readTagList)
                     {                       
                         //Save the Byte Address in anthoer Variable, because if we split the Read Request, we need not the real Start Address
                         akByteAddress = libNoDaveValue.ByteAddress;
@@ -1479,12 +1597,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
                             if (anzReadVar < maxReadVar)
                             {
-                                int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
+                                int restBytes = maxReadSize - gesReadSize - HeaderTagSize; //Howmany Bytes can be added to this call
                                 if (restBytes > 0)
                                 {
+                                    //Only at the rest of the bytes to the next read request, and increase the start address!                                    
                                     myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.LibNoDaveDataSource), libNoDaveValue.DatablockNumber, akByteAddress, restBytes);
-                                    //Only at the rest of the bytes to the next read request, and increase the start address!
                                     readSize = readSize - restBytes;
+                                    gesReadSize += restBytes;
+
                                     akByteAddress += restBytes;
 
                                     readenSizes[anzVar] = restBytes;
@@ -1579,7 +1699,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     int buffPos = 0;
                     int nr = 0;
-                    foreach (var value in valueList)
+                    foreach (var value in readTagList)
                     {
                         if (!NotExistedValue[nr])
                         {
@@ -1594,18 +1714,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
         }
 
-
-        
         /// <summary>
         /// This Function Reads One LibNoDave Value from the PLC
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns></returns>        
         public void ReadValue(PLCTag value)
         {
             if (AutoConnect && !Connected)
                 Connect();
-
             if (_dc != null)
                 lock (_dc)
                 {
@@ -1618,15 +1735,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     if (value.LibNoDaveDataSource != TagDataSource.Datablock && value.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
                         value.DatablockNumber = 0;
-
+                    
+                
                     int res = _dc.readManyBytes(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress, readSize, ref myBuff);
-
-
+                                
                     int buffPos = 0;
                     if (res == 0)
                     {
-                        value._readValueFromBuffer(myBuff, buffPos);
-                        buffPos += value._internalGetSize();
+                        value._readValueFromBuffer(myBuff, buffPos);                        
                     }
                     else if (res == -1025)
                     {
