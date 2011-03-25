@@ -1512,6 +1512,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                 rdHlp.ByteAddress = oldByteAddress;
                                 rdHlp.ArraySize = oldLen;
+                                rdHlp.LibNoDaveDataSource = oldDataSource;
                             }
                             else
                             {

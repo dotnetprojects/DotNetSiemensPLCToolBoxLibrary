@@ -31,6 +31,13 @@
             <Communication:PLCTag x:Key="Tag9" DatablockNumber="11" ByteAddress="0" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag10" DatablockNumber="12" ByteAddress="0" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
             <Communication:PLCTag x:Key="Tag11" DatablockNumber="1" ByteAddress="2" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag40" S7FormatAddress="M10.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag41" S7FormatAddress="M10.1" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag42" S7FormatAddress="M10.2" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag43" S7FormatAddress="M12.7" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag44" S7FormatAddress="M12.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag45" S7FormatAddress="M11.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Communication:PLCTag x:Key="Tag46" S7FormatAddress="M15.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
         </ResourceDictionary>
     </Window.Resources>
     <Viewbox>
