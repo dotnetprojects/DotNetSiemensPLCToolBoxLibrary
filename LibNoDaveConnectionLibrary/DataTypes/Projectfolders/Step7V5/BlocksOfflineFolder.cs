@@ -564,30 +564,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         #endregion
                     }
 
-                    /*
-                    //todo only use the networks structure!
-                    retVal.Networks = new List<Network>();
-                    S7FunctionBlockNetwork nw = null;
-                    if (retVal.AWLCode != null)
-                        foreach (S7FunctionBlockRow s7FunctionBlockRow in retVal.AWLCode)
-                        {
-                            if (s7FunctionBlockRow.Command == "NETWORK")
-                            {
-                                nw = new S7FunctionBlockNetwork();
-                                nw.Parent = retVal;
-                                nw.AWLCode = new List<FunctionBlockRow>();
-                                retVal.Networks.Add(nw);
-                                nw.Name = s7FunctionBlockRow.NetworkName;
-                                nw.Comment = s7FunctionBlockRow.Comment;
-                            }
-                            else
-                            {
-                                nw.AWLCode.Add(s7FunctionBlockRow);
-                            }
-
-                        }
-                       */
-
                     retVal.Networks = NetWork.GetNetworksList(retVal);
 
                     return retVal;

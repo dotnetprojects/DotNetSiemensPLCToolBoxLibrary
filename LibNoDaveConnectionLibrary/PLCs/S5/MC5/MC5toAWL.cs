@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
@@ -57,13 +58,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 }
             }
 
-            //todo only use the networks structure!
             retVal.Networks = new List<Network>();
 
-            S5FunctionBlockNetwork nw = null; // new S5FunctionBlockNetwork();
-            //nw.Parent = retVal;
-            //nw.AWLCode = new List<FunctionBlockRow>();
-            //retVal.Networks.Add(nw);
+            S5FunctionBlockNetwork nw = null; 
 
             if (retVal.AWLCode != null)
                 foreach (S5FunctionBlockRow s5FunctionBlockRow in retVal.AWLCode)

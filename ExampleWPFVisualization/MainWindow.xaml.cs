@@ -66,6 +66,8 @@ namespace ExampleWPFVisualization
                 worker.Dispose();
             }
 
+
+            
             //Uncomment this line, to use the VarTab Functions for Read
             //PLCConnection.VarTabData vtab = myConn.ReadValuesWithVarTabFunctions(Tags, PLCReadTriggerVarTab.EndOfCycle);
 
@@ -105,6 +107,7 @@ namespace ExampleWPFVisualization
             cmdStop.IsEnabled = false;
             myConn.Disconnect();
         }
+
 
       
 

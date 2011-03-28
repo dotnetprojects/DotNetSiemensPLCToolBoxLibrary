@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -425,18 +426,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             }
 
             return retVal;
-        }
-
-        //Todo: This Function
-        /// <summary>
-        /// This Function Combines the UCs to Calls, but it's only possible with a Step7 Project, because we need the Interface of
-        /// the Called Blocks.
-        /// </summary>
-        /// <param name="myBlk"></param>
-        /// <param name="myFld"></param>
-        static public void GenerateCallsFromUCs(S7FunctionBlock myBlk, S7ProgrammFolder myFld)
-        {
-
         }
 
         //Todo: Check if Jump label is used in the Block!

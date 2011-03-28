@@ -159,8 +159,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             if (hexCode[akAddr - 1] == 0x31)
                             {
                                 //showtype = "ZEIGER";
-                                //Todo: display Format Pointer!
-                                //tmp.DataTypeStringFormat = TagDisplayDataType.Pointer;
+                                tmp.DataTypeStringFormat = TagDisplayDataType.Pointer;
                             }
                             else
                             {

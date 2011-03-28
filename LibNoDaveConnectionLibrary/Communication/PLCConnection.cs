@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Timers;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -1178,25 +1179,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             return null;
         }
-
-
-        //Todo: Implement this an then Implement intelligent reading, not only Group Values, combine Addresses
-
-        /// <summary>
-        /// Group Values with Same address, so that they are only Read once from the PLC!
-        /// </summary>
-        /// <param name="valueList"></param>
-        /// <returns></returns>
-        private  Dictionary<PLCTag, List<PLCTag>> GroupReadValuesFromSameAddress(IEnumerable<PLCTag> valueList)
-        {
-            //When DB-Number, Byte-Number, Bit-Number and Readsize are the same, they read the identical Data!
- 
-            Dictionary<PLCTag, List<PLCTag>> doubleReadList = new Dictionary<PLCTag, List<PLCTag>>();
-           
-            return doubleReadList;
-        }
-
-
+        
         public class VarTabData : IDisposable
         {
             internal short ReqestID;
@@ -1450,7 +1433,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }           
         }
 
-        // Todo: optimize reading, so that when not more then 4 bytes between a tag, read a lager block!
         /// <summary>
         /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
         /// It tries to Optimize how the Values are Read from the PLC
@@ -1504,11 +1486,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         else
                         {
-                            if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress < oldByteAddress + oldLen + 4)
+                            if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
                             {
                                 cntCombinedTags++;
                                 int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                 oldLen = oldLen < newlen ? newlen : oldLen;
+                                if (oldLen % 2 != 0) oldLen++;
                                 rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                 rdHlp.ByteAddress = oldByteAddress;
                                 rdHlp.ArraySize = oldLen;
@@ -1532,7 +1515,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 oldDB = plcTag.DatablockNumber;
                                 oldByteAddress = plcTag.ByteAddress;
                                 oldLen = plcTag._internalGetSize();
-
+                                if (oldLen % 2 != 0) oldLen++;
                                 lastTag = plcTag;
                                 cntCombinedTags++;
                             }

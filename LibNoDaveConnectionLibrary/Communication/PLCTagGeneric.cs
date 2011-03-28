@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -10,7 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     {
         //private T _value;
         //private T _controlvalue;
-
+        //Todo support for string and array datatypes
         internal override void _putValueIntoBuffer(byte[] buff, int startpos)
         {
             byte[] tmp = ToBytes(_controlvalue);
@@ -41,6 +42,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 LibNoDaveDataType = TagDataType.Word;
             else if (typeof(T) == typeof(UInt32))
                 LibNoDaveDataType = TagDataType.Dword;
+            else if (typeof(T) == typeof(byte))
+                LibNoDaveDataType = TagDataType.Byte;
+            else if (typeof(T) == typeof(sbyte))
+                LibNoDaveDataType = TagDataType.SByte;
+            else if (typeof(T) == typeof(string))
+                LibNoDaveDataType = TagDataType.CharArray;
+            else if (typeof(T) == typeof(byte[]))
+                LibNoDaveDataType = TagDataType.ByteArray;
             else
                 this.LibNoDaveDataType = TagDataType.Struct;
         }

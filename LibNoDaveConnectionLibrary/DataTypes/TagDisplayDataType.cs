@@ -11,6 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         Hexadecimal,
         Binary,
         Float,
+        Pointer,
         //For Time Formats
         TimeSpan,
         S5Time,

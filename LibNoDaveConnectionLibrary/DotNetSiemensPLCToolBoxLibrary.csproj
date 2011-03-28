@@ -143,7 +143,7 @@
     <Compile Include="Communication\ConnectionEditor.Designer.cs">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="libnodave.net.cs" />
+    <Compile Include="Communication\LibNoDave\libnodave.net.cs" />
     <Compile Include="Communication\PLCConnectionConfiguration.cs" />
     <Compile Include="Communication\PLCConnectionUITypeEditor.cs" />
     <Compile Include="Communication\PLCTagEditor.cs">

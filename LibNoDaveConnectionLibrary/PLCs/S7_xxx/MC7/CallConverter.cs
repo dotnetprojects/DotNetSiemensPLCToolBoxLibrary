@@ -285,7 +285,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             {
                                                 newPar.Value = "T" + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);
-                                                //newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString());
+                                                //newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString()); //ToDo: Use Memnoic for T
                                             }
                                             else if (akRow.DataType == S7DataRowType.COUNTER)
                                             {

@@ -64,12 +64,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        //Todo: Implement this
+        //Todo: Implement "Rename Parameter" in S7FuntionBlock
         public void RenameParameter(string oldName, string newName)
         {
         }
 
-        //Todo: Implement this
+        //Todo: Implement "Rename Label" in S7FuntionBlock
         public void RenameLabel(string oldName, string newName)
         {
         }

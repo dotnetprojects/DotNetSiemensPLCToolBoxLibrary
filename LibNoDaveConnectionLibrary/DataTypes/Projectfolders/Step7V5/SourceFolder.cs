@@ -41,11 +41,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return tmpBlocks;
         }
 
+        public ProjectBlockInfo GetProjectBlockInfoFromBlockName(string BlockName)
+        {
+            var tmp = readPlcBlocksList();
+            foreach (ProjectPlcBlockInfo step7ProjectBlockInfo in tmp)
+            {
+                if (step7ProjectBlockInfo.BlockType.ToString() + step7ProjectBlockInfo.BlockNumber.ToString() == BlockName.ToUpper())
+                    return step7ProjectBlockInfo;
+            }
+            return null;
+        }
+
         public Block GetBlock(string BlockName)
         {
-           
-
-            throw new NotImplementedException();
+            var prjBlkInf = GetProjectBlockInfoFromBlockName(BlockName);
+            if (prjBlkInf != null)
+                return GetBlock(prjBlkInf);
+            return null;
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo)

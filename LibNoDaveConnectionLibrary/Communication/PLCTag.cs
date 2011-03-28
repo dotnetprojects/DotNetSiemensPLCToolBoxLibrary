@@ -30,6 +30,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
@@ -167,7 +168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDByte:
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
-                        if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary)
+                        if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary && _dataTypeStringFormat != TagDisplayDataType.Pointer)
                             return TagDisplayDataType.Decimal;
                         return _dataTypeStringFormat;
                     case TagDataType.Float:
@@ -639,6 +640,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         IFormattable val = (IFormattable)myValue;
                         switch (DataTypeStringFormat)
                         {
+                            case TagDisplayDataType.Pointer:
+                                return "P#" + (Convert.ToInt32(myValue)/8).ToString() + "." + (Convert.ToInt32(myValue)%8).ToString();
+                                break;
                             case TagDisplayDataType.Hexadecimal:
                                 string ad = "";
                                 switch (_internalGetSize())
@@ -993,6 +997,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case "binary":
                 case "bin":
                     tp = TagDisplayDataType.Binary;
+                    break;
+                case "pointer":
+                    tp = TagDisplayDataType.Pointer;
                     break;
                 case "bool":
                     tp = TagDisplayDataType.Bool;
