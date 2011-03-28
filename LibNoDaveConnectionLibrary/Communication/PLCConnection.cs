@@ -123,7 +123,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //LibNoDave used types
         private libnodave.daveOSserialType _fds;
         private libnodave.daveInterface _di = null; //dave Interface
-        private libnodave.daveConnection _dc = null;
+        private /* public */ libnodave.daveConnection _dc = null;
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
@@ -1496,6 +1496,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 rdHlp.ByteAddress = oldByteAddress;
                                 rdHlp.ArraySize = oldLen;
                                 rdHlp.LibNoDaveDataSource = oldDataSource;
+                                rdHlp.DatablockNumber = oldDB;
                             }
                             else
                             {
@@ -1576,10 +1577,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         //When there are too much bytes in the answer pdu, or you read more then the possible tags...
                         //But don't split if the bit is set (but ignore it if the tag is bigger then the pdu size!)
-                        if ((readSizeWithHeader + gesReadSize > maxReadSize || anzReadVar == maxReadVar) && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
+                        if ((readSizeWithHeader + gesReadSize > maxReadSize || anzReadVar == maxReadVar))
                         {
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
-                            if (anzReadVar < maxReadVar)
+                            if (anzReadVar < maxReadVar && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize; //Howmany Bytes can be added to this call
                                 if (restBytes > 0)

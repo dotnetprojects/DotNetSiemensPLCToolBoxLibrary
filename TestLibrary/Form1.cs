@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
@@ -348,6 +349,55 @@ namespace JFK_VarTab
 
         private void button13_Click(object sender, EventArgs e)
         {
+            /*
+            myValues=new List<PLCTag>();
+            myValues.Add(new PLCTag("P#DB99.DBX0.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX100.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX200.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX300.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX400.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX500.0 BYTE 150"));
+            myValues.Add(new PLCTag("P#DB99.DBX600.0 BYTE 100"));
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            myConn.ReadValue(myValues[0]);
+            sw.Stop();
+            MessageBox.Show("Read1 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+
+            byte[] aa=new byte[700];
+            sw = new Stopwatch();
+            sw.Start();
+            myConn._dc.readManyBytes(DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave.libnodave.daveDB, 99, 0, 700, ref aa);
+            sw.Stop();
+            MessageBox.Show("Read2 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+
+            sw = new Stopwatch();
+            sw.Start();
+            myConn.ReadValues(myValues);
+            sw.Stop();
+            MessageBox.Show("Read3 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+
+
+            sw = new Stopwatch();
+            sw.Start();
+            myConn.ReadValue(myValues[0]);
+            sw.Stop();
+            MessageBox.Show("Read4 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+
+            aa = new byte[700];
+            sw = new Stopwatch();
+            sw.Start();
+            myConn._dc.readManyBytes(DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave.libnodave.daveDB, 99, 0, 700, ref aa);
+            sw.Stop();
+            MessageBox.Show("Read5 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+
+            sw = new Stopwatch();
+            sw.Start();
+            myConn.ReadValues(myValues);
+            sw.Stop();
+            MessageBox.Show("Read6 took:" + sw.ElapsedMilliseconds.ToString() + " ms");
+            */
             timer1_Tick(sender, e);
         }
 

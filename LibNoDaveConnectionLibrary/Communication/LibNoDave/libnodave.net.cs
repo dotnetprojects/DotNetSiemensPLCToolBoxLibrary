@@ -33,7 +33,7 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 {
-    internal class libnodave {
+    internal /* public */ class libnodave {
 /*
     This struct contains whatever your Operating System uses to hold an in and outgoing 
     connection to external devices.
