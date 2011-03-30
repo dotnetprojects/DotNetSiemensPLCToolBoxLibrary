@@ -26,6 +26,8 @@ Partial Class Form1
         Me.cmdWriteMW100 = New System.Windows.Forms.Button()
         Me.cmdShowConfig = New System.Windows.Forms.Button()
         Me.cmdReadMulti = New System.Windows.Forms.Button()
+        Me.cmdStopPLC = New System.Windows.Forms.Button()
+        Me.cmdDiagPuffer = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'cmdReadMW100
@@ -64,11 +66,31 @@ Partial Class Form1
         Me.cmdReadMulti.Text = "Mehrere Werte lesen"
         Me.cmdReadMulti.UseVisualStyleBackColor = True
         '
+        'cmdStopPLC
+        '
+        Me.cmdStopPLC.Location = New System.Drawing.Point(13, 230)
+        Me.cmdStopPLC.Name = "cmdStopPLC"
+        Me.cmdStopPLC.Size = New System.Drawing.Size(108, 31)
+        Me.cmdStopPLC.TabIndex = 1
+        Me.cmdStopPLC.Text = "Stop SPS"
+        Me.cmdStopPLC.UseVisualStyleBackColor = True
+        '
+        'cmdDiagPuffer
+        '
+        Me.cmdDiagPuffer.Location = New System.Drawing.Point(13, 267)
+        Me.cmdDiagPuffer.Name = "cmdDiagPuffer"
+        Me.cmdDiagPuffer.Size = New System.Drawing.Size(108, 31)
+        Me.cmdDiagPuffer.TabIndex = 1
+        Me.cmdDiagPuffer.Text = "Diagnosepuffer"
+        Me.cmdDiagPuffer.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(133, 183)
+        Me.ClientSize = New System.Drawing.Size(361, 414)
+        Me.Controls.Add(Me.cmdDiagPuffer)
+        Me.Controls.Add(Me.cmdStopPLC)
         Me.Controls.Add(Me.cmdWriteMW100)
         Me.Controls.Add(Me.cmdShowConfig)
         Me.Controls.Add(Me.cmdReadMulti)
@@ -82,5 +104,7 @@ Partial Class Form1
     Friend WithEvents cmdWriteMW100 As System.Windows.Forms.Button
     Friend WithEvents cmdShowConfig As System.Windows.Forms.Button
     Friend WithEvents cmdReadMulti As System.Windows.Forms.Button
+    Friend WithEvents cmdStopPLC As System.Windows.Forms.Button
+    Friend WithEvents cmdDiagPuffer As System.Windows.Forms.Button
 
 End Class

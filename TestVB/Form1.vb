@@ -56,4 +56,20 @@ Public Class Form1
         MessageBox.Show(val4.ValueAsString)
         MessageBox.Show(val5.ValueAsString)
     End Sub
+
+    Private Sub cmdStopPLC_Click(sender As System.Object, e As System.EventArgs) Handles cmdStopPLC.Click
+        myConn.Connect()
+        myConn.PLCStop()
+
+    End Sub
+
+    Private Sub cmdDiagPuffer_Click(sender As System.Object, e As System.EventArgs) Handles cmdDiagPuffer.Click
+        myConn.Connect()
+        Dim lst As List(Of DotNetSiemensPLCToolBoxLibrary.DataTypes.DiagnosticEntry)
+        lst = myConn.PLCGetDiagnosticBuffer()
+        For Each entr In lst
+            MessageBox.Show(entr.ToString)
+        Next
+
+    End Sub
 End Class

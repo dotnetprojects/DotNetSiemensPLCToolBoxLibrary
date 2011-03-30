@@ -351,6 +351,7 @@ namespace JFK_VarTab
         private void button13_Click(object sender, EventArgs e)
         {
             
+            /*
             myValues = new List<PLCTag>();
             myValues.Add(new PLCTag("MW200"));
             myValues[0].Controlvalue = 999;
@@ -367,7 +368,7 @@ namespace JFK_VarTab
             myValues.Add(new PLCTag("P#DB99.DBX400.0 BYTE 150"));
             myValues.Add(new PLCTag("P#DB99.DBX500.0 BYTE 150"));
             myValues.Add(new PLCTag("P#DB99.DBX600.0 BYTE 100"));
-            
+            */
 
             /*
             Stopwatch sw = new Stopwatch();
