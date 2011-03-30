@@ -123,7 +123,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //LibNoDave used types
         private libnodave.daveOSserialType _fds;
         private libnodave.daveInterface _di = null; //dave Interface
-        private /* public */ libnodave.daveConnection _dc = null;
+        public /*private*/ libnodave.daveConnection _dc = null;
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
@@ -365,6 +365,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             internal int readLineCounter;
             internal byte DiagDataTeletype;
 
+            internal DiagnosticData()
+            { }
 
             public void RequestDiagnosticData()
             {
@@ -720,7 +722,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] stid = new byte[] { rparam[6], rparam[7] };
 
                     if (rparam[10] != 0x00 && rparam[11] != 0x00) // 0xd05f
-                        throw new Exception("Error Requesting Block Status, Error Code: 0x" + rparam[10].ToString("X") + rparam[11].ToString("X"));
+                        throw new Exception("Error Requesting Block Status, Error Code: 0x" + rparam[10].ToString("X").PadLeft(2, '0') + rparam[11].ToString("X").PadLeft(2, '0'));
 
                     retDiagnosticData.ReqestID = BitConverter.ToInt16(stid, 0);
 
@@ -1180,7 +1182,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return null;
         }
         
-        public class VarTabData : IDisposable
+        public class VarTabReadData : IDisposable
         {
             internal short ReqestID;
             internal PLCConnection myConn;
@@ -1191,7 +1193,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 get { return _plcTags; }                
             }
 
-            public VarTabData(short reqId, PLCTag[] plcTags, PLCConnection conn)
+            internal VarTabReadData(short reqId, PLCTag[] plcTags, PLCConnection conn)
             {
                 ReqestID = reqId;
                 _plcTags = plcTags;
@@ -1242,6 +1244,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             {
                                 //rdata[pos + 1] == 4 means len is in BITS, maybe we need this???
                                 len = rdata[pos + 2]*0x100 + rdata[pos + 3];
+                                if (len < PLCTags[i].ReadByteSize)
+                                    throw new Exception("The Tag for the VarTabRead Function was to huge, " + PLCTags[i].ReadByteSize + " Bytes should be read, but only " + len + " Bytes were read!");
                                 if (len % 2 != 0) len++;
                                 PLCTags[i]._readValueFromBuffer(rdata, pos + 4);
                             }
@@ -1275,7 +1279,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
 
-        public VarTabData ReadValuesWithVarTabFunctions(IEnumerable<PLCTag> valueList, PLCReadTriggerVarTab ReadTrigger)
+        public VarTabReadData ReadValuesWithVarTabFunctions(IEnumerable<PLCTag> valueList, PLCTriggerVarTab ReadTrigger)
         {
             int anzZeilen = 0;
 
@@ -1381,13 +1385,212 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             byte[] stid = new byte[] { rparam[6], rparam[7] };
 
             if (rparam[10] != 0x00 && rparam[11] != 0x00) // 0xd05f
-                throw new Exception("Error Requesting Block Status, Error Code: 0x" + rparam[10].ToString("X") + rparam[11].ToString("X"));
+                throw new Exception("Error Reading Tags with Var Tab Functions, Error Code: 0x" + rparam[10].ToString("X").PadLeft(2, '0') + rparam[11].ToString("X").PadLeft(2, '0'));
 
-            VarTabData retVal = new VarTabData(BitConverter.ToInt16(stid, 0), General.IEnumerableExtensions.ToArray<PLCTag>(valueList), this);
+            VarTabReadData retVal = new VarTabReadData(BitConverter.ToInt16(stid, 0), General.IEnumerableExtensions.ToArray<PLCTag>(valueList), this);
 
             return retVal;
         }
 
+        /*
+        public class VarTabWriteData : IDisposable
+        {
+            internal short ReqestID;
+            internal PLCConnection myConn;
+            
+            private PLCTag[] _plcTags;
+            public PLCTag[] PLCTags
+            {
+                get { return _plcTags; }                
+            }
+
+            internal VarTabWriteData(short reqId, PLCTag[] plcTags, PLCConnection conn)
+            {
+                ReqestID = reqId;
+                _plcTags = plcTags;
+                myConn = conn;
+            }
+
+            public void WriteData()
+            {
+                if (myConn._dc != null)
+                    lock (myConn._dc)
+                    {
+                        libnodave.PDU myPDU = new libnodave.PDU();
+
+                        byte[] para;
+                        byte[] data;
+
+                        myPDU = new libnodave.PDU();
+                        para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                        data = new byte[]
+                                    {
+                                        0x00, 0x14, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
+                                        0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00,
+                                        BitConverter.GetBytes(ReqestID)[0], BitConverter.GetBytes(ReqestID)[1]
+                                    };
+                        myConn._dc.daveBuildAndSendPDU(myPDU, para, data);
+
+                        byte[] rdata, rparam;
+                        int res = myConn._dc.daveRecieveData(out rdata, out rparam);
+
+                        //Todo: Look what error codes exist when using vartab, the following ones are from Diag Data!
+                        if (rparam[10] == 0xd0 && rparam[11] == 0xa5)
+                            throw new Exception("The Trigger Situation has not yet happened!");
+                        else if (rparam[10] == 0xd0)
+                            throw new Exception("Error, the Trigger is already in use. Err. Code: " +
+                                                rparam[11].ToString("X"));
+                        else if (rparam[10] != 0x00)
+                            throw new Exception("Error reading Diagnostic Data");
+                        else if (rdata.Length < 14) //Function Block is not called!
+                            return;                        
+                    }
+            }
+
+            private bool Closed;
+            public void Close()
+            {
+                libnodave.PDU myPDU = new libnodave.PDU();
+
+                byte[] para;
+                byte[] data;
+
+                para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                data = new byte[] { 0x00, 0x14, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, BitConverter.GetBytes(ReqestID)[0], BitConverter.GetBytes(ReqestID)[1] };
+
+                myPDU = new libnodave.PDU();
+                myConn._dc.daveBuildAndSendPDU(myPDU, para, data);
+            }
+
+            public void Dispose()
+            {
+                if (!Closed)
+                    Close();
+            }
+        }
+        */
+
+        public void /*VarTabWriteData*/ WriteValuesWithVarTabFunctions(IEnumerable<PLCTag> valueList, PLCTriggerVarTab WriteTrigger)
+        {
+            int anzZeilen = 0;
+
+            List<byte> controlBytes = new List<byte>();
+            List<byte> controlValues = new List<byte>();
+
+            foreach (PLCTag plcTag in valueList)
+            {
+                int dtaTyp = 0;
+                int dtaSize = 0;
+                int dtaArrSize = 1;
+                int dbNo = 0;
+
+                byte[] akAsk = new byte[6];
+
+                switch (plcTag.LibNoDaveDataSource)
+                {
+                    case TagDataSource.Flags:
+                        dtaTyp = 0;
+                        break;
+                    case TagDataSource.Inputs:
+                        dtaTyp = 1;
+                        break;
+                    case TagDataSource.Outputs:
+                        dtaTyp = 2;
+                        break;
+                    case TagDataSource.Datablock:
+                        dtaTyp = 0x07;
+                        dbNo = plcTag.DatablockNumber;
+                        break;
+                    case TagDataSource.Timer:
+                        dtaTyp = 5;
+                        break;
+                    case TagDataSource.Counter:
+                        dtaTyp = 6;
+                        break;
+                    case TagDataSource.LocalData:
+                        dtaTyp = 0x0c;
+                        break;
+                }
+
+                switch (plcTag.ReadByteSize)
+                {
+                    case 1:
+                        dtaSize = 1;
+                        break;
+                    case 2:
+                        dtaSize = 2;
+                        break;
+                    case 4:
+                        dtaSize = 3;
+                        break;
+                    default:
+                        if (plcTag.LibNoDaveDataSource == TagDataSource.Timer || plcTag.LibNoDaveDataSource == TagDataSource.Counter)
+                        {
+                            dtaSize = 4;
+                            dbNo = 1;
+                        }
+                        else
+                        {
+                            dtaArrSize = plcTag.ReadByteSize;
+                            dtaSize = 1;
+                        }
+                        break;
+                }
+
+                akAsk[0] = (byte)(dtaTyp * 0x10 + dtaSize);
+                akAsk[1] = (byte)dtaArrSize;
+                akAsk[2] = (byte)(dbNo / 0x100);
+                akAsk[3] = (byte)(dbNo % 0x100);
+                akAsk[4] = (byte)(plcTag.ByteAddress / 0x100);
+                akAsk[5] = (byte)(plcTag.ByteAddress % 0x100);
+
+                controlBytes.AddRange(akAsk);
+
+                //Add Control Values ....
+                controlValues.AddRange(new byte[] { 0x00, 0x09, (byte)(plcTag.ReadByteSize / 0x100), (byte)(plcTag.ReadByteSize % 0x100) });
+                byte[] ctrl = new byte[plcTag.ReadByteSize];
+                plcTag._putControlValueIntoBuffer(ctrl, 0);
+                controlValues.AddRange(ctrl);
+
+                anzZeilen++;
+            }
+
+            int len1 = anzZeilen*6 + 2 + controlValues.Count;
+
+            libnodave.PDU myPDU = new libnodave.PDU();
+
+            byte[] para;
+            byte[] data;
+
+            myPDU = new libnodave.PDU();
+
+            para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00 };
+            data = new byte[]
+                                    {                                                                                                   //1 means use Trigger? maybe
+                                        0x00, 0x14,  BitConverter.GetBytes(len1)[1],  BitConverter.GetBytes(len1)[0], 0x00, 0x00, 0x00, /* 0x00 */ 0x01, 0x00, 0x01, 0x00, 0x04, 0x00, 0x01, 
+                                        0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, /*0x00*/ (byte)WriteTrigger, 0x00, BitConverter.GetBytes(anzZeilen)[1], BitConverter.GetBytes(anzZeilen)[0], 
+                                        //0x01, 0x08, 0x00, 0x00, 0x00, 0x00 //Tag
+                                        
+                                    };
+
+            data = Helper.CombineByteArray(data, controlBytes.ToArray());
+            data = Helper.CombineByteArray(data, controlValues.ToArray());
+
+            _dc.daveBuildAndSendPDU(myPDU, para, data);
+
+            byte[] rdata, rparam;
+            int res = _dc.daveRecieveData(out rdata, out rparam);
+
+            byte[] stid = new byte[] { rparam[6], rparam[7] };
+
+            if (rparam[10] != 0x00 && rparam[11] != 0x00) // 0xd05f
+                throw new Exception("Error Wrting Tags with VarTab Functions, Error Code: 0x" + rparam[10].ToString("X").PadLeft(2,'0') + rparam[11].ToString("X").PadLeft(2,'0'));
+            /*
+            VarTabWriteData retVal = new VarTabWriteData(BitConverter.ToInt16(stid, 0), General.IEnumerableExtensions.ToArray<PLCTag>(valueList), this);
+
+            return retVal;
+            */
+        }
 
         //Helper for Readvalues
         //Sort the PLC TAGs
@@ -1787,7 +1990,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] myBuff = new byte[readSize];
 
 
-                    value._putValueIntoBuffer(myBuff, 0);
+                    value._putControlValueIntoBuffer(myBuff, 0);
 
                     if (value.LibNoDaveDataSource != TagDataSource.Datablock && value.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
                         value.DatablockNumber = 0;
@@ -1829,7 +2032,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if (gesWriteSize + akVarSize + 12 <= maxWriteSize) //12 Header Größe Variable
                         {
                             byte[] wrt = new byte[akVarSize];
-                            libNoDaveValue._putValueIntoBuffer(wrt, 0);
+                            libNoDaveValue._putControlValueIntoBuffer(wrt, 0);
                             if (libNoDaveValue.LibNoDaveDataType == TagDataType.Bool)
                                 myPDU.addBitVarToWriteRequest(Convert.ToInt32(libNoDaveValue.LibNoDaveDataSource), libNoDaveValue.DatablockNumber, libNoDaveValue.ByteAddress * 8 + libNoDaveValue.BitAddress, 1, wrt);
                             else

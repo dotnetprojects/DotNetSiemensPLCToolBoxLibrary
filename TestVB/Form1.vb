@@ -3,33 +3,57 @@ Imports DotNetSiemensPLCToolBoxLibrary.DataTypes
 Imports DotNetSiemensPLCToolBoxLibrary
 
 Public Class Form1
+    Dim myConn As New PLCConnection("myVBExample")
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Configuration.ShowConfiguration("", False)
-
-        'Verbindungen auflisten...
-        'WPFToolboxForSiemensPLCs.LibNoDaveConnectionConfiguration.GetConfigurationNames()
-
-        Dim myConn1 As New PLCConnection("aaaa")
-        Dim myConn2 As New PLCConnection("bbbb")
-        myConn1.Connect()
-        myConn2.Connect()
-
-
-        Dim val As New PLCTag
-        val.ByteAddress = 10
-        val.DatablockNumber = 2
-        val.LibNoDaveDataType = TagDataType.Byte
-        val.LibNoDaveDataSource = TagDataSource.Datablock
-        myConn1.ReadValue(val)
-        MsgBox(val.Value)
-
+  
+    Private Sub cmdShowConfig_Click(sender As System.Object, e As System.EventArgs) Handles cmdShowConfig.Click
+        'Configuration anzeigen
+        Configuration.ShowConfiguration("myVBExample", True)
+        'Config Objekt neu erzeugen (falls Config geändert wurde)
+        Dim myConn As New PLCConnection("myVBExample")
     End Sub
 
-    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
-        Dim myConn As New Communication.PLCConnection("sps1")
-        Dim val1 As New Communication.PLCTag("P#M40.0 BYTE 10")
-        val1.ParseControlValueFromString("1,2,3,4,5,6,7,8,9,0")
+    Private Sub cmdReadMW100_Click(sender As System.Object, e As System.EventArgs) Handles cmdReadMW100.Click
+        myConn.Connect()
+        Dim val1 As New Communication.PLCTag("MW100")
+        val1.DataTypeStringFormat = TagDisplayDataType.Hexadecimal
+
+        MessageBox.Show(val1.ValueAsString)
+    End Sub
+
+    Private Sub cmdWriteMW100_Click(sender As System.Object, e As System.EventArgs) Handles cmdWriteMW100.Click
+        myConn.Connect()
+        Dim val1 As New Communication.PLCTag("MW100")
+        val1.Controlvalue = 44
         myConn.WriteValue(val1)
+    End Sub
+
+    Private Sub cmdReadMulti_Click(sender As System.Object, e As System.EventArgs) Handles cmdReadMulti.Click
+        Dim lst As New List(Of PLCTag)
+
+        Dim val1 As New Communication.PLCTag("MW100")
+        Dim val2 As New Communication.PLCTag("AW100")
+        Dim val3 As New Communication.PLCTag("EW100")
+        Dim val4 As New Communication.PLCTag("DB3.DBW4")
+        val4.LibNoDaveDataType = TagDataType.DateTime
+        Dim val5 As New Communication.PLCTag("DB5.DBD6")
+        val5.LibNoDaveDataType = TagDataType.CharArray
+        val5.ArraySize = 20
+
+        lst.Add(val1)
+        lst.Add(val2)
+        lst.Add(val3)
+        lst.Add(val4)
+        lst.Add(val5)
+
+        myConn.Connect()
+
+        myConn.ReadValues(lst)
+
+        MessageBox.Show(val1.ValueAsString)
+        MessageBox.Show(val2.ValueAsString)
+        MessageBox.Show(val3.ValueAsString)
+        MessageBox.Show(val4.ValueAsString)
+        MessageBox.Show(val5.ValueAsString)
     End Sub
 End Class

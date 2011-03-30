@@ -22,41 +22,65 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.cmdReadMW100 = New System.Windows.Forms.Button()
+        Me.cmdWriteMW100 = New System.Windows.Forms.Button()
+        Me.cmdShowConfig = New System.Windows.Forms.Button()
+        Me.cmdReadMulti = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
-        'Button1
+        'cmdReadMW100
         '
-        Me.Button1.Location = New System.Drawing.Point(189, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(83, 27)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.cmdReadMW100.Location = New System.Drawing.Point(12, 45)
+        Me.cmdReadMW100.Name = "cmdReadMW100"
+        Me.cmdReadMW100.Size = New System.Drawing.Size(108, 27)
+        Me.cmdReadMW100.TabIndex = 0
+        Me.cmdReadMW100.Text = "MW100 lesen"
+        Me.cmdReadMW100.UseVisualStyleBackColor = True
         '
-        'Button2
+        'cmdWriteMW100
         '
-        Me.Button2.Location = New System.Drawing.Point(189, 133)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(88, 31)
-        Me.Button2.TabIndex = 1
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.cmdWriteMW100.Location = New System.Drawing.Point(12, 78)
+        Me.cmdWriteMW100.Name = "cmdWriteMW100"
+        Me.cmdWriteMW100.Size = New System.Drawing.Size(108, 31)
+        Me.cmdWriteMW100.TabIndex = 1
+        Me.cmdWriteMW100.Text = "MW100 schreiben"
+        Me.cmdWriteMW100.UseVisualStyleBackColor = True
+        '
+        'cmdShowConfig
+        '
+        Me.cmdShowConfig.Location = New System.Drawing.Point(12, 12)
+        Me.cmdShowConfig.Name = "cmdShowConfig"
+        Me.cmdShowConfig.Size = New System.Drawing.Size(108, 27)
+        Me.cmdShowConfig.TabIndex = 0
+        Me.cmdShowConfig.Text = "Show Config"
+        Me.cmdShowConfig.UseVisualStyleBackColor = True
+        '
+        'cmdReadMulti
+        '
+        Me.cmdReadMulti.Location = New System.Drawing.Point(13, 129)
+        Me.cmdReadMulti.Name = "cmdReadMulti"
+        Me.cmdReadMulti.Size = New System.Drawing.Size(108, 42)
+        Me.cmdReadMulti.TabIndex = 0
+        Me.cmdReadMulti.Text = "Mehrere Werte lesen"
+        Me.cmdReadMulti.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 262)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(133, 183)
+        Me.Controls.Add(Me.cmdWriteMW100)
+        Me.Controls.Add(Me.cmdShowConfig)
+        Me.Controls.Add(Me.cmdReadMulti)
+        Me.Controls.Add(Me.cmdReadMW100)
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents cmdReadMW100 As System.Windows.Forms.Button
+    Friend WithEvents cmdWriteMW100 As System.Windows.Forms.Button
+    Friend WithEvents cmdShowConfig As System.Windows.Forms.Button
+    Friend WithEvents cmdReadMulti As System.Windows.Forms.Button
 
 End Class

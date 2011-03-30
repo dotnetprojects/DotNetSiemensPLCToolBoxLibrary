@@ -33,7 +33,7 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 {
-    internal /* public */ class libnodave {
+    /*internal*/ public class libnodave {
 /*
     This struct contains whatever your Operating System uses to hold an in and outgoing 
     connection to external devices.
@@ -1338,16 +1338,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
 
 #if !IPHONE
-            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetupReceivedPDU")]
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "_daveSetupReceivedPDU")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveSetupReceivedPDU")]
+		    [DllImport ("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
 #endif
             private static extern int _daveSetupReceivedPDU64(IntPtr dc, IntPtr p);
 
 #if !IPHONE	
-            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetupReceivedPDU")]
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "_daveSetupReceivedPDU")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveSetupReceivedPDU")]
+	[DllImport ("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
 #endif
             private static extern int _daveSetupReceivedPDU32(IntPtr dc, IntPtr p);
 

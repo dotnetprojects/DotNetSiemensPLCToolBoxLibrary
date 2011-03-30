@@ -30,6 +30,7 @@ namespace JFK_VarTab
         private void button2_Click(object sender, EventArgs e)
         {             
             label2.Text = "Trying to connect...";
+            myConn = new PLCConnection("JFK-TestConnection");
             Application.DoEvents();
             try
             {              
@@ -349,7 +350,15 @@ namespace JFK_VarTab
 
         private void button13_Click(object sender, EventArgs e)
         {
-            /*
+            
+            myValues = new List<PLCTag>();
+            myValues.Add(new PLCTag("MW200"));
+            myValues[0].Controlvalue = 999;
+            myConn.WriteValue(myValues[0]);
+            var afa= myConn.WriteValuesWithVarTabFunctions(myValues, PLCTriggerVarTab.BeginOfCycle);
+            afa.WriteData();
+           
+            
             myValues=new List<PLCTag>();
             myValues.Add(new PLCTag("P#DB99.DBX0.0 BYTE 150"));
             myValues.Add(new PLCTag("P#DB99.DBX100.0 BYTE 150"));
@@ -358,7 +367,9 @@ namespace JFK_VarTab
             myValues.Add(new PLCTag("P#DB99.DBX400.0 BYTE 150"));
             myValues.Add(new PLCTag("P#DB99.DBX500.0 BYTE 150"));
             myValues.Add(new PLCTag("P#DB99.DBX600.0 BYTE 100"));
+            
 
+            /*
             Stopwatch sw = new Stopwatch();
             sw.Start();
             myConn.ReadValue(myValues[0]);
@@ -534,10 +545,10 @@ namespace JFK_VarTab
                 myConn.PLCSendPassword(pwd);
         }
 
-        private PLCConnection.VarTabData vtab = null;
+        private PLCConnection.VarTabReadData vtab = null;
         private void button18_Click(object sender, EventArgs e)
         {
-            vtab = myConn.ReadValuesWithVarTabFunctions(myValues, PLCReadTriggerVarTab.EndOfCycle);
+            vtab = myConn.ReadValuesWithVarTabFunctions(myValues, PLCTriggerVarTab.EndOfCycle);
             vtab.RequestData();
             timer3.Enabled = true;
         }

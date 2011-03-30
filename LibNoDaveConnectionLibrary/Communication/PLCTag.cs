@@ -1052,7 +1052,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return retValue;
         }
 
-        internal virtual void _putValueIntoBuffer(byte[] buff, int startpos)
+        internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
             if (Controlvalue!=null)
                 switch (LibNoDaveDataType)

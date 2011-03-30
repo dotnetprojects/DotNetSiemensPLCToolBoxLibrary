@@ -12,7 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //private T _value;
         //private T _controlvalue;
         //Todo support for string and array datatypes
-        internal override void _putValueIntoBuffer(byte[] buff, int startpos)
+        internal override void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
             byte[] tmp = ToBytes(_controlvalue);
             Array.Copy(tmp, 0, buff, startpos, tmp.Length);

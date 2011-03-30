@@ -78,7 +78,7 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameterDirection.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7ProjectSourceInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7SourceBlock.cs" />
-    <Compile Include="DataTypes\PLCReadTriggerVarTab.cs" />
+    <Compile Include="DataTypes\PLCTriggerVarTab.cs" />
     <Compile Include="DataTypes\Projectfolders\IPLCBlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\ISymbolTable.cs" />
     <Compile Include="DataTypes\Projectfolders\OnlineBlocksFolder.cs" />
