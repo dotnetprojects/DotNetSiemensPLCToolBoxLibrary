@@ -17,7 +17,7 @@ Public Class Form1
         myConn.Connect()
         Dim val1 As New Communication.PLCTag("MW100")
         val1.DataTypeStringFormat = TagDisplayDataType.Hexadecimal
-
+        myConn.ReadValue(val1)
         MessageBox.Show(val1.ValueAsString)
     End Sub
 
