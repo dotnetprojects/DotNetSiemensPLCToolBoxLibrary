@@ -582,16 +582,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     myDestination = new byte[] {(byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]), (byte) Convert.ToInt32(ip[2]), (byte) Convert.ToInt32(ip[3])};
                 }
                 ip = routingDestination.Split('.');
-                byte[] myRoutingDestination;
+                byte[] myRoutingDestination = new byte[4];
                 int routingDestinationIsIP = 0;
                 if (ip.Length < 4)
                 {
-                    myRoutingDestination = new byte[] {(byte) Convert.ToInt32(routingDestination)};
+                    try
+                    { myRoutingDestination = new byte[] {(byte) Convert.ToInt32(routingDestination)}; }
+                    catch(Exception)
+                    { }
                 }
                 else
                 {
                     routingDestinationIsIP = 1;
-                    myRoutingDestination = new byte[] {(byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]), (byte) Convert.ToInt32(ip[2]), (byte) Convert.ToInt32(ip[3])};
+                    string[] rip = routingDestination.Split('.');
+                    if (rip.Length == 4)
+                        myRoutingDestination = new byte[] {(byte) Convert.ToInt32(rip[0]), (byte) Convert.ToInt32(rip[1]), (byte) Convert.ToInt32(rip[2]), (byte) Convert.ToInt32(rip[3])};
                 }
                 if (IntPtr.Size == 8)
                     pointer = daveNewExtendedConnection64(di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond, routingRack, routingSlot, myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);

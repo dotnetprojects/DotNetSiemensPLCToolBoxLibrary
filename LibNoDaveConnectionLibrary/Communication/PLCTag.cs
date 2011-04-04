@@ -543,8 +543,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = Helper.GetDateTimeFromTimeOfDayString(myValue);
                     else if (myValueStrip.StartsWith("dt#"))
                         Controlvalue = Helper.GetDateTimeFromDateAndTimeString(myValue);
-                    else
-                        try { Controlvalue = DateTime.Parse(myValue); }
+                    else if (!string.IsNullOrEmpty(myValue))
+                        try
+                        {
+                            Controlvalue = DateTime.Parse(myValue);
+                        }
                         catch (Exception) { }
                     break;
                 case TagDataType.ByteArray:
