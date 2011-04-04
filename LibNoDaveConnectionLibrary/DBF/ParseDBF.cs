@@ -720,7 +720,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         }
         #endregion
 
-        #region Helper Functions
+        
+        #region Helper Functions        
         /// <summary>
         /// Simple function to test is a string can be parsed. There may be a better way, but this works
         /// If you port this to .NET 2.0, use the new TryParse methods instead of this        
@@ -758,7 +759,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             }
 
             return (number_count > 0 && point_count < 2);
-        }
+        }        
 
         /// <summary>
         /// Convert a Julian Date to a .NET DateTime structure

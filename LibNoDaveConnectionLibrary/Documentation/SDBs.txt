@@ -1,0 +1,47 @@
+﻿
+SDB 1002 - Konfigurierte Verbindungen
+SDB 1003 - 
+SDB 1004 - 
+
+???SDB 1000 = MPI-Globaldaten
+???SDB 1001 = Routingdaten
+???SDB 1002 = Ethernet CP
+
+0
+Hardware konfigurieren
+1
+Hardware konfigurieren oder durch CPU (nach Urlöschen)
+2
+CPU (Standard-Parametrierung nach Urlöschen)
+3, 4 und 7
+Hardware konfigurieren
+5
+CPU (MPI-Parameter)
+20 bis 89
+Hardware konfigurieren (DP-Konfiguration)
+90 bis 99
+Hardware konfigurieren (H- und F-Systeme)
+100 bis 149
+Hardware konfigurieren (Parameter für zentrale und dezentrale Konfigurationen)
+150 bis 152
+Hardware konfigurieren (Parameter für Schnittstellenmodule) 
+153 bis 189
+Hardware konfigurieren (DP-Konfiguration)
+200
+Projektieren von Verbindungen (S7-300)
+210
+Konfigurieren der Globaldaten-Kommunikation
+3xx
+Projektieren von symbolbezogenen Meldungen
+7xx
+Projektieren von Verbindungen
+999
+Projektieren von Netzen/Verbindungen (S7-Routing) 
+Größer oder gleich 1000
+Hardware konfigurieren (DP-Konfiguration, Parameter für CPs und FMs, S7-Routing, Verbindungen)
+
+
+
+
+
+Aufbau SDB1002:

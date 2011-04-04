@@ -90,6 +90,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public PLCTag()
         { }
 
+        public PLCTag(PLCTag oldTag)
+        {
+            this.LibNoDaveDataSource = oldTag.LibNoDaveDataSource;
+            this.LibNoDaveDataType = oldTag.LibNoDaveDataType;
+            this.ByteAddress = oldTag.ByteAddress;
+            this.BitAddress = oldTag.BitAddress;
+            this.ArraySize = oldTag.ArraySize;
+            this.DataTypeStringFormat = oldTag.DataTypeStringFormat;
+            this.DatablockNumber = oldTag.DatablockNumber;
+            this.Controlvalue = oldTag.Controlvalue;
+            this.DontSplitValue = oldTag.DontSplitValue;
+        }
+
         public PLCTag(string address)
         {
             this.ChangeAddressFromString(address);
@@ -351,10 +364,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 if (LibNoDaveDataSource == TagDataSource.Datablock || LibNoDaveDataSource == TagDataSource.InstanceDatablock)
                 {
-                    ret.Append("DB");
+                    if (LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                        ret.Append("DI");
+                    else
+                        ret.Append("DB");
                     ret.Append(DatablockNumber);
                     ret.Append(".");
-                    ret.Append("DB");
+                    if (LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                        ret.Append("DI");
+                    else
+                        ret.Append("DB");
                     if (LibNoDaveDataType == TagDataType.Bool || aksz == 3 || aksz > 4)
                         ret.Append("X");
                 }
@@ -375,6 +394,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                     case TagDataSource.Counter:
                         ret.Append("Z");
+                        break;
+                    case TagDataSource.LocalData:
+                        ret.Append("L");
+                        break;
+                    case TagDataSource.PreviousLocalData:
+                        ret.Append("V");
                         break;
                 }
 
@@ -499,7 +524,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (myValue=="0")
                         Controlvalue = false;
                     else
-                        try { Controlvalue = bool.Parse(myValue); } catch (Exception) { }
+                    {
+                        bool bvalue;
+                        bool.TryParse(myValue, out bvalue);
+                        Controlvalue = bvalue;
+                    }
                     break;
                 case TagDataType.String:
                 case TagDataType.CharArray:
@@ -766,6 +795,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             this.LibNoDaveDataSource = TagDataSource.Inputs;
                         else if (tmp.Contains("a"))
                             this.LibNoDaveDataSource = TagDataSource.Outputs;
+                        else if (tmp.Contains("l"))
+                            this.LibNoDaveDataSource = TagDataSource.LocalData;
+                        else if (tmp.Contains("v"))
+                            this.LibNoDaveDataSource = TagDataSource.PreviousLocalData;
                         else if (tmp.Contains("m"))
                             this.LibNoDaveDataSource = TagDataSource.Flags;
                         else if (tmp.Contains("t"))

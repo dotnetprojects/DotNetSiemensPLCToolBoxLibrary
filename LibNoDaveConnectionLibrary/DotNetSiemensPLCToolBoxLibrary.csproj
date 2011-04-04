@@ -219,6 +219,7 @@
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
     <Content Include="Documentation\PDUs.txt" />
+    <Content Include="Documentation\SDBs.txt" />
     <Content Include="Documentation\StatusOfPLCBlock.txt" />
     <Content Include="Documentation\Step5ProjectInfo.txt" />
     <Content Include="Documentation\Step7ProjectFileCommentRowInSubblkDBF.txt" />

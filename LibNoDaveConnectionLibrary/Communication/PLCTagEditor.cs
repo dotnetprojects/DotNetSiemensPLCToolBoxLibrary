@@ -10,7 +10,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public static PLCTag ShowPLCTagEditor(PLCTag tag)
         {
             PLCTagEditor tagedt=new PLCTagEditor();
-            tagedt._libnodavevalue = tag;
+            tagedt._libnodavevalue = new PLCTag(tag);
             tagedt.ShowDialog();
             return tagedt._libnodavevalue;
         }
@@ -24,6 +24,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private PLCTag _libnodavevalue;
         private bool startWasNull = false;
 
+        //private PLCTag backupPLCTag = null;
+
         private void LibNoDaveValueEditor_Load(object sender, EventArgs e)
         {
             EnumListBoxExtensions.AddEnumToList(cmbSource, typeof(TagDataSource));
@@ -34,6 +36,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 startWasNull = true;
                 _libnodavevalue = new PLCTag();
             }
+            //else
+            //    backupPLCTag = new PLCTag(_libnodavevalue);
 
             _libnodavevalue.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(_libnodavevalue_PropertyChanged);
             _libnodavevalue_PropertyChanged(null, null);            
@@ -129,8 +133,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (startWasNull)
+            //if (startWasNull)
                 _libnodavevalue = null;
+            //else
+            //    _libnodavevalue = backupPLCTag;
             this.Close();
         }
 
