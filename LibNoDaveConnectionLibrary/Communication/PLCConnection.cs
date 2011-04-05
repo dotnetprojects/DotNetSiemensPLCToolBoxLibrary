@@ -1995,8 +1995,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (value.LibNoDaveDataSource != TagDataSource.Datablock && value.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
                         value.DatablockNumber = 0;
 
-                    int res = _dc.writeManyBytes(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress, readSize, myBuff);
-
+                    int res;
+                    if (value.LibNoDaveDataType == TagDataType.Bool)
+                        res = _dc.writeBits(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress * 8 + value.BitAddress, readSize, myBuff);
+                    else
+                        res = _dc.writeManyBytes(Convert.ToInt32(value.LibNoDaveDataSource), value.DatablockNumber, value.ByteAddress, readSize, myBuff);
+                    
                     if (res == -1025)
                     {
                         this.Disconnect();
