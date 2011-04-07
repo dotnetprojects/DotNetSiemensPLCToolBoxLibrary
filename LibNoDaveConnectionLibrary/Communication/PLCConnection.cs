@@ -1691,6 +1691,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
                             {
+                                //todo: test if this is correct
+                                if (cntCombinedTags == 1)
+                                    rdHlp.PLCTags.Add(lastTag, 0);
+                                
                                 cntCombinedTags++;
                                 int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                 oldLen = oldLen < newlen ? newlen : oldLen;
