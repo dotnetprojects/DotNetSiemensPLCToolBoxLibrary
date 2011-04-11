@@ -6,7 +6,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     [Serializable()]
     public class S7VATRow
     {
-        public PLCTag LibNoDaveValue { get; set; }
+        private PLCTag _libNoDaveValue;
+        public PLCTag LibNoDaveValue
+        {
+            get { return _libNoDaveValue; }
+            set { _libNoDaveValue = value; }
+        }
+
         public string Comment { get; set; }
 
         public override string ToString()

@@ -15,7 +15,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return tagedt._libnodavevalue;
         }
 
-        private PLCTagEditor()
+        internal PLCTagEditor()
         {
             //_libnodavevalue = value;
             InitializeComponent();

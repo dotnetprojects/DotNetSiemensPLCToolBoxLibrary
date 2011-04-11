@@ -4,7 +4,7 @@
         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" 
         xmlns:WPFVarTab="clr-namespace:WPFVarTab" 
         Style="{DynamicResource GlassStyle}"
-        Title="JFK-WpfVarTab" Height="350" Width="525" Name="ThisWindow" WindowStyle="SingleBorderWindow">
+        Title="JFK-WpfVarTab" Height="350" Width="525" Name="ThisWindow" WindowStyle="SingleBorderWindow" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png">
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}"
@@ -14,6 +14,19 @@
     </Window.CommandBindings>
     
     <Window.Resources>
+        <DataTemplate x:Key="commentTemplate">
+            <TextBlock Text="{Binding}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="normalTemplate">
+            <Image Source="{Binding }" />
+        </DataTemplate>
+        
+        <WPFVarTab:VarTabRowItemTemplateSelector 
+            NormalRowsTemplate="{StaticResource normalTemplate}" 
+            CommentRowsTemplate="{StaticResource commentTemplate}" 
+            x:Key="vartabrowItemTemplateSelector" />
+        
         <Style x:Key="GlassStyle" TargetType="{x:Type WPFVarTab:MainWindow}">
             <Setter Property="Shell:WindowChrome.WindowChrome">
                 <Setter.Value>
@@ -26,22 +39,22 @@
                         <Grid>
                             <ContentPresenter
                                 Margin="7,14,7,7" Content="{TemplateBinding Content}"/>
-                            <StackPanel Orientation="Horizontal">
-                            <Button Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,120,0">
+                                <Button Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                     Margin="7,7,0,2"
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Left"                                      
                                     Padding="3"
                                     Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}" CommandParameter="{Binding ElementName=ThisWindow}">
                                     <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
-                            </Button>
+                                </Button>
                                 <Button Margin="20,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Open an existing VarTab">
-                                        <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                        ToolTip="Open an existing VarTab" Name="cmdOpen" Click="cmdOpen_Click">
+                                        <Image Width="16" Height="16" Source="/WPFVarTab;component/Images/document-open-4.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
@@ -49,23 +62,23 @@
                                         HorizontalAlignment="Left" 
                                         Padding="3"
                                         ToolTip="Save VarTab">
-                                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                    <Image Width="16" Height="16" Source="/WPFVarTab;component/Images/document-export.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Config Connections">
-                                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                        ToolTip="Config Connection" Name="cmdConfigConnection" Click="cmdConfigConnection_Click">
+                                    <Image Source="/WPFVarTab;component/Images/configure-2.png" Width="16" Height="16"/>
                                 </Button>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Online View">
-                                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                        ToolTip="Online View" Name="cmdOnlineView" Click="cmdOnlineView_Click">
+                                    <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/zoom-3.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
@@ -73,15 +86,15 @@
                                         HorizontalAlignment="Left" 
                                         Padding="3"
                                         ToolTip="Control Values">
-                                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                    <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/draw-line-2.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="VarTab Options">
-                                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icon}" Width="16" Height="16"/>
+                                        ToolTip="VarTab Options" Name="cmdConfigVarTab" Click="cmdConfigVarTab_Click">
+                                    <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/configure-shortcuts.png" />
                                 </Button>
                             </StackPanel>
                         </Grid>
@@ -98,54 +111,62 @@
         </Grid.RowDefinitions>
         
                
-        <DataGrid AutoGenerateColumns="False" Margin="0,22,0,22" Name="dataGrid" Grid.RowSpan="2">
+        <DataGrid AutoGenerateColumns="False" Margin="0,22,0,22" 
+                  Name="dataGrid" Grid.RowSpan="2" CanUserAddRows="True"
+                  RowBackground="Azure" AlternatingRowBackground="LightSteelBlue"
+                  ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}" CanUserResizeRows="False" CanUserSortColumns="False" CanUserDeleteRows="True">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Comment" Width="Auto" IsReadOnly="True" SortMemberPath="Comment" >
+                <DataGridTemplateColumn Header="Comment" Width="Auto" IsReadOnly="False" SortMemberPath="Comment" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Comment}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Comment}" BorderThickness="0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Address" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
+                <DataGridTemplateColumn Header="Address" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.S7FormatAddress">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox BorderThickness="0" Margin="0" Padding="0" Text="{Binding LibNoDaveValue.S7FormatAddress}" Background="{x:Null}" AcceptsTab="True" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Symbol" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.S7FormatAddress">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding LibNoDaveValue.S7FormatAddress}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Symbol" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.S7FormatAddress">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding LibNoDaveValue.S7FormatAddress}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
+                <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding LibNoDaveValue.LibNoDaveDataType}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="DisplayFormat" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.DataTypeStringFormat">
+                <DataGridTemplateColumn Header="DisplayFormat" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.DataTypeStringFormat">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding LibNoDaveValue.DataTypeStringFormat}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Value" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.Value">
+                <DataGridTemplateColumn Header="Value" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding LibNoDaveValue.Value}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="ControlValue" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.ControlValue">
+                <DataGridTemplateColumn Header="ControlValue" Width="Auto" IsReadOnly="False" SortMemberPath="LibNoDaveValue.ControlValue">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding LibNoDaveValue.ControlValue}" />
+                            <TextBlock Text="{Binding LibNoDaveValue.Controlvalue}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -153,12 +174,14 @@
             </DataGrid.Columns>
         </DataGrid>
         <StatusBar HorizontalContentAlignment="Stretch" Grid.Row="1" Name="statusBar" Height="22" VerticalAlignment="Bottom" Opacity="0.5">
-            <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right"  Width="40" />
+            <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right"  Width="120" >
+                <Label Padding="0" Content="JFK-WPFVarTab 1.0"></Label>
+            </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Right" VerticalContentAlignment="Stretch">
-                <ProgressBar Width="50" VerticalAlignment="Stretch" Value="0" IsIndeterminate="False"></ProgressBar>
+                <ProgressBar Width="50" VerticalAlignment="Stretch" Value="0" IsIndeterminate="False" Name="ProgressBarOnlineStatus"></ProgressBar>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                <Label Padding="0">JFK-WpfVarTab 1.0</Label>
+                <Label Padding="0" Name="lblStatus"></Label>
             </StatusBarItem>
         </StatusBar>
     </Grid>

@@ -16,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         public bool ObjectSavedConfiguration { get; set; }
 
-        public ConnectionEditor()
+        internal ConnectionEditor()
         {
             InitializeComponent();
         }
