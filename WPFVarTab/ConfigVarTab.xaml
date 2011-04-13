@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WPFVarTab.ConfigVarTab"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" Style="{DynamicResource GlassStyle}"
-        Title="ConfigVarTab" Height="221" Width="295" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="White">
+        Title="ConfigVarTab" Height="264" Width="224" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="White">
     <Window.Resources>
         <Style x:Key="GlassStyle" TargetType="{x:Type WPFVarTab:ConfigVarTab}">
             <Setter Property="Shell:WindowChrome.WindowChrome">
@@ -32,6 +32,13 @@
                 <RadioButton Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
-        <Button Content="Close" Height="28" HorizontalAlignment="Left" Margin="218,0,0,0" Name="cmdClose" VerticalAlignment="Top" Width="56" Click="cmdClose_Click" />
+        <GroupBox Header="Write Config" Height="116" HorizontalAlignment="Left" Margin="7,127,0,0" Name="groupBox2" VerticalAlignment="Top" Width="193">
+            <Grid>
+                <RadioButton Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
+                <RadioButton Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
+                <RadioButton Content="Trigger End of Cycle" HorizontalAlignment="Left" Margin="6,52,0,0" VerticalAlignment="Top" />
+                <RadioButton Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

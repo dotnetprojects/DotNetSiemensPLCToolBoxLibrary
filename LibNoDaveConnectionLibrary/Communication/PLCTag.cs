@@ -223,7 +223,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else
                     _LibNoDaveDataType = value;
-                NotifyPropertyChanged("LibNoDaveDataType"); NotifyPropertyChanged("S7FormatAddress"); 
+                NotifyPropertyChanged("LibNoDaveDataType"); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("DataTypeStringFormat"); 
             }
         }
         

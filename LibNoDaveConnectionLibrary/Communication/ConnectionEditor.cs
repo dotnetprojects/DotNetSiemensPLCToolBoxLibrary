@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
@@ -595,16 +596,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private void tryConnect_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            PLCConnection tmpConn = null;
             try
             {
                 var backup = myConfig.ConfigurationType;
                 myConfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
-                var tmp = new PLCConnection(myConfig);
+                tmpConn = new PLCConnection(myConfig);
                 myConfig.ConfigurationType = backup;
 
-                tmp.Connect();
-                tmp.Dispose();
-                changeStatusLabel("Verbindung erfolgreich!");
+                tmpConn.Connect();
+                changeStatusLabel("Connected!");
+                try
+                {
+                    var szlDat = tmpConn.PLCGetSZL(0x0111, 1);
+                    if (szlDat.SZLDaten.Length > 0)
+                    {
+                        xy11Dataset xy11Szl = szlDat.SZLDaten[0] as xy11Dataset;
+                        if (xy11Szl != null)
+                            changeStatusLabel("Connected! (MLFB:" + xy11Szl.MlfB + ")");
+                    }
+                }
+                catch (Exception ex)
+                { }
+                tmpConn.Dispose();
+                
             }
             catch (Exception ex)
             {
