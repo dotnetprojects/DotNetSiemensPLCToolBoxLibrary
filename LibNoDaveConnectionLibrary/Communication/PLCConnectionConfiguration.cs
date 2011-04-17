@@ -24,9 +24,11 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -59,56 +61,56 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private string _entryPoint;
+        private string _entryPoint = "S7ONLINE";
         public string EntryPoint
         {
             get { return _entryPoint; }
             set { _entryPoint = value; NotifyPropertyChanged("EntryPoint"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _cpuRack;
+        private int _cpuRack = 0;
         public int CpuRack
         {
             get { return _cpuRack; }
             set { _cpuRack = value; NotifyPropertyChanged("CpuRack"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _cpuSlot;
+        private int _cpuSlot = 2;
         public int CpuSlot
         {
             get { return _cpuSlot; }
             set { _cpuSlot = value; NotifyPropertyChanged("CpuSlot"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _cpuMpi;
+        private int _cpuMpi = 2;
         public int CpuMpi
         {
             get { return _cpuMpi; }
             set { _cpuMpi = value; NotifyPropertyChanged("CpuMpi"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private string _cpuIp;
+        private string _cpuIp = "192.168.1.100";
         public string CpuIP
         {
             get { return _cpuIp; }
             set { _cpuIp = value; NotifyPropertyChanged("CpuIP"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _port;
+        private int _port = 102;
         public int Port
         {
             get { return _port; }
             set { _port = value; NotifyPropertyChanged("Port"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _lokalMpi;
+        private int _lokalMpi = 0;
         public int LokalMpi
         {
             get { return _lokalMpi; }
             set { _lokalMpi = value; NotifyPropertyChanged("LokalMpi"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private string _comPort;
+        private string _comPort = "COM1";
         public string ComPort
         {
             get { return _comPort; }
@@ -128,8 +130,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return _routingplcConnectionType; }
             set { _routingplcConnectionType = value; NotifyPropertyChanged("RoutingPLCConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
         }
-        
-        private int _connectionType;
+
+        private int _connectionType = 122;
         public int ConnectionType
         {
             get { return _connectionType; }
@@ -143,7 +145,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _busSpeed = value; NotifyPropertyChanged("BusSpeed"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private bool _netLinkReset;
+        private bool _netLinkReset = false;
         public bool NetLinkReset
         {
             get { return _netLinkReset; }
@@ -169,7 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private bool _routing;
+        private bool _routing = false;
         public bool Routing
         {
             get { return _routing; }
@@ -243,7 +245,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public static String[] GetConfigurationNames()
         {
 #if !IPHONE
-            RegistryKey myConnectionKey = Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
+            if (File.Exists(ConfigurationPathAndFilename))
+            {
+                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
+                
+                Dictionary<String, PLCConnectionConfiguration> Connections = null;
+                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
+                    Connections = ConnectionsDicSer.Deserialize(strm);
+                    //string txt = strm.ReadToEnd();
+                    strm.Close();
+                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                    if (Connections != null)
+                    {
+                        string[] Names = new string[Connections.Count];
+                        Connections.Keys.CopyTo(Names, 0);
+                        return Names;
+                    }
+            }
+            return null;
+
+            RegistryKey myConnectionKey =
+                Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
             return myConnectionKey.GetSubKeyNames();
 #else
 			return null;
@@ -288,12 +310,64 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             this.ReloadConfiguration();
         }
 
+        private static string ConfigurationPathAndFilename
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                    "DotNetSiemensPLCToolBoxLibrary\\Connections.config");
+            }
+        }
 
         public void ReloadConfiguration()
         {
             if (ConfigurationType == LibNodaveConnectionConfigurationType.RegistrySavedConfiguration)
             {
 #if !IPHONE
+
+                if (File.Exists(ConfigurationPathAndFilename))
+                {
+                    DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
+
+                    Dictionary<String, PLCConnectionConfiguration> Connections = null;
+                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
+                    Connections = ConnectionsDicSer.Deserialize(strm);
+                    //string txt = strm.ReadToEnd();
+                    strm.Close();
+                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                    if (Connections != null && Connections.ContainsKey(ConnectionName))
+                    {
+                        PLCConnectionConfiguration akConf = Connections[ConnectionName];
+                        this.EntryPoint = akConf.EntryPoint;
+                        this.CpuRack = akConf.CpuRack;
+                        this.CpuSlot = akConf.CpuSlot;
+                        this.CpuMpi = akConf.CpuMpi;
+                        this.CpuIP = akConf.CpuIP;
+                        this.LokalMpi = akConf.LokalMpi;
+                        this.ComPort = akConf.ComPort;
+                        this.ConnectionType = akConf.ConnectionType;
+                        this.BusSpeed = akConf.BusSpeed;
+                        this.NetLinkReset = akConf.NetLinkReset;
+                        this.ComPortSpeed = akConf.ComPortSpeed;
+                        this.ComPortParity = akConf.ComPortParity;
+                        this.Routing = akConf.Routing;
+                        this.RoutingDestinationRack = akConf.RoutingDestinationRack;
+                        this.RoutingDestinationSlot = akConf.RoutingDestinationSlot;
+                        this.RoutingSubnet1 = akConf.RoutingSubnet1;
+                        this.RoutingSubnet2 = akConf.RoutingSubnet2;
+                        this.RoutingDestination = akConf.RoutingDestination;
+                        this.Port = akConf.Port;
+
+                        this.PLCConnectionType = akConf.PLCConnectionType;
+                        this.RoutingPLCConnectionType = akConf.RoutingPLCConnectionType;
+
+                        this.Timeout = akConf.Timeout;
+                        this.TimeoutIPConnect = akConf.TimeoutIPConnect;
+                    }
+                }
+                return;
+
+
                 RegistryKey myConnectionKey =
                     Registry.CurrentUser.CreateSubKey(
                         "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
@@ -360,6 +434,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (ConfigurationType == LibNodaveConnectionConfigurationType.RegistrySavedConfiguration)
             {
 #if !IPHONE
+
+                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
+                    
+                Dictionary<String, PLCConnectionConfiguration> Connections = null;
+                if (File.Exists(ConfigurationPathAndFilename))
+                {
+                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
+                    Connections = ConnectionsDicSer.Deserialize(strm);
+                    //string txt = strm.ReadToEnd();
+                    strm.Close();
+                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                }
+                if (Connections == null)
+                    Connections = new Dictionary<string, PLCConnectionConfiguration>();
+
+                if (Connections.ContainsKey(ConnectionName))
+                    Connections.Remove(ConnectionName);
+
+                Connections.Add(ConnectionName, this);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(ConfigurationPathAndFilename));
+                StreamWriter sstrm = new StreamWriter(ConfigurationPathAndFilename, false);
+                ConnectionsDicSer.Serialize(Connections, sstrm);
+                //sstrm.Write(stxt);
+                //sstrm.Flush();
+                sstrm.Close();
+
+                return;
+
                 RegistryKey myConnectionKey =
                     Registry.CurrentUser.CreateSubKey(
                         "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);

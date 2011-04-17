@@ -37,7 +37,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             FillEntryPointsList();
 
-            lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
+            string[] Connections = PLCConnectionConfiguration.GetConfigurationNames();
+            if (Connections != null)
+                lstConnectionList.Items.AddRange(Connections);
 
             lblConnectionName.Text = DefaultConnectionName;
             lstConnectionList.Text = DefaultConnectionName;
@@ -431,7 +433,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             object selItem = lstListEntryPoints.SelectedItem;
 
             lstListEntryPoints.Items.Clear();
-            RegistryKey myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames");
+            RegistryKey myConnectionKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames");
             if (myConnectionKey != null) lstListEntryPoints.Items.AddRange(myConnectionKey.GetSubKeyNames());
 
 
@@ -454,16 +456,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 akItem = lstListEntryPoints.SelectedItem.ToString();
 
             RegistryKey myConnectionKey =
-                Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + akItem
+                Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + akItem
                                                    );
-            string tmpDevice = (string)myConnectionKey.GetValue("LogDevice");
+            string tmpDevice = "";
+            if (myConnectionKey != null)
+                tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
 
             string retVal = "";
             if (tmpDevice != "")
             {
                 lblS7OnlineDevice.Text = tmpDevice;
-                myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
-                retVal = (string)myConnectionKey.GetValue("L4_PROTOCOL");
+                myConnectionKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
+                if (myConnectionKey != null)
+                    retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
             }
 
             if (retVal == "TCPIP" || retVal == "ISO")
