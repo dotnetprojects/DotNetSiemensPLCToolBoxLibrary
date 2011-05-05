@@ -27,6 +27,9 @@ using System;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
+    /// <summary>
+    /// This is a Static class to show the Edit Window for the PLCConnectionConfiguration
+    /// </summary>
     public class Configuration
     {
 #if !IPHONE

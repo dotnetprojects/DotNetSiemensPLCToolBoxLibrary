@@ -1,9 +1,9 @@
-﻿<Window x:Class="WPFVarTab.MainWindow"
+﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" 
-        xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary" Style="{DynamicResource GlassStyle}"
-        Title="JFK-WpfVarTab" Height="350" Width="525" Name="ThisWindow" WindowStyle="SingleBorderWindow" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png">
+        xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary" Style="{DynamicResource GlassStyle}"
+        Title="JFK-WpfVarTab" Height="350" Width="525" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png">
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}"
@@ -150,4 +150,4 @@
             </StatusBarItem>
         </StatusBar>
     </Grid>
-</Window>
+</ccl:CustomChromeWindow>

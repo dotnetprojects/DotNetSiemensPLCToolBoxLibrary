@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
+//Todo: Finish AWL to MC7
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class AWLtoMC7

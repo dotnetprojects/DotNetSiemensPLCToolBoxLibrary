@@ -32,11 +32,14 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
-{
+{    
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(PLCConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
-#endif
-    [Serializable]
+#endif   
+    [Serializable]    
+    /// <summary>
+    /// This Class stores the Connection Configuration to a PLC
+    /// </summary>
     public class PLCConnectionConfiguration : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -138,7 +141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _connectionType = value; NotifyPropertyChanged("ConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _busSpeed;
+        private int _busSpeed = 2;
         public int BusSpeed
         {
             get { return _busSpeed; }
@@ -152,14 +155,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _netLinkReset = value; NotifyPropertyChanged("NetLinkReset"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private string _comPortSpeed;
+        private string _comPortSpeed = "38400";
         public string ComPortSpeed
         {
             get { return _comPortSpeed; }
             set { _comPortSpeed = value; NotifyPropertyChanged("ComPortSpeed"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _comPortParity;
+        private int _comPortParity = 1;
         public int ComPortParity
         {
             get { return _comPortParity; }
@@ -213,14 +216,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _routingSubnet2 = value; NotifyPropertyChanged("RoutingSubnet2"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _timeout;
+        private int _timeout = 5000000;
         public int Timeout
         {
             get { return _timeout; }
             set { _timeout = value; NotifyPropertyChanged("Timeout"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _timeoutIpConnect;
+        private int _timeoutIpConnect = 5000;
         public int TimeoutIPConnect
         {
             get { return _timeoutIpConnect; }
@@ -239,7 +242,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public string ObjectAsString
         {
             get { return ToString(); }
-
         }
 
         public static String[] GetConfigurationNames()

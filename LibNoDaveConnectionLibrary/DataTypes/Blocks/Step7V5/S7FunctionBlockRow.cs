@@ -229,7 +229,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             bool isDBcall = false;
             isDBcall = System.Text.RegularExpressions.Regex.IsMatch(this.Parameter, "DB[0-9]");
 
-            //Todo: Look at this command wich registeres are changed
+            //Todo: Look at this commands wich registeres are changed
             if (this.Command == Memnoic.opCALL[MN] || this.Command == Memnoic.opCC[MN] ||
                 this.Command == Memnoic.opENT[MN] || this.Command == Memnoic.opEXP[MN] ||
                 this.Command == Memnoic.opFR[MN] ||

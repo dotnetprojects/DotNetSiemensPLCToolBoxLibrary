@@ -201,7 +201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             if (p3 != "0")
                                                 tmp += "DB" + p3 + ".";
                                             tmp += p4.Substring(2);
-                                            tmp += " BYTE "; //Todo Byte 1 noch auswerten ob typ überhaupt BYTE!
+                                            tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
                                             tmp += p2;
                                         }
                                         newPar.Value = tmp;
@@ -273,25 +273,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             {
                                                 newPar.Value = "FC" + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);
-                                                //newRow.ExtParameter.Add(parnm + "FC" + ak_address.ToString());                                            
                                             }
                                             else if (akRow.DataType == S7DataRowType.BLOCK_SDB)
                                             {
                                                 newPar.Value = "SDB" + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);
-                                                //newRow.ExtParameter.Add(parnm + "SDB" + ak_address.ToString());
                                             }
                                             else if (akRow.DataType == S7DataRowType.TIMER)
                                             {
-                                                newPar.Value = "T" + ak_address.ToString();
+                                                newPar.Value = Memnoic.adT[myOpt.Memnoic] + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);
-                                                //newRow.ExtParameter.Add(parnm + "T" + ak_address.ToString()); //ToDo: Use Memnoic for T
                                             }
                                             else if (akRow.DataType == S7DataRowType.COUNTER)
                                             {
-                                                newPar.Value = "Z" + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                               // newRow.ExtParameter.Add(parnm + "Z" + ak_address.ToString());  //todo use memnoic for Z                                                                                        
+                                                newPar.Value = Memnoic.adZ[myOpt.Memnoic] + ak_address.ToString();
+                                                newRow.CallParameter.Add(newPar);                                                                                      
                                             }
                                             else
                                             {

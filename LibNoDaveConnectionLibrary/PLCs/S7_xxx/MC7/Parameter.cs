@@ -88,11 +88,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 return parameterRoot;
             }
 
-            //Todo: read the complete DB from mc5 code first.
-            //Read the containing UDTs
-            //compare the UDTs with the Structs
-            //if the UDTs and Structs are not Equal, marke the PLCDataRow as TimeStampConflict
-
+            //Todo: read the complete DB from mc5 code first, Read the containing UDTs, compare the UDTs with the Structs, if the UDTs and Structs are not Equal, marke the PLCDataRow as TimeStampConflict
+            
             string[] rows = txt.Split(new string[] {"\n"}, StringSplitOptions.RemoveEmptyEntries);
 
             S7DataRow lastrow = null;
