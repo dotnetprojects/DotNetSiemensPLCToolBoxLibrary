@@ -33,24 +33,27 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 {
-    /*internal*/ public class libnodave {
-/*
-    This struct contains whatever your Operating System uses to hold an in and outgoing 
-    connection to external devices.
-*/
-        public struct daveOSserialType {
+    /*internal*/
+    public class libnodave
+    {
+        /*
+            This struct contains whatever your Operating System uses to hold an in and outgoing 
+            connection to external devices.
+        */
+        public struct daveOSserialType
+        {
             public IntPtr rfd;
             public IntPtr wfd;
         }
-/*
-    Protocol types to be used with new daveInterface:
-*/
-        public static readonly int daveProtoMPI = 0;	/* MPI for S7 300/400 */    
+        /*
+            Protocol types to be used with new daveInterface:
+        */
+        public static readonly int daveProtoMPI = 0;	/* MPI for S7 300/400 */
         public static readonly int daveProtoMPI2 = 1;	/* MPI for S7 300/400, "Andrew's version" */
         public static readonly int daveProtoMPI3 = 2;	/* MPI for S7 300/400, Step 7 Version, experimental */
         public static readonly int daveProtoMPI4 = 3;	/* MPI for S7 300/400, "Andrew's version" with STX */
         public static readonly int daveProtoPPI = 10;	/* PPI for S7 200 */
-    
+
         public static readonly int daveProtoAS511 = 20;	/* S5 via programming interface */
         public static readonly int daveProtoS7online = 50;	/* use s7onlinx.dll for transport */
 
@@ -63,50 +66,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static readonly int daveProtoUserTransport = 255;	/* Libnodave will pass the PDUs of */
         /* S7 Communication to user defined */
         /* call back functions. */
-/*
- *    ProfiBus speed constants. This is the baudrate on MPI network, NOT between adapter and PC:
-*/
+        /*
+         *    ProfiBus speed constants. This is the baudrate on MPI network, NOT between adapter and PC:
+        */
         public static readonly int daveSpeed9k = 0;
-        public static readonly int daveSpeed19k =   1;
-        public static readonly int daveSpeed187k =   2;
-        public static readonly int daveSpeed500k =  3;
-        public static readonly int daveSpeed1500k =  4;
-        public static readonly int daveSpeed45k =    5;
-        public static readonly int daveSpeed93k =   6;
-    
-/*
-    Some function codes (yet unused ones may be incorrect).
-*/
-        public static readonly int daveFuncOpenS7Connection	= 0xF0;
-        public static readonly int daveFuncRead		= 0x04;
-        public static readonly int daveFuncWrite		= 0x05;
-        public static readonly int daveFuncRequestDownload	= 0x1A;
-        public static readonly int daveFuncDownloadBlock	= 0x1B;
-        public static readonly int daveFuncDownloadEnded	= 0x1C;
-        public static readonly int daveFuncStartUpload	= 0x1D;
-        public static readonly int daveFuncUpload		= 0x1E;
-        public static readonly int daveFuncEndUpload	= 0x1F;
-        public static readonly int daveFuncInsertBlock	= 0x28;
-/*
-    S7 specific constants:
-*/
-        public static readonly int daveBlockType_OB  = '8';
-        public static readonly int daveBlockType_DB  = 'A';
+        public static readonly int daveSpeed19k = 1;
+        public static readonly int daveSpeed187k = 2;
+        public static readonly int daveSpeed500k = 3;
+        public static readonly int daveSpeed1500k = 4;
+        public static readonly int daveSpeed45k = 5;
+        public static readonly int daveSpeed93k = 6;
+
+        /*
+            Some function codes (yet unused ones may be incorrect).
+        */
+        public static readonly int daveFuncOpenS7Connection = 0xF0;
+        public static readonly int daveFuncRead = 0x04;
+        public static readonly int daveFuncWrite = 0x05;
+        public static readonly int daveFuncRequestDownload = 0x1A;
+        public static readonly int daveFuncDownloadBlock = 0x1B;
+        public static readonly int daveFuncDownloadEnded = 0x1C;
+        public static readonly int daveFuncStartUpload = 0x1D;
+        public static readonly int daveFuncUpload = 0x1E;
+        public static readonly int daveFuncEndUpload = 0x1F;
+        public static readonly int daveFuncInsertBlock = 0x28;
+        /*
+            S7 specific constants:
+        */
+        public static readonly int daveBlockType_OB = '8';
+        public static readonly int daveBlockType_DB = 'A';
         public static readonly int daveBlockType_SDB = 'B';
-        public static readonly int daveBlockType_FC  = 'C';
+        public static readonly int daveBlockType_FC = 'C';
         public static readonly int daveBlockType_SFC = 'D';
-        public static readonly int daveBlockType_FB  = 'E';
+        public static readonly int daveBlockType_FB = 'E';
         public static readonly int daveBlockType_SFB = 'F';
-/*
-    Use these constants for parameter "area" in daveReadBytes and daveWriteBytes
-*/    
+        /*
+            Use these constants for parameter "area" in daveReadBytes and daveWriteBytes
+        */
         public static readonly int daveSysInfo = 0x3;	/* System info of 200 family */
-        public static readonly int daveSysFlags =  0x5;	/* System flags of 200 family */
-        public static readonly int daveAnaIn =  0x6;	/* analog inputs of 200 family */
-        public static readonly int daveAnaOut =  0x7;	/* analog outputs of 200 family */
+        public static readonly int daveSysFlags = 0x5;	/* System flags of 200 family */
+        public static readonly int daveAnaIn = 0x6;	/* analog inputs of 200 family */
+        public static readonly int daveAnaOut = 0x7;	/* analog outputs of 200 family */
         public static readonly int daveP = 0x80;    	/* direct peripheral access */
-        public static readonly int daveInputs = 0x81;   
-        public static readonly int daveOutputs = 0x82;    
+        public static readonly int daveInputs = 0x81;
+        public static readonly int daveOutputs = 0x82;
         public static readonly int daveFlags = 0x83;
         public static readonly int daveDB = 0x84;		/* data blocks */
         public static readonly int daveDI = 0x85;	/* instance data blocks */
@@ -116,14 +119,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static readonly int daveTimer = 29;	/* S7 timers */
         public static readonly int daveCounter200 = 30;	/* IEC counters (200 family) */
         public static readonly int daveTimer200 = 31;	/* IEC timers (200 family) */
-/**
-    Library specific:
-**/
-/*
-    Result codes. Genarally, 0 means ok, 
-    >0 are results (also errors) reported by the PLC
-    <0 means error reported by library code.
-*/
+        /**
+            Library specific:
+        **/
+        /*
+            Result codes. Genarally, 0 means ok, 
+            >0 are results (also errors) reported by the PLC
+            <0 means error reported by library code.
+        */
         public static readonly int daveResOK = 0;			/* means all ok */
         public static readonly int daveResNoPeripheralAtAddress = 1;	/* CPU tells there is no peripheral at address */
         public static readonly int daveResMultipleBitsNotSupported = 6; /* CPU tells it does not support to read a bit block with a */
@@ -131,15 +134,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static readonly int daveResItemNotAvailable200 = 3;	/* means a a piece of data is not available in the CPU, e.g. */
         /* when trying to read a non existing DB or bit bloc of length<>1 */
         /* This code seems to be specific to 200 family. */
-					    
+
         public static readonly int daveResItemNotAvailable = 10;	/* means a a piece of data is not available in the CPU, e.g. */
         /* when trying to read a non existing DB */
 
         public static readonly int daveAddressOutOfRange = 5;		/* means the data address is beyond the CPUs address range */
         public static readonly int daveWriteDataSizeMismatch = 7;	/* means the write data size doesn't fit item size */
         public static readonly int daveResCannotEvaluatePDU = -123;     /* PDU is not understood by libnodave */
-        public static readonly int daveResCPUNoData = -124; 
-        public static readonly int daveUnknownError = -125; 
+        public static readonly int daveResCPUNoData = -124;
+        public static readonly int daveUnknownError = -125;
         public static readonly int daveEmptyResultError = -126;
         public static readonly int daveEmptyResultSetError = -127;
         public static readonly int daveResUnexpectedFunc = -128;
@@ -147,20 +150,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
         public static readonly int daveResShortPacket = -1024;
         public static readonly int daveResTimeout = -1025;
-/*
-    Error code to message string conversion:
-    Call this function to get an explanation for error codes returned by other functions.
-*/    
-/*
-    [DllImport("libnodave_jfkmod.dll")]
-    public static extern string 
-    daveStrerror(int res);
-*/
+        /*
+            Error code to message string conversion:
+            Call this function to get an explanation for error codes returned by other functions.
+        */
+        /*
+            [DllImport("libnodave_jfkmod.dll")]
+            public static extern string 
+            daveStrerror(int res);
+        */
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveStrerror")]
 #else
-	    [DllImport ("__Internal", EntryPoint="daveStrerror")]
+        [DllImport("__Internal", EntryPoint = "daveStrerror")]
 #endif
         private static extern IntPtr
             _daveStrerror64(int res);
@@ -168,7 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint="daveStrerror" )]
 #else
-	    [DllImport ("__Internal", EntryPoint="daveStrerror")]
+        [DllImport("__Internal", EntryPoint = "daveStrerror")]
 #endif
         private static extern IntPtr
             _daveStrerror32(int res);
@@ -236,22 +239,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return "Kein Fehler";
         }
 
-    
-/*
-    Copy an internal String into an external string buffer. This is needed to interface
-    with Visual Basic. Maybe it is helpful elsewhere, too.
-    C# can well work with C strings.
-*/
-//EXPORTSPEC void DECL2 daveStringCopy(char * intString, char * extString);
-    
-/* 
-    Max number of bytes in a single message. 
-*/
+
+        /*
+            Copy an internal String into an external string buffer. This is needed to interface
+            with Visual Basic. Maybe it is helpful elsewhere, too.
+            C# can well work with C strings.
+        */
+        //EXPORTSPEC void DECL2 daveStringCopy(char * intString, char * extString);
+
+        /* 
+            Max number of bytes in a single message. 
+        */
         public static readonly int daveMaxRawLen = 2048;
 
-/*
-    Some definitions for debugging:
-*/
+        /*
+            Some definitions for debugging:
+        */
         public static readonly int daveDebugRawRead = 0x01;	/* Show the single bytes received */
         public static readonly int daveDebugSpecialChars = 0x02;	/* Show when special chars are read */
         public static readonly int daveDebugRawWrite = 0x04;	/* Show the single bytes written */
@@ -272,21 +275,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static readonly int daveDebugOpen = 0x10000;
 
         public static readonly int daveDebugAll = 0x1ffff;
-/*
-    set and read debug level:
-*/
-	
+        /*
+            set and read debug level:
+        */
+
 #if !IPHONE	
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetDebug")]
 #else
-	    [DllImport ("__Internal"), EntryPoint = "daveSetDebug"]
+        [DllImport("__Internal", EntryPoint = "daveSetDebug")]
 #endif
         public static extern void daveSetDebug64(int newDebugLevel);
 
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetDebug")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "daveSetDebug")]
+        [DllImport("__Internal", EntryPoint = "daveSetDebug")]
 #endif
         public static extern void daveSetDebug32(int newDebugLevel);
 
@@ -302,14 +305,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetDebug")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "daveGetDebug")]
+        [DllImport("__Internal", EntryPoint = "daveGetDebug")]
 #endif
         public static extern int daveGetDebug64();
 
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetDebug")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "daveGetDebug")]
+        [DllImport("__Internal", EntryPoint = "daveGetDebug")]
 #endif
         public static extern int daveGetDebug32();
 
@@ -320,46 +323,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             return daveGetDebug32();
         }
 
-        public static int  daveMPIReachable = 0x30;
-        public static int  daveMPIunused = 0x10;
-        public static int  davePartnerListSize = 126;
-    
-/*
-    This wrapper class is used to avoid dealing with "unsafe" pointers to libnodave
-    internal structures. More wrapper classes are derived from this for the different 
-    structures. Constructors of derived classes will call functions in libnodave that 
-    allocate internal structures via malloc. The functions used return integers by 
-    declaration. These integers are stored in "pointer" In fact, these integers contain 
-    the "bit patterns" of the pointers. The compiler is deceived about the real nature of 
-    the return values. This is ok as long as the pointers are only used in libnodave, 
-    because libnodave routines are assumed to know what they may do with them.
-    The destructor here passes the pointers back to libnodave's daveFree to release memory
-    when the C# object is destructed.
-*/    
-        public class pseudoPointer {
+        public static int daveMPIReachable = 0x30;
+        public static int daveMPIunused = 0x10;
+        public static int davePartnerListSize = 126;
+
+        /*
+            This wrapper class is used to avoid dealing with "unsafe" pointers to libnodave
+            internal structures. More wrapper classes are derived from this for the different 
+            structures. Constructors of derived classes will call functions in libnodave that 
+            allocate internal structures via malloc. The functions used return integers by 
+            declaration. These integers are stored in "pointer" In fact, these integers contain 
+            the "bit patterns" of the pointers. The compiler is deceived about the real nature of 
+            the return values. This is ok as long as the pointers are only used in libnodave, 
+            because libnodave routines are assumed to know what they may do with them.
+            The destructor here passes the pointers back to libnodave's daveFree to release memory
+            when the C# object is destructed.
+        */
+        public class pseudoPointer
+        {
             public IntPtr pointer;
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveFree")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "daveFree")]
+            [DllImport("__Internal", EntryPoint = "daveFree")]
 #endif
             protected static extern int daveFree64(IntPtr p);
 
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveFree")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "daveFree")]
+            [DllImport("__Internal", EntryPoint = "daveFree")]
 #endif
-        protected static extern int daveFree32(IntPtr p);
-	
-            ~pseudoPointer(){
-//	    Console.WriteLine("~pseudoPointer()"+pointer);
+            protected static extern int daveFree32(IntPtr p);
+
+            ~pseudoPointer()
+            {
+                //	    Console.WriteLine("~pseudoPointer()"+pointer);
                 if (IntPtr.Size == 8)
                     daveFree64(pointer);
                 else
                     daveFree32(pointer);
             }
-	
+
         }
 
         public class daveInterface : pseudoPointer
@@ -375,14 +380,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewInterface")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewInterface")]
+            [DllImport("__Internal", EntryPoint = "daveNewInterface")]
 #endif
             private static extern IntPtr daveNewInterface64(daveOSserialType fd, [MarshalAs(UnmanagedType.LPStr)] string name, int localMPI, int useProto, int speed);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewInterface")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewInterface")]
+            [DllImport("__Internal", EntryPoint = "daveNewInterface")]
 #endif
             private static extern IntPtr daveNewInterface32(daveOSserialType fd, [MarshalAs(UnmanagedType.LPStr)] string name, int localMPI, int useProto, int speed);
 
@@ -407,14 +412,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveInitAdapter")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveInitAdapter")]
+            [DllImport("__Internal", EntryPoint = "daveInitAdapter")]
 #endif
             protected static extern int daveInitAdapter64(IntPtr di);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveInitAdapter")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveInitAdapter")]
+            [DllImport("__Internal", EntryPoint = "daveInitAdapter")]
 #endif
             protected static extern int daveInitAdapter32(IntPtr di);
             public int initAdapter()
@@ -427,14 +432,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveListReachablePartners")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveListReachablePartners")]
+            [DllImport("__Internal", EntryPoint = "daveListReachablePartners")]
 #endif
             protected static extern int daveListReachablePartners64(IntPtr di, byte[] buffer);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveListReachablePartners")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveListReachablePartners")]
+            [DllImport("__Internal", EntryPoint = "daveListReachablePartners")]
 #endif
             protected static extern int daveListReachablePartners32(IntPtr di, byte[] buffer);
             public int listReachablePartners(byte[] buffer)
@@ -447,14 +452,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetTimeout")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveSetTimeout")]
+            [DllImport("__Internal", EntryPoint = "daveSetTimeout")]
 #endif
             protected static extern void daveSetTimeout64(IntPtr di, int time);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetTimeout")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveSetTimeout")]
+            [DllImport("__Internal", EntryPoint = "daveSetTimeout")]
 #endif
             protected static extern void daveSetTimeout32(IntPtr di, int time);
             public void setTimeout(int time)
@@ -468,14 +473,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetTimeout")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetTimeout")]
+            [DllImport("__Internal", EntryPoint = "daveGetTimeout")]
 #endif
             protected static extern int daveGetTimeout64(IntPtr di);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetTimeout")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetTimeout")]
+            [DllImport("__Internal", EntryPoint = "daveGetTimeout")]
 #endif
             protected static extern int daveGetTimeout32(IntPtr di);
             public int getTimeout()
@@ -488,14 +493,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveDisconnectAdapter")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveDisconnectAdapter")]
+            [DllImport("__Internal", EntryPoint = "daveDisconnectAdapter")]
 #endif
             protected static extern IntPtr daveDisconnectAdapter64(IntPtr di);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveDisconnectAdapter")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveDisconnectAdapter")]
+            [DllImport("__Internal", EntryPoint = "daveDisconnectAdapter")]
 #endif
             protected static extern IntPtr daveDisconnectAdapter32(IntPtr di);
             public IntPtr disconnectAdapter()
@@ -508,14 +513,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetName")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetName")]
+            [DllImport("__Internal", EntryPoint = "daveGetName")]
 #endif
             protected static extern string daveGetName64(IntPtr di);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetName")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetName")]
+            [DllImport("__Internal", EntryPoint = "daveGetName")]
 #endif
             protected static extern string daveGetName32(IntPtr di);
             public string getName()
@@ -526,19 +531,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
 
         }
-    
-        public class daveConnection:pseudoPointer {
+
+        public class daveConnection : pseudoPointer
+        {
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewConnection")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewConnection")]
+            [DllImport("__Internal", EntryPoint = "daveNewConnection")]
 #endif
             protected static extern IntPtr daveNewConnection64(IntPtr di, int MPI, int rack, int slot);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewConnection")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewConnection")]
+            [DllImport("__Internal", EntryPoint = "daveNewConnection")]
 #endif
             protected static extern IntPtr daveNewConnection32(IntPtr di, int MPI, int rack, int slot);
 
@@ -554,7 +560,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewExtendedConnection")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewExtendedConnection")]
+            [DllImport("__Internal", EntryPoint = "daveNewExtendedConnection")]
 #endif
             protected static extern IntPtr daveNewExtendedConnection64(IntPtr di, byte[] destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, byte[] routingDestination, int routingDestinationIsIP, int ConnectionType, int routingConnectionType);
 
@@ -562,7 +568,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewExtendedConnection")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewExtendedConnection")]
+            [DllImport("__Internal", EntryPoint = "daveNewExtendedConnection")]
 #endif
             protected static extern IntPtr daveNewExtendedConnection32(IntPtr di, byte[] destination, int DestinationIsIP, int rack, int slot, int routing, int routingSubnetFirst, int routingSubnetSecond, int routingRack, int routingSlot, byte[] routingDestination, int routingDestinationIsIP, int ConnectionType, int routingConnectionType);
 
@@ -574,12 +580,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 int myDestinationIsIP = 0;
                 if (ip.Length < 4 || !DestinationIsIP)
                 {
-                    myDestination = new byte[] {(byte) Convert.ToInt32(MPI)};
+                    myDestination = new byte[] { (byte)Convert.ToInt32(MPI) };
                 }
                 else
                 {
                     myDestinationIsIP = 1;
-                    myDestination = new byte[] {(byte) Convert.ToInt32(ip[0]), (byte) Convert.ToInt32(ip[1]), (byte) Convert.ToInt32(ip[2]), (byte) Convert.ToInt32(ip[3])};
+                    myDestination = new byte[] { (byte)Convert.ToInt32(ip[0]), (byte)Convert.ToInt32(ip[1]), (byte)Convert.ToInt32(ip[2]), (byte)Convert.ToInt32(ip[3]) };
                 }
                 ip = routingDestination.Split('.');
                 byte[] myRoutingDestination = new byte[4];
@@ -587,8 +593,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 if (ip.Length < 4)
                 {
                     try
-                    { myRoutingDestination = new byte[] {(byte) Convert.ToInt32(routingDestination)}; }
-                    catch(Exception)
+                    { myRoutingDestination = new byte[] { (byte)Convert.ToInt32(routingDestination) }; }
+                    catch (Exception)
                     { }
                 }
                 else
@@ -596,7 +602,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     routingDestinationIsIP = 1;
                     string[] rip = routingDestination.Split('.');
                     if (rip.Length == 4)
-                        myRoutingDestination = new byte[] {(byte) Convert.ToInt32(rip[0]), (byte) Convert.ToInt32(rip[1]), (byte) Convert.ToInt32(rip[2]), (byte) Convert.ToInt32(rip[3])};
+                        myRoutingDestination = new byte[] { (byte)Convert.ToInt32(rip[0]), (byte)Convert.ToInt32(rip[1]), (byte)Convert.ToInt32(rip[2]), (byte)Convert.ToInt32(rip[3]) };
                 }
                 if (IntPtr.Size == 8)
                     pointer = daveNewExtendedConnection64(di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond, routingRack, routingSlot, myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
@@ -604,24 +610,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     pointer = daveNewExtendedConnection32(di.pointer, myDestination, myDestinationIsIP, rack, slot, Convert.ToInt32(routing), routingSubnetFirst, routingSubnetSecond, routingRack, routingSlot, myRoutingDestination, routingDestinationIsIP, PLCConnectionType, routingPLCConnectionType);
             }
 
-/* This wa here to test inheritance
-	~daveConnection(){
-	    Console.WriteLine("~daveConnection()"+pointer);
-	    daveFree(pointer);
-	    daveFree(pointer);
-	}
-*/
+            /* This wa here to test inheritance
+                ~daveConnection(){
+                    Console.WriteLine("~daveConnection()"+pointer);
+                    daveFree(pointer);
+                    daveFree(pointer);
+                }
+            */
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveConnectPLC")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveConnectPLC")]
+            [DllImport("__Internal", EntryPoint = "daveConnectPLC")]
 #endif
             protected static extern int daveConnectPLC64(IntPtr dc);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveConnectPLC")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveConnectPLC")]
+            [DllImport("__Internal", EntryPoint = "daveConnectPLC")]
 #endif
             protected static extern int daveConnectPLC32(IntPtr dc);
             public int connectPLC()
@@ -635,14 +641,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveDisconnectPLC")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveDisconnectPLC")]
+            [DllImport("__Internal", EntryPoint = "daveDisconnectPLC")]
 #endif
             protected static extern int daveDisconnectPLC64(IntPtr dc);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveDisconnectPLC")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveDisconnectPLC")]
+            [DllImport("__Internal", EntryPoint = "daveDisconnectPLC")]
 #endif
             protected static extern int daveDisconnectPLC32(IntPtr dc);
             public int disconnectPLC()
@@ -655,14 +661,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveReadBytes")]
+            [DllImport("__Internal", EntryPoint = "daveReadBytes")]
 #endif
             protected static extern int daveReadBytes64(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveReadBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveReadBytes")]
+            [DllImport("__Internal", EntryPoint = "daveReadBytes")]
 #endif
             protected static extern int daveReadBytes32(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             public int readBytes(int area, int DBnumber, int start, int len, byte[] buffer)
@@ -708,14 +714,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadBits")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveReadBits")]
+            [DllImport("__Internal", EntryPoint = "daveReadBits")]
 #endif
             protected static extern int daveReadBits64(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveReadBits")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveReadBits")]
+            [DllImport("__Internal", EntryPoint = "daveReadBits")]
 #endif
             protected static extern int daveReadBits32(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             public int readBits(int area, int DBnumber, int start, int len, byte[] buffer)
@@ -728,14 +734,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveWriteBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveWriteBytes")]
+            [DllImport("__Internal", EntryPoint = "daveWriteBytes")]
 #endif
             protected static extern int daveWriteBytes64(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveWriteBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveWriteBytes")]
+            [DllImport("__Internal", EntryPoint = "daveWriteBytes")]
 #endif
             protected static extern int daveWriteBytes32(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             public int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer)
@@ -748,14 +754,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveWriteManyBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveWriteManyBytes")]
+            [DllImport("__Internal", EntryPoint = "daveWriteManyBytes")]
 #endif
             protected static extern int daveWriteManyBytes64(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveWriteManyBytes")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveWriteManyBytes")]
+            [DllImport("__Internal", EntryPoint = "daveWriteManyBytes")]
 #endif
             protected static extern int daveWriteManyBytes32(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             public int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer)
@@ -768,14 +774,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveWriteBits")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveWriteBits")]
+            [DllImport("__Internal", EntryPoint = "daveWriteBits")]
 #endif
             protected static extern int daveWriteBits64(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveWriteBits")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveWriteBits")]
+            [DllImport("__Internal", EntryPoint = "daveWriteBits")]
 #endif
             protected static extern int daveWriteBits32(IntPtr dc, int area, int DBnumber, int start, int len, byte[] buffer);
             public int writeBits(int area, int DBnumber, int start, int len, byte[] buffer)
@@ -788,14 +794,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveBuildAndSendPDU")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveBuildAndSendPDU")]
+            [DllImport("__Internal", EntryPoint = "daveBuildAndSendPDU")]
 #endif
             protected static extern int daveBuildAndSendPDU64(IntPtr dc, IntPtr p, byte[] b1, int l1, byte[] b2, int l2);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveBuildAndSendPDU")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveBuildAndSendPDU")]
+            [DllImport("__Internal", EntryPoint = "daveBuildAndSendPDU")]
 #endif
             protected static extern int daveBuildAndSendPDU32(IntPtr dc, IntPtr p, byte[] b1, int l1, byte[] b2, int l2);
             public int daveBuildAndSendPDU(PDU myPDU, byte[] Parameter, byte[] Data)
@@ -812,14 +818,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetU8")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetU8")]
+            [DllImport("__Internal", EntryPoint = "daveGetU8")]
 #endif
             protected static extern int daveGetU8_64(IntPtr dc);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetU8")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetU8")]
+            [DllImport("__Internal", EntryPoint = "daveGetU8")]
 #endif
             protected static extern int daveGetU8_32(IntPtr dc);
             public int getU8()
@@ -832,14 +838,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetAnswLen")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveGetAnswLen")]
+            [DllImport("__Internal", EntryPoint = "daveGetAnswLen")]
 #endif
             protected static extern int daveGetAnswLen64(IntPtr dc);
-    
+
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetAnswLen")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveGetAnswLen")]
+            [DllImport("__Internal", EntryPoint = "daveGetAnswLen")]
 #endif
             protected static extern int daveGetAnswLen32(IntPtr dc);
             public int getAnswLen()
@@ -852,14 +858,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetMaxPDULen")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetMaxPDULen")]
+            [DllImport("__Internal", EntryPoint = "daveGetMaxPDULen")]
 #endif
             protected static extern int daveGetMaxPDULen64(IntPtr dc);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetMaxPDULen")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetMaxPDULen")]
+            [DllImport("__Internal", EntryPoint = "daveGetMaxPDULen")]
 #endif
             protected static extern int daveGetMaxPDULen32(IntPtr dc);
             public int getMaxPDULen()
@@ -872,14 +878,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePrepareReadRequest")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "davePrepareReadRequest")]
+            [DllImport("__Internal", EntryPoint = "davePrepareReadRequest")]
 #endif
             protected static extern int davePrepareReadRequest64(IntPtr dc, IntPtr p);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePrepareReadRequest")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "davePrepareReadRequest")]
+            [DllImport("__Internal", EntryPoint = "davePrepareReadRequest")]
 #endif
             protected static extern int davePrepareReadRequest32(IntPtr dc, IntPtr p);
             public PDU prepareReadRequest()
@@ -895,14 +901,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePrepareWriteRequest")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "davePrepareWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "davePrepareWriteRequest")]
 #endif
             protected static extern int davePrepareWriteRequest64(IntPtr dc, IntPtr p);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePrepareWriteRequest")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "davePrepareWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "davePrepareWriteRequest")]
 #endif
             protected static extern int davePrepareWriteRequest32(IntPtr dc, IntPtr p);
             public PDU prepareWriteRequest()
@@ -918,14 +924,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveExecReadRequest")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveExecReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveExecReadRequest")]
 #endif
             protected static extern int daveExecReadRequest64(IntPtr dc, IntPtr p, IntPtr rl);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveExecReadRequest")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveExecReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveExecReadRequest")]
 #endif
             protected static extern int daveExecReadRequest32(IntPtr dc, IntPtr p, IntPtr rl);
             public int execReadRequest(PDU p, resultSet rl)
@@ -939,14 +945,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveExecWriteRequest")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveExecWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveExecWriteRequest")]
 #endif
             protected static extern int daveExecWriteRequest64(IntPtr dc, IntPtr p, IntPtr rl);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveExecWriteRequest")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveExecWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveExecWriteRequest")]
 #endif
             protected static extern int daveExecWriteRequest32(IntPtr dc, IntPtr p, IntPtr rl);
             public int execWriteRequest(PDU p, resultSet rl)
@@ -959,14 +965,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveUseResult")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveUseResult")]
+            [DllImport("__Internal", EntryPoint = "daveUseResult")]
 #endif
             protected static extern int daveUseResult64(IntPtr dc, IntPtr rs, int number, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveUseResult")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveUseResult")]
+            [DllImport("__Internal", EntryPoint = "daveUseResult")]
 #endif
             protected static extern int daveUseResult32(IntPtr dc, IntPtr rs, int number, byte[] buffer);
             public int useResult(resultSet rs, int number, byte[] buffer)
@@ -980,15 +986,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadSZL")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveReadSZL")]
+            [DllImport("__Internal", EntryPoint = "daveReadSZL")]
 #endif
             protected static extern int daveReadSZL64(IntPtr dc, int id, int index, byte[] buffer, int len);
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveReadSZL")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveReadSZL")]
+            [DllImport("__Internal", EntryPoint = "daveReadSZL")]
 #endif
-            protected static extern int daveReadSZL32(IntPtr dc,int id,int index,byte[] buffer, int len);
+            protected static extern int daveReadSZL32(IntPtr dc, int id, int index, byte[] buffer, int len);
 
             public int readSZL(int id, int index, byte[] buffer)
             {
@@ -1000,13 +1006,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveStart")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveStart")]
+            [DllImport("__Internal", EntryPoint = "daveStart")]
 #endif
             protected static extern int daveStart64(IntPtr dc);
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveStart")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveStart")]
+            [DllImport("__Internal", EntryPoint = "daveStart")]
 #endif
             protected static extern int daveStart32(IntPtr dc);
 
@@ -1021,13 +1027,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveStop")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveStop")]
+            [DllImport("__Internal", EntryPoint = "daveStop")]
 #endif
-            protected static extern int daveStop64(IntPtr dc); 
+            protected static extern int daveStop64(IntPtr dc);
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveStop")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveStop")]
+            [DllImport("__Internal", EntryPoint = "daveStop")]
 #endif
             protected static extern int daveStop32(IntPtr dc);
 
@@ -1042,13 +1048,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveForce200")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveForce200")]
+            [DllImport("__Internal", EntryPoint = "daveForce200")]
 #endif
             protected static extern int daveForce200_64(IntPtr dc, int area, int start, int val);
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveForce200")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveForce200")]
+            [DllImport("__Internal", EntryPoint = "daveForce200")]
 #endif
             protected static extern int daveForce200_32(IntPtr dc, int area, int start, int val);
 
@@ -1064,14 +1070,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveForceDisconnectIBH")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveForceDisconnectIBH")]
+            [DllImport("__Internal", EntryPoint = "daveForceDisconnectIBH")]
 #endif
             protected static extern int daveForceDisconnectIBH64(IntPtr dc, int src, int dest, int MPI);
-	
+
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveForceDisconnectIBH")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveForceDisconnectIBH")]
+            [DllImport("__Internal", EntryPoint = "daveForceDisconnectIBH")]
 #endif
             protected static extern int daveForceDisconnectIBH32(IntPtr dc, int src, int dest, int MPI);
             public int forceDisconnectIBH(int src, int dest, int MPI)
@@ -1085,14 +1091,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveResetIBH")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveResetIBH")]
+            [DllImport("__Internal", EntryPoint = "daveResetIBH")]
 #endif
             protected static extern int daveResetIBH64(IntPtr dc);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveResetIBH")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveResetIBH")]
+            [DllImport("__Internal", EntryPoint = "daveResetIBH")]
 #endif
             protected static extern int daveResetIBH32(IntPtr dc);
 
@@ -1107,14 +1113,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetResponse")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveGetResponse")]
+            [DllImport("__Internal", EntryPoint = "daveGetResponse")]
 #endif
             protected static extern int daveGetResponse64(IntPtr dc);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetResponse")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetResponse")]
+            [DllImport("__Internal", EntryPoint = "daveGetResponse")]
 #endif
             protected static extern int daveGetResponse32(IntPtr dc);
             public int getGetResponse()
@@ -1128,14 +1134,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSendMessage")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveSendMessage")]
+            [DllImport("__Internal", EntryPoint = "daveSendMessage")]
 #endif
             protected static extern int daveSendMessage64(IntPtr dc, IntPtr p);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSendMessage")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveSendMessage")]
+            [DllImport("__Internal", EntryPoint = "daveSendMessage")]
 #endif
             protected static extern int daveSendMessage32(IntPtr dc, IntPtr p);
             public int getMessage(PDU p)
@@ -1149,14 +1155,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetProgramBlock")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveGetProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "daveGetProgramBlock")]
 #endif
             protected static extern int daveGetProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetProgramBlock")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "daveGetProgramBlock")]
 #endif
             protected static extern int daveGetProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
             public int getProgramBlock(int blockType, int number, byte[] buffer, ref int length)
@@ -1170,14 +1176,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePutProgramBlock")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "davePutProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
             protected static extern int davePutProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutProgramBlock")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "davePutProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
             protected static extern int davePutProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
             public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
@@ -1185,20 +1191,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 if (IntPtr.Size == 8)
                     return davePutProgramBlock64(pointer, blockType, number, buffer, ref length);
                 else
-                    return davePutProgramBlock32(pointer, blockType, number, buffer, ref length);                     
+                    return davePutProgramBlock32(pointer, blockType, number, buffer, ref length);
             }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveDeleteProgramBlock")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveDeleteProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "daveDeleteProgramBlock")]
 #endif
             protected static extern int daveDeleteProgramBlock64(IntPtr dc, int blockType, int number);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveDeleteProgramBlock")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveDeleteProgramBlock")]
+            [DllImport("__Internal", EntryPoint = "daveDeleteProgramBlock")]
 #endif
             protected static extern int daveDeleteProgramBlock32(IntPtr dc, int blockType, int number);
             public int deleteProgramBlock(int blockType, int number)
@@ -1212,14 +1218,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveListBlocksOfType")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveListBlocksOfType")]
+            [DllImport("__Internal", EntryPoint = "daveListBlocksOfType")]
 #endif
             protected static extern int daveListBlocksOfType64(IntPtr dc, int blockType, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveListBlocksOfType")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveListBlocksOfType")]
+            [DllImport("__Internal", EntryPoint = "daveListBlocksOfType")]
 #endif
             protected static extern int daveListBlocksOfType32(IntPtr dc, int blockType, byte[] buffer);
             public int ListBlocksOfType(int blockType, byte[] buffer)
@@ -1233,28 +1239,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveSetPLCTime")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveSetPLCTime")]
+            [DllImport("__Internal", EntryPoint = "daveSetPLCTime")]
 #endif
             protected static extern int daveSetPLCTime64(IntPtr dc, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveSetPLCTime")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveSetPLCTime")]
+            [DllImport("__Internal", EntryPoint = "daveSetPLCTime")]
 #endif
             protected static extern int daveSetPLCTime32(IntPtr dc, byte[] buffer);
 
             public int daveSetPLCTime(DateTime tm)
             {
-                byte[] buffer = new byte[] {0x00, 0x19, 0x05, 0x08, 0x23, 0x04, 0x10, 0x23, 0x67, 0x83,};
-                putBCD8at(buffer, 2, tm.Year%100);
+                byte[] buffer = new byte[] { 0x00, 0x19, 0x05, 0x08, 0x23, 0x04, 0x10, 0x23, 0x67, 0x83, };
+                putBCD8at(buffer, 2, tm.Year % 100);
                 putBCD8at(buffer, 3, tm.Month);
                 putBCD8at(buffer, 4, tm.Day);
                 putBCD8at(buffer, 5, tm.Hour);
                 putBCD8at(buffer, 6, tm.Minute);
                 putBCD8at(buffer, 7, tm.Second);
-                putBCD8at(buffer, 8, tm.Millisecond/100);
-                putBCD8at(buffer, 9, (tm.Millisecond%100) << 4);
+                putBCD8at(buffer, 8, tm.Millisecond / 100);
+                putBCD8at(buffer, 9, (tm.Millisecond % 100) << 4);
 
                 if (IntPtr.Size == 8)
                     return daveSetPLCTime64(pointer, buffer);
@@ -1265,14 +1271,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadPLCTime")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveReadPLCTime")]
+            [DllImport("__Internal", EntryPoint = "daveReadPLCTime")]
 #endif
             protected static extern int daveReadPLCTime64(IntPtr dc);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveReadPLCTime")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveReadPLCTime")]
+            [DllImport("__Internal", EntryPoint = "daveReadPLCTime")]
 #endif
             protected static extern int daveReadPLCTime32(IntPtr dc);
             public DateTime daveReadPLCTime()
@@ -1301,7 +1307,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 tmp[0] = Convert.ToByte(getU8());
                 second = getBCD8from(tmp, 0);
                 tmp[0] = Convert.ToByte(getU8());
-                millisecond = getBCD8from(tmp, 0)*10;
+                millisecond = getBCD8from(tmp, 0) * 10;
                 tmp[0] = Convert.ToByte(getU8());
                 tmp[0] = Convert.ToByte(tmp[0] >> 4);
                 millisecond += getBCD8from(tmp, 0);
@@ -1313,25 +1319,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetPDUData")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveGetPDUData")]
+            [DllImport("__Internal", EntryPoint = "daveGetPDUData")]
 #endif
             protected static extern int daveGetPDUData64(IntPtr dc, IntPtr p, byte[] data, ref int ldata, byte[] param, ref int lparam);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetPDUData")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveGetPDUData")]
+            [DllImport("__Internal", EntryPoint = "daveGetPDUData")]
 #endif
             protected static extern int daveGetPDUData32(IntPtr dc, IntPtr p, byte[] data, ref int ldata, byte[] param, ref int lparam);
 
             public int daveGetPDUData(PDU myPDU, out byte[] data, out byte[] param)
             {
-                byte[] tmp1=new byte[65536];
-                byte[] tmp2=new byte[65536];
+                byte[] tmp1 = new byte[65536];
+                byte[] tmp2 = new byte[65536];
                 int ltmp1 = 0;
                 int ltmp2 = 0;
                 int res = 0;
-                if (IntPtr.Size==8)
+                if (IntPtr.Size == 8)
                     res = daveGetPDUData64(pointer, myPDU.pointer, tmp1, ref ltmp1, tmp2, ref ltmp2);
                 else
                     res = daveGetPDUData32(pointer, myPDU.pointer, tmp1, ref ltmp1, tmp2, ref ltmp2);
@@ -1345,14 +1351,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "_daveSetupReceivedPDU")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
+            [DllImport("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
 #endif
             private static extern int _daveSetupReceivedPDU64(IntPtr dc, IntPtr p);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "_daveSetupReceivedPDU")]
 #else
-	[DllImport ("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
+            [DllImport("__Internal", EntryPoint = "_daveSetupReceivedPDU")]
 #endif
             private static extern int _daveSetupReceivedPDU32(IntPtr dc, IntPtr p);
 
@@ -1369,7 +1375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     _daveSetupReceivedPDU64(pointer, myPDU.pointer);
                 else
                     _daveSetupReceivedPDU32(pointer, myPDU.pointer);
-                
+
                 byte[] tmp1 = new byte[65536];
                 byte[] tmp2 = new byte[65536];
                 int ltmp1 = 0;
@@ -1394,14 +1400,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewPDU")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveNewPDU")]
+            [DllImport("__Internal", EntryPoint = "daveNewPDU")]
 #endif
             protected static extern IntPtr daveNewPDU64();
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewPDU")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveNewPDU")]
+            [DllImport("__Internal", EntryPoint = "daveNewPDU")]
 #endif
             protected static extern IntPtr daveNewPDU32();
 
@@ -1416,14 +1422,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddVarToReadRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
 #endif
             protected static extern void daveAddVarToReadRequest64(IntPtr p, int area, int DBnum, int start, int bytes);
-            
+
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddVarToReadRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
 #endif
             protected static extern void daveAddVarToReadRequest32(IntPtr p, int area, int DBnum, int start, int bytes);
             public void addVarToReadRequest(int area, int DBnum, int start, int bytes)
@@ -1437,14 +1443,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddBitVarToReadRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddBitVarToReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddBitVarToReadRequest")]
 #endif
             protected static extern void daveAddBitVarToReadRequest64(IntPtr p, int area, int DBnum, int start, int bytes);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddBitVarToReadRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddBitVarToReadRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddBitVarToReadRequest")]
 #endif
             protected static extern void daveAddBitVarToReadRequest32(IntPtr p, int area, int DBnum, int start, int bytes);
             public void addBitVarToReadRequest(int area, int DBnum, int start, int bytes)
@@ -1458,14 +1464,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddVarToWriteRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddVarToWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddVarToWriteRequest")]
 #endif
             protected static extern void daveAddVarToWriteRequest64(IntPtr p, int area, int DBnum, int start, int bytes, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddVarToWriteRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddVarToWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddVarToWriteRequest")]
 #endif
             protected static extern void daveAddVarToWriteRequest32(IntPtr p, int area, int DBnum, int start, int bytes, byte[] buffer);
             public void addVarToWriteRequest(int area, int DBnum, int start, int bytes, byte[] buffer)
@@ -1479,14 +1485,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddBitVarToWriteRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddBitVarToWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddBitVarToWriteRequest")]
 #endif
             protected static extern void daveAddBitVarToWriteRequest64(IntPtr p, int area, int DBnum, int start, int bytes, byte[] buffer);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddBitVarToWriteRequest")]
 #else
-		    [DllImport ("__Internal", EntryPoint = "daveAddBitVarToWriteRequest")]
+            [DllImport("__Internal", EntryPoint = "daveAddBitVarToWriteRequest")]
 #endif
             protected static extern void daveAddBitVarToWriteRequest32(IntPtr p, int area, int DBnum, int start, int bytes, byte[] buffer);
             public void addBitVarToWriteRequest(int area, int DBnum, int start, int bytes, byte[] buffer)
@@ -1495,7 +1501,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     daveAddBitVarToWriteRequest64(pointer, area, DBnum, start, bytes, buffer);
                 else
                     daveAddBitVarToWriteRequest32(pointer, area, DBnum, start, bytes, buffer);
-            }    
+            }
         } // class PDU
 
         public class resultSet : pseudoPointer
@@ -1504,14 +1510,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveNewResultSet")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewResultSet")]
+            [DllImport("__Internal", EntryPoint = "daveNewResultSet")]
 #endif
             protected static extern IntPtr daveNewResultSet64();
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveNewResultSet")]
 #else
-	        [DllImport ("__Internal", EntryPoint = "daveNewResultSet")]
+            [DllImport("__Internal", EntryPoint = "daveNewResultSet")]
 #endif
             protected static extern IntPtr daveNewResultSet32();
             public resultSet()
@@ -1525,14 +1531,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveFreeResults")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveFreeResults")]
+            [DllImport("__Internal", EntryPoint = "daveFreeResults")]
 #endif
             protected static extern void daveFreeResults64(IntPtr rs);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveFreeResults")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveFreeResults")]
+            [DllImport("__Internal", EntryPoint = "daveFreeResults")]
 #endif
             protected static extern void daveFreeResults32(IntPtr rs);
             ~resultSet()
@@ -1546,19 +1552,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetErrorOfResult")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveGetErrorOfResult")]
+            [DllImport("__Internal", EntryPoint = "daveGetErrorOfResult")]
 #endif
             protected static extern int daveGetErrorOfResult64(IntPtr rs, int number);
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetErrorOfResult")]
 #else
-	[DllImport ("__Internal", EntryPoint = "daveGetErrorOfResult")]
+            [DllImport("__Internal", EntryPoint = "daveGetErrorOfResult")]
 #endif
             protected static extern int daveGetErrorOfResult32(IntPtr rs, int number);
             public int getErrorOfResult(int number)
             {
-                if (IntPtr.Size==8)
+                if (IntPtr.Size == 8)
                     return daveGetErrorOfResult64(pointer, number);
                 return daveGetErrorOfResult32(pointer, number);
             }
@@ -1568,14 +1574,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "setPort")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "setPort")]
+        [DllImport("__Internal", EntryPoint = "setPort")]
 #endif
         public static extern IntPtr setPort64([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "setPort")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "setPort")]
+        [DllImport("__Internal", EntryPoint = "setPort")]
 #endif
         public static extern IntPtr setPort32([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
 
@@ -1589,7 +1595,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "openSocket")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "openSocket")]
+        [DllImport("__Internal", EntryPoint = "openSocket")]
 #endif
         protected static extern IntPtr openSocket64(
             int port,
@@ -1599,13 +1605,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE	
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "openSocket")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "openSocket")]
+        [DllImport("__Internal", EntryPoint = "openSocket")]
 #endif
         protected static extern IntPtr openSocket32(
             int port,
             [MarshalAs(UnmanagedType.LPStr)] string portName
             );
-        
+
         public static IntPtr openSocket(int port, string portName)
         {
             if (IntPtr.Size == 8)
@@ -1620,28 +1626,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             int hwnd
             );
 #else
-	public static int openS7online(string portName, int hwnd   ) {return 0; }
+        public static int openS7online(string portName, int hwnd) { return 0; }
 #endif
-    
+
 #if !IPHONE
         [DllImport("S7onlinx.dll" /*, PreserveSig=false */ )]
         private static extern int SCP_get_errno();
 #else
-	private static int SCP_get_errno() { return 0; }
+        private static int SCP_get_errno() { return 0; }
 #endif
-    
+
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "closePort")]
 #else
-	[DllImport ("__Internal",EntryPoint = "closePort")]
+        [DllImport("__Internal", EntryPoint = "closePort")]
 #endif
         protected static extern int closePort64(IntPtr port);
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "closePort")]
 #else
-	[DllImport ("__Internal",EntryPoint = "closePort")]
+        [DllImport("__Internal", EntryPoint = "closePort")]
 #endif
         protected static extern int closePort32(IntPtr port);
 
@@ -1655,14 +1661,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "closeSocket")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "closeSocket")]
+        [DllImport("__Internal", EntryPoint = "closeSocket")]
 #endif
         protected static extern int closeSocket64(IntPtr port);
-    
+
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "closeSocket")]
 #else
-	    [DllImport ("__Internal", EntryPoint = "closeSocket")]
+        [DllImport("__Internal", EntryPoint = "closeSocket")]
 #endif
         protected static extern int closeSocket32(IntPtr port);
 
@@ -1677,9 +1683,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         [DllImport("libnodave_jfkmod.dll" /*, PreserveSig=false */)]
         public static extern int closeS7online(IntPtr port);
 #else
-	    public static int closeS7online(int port   ) {return 0; }
-#endif        
-        
+        public static int closeS7online(IntPtr port) { return 0; }
+#endif
+
         public static byte getU8from(byte[] b, int pos)
         {
             return Convert.ToByte(b[pos]);
@@ -1689,19 +1695,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         {
 
             if (b[pos] > 127)
-                return Convert.ToSByte((256 - b[pos])*-1);
+                return Convert.ToSByte((256 - b[pos]) * -1);
             else
                 return Convert.ToSByte(b[pos]);
         }
 
-        public static short getS16from(byte[] b, int pos) {
-            if (BitConverter.IsLittleEndian) {
-                byte[] b1=new byte[2];
-                b1[1]=b[pos+0];
-                b1[0]=b[pos+1];
+        public static short getS16from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[2];
+                b1[1] = b[pos + 0];
+                b1[0] = b[pos + 1];
                 return BitConverter.ToInt16(b1, 0);
-            }    
-            else 
+            }
+            else
                 return BitConverter.ToInt16(b, pos);
         }
 
@@ -1716,15 +1724,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             else
                 Array.Copy(bytes, 0, b, pos, 2);
         }
-    
-        public static ushort getU16from(byte[] b, int pos) {
-            if (BitConverter.IsLittleEndian) {
-                byte[] b1=new byte[2];
-                b1[1]=b[pos+0];
-                b1[0]=b[pos+1];
+
+        public static ushort getU16from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[2];
+                b1[1] = b[pos + 0];
+                b1[0] = b[pos + 1];
                 return BitConverter.ToUInt16(b1, 0);
-            }    
-            else 
+            }
+            else
                 return BitConverter.ToUInt16(b, pos);
         }
 
@@ -1739,17 +1749,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             else
                 Array.Copy(bytes, 0, b, pos, 2);
         }
-        
-        public static int getS32from(byte[] b, int pos) {
-            if (BitConverter.IsLittleEndian) {
-                byte[] b1=new byte[4];
-                b1[3]=b[pos];
-                b1[2]=b[pos+1];
-                b1[1]=b[pos+2];
-                b1[0]=b[pos+3];
+
+        public static int getS32from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[4];
+                b1[3] = b[pos];
+                b1[2] = b[pos + 1];
+                b1[1] = b[pos + 2];
+                b1[0] = b[pos + 3];
                 return BitConverter.ToInt32(b1, 0);
-            }    
-            else 
+            }
+            else
                 return BitConverter.ToInt32(b, pos);
         }
 
@@ -1766,17 +1778,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             else
                 Array.Copy(bytes, 0, b, pos, 4);
         }
-    
-        public static uint getU32from(byte[] b, int pos) {
-            if (BitConverter.IsLittleEndian) {
-                byte[] b1=new byte[4];
-                b1[3]=b[pos];
-                b1[2]=b[pos+1];
-                b1[1]=b[pos+2];
-                b1[0]=b[pos+3];
+
+        public static uint getU32from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[4];
+                b1[3] = b[pos];
+                b1[2] = b[pos + 1];
+                b1[1] = b[pos + 2];
+                b1[0] = b[pos + 3];
                 return BitConverter.ToUInt32(b1, 0);
-            }    
-            else 
+            }
+            else
                 return BitConverter.ToUInt32(b, pos);
         }
 
@@ -1797,9 +1811,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static void putDateTimeat(byte[] b, int pos, DateTime mydatetime)
         {
             int tmp;
-        
-            tmp = mydatetime.Year/100;
-            tmp = tmp*100;
+
+            tmp = mydatetime.Year / 100;
+            tmp = tmp * 100;
             tmp = mydatetime.Year - tmp;
             b[pos] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
@@ -1821,7 +1835,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             tmp = mydatetime.Millisecond;
             b[pos + 6] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
-            tmp = (int) mydatetime.DayOfWeek;
+            tmp = (int)mydatetime.DayOfWeek;
             b[pos + 7] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
         }
 
@@ -1829,25 +1843,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         {
             byte basis;
             int wert;
-            if (value.TotalMilliseconds <= 999*10)
+            if (value.TotalMilliseconds <= 999 * 10)
             {
                 basis = 0;
-                wert = Convert.ToInt32(value.TotalMilliseconds)/10;
+                wert = Convert.ToInt32(value.TotalMilliseconds) / 10;
             }
-            else if (value.TotalMilliseconds <= 999*100)
+            else if (value.TotalMilliseconds <= 999 * 100)
             {
                 basis = 1;
-                wert = Convert.ToInt32(value.TotalMilliseconds)/100;
+                wert = Convert.ToInt32(value.TotalMilliseconds) / 100;
             }
-            else if (value.TotalMilliseconds <= 999*1000)
+            else if (value.TotalMilliseconds <= 999 * 1000)
             {
                 basis = 2;
-                wert = Convert.ToInt32(value.TotalMilliseconds)/1000;
+                wert = Convert.ToInt32(value.TotalMilliseconds) / 1000;
             }
-            else if (value.TotalMilliseconds <= 999*10000)
+            else if (value.TotalMilliseconds <= 999 * 10000)
             {
                 basis = 3;
-                wert = Convert.ToInt32(value.TotalMilliseconds)/10000;
+                wert = Convert.ToInt32(value.TotalMilliseconds) / 10000;
             }
             else
             {
@@ -1857,9 +1871,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
             int p1, p2, p3;
 
-            p3 = (wert/100);
-            p2 = ((wert - p3*100)/10);
-            p1 = (wert - p3*100 - p2*10);
+            p3 = (wert / 100);
+            p2 = ((wert - p3 * 100) / 10);
+            p1 = (wert - p3 * 100 - p2 * 10);
 
             b[pos] = Convert.ToByte(basis << 4 | p3);
             b[pos + 1] = Convert.ToByte((p2 << 4 | p1));
@@ -1915,8 +1929,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         /// <param name="length"></param>
         public static void putS7Stringat(byte[] b, int pos, string value, int length)
         {
-            b[pos] = (byte) length;
-            b[pos + 1] = length > value.Length ? (byte) value.Length : (byte) length;
+            b[pos] = (byte)length;
+            b[pos + 1] = length > value.Length ? (byte)value.Length : (byte)length;
             Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length);
         }
 
@@ -1951,7 +1965,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             int bt1 = b[pos];
             bool neg = libnodave.getBit(bt1, 7);
             bt1 = bt1 & 0x0f;
-            return neg ? bt1*-1 : bt1;
+            return neg ? bt1 * -1 : bt1;
         }
 
         public static void putBCD8at(byte[] b, int pos, int value)
@@ -1972,7 +1986,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             if (chars.Length > 0)
                 b0 = Convert.ToInt32(chars[0].ToString());
 
-            b[pos] = (byte) (b0 + b1*16);                   
+            b[pos] = (byte)(b0 + b1 * 16);
         }
 
         public static void putBCD16at(byte[] b, int pos, int value)
@@ -1989,7 +2003,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 value = -1 * value;
             }
 
-            string chars = Convert.ToString(value);            
+            string chars = Convert.ToString(value);
 
             if (chars.Length > 2)
             {
@@ -2005,8 +2019,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             else if (chars.Length > 0)
                 b0 = Convert.ToInt32(chars[0].ToString());
 
-            b[pos] = (byte) (b2 + b3*16);
-            b[pos + 1] = (byte) (b0 + b1*16);
+            b[pos] = (byte)(b2 + b3 * 16);
+            b[pos + 1] = (byte)(b0 + b1 * 16);
         }
 
         public static void putBCD32at(byte[] b, int pos, int value)
@@ -2024,7 +2038,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
 
             string chars = Convert.ToString(value);
-            if (chars.Length > 6 )
+            if (chars.Length > 6)
             {
                 b0 = Convert.ToInt32(chars[6].ToString());
                 b1 = Convert.ToInt32(chars[5].ToString());
@@ -2034,7 +2048,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 b5 = Convert.ToInt32(chars[1].ToString());
                 b6 = Convert.ToInt32(chars[0].ToString());
             }
-            else if (chars.Length > 5 )
+            else if (chars.Length > 5)
             {
                 b0 = Convert.ToInt32(chars[5].ToString());
                 b1 = Convert.ToInt32(chars[4].ToString());
@@ -2043,7 +2057,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 b4 = Convert.ToInt32(chars[1].ToString());
                 b5 = Convert.ToInt32(chars[0].ToString());
             }
-            else if (chars.Length > 4 )
+            else if (chars.Length > 4)
             {
                 b0 = Convert.ToInt32(chars[4].ToString());
                 b1 = Convert.ToInt32(chars[3].ToString());
@@ -2070,7 +2084,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 b1 = Convert.ToInt32(chars[0].ToString());
             }
             else if (chars.Length > 0)
-                b0 = Convert.ToInt32(chars[0].ToString());           
+                b0 = Convert.ToInt32(chars[0].ToString());
 
             b[pos] = (byte)(b6 + b7 * 16);
             b[pos + 1] = (byte)(b4 + b5 * 16);
@@ -2084,9 +2098,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             bool neg = libnodave.getBit(bt1, 7);
 
             bt1 = bt1 & 0x0f;
-            bt2 = (bt2 / 0x10)*10 + (bt2 & 0x0f % 0x10);
+            bt2 = (bt2 / 0x10) * 10 + (bt2 & 0x0f % 0x10);
 
-            return neg ? (bt1*100 + bt2)*-1 : bt1*100 + bt2;
+            return neg ? (bt1 * 100 + bt2) * -1 : bt1 * 100 + bt2;
         }
 
         public static int getBCD32from(byte[] b, int pos)
@@ -2101,7 +2115,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             bt2 = (bt2 / 0x10) * 10 + (bt2 % 0x10);
             bt3 = (bt3 / 0x10) * 10 + (bt3 % 0x10);
             bt4 = (bt4 / 0x10) * 10 + (bt4 % 0x10);
-            return neg ? (bt1*1000000 + bt2*10000 + bt3*100 + bt4)*-1 : bt1*1000000 + bt2*10000 + bt3*100 + bt4;
+            return neg ? (bt1 * 1000000 + bt2 * 10000 + bt3 * 100 + bt4) * -1 : bt1 * 1000000 + bt2 * 10000 + bt3 * 100 + bt4;
         }
 
         public static DateTime getDateTimefrom(byte[] b, int pos)
@@ -2146,7 +2160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             {
                 return new DateTime(jahr, monat, tag, stunde, minute, sekunde, mili);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new DateTime(1900, 01, 01, 00, 00, 00);
             }
@@ -2166,10 +2180,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
         public static TimeSpan getS5Timefrom(byte[] b, int pos)
         {
-            int w1 = getBCD8from(b, pos+1);
+            int w1 = getBCD8from(b, pos + 1);
             int w2 = ((b[pos] & 0x0f));
 
-            long zahl = w2*100 + w1;
+            long zahl = w2 * 100 + w1;
 
             int basis = (b[pos] >> 4) & 0x03;
 
@@ -2187,7 +2201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 case 3:
                     zahl = zahl * 100000000;
                     break;
-                
+
             }
             return new TimeSpan(zahl);
         }
@@ -2212,6 +2226,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 bitstring += Convert.ToString(bits[Counter]);
             }
             return bitstring;
-        }    
+        }
     }
 }

@@ -49,19 +49,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             var myConnectionEditor = new ConnectionEditor();
             myConnectionEditor.ShowDialog();
         }
-
-        /*
-        public static void ShowConfiguration(PLCConnectionConfiguration myConfig)
-        {
-            if (myConfig == null)
-                myConfig = new PLCConnectionConfiguration("PLC-Connection", LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
-
-            var myConnectionEditor = new ConnectionEditor { ConnectionNameFixed = true, DefaultConnectionName = myConfig.ConnectionName, ObjectSavedConfiguration = true };
-            myConnectionEditor.myConfig = myConfig;
-            myConnectionEditor.ShowDialog();
-        }
-        */
-
+      
         public static PLCConnectionConfiguration ShowConfiguration(PLCConnectionConfiguration myConfig)
         {
             if (myConfig == null)
