@@ -3979,21 +3979,23 @@ int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	//LOG2("timeout wrt: %d \n",di->timeout);
 	t.tv_sec = di->timeout / 1000000;
 	t.tv_usec = di->timeout % 1000000;
-	//LOG2("timeout s: %d \n",t.tv_sec);
-	//LOG2("timeout ms: %d \n",t.tv_usec );
-	//printf("Socket: %d\n",di->fd.rfd);
-	if (select(/*di->fd.rfd +*/ 1, &FDS, NULL, NULL, &t) <= 0) {
-		LOG2("WSAGetLastError: %d \n",WSAGetLastError());
+	LOG2("timeout s: %d \n",t.tv_sec);
+	LOG2("timeout ms: %d \n",t.tv_usec );
+	printf("Socket in Read: %d\n",di->fd.rfd);
+	LOG2("WSAGetLastError bef. Select: %d \n",WSAGetLastError());
+		
+	if (select(/* di->fd.rfd + */ 1, &FDS, NULL, NULL, &t) <= 0) {
+		LOG2("WSAGetLastError: %d \n", WSAGetLastError());
 		if (daveDebug & daveDebugByte) LOG1("timeout in ReadISOPacket.\n");
 		return 0;
 	} else {
-		i=recv((SOCKET)(di->fd.rfd), b, 4, 0);
-		res=i;
+		i = recv((SOCKET)(di->fd.rfd), b, 4, 0);
+		res = i;
 		if (res <= 0) {
 			if (daveDebug & daveDebugByte) LOG1("timeout in ReadISOPacket.\n");
 			return 0;
 		} else {
-			if (res<4) {
+			if (res < 4) {
 				if (daveDebug & daveDebugByte) {
 					LOG2("res %d ",res);
 					_daveDump("readISOpacket: short packet", b, res);
@@ -4081,6 +4083,7 @@ return (res);
 #ifndef AVR_NOOS
 int DECL2 _daveSendISOPacket(daveConnection * dc, int size) {
 	unsigned long i;
+	int ret;
 	size+=4;
 	*(dc->msgOut+3)=size % 0x100;	//was %0xFF, certainly a bug	
 	*(dc->msgOut+2)=size / 0x100;
@@ -4093,7 +4096,10 @@ int DECL2 _daveSendISOPacket(daveConnection * dc, int size) {
 #endif    
 #ifdef BCCWIN
 	//printf("sendsock %d\n",dc->iface->fd.wfd);
-	send((SOCKET)(dc->iface->fd.wfd), dc->msgOut, size, 0); //(unsigned int)
+	ret = send((SOCKET)(dc->iface->fd.wfd), dc->msgOut, size, 0); //(unsigned int)
+	if (ret==SOCKET_ERROR )
+		if (daveDebug & daveDebugByte) LOG2("_daveSendISOPacket WSAGetLastError: %d \n",WSAGetLastError());
+	
 #endif
 	return 0;
 }

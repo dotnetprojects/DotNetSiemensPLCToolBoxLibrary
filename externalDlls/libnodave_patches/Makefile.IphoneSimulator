@@ -5,7 +5,7 @@ CFLAGS =  -g -O2 -Wall -Wmissing-prototypes -std=c99 -ffast-math -fno-strict-ali
 CXXFLAGS =  -g -O2 -Wall -fno-strict-aliasing
 
 GCC_VERSION = 4.2
-IPHONEOS_DEPLOYMENT_TARGET = 4.1
+IPHONEOS_DEPLOYMENT_TARGET = 4.3
 MACOSX_DEPLOYMENT_TARGET = 10.5
 
 PLATFORM_SIM = iPhoneSimulator

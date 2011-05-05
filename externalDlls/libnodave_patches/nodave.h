@@ -875,7 +875,7 @@ EXPORTSPEC void DECL2 daveAddVarToReadRequest(PDU *p, int area, int DBnum, int s
 /* Executes the complete request. */
 EXPORTSPEC int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet * rl);
 /* Lets the functions daveGet<data type> work on the n-th result: */
-EXPORTSPEC int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n);
+EXPORTSPEC int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * buffer);
 /* Frees the memory occupied by the result structure */
 EXPORTSPEC void DECL2 daveFreeResults(daveResultSet * rl);
 /* Adds a new bit variable to a prepared request: */
