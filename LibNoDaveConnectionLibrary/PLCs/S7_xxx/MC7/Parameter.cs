@@ -375,7 +375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                 }
             }
-            if (blkTP != PLCBlockType.DB && tempAdded == false)
+            if (blkTP != PLCBlockType.DB && blkTP != PLCBlockType.UDT && tempAdded == false)
             {               
                 parameterRoot.Add(parameterTEMP);
             }
