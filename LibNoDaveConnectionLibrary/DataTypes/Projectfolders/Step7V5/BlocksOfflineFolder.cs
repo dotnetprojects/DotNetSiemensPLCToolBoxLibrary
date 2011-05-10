@@ -412,7 +412,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 {
                     
                     int uPos = 2;
-                    if (myTmpBlk.uda[0] > 0)
+                    if (myTmpBlk.uda != null && myTmpBlk.uda.Length > 0 && myTmpBlk.uda[0] > 0)
                     {
                         step7Attributes = new List<Step7Attribute>();
                         for (int j = 0; j < myTmpBlk.uda[0]; j++)
