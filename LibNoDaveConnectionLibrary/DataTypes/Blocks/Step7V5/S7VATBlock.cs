@@ -4,7 +4,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public class S7VATBlock : Block
+    public class S7VATBlock : S7Block
     {                
         public List<PLCTag> Rows{ get; set;}
         public List<S7VATRow> VATRows { get; set; }

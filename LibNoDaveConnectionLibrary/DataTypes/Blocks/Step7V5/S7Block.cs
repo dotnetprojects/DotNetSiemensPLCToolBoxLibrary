@@ -24,6 +24,7 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
@@ -31,7 +32,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     public class S7Block:Block
     {               
         public string BlockVersion;
-        public String BlockAttribute;
+        public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+
+        public List<Step7Attribute> Attributes { get; set; }
+
         public double Length;
 
         public string Title { get; set; }

@@ -244,9 +244,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             {
                 tmpBlock myTmpBlk = new tmpBlock();
 
+                var bstTbl = bausteinDBF;
+                DataRow[] bstRows = bstTbl.Select("ID = " + blkInfo.id);
+                if (bstRows != null && bstRows.Length > 0 && !(bstRows[0]["UDA"] is DBNull))
+                    myTmpBlk.uda = (byte[]) bstRows[0]["UDA"];
+
                 var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5) Project)._DirSeperator);
 
                 DataRow[] rows = dbfTbl.Select("OBJECTID = " + blkInfo.id);
+                //bausteinDBF
 
                 foreach (DataRow row in rows)// dbfTbl.Rows)
                 {
@@ -398,12 +404,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
             tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
+            List<Step7Attribute> step7Attributes = null;
+
             if (myTmpBlk != null)
             {
+                if (myTmpBlk.uda != null)
+                {
+                    
+                    int uPos = 2;
+                    if (myTmpBlk.uda[0] > 0)
+                    {
+                        step7Attributes = new List<Step7Attribute>();
+                        for (int j = 0; j < myTmpBlk.uda[0]; j++)
+                        {
+                            string t1 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
+                            uPos += myTmpBlk.uda[uPos] + 1;
+                            string t2 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
+                            uPos += myTmpBlk.uda[uPos] + 1;
+                            step7Attributes.Add(new Step7Attribute(t1, t2));
+                        }
+                    }
+                }
+
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
                 {
-                    return new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber);
+                    S7VATBlock retValBlock = new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber);
+                    retValBlock.Attributes = step7Attributes;
+                    return retValBlock;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
                 {
@@ -412,6 +440,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
+                    retVal.Attributes = step7Attributes;
                     return retVal;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
@@ -421,6 +450,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     S7FunctionBlock retVal = new S7FunctionBlock();
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
+                    retVal.Attributes = step7Attributes;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
 
                     retVal.Author = myTmpBlk.username;
