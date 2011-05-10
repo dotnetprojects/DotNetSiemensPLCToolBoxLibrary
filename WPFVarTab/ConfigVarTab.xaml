@@ -1,15 +1,8 @@
-﻿<Window x:Class="WPFVarTab.ConfigVarTab"
+﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.ConfigVarTab"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" Style="{DynamicResource GlassStyle}"
-        Title="ConfigVarTab" Height="264" Width="224" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="White">
-	<Shell:WindowChrome.WindowChrome>
-        <Shell:WindowChrome GlassFrameThickness="0" ResizeBorderThickness="4" CaptionHeight="36" CornerRadius="25,25,10,10"/>
-	</Shell:WindowChrome.WindowChrome>
-    <Window.Resources>
-        
-
-
-    </Window.Resources>
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary" Style="{DynamicResource GlassStyle}"
+        Title="ConfigVarTab" Height="274" Width="224" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    
     <Grid>
         <GroupBox Header="Read Config" Height="116" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">
             <Grid>
@@ -28,4 +21,4 @@
             </Grid>
         </GroupBox>
     </Grid>
-</Window>
+</ccl:CustomChromeWindow>

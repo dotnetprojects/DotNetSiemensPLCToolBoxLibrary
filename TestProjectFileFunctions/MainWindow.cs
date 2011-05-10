@@ -41,7 +41,9 @@ namespace JFK_VarTab
             tableLayoutPanelVisu.ColumnStyles[1].Width = 0;
 
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
+            var itms = PLCConnectionConfiguration.GetConfigurationNames();
+            if (itms != null)
+                lstConnections.Items.AddRange(itms);
 
             if (lstConnections.Items.Count > 0)
                 lstConnections.SelectedItem = lstConnections.Items[0];

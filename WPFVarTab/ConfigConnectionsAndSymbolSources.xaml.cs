@@ -14,18 +14,13 @@ using System.Windows.Shapes;
 namespace WPFVarTab
 {
     /// <summary>
-    /// Interaction logic for ConfigVarTab.xaml
+    /// Interaction logic for ConfigConnectionsAndSymbolSources.xaml
     /// </summary>
-    public partial class ConfigVarTab : CustomChromeLibrary.CustomChromeWindow
+    public partial class ConfigConnectionsAndSymbolSources : Window
     {
-        public ConfigVarTab()
+        public ConfigConnectionsAndSymbolSources()
         {
             InitializeComponent();
-        }
-
-        private void cmdClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

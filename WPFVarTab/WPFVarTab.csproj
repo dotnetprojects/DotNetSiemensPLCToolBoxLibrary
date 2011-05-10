@@ -63,11 +63,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConfigConnectionsAndSymbolSources.xaml.cs">
+      <DependentUpon>ConfigConnectionsAndSymbolSources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConfigVarTab.xaml.cs">
       <DependentUpon>ConfigVarTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="VarTabRowItemTemplateSelector.cs" />
     <Compile Include="VarTabViewModel.cs" />
+    <Page Include="ConfigConnectionsAndSymbolSources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfigVarTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

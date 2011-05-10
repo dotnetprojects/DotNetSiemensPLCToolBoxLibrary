@@ -112,7 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 else
                 {
-                    switch (switchrow)
+                    switch (switchrow.Trim())
                     {
 
                         case "VAR_INPUT":
@@ -143,6 +143,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             akDataRow = parameterSTAT;
                             parameterRoot.Add(parameterSTAT);
                             break;
+                        case "END_STRUCT;":
                         case "END_STRUCT ;":
                             akDataRow = akDataRow.Parent;
                             break;

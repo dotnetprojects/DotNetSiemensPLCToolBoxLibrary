@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" 
         xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary" Style="{DynamicResource GlassStyle}"
-        Title="JFK-WpfVarTab" Height="350" Width="525" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png">
+        Title="JFK-WPF-VarTab" Height="350" Width="640" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png" ResizeMode="CanResizeWithGrip">
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}"
@@ -80,7 +80,7 @@
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Config Connection" Name="cmdConfigConnection" Click="cmdConfigConnection_Click">
+                                        ToolTip="Config Connections" Name="cmdConfigConnection" Click="cmdConfigConnection_Click">
                                     <Image Source="/WPFVarTab;component/Images/configure-2.png" Width="16" Height="16"/>
                                 </Button>
                                 <Button Margin="2,7,0,2" 
@@ -127,6 +127,14 @@
                   RowBackground="Azure" AlternatingRowBackground="LightSteelBlue"
                   ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}" CanUserResizeRows="False" CanUserSortColumns="False" CanUserDeleteRows="True">
             <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="16" Height="16" Fill="Red"></Ellipse>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <DataGridTextColumn Binding="{Binding Comment}" Header="Comment"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.S7FormatAddress}" Header="Address"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Symbol}" Header="Symbol"></DataGridTextColumn>
@@ -134,6 +142,7 @@
                 <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDataTypes}}" SelectedItemBinding="{Binding LibNoDaveValue.LibNoDaveDataType}" Header="DataType"></DataGridComboBoxColumn>                
                 <!--<DataGridTextColumn Binding="{Binding LibNoDaveValue.DataTypeStringFormat}" Header="DisplayFormat"></DataGridTextColumn>-->
                 <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDisplayDataTypes}}" SelectedItemBinding="{Binding LibNoDaveValue.DataTypeStringFormat}" Header="DisplayFormat"></DataGridComboBoxColumn>
+                <DataGridComboBoxColumn Header="Connection"></DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Value}" Header="Value"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Controlvalue}" Header="ControlValue"></DataGridTextColumn>                               
             </DataGrid.Columns>
