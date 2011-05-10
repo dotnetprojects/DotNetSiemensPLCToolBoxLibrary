@@ -176,7 +176,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         int pos = rowTr.IndexOf("//");
                                         rowTr = rowTr.Substring(0, pos) + " " + rows[n + 1].Trim() + rowTr.Substring(pos);
                                     }
-                                    else
+                                    else if (rowTr[rowTr.Length-1]!=';')
                                     {
                                         rowTr += " " + rows[n + 1].Trim();
                                     }
@@ -256,7 +256,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     tmpComment += tmpChar;
                             }
 
-                            tmpType = tmpType.Trim();
+                            tmpType = tmpType.Trim().ToUpper();
 
 
 
