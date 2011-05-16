@@ -73,12 +73,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             sym.Comment = (string)row["_COMMENT"];
                             if ((bool)row["DELETED_FLAG"]) sym.Comment = "(deleted) " + sym.Comment;
                             _step7SymbolTableEntrys.Add(sym);
-                            operandIndexList.Add(sym.Operand.Replace(" ", ""), sym);
-                            symbolIndexList.Add(sym.Symbol.ToUpper().Trim(), sym);
+                            string oper = sym.Operand.Replace(" ", "");
+                            string addSym = sym.Symbol.ToUpper().Trim();
+
+                            if (!string.IsNullOrEmpty(addSym))
+                            {
+                                if (!operandIndexList.ContainsKey(oper))
+                                    operandIndexList.Add(oper, sym);
+                                if (!symbolIndexList.ContainsKey(addSym))
+                                    symbolIndexList.Add(addSym, sym);
+                            }
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
             }
