@@ -90,6 +90,7 @@
             this.varTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertCallsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExpandDatablockArrays = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -103,7 +104,6 @@
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.mnuExpandDatablockArrays = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -668,6 +668,13 @@
             this.convertCallsToolStripMenuItem.Text = "Convert UCs to Calls";
             this.convertCallsToolStripMenuItem.Click += new System.EventHandler(this.convertCallsToolStripMenuItem_Click);
             // 
+            // mnuExpandDatablockArrays
+            // 
+            this.mnuExpandDatablockArrays.Name = "mnuExpandDatablockArrays";
+            this.mnuExpandDatablockArrays.Size = new System.Drawing.Size(204, 22);
+            this.mnuExpandDatablockArrays.Text = "Expand Datablock Arrays";
+            this.mnuExpandDatablockArrays.Click += new System.EventHandler(this.mnuExpandDatablockArrays_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -827,13 +834,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
-            // 
-            // mnuExpandDatablockArrays
-            // 
-            this.mnuExpandDatablockArrays.Name = "mnuExpandDatablockArrays";
-            this.mnuExpandDatablockArrays.Size = new System.Drawing.Size(204, 22);
-            this.mnuExpandDatablockArrays.Text = "Expand Datablock Arrays";
-            this.mnuExpandDatablockArrays.Click += new System.EventHandler(this.mnuExpandDatablockArrays_Click);
             // 
             // Form1
             // 

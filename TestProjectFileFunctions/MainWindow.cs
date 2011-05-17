@@ -509,8 +509,8 @@ namespace JFK_VarTab
                         stoeTxt = plcDataRow.Comment;
                         if (stoeTxt.Contains(";"))
                         {
-                            stoeTxt = stoeTxt.Split(';')[1];
                             stoeOrt = stoeTxt.Split(';')[0];
+                            stoeTxt = stoeTxt.Split(';')[1];                            
                         }
 
                         if (chkFixedErrorNumber.Checked)
@@ -519,7 +519,7 @@ namespace JFK_VarTab
                         try
                         {
                             HMIGOObject.CreateSingleAlarm(errNr, HMIGENOBJECTSLib.HMIGO_SINGLE_ALARM_CLASS_ID.SINGLE_ALARM_ERROR, 1, stoeTxt, varname + "_" + varnr.ToString(), bitnr);
-                            HMIGOObject.SingleAlarmInfoText = stoeTxt;
+                            //HMIGOObject.SingleAlarmInfoText = stoeOrt;//stoeTxt;
                             HMIGOObject.SingleAlarmText2ID = stoeOrt;
                             HMIGOObject.CommitSingleAlarm();
                         }
@@ -813,7 +813,9 @@ namespace JFK_VarTab
             Configuration.ShowConfiguration("Verbindung_1", false);
 
             lstConnections.Items.Clear();
-            lstConnections.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
+            var lstConn = PLCConnectionConfiguration.GetConfigurationNames();
+            if (lstConn != null)
+                lstConnections.Items.AddRange(lstConn);
 
             if (tmp != null && lstConnections.Items.Contains(tmp))
                 lstConnections.SelectedItem = tmp;
