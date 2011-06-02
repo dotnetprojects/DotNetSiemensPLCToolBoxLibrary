@@ -14,7 +14,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     {
         public static void ReplaceStaticAccess(S7FunctionBlock myFct, S7ProgrammFolder myFld, S7ConvertingOptions myOpt)
         {
-            if (myOpt.ReplaceDIAccessesWithSymbolNames)
+            if (myOpt.ReplaceDIAccessesWithSymbolNames && myFct.BlockType==PLCBlockType.FB)
             {
                 List<FunctionBlockRow> retVal = new List<FunctionBlockRow>();
                 List<FunctionBlockRow> tempList = new List<FunctionBlockRow>();
