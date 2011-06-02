@@ -39,7 +39,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         {
             var retVal = new List<FunctionBlockRow>();
 
-            bool CombineDBOpenAndCommand = true; // false; //If DB Open and Acess should be One AWL Line (like in Step 7). This should be a Parameter.
+            //bool CombineDBOpenAndCommand = false; // true; // false; //If DB Open and Acess should be One AWL Line (like in Step 7). This should be a Parameter.
 
             int NWNr = 1;
 
@@ -135,11 +135,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case (0x40):
                         case (0xC0):
-                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("[") && CombineDBOpenAndCommand)
+                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
                             {
-                                DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
-                                par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
-                                retVal.RemoveAt(retVal.Count - 1);
+                                ((S7FunctionBlockRow) retVal[retVal.Count - 1]).CombineDBAccess = true;
+                                //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
+                                //par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
+                                //retVal.RemoveAt(retVal.Count - 1);
                             }
                             curr_ad = Memnoic.adDBX[MN];
                             break;
@@ -638,11 +639,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string par = "";
                                             byte[] DBByte = null;
-                                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("[") && CombineDBOpenAndCommand)
+                                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
                                             {
-                                                DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
-                                                par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
-                                                retVal.RemoveAt(retVal.Count - 1);
+                                                ((S7FunctionBlockRow)retVal[retVal.Count - 1]).CombineDBAccess = true;
+                                                //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
+                                                //par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
+                                                //retVal.RemoveAt(retVal.Count - 1);
                                             }
                                             retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opZUW[MN], Parameter = par + Memnoic.adDBX[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." + Convert.ToString(BD[pos + 1] - 0x40) });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -1788,11 +1790,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                                     //new
                                     byte[] DBByte = null;
-                                    if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && par.Substring(0, 2) == "DB" && CombineDBOpenAndCommand)
+                                    if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && par.Substring(0, 2) == "DB")// && CombineDBOpenAndCommand)
                                     {
-                                        DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
-                                        par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + "." + par;
-                                        retVal.RemoveAt(retVal.Count - 1);
+                                        ((S7FunctionBlockRow)retVal[retVal.Count - 1]).CombineDBAccess = true;
+                                        //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
+                                        //par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + "." + par;
+                                        //retVal.RemoveAt(retVal.Count - 1);
                                     }
                                     retVal.Add(new S7FunctionBlockRow() { Command = cmd, Parameter = par });
                                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };

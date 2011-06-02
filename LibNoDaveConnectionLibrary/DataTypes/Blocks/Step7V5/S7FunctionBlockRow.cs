@@ -52,6 +52,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             CombinedCommands = null;
         }
 
+        private bool _CombineDbAccess = false;
+        internal bool CombineDBAccess
+        {
+            get { return _CombineDbAccess; }
+            set { _CombineDbAccess = value; }
+        }
+
         //These Commands are Combined...
         public List<FunctionBlockRow> CombinedCommands { get; internal set; }
 
@@ -90,6 +97,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        /// <summary>
+        /// Returns the Number of Lines this Command needs (Calls needs more then 1 Line)
+        /// </summary>
+        /// <returns></returns>
         internal int GetNumberOfLines()
         {
             if ((Command == "UC" || Command == "CC") && ExtParameter != null)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {

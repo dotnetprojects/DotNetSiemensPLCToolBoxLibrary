@@ -10,7 +10,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
     {
         public static Step7ProjectFolder SelectBlocksOfflineFolder()
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            return SelectBlocksOfflineFolder("");
+        }
+
+        public static Step7ProjectFolder SelectBlocksOfflineFolder(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.BlocksOfflineFolder;
             myFrm.ShowDialog();
             return (Step7ProjectFolder)myFrm.retVal;
@@ -18,7 +23,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public static S7ProgrammFolder SelectS7ProgrammFolder()
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            return SelectS7ProgrammFolder("");
+        }
+
+        public static S7ProgrammFolder SelectS7ProgrammFolder(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.S7ProgrammFolder;
             myFrm.ShowDialog();
             return (S7ProgrammFolder)myFrm.retVal;
@@ -26,15 +36,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public static SymbolTable SelectSymbolTable()
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            return SelectSymbolTable("");
+        }
+
+        public static SymbolTable SelectSymbolTable(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.SymbolTable;
             myFrm.ShowDialog();
             return (SymbolTable)myFrm.retVal;
         }
-        
+
         public static S7VATBlock SelectVAT()
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            return SelectVAT("");
+        }
+
+        public static S7VATBlock SelectVAT(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.VariableTable;
             myFrm.ShowDialog();
             return (S7VATBlock)myFrm.retVal;
@@ -42,16 +62,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public static S7DataBlock SelectUDT()
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            return SelectUDT("");
+        }
+
+        public static S7DataBlock SelectUDT(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.DataType;
             myFrm.ShowDialog();
             return (S7DataBlock)myFrm.retVal;
         }
 
+        public static PLCTag SelectTAG()
+        {
+            return SelectTAG("");
+        }
+
         //This selects a Tag From a Step 7 Project
         public static PLCTag SelectTAG(string FileAndProjectInternalFolder)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm();
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.Tag;
             myFrm.ShowDialog();
             PLCTag retVal = (PLCTag) myFrm.retVal;

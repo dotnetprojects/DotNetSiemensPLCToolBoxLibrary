@@ -493,8 +493,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             int subCnt = 0; //Counter wich line in Command (for Calls and UCs)
 
                             if (myTmpBlk.comments != null)
-                            {
+                            {                                
                                 byte[] cmt = myTmpBlk.comments;
+
+                                //string aa = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(cmt);
+                                //string testaa = "";
 
                                 while (n < myTmpBlk.comments.Length)
                                 {
@@ -502,7 +505,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     int startNWKomm = cmt[n + 1];
                                     int anzUebsprungZeilen = cmt[n + 2] + cmt[n + 3] * 0x100;
                                     int lenNWKommZeile = cmt[n + 3] + cmt[n + 4] * 0x100;
-
+                                    //Console.WriteLine(cmt[n + 5].ToString("X"));
                                     if (cmt[n + 5] == 0x06)
                                     {
                                         //NWKomentar:
@@ -534,22 +537,41 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         {
                                             if (retVal.AWLCode.Count > j)
                                             {
-                                                if (((S7FunctionBlockRow)retVal.AWLCode[j]).GetNumberOfLines() == 1)
+                                                S7FunctionBlockRow akRw = (S7FunctionBlockRow) retVal.AWLCode[j];
+
+                                                 if (cmt[n + 4] == 0xc0 && q==anzUebsprungZeilen-1)
+                                                     akRw.CombineDBAccess = false;
+
+                                                //Db Zugriff zusammenfügen...
+                                                if (akRw.CombineDBAccess)
+                                                {
+                                                    S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[j + 1];
+                                                    nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
+                                                    nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
+
+                                                    akRw = nRw;
+                                                    retVal.AWLCode.RemoveAt(j + 1);
+                                                }
+
+
+                                                if (akRw.GetNumberOfLines() == 1)
                                                 {
                                                     subCnt = 0;
-                                                    lastRow = (S7FunctionBlockRow)retVal.AWLCode[j];
-                                                    newAwlCode.Add(retVal.AWLCode[j]);
+
+                                                    lastRow = akRw;                                                    
+                                                    
+                                                    newAwlCode.Add(akRw);
                                                     j++;
                                                 }
                                                 else
                                                 {
-                                                    lastRow = (S7FunctionBlockRow)retVal.AWLCode[j];
+                                                    lastRow = akRw;
                                                     if (subCnt == 0)
                                                     {
-                                                        newAwlCode.Add(retVal.AWLCode[j]);
+                                                        newAwlCode.Add(akRw);
                                                     }
 
-                                                    if (((S7FunctionBlockRow)retVal.AWLCode[j]).GetNumberOfLines() - 1 == subCnt)
+                                                    if (akRw.GetNumberOfLines() - 1 == subCnt)
                                                     {
                                                         j++;
                                                         //subCnt = 0;
@@ -563,7 +585,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             }
                                         }
 
-                                        if (lastRow == null || cmt[n + 4] != 0x80)
+                                        
+                                        //if (lastRow == null || cmt[n + 4] != 0x80)
+                                        if (lastRow == null || (cmt[n + 4] != 0x80 && cmt[n + 4] != 0xc0))
                                         {
                                             lastRow = new S7FunctionBlockRow();
                                             newAwlCode.Add(lastRow);
@@ -578,7 +602,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                 if (subCnt == 1) lastRow.Comment = tx1;
                                                 else
                                                     lastRow.CallParameter[subCnt - 2].Comment = tx1;
-                                        n += kommLen + 6;
+                                        n += kommLen + 6;                                        
 
                                         //subCnt = 0;
                                     }

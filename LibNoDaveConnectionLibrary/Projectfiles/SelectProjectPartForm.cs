@@ -12,10 +12,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     internal partial class SelectProjectPartForm : Form
     {
-        public SelectProjectPartForm()
+        public SelectProjectPartForm(string projectFile)
         {
-            InitializeComponent();            
-        }        
+            InitializeComponent();
+
+            fnm = projectFile;
+            if (!string.IsNullOrEmpty(fnm))
+            {
+                cmdOpenProject.Visible = false;
+                loadPrj();
+            }
+        }               
 
         Step7ProjectV5 tmpPrj;        
 
@@ -250,7 +257,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     this.Hide();
                     S7ProjectBlockInfo tmp = (S7ProjectBlockInfo) lstProjectFolder.SelectedItem;
-                    if (tmp.BlockType == PLCBlockType.UDT)
+                    if (tmp.BlockType == PLCBlockType.VAT)
                     {
                         retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
                         ((Block) retVal).ParentFolder = tmp.ParentFolder;
