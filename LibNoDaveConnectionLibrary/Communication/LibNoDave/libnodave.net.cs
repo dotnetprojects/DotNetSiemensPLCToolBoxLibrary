@@ -2150,12 +2150,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             bt = b[pos + 5];
             sekunde = (((bt >> 4)) * 10) + ((bt & 0x0f));
 
-            //Milisekunden (werden noch nicht verarbeitet...)
+            //Milisekunden
+            //Byte 6 BCD + MSB (Byte 7)
             bt = b[pos + 6];
+            int bt1 = b[pos + 7];
             mili = (((bt >> 4)) * 10) + ((bt & 0x0f));
+            mili = mili * 10 + (bt1 >> 4);
 
             //Wochentag
-            bt = b[pos + 7];
+            //LSB (Byte 7) 1=Sunday
+            //bt = b[pos + 7];
+            //wochentag = (bt1 & 0x0f); 
             try
             {
                 return new DateTime(jahr, monat, tag, stunde, minute, sekunde, mili);
