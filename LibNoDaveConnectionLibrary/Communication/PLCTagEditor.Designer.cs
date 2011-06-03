@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PLCTagEditor));
             this.lblLen = new System.Windows.Forms.Label();
             this.txtByte = new System.Windows.Forms.TextBox();
             this.txtBit = new System.Windows.Forms.TextBox();
@@ -50,148 +51,92 @@
             // 
             // lblLen
             // 
-            this.lblLen.AutoSize = true;
-            this.lblLen.Location = new System.Drawing.Point(11, 178);
+            resources.ApplyResources(this.lblLen, "lblLen");
             this.lblLen.Name = "lblLen";
-            this.lblLen.Size = new System.Drawing.Size(37, 13);
-            this.lblLen.TabIndex = 20;
-            this.lblLen.Text = "Länge";
             // 
             // txtByte
             // 
-            this.txtByte.Location = new System.Drawing.Point(55, 3);
-            this.txtByte.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            resources.ApplyResources(this.txtByte, "txtByte");
             this.txtByte.Name = "txtByte";
-            this.txtByte.Size = new System.Drawing.Size(56, 20);
-            this.txtByte.TabIndex = 13;
-            this.txtByte.Text = "0";
-            this.txtByte.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtByte.TextChanged += new System.EventHandler(this.txtByte_TextChanged);
             // 
             // txtBit
             // 
-            this.txtBit.Location = new System.Drawing.Point(121, 3);
-            this.txtBit.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            resources.ApplyResources(this.txtBit, "txtBit");
             this.txtBit.Name = "txtBit";
-            this.txtBit.Size = new System.Drawing.Size(36, 20);
-            this.txtBit.TabIndex = 14;
-            this.txtBit.Text = "0";
-            this.txtBit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBit.TextChanged += new System.EventHandler(this.txtBit_TextChanged);
             // 
             // txtLen
             // 
-            this.txtLen.Location = new System.Drawing.Point(15, 197);
+            resources.ApplyResources(this.txtLen, "txtLen");
             this.txtLen.Name = "txtLen";
-            this.txtLen.Size = new System.Drawing.Size(61, 20);
-            this.txtLen.TabIndex = 11;
-            this.txtLen.Text = "1";
-            this.txtLen.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtLen.TextChanged += new System.EventHandler(this.txtLen_TextChanged);
             // 
             // txtDB
             // 
-            this.txtDB.Location = new System.Drawing.Point(0, 3);
-            this.txtDB.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            resources.ApplyResources(this.txtDB, "txtDB");
             this.txtDB.Name = "txtDB";
-            this.txtDB.Size = new System.Drawing.Size(45, 20);
-            this.txtDB.TabIndex = 12;
-            this.txtDB.Text = "1";
-            this.txtDB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDB.TextChanged += new System.EventHandler(this.txtDB_TextChanged);
             // 
             // cmbType
             // 
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(15, 78);
+            resources.ApplyResources(this.cmbType, "cmbType");
             this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(161, 21);
-            this.cmbType.TabIndex = 16;
             this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
             // 
             // cmbSource
             // 
             this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(15, 29);
+            resources.ApplyResources(this.cmbSource, "cmbSource");
             this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(121, 21);
-            this.cmbSource.TabIndex = 15;
             this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // cmdOK
             // 
-            this.cmdOK.Location = new System.Drawing.Point(246, 12);
+            resources.ApplyResources(this.cmdOK, "cmdOK");
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(89, 38);
-            this.cmdOK.TabIndex = 21;
-            this.cmdOK.Text = "OK";
             this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(246, 56);
+            resources.ApplyResources(this.button1, "button1");
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(89, 29);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "Abbruch";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 9);
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
-            this.label1.TabIndex = 18;
-            this.label1.Text = "Datenquelle";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 122);
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
-            this.label2.TabIndex = 18;
-            this.label2.Text = "Adresse";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 58);
+            resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(50, 13);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "Datentyp";
             // 
             // lblPT1
             // 
-            this.lblPT1.Location = new System.Drawing.Point(45, 0);
-            this.lblPT1.Margin = new System.Windows.Forms.Padding(0);
+            resources.ApplyResources(this.lblPT1, "lblPT1");
             this.lblPT1.Name = "lblPT1";
-            this.lblPT1.Size = new System.Drawing.Size(10, 20);
-            this.lblPT1.TabIndex = 17;
-            this.lblPT1.Text = ".";
-            this.lblPT1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // txtValueInS7
             // 
-            this.txtValueInS7.Location = new System.Drawing.Point(15, 253);
+            resources.ApplyResources(this.txtValueInS7, "txtValueInS7");
             this.txtValueInS7.Name = "txtValueInS7";
-            this.txtValueInS7.Size = new System.Drawing.Size(166, 20);
-            this.txtValueInS7.TabIndex = 12;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 233);
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 13);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "In S7 Schreibweise";
             // 
             // flowLayoutPanel1
             // 
@@ -200,27 +145,18 @@
             this.flowLayoutPanel1.Controls.Add(this.txtByte);
             this.flowLayoutPanel1.Controls.Add(this.lblPT2);
             this.flowLayoutPanel1.Controls.Add(this.txtBit);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(15, 140);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(191, 26);
-            this.flowLayoutPanel1.TabIndex = 22;
             // 
             // lblPT2
             // 
-            this.lblPT2.Location = new System.Drawing.Point(111, 0);
-            this.lblPT2.Margin = new System.Windows.Forms.Padding(0);
+            resources.ApplyResources(this.lblPT2, "lblPT2");
             this.lblPT2.Name = "lblPT2";
-            this.lblPT2.Size = new System.Drawing.Size(10, 20);
-            this.lblPT2.TabIndex = 17;
-            this.lblPT2.Text = ".";
-            this.lblPT2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // PLCTagEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(347, 285);
             this.ControlBox = false;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button1);
@@ -236,8 +172,6 @@
             this.Controls.Add(this.cmbSource);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "PLCTagEditor";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "LibNoDaveValueEditor";
             this.Load += new System.EventHandler(this.LibNoDaveValueEditor_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();

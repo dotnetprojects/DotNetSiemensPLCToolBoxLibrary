@@ -201,6 +201,12 @@
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Communication\ConnectionEditor.en.resx">
+      <DependentUpon>ConnectionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\ConnectionEditor.es.resx">
+      <DependentUpon>ConnectionEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Communication\ConnectionEditor.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
