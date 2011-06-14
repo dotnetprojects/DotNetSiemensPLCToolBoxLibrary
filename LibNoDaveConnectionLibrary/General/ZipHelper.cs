@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 #if SHARPZIPLIB
 
@@ -13,8 +14,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #if SHARPZIPLIB
             if (string.IsNullOrEmpty(zipfile))
                 return null;
-            ZipFile zf = new ZipFile(zipfile);
 
+            ZipFile zf = null;
+            try
+            {
+                zf = new ZipFile(zipfile);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
             string name = null;
             foreach (ZipEntry zipEntry in zf)
             {

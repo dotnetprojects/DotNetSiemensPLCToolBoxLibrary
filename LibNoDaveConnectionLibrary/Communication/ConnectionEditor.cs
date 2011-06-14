@@ -629,6 +629,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             catch (Exception ex)
             {
                 changeStatusLabel(ex.Message);
+                tmpConn.Dispose();
             }
             finally
             {
