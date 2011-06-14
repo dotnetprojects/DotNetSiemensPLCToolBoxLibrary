@@ -1962,140 +1962,89 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
         public static int getBCD8from(byte[] b, int pos)
         {
+            //Acepted Values 00 to 99
             int bt1 = b[pos];
-            bool neg = libnodave.getBit(bt1, 7);
-            bt1 = bt1 & 0x0f;
-            return neg ? bt1 * -1 : bt1;
+            bool neg = (bt1 & 0xf0) == 0xf0 ? true : false;
+            if (neg)
+            {
+                bt1 = -1*(bt1 & 0x0f);
+                //bt1 = 0;
+            }
+            else
+            {
+                bt1 = (bt1 >> 4) * 10 + (bt1 & 0x0f);
+            }
+            return bt1;
         }
 
         public static void putBCD8at(byte[] b, int pos, int value)
         {
-            //todo: Redo this function! this should be done without string functions!
-
-
             int b0 = 0, b1 = 0;
 
             //setze höchstes bit == negativer wert!
-            if (value < 0)
+            if (value >= 0)
             {
-                b1 = 8;
-                value = -1 * value;
+                b1 = (value % 100 / 10);
+                b0 = value % 10;
             }
-
-            string chars = Convert.ToString(value);
-            if (chars.Length > 0)
-                b0 = Convert.ToInt32(chars[0].ToString());
-
-            b[pos] = (byte)(b0 + b1 * 16);
+            b[pos] = (byte)((b1 << 4) + b0);
         }
 
         public static void putBCD16at(byte[] b, int pos, int value)
         {
-
-            //todo: Redo this function! this should be done without string functions!
-
+            //Acepted Values -999 to +999
             int b0 = 0, b1 = 0, b2 = 0, b3 = 0;
 
-            //setze höchstes bit == negativer wert!
             if (value < 0)
             {
-                b3 = 8;
+                b3 = 0x0f;
                 value = -1 * value;
             }
-
-            string chars = Convert.ToString(value);
-
-            if (chars.Length > 2)
+            else
             {
-                b0 = Convert.ToInt32(chars[2].ToString());
-                b1 = Convert.ToInt32(chars[1].ToString());
-                b2 = Convert.ToInt32(chars[0].ToString());
+                b3 = 0x00;
             }
-            else if (chars.Length > 1)
-            {
-                b0 = Convert.ToInt32(chars[1].ToString());
-                b1 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 0)
-                b0 = Convert.ToInt32(chars[0].ToString());
-
-            b[pos] = (byte)(b2 + b3 * 16);
-            b[pos + 1] = (byte)(b0 + b1 * 16);
+            b2 = (value % 1000 / 100);
+            b1 = (value % 100 / 10);
+            b0 = (value % 10);
+            b[pos] = (byte)((b3 << 4) + b2);
+            b[pos + 1] = (byte)((b1 << 4) + b0);
         }
 
         public static void putBCD32at(byte[] b, int pos, int value)
         {
-            //todo: Redo this function! this should be done without string functions!
-
-
+            //Acepted Values -9999999 to +9999999
             int b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, b7 = 0;
 
-            //setze höchstes bit == negativer wert!
             if (value < 0)
             {
-                b7 = 8;
+                b7 = 0x0f;
                 value = -1 * value;
             }
+            else
+            {
+                //b7 = (value % 100000000 / 10000000);
+                b7 = 0x00;
+            }
+            b6 = (value % 10000000 / 1000000);
+            b5 = (value % 1000000 / 100000);
+            b4 = (value % 100000 / 10000);
+            b3 = (value % 10000 / 1000);
+            b2 = (value % 1000 / 100);
+            b1 = (value % 100 / 10);
+            b0 = (value % 10);
 
-            string chars = Convert.ToString(value);
-            if (chars.Length > 6)
-            {
-                b0 = Convert.ToInt32(chars[6].ToString());
-                b1 = Convert.ToInt32(chars[5].ToString());
-                b2 = Convert.ToInt32(chars[4].ToString());
-                b3 = Convert.ToInt32(chars[3].ToString());
-                b4 = Convert.ToInt32(chars[2].ToString());
-                b5 = Convert.ToInt32(chars[1].ToString());
-                b6 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 5)
-            {
-                b0 = Convert.ToInt32(chars[5].ToString());
-                b1 = Convert.ToInt32(chars[4].ToString());
-                b2 = Convert.ToInt32(chars[3].ToString());
-                b3 = Convert.ToInt32(chars[2].ToString());
-                b4 = Convert.ToInt32(chars[1].ToString());
-                b5 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 4)
-            {
-                b0 = Convert.ToInt32(chars[4].ToString());
-                b1 = Convert.ToInt32(chars[3].ToString());
-                b2 = Convert.ToInt32(chars[2].ToString());
-                b3 = Convert.ToInt32(chars[1].ToString());
-                b4 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 3)
-            {
-                b0 = Convert.ToInt32(chars[3].ToString());
-                b1 = Convert.ToInt32(chars[2].ToString());
-                b2 = Convert.ToInt32(chars[1].ToString());
-                b3 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 2)
-            {
-                b0 = Convert.ToInt32(chars[2].ToString());
-                b1 = Convert.ToInt32(chars[1].ToString());
-                b2 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 1)
-            {
-                b0 = Convert.ToInt32(chars[1].ToString());
-                b1 = Convert.ToInt32(chars[0].ToString());
-            }
-            else if (chars.Length > 0)
-                b0 = Convert.ToInt32(chars[0].ToString());
-
-            b[pos] = (byte)(b6 + b7 * 16);
-            b[pos + 1] = (byte)(b4 + b5 * 16);
-            b[pos + 2] = (byte)(b2 + b3 * 16);
-            b[pos + 3] = (byte)(b0 + b1 * 16);
+            b[pos] = (byte)((b7 << 4) + b6);
+            b[pos + 1] = (byte)((b5 << 4) + b4);
+            b[pos + 2] = (byte)((b3 << 4) + b2);
+            b[pos + 3] = (byte)((b1 << 4) + b0);
         }
+
         public static int getBCD16from(byte[] b, int pos)
         {
             int bt1 = b[pos];
             int bt2 = b[pos + 1];
-            bool neg = libnodave.getBit(bt1, 7);
+            bool neg = (bt1 & 0xf0) == 0xf0 ? true : false;
 
             bt1 = bt1 & 0x0f;
             bt2 = (bt2 / 0x10) * 10 + (bt2 & 0x0f % 0x10);
@@ -2109,7 +2058,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             int bt2 = b[pos + 1];
             int bt3 = b[pos + 2];
             int bt4 = b[pos + 3];
-            bool neg = libnodave.getBit(bt1, 7);
+            bool neg = (bt1 & 0xf0) == 0xf0 ? true : false;
 
             bt1 = bt1 & 0x0f;
             bt2 = (bt2 / 0x10) * 10 + (bt2 % 0x10);
