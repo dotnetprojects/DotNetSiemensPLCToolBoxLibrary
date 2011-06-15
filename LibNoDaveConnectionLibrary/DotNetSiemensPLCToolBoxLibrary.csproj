@@ -211,6 +211,12 @@
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Communication\PLCTagEditor.en.resx">
+      <DependentUpon>PLCTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\PLCTagEditor.es.resx">
+      <DependentUpon>PLCTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Communication\PLCTagEditor.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
       <SubType>Designer</SubType>

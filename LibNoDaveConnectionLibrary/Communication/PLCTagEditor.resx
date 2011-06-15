@@ -580,7 +580,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>LibNoDaveValueEditor</value>
+    <value>SPS-Variablen-Editor</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PLCTagEditor</value>
