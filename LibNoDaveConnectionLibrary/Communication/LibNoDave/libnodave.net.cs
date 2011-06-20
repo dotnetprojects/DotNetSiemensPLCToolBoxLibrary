@@ -1259,8 +1259,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 putBCD8at(buffer, 5, tm.Hour);
                 putBCD8at(buffer, 6, tm.Minute);
                 putBCD8at(buffer, 7, tm.Second);
-                putBCD8at(buffer, 8, tm.Millisecond / 100);
-                putBCD8at(buffer, 9, (tm.Millisecond % 100) << 4);
+                putBCD8at(buffer, 8, tm.Millisecond / 10);
+                putBCD8at(buffer, 9, (tm.Millisecond % 10) << 4);
 
                 if (IntPtr.Size == 8)
                     return daveSetPLCTime64(pointer, buffer);
