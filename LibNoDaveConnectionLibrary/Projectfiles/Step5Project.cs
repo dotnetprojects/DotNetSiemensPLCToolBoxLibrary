@@ -293,17 +293,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             if (ZipHelper.FileExists(_zipfile, _projectfilename.ToLower().Replace("st.s5d","z0.seq")))
             {
-                Stream symTabStream = ZipHelper.GetReadStream(_zipfile,
-                                                        _projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
+                Stream symTabStream = ZipHelper.GetReadStream(_zipfile, _projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
 
                 SymbolTable symtab=new SymbolTable();
                 symtab.LoadSymboltable(symTabStream);               
                 symTabStream.Close();
-
+                symtab.Parent = ProjectStructure;
+                symtab.Project = this;
                 ProjectStructure.SubItems.Add(symtab);
             }
 
-            ProjectStructure.SubItems.Add(new ReferenceData());
+            ProjectStructure.SubItems.Add(new ReferenceData() {Parent = ProjectStructure, Project = this});
 
         }
 

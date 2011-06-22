@@ -1,4 +1,5 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {

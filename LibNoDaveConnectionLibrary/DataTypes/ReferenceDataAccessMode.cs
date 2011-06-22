@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
     public enum ReferenceDataAccessMode
     {

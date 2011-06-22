@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Threading;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
@@ -14,20 +15,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         private Dictionary<string, ReferenceDataEntry> operandIndexList = new Dictionary<string, ReferenceDataEntry>();
 
-        private List<ReferenceDataEntry> _ReferenceDataEntrys;
+        private bool ReferenceDataLoaded = false;
+
+        private List<ReferenceDataEntry> _ReferenceDataEntrys = new List<ReferenceDataEntry>();
         public List<ReferenceDataEntry> ReferenceDataEntrys
         {
             get
             {
+                while (!ReferenceDataLoaded)
+                { Thread.Sleep(500); }
                 return _ReferenceDataEntrys;
-            }
-            set { _ReferenceDataEntrys = value; }
+            }            
         }
 
         internal bool showDeleted { get; set; }
 
         public ReferenceDataEntry GetEntryFromOperand(string operand)
         {
+            while (!ReferenceDataLoaded)
+            { Thread.Sleep(500); }
+
             string tmpname = operand.Trim().ToUpper();
             ReferenceDataEntry retval = null;
             operandIndexList.TryGetValue(tmpname, out retval);
@@ -45,7 +52,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
         
         private void LoadReferenceData()
         {
-            _ReferenceDataEntrys = new List<ReferenceDataEntry>();            
+            ReferenceDataLoaded = false;
+
+            Step5ProgrammFolder prgFld = (Step5ProgrammFolder) this.Parent;
+            Step5BlocksFolder blkFld = (Step5BlocksFolder) prgFld.BlocksFolder;
+            
+            foreach (ProjectBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
+            {
+                if (projectBlockInfo.BlockType == PLCBlockType.S5_PB || projectBlockInfo.BlockType == PLCBlockType.S5_FB || projectBlockInfo.BlockType == PLCBlockType.S5_FX || projectBlockInfo.BlockType == PLCBlockType.S5_OB || projectBlockInfo.BlockType == PLCBlockType.S5_SB)
+                {
+                    S5FunctionBlock blk = (S5FunctionBlock) projectBlockInfo.GetBlock();
+                    foreach (S5FunctionBlockRow functionBlockRow in blk.AWLCode)
+                    {
+                        if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
+                        {
+                            string operand = functionBlockRow.Parameter;
+                            ReferenceDataEntry entr;
+                            operandIndexList.TryGetValue(operand, out entr);
+                            if (entr == null)
+                            {
+                                entr = new ReferenceDataEntry() {Operand = operand};
+                                operandIndexList.Add(operand, entr);
+                                _ReferenceDataEntrys.Add(entr);
+                            }
+
+                            entr.ReferencePoints.Add(new ReferencePoint() {Block = blk, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]});
+                        }
+                    }
+
+                }
+            }
+
+            ReferenceDataLoaded = true;
         }                
     }
 }

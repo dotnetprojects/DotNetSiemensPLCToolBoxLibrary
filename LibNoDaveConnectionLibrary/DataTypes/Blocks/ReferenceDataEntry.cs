@@ -14,6 +14,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             set { _SymbolTableEntry = value; }
         }
 
-        public List<ReferencePoint> ReferencePoints { get; set; }
+        private List<ReferencePoint> _referencePoints = new List<ReferencePoint>();
+        public List<ReferencePoint> ReferencePoints
+        {
+            get { return _referencePoints; }
+            set { _referencePoints = value; }
+        }
     }
 }

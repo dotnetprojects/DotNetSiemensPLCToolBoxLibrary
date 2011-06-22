@@ -5,5 +5,7 @@
         public Block Block { get; set; }
 
         public FunctionBlockRow BlockRow { get; set; }
+
+        public ReferenceDataAccessMode AccessMode { get; set; }
     }
 }

@@ -95,23 +95,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     if (commentBlock[nr + 1] == 0x00)
                     {
                         netzwnr = zeile;
-                        ((S5FunctionBlockNetwork) retVal.Networks[netzwnr - 1]).Name = cmt;
-                        commandLineNumerList.Clear();
-                        int lineNr = 0;
-                        foreach (S5FunctionBlockRow akRow in retVal.Networks[netzwnr - 1].AWLCode)
+                        if (retVal.Networks.Count>netzwnr - 1)
                         {
-
-                            commandLineNumerList.Add(lineNr, akRow);
-                            lineNr++;
-
-                            if (IsCall(akRow))
+                            ((S5FunctionBlockNetwork) retVal.Networks[netzwnr - 1]).Name = cmt;
+                            commandLineNumerList.Clear();
+                            int lineNr = 0;
+                            foreach (S5FunctionBlockRow akRow in retVal.Networks[netzwnr - 1].AWLCode)
                             {
-                                foreach (S5Parameter extPar in akRow.ExtParameter)
+
+                                commandLineNumerList.Add(lineNr, akRow);
+                                lineNr++;
+
+                                if (IsCall(akRow))
                                 {
-                                    commandLineNumerList.Add(lineNr, extPar);
-                                    lineNr++;
+                                    foreach (S5Parameter extPar in akRow.ExtParameter)
+                                    {
+                                        commandLineNumerList.Add(lineNr, extPar);
+                                        lineNr++;
+                                    }
                                 }
                             }
+                        }
+                        else
+                        {
+                            //Todo: Throw an error when this happens???
+                            //throw new Exception("Error in Block: " + retVal.BlockName);
                         }
 
                     }
@@ -253,10 +261,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 
 
                 S5FunctionBlockRow newRow = new S5FunctionBlockRow();
-                newRow.MC5LIB_SYMTAB_Row = (object[]) sym[index];
-                
+                                
                 if (index >= 0)
                 {
+                    newRow.MC5LIB_SYMTAB_Row = (object[])sym[index];
 
                     bool fb = false;
                    newRow.Command = (string) ((object[]) sym[index])[operation];
