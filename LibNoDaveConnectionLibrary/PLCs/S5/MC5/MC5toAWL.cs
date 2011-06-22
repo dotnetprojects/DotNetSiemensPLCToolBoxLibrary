@@ -252,7 +252,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                 
 
-                S5FunctionBlockRow newRow = new S5FunctionBlockRow();                   
+                S5FunctionBlockRow newRow = new S5FunctionBlockRow();
+                newRow.MC5LIB_SYMTAB_Row = (object[]) sym[index];
                 
                 if (index >= 0)
                 {

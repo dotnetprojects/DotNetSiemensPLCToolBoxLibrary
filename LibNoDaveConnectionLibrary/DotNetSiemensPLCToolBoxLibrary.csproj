@@ -74,6 +74,7 @@
     <Compile Include="DataTypes\Blocks\IFunctionBlock.cs" />
     <Compile Include="DataTypes\Blocks\Network.cs" />
     <Compile Include="DataTypes\Blocks\ProjectPlcBlockInfo.cs" />
+    <Compile Include="DataTypes\Blocks\ReferenceDataAccessMode.cs" />
     <Compile Include="DataTypes\Blocks\Step5\S5FunctionBlockNetwork.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockNetwork.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockParameter.cs" />
@@ -102,10 +103,13 @@
     <Compile Include="DataTypes\LibNoDaveConnectionLibraryExceptionType.cs" />
     <Compile Include="DataTypes\Projectfolders\IBlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\ProjectFolder.cs" />
+    <Compile Include="DataTypes\Blocks\ReferenceDataEntry.cs" />
+    <Compile Include="DataTypes\Blocks\ReferencePoint.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step5\SymbolTable.cs" />
     <Compile Include="DataTypes\Projectfolders\Step5\Step5ProgrammFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step5\Step5BlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step5\Step5ProjectFolder.cs" />
-    <Compile Include="DataTypes\Projectfolders\Step5\SymbolTable.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step5\ReferenceData.cs" />
     <Compile Include="DataTypes\Projectfolders\IProgrammFolder.cs" />
     <Compile Include="DataTypes\Step7Attribute.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\CPFolder.cs" />

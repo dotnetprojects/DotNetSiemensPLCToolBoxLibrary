@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
@@ -10,8 +9,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
          {
              _MC5 = null;
          }
+
+
+        //This Property has nothing to do with the Symboltable, its the S5 command
+         internal object[] MC5LIB_SYMTAB_Row { get; set; }
+
         //These Commands are Combined...
-        public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
+        //public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
 
         private string _parameter;
         public string Parameter
@@ -22,7 +26,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 _parameter = value;
                 _SymbolTableEntry = null;
                 _MC5 = null;
-                CombinedCommands = null;
+                //CombinedCommands = null;
             }
         }
 
@@ -56,7 +60,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             {
                 _extparameter = value;
                 _MC5 = null;
-                CombinedCommands = null;
+                //CombinedCommands = null;
             }
         }
 
@@ -72,7 +76,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             {
                 _jumpwidth = value;
                 _MC5 = null;
-                CombinedCommands = null;
+                //CombinedCommands = null;
             }
         }
 
@@ -93,10 +97,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             }
         }
 
+        /*
         public PLCFunctionBlockAdressType GetParameterType()
         {
             return PLCFunctionBlockAdressType.Direct;
         }
+        */
 
         public S5FunctionBlockRow()
         {
@@ -163,7 +169,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             if (Parameter != null)
                 par = Parameter;
 
-            if (_SymbolTableEntry != null)
+            if (_SymbolTableEntry != null && !string.IsNullOrEmpty(SymbolTableEntry.Symbol))
                 par = "-" + SymbolTableEntry.Symbol;
 
             return (retVal + Command.PadRight(6) + par).PadRight(35) + cmt + ext; // +"Sz:" + ByteSize.ToString();

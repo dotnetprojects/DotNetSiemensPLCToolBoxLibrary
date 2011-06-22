@@ -64,16 +64,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                     string[] wrt = line.Split('\t');
 
                     SymbolTableEntry sym = new SymbolTableEntry();
-                    sym.Symbol = wrt[2];
-                    sym.Operand = wrt[1];
-                    sym.OperandIEC = wrt[1];
-                    //sym.DataType = 
-                    if (wrt.Length > 3)
-                        sym.Comment = wrt[3];
-                    _SymbolTableEntrys.Add(sym);
-                    operandIndexList.Add(sym.Operand.Replace(" ", ""), sym);
-                    if (sym.Symbol.Trim() != "")
-                        symbolIndexList.Add(sym.Symbol.ToUpper().Trim(), sym);
+
+                    if (wrt.Length > 2)
+                    {
+                        sym.Symbol = wrt[2];
+                        sym.Operand = wrt[1];
+                        sym.OperandIEC = wrt[1];
+                        //sym.DataType = 
+                        if (wrt.Length > 3)
+                            sym.Comment = wrt[3];
+                        _SymbolTableEntrys.Add(sym);
+                        try
+                        {
+                            operandIndexList.Add(sym.Operand.Replace(" ", ""), sym);
+                            if (sym.Symbol.Trim() != "")
+                                symbolIndexList.Add(sym.Symbol.ToUpper().Trim(), sym);
+                        }
+                        catch (Exception ex)
+                        { }
+                    }
                 }
             }
         }

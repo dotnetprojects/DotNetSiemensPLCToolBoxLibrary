@@ -268,8 +268,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                             col = new DataColumn(field.fieldName, typeof(string));
                             break;
                         case (byte)'T':
-                            // You can uncomment this to see the time component in the grid
-                            //col = new DataColumn(field.fieldName, typeof(string));
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
                         case (byte)'D':
@@ -284,7 +282,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                         case (byte)'M':
                             //Field Type Memo...
                             col = new DataColumn(field.fieldName, typeof(byte[]));
-                            //col = new DataColumn(field.fieldName, typeof(string));
                             break;
                     }
                     dt.Columns.Add(col);
@@ -324,7 +321,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                         switch (field.fieldType)
                         {
                             case (byte)'N':  // Number
-                                // If you port this to .NET 2.0, use the Decimal.TryParse method
                                 number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
                                 if (IsNumber(number))
                                 {
@@ -352,16 +348,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                             case (byte)'M': // Memo
                                 {
                                     int intRef;
-                                    //if ((int)row[1] == 89 && (string)row[3] == "00014")
-                                    //    intRef = 0;
                                     
                                     String strRef = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen)).Trim();
                                     if (Int32.TryParse(strRef, out intRef))
                                     {
-                                        //if (memoLookup.ContainsKey(intRef))
-                                        //    row[fieldIndex + 1] = memoLookup[intRef];
-                                        //else
-                                        //    row[fieldIndex + 1] = new byte[0];
                                         row[fieldIndex + 1] = ReadMemoBlock(intRef);
                                     }
                                     else
@@ -628,6 +618,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                         bw.Write(Encoding.ASCII.GetBytes(" "));
                 else
                 {
+
+                    /*
+                    number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
+                    switch (field.fieldType)
+                    {
+                        case (byte)'N':
+                            if (number.IndexOf(".") > -1)
+                            {
+                                col = new DataColumn(field.fieldName, typeof(decimal));
+                            }
+                            else
+                            {
+                                col = new DataColumn(field.fieldName, typeof(int));
+                            }
+                            break;
+                        case (byte)'C':
+                            col = new DataColumn(field.fieldName, typeof(string));
+                            break;
+                        case (byte)'T':
+                            // You can uncomment this to see the time component in the grid
+                            //col = new DataColumn(field.fieldName, typeof(string));
+                            col = new DataColumn(field.fieldName, typeof(DateTime));
+                            break;
+                        case (byte)'D':
+                            col = new DataColumn(field.fieldName, typeof(DateTime));
+                            break;
+                        case (byte)'L':
+                            col = new DataColumn(field.fieldName, typeof(bool));
+                            break;
+                        case (byte)'F':
+                            col = new DataColumn(field.fieldName, typeof(Double));
+                            break;
+                        case (byte)'M':
+                            //Field Type Memo...
+                            col = new DataColumn(field.fieldName, typeof(byte[]));
+                            //col = new DataColumn(field.fieldName, typeof(string));
+                            break;
+                    }*/
+
+
                     switch (writeFieldType)
                     {
                         case 'N':
