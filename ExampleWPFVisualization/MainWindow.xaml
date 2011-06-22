@@ -2,17 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters" xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours" Title="MainWindow" Height="334" Width="329">
     <Window.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary>            
             <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">
-                <Converters:IntRangeToBrushConverter.IntRangeBrushValues>
-                        <Converters:IntRangeBrushValue IntRange="0-5000" Brush="Red" />
-                        <Converters:IntRangeBrushValue IntRange="5001-10000" Brush="Blue" />
-                        <Converters:IntRangeBrushValue IntRange="10001-15000" Brush="Green" />
-                        <Converters:IntRangeBrushValue IntRange="15001-20000" Brush="Orange" />
-                        <Converters:IntRangeBrushValue IntRange="20001-25000" Brush="Purple" />
-                        <Converters:IntRangeBrushValue IntRange="25001-30000" Brush="Brown" />                        
-                        <Converters:IntRangeBrushValue IntRange=">30000" Brush="Yellow" />
-                </Converters:IntRangeToBrushConverter.IntRangeBrushValues>
+                <!--
+                <Converters:IntRangeToBrushConverter.IntRangeValues> 
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="0-5000" Value="Red" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="5001-10000" Value="Blue" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="10001-15000" Value="Green" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="15001-20000" Value="Orange" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="20001-25000" Value="Purple" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="25001-30000" Value="Brown" />
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange=">30000" Value="Yellow" />                    
+                </Converters:IntRangeToBrushConverter.IntRangeValues>-->
             </Converters:IntRangeToBrushConverter>
 
             <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1" TrueValue="Green" FalseValue="Red"></Converters:BoolToBrushConverter>

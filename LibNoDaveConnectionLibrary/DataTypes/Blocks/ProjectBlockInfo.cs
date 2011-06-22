@@ -9,6 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     public class ProjectBlockInfo
     {
        internal int id;
+       internal Block _Block = null;
 
        public ProjectFolder ParentFolder { get; set; }
 
@@ -16,11 +17,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
        public PLCBlockType BlockType { get; set; }
 
-        public Block GetBlock()
-        {
-            IBlocksFolder blkFld = (IBlocksFolder)ParentFolder;
-            return blkFld.GetBlock(this);
-        }
+       public Block GetBlock()
+       {
+           IBlocksFolder blkFld = (IBlocksFolder) ParentFolder;
+           return blkFld.GetBlock(this);
+       }
 
         public string GetSourceBlock()
         {

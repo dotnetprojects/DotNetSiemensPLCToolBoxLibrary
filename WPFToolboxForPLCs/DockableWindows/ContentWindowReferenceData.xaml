@@ -1,0 +1,84 @@
+﻿<ad:DocumentContent
+    x:Class="WPFToolboxForSiemensPLCs.DockableWindows.ContentWindowReferenceData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+    <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True" CanUserAddRows="False"
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2">
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Header="Operand" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Operand">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Operand}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Symbol">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding SymbolTableEntry}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Referenzen" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ReferencePoints">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Expander>
+                            <DataGrid ItemsSource="{Binding ReferencePoints}" AutoGenerateColumns="False" CanUserAddRows="False"
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Block" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Block.BlockName}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="NetworkNumber" Width="SizeToCells" IsReadOnly="True" SortMemberPath="NetworkNumber">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding NetworkNumber}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="LineNumber" Width="SizeToCells" IsReadOnly="True" SortMemberPath="LineNumber">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding LineNumber}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Command" Width="SizeToCells" IsReadOnly="True" SortMemberPath="BlockRow.Command">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding BlockRow.Command}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="AccessMode" Width="SizeToCells" IsReadOnly="True" SortMemberPath="AccessMode">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding AccessMode}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Expander>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Comment" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Comment">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Comment}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+
+</ad:DocumentContent>

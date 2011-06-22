@@ -79,7 +79,7 @@ namespace WPFVarTab
                 }
                 else
                 {
-
+                    DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectVAT(file);
                 }
             }
         }

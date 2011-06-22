@@ -7,5 +7,11 @@
         public FunctionBlockRow BlockRow { get; set; }
 
         public ReferenceDataAccessMode AccessMode { get; set; }
+
+        public Network Network { get; set; }
+
+        public int NetworkNumber { get; set; }
+
+        public int LineNumber { get; set; }
     }
 }

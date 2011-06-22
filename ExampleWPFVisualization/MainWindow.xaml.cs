@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using ExampleWPFVisualization.Converters;
 
 namespace ExampleWPFVisualization
 {
@@ -101,7 +102,7 @@ namespace ExampleWPFVisualization
         }
 
         private void cmdStop_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             worker.CancelAsync();            
             cmdConnect.IsEnabled = true;
             cmdStop.IsEnabled = false;

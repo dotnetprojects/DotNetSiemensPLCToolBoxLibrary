@@ -1,7 +1,7 @@
 ﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.ConfigVarTab"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary" Style="{DynamicResource GlassStyle}"
-        Title="ConfigVarTab" Height="274" Width="224" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="ConfigVarTab" Height="274" Width="213" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     
     <Grid>
         <GroupBox Header="Read Config" Height="116" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">

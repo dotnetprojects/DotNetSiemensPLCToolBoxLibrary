@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" 
         xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary" Style="{DynamicResource GlassStyle}"
-        Title="JFK-WPF-VarTab" Height="350" Width="640" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png" ResizeMode="CanResizeWithGrip">
+        Title="JFK-WPF-VarTab" Height="397" Width="784" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png" ResizeMode="CanResizeWithGrip">
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}"
@@ -37,6 +37,16 @@
             NormalRowsTemplate="{StaticResource normalTemplate}" 
             CommentRowsTemplate="{StaticResource commentTemplate}" 
             x:Key="vartabrowItemTemplateSelector" />
+        
+        <Style TargetType="{x:Type DataGridCellsPresenter}">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WPFVarTab:CustomDataGridCellsPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         
         <Style x:Key="GlassStyle" TargetType="{x:Type WPFVarTab:MainWindow}">
             <Setter Property="Shell:WindowChrome.WindowChrome">
@@ -122,11 +132,11 @@
         </Grid.RowDefinitions>
         
                
-        <DataGrid AutoGenerateColumns="False" Margin="0,22,0,22" 
-                  Name="dataGrid" Grid.RowSpan="2" CanUserAddRows="True"
+        <WPFVarTab:CustomDataGrid AutoGenerateColumns="False" Margin="0,22,0,22" 
+                  x:Name="dataGrid" Grid.RowSpan="2" CanUserAddRows="True"
                   RowBackground="Azure" AlternatingRowBackground="LightSteelBlue"
                   ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}" CanUserResizeRows="False" CanUserSortColumns="False" CanUserDeleteRows="True">
-            <DataGrid.Columns>
+            <WPFVarTab:CustomDataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -134,8 +144,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
-                <DataGridTextColumn Binding="{Binding Comment}" Header="Comment"></DataGridTextColumn>
+                                
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.S7FormatAddress}" Header="Address"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Symbol}" Header="Symbol"></DataGridTextColumn>
                 <!--<DataGridTextColumn Binding="{Binding LibNoDaveValue.LibNoDaveDataType}" Header="DataType"></DataGridTextColumn>-->
@@ -144,9 +153,10 @@
                 <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDisplayDataTypes}}" SelectedItemBinding="{Binding LibNoDaveValue.DataTypeStringFormat}" Header="DisplayFormat"></DataGridComboBoxColumn>
                 <DataGridComboBoxColumn Header="Connection"></DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Value}" Header="Value"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LibNoDaveValue.Controlvalue}" Header="ControlValue"></DataGridTextColumn>                               
-            </DataGrid.Columns>
-        </DataGrid>
+                <DataGridTextColumn Binding="{Binding LibNoDaveValue.Controlvalue}" Header="ControlValue"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Comment}" Header="Comment"></DataGridTextColumn>
+            </WPFVarTab:CustomDataGrid.Columns>
+        </WPFVarTab:CustomDataGrid>
         <StatusBar HorizontalContentAlignment="Stretch" Grid.Row="1" Name="statusBar" Height="22" VerticalAlignment="Bottom" Opacity="0.5">
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right"  Width="120" >
                 <Label Padding="0" Content="JFK-WPFVarTab 1.0"></Label>

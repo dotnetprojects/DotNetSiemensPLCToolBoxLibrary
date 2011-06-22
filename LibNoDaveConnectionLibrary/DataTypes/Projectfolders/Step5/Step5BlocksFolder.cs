@@ -46,33 +46,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
         {
+            if (blkInfo._Block != null)
+                return blkInfo._Block;
+
             ProjectPlcBlockInfo plcblkInfo = (ProjectPlcBlockInfo)blkInfo;
             //string aa = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(((Step5ProjectBlockInfo)blkInfo)._blkByte);
             //string bb = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(((Step5ProjectBlockInfo)blkInfo)._blkHeaderByte);
-            if (blkInfo.BlockType == PLCBlockType.S5_DV)
-                return MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, null, ((S5ProjectBlockInfo)blkInfo)._blkByte, null);
-            else if (blkInfo.BlockType == PLCBlockType.S5_DVX)
-                return MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, null, ((S5ProjectBlockInfo)blkInfo)._blkByte, null);
-            else if (blkInfo.BlockType == PLCBlockType.S5_DB)
-                return MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_DV" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_DK" + plcblkInfo.BlockNumber.ToString()));
-            else if (blkInfo.BlockType == PLCBlockType.S5_DX)
-                return MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_DVX" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_DKX" + plcblkInfo.BlockNumber.ToString()));
-            else if (blkInfo.BlockType == PLCBlockType.S5_DK)
-                return MC5toComment.GetCommentBlock(blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte);
-            else if (blkInfo.BlockType == PLCBlockType.S5_DKX)
-                return MC5toComment.GetCommentBlock(blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte);
-            else if (blkInfo.BlockType == PLCBlockType.S5_PB)
-                return MC5toAWL.GetFunctionBlock((ProjectPlcBlockInfo)blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_PK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
-            else if (blkInfo.BlockType == PLCBlockType.S5_FB)
-                return MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_FV" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_FK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
-            else if (blkInfo.BlockType == PLCBlockType.S5_SB)
-                return MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_SK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
-            else if (blkInfo.BlockType == PLCBlockType.S5_FX)
-                return MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_FVX" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_FKX" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
-            else if (blkInfo.BlockType == PLCBlockType.S5_OB)
-                return MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_OK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+            Block retVal = null;
             
-            return null;            
+            if (blkInfo.BlockType == PLCBlockType.S5_DV)
+                retVal = MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, null, ((S5ProjectBlockInfo)blkInfo)._blkByte, null);
+            else if (blkInfo.BlockType == PLCBlockType.S5_DVX)
+                retVal = MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, null, ((S5ProjectBlockInfo)blkInfo)._blkByte, null);
+            else if (blkInfo.BlockType == PLCBlockType.S5_DB)
+                retVal = MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_DV" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_DK" + plcblkInfo.BlockNumber.ToString()));
+            else if (blkInfo.BlockType == PLCBlockType.S5_DX)
+                retVal = MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_DVX" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_DKX" + plcblkInfo.BlockNumber.ToString()));
+            else if (blkInfo.BlockType == PLCBlockType.S5_DK)
+                retVal = MC5toComment.GetCommentBlock(blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte);
+            else if (blkInfo.BlockType == PLCBlockType.S5_DKX)
+                retVal = MC5toComment.GetCommentBlock(blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte);
+            else if (blkInfo.BlockType == PLCBlockType.S5_PB)
+                retVal = MC5toAWL.GetFunctionBlock((ProjectPlcBlockInfo)blkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_PK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+            else if (blkInfo.BlockType == PLCBlockType.S5_FB)
+                retVal = MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_FV" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_FK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+            else if (blkInfo.BlockType == PLCBlockType.S5_SB)
+                retVal = MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_SK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+            else if (blkInfo.BlockType == PLCBlockType.S5_FX)
+                retVal = MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, GetBlockInByte("S5_FVX" + plcblkInfo.BlockNumber.ToString()), GetBlockInByte("S5_FKX" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+            else if (blkInfo.BlockType == PLCBlockType.S5_OB)
+                retVal = MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_OK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
+
+            blkInfo._Block = retVal;
+            return retVal;            
         }
     }
 }

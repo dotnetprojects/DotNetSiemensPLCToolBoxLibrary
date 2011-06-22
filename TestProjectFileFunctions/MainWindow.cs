@@ -138,7 +138,8 @@ namespace JFK_VarTab
                     trnd.Text = tmp.ToString();
                     if (chkShowDeleted.Checked)
                         trnd.Text += "(show deleted)";
-                    AddNodes(trnd, tmp.ProjectStructure.SubItems);
+                    if (tmp.ProjectStructure != null)
+                        AddNodes(trnd, tmp.ProjectStructure.SubItems);
                     treeStep7Project.Nodes.Add(trnd);
                 }
 
@@ -788,7 +789,7 @@ namespace JFK_VarTab
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d)|*.s7p;*.zip;*.s5d;*.s7l|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11";
 
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)

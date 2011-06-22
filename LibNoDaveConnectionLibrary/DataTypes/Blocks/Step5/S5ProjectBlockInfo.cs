@@ -23,6 +23,7 @@
 
         internal byte[] _blkByte;
         internal byte[] _blkHeaderByte;
+
         //internal S5Block _myblk;
         
     }

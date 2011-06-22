@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Converters\BoolToValueConverter.cs" />
     <Compile Include="Behaviours\InputBindingsManager.cs" />
+    <Compile Include="Converters\IntRangeConverter.cs" />
     <Compile Include="Converters\IntToBrushConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

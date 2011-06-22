@@ -399,8 +399,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
         {
-            //tmpBlock myTmpBlk = new tmpBlock();
+            //Todo: Enable this, but then myConvOpt is only used the first time!
+            //if (blkInfo._Block != null)
+            //    return blkInfo._Block;
 
+            
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
             tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
@@ -448,6 +451,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     List<string> ParaList = new List<string>();
 
                     S7FunctionBlock retVal = new S7FunctionBlock();
+                    blkInfo._Block = retVal;
+
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
@@ -620,7 +625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.Networks = NetWork.GetNetworksList(retVal);
 
-                    return retVal;
+                    return retVal;                    
                 }
             }
             return null;

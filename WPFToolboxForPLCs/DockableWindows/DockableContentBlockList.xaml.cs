@@ -192,6 +192,11 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             }
         }
 
+        private void myDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
 
     }
 }

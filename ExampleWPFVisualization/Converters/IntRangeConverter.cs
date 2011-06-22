@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace ExampleWPFVisualization.Converters
 {
-    /*
-    public class IntRangeBrushValue
+    public class IntRangeConverter<T> : IValueConverter
     {
-        public string IntRange { get; set; }
-        public Brush Brush { get; set; }
-    }
-
-
-    public class IntRangeToBrushConverter : IValueConverter
-    {
-        private List<IntRangeBrushValue> _intRangeBrushValues=new List<IntRangeBrushValue>();
-        public List<IntRangeBrushValue> IntRangeBrushValues
+        public class IntRangeValue
         {
-            get { return _intRangeBrushValues; }
-            set { _intRangeBrushValues = value; }
+            public string IntRange { get; set; }
+            public T Value { get; set; }
+        }
+
+        private List<IntRangeValue> _intRangeValues = new List<IntRangeValue>();
+        public List<IntRangeValue> IntRangeValues
+        {
+            get { return _intRangeValues; }
+            set { _intRangeValues = value; }
         }
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -31,41 +30,41 @@ namespace ExampleWPFVisualization.Converters
 
             int intvalue = System.Convert.ToInt32(value);
 
-            foreach (IntRangeBrushValue intBrushValue in IntRangeBrushValues)
+            foreach (IntRangeValue intBrushValue in IntRangeValues)
             {
                 if (intBrushValue.IntRange.Contains('-'))
                 {
                     int start = System.Convert.ToInt32(intBrushValue.IntRange.Split('-')[0]);
                     int stop = System.Convert.ToInt32(intBrushValue.IntRange.Split('-')[1]);
                     if (intvalue >= start && intvalue <= stop)
-                        return intBrushValue.Brush;
+                        return intBrushValue.Value;
                 }
                 else if (intBrushValue.IntRange.Length>=2 && intBrushValue.IntRange[0] == '<' && intBrushValue.IntRange[1] == '=')
                 {
                     int val = System.Convert.ToInt32(intBrushValue.IntRange.Substring(1));
                     if (intvalue <= val)
-                        return intBrushValue.Brush;
+                        return intBrushValue.Value;
                 }
                 else if (intBrushValue.IntRange.Length >= 2 && intBrushValue.IntRange[0] == '>' && intBrushValue.IntRange[1] == '=')
                 {
                     int val = System.Convert.ToInt32(intBrushValue.IntRange.Substring(1));
                     if (intvalue >= val)
-                        return intBrushValue.Brush;
+                        return intBrushValue.Value;
                 }
                 else if (intBrushValue.IntRange.Length >= 1 && intBrushValue.IntRange[0] == '<')
                 {
                     int val = System.Convert.ToInt32(intBrushValue.IntRange.Substring(1));
                     if (intvalue < val)
-                        return intBrushValue.Brush;
+                        return intBrushValue.Value;
                 }
                 else if (intBrushValue.IntRange.Length >= 1 && intBrushValue.IntRange[0] == '>')
                 {
                     int val = System.Convert.ToInt32(intBrushValue.IntRange.Substring(1));
                     if (intvalue > val)
-                        return intBrushValue.Brush;
+                        return intBrushValue.Value;
                 }
                 else if (System.Convert.ToInt32(intBrushValue.IntRange) == intvalue)
-                    return intBrushValue.Brush;
+                    return intBrushValue.Value;
             }
 
             return null;          
@@ -76,5 +75,8 @@ namespace ExampleWPFVisualization.Converters
             throw new NotImplementedException();
         }
     }
-     * */
+
+    public class IntRangeToBrushConverter : IntRangeConverter<Brush> { } ;
+    public class IntRangeToThicknessConverter : IntRangeConverter<Thickness> { } ;
+    public class IntRangeToPointConverter : IntRangeConverter<Point> { } ;
 }

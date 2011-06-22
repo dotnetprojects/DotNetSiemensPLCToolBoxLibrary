@@ -69,6 +69,7 @@
     <Compile Include="ConfigVarTab.xaml.cs">
       <DependentUpon>ConfigVarTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomDataGrid.cs" />
     <Compile Include="VarTabRowItemTemplateSelector.cs" />
     <Compile Include="VarTabViewModel.cs" />
     <Page Include="ConfigConnectionsAndSymbolSources.xaml">

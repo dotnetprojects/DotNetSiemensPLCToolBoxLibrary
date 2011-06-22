@@ -62,23 +62,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                 if (projectBlockInfo.BlockType == PLCBlockType.S5_PB || projectBlockInfo.BlockType == PLCBlockType.S5_FB || projectBlockInfo.BlockType == PLCBlockType.S5_FX || projectBlockInfo.BlockType == PLCBlockType.S5_OB || projectBlockInfo.BlockType == PLCBlockType.S5_SB)
                 {
                     S5FunctionBlock blk = (S5FunctionBlock) projectBlockInfo.GetBlock();
-                    foreach (S5FunctionBlockRow functionBlockRow in blk.AWLCode)
+                    int networkNR = 0;                    
+                    foreach (Network network in blk.Networks)
                     {
-                        if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
+                        int rowNR = 0;
+                        networkNR++;
+                        foreach (S5FunctionBlockRow functionBlockRow in network.AWLCode)
                         {
-                            string operand = functionBlockRow.Parameter;
-                            ReferenceDataEntry entr;
-                            operandIndexList.TryGetValue(operand, out entr);
-                            if (entr == null)
+                            rowNR++;
+                            if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
                             {
-                                entr = new ReferenceDataEntry() {Operand = operand};
-                                operandIndexList.Add(operand, entr);
-                                _ReferenceDataEntrys.Add(entr);
-                            }
+                                string operand = functionBlockRow.Parameter;
+                                ReferenceDataEntry entr;
+                                operandIndexList.TryGetValue(operand, out entr);
+                                if (entr == null)
+                                {
+                                    entr = new ReferenceDataEntry() { Operand = operand };
+                                    operandIndexList.Add(operand, entr);
+                                    _ReferenceDataEntrys.Add(entr);
+                                }
 
-                            entr.ReferencePoints.Add(new ReferencePoint() {Block = blk, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]});
+                                entr.ReferencePoints.Add(new ReferencePoint() { Block = blk,Network = network,NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9] });
+                            }
                         }
                     }
+                    
 
                 }
             }

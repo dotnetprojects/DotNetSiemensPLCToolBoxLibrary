@@ -18,7 +18,7 @@
 
 
         <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove" AllowDrop="False" GiveFeedback="myDataGrid_GiveFeedback" MouseDown="myDataGrid_MouseDown">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove" AllowDrop="False" GiveFeedback="myDataGrid_GiveFeedback" MouseDown="myDataGrid_MouseDown" SelectionChanged="myDataGrid_SelectionChanged">
             
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="ObjectName" Width="Auto" IsReadOnly="True" SortMemberPath="ObjectName">

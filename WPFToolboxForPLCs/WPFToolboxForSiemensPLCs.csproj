@@ -108,6 +108,9 @@
     <Compile Include="DockableWindows\ContentWindowSourceBlock.xaml.cs">
       <DependentUpon>ContentWindowSourceBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DockableWindows\ContentWindowReferenceData.xaml.cs">
+      <DependentUpon>ContentWindowReferenceData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DockableWindows\DockableContentBlockList.xaml.cs">
       <DependentUpon>DockableContentBlockList.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DockableWindows\ContentWindowSourceBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockableWindows\ContentWindowReferenceData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
