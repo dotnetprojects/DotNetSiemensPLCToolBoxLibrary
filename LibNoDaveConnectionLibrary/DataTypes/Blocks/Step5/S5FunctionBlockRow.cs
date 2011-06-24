@@ -139,6 +139,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             }
             else*/ if (Command == "BLD" && Parameter == "130")
             {
+                if (!string.IsNullOrEmpty(Label))
+                    return Label.PadRight(4) + ": ";
                 return ""; // +"Sz:" + ByteSize.ToString();
             }
             string retVal = "";
@@ -162,7 +164,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 }
             }
 
-            if (Command == "" && Parameter == "")
+            if (Command == "" && Parameter == "" && retVal=="")
                 return cmt;
 
             string par = "";

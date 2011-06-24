@@ -41,7 +41,7 @@
 
 
     </UserControl.Resources>
-    <Expander Grid.Row="2" HorizontalAlignment="Stretch">
+    <Expander Grid.Row="2" HorizontalAlignment="Stretch" Name="myExpander">
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="Netzwerk "></TextBlock>

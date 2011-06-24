@@ -564,7 +564,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     if (ByteAdressNumerPLCFunctionBlocks.ContainsKey(jmpBytePos))
                     {
                         var target = ByteAdressNumerPLCFunctionBlocks[jmpBytePos];
-                        if (target.Label == "")
+                        if (target.Label.Trim() == "")
                         {
                             target.Label = "M" + JumpCount.ToString().PadLeft(3, '0');
                             JumpCount++;

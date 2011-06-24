@@ -10,6 +10,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using ICSharpCode.AvalonEdit.Highlighting;
+using WPFToolboxForSiemensPLCs.Controls.NetworkEditor;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {
@@ -20,10 +21,24 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         private Block myBlock;
         private string myBlockString;
 
-        
         public ContentWindowFunctionBlockEditor(object myBlock)
         {
             InitializeComponent();
+
+            this.showBlock(myBlock, 0, 0);
+        }
+
+        public ContentWindowFunctionBlockEditor(object myBlock, int netzwerknr, int zeile)
+        {
+            InitializeComponent();
+
+            this.showBlock(myBlock, netzwerknr, zeile);
+        }
+
+        private void showBlock(object myBlock, int netzwerknr, int zeile)
+        {
+            this.netzwerknr = netzwerknr;
+            this.zeile = zeile;
 
             this.myBlock = (Block)myBlock;
             myBlockString = this.myBlock.ToString();
@@ -41,8 +56,29 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 myLst.ItemsSource = ((S5FunctionBlock)myBlock).Networks;
             }
             this.DataContext = this;
+
+            if (netzwerknr > 0)
+            {
+                myLst.ItemContainerGenerator.StatusChanged += new EventHandler(ItemContainerGenerator_StatusChanged);
+                
+            }
         }
 
+        private int netzwerknr=0;
+        private int zeile = 0;
+        void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
+        {
+            if (myLst.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+            {
+                myLst.ItemContainerGenerator.StatusChanged -= new EventHandler(ItemContainerGenerator_StatusChanged);
+
+                myLst.ScrollIntoView(((S5FunctionBlock) myBlock).Networks[netzwerknr - 1]);
+                DependencyObject depObj = myLst.ItemContainerGenerator.ContainerFromIndex(netzwerknr - 1);
+
+                NetworkEditor nedt = depObj.TryFindChild<NetworkEditor>();
+                nedt.ShowLine(zeile);
+            }
+        }
 
         private void myTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

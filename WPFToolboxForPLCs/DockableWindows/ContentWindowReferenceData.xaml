@@ -16,10 +16,10 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Symbol">
+            <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="SymbolTableEntry.Symbol">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding SymbolTableEntry}" />
+                        <TextBlock Text="{Binding SymbolTableEntry.Symbol}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
@@ -28,7 +28,7 @@
                     <DataTemplate>
                         <Expander>
                             <DataGrid ItemsSource="{Binding ReferencePoints}" AutoGenerateColumns="False" CanUserAddRows="False"
-              AlternatingRowBackground="Gainsboro"  AlternationCount="2">
+              AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="DataGrid_MouseDoubleClick">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Block" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -71,10 +71,10 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Comment" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Comment">
+            <DataGridTemplateColumn Header="Symbol Comment" Width="SizeToCells" IsReadOnly="True" SortMemberPath="SymbolTableEntry.Comment">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Comment}" />
+                        <TextBlock Text="{Binding SymbolTableEntry.Comment}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

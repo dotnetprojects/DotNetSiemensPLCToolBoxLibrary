@@ -56,6 +56,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
             Step5ProgrammFolder prgFld = (Step5ProgrammFolder) this.Parent;
             Step5BlocksFolder blkFld = (Step5BlocksFolder) prgFld.BlocksFolder;
+            SymbolTable smyTab = (SymbolTable) prgFld.SymbolTable;
             
             foreach (ProjectBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
             {
@@ -77,7 +78,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                                 operandIndexList.TryGetValue(operand, out entr);
                                 if (entr == null)
                                 {
-                                    entr = new ReferenceDataEntry() { Operand = operand };
+                                    entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = smyTab.GetEntryFromOperand(operand)};
                                     operandIndexList.Add(operand, entr);
                                     _ReferenceDataEntrys.Add(entr);
                                 }

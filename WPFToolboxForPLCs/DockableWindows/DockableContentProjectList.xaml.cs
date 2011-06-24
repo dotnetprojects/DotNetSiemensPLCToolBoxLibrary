@@ -73,6 +73,8 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 {
                     ReferenceData fld = (ReferenceData)myTreeView.SelectedItem;
                     ContentWindowReferenceData tmp = new ContentWindowReferenceData(fld);
+                    tmp.parentDockingManager = parentDockingManager;
+                  
                     tmp.Title = fld.ToString(); //.Substring(fld.ToString().LastIndexOf("\\") + 1);
                     tmp.ToolTip = fld.ToString();
                     tmp.Show(parentDockingManager);
