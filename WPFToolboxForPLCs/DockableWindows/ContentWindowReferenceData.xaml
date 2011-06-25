@@ -26,14 +26,28 @@
             <DataGridTemplateColumn Header="Referenzen" Width="SizeToCells" IsReadOnly="True" SortMemberPath="ReferencePoints">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Expander>
-                            <DataGrid ItemsSource="{Binding ReferencePoints}" AutoGenerateColumns="False" CanUserAddRows="False"
+                        <Expander Padding="0">
+                            <DataGrid Margin="0" ItemsSource="{Binding ReferencePoints}" AutoGenerateColumns="False" CanUserAddRows="False"
               AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="DataGrid_MouseDoubleClick">
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Block" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block">
+                                    <DataGridTemplateColumn Header="Block" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block.BlockName">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Block.BlockName}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Symbol" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block.SymbolTabelEntry.Symbol">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Block.SymbolTabelEntry.Symbol}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Name" Width="SizeToCells" IsReadOnly="True" SortMemberPath="Block.Name">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Block.Name}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>

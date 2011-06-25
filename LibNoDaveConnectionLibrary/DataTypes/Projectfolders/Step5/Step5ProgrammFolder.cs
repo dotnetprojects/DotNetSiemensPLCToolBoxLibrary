@@ -8,7 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
         {
             get
             {
-                if (SubItems.Count>1)
+                if (SubItems.Count > 1 && SubItems[1] is SymbolTable)
                     return (ISymbolTable)SubItems[1];
                 return null;
             }

@@ -26,15 +26,17 @@ namespace WPFToolboxForSiemensPLCs.Controls.NetworkEditor
             set { SetValue(NetworkNumberProperty, value); }
         }
 
-        public void ShowLine(int linenr)
+        public void ShowLine(int linenr, int selstart, int sellen)
         {
             myExpander.IsExpanded = true;
             textEditor.ScrollToLine(linenr);
 
+            /*
             int zeile = 0;
             int start = 0;
             int anz = 0;
             int len = 0;
+            
             foreach (char c in textEditor.Text)
             {
                 anz++;
@@ -55,6 +57,10 @@ namespace WPFToolboxForSiemensPLCs.Controls.NetworkEditor
             if (len == 0)
                 len = textEditor.Text.Length - start;
             textEditor.SelectionLength = len - 1;
+             * */
+
+            textEditor.SelectionStart = selstart;
+            textEditor.SelectionLength = sellen;
             
             //textEditor.SelectionStart = textEditor.TextArea.TextView.GetVisualLine(linenr).StartOffset;
             //textEditor.SelectionLength = textEditor.TextArea.TextView.GetVisualLine(linenr + 1).StartOffset - textEditor.SelectionStart;

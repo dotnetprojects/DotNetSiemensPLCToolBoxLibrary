@@ -68,22 +68,58 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                     {
                         int rowNR = 0;
                         networkNR++;
+                        string akdb = "";
+
                         foreach (S5FunctionBlockRow functionBlockRow in network.AWLCode)
-                        {
+                        {                           
+                            if (!string.IsNullOrEmpty(functionBlockRow.Label))
+                                akdb = "";
+                            if (functionBlockRow.Command == "A" || functionBlockRow.Command == "AX")
+                                if (functionBlockRow.Parameter == "DB 0" || functionBlockRow.Parameter == "DX 0")
+                                    akdb = "";
+                                else
+                                    akdb = functionBlockRow.Parameter;
+
+                            
+
                             rowNR++;
                             if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
                             {
+                                //Normal reference...
                                 string operand = functionBlockRow.Parameter;
+                                if (operand == "DB 0") operand = "DB ??";
                                 ReferenceDataEntry entr;
                                 operandIndexList.TryGetValue(operand, out entr);
                                 if (entr == null)
                                 {
-                                    entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = smyTab.GetEntryFromOperand(operand)};
+                                    SymbolTableEntry symb = null;
+                                    if (smyTab != null)
+                                        symb = smyTab.GetEntryFromOperand(operand);
+                                    entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = symb};
                                     operandIndexList.Add(operand, entr);
                                     _ReferenceDataEntrys.Add(entr);
                                 }
-
                                 entr.ReferencePoints.Add(new ReferencePoint() { Block = blk,Network = network,NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9] });
+
+                                //Reference to DB
+                                if (akdb != "" )
+                                    if (functionBlockRow.Parameter.StartsWith("D ") || functionBlockRow.Parameter.StartsWith("DW") || functionBlockRow.Parameter.StartsWith("DL") || functionBlockRow.Parameter.StartsWith("DR") || functionBlockRow.Parameter.StartsWith("DX"))
+                                    {
+                                        //Normal reference...
+                                        operand = akdb + "." + functionBlockRow.Parameter;
+                                        entr = null;
+                                        operandIndexList.TryGetValue(operand, out entr);
+                                        if (entr == null)
+                                        {
+                                            SymbolTableEntry symb = null;
+                                            if (smyTab != null)
+                                                symb = smyTab.GetEntryFromOperand(operand);
+                                            entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = symb};
+                                            operandIndexList.Add(operand, entr);
+                                            _ReferenceDataEntrys.Add(entr);
+                                        }
+                                        entr.ReferencePoints.Add(new ReferencePoint() {Block = blk, Network = network, NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]});
+                                    }
                             }
                         }
                     }

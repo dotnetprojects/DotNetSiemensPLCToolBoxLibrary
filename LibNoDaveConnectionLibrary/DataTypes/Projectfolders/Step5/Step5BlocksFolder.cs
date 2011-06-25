@@ -77,7 +77,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             else if (blkInfo.BlockType == PLCBlockType.S5_OB)
                 retVal = MC5toAWL.GetFunctionBlock(plcblkInfo, ((S5ProjectBlockInfo)blkInfo)._blkByte, null, GetBlockInByte("S5_OK" + plcblkInfo.BlockNumber.ToString()), (Step5ProgrammFolder)blkInfo.ParentFolder.Parent);
 
+            retVal.ParentFolder = this;
+
             blkInfo._Block = retVal;
+            
             return retVal;            
         }
     }

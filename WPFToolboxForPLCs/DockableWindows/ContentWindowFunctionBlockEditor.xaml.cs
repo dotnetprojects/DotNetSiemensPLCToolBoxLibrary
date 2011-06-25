@@ -76,7 +76,13 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 DependencyObject depObj = myLst.ItemContainerGenerator.ContainerFromIndex(netzwerknr - 1);
 
                 NetworkEditor nedt = depObj.TryFindChild<NetworkEditor>();
-                nedt.ShowLine(zeile);
+
+                Network netw = ((S5FunctionBlock) myBlock).Networks[netzwerknr - 1];
+                int anz = 0;
+                for (int q = 0; q < zeile-1; q++)
+                    anz += netw.AWLCode[q].ToString().Length + 2;
+
+                nedt.ShowLine(zeile, anz, netw.AWLCode[zeile-1].ToString().Length);
             }
         }
 
