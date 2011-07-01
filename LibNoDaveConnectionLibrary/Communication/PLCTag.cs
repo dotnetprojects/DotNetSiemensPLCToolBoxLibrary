@@ -73,7 +73,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private bool _itemDoesNotExist;
-        public bool ItemDoesNotExist
+        public virtual bool ItemDoesNotExist
         {
             get { return _itemDoesNotExist; }
             set

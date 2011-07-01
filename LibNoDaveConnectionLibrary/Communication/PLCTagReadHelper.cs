@@ -18,5 +18,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 keyValuePair.Key._readValueFromBuffer(buff, keyValuePair.Value + startpos);
             }            
         }
+
+        public override bool ItemDoesNotExist
+        {
+            get { return base.ItemDoesNotExist; }
+            set
+            {
+                foreach (PLCTag plcTag in PLCTags.Keys)
+                {
+                    plcTag.ItemDoesNotExist = value;
+                }
+                base.ItemDoesNotExist = value;
+            }
+        }
     }
 }

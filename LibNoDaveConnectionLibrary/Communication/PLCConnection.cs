@@ -1822,7 +1822,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             buffPos += value._internalGetSize();
                         }
                         else
-                            value.ItemDoesNotExist = true;                        
+                        {
+                            value.ItemDoesNotExist = true;
+                        }
                         nr++;
                     }
                 }
