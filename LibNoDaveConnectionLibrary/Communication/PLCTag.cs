@@ -92,15 +92,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public PLCTag(PLCTag oldTag)
         {
-            this.LibNoDaveDataSource = oldTag.LibNoDaveDataSource;
-            this.LibNoDaveDataType = oldTag.LibNoDaveDataType;
-            this.ByteAddress = oldTag.ByteAddress;
-            this.BitAddress = oldTag.BitAddress;
-            this.ArraySize = oldTag.ArraySize;
-            this.DataTypeStringFormat = oldTag.DataTypeStringFormat;
-            this.DatablockNumber = oldTag.DatablockNumber;
-            this.Controlvalue = oldTag.Controlvalue;
-            this.DontSplitValue = oldTag.DontSplitValue;
+            if (oldTag != null)
+            {
+                this.LibNoDaveDataSource = oldTag.LibNoDaveDataSource;
+                this.LibNoDaveDataType = oldTag.LibNoDaveDataType;
+                this.ByteAddress = oldTag.ByteAddress;
+                this.BitAddress = oldTag.BitAddress;
+                this.ArraySize = oldTag.ArraySize;
+                this.DataTypeStringFormat = oldTag.DataTypeStringFormat;
+                this.DatablockNumber = oldTag.DatablockNumber;
+                this.Controlvalue = oldTag.Controlvalue;
+                this.DontSplitValue = oldTag.DontSplitValue;
+            }
         }
 
         public PLCTag(string address)
