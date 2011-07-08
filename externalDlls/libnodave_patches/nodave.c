@@ -1511,7 +1511,6 @@ int DECL2 daveExecWriteRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 	return res;
 }
 
-
 int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * buffer){
 	daveResult * dr;
 #ifdef DEBUG_CALLS
@@ -6108,6 +6107,7 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 		}	
 		return res;
 	}
+	return res;
 }
 
 int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number) {
@@ -6840,12 +6840,16 @@ be good for in the future...
 /*
 fill some standard fields and pass it to SCP-send:
 */
-int DECL2 _daveSCP_send(int fd, uc * reqBlock) {
+int DECL2 _daveSCP_send(int fd, uc * reqBlock) {	
 	S7OexchangeBlock* fdr;
 	fdr=(S7OexchangeBlock*)reqBlock;
 	fdr->headerlength = 80;  //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
 	fdr->rb_type = 2; //rb_type is always 2
-	fdr->offset_1= 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)
+	fdr->offset_1= 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+
+	if (fdr->application_block_subsystem == 0xE4)   //Fix for PLCSim
+		Sleep(50);									//Fix for PLCSim
+
 	return SCP_send(fd, fdr->seg_length_1 + fdr->headerlength, reqBlock);
 }
 
@@ -6853,6 +6857,10 @@ int daveSCP_receive(int h, uc * buffer) {
 	int res, datalen;
 	S7OexchangeBlock * fdr;
 	fdr=(S7OexchangeBlock*) buffer;
+
+	if (fdr->application_block_subsystem == 0xE4)   //Fix for PLCSim
+		Sleep(50);									//Fix for PLCSim
+
 	res=SCP_receive(h, 0xFFFF, &datalen, sizeof(S7OexchangeBlock), buffer);
 	if (daveDebug & daveDebugByte) {
 		_daveDump("header:",buffer, 80);
@@ -6941,14 +6949,14 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 
 	//Telegramms for both Types (TCP/IP and MPI)
 
-	//1st telegramm
+	//3rd telegramm / TCP(1st)
 	memset(fdr,0,80);    
 	fdr->response= 255; 
 	fdr->subsystem= 0x40;
 	a= _daveSCP_send(((int)dc->iface->fd.wfd), dc->msgOut);
 	daveSCP_receive((int)(dc->iface->fd.rfd), dc->msgIn);
 
-	//4th Telegramm
+	//4th Telegramm / TCP(2nd)
 	memset(fdr,0,206);
 	fdr->user= 111;
 	fdr->subsystem= 64;
@@ -6962,6 +6970,7 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	fdr->application_block_remote_address_station= 114;   //I think this should be the local MPI
 	
 	fdr->application_block_subsystem = rec->application_block_subsystem;  //When this is One it is a MP Connection, zero means TCP Connection!
+	dc->application_block_subsystem = rec->application_block_subsystem; 
 	//Maybe we remove the destination is IP Parameter and use the upper bit
 	
 	p2[19]=(dc->slot + dc->rack*32);	
@@ -7009,7 +7018,7 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	if (rec->response != 0x01)
 		return -1;
 
-	//5th Telegramm
+	//5th Telegramm / TCP(3rd)
 	memset(fdr,0,98);
 	fdr->subsystem= 64;
 	fdr->opcode= 6;	
@@ -7026,6 +7035,7 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	_daveAddParam(p, pa, sizeof(pa));
 	if (daveGetDebug() & daveDebugPDU)
 		_daveDumpPDU(p);
+	fdr->application_block_subsystem = dc->application_block_subsystem; //Test
 	a= _daveSCP_send((int)(dc->iface->fd.wfd), dc->msgOut);
 	daveSCP_receive((int)(dc->iface->fd.rfd), dc->msgIn);
 
@@ -7034,7 +7044,7 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	if (daveGetDebug() & daveDebugPDU)
 		_daveDumpPDU(&pu2);
 
-	//6th Telegramm (this get's the PDU size)
+	//6th Telegramm (this get's the PDU size)  / TCP(4th)
 	memset(fdr,0,560);
 	fdr->user= 0;
 	fdr->subsystem= 64;
@@ -7042,8 +7052,10 @@ int DECL2 _daveConnectPLCS7online (daveConnection * dc) {
 	fdr->response= 16642;
 	fdr->seg_length_1= 480;
 	fdr->application_block_opcode= dc->connectionNumber; 
+	
 	if (!dc->DestinationIsIP)
 		fdr->application_block_subsystem= 1; 
+	fdr->application_block_subsystem = dc->application_block_subsystem; //Test
 
 	//PLCSIM...
 	//fdr->response= 0;
@@ -7129,12 +7141,13 @@ int DECL2 _daveSendMessageS7online(daveConnection *dc, PDU *p) {
 
 	if (!dc->DestinationIsIP)
 		fdr->application_block_subsystem= 1;
-
+	fdr->application_block_subsystem=dc->application_block_subsystem; //Test
+	
 	//    memcpy(&(fdr->payload),buffer,len);
 	a= _daveSCP_send((int)(dc->iface->fd.wfd), dc->msgOut);
 	if (daveDebug & daveDebugErrorReporting) 
 		LOG2("RetVal SCP_send in SendMessageS7Online: ",a);
-
+	
 	b= SCP_receive((int)(dc->iface->fd.rfd), 0xFFFF, &datalen, sizeof(S7OexchangeBlock), buffer);	
 	if (daveDebug & daveDebugErrorReporting) 
 		LOG2("RetVal SCP_recieve in SendMessageS7Online: ",b);
@@ -7146,7 +7159,7 @@ int DECL2 _daveGetResponseS7online(daveConnection *dc) {
 	int a, b;
 
 	//if (dc->DestinationIsIP)
-	//	fdr->application_block_subsystem=1;
+	//	fdr->application_block_subsystem=1;		
 
 	a= _daveSCP_send((int)(dc->iface->fd.rfd), dc->msgIn);
 	if (daveDebug & daveDebugErrorReporting) 
