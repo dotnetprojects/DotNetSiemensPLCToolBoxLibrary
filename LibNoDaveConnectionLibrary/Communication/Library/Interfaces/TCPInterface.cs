@@ -3,6 +3,7 @@ using System.Net;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
+    /*
     public class TCPInterface : ISONetworkInterface
     {
 
@@ -77,7 +78,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 		1,		// Length of this parameter 
 		9,		// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
         }*/
-            	           
+      
+    
+  	/*           
             byte[] res;
 
             sendISOPacket(stdConn);
@@ -107,5 +110,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
             byte[] res = readPacket();
             return readPacket();
         }        
-    }
+    }*/
 }

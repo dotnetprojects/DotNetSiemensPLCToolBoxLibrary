@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
+    /*
     public abstract class NetworkInterface : Interface
     {
         private TCPConnection _tcpConnection;
@@ -28,5 +29,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
             return _recievedData;
         }
 
-    }
+    }*/
 }

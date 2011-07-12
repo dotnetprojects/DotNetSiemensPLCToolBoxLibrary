@@ -4,39 +4,18 @@ using System.Net;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
-    public abstract class Interface : IDisposable
+    public interface Interface : IDisposable
     {
-
         /// <summary>
         /// default 1,5s
         /// </summary>
-        public TimeSpan TimeOut { get; set;} 
+        TimeSpan TimeOut { get; set;} 
+               
+        Connection ConnectPlc(ConnectionConfig config);
 
-        public Interface()
-        {
-            TimeOut = new TimeSpan(0, 0, 0, 1, 500);
-        }
+        List<int> ListReachablePartners();
 
-        public void Dispose()
-        { }
-
-        protected abstract byte[] ConnectPlc(byte cpuMpi, byte cpuRack, byte cpuSlot, byte connType, bool routing, bool routingDestIsIp, IPAddress routingIp, byte routingMpi, byte routingRack, byte routingSlot, byte routingConnType);
-         
-        public Connection NewConnection(int TargetMPI, string CpuMpi, bool IPConnection, int CpuRack, int CpuSlot)
-        {
-            return null;
-        }
-
-        public Connection NewRoutingConnection(int TargetMPI, string CpuMpi, bool IPConnection, int CpuRack, int CpuSlot, bool Routing, string RoutingSubnet1, string RoutingSubnet2, int RoutingDestinationRack, int RoutingDestinationSlot, string RoutingDestination)
-        {
-            return new Connection(ConnectPlc(0, 0, 0, 0, false, false, new IPAddress(new byte[] { 192, 168, 1, 210 }), 0, 0, 0, 0));
-        }
-     
-        public List<int> ListReachablePartners()
-        {
-            return null;
-        }
-
+        //void SendData(byte[] data);
         //event AsynchronousDataRecieved
 
         /*

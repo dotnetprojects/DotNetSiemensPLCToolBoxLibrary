@@ -7,29 +7,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
     public class Connection : IDisposable
     {
-        public void Dispose()
-        { }
-
-        private byte[] ConnectionId;
-        
         delegate void AsynchronDataArrivedDelegate(ResultSet resultSet);
         private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
-        internal Connection(byte[] ConnectionId)
+        internal int ConnectionNumber { get; set; }
+        
+        //Data for S7Online!
+        internal byte application_block_subsystem { get; set; }
+        
+        //End Data for S7Online
+
+        internal Connection(Interface Interface)
         {
-            this.ConnectionId = ConnectionId;
+            _interface = Interface;
         }
+
+        
 
         private Interface _interface;
         public Interface Interface
         {
             get { return _interface; }          
         }
-
-        /*public Pdu ExchangePdu(Pdu mPdu)
-        {
-            //Interface.
-        }*/
 
         public Pdu PrepareReadRequest()
         {
@@ -42,11 +41,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         public void SendPdu(Pdu myPdu)
-        { }
+        { }        
 
-        public void DeleteprogrammBlock(int BlockType, int Nummer)
+        public void Dispose()
         { }
-
-        //public byte[] ReadSzl()
     }
 }
