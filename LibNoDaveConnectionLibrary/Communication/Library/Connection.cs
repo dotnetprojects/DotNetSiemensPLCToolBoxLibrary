@@ -11,18 +11,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
         internal int ConnectionNumber { get; set; }
-        
+
+        private ConnectionConfig _connectionConfig;
+        public ConnectionConfig ConnectionConfig
+        {
+            get { return _connectionConfig; }            
+        }
+
+        private int _pduSize;
+        public int PduSize
+        {
+            get { return _pduSize; }
+            internal set { _pduSize = value; }            
+        }
+
         //Data for S7Online!
         internal byte application_block_subsystem { get; set; }
         
         //End Data for S7Online
 
-        internal Connection(Interface Interface)
+        internal Connection(Interface Interface, ConnectionConfig config, int PduSize)
         {
+            _connectionConfig = config;
             _interface = Interface;
+            _pduSize = PduSize;
         }
-
-        
 
         private Interface _interface;
         public Interface Interface

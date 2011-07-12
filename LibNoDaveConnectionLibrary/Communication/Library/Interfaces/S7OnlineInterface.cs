@@ -362,8 +362,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             fdr.subsystem = 0x40;
             SendData(fdr);
             rec = RecieveData();
-           
-            retVal = new Connection(this);
+
+            retVal = new Connection(this, config, 0);
             retVal.ConnectionNumber = rec.application_block_opcode;
             retVal.application_block_subsystem = rec.application_block_subsystem;
 
@@ -429,10 +429,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             SendData(fdr);
             rec = RecieveData();            
-
             if (rec.response != 0x01)
                 throw new S7OnlineException("S7Online: Error Connection to PLC");
 
+            #endregion
+
+            #region Telegramm 5 (Ethernet 3) (this Telegramm sends a PDU)
+            //5th Telegramm / TCP(3rd)
+            Pdu pdu = new Pdu(1);
+            pdu.Param.AddRange(new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xc0});
+            SendData(pdu, retVal);
+            Pdu recPdu = RecievePdu();            
+            #endregion
+
+            #region Telegramm 6 (Ethernet 4) (get PDU size)
+            fdr = new S7OexchangeBlock();
+            fdr.user = 0;
+            fdr.subsystem = 64;
+            fdr.opcode = 7;
+            fdr.response = 16642;
+            fdr.seg_length_1 = 480;
+            fdr.application_block_opcode = (byte)retVal.ConnectionNumber;
+            fdr.application_block_subsystem = retVal.application_block_subsystem;
+            SendData(fdr);
+            recPdu = RecievePdu();
+            retVal.PduSize = Converter.getU16from(recPdu.Param.ToArray(), 6);
             #endregion
 
             return retVal;
@@ -441,8 +462,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public List<int> ListReachablePartners()
         {
             throw new NotImplementedException();
-        }
-         								
+        }         			
 
         private void SendData(S7OexchangeBlock data)
         {
@@ -464,6 +484,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 Marshal.FreeHGlobal(ptr);
 
                 int ret = SCP_send(_connectionHandle, (ushort) (data.seg_length_1 + data.headerlength), buffer);
+                if (ret < 0)
+                    throw new S7OnlineException(SCP_get_errno());
+            }
+            else
+            {
+                throw new ObjectDisposedException(this.ToString());
+            }
+        }
+
+        private void SendData(Pdu pdu, Connection connection)
+        {
+            if (!Disposed)
+            {
+                byte[] pdubytes = pdu.ToBytes();
+
+                S7OexchangeBlock fdr = new S7OexchangeBlock();
+
+                fdr.subsystem = 64;
+                fdr.opcode = 6;
+                fdr.response = 255;
+                fdr.fill_length_1 = 18;
+                fdr.seg_length_1 = (byte) pdubytes.Length;
+                fdr.application_block_opcode = (byte)connection.ConnectionNumber;
+                //if (!connection.ConnectionConfig.ConnectionToEthernet)
+                fdr.application_block_subsystem = connection.application_block_subsystem;
+
+
+                fdr.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
+                fdr.rb_type = 2; //rb_type is always 2
+                fdr.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+
+                fdr.user_data_1 = new byte[260];
+                Array.Copy(pdubytes, fdr.user_data_1, pdubytes.Length);                          
+
+                int len = Marshal.SizeOf(fdr);
+                byte[] buffer = new byte[len];
+                IntPtr ptr = Marshal.AllocHGlobal(len);
+                Marshal.StructureToPtr(fdr, ptr, true);
+                Marshal.Copy(ptr, buffer, 0, len);
+                Marshal.FreeHGlobal(ptr);
+
+                int ret = SCP_send(_connectionHandle, (ushort)(fdr.seg_length_1 + fdr.headerlength), buffer);
                 if (ret < 0)
                     throw new S7OnlineException(SCP_get_errno());
             }
@@ -513,6 +575,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
             handle.Free(); 
             return rec;
+        }
+
+        private Pdu RecievePdu()
+        {
+            
+            S7OexchangeBlock rec = new S7OexchangeBlock();
+            int[] rec_len = new int[1];
+            int len = Marshal.SizeOf(rec);
+            byte[] buffer = new byte[len];
+            //
+            SCP_receive(_connectionHandle, 0xFFFF, rec_len, (ushort)len, buffer);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
+            handle.Free();
+            return new Pdu(rec.user_data_1);
         }
         /*
         public byte[] RecieveData()

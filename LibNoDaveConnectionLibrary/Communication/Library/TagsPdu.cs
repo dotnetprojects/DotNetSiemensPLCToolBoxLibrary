@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
+    /*
     public class TagsPdu : Pdu
     {
         public void AddVarToReadRequest(int area, int db, int start,int bytes)
@@ -18,4 +19,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public void AddBitVarToWriteRequest(int area, int db, int start, int bitpos)
         {}
     }
+    */
 }
