@@ -25,10 +25,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public int RoutingSlot { get; set; }
         public int RoutingConnectionType { get; set; }
 
-        public ConnectionConfig(int MPI, int Rack, int Slot)
+        public ConnectionConfig(int MPIAddress, int Rack, int Slot)
         {
+            this.MPIAddress = MPIAddress;
+            this.Rack = Rack;
+            this.Slot = Slot;
+
+            this.ConnectionType = 1;
+            this.ConnectionToEthernet = false;
         }
 
+        public ConnectionConfig(IPAddress IPAddress, int Rack, int Slot)
+        {
+            this.IPAddress = IPAddress;
+            this.Rack = Rack;
+            this.Slot = Slot;
+
+            this.ConnectionType = 1;
+            this.ConnectionToEthernet = true;
+        }
 
     }
 }

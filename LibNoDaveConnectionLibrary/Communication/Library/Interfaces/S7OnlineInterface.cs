@@ -117,7 +117,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 b04 = 0x0C;
                 b05 = 0x01;
                 b15 = 0x01;
-                b17 = 0x01;
+                b17 = 0x02;
             }
         }
 
@@ -161,12 +161,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             {
                 _connectionHandle = ConnectionHandle;
                 this.fdrlen = fdrlen;
+                
                 this.Interface = Interface;
             }
-
+            
             protected override void WndProc(ref Message m)
             {
-                Debug.WriteLine(m.Msg);
                 if (m.Msg == WM_SINEC) //WM_SINEC Message recieved, recieve Data
                 {
                     int[] rec_len = new int[1];
@@ -355,7 +355,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 #endregion
             }
 
-            #region Telegramm 3
+            #region Telegramm 3 (Ethernet 1)
 
             fdr = new S7OexchangeBlock();
             fdr.response = 255;
@@ -369,7 +369,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             #endregion
 
-            #region Telegramm 4
+            #region Telegramm 4 (Ethernet 2)
 
             fdr = new S7OexchangeBlock();
             fdr.user = 111;
@@ -384,6 +384,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             fdr.application_block_subsystem = retVal.application_block_subsystem; //When this is One it is a MPI Connection, zero means TCP Connection!
             UserDataConnectionConfig ud_cfg = new UserDataConnectionConfig(true);
             ud_cfg.rack_slot = (byte) (config.Slot + config.Rack*32);
+            ud_cfg.connection_type = (byte) config.ConnectionType;
             if (config.ConnectionToEthernet)
             {
                 ud_cfg.destination_1 = config.IPAddress.GetAddressBytes()[0];
@@ -420,9 +421,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                     ud_cfg.size_to_end = 0x0C;
                 }
             }
-            ptr = Marshal.AllocHGlobal(len);
+            ptr = Marshal.AllocHGlobal(Marshal.SizeOf(ud_cfg));
             Marshal.StructureToPtr(ud_cfg, ptr, true);
-            Marshal.Copy(ptr, fdr.user_data_1, 0, len);
+            fdr.user_data_1 = new byte[260];
+            Marshal.Copy(ptr, fdr.user_data_1, 0, Marshal.SizeOf(ud_cfg));
             Marshal.FreeHGlobal(ptr);
 
             SendData(fdr);
@@ -480,6 +482,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
         */
 
+        /*
         private S7OexchangeBlock RecieveData()
         {
 
@@ -496,7 +499,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             return rec;
         }
+        */
 
+        private S7OexchangeBlock RecieveData()
+        {
+            S7OexchangeBlock rec=new S7OexchangeBlock();
+            int[] rec_len = new int[1];
+            int len = Marshal.SizeOf(rec);
+            byte[] buffer = new byte[len];
+            //
+            SCP_receive(_connectionHandle, 0xFFFF, rec_len, (ushort)len, buffer);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
+            handle.Free(); 
+            return rec;
+        }
         /*
         public byte[] RecieveData()
         {
