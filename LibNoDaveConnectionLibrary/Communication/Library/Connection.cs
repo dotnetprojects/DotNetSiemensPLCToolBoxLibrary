@@ -54,7 +54,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         public void SendPdu(Pdu myPdu)
-        { }        
+        {
+            Interface.SendPdu(myPdu, this);
+        }
+
+        
+        /* Vielleicht unnötig, da man gar nicht zuordnen könnte zu welcher Pdu die Antwort gehört!
+        public Pdu RecievePdu()
+        {
+            throw new NotImplementedException();
+        }
+        */
+     
+        public Pdu ExchangePdu(Pdu myPdu)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Dispose()
         { }

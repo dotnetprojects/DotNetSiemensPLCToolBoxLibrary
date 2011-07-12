@@ -438,7 +438,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //5th Telegramm / TCP(3rd)
             Pdu pdu = new Pdu(1);
             pdu.Param.AddRange(new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xc0});
-            SendData(pdu, retVal);
+            SendPdu(pdu, retVal);
             Pdu recPdu = RecievePdu();            
             #endregion
 
@@ -493,7 +493,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
         }
 
-        private void SendData(Pdu pdu, Connection connection)
+        public void SendPdu(Pdu pdu, Connection connection)
         {
             if (!Disposed)
             {
