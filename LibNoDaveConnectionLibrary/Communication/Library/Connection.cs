@@ -25,6 +25,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             internal set { _pduSize = value; }            
         }
 
+        public void Close()
+        {
+
+        }
+
         //Data for S7Online!
         internal byte application_block_subsystem { get; set; }
         
@@ -72,6 +77,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         public void Dispose()
-        { }
+        {
+            if (this._interface != null)
+            {
+                this.Close();
+                this._interface = null;
+            }
+        }
     }
 }

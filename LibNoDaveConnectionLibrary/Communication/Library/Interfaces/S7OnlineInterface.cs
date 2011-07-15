@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 
@@ -12,6 +13,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
     public class S7OnlineInterface : Interface
     {
+        private enum com_class
+        {
+            request = 0x00,
+            confirm = 0x01,
+            indication = 0x02
+        }; 
+
+        private enum service_code
+        {
+            sda = 0x00,       /* Send Data with Acknowledge                                           */
+            sdn = 0x01,       /* Send Data with no Acknowledge                                        */
+            sdn_broadcast = 0x7f,       /* only for FDL-indication !!! (signs received broadcast-telegram)      */
+            srd = 0x03,       /* Send and Request Data                                                */
+            csrd = 0x05,       /* Cyclic Send and Request Data                                         */
+            reply_update_single = 0x06,       /* Reply Update Single Mode                                             */
+            reply_update_multiple = 0x07,       /* Reply Update Multiple Mode                                           */
+            fdl_read_value = 0x0b,       /* read busparameter                                                    */
+            fdl_set_value = 0x0c,       /* set busparameter                                                     */
+            sap_activate = 0x0e,       /* activate local SAP                                                   */
+            rsap_activate = 0x11,       /* activate local Responder-SAP                                         */
+            sap_deactivate = 0x12,       /* deactivate local (R)SAP                                              */
+            fdl_reset = 0x13,       /* reset PHY and FDL; all FDL-information is lost, exc. last busparam.  */
+            mac_reset = 0x15,       /* reset for MAC; a part of last valid busparameter will be updated     */
+            fdl_event = 0x18,       /* only for indication, list of events                                  */
+            lsap_status = 0x19,       /* requests information of remote-SAP or local-SAP                      */
+            fdl_life_list_create_remote = 0x1a,       /* requests list of intact stations                                     */
+            fdl_life_list_create_local = 0x1b,       /* requests quick-list of intact stations (LAS and GAP will be actual)  */
+            fdl_ident = 0x1c,       /* requests data of software- and hardware-release                      */
+            fdl_read_statistic_ctr = 0x1d,       /* NOT SUPPORTED! reads counter values of statistic and resets counter                 */
+            fdl_read_las_statistic_ctr = 0x1e,       /* NOT SUPPORTED! reads LAS and las_cycle_ctr and resets las_cycle_ctr                 */
+            await_indication = 0x1f,       /* provides resources for indication (sap-dependent)                    */
+            withdraw_indication = 0x20,       /* returnes indication-resources                                        */
+            load_routing_table = 0x21,       /* only for network-connection !!!                                      */
+            deactivate_routing_table = 0x22,       /* only for network-connection !!!                                      */
+            get_direct_conn = 0x23,       /* gets adress of next station                                          */
+        }; 
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
         private struct S7OexchangeBlock
@@ -130,6 +167,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private static extern int SetSinecHWnd(int handle, IntPtr hwnd);
 
         [DllImport("S7onlinx.dll")]
+        private static extern int SetSinecHWndMsg(int handle, IntPtr hwnd, uint msg_id);
+
+
+        [DllImport("S7onlinx.dll")]
         private static extern int SCP_open([MarshalAs(UnmanagedType.LPStr)] string name);
 
         [DllImport("S7onlinx.dll")]
@@ -168,14 +209,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             protected override void WndProc(ref Message m)
             {
                 if (m.Msg == WM_SINEC) //WM_SINEC Message recieved, recieve Data
-                {
+                {                   
                     int[] rec_len = new int[1];
-
                     byte[] buffer = new byte[fdrlen];
                     SCP_receive(_connectionHandle, 0, rec_len, (ushort) fdrlen, buffer);
-                    byte[] retVal = new byte[rec_len[0]];
-                    Array.Copy(buffer, retVal, rec_len[0]);
-                    Interface.lastMessage = retVal;
+                    Interface.lastMessage = buffer;
                 }
                 else
                     base.WndProc(ref m);
@@ -286,7 +324,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             S7OexchangeBlock fdr = new S7OexchangeBlock();
             _myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);
-            SetSinecHWnd(_connectionHandle, _myForm.Handle);
+            //SetSinecHWnd(_connectionHandle, _myForm.Handle);
+            SetSinecHWndMsg(_connectionHandle, _myForm.Handle, WM_SINEC);
         }
 
 
@@ -340,7 +379,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 fdr.user = 0xFF;
                 fdr.seg_length_1 = 0x80;
                 fdr.priority = 1;
-                fdr.application_block_service = 0x1A;
+                fdr.application_block_service = (ushort)service_code.fdl_life_list_create_remote;
 
                 SendData(fdr);
                 rec = RecieveData();
@@ -348,7 +387,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
                 #region Telegramm 2
                 fdr.seg_length_1 = 0xF2;
-                fdr.application_block_service = 0xB;
+                fdr.application_block_service = (ushort) service_code.fdl_read_value;
 
                 SendData(fdr);
                 rec = RecieveData();
@@ -544,14 +583,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
         */
 
-        /*
+        
         private S7OexchangeBlock RecieveData()
         {
 
             bool timeout = false;
 
             while (lastMessage == null)
-            { }
+            {Application.DoEvents();}
             
             GCHandle handle = GCHandle.Alloc(lastMessage, GCHandleType.Pinned);
             S7OexchangeBlock rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
@@ -561,9 +600,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             return rec;
         }
-        */
+        
 
-        private S7OexchangeBlock RecieveData()
+        
+        private S7OexchangeBlock RecieveDataD()
         {
             S7OexchangeBlock rec=new S7OexchangeBlock();
             int[] rec_len = new int[1];
@@ -578,6 +618,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         private Pdu RecievePdu()
+        {
+            S7OexchangeBlock rec = RecieveData();
+            return new Pdu(rec.user_data_1);
+        }
+
+        private Pdu RecievePduD()
         {
             
             S7OexchangeBlock rec = new S7OexchangeBlock();
