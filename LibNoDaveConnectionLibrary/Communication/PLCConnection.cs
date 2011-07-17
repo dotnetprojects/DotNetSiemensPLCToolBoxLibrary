@@ -242,7 +242,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             int ret = _di.initAdapter();
             if (ret != 0)
                 throw new Exception("Error: " + libnodave.daveStrerror(ret));
-
+            
             //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
 
             //Get S7OnlineType - To detect if is a IPConnection 

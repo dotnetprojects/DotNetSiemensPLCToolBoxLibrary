@@ -7,6 +7,14 @@
             byte[] bytes = new byte[] {0x04, 0}; //0x04 Function Read
             this.Param.AddRange(bytes);
         }
+        
+        private byte PduVarCount = 0x00;
+
+        public override byte[] ToBytes()
+        {
+            Param[1] = PduVarCount;
+            return base.ToBytes();
+        }
 
         private void addToReadRequest(int area, int DBnumber, int startByteAddress, int byteCount, bool isBit)
         {
@@ -35,6 +43,7 @@
                           (byte) area, /* area code */
                           (byte) (startByte/0x10000), (byte) ((startByte/0x100) & 0xff), (byte) (startByte & 0xFF) /* start address in bits */};
             Param.AddRange(tag);
+            PduVarCount++;
         }
 
         public void addVarToReadRequest(int area, int DBnumber, int startByteAddress, int byteCount)

@@ -61,7 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public ResultSet ExecReadRequest(Pdu_ReadRequest myPdu)
         {
             Pdu wrt = ExchangePdu(myPdu);
-            return null;
+            return new ResultSet(wrt.Param[1], wrt.Data.ToArray());
         }
 
         public void SendPdu(Pdu myPdu)
@@ -83,7 +83,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         private object lockpdu = new object();
         private ushort pduNr = 1;
-        private Dictionary<int, Pdu> RecievedPdus = new Dictionary<int, Pdu>();
+        internal Dictionary<int, Pdu> RecievedPdus = new Dictionary<int, Pdu>();
         public Pdu ExchangePdu(Pdu myPdu)
         {
             ushort pduNrInt;
@@ -102,14 +102,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
                 RecievedPdus.Add(1, null);
 
-                Interface.SendPdu(myPdu, this);
+                Interface.ExchangePdu(myPdu, this);
             }
 
             //Todo: maybe implement a Timeout here!
             while (RecievedPdus[pduNrInt] == null)
-            {
-                Application.DoEvents();
-            }
+            { }
 
             Pdu retVal = RecievedPdus[pduNrInt];
             RecievedPdus.Remove(pduNrInt);

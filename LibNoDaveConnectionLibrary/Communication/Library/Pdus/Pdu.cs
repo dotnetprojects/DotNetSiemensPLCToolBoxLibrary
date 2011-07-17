@@ -42,7 +42,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             UData = new List<byte>();            
         }
 
-        public byte[] ToBytes()
+        public virtual byte[] ToBytes()
         {
             //Todo byteswap within the length of the pdu headers!
             header.plen = (byte) Param.Count;
@@ -72,6 +72,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             public byte P; /* allways 0x32 */
             public byte type; /* Header type, one of 1,2,3 or 7. type 2 and 3 headers are two bytes longer. */
             public byte a, b; /* currently unknown. Maybe it can be used for long numbers? */
+            [Endian(Endianness.BigEndian)]        
             public ushort number; /* A number. This can be used to make sure a received answer */
             /* corresponds to the request with the same number. */
             [Endian(Endianness.BigEndian)]        

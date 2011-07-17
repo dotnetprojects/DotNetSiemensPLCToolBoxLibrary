@@ -332,10 +332,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
 
             S7OexchangeBlock fdr = new S7OexchangeBlock();
-            _myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);
-            //SetSinecHWnd(_connectionHandle, _myForm.Handle);
-            SetSinecHWndMsg(_connectionHandle, _myForm.Handle, WM_SINEC);
+
+
+            formBackgroundThread = new Thread(new ThreadStart(createFormInOtherThread));
+            formBackgroundThread.IsBackground = true;
+            formBackgroundThread.Start();
+            
+            //_myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);            
+            //SetSinecHWndMsg(_connectionHandle, _myForm.Handle, WM_SINEC);
+            while (!WndProcReady)
+            { }
         }
+
+        private Thread formBackgroundThread;
+        private bool WndProcReady = false;
+        private void createFormInOtherThread()
+        {
+            try
+            {
+                S7OexchangeBlock fdr = new S7OexchangeBlock();
+                _myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);
+                SetSinecHWndMsg(_connectionHandle, _myForm.Handle, WM_SINEC);
+                WndProcReady = true;
+                Application.Run();
+            }
+            catch (ThreadAbortException)
+            { }
+        }
+        
+
 
 
         private bool Disposed = false;
@@ -346,6 +371,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 Disposed = true;
 
                 if (_myForm != null) _myForm.Dispose();
+
+                if (formBackgroundThread.IsAlive)
+                    formBackgroundThread.Abort();
 
                 if (_connectionHandle >= 0)
                 {
@@ -493,7 +521,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             fdr.user_data_1 = new byte[260];
             Marshal.Copy(ptr, fdr.user_data_1, 0, Marshal.SizeOf(ud_cfg));
             Marshal.FreeHGlobal(ptr);
-
             SendData(fdr);
             rec = RecieveData(connNr);            
             if (rec.response != 0x01)
@@ -522,8 +549,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             recPdu = RecievePdu(connNr);
             retVal.PduSize = ByteFunctions.getU16from(recPdu.Param.ToArray(), 6);
             #endregion
-
-            //ConnectionsList[retVal.ConnectionNumber] = retVal;
 
             retVal.ConnectionEstablished = true;
 
@@ -578,9 +603,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 data.rb_type = 2; //rb_type is always 2
                 data.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
 
-                //if (fdr->application_block_subsystem == 0xE4)   //Fix for PLCSim
-                //    Sleep(50);	
-
                 IntPtr ptr = Marshal.AllocHGlobal(len);
                 Marshal.StructureToPtr(data, ptr, true);
                 Marshal.Copy(ptr, buffer, 0, len);
@@ -604,12 +626,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
                 S7OexchangeBlock fdr = new S7OexchangeBlock();
 
-
                 fdr.user = (ushort) connection.ConnectionNumber;
                 fdr.subsystem = 64;
                 fdr.opcode = 6;
                 fdr.response = 255;
-                fdr.fill_length_1 = 18;
+                fdr.fill_length_1 = (byte) pdubytes.Length;
                 fdr.seg_length_1 = (byte) pdubytes.Length;
                 fdr.application_block_opcode = connection.application_block_opcode;
                 //if (!connection.ConnectionConfig.ConnectionToEthernet)
@@ -640,80 +661,72 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
         }
 
-        /*
-        public void SendData(byte[] data)
-        {
-            int ret = SCP_send(_connectionHandle, (ushort) data.Length, data);
-            if (ret < 0)
-                throw new S7OnlineException(SCP_get_errno());
-        }
-        */
 
+        public void ExchangePdu(Pdu pdu, Connection connection)
+        {
+            SendPdu(pdu, connection);
+            while (connection.RecievedPdus[pdu.header.number] == null)
+            { }
+            connection.RecievedPdus[pdu.header.number] = null;
+            GetResponsePdu(connection);
+        }
+
+        private void GetResponsePdu(Connection connection)
+        {
+            if (!Disposed)
+            {                
+                S7OexchangeBlock fdr = new S7OexchangeBlock();
+
+                
+                fdr.user = (ushort)connection.ConnectionNumber;
+                fdr.subsystem = 64;
+                fdr.opcode = 7;
+                fdr.response = 3;
+
+                fdr.seg_length_1 = 480;
+                fdr.response = 16642;
+                
+                fdr.application_block_opcode = connection.application_block_opcode;               
+                fdr.application_block_subsystem = connection.application_block_subsystem;
+
+                fdr.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
+                fdr.rb_type = 2; //rb_type is always 2
+                fdr.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+
+                fdr.user_data_1 = new byte[260];
+
+                int len = Marshal.SizeOf(fdr);
+                byte[] buffer = new byte[len];
+                IntPtr ptr = Marshal.AllocHGlobal(len);
+                Marshal.StructureToPtr(fdr, ptr, true);
+                Marshal.Copy(ptr, buffer, 0, len);
+                Marshal.FreeHGlobal(ptr);
+
+                int ret = SCP_send(_connectionHandle, (ushort)(fdr.seg_length_1 + fdr.headerlength), buffer);
+                if (ret < 0)
+                    throw new S7OnlineException(SCP_get_errno());
+            }
+            else
+            {
+                throw new ObjectDisposedException(this.ToString());
+            }
+        }
 
         private S7OexchangeBlock RecieveData(ushort myConnNr)
         {
-            bool timeout = false;
-
-            while (ConnectionsList[myConnNr].RecievedData == null) //(lastMessage == null)
-            { Application.DoEvents(); }
+            while (ConnectionsList[myConnNr].RecievedData == null)
+            { }
 
             S7OexchangeBlock rec = (S7OexchangeBlock)ConnectionsList[myConnNr].RecievedData;
             ConnectionsList[myConnNr].RecievedData = null;
 
             return rec;
         }
-
-
-        /*
-        private S7OexchangeBlock RecieveDataD()
-        {
-            S7OexchangeBlock rec=new S7OexchangeBlock();
-            int[] rec_len = new int[1];
-            int len = Marshal.SizeOf(rec);
-            byte[] buffer = new byte[len];
-            //
-            SCP_receive(_connectionHandle, 0xFFFF, rec_len, (ushort)len, buffer);
-            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
-            handle.Free(); 
-            return rec;
-        }
-        */
-
+        
         private Pdu RecievePdu(ushort myConnNr)
         {
             S7OexchangeBlock rec = RecieveData(myConnNr);
             return new Pdu(rec.user_data_1);
-        }
-
-        /*
-        private Pdu RecievePduD()
-        {
-            
-            S7OexchangeBlock rec = new S7OexchangeBlock();
-            int[] rec_len = new int[1];
-            int len = Marshal.SizeOf(rec);
-            byte[] buffer = new byte[len];
-            //
-            SCP_receive(_connectionHandle, 0xFFFF, rec_len, (ushort)len, buffer);
-            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
-            handle.Free();
-            return new Pdu(rec.user_data_1);
-        }
-        */
-
-        /*
-        public byte[] RecieveData()
-        {
-            byte[] tmp;
-            while (lastMessage == null)
-            {
-            }
-            tmp = lastMessage;
-            lastMessage = null;
-            return tmp;
-        }
-        */
+        }        
     }
 }

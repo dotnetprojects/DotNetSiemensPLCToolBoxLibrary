@@ -17,16 +17,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
         List<int> ListReachablePartners();
 
         void SendPdu(Pdu pdu, Connection connection);
-        void DisconnectPlc(Connection conn);
-        //void SendData(byte[] data);
-        //event AsynchronousDataRecieved
+        void ExchangePdu(Pdu pdu, Connection connection);
 
-        /*
-        protected Pdu NegotiatePduLengthRequest()
-        {
-            Pdu myPdu=new Pdu();
-            myPdu.Param = new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xC0,};
-        }
-        */
+        void DisconnectPlc(Connection conn);      
     }
 }
