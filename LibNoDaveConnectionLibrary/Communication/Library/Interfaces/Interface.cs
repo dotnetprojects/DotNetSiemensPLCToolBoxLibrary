@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
@@ -16,6 +17,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
         List<int> ListReachablePartners();
 
         void SendPdu(Pdu pdu, Connection connection);
+        void DisconnectPlc(Connection conn);
         //void SendData(byte[] data);
         //event AsynchronousDataRecieved
 

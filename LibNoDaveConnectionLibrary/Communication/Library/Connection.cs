@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
@@ -11,6 +13,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
         internal int ConnectionNumber { get; set; }
+
+        internal bool ConnectionEstablished { get; set; }
 
         private ConnectionConfig _connectionConfig;
         public ConnectionConfig ConnectionConfig
@@ -27,11 +31,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         public void Close()
         {
-
+            Interface.DisconnectPlc(this);
         }
 
         //Data for S7Online!
         internal byte application_block_subsystem { get; set; }
+        internal byte application_block_opcode { get; set; }
         
         //End Data for S7Online
 
@@ -53,8 +58,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             return null;
         }
 
-        public ResultSet ExecReadRequest(Pdu myPdu)
+        public ResultSet ExecReadRequest(Pdu_ReadRequest myPdu)
         {
+            Pdu wrt = ExchangePdu(myPdu);
             return null;
         }
 
@@ -70,16 +76,63 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             throw new NotImplementedException();
         }
         */
-     
+
+        #region PDU/Data Exchange with Interface
+
+        internal object RecievedData = null;
+
+        private object lockpdu = new object();
+        private ushort pduNr = 1;
+        private Dictionary<int, Pdu> RecievedPdus = new Dictionary<int, Pdu>();
         public Pdu ExchangePdu(Pdu myPdu)
         {
-            throw new NotImplementedException();
+            ushort pduNrInt;
+            lock (lockpdu)
+            {
+                while (RecievedPdus.ContainsKey(pduNr))
+                {
+                    pduNr++;
+                    if (pduNr >= ushort.MaxValue)
+                        pduNr = 1;
+                }
+
+                pduNrInt = pduNr;
+
+                myPdu.header.number = pduNr;
+
+                RecievedPdus.Add(1, null);
+
+                Interface.SendPdu(myPdu, this);
+            }
+
+            //Todo: maybe implement a Timeout here!
+            while (RecievedPdus[pduNrInt] == null)
+            {
+                Application.DoEvents();
+            }
+
+            Pdu retVal = RecievedPdus[pduNrInt];
+            RecievedPdus.Remove(pduNrInt);
+            return retVal;
         }
+
+        internal void SetRecievedPdu(Pdu data)
+        {
+            if (data.header.number != 0)
+                RecievedPdus[data.header.number] = data;
+            else
+            {
+                //Asynchronous Data arrived, call Event
+                //Event should be used in PLC Connection!
+            }
+        }
+        #endregion
 
         public void Dispose()
         {
             if (this._interface != null)
             {
+
                 this.Close();
                 this._interface = null;
             }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
@@ -213,7 +214,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                     int[] rec_len = new int[1];
                     byte[] buffer = new byte[fdrlen];
                     SCP_receive(_connectionHandle, 0, rec_len, (ushort) fdrlen, buffer);
-                    Interface.lastMessage = buffer;
+
+                    GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                    S7OexchangeBlock rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
+                    handle.Free();
+
+                    if (Interface.ConnectionsList[rec.user].ConnectionEstablished)
+                        Interface.ConnectionsList[rec.user].SetRecievedPdu(new Pdu(rec.user_data_1));
+                    else
+                        Interface.ConnectionsList[rec.user].RecievedData = rec;
                 }
                 else
                     base.WndProc(ref m);
@@ -354,8 +363,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             set { _timeOut = value; }
         }
 
+
+        private ushort connNr = 1;
+        internal Dictionary<int, Connection> ConnectionsList = new Dictionary<int, Connection>();
         public Connection ConnectPlc(ConnectionConfig config)
         {
+
+            //eine eindeutige connection id erzeugen
+            //in der connection eine liste der pdus pflegen, auf welche noch gewartet wird.
+            //für die pdu welche asynchron kommt nummer 0 verwenden!
+            
             S7OexchangeBlock fdr = new S7OexchangeBlock();
             S7OexchangeBlock rec = new S7OexchangeBlock();
             int len = Marshal.SizeOf(fdr);
@@ -364,6 +381,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             GCHandle handle;
 
             Connection retVal;
+
+
+            while (ConnectionsList.ContainsKey(connNr))
+            {
+                connNr++;
+                if (connNr >= ushort.MaxValue)
+                    connNr = 1;
+            }
+            retVal = new Connection(this, config, 0);
+            retVal.ConnectionNumber = connNr;            
+            ConnectionsList.Add(connNr, retVal);
 
             //Todo:
             //Im Feld fdr.user für jede Connection einen eigenen Wert verwenden, so das bei empfangen Daten auch
@@ -376,13 +404,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 #region Telegramm 1
                 fdr.subsystem = 0x22;
                 fdr.response = 0xFF;
-                fdr.user = 0xFF;
+                fdr.user = connNr;//0xFF;
                 fdr.seg_length_1 = 0x80;
                 fdr.priority = 1;
                 fdr.application_block_service = (ushort)service_code.fdl_life_list_create_remote;
 
                 SendData(fdr);
-                rec = RecieveData();
+                rec = RecieveData(connNr);
                 #endregion
 
                 #region Telegramm 2
@@ -390,34 +418,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 fdr.application_block_service = (ushort) service_code.fdl_read_value;
 
                 SendData(fdr);
-                rec = RecieveData();
+                rec = RecieveData(connNr);
                 #endregion
             }
 
             #region Telegramm 3 (Ethernet 1)
 
             fdr = new S7OexchangeBlock();
+            fdr.user = connNr;
             fdr.response = 255;
             fdr.subsystem = 0x40;
             SendData(fdr);
-            rec = RecieveData();
+            rec = RecieveData(connNr);
 
-            retVal = new Connection(this, config, 0);
-            retVal.ConnectionNumber = rec.application_block_opcode;
-            retVal.application_block_subsystem = rec.application_block_subsystem;
-
+            retVal.application_block_opcode = rec.application_block_opcode;
+            retVal.application_block_subsystem = rec.application_block_subsystem;            
             #endregion
 
             #region Telegramm 4 (Ethernet 2)
 
             fdr = new S7OexchangeBlock();
-            fdr.user = 111;
+
+            fdr.user = connNr;// 111;
             fdr.subsystem = 64;
             fdr.opcode = 1;
             fdr.response = 255;
             fdr.fill_length_1 = 126;
             fdr.seg_length_1 = 126;
-            fdr.application_block_opcode = (byte) retVal.ConnectionNumber;
+            fdr.application_block_opcode = retVal.application_block_opcode;
             fdr.application_block_ssap = 2;
             fdr.application_block_remote_address_station = 114;
             fdr.application_block_subsystem = retVal.application_block_subsystem; //When this is One it is a MPI Connection, zero means TCP Connection!
@@ -467,7 +495,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             Marshal.FreeHGlobal(ptr);
 
             SendData(fdr);
-            rec = RecieveData();            
+            rec = RecieveData(connNr);            
             if (rec.response != 0x01)
                 throw new S7OnlineException("S7Online: Error Connection to PLC");
 
@@ -478,25 +506,61 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             Pdu pdu = new Pdu(1);
             pdu.Param.AddRange(new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xc0});
             SendPdu(pdu, retVal);
-            Pdu recPdu = RecievePdu();            
+            Pdu recPdu = RecievePdu(connNr);            
             #endregion
 
             #region Telegramm 6 (Ethernet 4) (get PDU size)
             fdr = new S7OexchangeBlock();
-            fdr.user = 0;
+            fdr.user = connNr;//0;
             fdr.subsystem = 64;
             fdr.opcode = 7;
             fdr.response = 16642;
             fdr.seg_length_1 = 480;
-            fdr.application_block_opcode = (byte)retVal.ConnectionNumber;
+            fdr.application_block_opcode = retVal.application_block_opcode;
             fdr.application_block_subsystem = retVal.application_block_subsystem;
             SendData(fdr);
-            recPdu = RecievePdu();
-            retVal.PduSize = Converter.getU16from(recPdu.Param.ToArray(), 6);
+            recPdu = RecievePdu(connNr);
+            retVal.PduSize = ByteFunctions.getU16from(recPdu.Param.ToArray(), 6);
             #endregion
+
+            //ConnectionsList[retVal.ConnectionNumber] = retVal;
+
+            retVal.ConnectionEstablished = true;
 
             return retVal;
         }
+
+        public void DisconnectPlc(Connection conn)
+        {
+            conn.ConnectionEstablished = false;
+            S7OexchangeBlock fdr;
+
+            if (conn.ConnectionConfig.ConnectionToEthernet)
+            {
+                fdr = new S7OexchangeBlock();
+                fdr.user = (ushort) conn.ConnectionNumber;
+                fdr.subsystem = 64;
+                fdr.opcode = 8;
+                fdr.response = 255;
+                fdr.application_block_opcode = conn.application_block_opcode;
+                SendData(fdr);
+                RecieveData((ushort) conn.ConnectionNumber);
+            }
+
+            fdr = new S7OexchangeBlock();
+            fdr.user = (ushort)conn.ConnectionNumber;            
+            fdr.subsystem = 64;
+            fdr.opcode = 0xC;
+            fdr.response = 255;
+            fdr.application_block_service = 0x8000;
+            fdr.application_block_opcode = conn.application_block_opcode;
+            fdr.application_block_subsystem = conn.application_block_subsystem;
+            SendData(fdr);
+            RecieveData((ushort)conn.ConnectionNumber);
+
+            ConnectionsList.Remove(conn.ConnectionNumber);
+        }
+
 
         public List<int> ListReachablePartners()
         {
@@ -540,12 +604,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
                 S7OexchangeBlock fdr = new S7OexchangeBlock();
 
+
+                fdr.user = (ushort) connection.ConnectionNumber;
                 fdr.subsystem = 64;
                 fdr.opcode = 6;
                 fdr.response = 255;
                 fdr.fill_length_1 = 18;
                 fdr.seg_length_1 = (byte) pdubytes.Length;
-                fdr.application_block_opcode = (byte)connection.ConnectionNumber;
+                fdr.application_block_opcode = connection.application_block_opcode;
                 //if (!connection.ConnectionConfig.ConnectionToEthernet)
                 fdr.application_block_subsystem = connection.application_block_subsystem;
 
@@ -583,26 +649,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
         */
 
-        
-        private S7OexchangeBlock RecieveData()
-        {
 
+        private S7OexchangeBlock RecieveData(ushort myConnNr)
+        {
             bool timeout = false;
 
-            while (lastMessage == null)
-            {Application.DoEvents();}
-            
-            GCHandle handle = GCHandle.Alloc(lastMessage, GCHandleType.Pinned);
-            S7OexchangeBlock rec = (S7OexchangeBlock)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(S7OexchangeBlock));
-            handle.Free();
+            while (ConnectionsList[myConnNr].RecievedData == null) //(lastMessage == null)
+            { Application.DoEvents(); }
 
-            lastMessage = null;
+            S7OexchangeBlock rec = (S7OexchangeBlock)ConnectionsList[myConnNr].RecievedData;
+            ConnectionsList[myConnNr].RecievedData = null;
 
             return rec;
         }
-        
 
-        
+
+        /*
         private S7OexchangeBlock RecieveDataD()
         {
             S7OexchangeBlock rec=new S7OexchangeBlock();
@@ -616,13 +678,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             handle.Free(); 
             return rec;
         }
+        */
 
-        private Pdu RecievePdu()
+        private Pdu RecievePdu(ushort myConnNr)
         {
-            S7OexchangeBlock rec = RecieveData();
+            S7OexchangeBlock rec = RecieveData(myConnNr);
             return new Pdu(rec.user_data_1);
         }
 
+        /*
         private Pdu RecievePduD()
         {
             
@@ -637,6 +701,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             handle.Free();
             return new Pdu(rec.user_data_1);
         }
+        */
+
         /*
         public byte[] RecieveData()
         {
