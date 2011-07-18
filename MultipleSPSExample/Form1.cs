@@ -51,20 +51,41 @@ namespace MultipleSPSExample
         }
 
         private List<PLCConnection> plcConnections;
-        
+
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            plcConnections=new List<PLCConnection>();
-            for (int n = 0; n < 6; n++)
+            plcConnections = new List<PLCConnection>();
+            try
             {
-                PLCConnection akConn = new PLCConnection(conn[n]);
-                plcConnections.Add(akConn);
-                akConn.Connect();
+                for (int n = 0; n < 6; n++)
+                {
+                    PLCConnection akConn = new PLCConnection(conn[n]);
+                    plcConnections.Add(akConn);
+                    akConn.Connect();
+                }
+            }
+            catch (Exception ex)
+            {
+                closeConnections();
+                MessageBox.Show("Fehler beim Verbindungsaufbau: " + ex.Message);
             }
 
             read_timer_plc1.Enabled = true;
             read_timer_plc2.Enabled = true;
+        }
+
+        private void closeConnections()
+        {
+            read_timer_plc1.Enabled = false;
+            read_timer_plc2.Enabled = false;
+
+            if (plcConnections!=null)
+                foreach (PLCConnection plcConnection in plcConnections)
+                {
+                    plcConnection.Dispose();
+                }
+            plcConnections = null;            
         }
 
         private void read_timer_plc1_Tick(object sender, EventArgs e)
