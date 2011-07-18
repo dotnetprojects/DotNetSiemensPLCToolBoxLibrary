@@ -28,9 +28,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -127,16 +130,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
-
-        /// <summary>
-        /// If you use this Connect without HWND, you can not use the S7Online Connection!
-        /// </summary>
-        public void Connect()
-        {
-            Connect(0);
-        }
-
-
+        
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             socketTimer.Stop();
@@ -152,8 +146,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// Connect to the PLC
         /// </summary>
-        /// <param name="hwnd"></param>
-        public void Connect(int hwnd)
+        public void Connect()
         {
             _NeedDispose = true;
             //Debugging for LibNoDave
@@ -181,7 +174,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
                     break;
                 case 50:
-                    _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, hwnd);
+                    _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
                     if (_fds.rfd.ToInt32() == -1)
                     {
                         _NeedDispose = false;
@@ -300,7 +293,79 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
 
             Connected = true;
-        }        
+        }
+
+
+        private Interface myIf;
+        private Connection myConn;
+        public void ConnectTestwithNewInterface()
+        {
+            _NeedDispose = true;
+
+            ConnectionConfig connConf = new ConnectionConfig();
+
+            bool IPConnection = false;
+
+            switch (_configuration.ConnectionType)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 10:
+                    //_fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                    break;
+                case 20: //AS511            
+                    //_fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                    break;
+                case 50:
+                    RegistryKey myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + _configuration.EntryPoint);
+                    string tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
+                    string retVal = "";
+                    if (tmpDevice != "")
+                    {
+                        myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
+                        retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
+                    }
+                    if (retVal == "TCPIP" || retVal == "ISO")
+                        IPConnection = true;
+                    myIf = new S7OnlineInterface(_configuration.EntryPoint);
+                    break;
+                case 122:
+                case 123:
+                case 124:
+                case 223:
+                case 224:
+                    break;
+                case 230:
+                    IPConnection = true;
+                    //_fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP););
+                    break;
+            }
+
+            connConf.ConnectionToEthernet = IPConnection;
+            if (IPConnection)
+                connConf.IPAddress = IPAddress.Parse(_configuration.CpuIP);
+            else
+                connConf.MPIAddress = _configuration.CpuMpi;
+            connConf.ConnectionType = _configuration.PLCConnectionType;
+            connConf.Rack = _configuration.CpuRack;
+            connConf.Slot = _configuration.CpuSlot;
+            connConf.Routing = _configuration.Routing;
+            connConf.RoutingConnectionType = _configuration.RoutingPLCConnectionType;
+            connConf.RoutingToEthernet = _configuration.RoutingDestination.Length > 4;
+            if (connConf.RoutingToEthernet)
+                connConf.RoutingIPAddress = IPAddress.Parse(_configuration.RoutingDestination);
+            else
+                connConf.RoutingMPIAddres = int.Parse(_configuration.RoutingDestination);
+            connConf.RoutingRack = _configuration.RoutingDestinationRack;
+            connConf.RoutingSlot = _configuration.RoutingDestinationSlot;
+            connConf.RoutingSubnet1 = _configuration.RoutingSubnet1;
+            connConf.RoutingSubnet2 = _configuration.RoutingSubnet2;
+
+
+            myConn = myIf.ConnectPlc(connConf);
+        }
 
         public void PLCStop()
         {

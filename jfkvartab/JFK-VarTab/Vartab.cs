@@ -177,7 +177,7 @@ namespace JFK_VarTab
                 if (lstConnections.SelectedItem != null)
                 {
                     this.myConn = new PLCConnection(lstConnections.SelectedItem.ToString());
-                    this.myConn.Connect(this.Handle.ToInt32());
+                    this.myConn.Connect();
                     cmdConnect.BackColor = Color.LightGreen;
                 }
                 else

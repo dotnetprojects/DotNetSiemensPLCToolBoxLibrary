@@ -13,6 +13,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public int MPIAddress { get; set; }
         public int Rack { get; set; }
         public int Slot { get; set; }
+        /// <summary>
+        /// 1 = PG Connection, 2 = OP Connection
+        /// </summary>
         public int ConnectionType { get; set; }
 
         public bool Routing { get; set; }
@@ -24,6 +27,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public int RoutingRack { get; set; }
         public int RoutingSlot { get; set; }
         public int RoutingConnectionType { get; set; }
+
+        public ConnectionConfig()
+        {
+
+        }
 
         public ConnectionConfig(int MPIAddress, int Rack, int Slot)
         {

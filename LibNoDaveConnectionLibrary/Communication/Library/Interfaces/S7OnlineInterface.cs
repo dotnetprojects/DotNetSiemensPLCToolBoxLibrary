@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
+namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
 
     public class S7OnlineInterface : Interface

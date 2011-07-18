@@ -287,7 +287,7 @@ namespace JFK_VarTab
         {
             try
             {
-                myConn.Connect((int) e.Argument);
+                myConn.Connect();
                 myDelegate += new stateConnectedDelegate(stateConnected);
                 this.Invoke(myDelegate);
             }

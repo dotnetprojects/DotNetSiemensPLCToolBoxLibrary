@@ -53,30 +53,86 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             get { return _interface; }          
         }
 
-        public Pdu PrepareReadRequest()
-        {
-            return null;
-        }
-
         public ResultSet ExecReadRequest(Pdu_ReadRequest myPdu)
         {
             Pdu wrt = ExchangePdu(myPdu);
             return new ResultSet(wrt.Param[1], wrt.Data.ToArray());
+        }
+        
+        public void PLCStop()
+        {
+            Pdu pdu = new Pdu(1);
+            byte[] para = new byte[] {0x29, 0, 0, 0, 0, 0, 9, (byte) 'P', (byte) '_', (byte) 'P', (byte) 'R', (byte) 'O', (byte) 'G', (byte) 'R', (byte) 'A', (byte) 'M'};
+            pdu.Param.AddRange(para);
+
+            Pdu rec = ExchangePdu(pdu);
+        }
+
+        public void PLCStart()
+        {
+            Pdu pdu = new Pdu(1);
+            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 9, (byte) 'P', (byte) '_', (byte) 'P', (byte) 'R', (byte) 'O', (byte) 'G', (byte) 'R', (byte) 'A', (byte) 'M'};
+            pdu.Param.AddRange(para);
+
+            Pdu rec = ExchangePdu(pdu);
+        }
+
+        public void PLCCompress()
+        {
+            Pdu pdu = new Pdu(1);
+            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 0, 5, (byte) '_', (byte) 'G', (byte) 'A', (byte) 'R', (byte) 'B'};
+            pdu.Param.AddRange(para);
+
+            Pdu rec = ExchangePdu(pdu);
+        }
+
+        public void PLCCopyRamToRom()
+        {
+            Pdu pdu = new Pdu(1);
+            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 2, (byte) 'E', (byte) 'P', 5, (byte) '_', (byte) 'M', (byte) 'O', (byte) 'D', (byte) 'U'};
+            pdu.Param.AddRange(para);
+
+            Pdu rec = ExchangePdu(pdu);
+        }
+
+        public byte[] ReadSZL(int SZL_ID, int SZL_Index)
+        {
+            Pdu pdu = new Pdu(1);
+            byte[] para_1 = new byte[] {0, 1, 18, 4, 17, 68, 1, 0};
+            pdu.Param.AddRange(para_1);
+
+            byte[] user = new byte[4];
+            user[0] = (byte) (SZL_ID/0x100);
+            user[1] = (byte) (SZL_ID%0x100);
+            user[2] = (byte) (SZL_Index/0x100);
+            user[3] = (byte) (SZL_Index%0x100);
+            pdu.Data.AddRange(user);
+
+            Pdu rec = ExchangePdu(pdu);
+
+            byte[] para_2 = {0, 1, 18, 8, 18, 68, 1, 1, 0, 0, 0, 0};
+            para_2[7] = rec.Param[7];
+            pdu.Param.Clear();
+            pdu.Param.AddRange(para_2);
+
+            List<byte> retVal = new List<byte>();
+
+            while (rec.Param[9] != 0)
+            {
+                retVal.AddRange(rec.UData);
+                rec = ExchangePdu(pdu);
+            }
+
+            retVal.AddRange(rec.UData);
+
+            return retVal.ToArray();
         }
 
         public void SendPdu(Pdu myPdu)
         {
             Interface.SendPdu(myPdu, this);
         }
-
         
-        /* Vielleicht unnötig, da man gar nicht zuordnen könnte zu welcher Pdu die Antwort gehört!
-        public Pdu RecievePdu()
-        {
-            throw new NotImplementedException();
-        }
-        */
-
         #region PDU/Data Exchange with Interface
 
         internal object RecievedData = null;
