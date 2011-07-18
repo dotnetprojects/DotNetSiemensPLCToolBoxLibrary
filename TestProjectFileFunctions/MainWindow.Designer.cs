@@ -50,11 +50,13 @@
             this.txtUndeleteName = new System.Windows.Forms.TextBox();
             this.grpVisu = new System.Windows.Forms.GroupBox();
             this.chkExpandArrays = new System.Windows.Forms.CheckBox();
+            this.chkUseErrPrefix = new System.Windows.Forms.CheckBox();
             this.chkFixedErrorNumber = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTagsPrefix = new System.Windows.Forms.TextBox();
+            this.txtErrPrefix = new System.Windows.Forms.TextBox();
             this.txtStartErrorNumber = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtConnectionName = new System.Windows.Forms.TextBox();
@@ -305,11 +307,13 @@
             // grpVisu
             // 
             this.grpVisu.Controls.Add(this.chkExpandArrays);
+            this.grpVisu.Controls.Add(this.chkUseErrPrefix);
             this.grpVisu.Controls.Add(this.chkFixedErrorNumber);
             this.grpVisu.Controls.Add(this.label10);
             this.grpVisu.Controls.Add(this.label2);
             this.grpVisu.Controls.Add(this.label1);
             this.grpVisu.Controls.Add(this.txtTagsPrefix);
+            this.grpVisu.Controls.Add(this.txtErrPrefix);
             this.grpVisu.Controls.Add(this.txtStartErrorNumber);
             this.grpVisu.Controls.Add(this.label9);
             this.grpVisu.Controls.Add(this.txtConnectionName);
@@ -327,12 +331,21 @@
             // chkExpandArrays
             // 
             this.chkExpandArrays.AutoSize = true;
-            this.chkExpandArrays.Location = new System.Drawing.Point(25, 290);
+            this.chkExpandArrays.Location = new System.Drawing.Point(25, 330);
             this.chkExpandArrays.Name = "chkExpandArrays";
             this.chkExpandArrays.Size = new System.Drawing.Size(94, 17);
             this.chkExpandArrays.TabIndex = 4;
             this.chkExpandArrays.Text = "Expand Arrays";
             this.chkExpandArrays.UseVisualStyleBackColor = true;
+            // 
+            // chkUseErrPrefix
+            // 
+            this.chkUseErrPrefix.Location = new System.Drawing.Point(20, 126);
+            this.chkUseErrPrefix.Name = "chkUseErrPrefix";
+            this.chkUseErrPrefix.Size = new System.Drawing.Size(165, 19);
+            this.chkUseErrPrefix.TabIndex = 4;
+            this.chkUseErrPrefix.Text = "Errors Start with: ";
+            this.chkUseErrPrefix.UseVisualStyleBackColor = true;
             // 
             // chkFixedErrorNumber
             // 
@@ -347,7 +360,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(22, 223);
+            this.label10.Location = new System.Drawing.Point(22, 263);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(210, 60);
             this.label10.TabIndex = 3;
@@ -356,7 +369,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 314);
+            this.label2.Location = new System.Drawing.Point(17, 354);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 15);
             this.label2.TabIndex = 2;
@@ -373,10 +386,18 @@
             // 
             // txtTagsPrefix
             // 
-            this.txtTagsPrefix.Location = new System.Drawing.Point(107, 311);
+            this.txtTagsPrefix.Location = new System.Drawing.Point(107, 351);
             this.txtTagsPrefix.Name = "txtTagsPrefix";
             this.txtTagsPrefix.Size = new System.Drawing.Size(121, 21);
             this.txtTagsPrefix.TabIndex = 1;
+            // 
+            // txtErrPrefix
+            // 
+            this.txtErrPrefix.Location = new System.Drawing.Point(185, 124);
+            this.txtErrPrefix.Name = "txtErrPrefix";
+            this.txtErrPrefix.Size = new System.Drawing.Size(43, 21);
+            this.txtErrPrefix.TabIndex = 1;
+            this.txtErrPrefix.Text = "$";
             // 
             // txtStartErrorNumber
             // 
@@ -405,9 +426,9 @@
             // 
             // cmdCreateWinCCTags
             // 
-            this.cmdCreateWinCCTags.Location = new System.Drawing.Point(20, 336);
+            this.cmdCreateWinCCTags.Location = new System.Drawing.Point(20, 376);
             this.cmdCreateWinCCTags.Name = "cmdCreateWinCCTags";
-            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(212, 52);
+            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(212, 53);
             this.cmdCreateWinCCTags.TabIndex = 0;
             this.cmdCreateWinCCTags.Text = "Create WinCC Tags";
             this.cmdCreateWinCCTags.UseVisualStyleBackColor = true;
@@ -415,7 +436,7 @@
             // 
             // cmdCreateWinCCErrorMessages
             // 
-            this.cmdCreateWinCCErrorMessages.Location = new System.Drawing.Point(20, 167);
+            this.cmdCreateWinCCErrorMessages.Location = new System.Drawing.Point(20, 202);
             this.cmdCreateWinCCErrorMessages.Name = "cmdCreateWinCCErrorMessages";
             this.cmdCreateWinCCErrorMessages.Size = new System.Drawing.Size(212, 52);
             this.cmdCreateWinCCErrorMessages.TabIndex = 0;
@@ -425,7 +446,7 @@
             // 
             // cmdCreateFlexibleErrorMessages
             // 
-            this.cmdCreateFlexibleErrorMessages.Location = new System.Drawing.Point(20, 116);
+            this.cmdCreateFlexibleErrorMessages.Location = new System.Drawing.Point(20, 151);
             this.cmdCreateFlexibleErrorMessages.Name = "cmdCreateFlexibleErrorMessages";
             this.cmdCreateFlexibleErrorMessages.Size = new System.Drawing.Size(212, 52);
             this.cmdCreateFlexibleErrorMessages.TabIndex = 0;
@@ -953,6 +974,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem dBStructResizerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuExpandDatablockArrays;
+        private System.Windows.Forms.CheckBox chkUseErrPrefix;
+        private System.Windows.Forms.TextBox txtErrPrefix;
 
     }
 }

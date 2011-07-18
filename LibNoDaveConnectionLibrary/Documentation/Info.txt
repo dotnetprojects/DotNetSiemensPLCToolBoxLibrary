@@ -35,3 +35,7 @@ When you want to use the communication Functions, be sure, that you copy libnoda
 Global Todo List:
 - 2 Versions of WPF ToolBox, one only for reading (Compile Switch)
 - Implement use of Converting Options
+
+S7Online Documentation:
+	http://cache.automation.siemens.com/dnl/Tg/Tg1MzIzNzEA_1653427_HB/mn_fdl-api_0.pdf
+	Header-File: http://read.pudn.com/downloads96/sourcecode/others/392580/profim-1.0.0/src/lib/sources/fdl_rb.h__.htm 

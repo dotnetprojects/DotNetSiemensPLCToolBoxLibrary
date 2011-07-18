@@ -372,7 +372,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
                 if (_myForm != null) _myForm.Dispose();
 
-                if (formBackgroundThread.IsAlive)
+                if (formBackgroundThread != null && formBackgroundThread.IsAlive)
                     formBackgroundThread.Abort();
 
                 if (_connectionHandle >= 0)
@@ -661,7 +661,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
         }
 
-
         public void ExchangePdu(Pdu pdu, Connection connection)
         {
             SendPdu(pdu, connection);
@@ -676,7 +675,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             if (!Disposed)
             {                
                 S7OexchangeBlock fdr = new S7OexchangeBlock();
-
                 
                 fdr.user = (ushort)connection.ConnectionNumber;
                 fdr.subsystem = 64;
@@ -690,8 +688,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 fdr.application_block_subsystem = connection.application_block_subsystem;
 
                 fdr.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
-                fdr.rb_type = 2; //rb_type is always 2
-                fdr.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+                fdr.rb_type = 2;       //rb_type is always 2
+                fdr.offset_1 = 80;     //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
 
                 fdr.user_data_1 = new byte[260];
 

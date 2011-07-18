@@ -27,7 +27,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
     {
         public static void RespectEndianness(Type type, byte[] data)
         {
-            foreach (FieldInfo f in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+            foreach (FieldInfo f in type.GetFields()) //BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (f.IsDefined(typeof(EndianAttribute), false))
                 {
@@ -41,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             }
         }
 
-        public static T BytesToStruct<T>(byte[] rawData) where T : class 
+        public static T BytesToStruct<T>(byte[] rawData) //where T : class 
         {
             T result = default(T);
 
@@ -62,7 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             return result;
         }
 
-        public static byte[] StructToBytes<T>(T data) where T : class
+        public static byte[] StructToBytes<T>(T data) //where T : class
         {
             byte[] rawData = new byte[Marshal.SizeOf(data)];
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);

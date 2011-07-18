@@ -494,45 +494,55 @@ namespace JFK_VarTab
 
                 foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
                 {
-                    if (plcDataRow.DataType == S7DataRowType.BOOL)
+                    if (plcDataRow.DataType == S7DataRowType.BOOL && !string.IsNullOrEmpty(plcDataRow.Comment))
                     {
-                        ByteBitAddress akAddr = plcDataRow.BlockAddress;
-                        int varnr = (akAddr.ByteAddress / 2) + 1;
-
-                        int bitnr = akAddr.BitAddress;
-                        if (akAddr.ByteAddress % 2 == 0)
-                            bitnr += 8;
-
                         string stoeTxt = "";
-                        string stoeOrt = "";
-                        string stoeTxtEn = "";
-
                         stoeTxt = plcDataRow.Comment;
-                        if (stoeTxt.Contains(";"))
-                        {
-                            stoeOrt = stoeTxt.Split(';')[0];
-                            stoeTxt = stoeTxt.Split(';')[1];                            
-                        }
 
-                        if (chkFixedErrorNumber.Checked)
-                            errNr = Convert.ToInt32(txtStartErrorNumber.Text) + akAddr.ByteAddress * 8 + akAddr.BitAddress;
-
-                        try
+                        char anfC = plcDataRow.Comment[0];
+                        if (anfC.ToString() == txtErrPrefix.Text || !chkUseErrPrefix.Checked)
                         {
-                            HMIGOObject.CreateSingleAlarm(errNr, HMIGENOBJECTSLib.HMIGO_SINGLE_ALARM_CLASS_ID.SINGLE_ALARM_ERROR, 1, stoeTxt, varname + "_" + varnr.ToString(), bitnr);
-                            //HMIGOObject.SingleAlarmInfoText = stoeOrt;//stoeTxt;
-                            HMIGOObject.SingleAlarmText2ID = stoeOrt;
-                            HMIGOObject.CommitSingleAlarm();
-                        }
-                        catch (System.Runtime.InteropServices.COMException ex)
-                        {
-                            if (ex.ErrorCode != -2147467259)
-                                throw ex;
-                        }
+                            if (anfC.ToString() == txtErrPrefix.Text)
+                                stoeTxt = stoeTxt.Substring(1);
 
-                        //errors += "\"D\"\t\"" + errNr.ToString() + "\"\t\"Alarms\"\t\"" + varname + "\"\t\"" + bitnr.ToString() + "\"\t\t\t\t\t\t\"0\"\t\"de-DE=" + stoeTxt + "\"\t\"en-US=" + stoeTxtEn + "\"\t\"de-DE=\"" + "\r\n";
-                        if (!chkFixedErrorNumber.Checked)
-                            errNr++;
+                            ByteBitAddress akAddr = plcDataRow.BlockAddress;
+                            int varnr = (akAddr.ByteAddress/2) + 1;
+
+                            int bitnr = akAddr.BitAddress;
+                            if (akAddr.ByteAddress%2 == 0)
+                                bitnr += 8;
+
+
+                            string stoeOrt = "";
+                            string stoeTxtEn = "";
+
+
+                            if (stoeTxt.Contains(";"))
+                            {
+                                stoeOrt = stoeTxt.Split(';')[0];
+                                stoeTxt = stoeTxt.Split(';')[1];
+                            }
+
+                            if (chkFixedErrorNumber.Checked)
+                                errNr = Convert.ToInt32(txtStartErrorNumber.Text) + akAddr.ByteAddress*8 + akAddr.BitAddress;
+
+                            try
+                            {
+                                HMIGOObject.CreateSingleAlarm(errNr, HMIGENOBJECTSLib.HMIGO_SINGLE_ALARM_CLASS_ID.SINGLE_ALARM_ERROR, 1, stoeTxt, varname + "_" + varnr.ToString(), bitnr);
+                                //HMIGOObject.SingleAlarmInfoText = stoeOrt;//stoeTxt;
+                                HMIGOObject.SingleAlarmText2ID = stoeOrt;
+                                HMIGOObject.CommitSingleAlarm();
+                            }
+                            catch (System.Runtime.InteropServices.COMException ex)
+                            {
+                                if (ex.ErrorCode != -2147467259)
+                                    throw ex;
+                            }
+
+                            //errors += "\"D\"\t\"" + errNr.ToString() + "\"\t\"Alarms\"\t\"" + varname + "\"\t\"" + bitnr.ToString() + "\"\t\t\t\t\t\t\"0\"\t\"de-DE=" + stoeTxt + "\"\t\"en-US=" + stoeTxtEn + "\"\t\"de-DE=\"" + "\r\n";
+                            if (!chkFixedErrorNumber.Checked)
+                                errNr++;
+                        }
                     }
                 }
             }

@@ -49,18 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\Library\ConnectionConfig.cs" />
     <Compile Include="Communication\Library\Interfaces\ISONetworkInterface.cs" />
+    <Compile Include="Communication\Library\Pdus\Pdu_ReadRequest.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
     <Compile Include="Communication\Configuration.cs" />
     <Compile Include="Communication\Library\ByteFunctions.cs" />
     <Compile Include="Communication\Library\Connection.cs" />
-    <Compile Include="Communication\Library\TagsPdu.cs" />
     <Compile Include="Communication\Library\Interfaces\Interface.cs" />
     <Compile Include="Communication\Library\internal\TCPConnection.cs" />
     <Compile Include="Communication\Library\Interfaces\NetLinkLiteInterface.cs" />
     <Compile Include="Communication\Library\Interfaces\NetLinkProInterface.cs" />
     <Compile Include="Communication\Library\Interfaces\NetworkInterface.cs" />
-    <Compile Include="Communication\Library\Pdu.cs" />
+    <Compile Include="Communication\Library\Pdus\Pdu.cs" />
     <Compile Include="Communication\Library\Interfaces\S7OnlineInterface.cs" />
     <Compile Include="Communication\Library\Interfaces\SerialInterface.cs" />
     <Compile Include="Communication\Library\Interfaces\TCPInterface.cs" />
