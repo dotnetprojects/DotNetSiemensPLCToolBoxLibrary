@@ -904,8 +904,107 @@ namespace JFK_VarTab
             stRz.ShowDialog();
         }
 
+        private void searchPasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            char[] zeichen = { ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+            
+            myConn = new PLCConnection((string)lstConnections.SelectedItem);
+            myConn.Connect();
+
+            Int64 anz = 0;
+
+            bool pwdCorr = false;
+            string pwd = "12345678";
+            int[] cnt = new int[8];
+            while (!pwdCorr)
+            {
+                cnt[0]++;
+                for (int n = 0; n < 7; n++)
+                {
+                    if (cnt[n] >= zeichen.Length)
+                    {
+                        cnt[n + 1]++;
+                        cnt[n] = 0;
+                    }
+                }
+
+                if (cnt[7] >= zeichen.Length)
+                {
+                    MessageBox.Show("Password not found!");
+                    return;
+                }
+
+                
+                pwd = "";
+                for (int n = 0; n < 8; n++)
+                {
+                    pwd += zeichen[cnt[n]];
+                }
+
+                anz++;
+                pwdCorr = myConn.PLCSendPassword(pwd.Trim());
+            }
+
+            MessageBox.Show("Passwort:" + pwd + "\n" + "Anzahl geprüfter Kennwörter:" + anz.ToString());
+
+        }
+
+        private void cmdCreateWinCCFlexibleTags_Click(object sender, EventArgs e)
+        {
+            S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
+
+            List<S7DataRow> myLst = null;
+            if (chkExpandArrays.Checked)
+                myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
+            else
+                myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+
+            string tags = "";
 
 
+            foreach (S7DataRow plcDataRow in myLst) // myDB.GetRowsAsList())
+            {
+                string tagName = txtTagsPrefix.Text + plcDataRow.StructuredName.Replace(".", "_").Replace("[", "_").Replace("]", "").Replace(" ", "").Replace(",", "_");
 
+                switch (plcDataRow.DataType)
+                {
+                    case S7DataRowType.BOOL:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBX " + plcDataRow.BlockAddress.ByteAddress.ToString() + "." + plcDataRow.BlockAddress.BitAddress.ToString() + ";Bool;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.INT:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Int;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                        
+                        break;
+                    case S7DataRowType.DINT:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";DInt;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                
+                        break;
+                    case S7DataRowType.WORD:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Word;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                
+                        break;
+                    case S7DataRowType.DWORD:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";DWord;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                
+                        break;
+                    case S7DataRowType.BYTE:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBB " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Byte;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                                        
+                        break;
+                    case S7DataRowType.REAL:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Real;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                                        
+                        break;
+                }
+            }
+
+            FolderBrowserDialog fldDlg = null;
+
+            fldDlg = new FolderBrowserDialog();
+            fldDlg.Description = "Destination Diretory for Tags.csv!";
+            if (fldDlg.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.StreamWriter swr;
+
+                swr = new System.IO.StreamWriter(fldDlg.SelectedPath + "\\Tags.csv");
+                swr.Write(tags.Replace(";", "\t"));
+                swr.Close();
+            }
+        }
     }
 }

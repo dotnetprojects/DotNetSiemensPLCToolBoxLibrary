@@ -31,6 +31,7 @@ namespace TestProjectFileFunctions
                               (new PLCConnectionConfiguration(ConnectionName)).ToString();
                 myConn.Connect();
                 listBox1.Items.AddRange(myConn.PLCListBlocks(PLCBlockType.AllEditableBlocks).ToArray());
+                //myConn.PLCSendPassword("admin");
             }
             catch(Exception ex)
             {
@@ -50,6 +51,7 @@ namespace TestProjectFileFunctions
                 {
                     try
                     {
+                        
                         byte[] blk = myConn.PLCGetBlockInMC7(listBox1.SelectedItem.ToString());
 
                         System.IO.FileStream _FileStream = new System.IO.FileStream(sav.FileName,
