@@ -822,31 +822,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return 0;
         }
 
-        public void PLCSendPassword(string pwd)
+        public bool PLCSendPassword(string pwd)
         {
             if (AutoConnect && !Connected)
                 Connect();
 
-             if (_dc != null)
-                 lock (_dc)
-                 {
-                     libnodave.PDU myPDU = new libnodave.PDU();
+            if (_dc != null)
+                lock (_dc)
+                {
+                    libnodave.PDU myPDU = new libnodave.PDU();
 
-                     //PDU Header
-                     byte[] para;
-                     //PDU Data
-                     byte[] data;
+                    //PDU Header
+                    byte[] para;
+                    //PDU Data
+                    byte[] data;
 
-                     para = new byte[] {0x00, 0x01, 0x12, 0x04, 0x11, 0x45, 0x01, 0x00};
-                     data = Helper.EncodePassword(pwd);
-                     _dc.daveBuildAndSendPDU(myPDU, para, data);
+                    para = new byte[] { 0x00, 0x01, 0x12, 0x04, 0x11, 0x45, 0x01, 0x00 };
+                    data = Helper.EncodePassword(pwd);
+                    _dc.daveBuildAndSendPDU(myPDU, para, data);
 
-                     byte[] rdata, rparam;
-                     int res = _dc.daveGetPDUData(myPDU, out rdata, out rparam);
+                    byte[] rdata, rparam;
+                    int res = _dc.daveGetPDUData(myPDU, out rdata, out rparam);
 
-                     if (rparam[10] == 0xd6 && rparam[11] == 0x02)
-                         throw new Exception("Wrong Password");
-                 }
+                    if (rparam[10] == 0xd6 && rparam[11] == 0x02)
+                        return false;
+                    //throw new Exception("Wrong Password");
+                    return true;
+                }
+            return false;
         }
 
         public DataTypes.PLCState PLCGetState()
@@ -976,6 +979,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Array.Copy(buffer, retVal, readsize);
                         return retVal;
                     }
+                    else if (ret == 53825)
+                        throw new Exception("PLC is Password Protected, unlock before downloading Blocks!");
                     else
                         return null;
                 }
