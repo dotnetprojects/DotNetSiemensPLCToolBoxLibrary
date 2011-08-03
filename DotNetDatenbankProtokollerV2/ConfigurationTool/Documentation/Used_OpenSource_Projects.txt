@@ -1,5 +1,6 @@
 ﻿Versionen noch angeben!
 
+# = noch nicht benutzt/implementiert (Lizenzfragen??)
 
 Propertygrid:
 http://wpg.codeplex.com (Ms-PL)
@@ -32,11 +33,3 @@ For mysql: (6.3.6)
 
 For Firebird: (2.6.0.0)
 http://prdownloads.sourceforge.net/firebird/FirebirdClient-2.0.1.exe?download (LGPL)
-
-
-
-
-DB2 Support???
-
-Oracle Support???
-http://www.oracle.com/technetwork/topics/dotnet/index-085163.html
