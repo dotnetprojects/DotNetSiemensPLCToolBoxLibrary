@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Communication\Library\ConnectionConfig.cs" />
     <Compile Include="Communication\Library\Interfaces\ISONetworkInterface.cs" />
+    <Compile Include="Communication\Library\internal\SocketExtensions.cs" />
     <Compile Include="Communication\Library\Pdus\Pdu_ReadRequest.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
     <Compile Include="Communication\Configuration.cs" />

@@ -356,9 +356,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
             { }
         }
         
-
-
-
         private bool Disposed = false;
         public void Dispose()
         {
@@ -366,7 +363,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
             {
                 Disposed = true;
 
-                if (_myForm != null) _myForm.Dispose();
+                if (_myForm != null) _myForm.Invoke((MethodInvoker) (() => _myForm.Dispose()));                
 
                 if (formBackgroundThread != null && formBackgroundThread.IsAlive)
                     formBackgroundThread.Abort();

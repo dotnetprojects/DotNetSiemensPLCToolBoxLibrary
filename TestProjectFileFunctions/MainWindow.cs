@@ -990,6 +990,36 @@ namespace JFK_VarTab
                     case S7DataRowType.REAL:
                         tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Real;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";                                                                        
                         break;
+                    case S7DataRowType.CHAR:
+                        if (plcDataRow.IsArray)
+                            tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBB " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";StringChar;" + plcDataRow.GetArrayLines().ToString() + ";" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        else
+                            tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBB " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Char;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.COUNTER:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Counter;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.DATE:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Date;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.DATE_AND_TIME:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBB " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Date and Time;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.S5TIME:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Timer;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.STRING:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBB " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";String;" + plcDataRow.StringSize.ToString() + ";" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.TIME:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Time;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.TIME_OF_DAY:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBD " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Time of Day;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;
+                    case S7DataRowType.TIMER:
+                        tags += tagName + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW " + plcDataRow.BlockAddress.ByteAddress.ToString() + ";Timer;;" + "1" + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
+                        break;                   
                 }
             }
 

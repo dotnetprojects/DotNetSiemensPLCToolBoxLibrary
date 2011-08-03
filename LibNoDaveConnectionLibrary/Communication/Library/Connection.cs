@@ -12,6 +12,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         delegate void AsynchronDataArrivedDelegate(ResultSet resultSet);
         private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
+        public delegate void PDURecievedDelegate(Pdu pdu);
+        public event PDURecievedDelegate PDURecieved;
+
         internal int ConnectionNumber { get; set; }
 
         internal bool ConnectionEstablished { get; set; }
@@ -172,6 +175,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         internal void SetRecievedPdu(Pdu data)
         {
+            if (PDURecieved != null)
+                PDURecieved(data);
+
             if (data.header.number != 0)
                 RecievedPdus[data.header.number] = data;
             else

@@ -9,6 +9,8 @@ using System.Security;
 using System.Windows;
 using System.Windows.Interop;
 
+
+
 // Please write coder @ wiredprairie dot us if you use this code or find it useful!
 
 
@@ -280,7 +282,98 @@ namespace WPFToolboxForSiemensPLCs
             get { return _ghostCursor; }
         }
 
+        #region Mouse Cursor
+        [DllImport("user32.dll", EntryPoint = "GetCursorInfo")]
+        public static extern bool GetCursorInfo(out CURSORINFO pci);
+
+        [DllImport("user32.dll", EntryPoint = "CopyIcon")]
+        public static extern IntPtr CopyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll", EntryPoint = "GetIconInfo")]
+        public static extern bool GetIconInfo(IntPtr hIcon, out aICONINFO piconinfo);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CURSORINFO
+        {
+            public Int32 cbSize;        // Specifies the size, in bytes, of the structure. 
+            public Int32 flags;         // Specifies the cursor state. This parameter can be one of the following values:
+            public IntPtr hCursor;          // Handle to the cursor. 
+            public pPOINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor. 
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct pPOINT
+        {
+            public Int32 x;
+            public Int32 y;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct aICONINFO
+        {
+            public bool fIcon;         // Specifies whether this structure defines an icon or a cursor. A value of TRUE specifies 
+            public Int32 xHotspot;     // Specifies the x-coordinate of a cursor's hot spot. If this structure defines an icon, the hot 
+            public Int32 yHotspot;     // Specifies the y-coordinate of the cursor's hot spot. If this structure defines an icon, the hot 
+            public IntPtr hbmMask;     // (HBITMAP) Specifies the icon bitmask bitmap. If this structure defines a black and white icon, 
+            public IntPtr hbmColor;    // (HBITMAP) Handle to the icon color bitmap. This member can be optional if this 
+        }
+
+        public const Int32 CURSOR_SHOWING = 0x00000001;
+
+        /*
+        static System.Drawing.Bitmap CaptureCursor() //ref int x, ref int y)
+        {
+            System.Drawing.Bitmap bmp;
+            IntPtr hicon;
+            CURSORINFO ci = new CURSORINFO();
+            aICONINFO icInfo;
+            ci.cbSize = Marshal.SizeOf(ci);
+            if (GetCursorInfo(out ci))
+            {
+                if (ci.flags == CURSOR_SHOWING)
+                {
+                    hicon = CopyIcon(ci.hCursor);
+                    if (GetIconInfo(hicon, out icInfo))
+                    {                        
+                        //x = ci.ptScreenPos.x - ((int)icInfo.xHotspot);
+                        //y = ci.ptScreenPos.y - ((int)icInfo.yHotspot);
+                        System.Drawing.Icon ic = System.Drawing.Icon.FromHandle(hicon);                        
+                        bmp = ic.ToBitmap();
+                        DestroyIcon(hicon);
+                        return bmp;
+                    }
+                }
+            }
+            return null;
+        }*/
+
+        static BitmapSource CaptureCursor() //ref int x, ref int y)
+        {
+            IntPtr hicon;
+            CURSORINFO ci = new CURSORINFO();
+            aICONINFO icInfo;
+            ci.cbSize = Marshal.SizeOf(ci);
+            if (GetCursorInfo(out ci))
+            {
+                if (ci.flags == CURSOR_SHOWING)
+                {
+                    hicon = CopyIcon(ci.hCursor);
+                    if (GetIconInfo(hicon, out icInfo))
+                    {
+                        System.Drawing.Icon ic = System.Drawing.Icon.FromHandle(hicon);
+                        System.Drawing.Bitmap bmp = ic.ToBitmap();
+
+                        BitmapSource retVal=System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        DestroyIcon(hicon);
+                        return retVal;
+                    }
+                }
+            }
+            return null;
+        }
         
+        #endregion
+
         /*
         internal GhostCursor(Visual visual, Cursor cur,  DragDropEffects dragDropEffects)
         {            
@@ -288,21 +381,38 @@ namespace WPFToolboxForSiemensPLCs
         }
         */
 
+        public static BitmapSource CreateBitmapSourceFromBitmap(System.Drawing.Bitmap bitmap)
+        {
+            if (bitmap == null)
+                throw new ArgumentNullException("bitmap");
+
+            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                bitmap.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+        }
+
         internal GhostCursor(Visual visual)
         {
             BitmapSource renderBitmap = CaptureScreen(visual);
+
+            BitmapSource actualCursor = CaptureCursor();
+            byte[] pixels = GetBitmapPixels(actualCursor, (int)actualCursor.Width, (int)actualCursor.Height);            
+            WriteableBitmap wrbmp = new WriteableBitmap(renderBitmap);
+            wrbmp.WritePixels(new Int32Rect(0, 0, (int)actualCursor.Width, (int)actualCursor.Height), pixels, actualCursor.PixelWidth * actualCursor.Format.BitsPerPixel / 8, 0);
 
             int width = renderBitmap.PixelWidth;
             int height = renderBitmap.PixelHeight;
             int stride = width * 4;
 
             // unfortunately, this byte array will get placed on the large object heap more than likely ... 
-            byte[] pixels = GetBitmapPixels(renderBitmap, width, height);
-
+            pixels = GetBitmapPixels(wrbmp, width, height);
+           
             // -height specifies top-down bitmap
             BITMAPV5HEADER bInfo = new BITMAPV5HEADER(width, -height, 32);
             IntPtr ppvBits = IntPtr.Zero;
-            BitmapHandle dibSectionHandle = null;
+            BitmapHandle dibSectionHandle = null;            
 
             try
             {
@@ -311,11 +421,11 @@ namespace WPFToolboxForSiemensPLCs
                 // copy the pixels into the DIB section now ...
                 Marshal.Copy(pixels, 0, ppvBits, pixels.Length);
 
+                
                 if (!dibSectionHandle.IsInvalid && ppvBits != IntPtr.Zero)
                 {
                     CreateCursor(width, height, dibSectionHandle);
                 }
-
             }
             finally
             {

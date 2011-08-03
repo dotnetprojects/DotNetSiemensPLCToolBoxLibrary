@@ -17,11 +17,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             Threads = null;
 
-            if (Send_Client != null)
-                Send_Client.Close();
+            if (tcpClient != null)
+                tcpClient.Close();
         }
 
-        private TcpClient Send_Client;
+        private TcpClient tcpClient;
 
         private Thread ReceiveDataSendClientThread;
 
@@ -53,12 +53,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         public void Connect()
         {
-            ConnectSend();
+            connectClient();
         }
 
-        private void ConnectSend()
+        private void connectClient()
         {
-            Thread send_wait_for_conn_thread = new Thread(new ThreadStart(InitSendClientActive));
+            Thread send_wait_for_conn_thread = new Thread(new ThreadStart(initClient));
             send_wait_for_conn_thread.Name = "send_wait_for_conn_thread";
             send_wait_for_conn_thread.Start();
             Threads.Add(send_wait_for_conn_thread);
@@ -73,32 +73,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         public void SendData(byte[] telegramm)
         {
-            if (Send_Client == null)
+            if (tcpClient == null)
                 throw new Exception("Send not possible, not connected");
-            NetworkStream stream = Send_Client.GetStream();
+            NetworkStream stream = tcpClient.GetStream();
             stream.Write(telegramm, 0, telegramm.Length);
         }
 
-        public void InitSendClientActive()
+        public void initClient()
         {
-            bool SendClosed = false;
+            bool closed = false;
             while (true)
             {
                 try
                 {
-                    if (Send_Client == null || Send_Client.Connected == false)
+                    if (ConnectionClosed != null && closed)
                     {
-                        if (SendClosed)
-                        {
-                            SendClosed = false;
-                            context.Post(delegate { ConnectionClosed(1); }, null);
-                        }
+                        closed = false;
+                        context.Post(delegate { ConnectionClosed(1); }, null);
+                    }
 
-                        Send_Client = null;
+                    if (tcpClient == null || tcpClient.Connected == false)
+                    {
+                        if (tcpClient == null)
+                            tcpClient.Close();
 
-                        Send_Client = new TcpClient(plc_ip.ToString(), connection_port);
-
-                        SendClosed = true;
+                        tcpClient = new TcpClient(plc_ip.ToString(), connection_port);
+                        closed = true;
 
                         if (ConnectionEstablished != null)
                             context.Post(delegate { ConnectionEstablished(1); }, null);
@@ -140,7 +140,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                     try
                     {
                         if (stream == null)
-                            stream = Send_Client.GetStream();
+                            stream = tcpClient.GetStream();
                         int len = stream.Read(bytes, 0, 4);
 
                         if (len > 3)

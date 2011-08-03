@@ -37,6 +37,8 @@ namespace SimpleCSharpDemonstration
         private void button1_Click(object sender, EventArgs e)
         {
             Configuration.ShowConfiguration("SimpleCSharpDemonstrationConnection", true);
+
+            
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -106,30 +108,28 @@ namespace SimpleCSharpDemonstration
         private Connection aa, bb;
         private void button4_Click(object sender, EventArgs e)
         {
-
+            /*
             Stopwatch sw = new Stopwatch();
             Stopwatch sw2 = new Stopwatch();
 
             sw.Start();
             Interface tmp = new S7OnlineInterface("S7ONLINE");
-            aa = tmp.ConnectPlc(new ConnectionConfig(2, 0, 2));
-            //aa = tmp.ConnectPlc(new ConnectionConfig(new IPAddress(new byte[] {192, 168, 1, 185}), 0, 2));
+            //aa = tmp.ConnectPlc(new ConnectionConfig(2, 0, 2));
+            aa = tmp.ConnectPlc(new ConnectionConfig(new IPAddress(new byte[] {192, 168, 1, 185}), 0, 2));
             Pdu_ReadRequest rd = new Pdu_ReadRequest();
             rd.addVarToReadRequest(0x83, 1, 0, 1);
             var rs = aa.ExecReadRequest(rd);
             var erg = rs.useResult(0);           
             aa.Dispose();
             sw.Stop();
-
-            sw2.Start();
+            */
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
             //PLCTag tag = new PLCTag("MD0") {LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.ByteArray, ArraySize=16};
             PLCTag tag = new PLCTag("P#DB1.DBX0.0 BYTE 8");
             myConn.ReadValue(tag);
             myConn.Disconnect();
-            sw2.Stop();
-
+            
             lblString.Text = tag.ValueAsString;  
             
         }
