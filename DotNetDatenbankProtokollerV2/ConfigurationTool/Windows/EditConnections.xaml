@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="DotNetSimaticDatabaseProtokollerConfigurationTool.Windows.EditConnections"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:WPG="clr-namespace:WPG;assembly=WPG" xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary" mc:Ignorable="d" 
+             d:DesignHeight="348" d:DesignWidth="508">
+    <Grid>
+        <Grid Margin="12,12,152,12" Name="grid1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27*" />
+                <RowDefinition Height="26*" />
+            </Grid.RowDefinitions>
+            <WPG:PropertyGrid ShowPreview="False" Grid.Row="1" Instance="{Binding ElementName=grdConnections, Path=SelectedItem}" FontSize="11" ShowDescription="True" MouseDoubleClick="PropertyGrid_MouseDoubleClick" Name="prpGrid"></WPG:PropertyGrid>
+
+
+            <DataGrid AutoGenerateColumns="False" Margin="0,0,0,3" Name="grdConnections" MouseDoubleClick="grdConnections_MouseDoubleClick" ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Connection-Name" Width="Auto" IsReadOnly="True" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Connection-Info" Width="Auto" IsReadOnly="True" SortMemberPath="ObjectAsString">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ObjectAsString}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+            <GridSplitter Grid.Row="0" Height="3" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
+        </Grid>
+        
+        <Button Content="Add PLC Connection" HorizontalAlignment="Right" Margin="0,12,12,0" Name="cmdAddPLCConnection" Width="134" Click="cmdAddConnection_Click" Height="25" VerticalAlignment="Top" />
+        <Button Content="Add TCP/IP Connection" HorizontalAlignment="Right" Margin="0,43,12,0" Width="134" Height="25" VerticalAlignment="Top" Name="cmdAddTCPIPConnection" Click="cmdAddTCPIPConnection_Click" IsEnabled="False" />
+        <Button Content="Remove" HorizontalAlignment="Right" Margin="0,0,12,12" Name="cmdRemoveConnection" Width="134" Height="25" VerticalAlignment="Bottom" Click="cmdRemoveConnection_Click" />
+    </Grid>
+</UserControl>

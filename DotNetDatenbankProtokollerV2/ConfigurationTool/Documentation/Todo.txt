@@ -1,0 +1,10 @@
+﻿Postgres Support
+Database Browser Functionality (Fwd, Backwd, SQL) (Auto Add Limit)
+MySQl Support
+MsSQL Support
+FireBird Support
+TCP/IP wie bei BSH
+MDB/ACCDB Support
+ODBC Support
+DBF RW Support
+Oracle ??

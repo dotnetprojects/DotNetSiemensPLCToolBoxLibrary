@@ -1,0 +1,42 @@
+﻿Versionen noch angeben!
+
+
+Propertygrid:
+http://wpg.codeplex.com (Ms-PL)
+
+For CSV Parsing: (3.7.2)
+http://www.codeproject.com/KB/database/CsvReader.aspx (MIT)
+
+For Excel File writing: (2011-04-14) (xls)
+http://code.google.com/p/excellibrary/ (LGPL) //Has a Bug in Excel 2010 with to small files (#60)
+
+For Excel File writing: (xlsx)
+#http://epplus.codeplex.com/ (GPL)
+#http://www.codeproject.com/KB/office/excelxmllibrary.aspx (CPOL)
+#http://www.chrislaforetsoftware.com/products.html (LGPL)
+
+For Communication:
+http://libnodave.sourceforge.net/ (LGPL)
+
+For Communication and Step7 File Access
+http://siemensplctoolboxlib.codeplex.com/ (LGPL)
+
+For postgres: (2.0.11.91)
+http://npgsql.projects.postgresql.org/ (Completely Open)
+
+For sqlite: (1.0.66.0) 
+http://sqlite.phxsoftware.com/ (100% free)
+
+For mysql: (6.3.6)
+#http://www.mysql.de/downloads/connector/net/
+
+For Firebird: (2.6.0.0)
+http://prdownloads.sourceforge.net/firebird/FirebirdClient-2.0.1.exe?download (LGPL)
+
+
+
+
+DB2 Support???
+
+Oracle Support???
+http://www.oracle.com/technetwork/topics/dotnet/index-085163.html

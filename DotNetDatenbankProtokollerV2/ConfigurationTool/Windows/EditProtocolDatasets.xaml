@@ -1,0 +1,229 @@
+﻿<UserControl x:Class="DotNetSimaticDatabaseProtokollerConfigurationTool.Windows.EditProtocolDatasets"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:System="clr-namespace:System;assembly=mscorlib" 
+             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary" 
+             xmlns:Datasets="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;assembly=JFK-ProtokollerLibrary" 
+             xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary" 
+             xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
+             xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
+             mc:Ignorable="d" 
+             d:DesignHeight="426" d:DesignWidth="765" Name="myControl">
+    
+    <UserControl.Resources>
+        <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
+        <WPF1:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
+
+        <WPF1:IntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0"></WPF1:IntToVisibilityConverter>
+        <WPF1:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1"></WPF1:IntToVisibilityConverter>
+        
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="dtrigger">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Datasets:DatasetTriggerType"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="tagdatatype">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="DataTypes:TagDataType"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
+    <Grid Visibility="Visible">
+        
+        <DataGrid AutoGenerateColumns="False" Margin="12,10,0,45" Name="grdDatasets" ItemsSource="{Binding Datasets, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" HorizontalAlignment="Left" Width="159">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Name" Width="*" IsReadOnly="True" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                
+            </DataGrid.Columns>
+        </DataGrid>       
+
+        <DataGrid IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
+                  ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}"
+                  AutoGenerateColumns="False" Margin="184,214,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"></EventSetter>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Database-Field" Width="Auto" IsReadOnly="False" SortMemberPath="DatabaseField">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseField}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding DatabaseField, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Database-Fieldtype" Width="Auto" IsReadOnly="False" SortMemberPath="DatabaseFieldType">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseFieldType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=GetGrdDatsetsObject.SelectedItem.Storage.DatabaseFieldTypes}" 
+                                      SelectedItem="{Binding DatabaseFieldType}"
+                                      VerticalAlignment="Top" HorizontalAlignment="Stretch" Padding="0" Margin="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="3,0,0,0" Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>                                    
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Database-Fieldsize" Width="Auto" IsReadOnly="False" SortMemberPath="DatabaseFieldSize">                    
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseFieldSize}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding DatabaseFieldSize, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="PLC-Connection" Width="Auto" IsReadOnly="False" SortMemberPath="Connection">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Connection.Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" 
+                                      SelectedItem="{Binding Connection, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Stretch" Padding="0" Margin="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="3,0,0,0" Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                           
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="PLC-Value" Width="Auto" IsReadOnly="False" SortMemberPath="PLCTag.S7FormatAddress">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.S7FormatAddress}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <Button DockPanel.Dock="Right" Content="P" HorizontalAlignment="Left" Name="cmdSelectBitFromProjectInDataRowsList" Click="cmdSelectBitFromProjectInDataRowsList_Click" />
+                                <Button DockPanel.Dock="Right" Content="..." HorizontalAlignment="Left" Name="cmdEditBitInDataRowsList" Click="cmdEditBitInDataRowsList_Click" />
+                                <TextBox Margin="0" Padding="0" Text="{Binding PLCTag.S7FormatAddress, Mode=TwoWay}" />
+                            </DockPanel>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="PLC-Value Type" Width="Auto" IsReadOnly="False" SortMemberPath="PLCTag.LibNoDaveDataType">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.LibNoDaveDataType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={StaticResource tagdatatype}}" 
+                                      SelectedItem="{Binding PLCTag.LibNoDaveDataType}"
+                                      VerticalAlignment="Top" HorizontalAlignment="Stretch" Padding="0" Margin="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="3,0,0,0" Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>           
+        </DataGrid>
+        
+        <Button IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
+                Content="Add" Margin="183,185,0,0" Name="cmdAddDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdAddDatasetRow_Click" />
+        <Button IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
+                Content="Remove" Margin="247,185,0,0" Name="cmdRemoveDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdRemoveDatasetRow_Click" />
+        <Label IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Content="Trigger-Type" HorizontalAlignment="Left" Margin="183,76,0,0" Width="91" Height="26" VerticalAlignment="Top" Padding="0" VerticalContentAlignment="Center" />
+        <ComboBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
+                  ItemsSource="{Binding Source={StaticResource dtrigger}}"
+                  SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Trigger}"
+                  Height="26" HorizontalAlignment="Left" Margin="266,76,0,0" VerticalAlignment="Top" Width="308" SelectedIndex="1" VerticalContentAlignment="Center" Name="cmbTriggerType">
+        </ComboBox>
+
+        <GroupBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Header="Tags-Handshake-Trigger" Height="73" Margin="184,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="443" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv1Visible}}">
+            <Grid>
+                <Label HorizontalAlignment="Left" Width="50" Height="19" VerticalAlignment="Top" Margin="1,3,0,0" Padding="1">Read Bit:</Label>
+                <TextBox Height="19" BorderThickness="1" BorderBrush="Black" Padding="0" Margin="57,3,0,0" HorizontalAlignment="Left" Width="141" VerticalAlignment="Top" VerticalContentAlignment="Center" 
+                         Text="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerReadBit, Converter={StaticResource myStringToPLCValueBoolConverter}}" />
+                <Button Content="..." HorizontalAlignment="Left" Margin="202,3,0,0" Width="28" Height="19" VerticalAlignment="Top" Name="cmdEditReadBit" Click="cmdEditReadBit_Click" />
+                <Button Content="P" HorizontalAlignment="Left" Margin="236,3,0,0" Width="28" Height="19" VerticalAlignment="Top" Name="cmdSelectReadBitFromProject" Click="cmdSelectReadBitFromProject_Click" />
+
+                <Label HorizontalAlignment="Left" Width="50" Height="19" VerticalAlignment="Top" Margin="1,25,0,0" Padding="1" Content="Quitt Bit:"></Label>
+                <TextBox Height="19" BorderThickness="1" BorderBrush="Black" Padding="0" Margin="57,25,0,0" HorizontalAlignment="Left" Width="141" VerticalAlignment="Top" VerticalContentAlignment="Center" 
+                         Text="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerQuittBit, Converter={StaticResource myStringToPLCValueBoolConverter}}" />
+                <Button Content="..." HorizontalAlignment="Left" Margin="202,25,0,0" Width="28" Height="19" VerticalAlignment="Top" Name="cmdEditQuittBit" Click="cmdEditQuittBit_Click" />
+                <Button Content="P" HorizontalAlignment="Left" Margin="236,25,0,0" Width="28" Height="19" VerticalAlignment="Top" Name="cmdSelectQuitBitFromProject" Click="cmdSelectQuitBitFromProject_Click" />
+                <Rectangle Height="270" HorizontalAlignment="Left" Margin="-6,-112,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="0" />
+                <Label HorizontalAlignment="Left" Width="114" Height="19" VerticalAlignment="Top" Margin="283,3,0,0" Padding="1" Content="Trigger Connection:"></Label>
+
+                <ComboBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerConnection}" Height="23" HorizontalAlignment="Left" Margin="311,20,0,0" Name="cmbTriggerConnection" VerticalAlignment="Top" Width="114" VerticalContentAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Header="Time-Trigger" Height="73" Margin="184,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="285" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv0Visible}}">
+            <Grid>
+                <Label HorizontalAlignment="Left" Width="109" Height="19" VerticalAlignment="Top" Margin="1,3,0,0" Padding="1" Content="Trigger Interval:"></Label>
+                <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="145,18,0,0" Name="textBox1" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerTimeSpan}" VerticalAlignment="Top" Width="122" />
+                <Label Content="(hh:mm:ss.ms)" Height="19" HorizontalAlignment="Left" Margin="16,25,0,0" Padding="1" VerticalAlignment="Top" Width="94" />
+            </Grid>
+        </GroupBox>
+
+        <TextBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
+                 Text="{Binding ElementName=grdDatasets, Path=SelectedItem.Name}"
+                 Height="26" HorizontalAlignment="Left" Margin="266,12,0,0" VerticalAlignment="Top" Width="179" BorderBrush="Black" Name="txtTableName" KeyUp="txt_Enter_ValueUpdater" />
+        <Label IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Content="Table (Name)" Height="26" HorizontalAlignment="Left" Margin="183,12,0,0" Padding="0" VerticalAlignment="Top" Width="83" VerticalContentAlignment="Center" />
+        <Label IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Content="Storage" Height="26" HorizontalAlignment="Left" Margin="184,44,0,0" Padding="0" VerticalAlignment="Top" Width="55" VerticalContentAlignment="Center" />
+        <ComboBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
+                  ItemsSource="{Binding Storages, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" 
+                  SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Storage}"
+                  Height="26" HorizontalAlignment="Left" Margin="266,44,0,0" Name="cmbStorage" VerticalAlignment="Top" Width="179" VerticalContentAlignment="Center">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>                             
+        </ComboBox>
+        <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="12,0,0,12" Name="cmdAddDataset" VerticalAlignment="Bottom" Width="53" Click="cmdAddDataset_Click" />
+        <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="118,0,0,12" Name="cmdRemoveDataset" VerticalAlignment="Bottom" Width="53" Click="cmdRemoveDataset_Click" />
+        <Rectangle HorizontalAlignment="Left" Margin="176,5,0,5" Name="rectangle2" Stroke="Black" Width="2" Fill="Black" />
+    </Grid>
+</UserControl>

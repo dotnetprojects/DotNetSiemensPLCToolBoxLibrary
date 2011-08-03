@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.ServiceProcess;
+using System.Text;
+using DotNetSimaticDatabaseProtokollerLibrary;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
+using DotNetSimaticDatabaseProtokollerLibrary.Protocolling;
+using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
+
+namespace DotNetSimaticDatabaseProtokollerService
+{
+    public partial class ProtokollerDatenbankService : ServiceBase
+    {
+        private ProtokollerInstance myInstance = null;
+
+        public ProtokollerDatenbankService()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnStart(string[] args)
+        {
+            try
+            {
+                ProtokollerConfiguration.Load(false);
+                myInstance = new ProtokollerInstance(ProtokollerConfiguration.ActualConfigInstance);
+                myInstance.Start();
+            }
+            catch (Exception ex)
+            {
+                Logging.LogText("Exception occured! " + ex.Message, Logging.LogLevel.Error);
+            }
+        }
+
+        protected override void OnStop()
+        {
+            myInstance.Dispose();
+            myInstance = null;
+        }
+    }
+}

@@ -621,7 +621,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 
                 fdr.user = (ushort) connection.ConnectionNumber;
                 fdr.subsystem = 64;
-                fdr.opcode = 6;
+                fdr.opcode = 6;  
                 fdr.response = 255;
                 fdr.fill_length_1 = (byte) pdubytes.Length;
                 fdr.seg_length_1 = (byte) pdubytes.Length;
@@ -671,9 +671,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
                 
                 fdr.user = (ushort)connection.ConnectionNumber;
                 fdr.subsystem = 64;
-                fdr.opcode = 7;
-                fdr.response = 3;
-
+                fdr.opcode = 7; 
+                
                 fdr.seg_length_1 = 480;
                 fdr.response = 16642;
                 
