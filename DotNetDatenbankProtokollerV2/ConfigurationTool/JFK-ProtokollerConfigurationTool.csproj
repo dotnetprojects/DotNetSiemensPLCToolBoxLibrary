@@ -54,8 +54,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPG">
-      <HintPath>..\..\wpg\WPG\bin\Debug\WPG.dll</HintPath>
+    <Reference Include="WPG, Version=2.0.4085.23144, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AdditionalDlls\WPG.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
