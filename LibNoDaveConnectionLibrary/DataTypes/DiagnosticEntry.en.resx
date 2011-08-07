@@ -1,0 +1,1590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ID_0x113A" xml:space="preserve">
+    <value>Starting request for Weckalarm-OB with Specialtreatment (only S7-300)</value>
+  </data>
+  <data name="ID_0x1155" xml:space="preserve">
+    <value>Statusalarm at PROFIBUS DP</value>
+  </data>
+  <data name="ID_0x1156" xml:space="preserve">
+    <value>Update-Alarm at PROFIBUS DP</value>
+  </data>
+  <data name="ID_0x1157" xml:space="preserve">
+    <value>Manufacture Alarm at PROFIBUS DP</value>
+  </data>
+  <data name="ID_0x1158" xml:space="preserve">
+    <value>Statusalarm at PROFINET IO</value>
+  </data>
+  <data name="ID_0x1159" xml:space="preserve">
+    <value>Update-Alarm at PROFINET IO</value>
+  </data>
+  <data name="ID_0x115A" xml:space="preserve">
+    <value>Manufacture Alarm at PROFINET IO</value>
+  </data>
+  <data name="ID_0x115B" xml:space="preserve">
+    <value>IO: Profile Specific Alarm</value>
+  </data>
+  <data name="ID_0x116A" xml:space="preserve">
+    <value>Technology synchronous alarm</value>
+  </data>
+  <data name="ID_0x1381" xml:space="preserve">
+    <value>Request for manual complete restart</value>
+  </data>
+  <data name="ID_0x1382" xml:space="preserve">
+    <value>Request for automatic complete restart</value>
+  </data>
+  <data name="ID_0x1383" xml:space="preserve">
+    <value>Request for manual restart</value>
+  </data>
+  <data name="ID_0x1384" xml:space="preserve">
+    <value>Request for automatic restart</value>
+  </data>
+  <data name="ID_0x1385" xml:space="preserve">
+    <value>Request for manual cold restart</value>
+  </data>
+  <data name="ID_0x1386" xml:space="preserve">
+    <value>Request for automatic cold restart</value>
+  </data>
+  <data name="ID_0x1387" xml:space="preserve">
+    <value>Master CPU: request for manual cold restart</value>
+  </data>
+  <data name="ID_0x1388" xml:space="preserve">
+    <value>Master CPU: request for automatic cold restart</value>
+  </data>
+  <data name="ID_0x138A" xml:space="preserve">
+    <value>Master CPU: request for manual warm restart</value>
+  </data>
+  <data name="ID_0x138B" xml:space="preserve">
+    <value>Master CPU: request for automatic warm restart</value>
+  </data>
+  <data name="ID_0x138C" xml:space="preserve">
+    <value>Standby CPU: request for manual hot restart</value>
+  </data>
+  <data name="ID_0x138D" xml:space="preserve">
+    <value>Standby CPU: request for automatic hot restart</value>
+  </data>
+  <data name="ID_0x2521" xml:space="preserve">
+    <value>BCD conversion error</value>
+  </data>
+  <data name="ID_0x2522" xml:space="preserve">
+    <value>Area length error when reading</value>
+  </data>
+  <data name="ID_0x2523" xml:space="preserve">
+    <value>Area length error when writing</value>
+  </data>
+  <data name="ID_0x2524" xml:space="preserve">
+    <value>Area error when reading</value>
+  </data>
+  <data name="ID_0x2525" xml:space="preserve">
+    <value>Area error when writing</value>
+  </data>
+  <data name="ID_0x2526" xml:space="preserve">
+    <value>Timer number error</value>
+  </data>
+  <data name="ID_0x2527" xml:space="preserve">
+    <value>Counter number error</value>
+  </data>
+  <data name="ID_0x2528" xml:space="preserve">
+    <value>Alignment error when reading</value>
+  </data>
+  <data name="ID_0x2529" xml:space="preserve">
+    <value>Alignment error when writing</value>
+  </data>
+  <data name="ID_0x2530" xml:space="preserve">
+    <value>Write error when accessing the DB</value>
+  </data>
+  <data name="ID_0x2531" xml:space="preserve">
+    <value>Write error when accessing the DI</value>
+  </data>
+  <data name="ID_0x2532" xml:space="preserve">
+    <value>Block number error when opening a DB</value>
+  </data>
+  <data name="ID_0x2533" xml:space="preserve">
+    <value>Block number error when opening a DI</value>
+  </data>
+  <data name="ID_0x2534" xml:space="preserve">
+    <value>Block number error when calling an FC</value>
+  </data>
+  <data name="ID_0x2535" xml:space="preserve">
+    <value>Block number error when calling an FB</value>
+  </data>
+  <data name="ID_0x253A" xml:space="preserve">
+    <value>DB not loaded</value>
+  </data>
+  <data name="ID_0x253C" xml:space="preserve">
+    <value>FC not loaded</value>
+  </data>
+  <data name="ID_0x253D" xml:space="preserve">
+    <value>SFC not loaded</value>
+  </data>
+  <data name="ID_0x253E" xml:space="preserve">
+    <value>FB not loaded</value>
+  </data>
+  <data name="ID_0x253F" xml:space="preserve">
+    <value>SFB not loaded</value>
+  </data>
+  <data name="ID_0x2942" xml:space="preserve">
+    <value>I/O access error, reading</value>
+  </data>
+  <data name="ID_0x2943" xml:space="preserve">
+    <value>I/O access error, writing</value>
+  </data>
+  <data name="ID_0x3267" xml:space="preserve">
+    <value>End of module reconfiguration</value>
+  </data>
+  <data name="ID_0x3367" xml:space="preserve">
+    <value>Start of module reconfiguration</value>
+  </data>
+  <data name="ID_0x34A4" xml:space="preserve">
+    <value>PROFINET Interface DB can be addressed again</value>
+  </data>
+  <data name="ID_0x3501" xml:space="preserve">
+    <value>Watchdog monitoring (cycle time exceeded)</value>
+  </data>
+  <data name="ID_0x3502" xml:space="preserve">
+    <value>User interface (OB or FRB) request error</value>
+  </data>
+  <data name="ID_0x3503" xml:space="preserve">
+    <value>Zu lange Verzögerung der Bearbeitung einer Prioritätsklasse</value>
+  </data>
+  <data name="ID_0x3505" xml:space="preserve">
+    <value>Time-of-day interrupt(s) skipped due to new clock setting</value>
+  </data>
+  <data name="ID_0x3506" xml:space="preserve">
+    <value>Time-of-day interrupt(s) skipped when changing to RUN after HOLD</value>
+  </data>
+  <data name="ID_0x3507" xml:space="preserve">
+    <value>Multiple OB request errors caused start information buffer overflow</value>
+  </data>
+  <data name="ID_0x3508" xml:space="preserve">
+    <value>Synchronous cycle interrupt-timing error</value>
+  </data>
+  <data name="ID_0x3509" xml:space="preserve">
+    <value>Interrupt loss due to excess interrupt load</value>
+  </data>
+  <data name="ID_0x350A" xml:space="preserve">
+    <value>Resume RUN mode after CiR</value>
+  </data>
+  <data name="ID_0x350B" xml:space="preserve">
+    <value>Technology synchronization interrupt - timing error</value>
+  </data>
+  <data name="ID_0x3571" xml:space="preserve">
+    <value>Nesting depth too high in nesting levels</value>
+  </data>
+  <data name="ID_0x3572" xml:space="preserve">
+    <value>Nesting depth for Master Control Relays too high</value>
+  </data>
+  <data name="ID_0x3573" xml:space="preserve">
+    <value>Nesting depth too high after synchronous errors</value>
+  </data>
+  <data name="ID_0x3574" xml:space="preserve">
+    <value>Nesting depth for block calls (U stack) too high</value>
+  </data>
+  <data name="ID_0x3575" xml:space="preserve">
+    <value>Nesting depth for block calls (B stack) too high</value>
+  </data>
+  <data name="ID_0x3576" xml:space="preserve">
+    <value>Local data allocation error</value>
+  </data>
+  <data name="ID_0x3578" xml:space="preserve">
+    <value>Unknown instruction</value>
+  </data>
+  <data name="ID_0x357A" xml:space="preserve">
+    <value>Jump instruction to target outside of the block</value>
+  </data>
+  <data name="ID_0x3582" xml:space="preserve">
+    <value>Memory error detected and corrected by operating system</value>
+  </data>
+  <data name="ID_0x3583" xml:space="preserve">
+    <value>Accumulation of detected and corrected memo errors</value>
+  </data>
+  <data name="ID_0x3585" xml:space="preserve">
+    <value>Error in the PC operating system (only with Win AC controllers)</value>
+  </data>
+  <data name="ID_0x3587" xml:space="preserve">
+    <value>Multi-bit memory error detected and corrected</value>
+  </data>
+  <data name="ID_0x35A1" xml:space="preserve">
+    <value>User interface (OB or FRB) not found</value>
+  </data>
+  <data name="ID_0x35A2" xml:space="preserve">
+    <value>OB not loaded (started by SFC or operating system due to configuration)</value>
+  </data>
+  <data name="ID_0x35A3" xml:space="preserve">
+    <value>Error when operating system accesses a block</value>
+  </data>
+  <data name="ID_0x35A4" xml:space="preserve">
+    <value>PROFINET Interface DB cannot be addressed</value>
+  </data>
+  <data name="ID_0x35D2" xml:space="preserve">
+    <value>Diagnostic entries cannot be sent at present</value>
+  </data>
+  <data name="ID_0x35D3" xml:space="preserve">
+    <value>Synchronization frames cannot be sent</value>
+  </data>
+  <data name="ID_0x35D4" xml:space="preserve">
+    <value>Illegal time jump resulting from synchronization</value>
+  </data>
+  <data name="ID_0x35D5" xml:space="preserve">
+    <value>Error adopting the synchronization time</value>
+  </data>
+  <data name="ID_0x35E1" xml:space="preserve">
+    <value>Incorrect frame ID in GD</value>
+  </data>
+  <data name="ID_0x35E2" xml:space="preserve">
+    <value>GD packet status cannot be entered in DB</value>
+  </data>
+  <data name="ID_0x35E3" xml:space="preserve">
+    <value>Frame length error in GD</value>
+  </data>
+  <data name="ID_0x35E4" xml:space="preserve">
+    <value>Illegal GD packet number received</value>
+  </data>
+  <data name="ID_0x35E5" xml:space="preserve">
+    <value>Error accessing DB in CFB</value>
+  </data>
+  <data name="ID_0x35E6" xml:space="preserve">
+    <value>GD total status cannot be entered in DB</value>
+  </data>
+  <data name="ID_0x3821" xml:space="preserve">
+    <value>BATTF: at least one backup battery of the central rack exhausted/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3822" xml:space="preserve">
+    <value>BAF: no backup voltage on central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3823" xml:space="preserve">
+    <value>24 volt supply failure on central rack / problem eliminated</value>
+  </data>
+  <data name="ID_0x3825" xml:space="preserve">
+    <value>BATTF: failure on at least one backup battery of the redundant central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3826" xml:space="preserve">
+    <value>BAF: failure of backup voltage on redundant central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3827" xml:space="preserve">
+    <value>24 volt supply failure on redundant central rack / problem eliminated</value>
+  </data>
+  <data name="ID_0x3831" xml:space="preserve">
+    <value>BATTF: at least one backup battery on at least one expansion rack exhausted/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3832" xml:space="preserve">
+    <value>BAF: no backup voltage on at least one of the expansion racks/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3833" xml:space="preserve">
+    <value>24 volt supply failure on at least one expansion rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3842" xml:space="preserve">
+    <value>Module OK</value>
+  </data>
+  <data name="ID_0x3854" xml:space="preserve">
+    <value>PROFINET IO interface submodule/submodule and matches the configured interface submodule/submodule</value>
+  </data>
+  <data name="ID_0x3855" xml:space="preserve">
+    <value>PROFINET IO interface submodule/submodule inserted, but does not match the configured interface submodule/submodule</value>
+  </data>
+  <data name="ID_0x3856" xml:space="preserve">
+    <value>PROFINET IO interface submodule/submodule inserted, but error in module parameter assignment</value>
+  </data>
+  <data name="ID_0x3858" xml:space="preserve">
+    <value>PROFINET IO interface submodule access error corrected</value>
+  </data>
+  <data name="ID_0x3861" xml:space="preserve">
+    <value>Module inserted, module type OK</value>
+  </data>
+  <data name="ID_0x3863" xml:space="preserve">
+    <value>Module plugged in, but wrong module type</value>
+  </data>
+  <data name="ID_0x3864" xml:space="preserve">
+    <value>Module plugged in, but causing problem (type ID unreadable)</value>
+  </data>
+  <data name="ID_0x3865" xml:space="preserve">
+    <value>Module plugged in, but error in module parameter assignment</value>
+  </data>
+  <data name="ID_0x3866" xml:space="preserve">
+    <value>Module can be addressed again, load voltage error removed</value>
+  </data>
+  <data name="ID_0x3881" xml:space="preserve">
+    <value>Interface error leaving state</value>
+  </data>
+  <data name="ID_0x3884" xml:space="preserve">
+    <value>???!!! Schnittstellenmodul gesteckt - Identification of module or submodule/interface module plugged</value>
+  </data>
+  <data name="ID_0x38B3" xml:space="preserve">
+    <value>I/O access error when updating the process image input table</value>
+  </data>
+  <data name="ID_0x38B4" xml:space="preserve">
+    <value>I/O access error when transferring the process image to the output modules</value>
+  </data>
+  <data name="ID_0x38C1" xml:space="preserve">
+    <value>Expansion rack failure (1 to 21), leaving state</value>
+  </data>
+  <data name="ID_0x38C2" xml:space="preserve">
+    <value>Expansion rack operational again but mismatch between setpoint and actual configuration</value>
+  </data>
+  <data name="ID_0x38C4" xml:space="preserve">
+    <value>Distributed I/Os: station failure, leaving state</value>
+  </data>
+  <data name="ID_0x38C5" xml:space="preserve">
+    <value>Distributed I/Os: station fault, leaving state</value>
+  </data>
+  <data name="ID_0x38C6" xml:space="preserve">
+    <value>Expansion rack operational again, but error(s) in module parameter assignment</value>
+  </data>
+  <data name="ID_0x38C7" xml:space="preserve">
+    <value>Distributed I/Os: station operational again, but error(s) in module parameter assignment</value>
+  </data>
+  <data name="ID_0x38C8" xml:space="preserve">
+    <value>DP: station operational again, but mismatch between setpoint and actual configuration</value>
+  </data>
+  <data name="ID_0x38CB" xml:space="preserve">
+    <value>PROFINET IO station operational again</value>
+  </data>
+  <data name="ID_0x38CC" xml:space="preserve">
+    <value>PROFINET IO station return with problem</value>
+  </data>
+  <data name="ID_0x3917" xml:space="preserve">
+    <value>24 volt supply failure on redundant central rack / problem eliminated</value>
+  </data>
+  <data name="ID_0x3921" xml:space="preserve">
+    <value>BATTF: at least one backup battery of the central rack exhausted/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3922" xml:space="preserve">
+    <value>BAF: no backup voltage on central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3923" xml:space="preserve">
+    <value>24 volt supply failure on central rack / problem eliminated</value>
+  </data>
+  <data name="ID_0x3925" xml:space="preserve">
+    <value>BATTF: failure on at least one backup battery of the redundant central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3926" xml:space="preserve">
+    <value>BAF: failure of backup voltage on redundant central rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3927" xml:space="preserve">
+    <value>24 volt supply failure on redundant central rack / problem eliminated</value>
+  </data>
+  <data name="ID_0x3931" xml:space="preserve">
+    <value>BATTF: at least one backup battery on at least one expansion rack exhausted/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3932" xml:space="preserve">
+    <value>BAF: no backup voltage on at least one of the expansion racks/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3933" xml:space="preserve">
+    <value>24 volt supply failure on at least one expansion rack/ problem eliminated</value>
+  </data>
+  <data name="ID_0x3942" xml:space="preserve">
+    <value>Module fault present</value>
+  </data>
+  <data name="ID_0x3951" xml:space="preserve">
+    <value>PROFINET IO submodule removed</value>
+  </data>
+  <data name="ID_0x3954" xml:space="preserve">
+    <value>PROFINET IO interface submodule/submodule removed</value>
+  </data>
+  <data name="ID_0x3961" xml:space="preserve">
+    <value>Module removed, cannot be addressed</value>
+  </data>
+  <data name="ID_0x3966" xml:space="preserve">
+    <value>Module cannot be addressed, load voltage error</value>
+  </data>
+  <data name="ID_0x3968" xml:space="preserve">
+    <value>Module reconfiguration has ended with error</value>
+  </data>
+  <data name="ID_0x3981" xml:space="preserve">
+    <value>Interface error entering state</value>
+  </data>
+  <data name="ID_0x3984" xml:space="preserve">
+    <value>???!!! Schnittstellenmodul gezogen - Identification of module or submodule/interface module removed</value>
+  </data>
+  <data name="ID_0x3986" xml:space="preserve">
+    <value>Performance of an H-Sync link negatively affected</value>
+  </data>
+  <data name="ID_0x39B1" xml:space="preserve">
+    <value>I/O access error when updating the process image input table</value>
+  </data>
+  <data name="ID_0x39B2" xml:space="preserve">
+    <value>I/O access error when transferring the process image to the output modules</value>
+  </data>
+  <data name="ID_0x39B3" xml:space="preserve">
+    <value>I/O access error when updating the process image input table</value>
+  </data>
+  <data name="ID_0x39B4" xml:space="preserve">
+    <value>I/O access error when transferring the process image to the output modules</value>
+  </data>
+  <data name="ID_0x39C1" xml:space="preserve">
+    <value>Expansion rack failure (1 to 21), entering state</value>
+  </data>
+  <data name="ID_0x39C3" xml:space="preserve">
+    <value>Distributed I/Os: master system failure entering state</value>
+  </data>
+  <data name="ID_0x39C4" xml:space="preserve">
+    <value>Distributed I/Os: station failure, entering state</value>
+  </data>
+  <data name="ID_0x39C5" xml:space="preserve">
+    <value>Distributed I/Os: station fault, entering state</value>
+  </data>
+  <data name="ID_0x39CA" xml:space="preserve">
+    <value>PROFINET IO system failure</value>
+  </data>
+  <data name="ID_0x39CB" xml:space="preserve">
+    <value>PROFINET IO station failure</value>
+  </data>
+  <data name="ID_0x39CC" xml:space="preserve">
+    <value>???!!! PROFINET IO-Station gestört</value>
+  </data>
+  <data name="ID_0x39CD" xml:space="preserve">
+    <value>PROFINET IO station operational again, but expected configuration does not match actual configuration</value>
+  </data>
+  <data name="ID_0x39CE" xml:space="preserve">
+    <value>PROFINET IO station operational again, but error(s) in module parameter assignment</value>
+  </data>
+  <data name="ID_0x42F3" xml:space="preserve">
+    <value>Checksum error detected and corrected by the operating system</value>
+  </data>
+  <data name="ID_0x4300" xml:space="preserve">
+    <value>Backed–up power on</value>
+  </data>
+  <data name="ID_0x4301" xml:space="preserve">
+    <value>Mode transition from STOP to STARTUP</value>
+  </data>
+  <data name="ID_0x4302" xml:space="preserve">
+    <value>Mode transition from STARTUP to RUN</value>
+  </data>
+  <data name="ID_0x4303" xml:space="preserve">
+    <value>STOP caused by stop switch being activated</value>
+  </data>
+  <data name="ID_0x4304" xml:space="preserve">
+    <value>STOP caused by PG STOP operation or by SFB20 \STOP\""</value>
+  </data>
+  <data name="ID_0x4305" xml:space="preserve">
+    <value>HOLD: Breakpoint reached</value>
+  </data>
+  <data name="ID_0x4306" xml:space="preserve">
+    <value>HOLD: Breakpoint exited</value>
+  </data>
+  <data name="ID_0x4307" xml:space="preserve">
+    <value>Memory reset started by PG operation</value>
+  </data>
+  <data name="ID_0x4308" xml:space="preserve">
+    <value>Memory reset started by switch setting</value>
+  </data>
+  <data name="ID_0x4309" xml:space="preserve">
+    <value>Memory reset started automatically (power on not backed up)</value>
+  </data>
+  <data name="ID_0x430A" xml:space="preserve">
+    <value>HOLD exited, transition to STOP</value>
+  </data>
+  <data name="ID_0x430D" xml:space="preserve">
+    <value>STOP caused by other CPU in multicomputing</value>
+  </data>
+  <data name="ID_0x430E" xml:space="preserve">
+    <value>Memory reset executed</value>
+  </data>
+  <data name="ID_0x430F" xml:space="preserve">
+    <value>STOP on the module due to STOP on a CPU</value>
+  </data>
+  <data name="ID_0x4318" xml:space="preserve">
+    <value>Start of CiR</value>
+  </data>
+  <data name="ID_0x4319" xml:space="preserve">
+    <value>CiR completed</value>
+  </data>
+  <data name="ID_0x4357" xml:space="preserve">
+    <value>Module watchdog started</value>
+  </data>
+  <data name="ID_0x4358" xml:space="preserve">
+    <value>All modules are ready for operation</value>
+  </data>
+  <data name="ID_0x43B0" xml:space="preserve">
+    <value>Firmware update / backup was successful</value>
+  </data>
+  <data name="ID_0x43B4" xml:space="preserve">
+    <value>Error in firmware fuse</value>
+  </data>
+  <data name="ID_0x43B6" xml:space="preserve">
+    <value>Firmware updates canceled by redundant modules</value>
+  </data>
+  <data name="ID_0x43D0" xml:space="preserve">
+    <value>???!!! 49D0 LINK-UP aborted due to violation of coordination rules</value>
+  </data>
+  <data name="ID_0x43D1" xml:space="preserve">
+    <value>???!!! 49D1 LINK-UP/UPDATE sequence aborted</value>
+  </data>
+  <data name="ID_0x43D3" xml:space="preserve">
+    <value>STOP on standby CPU</value>
+  </data>
+  <data name="ID_0x43D5" xml:space="preserve">
+    <value>???!!! 45D5 LINK-UP rejected due to mismatched CPU memory configuration of the sub-PLC</value>
+  </data>
+  <data name="ID_0x43D6" xml:space="preserve">
+    <value>???!!! 45D6 LINK-UP rejected due to mismatched system program of the sub-PLC</value>
+  </data>
+  <data name="ID_0x43D7" xml:space="preserve">
+    <value>???!!! 49D7 LINK-UP rejected due to change in user program or in configuration</value>
+  </data>
+  <data name="ID_0x43DC" xml:space="preserve">
+    <value>Abort during link-up with switchover</value>
+  </data>
+  <data name="ID_0x43DD" xml:space="preserve">
+    <value>???!!! 45DD LINK-UP rejected due to running test or other online functions</value>
+  </data>
+  <data name="ID_0x43DE" xml:space="preserve">
+    <value>Updating aborted due to monitoring time being exceeded during the n-th attempt, new update attempt initiated</value>
+  </data>
+  <data name="ID_0x43DF" xml:space="preserve">
+    <value>Updating aborted for final time due to monitoring time being exceeded after completing the maximum amount of attempts. User intervention required.</value>
+  </data>
+  <data name="ID_0x43E0" xml:space="preserve">
+    <value>Change from solo mode after link-up</value>
+  </data>
+  <data name="ID_0x43E1" xml:space="preserve">
+    <value>Change from link-up after updating</value>
+  </data>
+  <data name="ID_0x43E2" xml:space="preserve">
+    <value>Change from updating to redundant mode</value>
+  </data>
+  <data name="ID_0x43E3" xml:space="preserve">
+    <value>Master CPU: change from redundant mode to solo mode</value>
+  </data>
+  <data name="ID_0x43E4" xml:space="preserve">
+    <value>Standby CPU: change from redundant mode after error-search mode</value>
+  </data>
+  <data name="ID_0x43E5" xml:space="preserve">
+    <value>Standby CPU: change from error-search mode after link-up or STOP</value>
+  </data>
+  <data name="ID_0x43E6" xml:space="preserve">
+    <value>Link-up aborted on the standby CPU</value>
+  </data>
+  <data name="ID_0x43E7" xml:space="preserve">
+    <value>Updating aborted on the standby CPU</value>
+  </data>
+  <data name="ID_0x43E8" xml:space="preserve">
+    <value>Standby CPU: change from link-up after startup</value>
+  </data>
+  <data name="ID_0x43E9" xml:space="preserve">
+    <value>Standby CPU: change from startup after updating</value>
+  </data>
+  <data name="ID_0x43F1" xml:space="preserve">
+    <value>Reserve-master switchover</value>
+  </data>
+  <data name="ID_0x43F2" xml:space="preserve">
+    <value>Coupling of incompatible H-CPUs blocked by system program</value>
+  </data>
+  <data name="ID_0x43F4" xml:space="preserve">
+    <value>???!!! 42F4 Standby CPU: connection/update via SFC90 is locked in the master CPU</value>
+  </data>
+  <data name="ID_0x4510" xml:space="preserve">
+    <value>STOP violation of the CPU's data range</value>
+  </data>
+  <data name="ID_0x4520" xml:space="preserve">
+    <value>DEFECT: STOP not possible</value>
+  </data>
+  <data name="ID_0x4521" xml:space="preserve">
+    <value>DEFECT: failure of MC5–ASIC</value>
+  </data>
+  <data name="ID_0x4522" xml:space="preserve">
+    <value>DEFECT:  failure of clock chip</value>
+  </data>
+  <data name="ID_0x4523" xml:space="preserve">
+    <value>DEFECT: failure of clock pulse generator</value>
+  </data>
+  <data name="ID_0x4524" xml:space="preserve">
+    <value>DEFECT: failure of timer update function</value>
+  </data>
+  <data name="ID_0x4525" xml:space="preserve">
+    <value>DEFECT: failure of multicomputing synchronization</value>
+  </data>
+  <data name="ID_0x4527" xml:space="preserve">
+    <value>DEFECT: failure of I/O access monitoring</value>
+  </data>
+  <data name="ID_0x4528" xml:space="preserve">
+    <value>DEFECT: failure of scan time monitoring</value>
+  </data>
+  <data name="ID_0x4530" xml:space="preserve">
+    <value>DEFECT: memory test error in internal memory</value>
+  </data>
+  <data name="ID_0x4532" xml:space="preserve">
+    <value>DEFECT: failure of core resources</value>
+  </data>
+  <data name="ID_0x4536" xml:space="preserve">
+    <value>DEFECT: switch defective</value>
+  </data>
+  <data name="ID_0x4540" xml:space="preserve">
+    <value>STOP: Memory expansion of the internal work memory has gaps. First memory expansion too small or missing.</value>
+  </data>
+  <data name="ID_0x4541" xml:space="preserve">
+    <value>STOP caused by priority class system</value>
+  </data>
+  <data name="ID_0x4542" xml:space="preserve">
+    <value>STOP caused by object management system</value>
+  </data>
+  <data name="ID_0x4543" xml:space="preserve">
+    <value>STOP caused by test functions</value>
+  </data>
+  <data name="ID_0x4544" xml:space="preserve">
+    <value>STOP caused by diagnostic system</value>
+  </data>
+  <data name="ID_0x4545" xml:space="preserve">
+    <value>STOP caused by communication system</value>
+  </data>
+  <data name="ID_0x4546" xml:space="preserve">
+    <value>STOP caused by CPU memory management</value>
+  </data>
+  <data name="ID_0x4547" xml:space="preserve">
+    <value>STOP caused by process image management</value>
+  </data>
+  <data name="ID_0x4548" xml:space="preserve">
+    <value>STOP caused by I/O management</value>
+  </data>
+  <data name="ID_0x454A" xml:space="preserve">
+    <value>STOP caused by configuration: an OB deselected with STEP 7 was being loaded into the CPU during STARTUP</value>
+  </data>
+  <data name="ID_0x4550" xml:space="preserve">
+    <value>DEFECTIVE: internal system error </value>
+  </data>
+  <data name="ID_0x4555" xml:space="preserve">
+    <value>No restart possible, monitoring time elapsed</value>
+  </data>
+  <data name="ID_0x4556" xml:space="preserve">
+    <value>STOP: memory reset request from communication system / due to data inconsistency</value>
+  </data>
+  <data name="ID_0x4562" xml:space="preserve">
+    <value>STOP caused by programming error (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x4563" xml:space="preserve">
+    <value>STOP caused by I/O access error (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x4567" xml:space="preserve">
+    <value>STOP caused by H event</value>
+  </data>
+  <data name="ID_0x4568" xml:space="preserve">
+    <value>STOP caused by time error (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x456A" xml:space="preserve">
+    <value>STOP caused by diagnostic interrupt (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x456B" xml:space="preserve">
+    <value>STOP caused by removing/inserting module (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x456C" xml:space="preserve">
+    <value>STOP caused by CPU hardware error (OB not loaded or not possible, or no FRB)STOP</value>
+  </data>
+  <data name="ID_0x456D" xml:space="preserve">
+    <value>STOP caused by program sequence error (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x456E" xml:space="preserve">
+    <value>STOP caused by communication error (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x456F" xml:space="preserve">
+    <value>STOP caused by rack failure OB (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x4570" xml:space="preserve">
+    <value>STOP caused by process interrupt (OB not loaded or not possible)</value>
+  </data>
+  <data name="ID_0x4571" xml:space="preserve">
+    <value>STOP caused by nesting stack error</value>
+  </data>
+  <data name="ID_0x4572" xml:space="preserve">
+    <value>STOP caused by master control relay stack error</value>
+  </data>
+  <data name="ID_0x4573" xml:space="preserve">
+    <value>STOP caused by exceeding the nesting depth for synchronous errors</value>
+  </data>
+  <data name="ID_0x4574" xml:space="preserve">
+    <value>STOP caused by exceeding interrupt stack nesting depth in the priority class stack</value>
+  </data>
+  <data name="ID_0x4575" xml:space="preserve">
+    <value>STOP caused by exceeding block stack nesting depth in the priority class stack</value>
+  </data>
+  <data name="ID_0x4576" xml:space="preserve">
+    <value>STOP caused by error when allocating the local data</value>
+  </data>
+  <data name="ID_0x4578" xml:space="preserve">
+    <value>STOP caused by unknown opcode</value>
+  </data>
+  <data name="ID_0x457A" xml:space="preserve">
+    <value>STOP caused by code length error</value>
+  </data>
+  <data name="ID_0x457B" xml:space="preserve">
+    <value>STOP caused by DB not being loaded on on-board I/Os</value>
+  </data>
+  <data name="ID_0x457D" xml:space="preserve">
+    <value>Reset/clear request because the version of the internal interface to the integrated technology was changed</value>
+  </data>
+  <data name="ID_0x457F" xml:space="preserve">
+    <value>STOP caused by STOP command</value>
+  </data>
+  <data name="ID_0x4580" xml:space="preserve">
+    <value>STOP: back-up buffer contents inconsistent (no transition to RUN)</value>
+  </data>
+  <data name="ID_0x4590" xml:space="preserve">
+    <value>STOP caused by overloading the internal functions</value>
+  </data>
+  <data name="ID_0x4926" xml:space="preserve">
+    <value>DEFECT: failure of the watchdog for I/O access</value>
+  </data>
+  <data name="ID_0x4931" xml:space="preserve">
+    <value>DEFECT: memory test error in memory submodule</value>
+  </data>
+  <data name="ID_0x4933" xml:space="preserve">
+    <value>DEFECT: checksum error</value>
+  </data>
+  <data name="ID_0x4934" xml:space="preserve">
+    <value>DEFECT: memory not available</value>
+  </data>
+  <data name="ID_0x4935" xml:space="preserve">
+    <value>DEFECT: cancelled by watchdog/processor exceptions</value>
+  </data>
+  <data name="ID_0x4949" xml:space="preserve">
+    <value>STOP caused by continuous hardware interrupt</value>
+  </data>
+  <data name="ID_0x494D" xml:space="preserve">
+    <value>STOP caused by I/O error</value>
+  </data>
+  <data name="ID_0x494E" xml:space="preserve">
+    <value>STOP caused by power failure</value>
+  </data>
+  <data name="ID_0x494F" xml:space="preserve">
+    <value>STOP caused by configuration error</value>
+  </data>
+  <data name="ID_0x4959" xml:space="preserve">
+    <value>One or more modules not ready for operation</value>
+  </data>
+  <data name="ID_0x497C" xml:space="preserve">
+    <value>STOP caused by integrated technology</value>
+  </data>
+  <data name="ID_0x49A0" xml:space="preserve">
+    <value>STOP caused by parameter assignment error or non-permissible variation of setpoint and actual extension: Start-up blocked.</value>
+  </data>
+  <data name="ID_0x49A1" xml:space="preserve">
+    <value>STOP caused by parameter assignment error: memory reset request</value>
+  </data>
+  <data name="ID_0x49A2" xml:space="preserve">
+    <value>STOP caused by error in parameter modification: startup disabled</value>
+  </data>
+  <data name="ID_0x49A3" xml:space="preserve">
+    <value>STOP caused by error in parameter modification: memory reset request</value>
+  </data>
+  <data name="ID_0x49A4" xml:space="preserve">
+    <value>STOP: inconsistency in configuration data</value>
+  </data>
+  <data name="ID_0x49A5" xml:space="preserve">
+    <value>STOP: distributed I/Os: inconsistency in the loaded configuration information</value>
+  </data>
+  <data name="ID_0x49A6" xml:space="preserve">
+    <value>STOP: distributed I/Os: invalid configuration information</value>
+  </data>
+  <data name="ID_0x49A7" xml:space="preserve">
+    <value>STOP: distributed I/Os: no configuration information</value>
+  </data>
+  <data name="ID_0x49A8" xml:space="preserve">
+    <value>STOP: error indicated by the interface module for the distributed I/Os</value>
+  </data>
+  <data name="ID_0x49B1" xml:space="preserve">
+    <value>Firmware update data incorrect</value>
+  </data>
+  <data name="ID_0x49B2" xml:space="preserve">
+    <value>Firmware update: hardware version does not match firmware</value>
+  </data>
+  <data name="ID_0x49B3" xml:space="preserve">
+    <value>Firmware update: module type does not match firmware</value>
+  </data>
+  <data name="ID_0x49D2" xml:space="preserve">
+    <value> Standby CPU changed to STOP due to STOP on the master CPU during link-up</value>
+  </data>
+  <data name="ID_0x49D4" xml:space="preserve">
+    <value>STOP eines Masters, da Partner-CPU auch Master ist (Kopplungsfehler)</value>
+  </data>
+  <data name="ID_0x49D8" xml:space="preserve">
+    <value>???!!! 45D8 DEFECTIVE: hardware fault detected due to other error</value>
+  </data>
+  <data name="ID_0x49D9" xml:space="preserve">
+    <value>???!!! 45D9 STOP due to SYNC module error</value>
+  </data>
+  <data name="ID_0x49DA" xml:space="preserve">
+    <value>???!!! 45DA STOP due to synchronization error between H CPUs</value>
+  </data>
+  <data name="ID_0x510F" xml:space="preserve">
+    <value>A problem as occurred with WinLC. This problem has caused the CPU to go into STOP mode or has caused a fault in the CPU.</value>
+  </data>
+  <data name="ID_0x530D" xml:space="preserve">
+    <value>New startup information in the STOP mode</value>
+  </data>
+  <data name="ID_0x5311" xml:space="preserve">
+    <value>Startup despite Not Ready message from module(s)</value>
+  </data>
+  <data name="ID_0x5371" xml:space="preserve">
+    <value>Distributed I/Os: end of the synchronization with a DP master</value>
+  </data>
+  <data name="ID_0x5380" xml:space="preserve">
+    <value>Diagnostic buffer entries of interrupt and asynchronous errors disabled</value>
+  </data>
+  <data name="ID_0x5395" xml:space="preserve">
+    <value>Distributed I/Os: reset of a DP master</value>
+  </data>
+  <data name="ID_0x53A2" xml:space="preserve">
+    <value>Download of technology firmware successful</value>
+  </data>
+  <data name="ID_0x53A4" xml:space="preserve">
+    <value>Download of technology DB not successful</value>
+  </data>
+  <data name="ID_0x53FF" xml:space="preserve">
+    <value>Reset to factory setting</value>
+  </data>
+  <data name="ID_0x5445" xml:space="preserve">
+    <value>???!!! End of System reconfiguration in RUN mode</value>
+  </data>
+  <data name="ID_0x5481" xml:space="preserve">
+    <value>All licenses for runtime software are complete again.</value>
+  </data>
+  <data name="ID_0x5498" xml:space="preserve">
+    <value>No more inconsistency with DP master systems due to CiR</value>
+  </data>
+  <data name="ID_0x5545" xml:space="preserve">
+    <value>Start of System reconfiguration in RUN mode</value>
+  </data>
+  <data name="ID_0x5581" xml:space="preserve">
+    <value>One or several licenses for runtime software are missing.</value>
+  </data>
+  <data name="ID_0x558A" xml:space="preserve">
+    <value>Difference between the MLFB of the configured and inserted CPU</value>
+  </data>
+  <data name="ID_0x558B" xml:space="preserve">
+    <value>Difference in the firmware version of the configured and inserted CPU</value>
+  </data>
+  <data name="ID_0x5598" xml:space="preserve">
+    <value>Start of possible inconsistency with DP master systems due to CiR</value>
+  </data>
+  <data name="ID_0x55A5" xml:space="preserve">
+    <value>Version conflict: internal interface with integrated technology</value>
+  </data>
+  <data name="ID_0x55A6" xml:space="preserve">
+    <value>The maximum number of technology objects has been exceeded.</value>
+  </data>
+  <data name="ID_0x55A7" xml:space="preserve">
+    <value>A technology DB of this type is already present.</value>
+  </data>
+  <data name="ID_0x5879" xml:space="preserve">
+    <value>Diagnostic message from DP interface: EXTF LED on/off</value>
+  </data>
+  <data name="ID_0x5961" xml:space="preserve">
+    <value>Parameter assignment error</value>
+  </data>
+  <data name="ID_0x5962" xml:space="preserve">
+    <value>Parameter assignment error preventing startup</value>
+  </data>
+  <data name="ID_0x5963" xml:space="preserve">
+    <value>Parameter assignment error with memory reset request</value>
+  </data>
+  <data name="ID_0x5966" xml:space="preserve">
+    <value>Parameter assignment error when switching</value>
+  </data>
+  <data name="ID_0x5969" xml:space="preserve">
+    <value>Parameter assignment error with startup blocked</value>
+  </data>
+  <data name="ID_0x596A" xml:space="preserve">
+    <value>PROFINET IO: IP address of an IO device already present</value>
+  </data>
+  <data name="ID_0x596B" xml:space="preserve">
+    <value>IP address of an Ethernet interface already exists</value>
+  </data>
+  <data name="ID_0x596C" xml:space="preserve">
+    <value>Name of an Ethernet interface already exists</value>
+  </data>
+  <data name="ID_0x596D" xml:space="preserve">
+    <value>The existing network configuration does not mach the system requirements or configuration.</value>
+  </data>
+  <data name="ID_0x5979" xml:space="preserve">
+    <value>Diagnostic message from DP interface: EXTF LED on/off</value>
+  </data>
+  <data name="ID_0x597C" xml:space="preserve">
+    <value>DP Global Control command failed or moved</value>
+  </data>
+  <data name="ID_0x59A0" xml:space="preserve">
+    <value>The interrupt can not be associated in the CPU</value>
+  </data>
+  <data name="ID_0x59A1" xml:space="preserve">
+    <value>Configuration error in the integrated technology</value>
+  </data>
+  <data name="ID_0x59A3" xml:space="preserve">
+    <value>Error when downloading the integrated technology</value>
+  </data>
+  <data name="ID_0x6253" xml:space="preserve">
+    <value>Firmware update: End of firmware download over the network</value>
+  </data>
+  <data name="ID_0x6316" xml:space="preserve">
+    <value>Interface error when starting programmable controller</value>
+  </data>
+  <data name="ID_0x6353" xml:space="preserve">
+    <value>Firmware update: Start of firmware download over the network</value>
+  </data>
+  <data name="ID_0x6390" xml:space="preserve">
+    <value>Formatting of Micro Memory Card complete</value>
+  </data>
+  <data name="ID_0x6500" xml:space="preserve">
+    <value>Connection ID exists twice on module</value>
+  </data>
+  <data name="ID_0x6501" xml:space="preserve">
+    <value>Connection resources inadequate</value>
+  </data>
+  <data name="ID_0x6502" xml:space="preserve">
+    <value>Error in the connection description</value>
+  </data>
+  <data name="ID_0x6510" xml:space="preserve">
+    <value>CFB structure error detected in instance DB when evaluating EPROM</value>
+  </data>
+  <data name="ID_0x6514" xml:space="preserve">
+    <value>GD packet number exists twice on the module</value>
+  </data>
+  <data name="ID_0x6515" xml:space="preserve">
+    <value>Inconsistent length specifications in GD configuration information</value>
+  </data>
+  <data name="ID_0x6521" xml:space="preserve">
+    <value>No memory submodule and no internal memory available</value>
+  </data>
+  <data name="ID_0x6522" xml:space="preserve">
+    <value>Illegal memory submodule: replace submodule and reset memory</value>
+  </data>
+  <data name="ID_0x6523" xml:space="preserve">
+    <value>Memory reset request due to error accessing submodule</value>
+  </data>
+  <data name="ID_0x6524" xml:space="preserve">
+    <value>Memory reset request due to error in block header</value>
+  </data>
+  <data name="ID_0x6526" xml:space="preserve">
+    <value>Memory reset request due to memory replacement</value>
+  </data>
+  <data name="ID_0x6527" xml:space="preserve">
+    <value>Memory replaced, therefore restart not possible</value>
+  </data>
+  <data name="ID_0x6528" xml:space="preserve">
+    <value>Object handling function in the STOP/HOLD mode, no restart possible</value>
+  </data>
+  <data name="ID_0x6529" xml:space="preserve">
+    <value>No startup possible during the \load user program\" function"</value>
+  </data>
+  <data name="ID_0x652A" xml:space="preserve">
+    <value>No startup because block exists twice in user memory</value>
+  </data>
+  <data name="ID_0x652B" xml:space="preserve">
+    <value>No startup because block is too long for submodule - replace submodule</value>
+  </data>
+  <data name="ID_0x652C" xml:space="preserve">
+    <value>No startup due to illegal OB on submodule</value>
+  </data>
+  <data name="ID_0x6532" xml:space="preserve">
+    <value>No startup because illegal configuration information on submodule</value>
+  </data>
+  <data name="ID_0x6533" xml:space="preserve">
+    <value>Memory reset request because of invalid submodule content</value>
+  </data>
+  <data name="ID_0x6534" xml:space="preserve">
+    <value>No startup: block exists more than once on submodule</value>
+  </data>
+  <data name="ID_0x6535" xml:space="preserve">
+    <value>No startup: not enough memory to transfer block from submodule</value>
+  </data>
+  <data name="ID_0x6536" xml:space="preserve">
+    <value>No startup: submodule contains an illegal block number</value>
+  </data>
+  <data name="ID_0x6537" xml:space="preserve">
+    <value>No startup: submodule contains a block with an illegal length</value>
+  </data>
+  <data name="ID_0x6538" xml:space="preserve">
+    <value>Local data or write-protection ID (for DB) of a block illegal for CPU</value>
+  </data>
+  <data name="ID_0x6539" xml:space="preserve">
+    <value>Illegal command in block (detected by compiler)</value>
+  </data>
+  <data name="ID_0x653A" xml:space="preserve">
+    <value>Memory reset request because local OB data on submodule too short</value>
+  </data>
+  <data name="ID_0x6543" xml:space="preserve">
+    <value>No startup: illegal block type</value>
+  </data>
+  <data name="ID_0x6544" xml:space="preserve">
+    <value>No startup: attribute \relevant for processing\" illegal"</value>
+  </data>
+  <data name="ID_0x6545" xml:space="preserve">
+    <value>Source language illegal</value>
+  </data>
+  <data name="ID_0x6546" xml:space="preserve">
+    <value>Maximum number of blocks of one block type reached</value>
+  </data>
+  <data name="ID_0x6547" xml:space="preserve">
+    <value>Parameter assignment error assigning parameters to modules (not on P bus, cancel download)</value>
+  </data>
+  <data name="ID_0x6548" xml:space="preserve">
+    <value>Plausibility error during block check</value>
+  </data>
+  <data name="ID_0x6549" xml:space="preserve">
+    <value>Structure error in block</value>
+  </data>
+  <data name="ID_0x6550" xml:space="preserve">
+    <value>A block has an error in the CRC</value>
+  </data>
+  <data name="ID_0x6551" xml:space="preserve">
+    <value>A block has no CRC</value>
+  </data>
+  <data name="ID_0x6560" xml:space="preserve">
+    <value>SCAN overflow</value>
+  </data>
+  <data name="ID_0x6805" xml:space="preserve">
+    <value>Resource problem on configured connections/eliminated</value>
+  </data>
+  <data name="ID_0x6881" xml:space="preserve">
+    <value>Interface error leaving state</value>
+  </data>
+  <data name="ID_0x6905" xml:space="preserve">
+    <value>Resource problem on configured connections/eliminated</value>
+  </data>
+  <data name="ID_0x6981" xml:space="preserve">
+    <value>Interface error entering state</value>
+  </data>
+  <data name="ID_0x72A3" xml:space="preserve">
+    <value>Redundancy restored on the DP slave</value>
+  </data>
+  <data name="ID_0x72DB" xml:space="preserve">
+    <value>Safety program: Safety mode active/deactivated</value>
+  </data>
+  <data name="ID_0x7301" xml:space="preserve">
+    <value>Loss of redundancy (1 of 2) due to failure of a CPU</value>
+  </data>
+  <data name="ID_0x7302" xml:space="preserve">
+    <value>Loss of redundancy (1 of 2) due to STOP on the standby triggered by user</value>
+  </data>
+  <data name="ID_0x7303" xml:space="preserve">
+    <value>H system (1 of 2) changed to redundant mode</value>
+  </data>
+  <data name="ID_0x7320" xml:space="preserve">
+    <value>???!!! 7520 Error in RAM comparison</value>
+  </data>
+  <data name="ID_0x7321" xml:space="preserve">
+    <value>???!!! 7521 Error in comparison of process image output value</value>
+  </data>
+  <data name="ID_0x7322" xml:space="preserve">
+    <value>???!!! 7522 Error in comparison of memory bits, timers, or counters</value>
+  </data>
+  <data name="ID_0x7323" xml:space="preserve">
+    <value>Discrepancy found in operating system data</value>
+  </data>
+  <data name="ID_0x7331" xml:space="preserve">
+    <value>Standby-master switchover due to master failure</value>
+  </data>
+  <data name="ID_0x7333" xml:space="preserve">
+    <value>Standby-master switchover due to system modification during runtime</value>
+  </data>
+  <data name="ID_0x7334" xml:space="preserve">
+    <value>Standby-master switchover due to communication error at the synchronization module</value>
+  </data>
+  <data name="ID_0x7340" xml:space="preserve">
+    <value>Synchronization error in user program due to elapsed wait time</value>
+  </data>
+  <data name="ID_0x7341" xml:space="preserve">
+    <value>Synchronization error in user program due to waiting at different synchronization points</value>
+  </data>
+  <data name="ID_0x7342" xml:space="preserve">
+    <value>Synchronization error in operating system due to waiting at different synchronization points</value>
+  </data>
+  <data name="ID_0x7343" xml:space="preserve">
+    <value>Synchronization error in operating system due to elapsed wait time</value>
+  </data>
+  <data name="ID_0x7344" xml:space="preserve">
+    <value>Synchronization error in operating system due to incorrect data</value>
+  </data>
+  <data name="ID_0x73A2" xml:space="preserve">
+    <value>???!!! 72A2 Failure of a DP master or a DP master system</value>
+  </data>
+  <data name="ID_0x73A3" xml:space="preserve">
+    <value>Loss of redundancy on the DP slave</value>
+  </data>
+  <data name="ID_0x73C1" xml:space="preserve">
+    <value>Linking/updating was aborted</value>
+  </data>
+  <data name="ID_0x73C2" xml:space="preserve">
+    <value>Updating aborted due to a monitoring time being exceeded at the nth attempt (1 ≤ n ≤ max. possible number of update attempts after abort due to timeout)</value>
+  </data>
+  <data name="ID_0x73D8" xml:space="preserve">
+    <value>Safety mode deactivated</value>
+  </data>
+  <data name="ID_0x73DB" xml:space="preserve">
+    <value>Safety program: Safety mode active/deactivated</value>
+  </data>
+  <data name="ID_0x74DD" xml:space="preserve">
+    <value>Safety program: Disabling of a fail-safe runtime group active/deactivated</value>
+  </data>
+  <data name="ID_0x74DE" xml:space="preserve">
+    <value>Safety program: Full disabling of a F program active/deactivated</value>
+  </data>
+  <data name="ID_0x74DF" xml:space="preserve">
+    <value>Initialization of F program start/end</value>
+  </data>
+  <data name="ID_0x75D1" xml:space="preserve">
+    <value>Safety program: Internal CPU error</value>
+  </data>
+  <data name="ID_0x75D2" xml:space="preserve">
+    <value>Error in safety program: Cycle exceeded</value>
+  </data>
+  <data name="ID_0x75D6" xml:space="preserve">
+    <value>Data corruption in safety program before output to F I/O</value>
+  </data>
+  <data name="ID_0x75D7" xml:space="preserve">
+    <value>Data corruption in safety program before output to partner F CPU</value>
+  </data>
+  <data name="ID_0x75D9" xml:space="preserve">
+    <value>Invalid REAL number in a DB</value>
+  </data>
+  <data name="ID_0x75DA" xml:space="preserve">
+    <value>Safety program: Error in safety data format</value>
+  </data>
+  <data name="ID_0x75DC" xml:space="preserve">
+    <value>Runtime group, internal protocol error</value>
+  </data>
+  <data name="ID_0x75DD" xml:space="preserve">
+    <value>Safety program: Disabling of a fail-safe runtime group active/deactivated</value>
+  </data>
+  <data name="ID_0x75DE" xml:space="preserve">
+    <value>Safety program: Full disabling of a F program active/deactivated</value>
+  </data>
+  <data name="ID_0x75DF" xml:space="preserve">
+    <value>Initialization of F program start/end</value>
+  </data>
+  <data name="ID_0x75E1" xml:space="preserve">
+    <value>Safety program: Error in FB \F_PLK\" or \"F_PLK_O\" or \"F_CYC_CO\" or \"F_TEST\" or \"F_TESTC\""</value>
+  </data>
+  <data name="ID_0x75E2" xml:space="preserve">
+    <value>Safety program: Area length error</value>
+  </data>
+  <data name="ID_0x7852" xml:space="preserve">
+    <value>SYNC module removed/inserted</value>
+  </data>
+  <data name="ID_0x7855" xml:space="preserve">
+    <value>SYNC module error/eliminated</value>
+  </data>
+  <data name="ID_0x78D3" xml:space="preserve">
+    <value>Communication error between PROFIsafe and F I/O</value>
+  </data>
+  <data name="ID_0x78D4" xml:space="preserve">
+    <value>Error in safety relevant communication between F CPUs</value>
+  </data>
+  <data name="ID_0x78D5" xml:space="preserve">
+    <value>Error in safety relevant communication between F CPUs</value>
+  </data>
+  <data name="ID_0x78E3" xml:space="preserve">
+    <value>F-I/O device input channel depassivated</value>
+  </data>
+  <data name="ID_0x78E4" xml:space="preserve">
+    <value>F-I/O device output channel depassivated</value>
+  </data>
+  <data name="ID_0x78E5" xml:space="preserve">
+    <value>F-I/O device depassivated</value>
+  </data>
+  <data name="ID_0x7950" xml:space="preserve">
+    <value>Synchronization module missing</value>
+  </data>
+  <data name="ID_0x7951" xml:space="preserve">
+    <value>Change at the SYNC module without Power On</value>
+  </data>
+  <data name="ID_0x7952" xml:space="preserve">
+    <value>SYNC module removed/inserted</value>
+  </data>
+  <data name="ID_0x7953" xml:space="preserve">
+    <value>Change at the SYNC-module without reset</value>
+  </data>
+  <data name="ID_0x7954" xml:space="preserve">
+    <value>SYNC module: rack number assigned twice</value>
+  </data>
+  <data name="ID_0x7955" xml:space="preserve">
+    <value>SYNC module error/eliminated</value>
+  </data>
+  <data name="ID_0x7956" xml:space="preserve">
+    <value>Illegal rack number set on SYNC module</value>
+  </data>
+  <data name="ID_0x7960" xml:space="preserve">
+    <value>Redundant I/O: Time-out of discrepancy time at digital input, error is not yet localized</value>
+  </data>
+  <data name="ID_0x7961" xml:space="preserve">
+    <value>Redundant I/O, digital input error: Signal change after expiration of the discrepancy time</value>
+  </data>
+  <data name="ID_0x7962" xml:space="preserve">
+    <value>Redundant I/O: Digital input error</value>
+  </data>
+  <data name="ID_0x796F" xml:space="preserve">
+    <value>Redundant I/O: The I/O was globally depassivated</value>
+  </data>
+  <data name="ID_0x7970" xml:space="preserve">
+    <value>Redundant I/O: Digital output error</value>
+  </data>
+  <data name="ID_0x7980" xml:space="preserve">
+    <value>Redundant I/O: Time-out of discrepancy time at analog input</value>
+  </data>
+  <data name="ID_0x7981" xml:space="preserve">
+    <value>Redundant I/O: Analog input error</value>
+  </data>
+  <data name="ID_0x7990" xml:space="preserve">
+    <value>Redundant I/O: Analog output error</value>
+  </data>
+  <data name="ID_0x79D3" xml:space="preserve">
+    <value>Communication error between PROFIsafe and F I/O</value>
+  </data>
+  <data name="ID_0x79D4" xml:space="preserve">
+    <value>Error in safety relevant communication between F CPUs</value>
+  </data>
+  <data name="ID_0x79D5" xml:space="preserve">
+    <value>Error in safety relevant communication between F CPUs</value>
+  </data>
+  <data name="ID_0x79E3" xml:space="preserve">
+    <value>F-I/O device input channel passivated</value>
+  </data>
+  <data name="ID_0x79E4" xml:space="preserve">
+    <value>F-I/O device output channel passivated</value>
+  </data>
+  <data name="ID_0x79E5" xml:space="preserve">
+    <value>F-I/O device passivated</value>
+  </data>
+  <data name="ID_0x79E6" xml:space="preserve">
+    <value>Inconsistent safety program</value>
+  </data>
+  <data name="ID_0x79E7" xml:space="preserve">
+    <value>Simulation block (F system block) loaded</value>
+  </data>
+  <data name="ID_0xE003" xml:space="preserve">
+    <value>VIPA-Error: Error at access to I/O devices</value>
+  </data>
+  <data name="ID_0xE004" xml:space="preserve">
+    <value>VIPA-Error: Multiple parameterization of a I/O address</value>
+  </data>
+  <data name="ID_0xE005" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xE006" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xE007" xml:space="preserve">
+    <value>VIPA-Error: Configured in-/output bytes do not fit into I/O area</value>
+  </data>
+  <data name="ID_0xE008" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xE009" xml:space="preserve">
+    <value>VIPA-Error: Error at access to standard back plane bus</value>
+  </data>
+  <data name="ID_0xE010" xml:space="preserve">
+    <value>VIPA-Error: Not defined module group at backplane bus recognized</value>
+  </data>
+  <data name="ID_0xE011" xml:space="preserve">
+    <value>VIPA-Error: Master project engineering at Slave-CPU not possible or wrong slave configuration</value>
+  </data>
+  <data name="ID_0xE012" xml:space="preserve">
+    <value>VIPA-Error: Error at parameterization</value>
+  </data>
+  <data name="ID_0xE013" xml:space="preserve">
+    <value>VIPA-Error: Error at shift register access to standard bus digital modules</value>
+  </data>
+  <data name="ID_0xE014" xml:space="preserve">
+    <value>VIPA-Error: Error at Check_Sys</value>
+  </data>
+  <data name="ID_0xE015" xml:space="preserve">
+    <value>VIPA-Error: Error at access to the master</value>
+  </data>
+  <data name="ID_0xE016" xml:space="preserve">
+    <value>VIPA-Error: Maximum block size at master transfer exceeded</value>
+  </data>
+  <data name="ID_0xE017" xml:space="preserve">
+    <value>VIPA-Error: Error at access to integrated slave</value>
+  </data>
+  <data name="ID_0xE018" xml:space="preserve">
+    <value>VIPA-Error: Error at mapping of the master I/O devices</value>
+  </data>
+  <data name="ID_0xE019" xml:space="preserve">
+    <value>VIPA-Error: Error at standard back plane bus system recognition</value>
+  </data>
+  <data name="ID_0xE01A" xml:space="preserve">
+    <value>VIPA-Error: Error at recognition of the operating mode (8 / 9bit)</value>
+  </data>
+  <data name="ID_0xE01B" xml:space="preserve">
+    <value>VIPA-Error: Error - maximum number of plug-in modules exceeded</value>
+  </data>
+  <data name="ID_0xE030" xml:space="preserve">
+    <value>VIPA-Error: Error of the standard bus</value>
+  </data>
+  <data name="ID_0xE0B0" xml:space="preserve">
+    <value>VIPA-Error: SPEED7 is not stoppable (probably undefined BCD value at timer)</value>
+  </data>
+  <data name="ID_0xE0C0" xml:space="preserve">
+    <value>VIPA-Error: Not enough space in work memory for storing code block (block size exceeded)</value>
+  </data>
+  <data name="ID_0xE0CC" xml:space="preserve">
+    <value>VIPA-Error: Communication error MPI / Serial</value>
+  </data>
+  <data name="ID_0xE0CD" xml:space="preserve">
+    <value>VIPA-Error: Error at DPV1 job management</value>
+  </data>
+  <data name="ID_0xE0CE" xml:space="preserve">
+    <value>VIPA-Error: Error: Timeout at sending of the i-slave diagnostics</value>
+  </data>
+  <data name="ID_0xE100" xml:space="preserve">
+    <value>VIPA-Error: MMC access error</value>
+  </data>
+  <data name="ID_0xE101" xml:space="preserve">
+    <value>VIPA-Error: MMC error file system</value>
+  </data>
+  <data name="ID_0xE102" xml:space="preserve">
+    <value>VIPA-Error: MMC error FAT</value>
+  </data>
+  <data name="ID_0xE104" xml:space="preserve">
+    <value>VIPA-Error: MMC error at saving</value>
+  </data>
+  <data name="ID_0xE200" xml:space="preserve">
+    <value>VIPA-Error: MMC writing finished (Copy Ram2Rom)</value>
+  </data>
+  <data name="ID_0xE210" xml:space="preserve">
+    <value>VIPA-Error: MMC reading finished (reload after overall reset)</value>
+  </data>
+  <data name="ID_0xE21F" xml:space="preserve">
+    <value>VIPA-Error: MMC reading: error at reload (after overall reset), read error, out of memory</value>
+  </data>
+  <data name="ID_0xE400" xml:space="preserve">
+    <value>VIPA-Error: Memory expansion MCC has been plugged</value>
+  </data>
+  <data name="ID_0xE401" xml:space="preserve">
+    <value>VIPA-Error: Memory expansion MCC has been removed</value>
+  </data>
+  <data name="ID_0xE801" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: CMD_START recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE802" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: CMD_END recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE803" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: WAIT1SECOND recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE804" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: WEBPAGE recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE805" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: LOAD_PROJECT recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE806" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: SAVE_ PROJECT recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE807" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: FACTORY_RESET recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE80B" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: DIAGBUF recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE80E" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: SET_NETWORK recognized and successfully executed</value>
+  </data>
+  <data name="ID_0xE8FB" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: Error: Initialization of the Ethernet PG/OP channel by means of SET_NETWORK is faulty.</value>
+  </data>
+  <data name="ID_0xE8FC" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: Error: Not every IP-Parameter is set at SET_NETWORK.</value>
+  </data>
+  <data name="ID_0xE8FE" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: Error: CMD_START was not found</value>
+  </data>
+  <data name="ID_0xE8FF" xml:space="preserve">
+    <value>VIPA-Error: MMC-Cmd: Error: Reading the CMD file is faulty (MMC error)</value>
+  </data>
+  <data name="ID_0xE901" xml:space="preserve">
+    <value>VIPA-Error: Check sum error</value>
+  </data>
+  <data name="ID_0xEA00" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA01" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA02" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Internal error (internal plugged sub module not recognized)</value>
+  </data>
+  <data name="ID_0xEA04" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Multiple parameterization of a I/O address</value>
+  </data>
+  <data name="ID_0xEA05" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA07" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA08" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Parameterized input data width unequal to plugged input data width</value>
+  </data>
+  <data name="ID_0xEA09" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Parameterized output data width unequal to plugged output data width</value>
+  </data>
+  <data name="ID_0xEA10" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Input address outside input area</value>
+  </data>
+  <data name="ID_0xEA11" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Output address outside output area</value>
+  </data>
+  <data name="ID_0xEA12" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Error at writing record set</value>
+  </data>
+  <data name="ID_0xEA14" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Multiple parameterization of a I/O address (Diagnostic address)</value>
+  </data>
+  <data name="ID_0xEA15" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA18" xml:space="preserve">
+    <value>VIPA-Error: SBUS: Error at mapping of the master I/O devices</value>
+  </data>
+  <data name="ID_0xEA19" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA20" xml:space="preserve">
+    <value>VIPA-Error: Error - RS485 interface is not set to Profibus DP master but there is a Profibus DP master configured.</value>
+  </data>
+  <data name="ID_0xEA21" xml:space="preserve">
+    <value>VIPA-Error: Error - Project engineering RS485 interface X2/X3: Profibus DP master is configured but missing</value>
+  </data>
+  <data name="ID_0xEA22" xml:space="preserve">
+    <value>VIPA-Error: Error - RS485 interface X2 - value is out of range</value>
+  </data>
+  <data name="ID_0xEA23" xml:space="preserve">
+    <value>VIPA-Error: Error - RS485 interface X3 - value is out of range</value>
+  </data>
+  <data name="ID_0xEA24" xml:space="preserve">
+    <value>VIPA-Error: Error - Project engineering RS485 interface X2/X3: Interface/Protocol is missing, the default settings are used.</value>
+  </data>
+  <data name="ID_0xEA30" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA40" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA41" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+  <data name="ID_0xEA98" xml:space="preserve">
+    <value>VIPA-Error: Timeout at waiting for reboot of a SBUS module (Server)</value>
+  </data>
+  <data name="ID_0xEA99" xml:space="preserve">
+    <value>VIPA-Error: Error at file reading via SBUS</value>
+  </data>
+  <data name="ID_0xEE00" xml:space="preserve">
+    <value>VIPA-Error: Internal error - Please contact the VIPA-Hotline!</value>
+  </data>
+</root>

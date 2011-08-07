@@ -1207,9 +1207,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     for (int n = 0; n < cnt; n++)
                     {
-                        int nr = buffer[n * 20 + 8] * 256 + buffer[n * 20 + 9];
-                        DataTypes.DiagnosticEntry myEntr = new DataTypes.DiagnosticEntry(nr);
-                        myEntr.TimeStamp = libnodave.getDateTimefrom(buffer, n*20 + 20);
+                        byte[] diagData = new byte[20];
+                        Array.Copy(buffer, n * 20 + 8, diagData, 0, 20);
+
+                        DataTypes.DiagnosticEntry myEntr = new DataTypes.DiagnosticEntry(diagData);
                         retVal.Add(myEntr);
                     }
 
