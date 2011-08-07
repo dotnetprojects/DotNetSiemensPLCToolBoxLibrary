@@ -6,12 +6,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
     public class DiagnosticEntry
     {
-        private System.ComponentModel.ComponentResourceManager _Resources;
+        private static System.ComponentModel.ComponentResourceManager _Resources;
+        private System.ComponentModel.ComponentResourceManager _MyResource
+        {
+            get
+            {
+                if (_Resources == null)
+                    _Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
+                return _Resources;
+            }
+        }
 
         private DateTime _TimeStamp;
         public DateTime TimeStamp { get { return _TimeStamp; } }
 
-        public string Message { get { return _Resources.GetString("ID_0x" + _id.ToString("X")); } }
+        public string Message { get { return _MyResource.GetString("ID_0x" + _id.ToString("X")); } }
 
         private int _id;
         public int ID { get { return _id; } }
@@ -23,7 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         
         public DiagnosticEntry(byte[] data)
         {
-            _Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
+            //_Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
             _TimeStamp = libnodave.getDateTimefrom(data, 12);
             _id = data[0] * 256 + data[1]; 
             //Bytes 2-11 additional Info!        
