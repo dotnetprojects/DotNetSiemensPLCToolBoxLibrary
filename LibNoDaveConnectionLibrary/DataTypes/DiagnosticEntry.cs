@@ -23,6 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         
         public DiagnosticEntry(byte[] data)
         {
+            _Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
             _TimeStamp = libnodave.getDateTimefrom(data, 12);
             _id = data[0] * 256 + data[1]; 
             //Bytes 2-11 additional Info!        
