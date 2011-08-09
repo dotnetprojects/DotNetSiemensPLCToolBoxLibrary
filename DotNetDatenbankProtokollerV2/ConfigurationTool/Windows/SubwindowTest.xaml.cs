@@ -94,7 +94,8 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             try
             {
                 testinstance = new ProtokollerInstance(ProtokollerConfiguration.ActualConfigInstance);
-                testinstance.Start();
+                testinstance.ThreadExceptionOccured += new ThreadExceptionEventHandler(testinstance_ThreadExceptionOccured);
+                testinstance.Start(false);
                 cmdTestService.Background = Brushes.LightGreen;
                 cmdTest.IsEnabled = false;
                 cmdTestTriggers.IsEnabled = false;
@@ -105,6 +106,11 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             {
                 lblError.Text = ex.Message;
             }
+        }
+
+        void testinstance_ThreadExceptionOccured(object sender, ThreadExceptionEventArgs e)
+        {
+            lblError.Text = e.Exception.Message;
         }
 
         private void cmdTestTriggers_Click(object sender, RoutedEventArgs e)

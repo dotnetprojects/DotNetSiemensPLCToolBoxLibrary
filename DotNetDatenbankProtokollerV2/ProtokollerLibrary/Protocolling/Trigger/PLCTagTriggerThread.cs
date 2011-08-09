@@ -20,6 +20,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
         private DatasetConfig datasetConfig;
         private Dictionary<ConnectionConfig, Object> activConnections;
 
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
+
+        private bool StartedAsService;
 
         // Leseintervall von der SPS wenn neue Daten vorhanden waren.        
         private int NewDataInterval = 5;
@@ -32,8 +35,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
 
         private Thread myThread = null;
 
-        public PLCTagTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections)
+        public PLCTagTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
+            this.StartedAsService = StartedAsService;
             this.dbInterface = dbInterface;
             this.datasetConfig = datasetConfig;
             this.activConnections = activConnections;
@@ -46,7 +50,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
         }
 
         public void StartTrigger()
-        {
+        {            
             myThread = new Thread(new ThreadStart(WaitForTrigger)) {Name = "PLCTagTriggerThread, DataSetConfig:" + datasetConfig.Name};
             myThread.Start();
         }
@@ -79,7 +83,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             cycle_counter = NoDataCycles;
                             ak_interval = NewDataInterval;
 
-                            IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig.DatasetConfigRows, activConnections);
+                            IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
                             if (values != null)
                             {
                                 dbInterface.Write(values);
@@ -104,6 +108,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             }
             catch (ThreadAbortException ex)
             {
+                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
             }
         }
 

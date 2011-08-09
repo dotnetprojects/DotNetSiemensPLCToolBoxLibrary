@@ -16,13 +16,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
         private DatasetConfig datasetConfig;
         private Dictionary<ConnectionConfig, Object> activConnections;
 
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
+
+        private bool StartedAsService;
 
         private TimeSpan TriggerTimeSpan = new TimeSpan(0, 0, 1);
         
         private Thread myThread = null;
 
-        public TimeTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections)
+        public TimeTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
+            this.StartedAsService = StartedAsService;
             this.dbInterface = dbInterface;
             this.datasetConfig = datasetConfig;
             this.activConnections = activConnections;
@@ -43,7 +47,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             {
                 while (true)
                 {
-                    IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig.DatasetConfigRows, activConnections);
+                    IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
                     if (values != null)
                         dbInterface.Write(values);
 
@@ -52,6 +56,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             }
             catch (ThreadAbortException ex)
             {
+            }
+            catch (Exception ex)
+            {
+                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));                
             }
         }
 

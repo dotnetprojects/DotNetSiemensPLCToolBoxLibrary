@@ -12,7 +12,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
     static class ReadData
     {               
-        public static IEnumerable<object> ReadDataFromPLCs(IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections)
+        public static IEnumerable<object> ReadDataFromPLCs(IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
             var usedConnections = from n in datasetConfigRows
                                   group n by n.Connection into g       //Es wird in das Object g hineingruppiert.
@@ -32,7 +32,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         foreach (var plcTag in tags)
                         {
                             if (plcTag.ItemDoesNotExist)
-                                throw new Exception("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress);
+                                if (StartedAsService)
+                                    Logging.LogText("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress, Logging.LogLevel.Error);
+                                else
+                                    throw new Exception("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress);
                         }
                     }
                     else

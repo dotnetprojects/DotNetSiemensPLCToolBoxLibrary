@@ -18,29 +18,35 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
     public class ProtokollerInstance : IDisposable
     {
+        private SynchronizationContext context;
+
         private ProtokollerConfiguration akConfig;
         private Dictionary<ConnectionConfig, Object> ConnectionList = new Dictionary<ConnectionConfig, object>();
         private Dictionary<DatasetConfig, IDBInterface> DatabaseInterfaces = new Dictionary<DatasetConfig, IDBInterface>();
 
         private List<IDisposable> myDisposables = new List<IDisposable>();
         private Thread myReEstablishConnectionsThread;
-        
+
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
+
         public ProtokollerInstance(ProtokollerConfiguration akConfig)
         {
             this.akConfig = akConfig;           
         }
 
-        public void Start()
+        public void Start(bool StartedAsService)
         {
+            context = SynchronizationContext.Current;
+
             Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
             EstablishConnections();
-            OpenStoragesAndCreateTriggers(true);            
+            OpenStoragesAndCreateTriggers(true, StartedAsService);            
         }
 
         public void StartTestMode()
         {
             EstablishConnections();
-            OpenStoragesAndCreateTriggers(false);
+            OpenStoragesAndCreateTriggers(false, false);
         }
 
         private void ReEstablishConnectionsThreadProc()
@@ -138,15 +144,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         public void TestDataRead(DatasetConfig testDataset)
         {
-            ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList);
+            ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList, false);
         }
 
         public void TestDataReadWrite(DatasetConfig testDataset)
         {
-            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList));
+            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList, false));
         }
 
-        private void OpenStoragesAndCreateTriggers(bool CreateTriggers)
+        private void OpenStoragesAndCreateTriggers(bool CreateTriggers, bool StartedAsService)
         {
             foreach (DatasetConfig datasetConfig in akConfig.Datasets)
             {
@@ -162,14 +168,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 if (CreateTriggers)
                     if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)
                     {
-                        PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList);
+                        PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
+                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
                         myDisposables.Add(tmpTrigger);
                     }
                     else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger)
                     {
-                        TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList);
+                        TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
+                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
                         myDisposables.Add(tmpTrigger);
                     }
                     else if (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
@@ -177,6 +185,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     }
             }
+        }
+
+        void tmpTrigger_ThreadExceptionOccured(object sender, ThreadExceptionEventArgs e)
+        {
+            if (ThreadExceptionOccured != null)
+                context.Send(delegate
+                                 {
+                                     ThreadExceptionOccured.Invoke(sender, e);
+                                 }, null);                
+            Dispose();
         }        
 
         public void Dispose()
