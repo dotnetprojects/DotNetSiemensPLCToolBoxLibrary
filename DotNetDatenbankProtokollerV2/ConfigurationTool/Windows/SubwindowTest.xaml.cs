@@ -95,7 +95,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             {
                 testinstance = new ProtokollerInstance(ProtokollerConfiguration.ActualConfigInstance);
                 testinstance.ThreadExceptionOccured += new ThreadExceptionEventHandler(testinstance_ThreadExceptionOccured);
-                testinstance.Start(true);//false);
+                testinstance.Start(false);
                 cmdTestService.Background = Brushes.LightGreen;
                 cmdTest.IsEnabled = false;
                 cmdTestTriggers.IsEnabled = false;
