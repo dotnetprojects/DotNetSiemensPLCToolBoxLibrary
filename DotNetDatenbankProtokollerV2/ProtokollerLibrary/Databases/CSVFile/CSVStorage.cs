@@ -131,10 +131,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 {
                     if (zeile != "")
                         zeile += myConfig.Seperator;
+                    string akV = "";
+                    if (akValue != null)
+                        akV = akValue.ToString();
                     if (myConfig.UseQuotes)
-                        zeile += "\"" + akValue.ToString() + "\"";
+                        zeile += "\"" + akV + "\"";
                     else
-                        zeile += akValue.ToString();
+                        zeile += akV;
                 }
 
                 zeilen += zeile + Environment.NewLine;
