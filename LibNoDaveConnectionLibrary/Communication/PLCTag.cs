@@ -106,9 +106,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        public PLCTag(string address)
+        /// <summary>
+        /// The initalizationString can be a PLC Address like: "DB100.DBW2" or a init String like: "User,DB100.DBW2,Word,Decimal"
+        /// </summary>
+        /// <param name="initalizationString"></param>
+        public PLCTag(string initalizationString)
         {
-            this.ChangeAddressFromString(address);
+            if (initalizationString.Contains(","))
+            {
+                string[] values = initalizationString.Split();
+                this.ValueName = values[0];
+                this.ChangeAddressFromString(values[1]);
+                if (values.Length > 1)
+                    this.ChangeDataTypeFromString(values[2]);
+                if (values.Length > 2)
+                    this.ChangeDataTypeStringFormatFromString(values[3]);
+            }
+            else
+                this.ChangeAddressFromString(initalizationString);
         }
 
         private int _datablockNumber = 1;
@@ -575,7 +590,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     break;
                 case TagDataType.Float:
                     {
-                        Controlvalue = Convert.ToSingle(myValue);
+                        Single val;
+                        Controlvalue = Single.TryParse(myValue, out val);
+                        Controlvalue = val;
                     }
                     break;
 /* 

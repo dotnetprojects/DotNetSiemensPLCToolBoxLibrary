@@ -140,7 +140,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void socket_Thread()
         {
             _fds.rfd = new IntPtr(-999);
-            _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
+            string ip = null;
+            try
+            {
+                IPAddress[] addresslist = Dns.GetHostAddresses(_configuration.CpuIP);                
+                foreach (var ipAddress in addresslist)
+                {
+                    if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        ip = ipAddress.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            { }
+
+            if (ip != null)
+                _fds.rfd = libnodave.openSocket(_configuration.Port, ip);
+            else
+                _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
         }
 
         /// <summary>

@@ -32,6 +32,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myDBConn.Close();
         }
 
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
+
         private string ConnectionString
         {
             get { return string.Format("server=" + myConfig.Server + ";user id=" + myConfig.Username + "; password=" + myConfig.Password + "; port=" + myConfig.Port + ";"); }
@@ -239,7 +241,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            if (ThreadExceptionOccured != null)
+                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                            else
+                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);

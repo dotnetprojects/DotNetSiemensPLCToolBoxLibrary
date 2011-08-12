@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Threading;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
@@ -49,6 +50,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             if (myDBConn != null)
                 myDBConn.Close();
         }
+
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
 
         private string ConnectionString
         {
@@ -223,7 +226,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            if (ThreadExceptionOccured != null)
+                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                            else
+                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);

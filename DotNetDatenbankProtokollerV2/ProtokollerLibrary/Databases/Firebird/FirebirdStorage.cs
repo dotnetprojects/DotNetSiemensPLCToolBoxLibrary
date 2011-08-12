@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
@@ -26,6 +27,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
             if (myDBConn != null)
                 myDBConn.Close();
         }
+
+        public event ThreadExceptionEventHandler ThreadExceptionOccured;
 
         public void Connect_To_Database(StorageConfig config)
         {
@@ -194,7 +197,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            if (ThreadExceptionOccured != null)
+                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                            else
+                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);

@@ -22,7 +22,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 
         public List<string> DatabaseFieldTypes
         {
-            get { return new List<string>() { "TEXT" }; }
+            get { return new List<string>() { "AUTO" }; }
         }
 
         public override string ToString()

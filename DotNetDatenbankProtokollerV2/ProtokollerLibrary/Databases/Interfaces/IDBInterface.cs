@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 
@@ -31,5 +32,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         /// Closes Connection to the Database
         /// </summary>
         void Close();
+
+        event ThreadExceptionEventHandler ThreadExceptionOccured;
     }    
 }

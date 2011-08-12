@@ -13,6 +13,7 @@ http://code.google.com/p/excellibrary/ (LGPL) //Has a Bug in Excel 2010 with to 
 
 For Excel File writing: (xlsx)
 #http://epplus.codeplex.com/ (GPL)
+#http://simpleooxml.codeplex.com/ 
 #http://www.codeproject.com/KB/office/excelxmllibrary.aspx (CPOL)
 #http://www.chrislaforetsoftware.com/products.html (LGPL)
 
