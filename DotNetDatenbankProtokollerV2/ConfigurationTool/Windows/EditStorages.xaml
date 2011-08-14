@@ -9,7 +9,7 @@
         <Button Content="Add SQLite Storage" HorizontalAlignment="Right" Margin="0,43,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddSQLiteStorage" Click="cmdAddSQLiteStorage_Click" />
         <Button Content="Add MsSQL Storage" HorizontalAlignment="Right" Margin="0,167,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMsSQLStorage" Click="cmdAddMsSQLStorage_Click" Visibility="Visible" IsEnabled="False" />
         <Button Content="Add PostgreSQL Storage" HorizontalAlignment="Right" Margin="0,136,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddPostgreSQLStorage" Click="cmdAddPostgreSQLStorage_Click" Visibility="Visible" />
-        <Button Content="Add MySQL Storage" HorizontalAlignment="Right" Margin="0,105,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMySQLStorage" Click="cmdAddMySQLStorage_Click" Visibility="Visible" IsEnabled="False" />
+        <Button Content="Add MySQL Storage" HorizontalAlignment="Right" Margin="0,105,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMySQLStorage" Click="cmdAddMySQLStorage_Click" Visibility="Visible" />
         <Button Content="Add ODBC Storage" HorizontalAlignment="Right" Margin="0,198,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddODBCStorage" Click="cmdAddODBCStorage_Click" Visibility="Visible" IsEnabled="False" />
         <Button Content="Remove" HorizontalAlignment="Right" Margin="0,0,12,12" Name="cmdRemoveConnection" Width="147" Height="25" VerticalAlignment="Bottom" Click="cmdRemoveConnection_Click" />
         <Grid Margin="12,12,165,12" Name="grid1">
@@ -19,7 +19,7 @@
             </Grid.RowDefinitions>
             <WPG:PropertyGrid ShowPreview="False" Grid.Row="1" Instance="{Binding ElementName=grdStorages, Path=SelectedItem}" FontSize="11"></WPG:PropertyGrid>
 
-            <DataGrid AutoGenerateColumns="False" Name="grdStorages" Margin="0,0,0,3" MouseDoubleClick="grdConnections_MouseDoubleClick" ItemsSource="{Binding Storages, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+            <DataGrid AutoGenerateColumns="False" Name="grdStorages" Margin="0,0,0,3" ItemsSource="{Binding Storages, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Storage-Name" Width="Auto" IsReadOnly="True" SortMemberPath="">
                         <DataGridTemplateColumn.CellTemplate>

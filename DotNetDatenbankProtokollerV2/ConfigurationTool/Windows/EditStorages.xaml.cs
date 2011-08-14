@@ -23,16 +23,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         {
             if (grdStorages.SelectedItem != null)
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Remove((StorageConfig) grdStorages.SelectedItem);
-        }
-
-        private void grdConnections_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (grdStorages.SelectedItem != null)
-            {
-                PLCConnectionConfiguration myConfig = (PLCConnectionConfiguration)grdStorages.SelectedItem;
-                myConfig = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig);
-            }
-        }
+        }       
 
         private void cmdAddCSVStorage_Click(object sender, RoutedEventArgs e)
         {

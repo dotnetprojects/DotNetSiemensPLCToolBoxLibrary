@@ -43,6 +43,10 @@
     <Reference Include="LumenWorks.Framework.IO">
       <HintPath>..\AdditionalDlls\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
+    <Reference Include="mysql.data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AdditionalDlls\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=2.0.11.91, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AdditionalDlls\Npgsql.dll</HintPath>
@@ -71,6 +75,7 @@
     <Compile Include="Databases\Excel\ExcelStorage.cs" />
     <Compile Include="Databases\Firebird\FirebirdStorage.cs" />
     <Compile Include="Databases\Interfaces\IDBViewableSQL.cs" />
+    <Compile Include="Databases\MySQL\MySQLStorage.cs" />
     <Compile Include="Databases\PostgreSQL\PostgreSQLStorage.cs" />
     <Compile Include="Databases\StorageHelper.cs" />
     <Compile Include="Databases\Interfaces\IDBInterface.cs" />

@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
 using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
-using Npgsql;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
-namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
+namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 {
-    public class PostgreSQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
+    public class MySQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
     {
-        private PostgreSQLConfig myConfig;
+        private MySQLConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
         private string insertCommand = "";
 
         private DbConnection myDBConn;
-        private DbCommand myCmd = new NpgsqlCommand();
+        private DbCommand myCmd = new MySqlCommand();
         private DbDataReader myReader;
         
         
@@ -41,15 +41,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
         public void Connect_To_Database(StorageConfig config)
         {
-            myConfig = config as PostgreSQLConfig;
+            myConfig = config as MySQLConfig;
             if (myConfig == null)
                 throw new Exception("Database Config is NULL");
             try
             {
-                myDBConn = new Npgsql.NpgsqlConnection(ConnectionString);
+                myDBConn = new MySqlConnection(ConnectionString);
                 myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
-                    throw new Exception("Unable to Open Database. Storage:" + config.Name);                
+                    throw new Exception("Unable to Open Database. Storage:" + config.Name);               
             }
             catch (Exception ex)
             {
@@ -70,9 +70,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myCmd.CommandText = sql;
                 myCmd.ExecuteNonQuery();
             }
-            catch (Npgsql.NpgsqlException ex)
+            catch (MySqlException ex)
             {
-                if (ex.Code != "42P04")
+                if (ex.Number != 1007)
                 {
                     Logging.LogText("Database could not be created. Storage: " + myConfig.Name + " Error:" + ex.Message, Logging.LogLevel.Error);
                     throw ex;
@@ -90,16 +90,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myReader = myCmd.ExecuteReader();
 
             }
-            catch (Npgsql.NpgsqlException ex)
+            catch (MySqlException ex)
             {
-                if (ex.Code == "42P01")
+                if (ex.Number == 1146)
                 {
                     try
                     {
                         sql = "CREATE TABLE " + dataTable + " (";
-                        sql += "\"id\" bigserial NOT NULL, ";
-                        sql += "CONSTRAINT " + dataTable + "_data_pkey PRIMARY KEY (id))";
-
+                        sql += "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY); ";
+                                                
                         myCmd.CommandText = sql;
                         myCmd.ExecuteNonQuery();
 
@@ -150,8 +149,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                     case "real":
                         dbfieldtype = "real NOT NULL default 0";
                         break;
+                    case "datetime":
+                        dbfieldtype = "TIMESTAMP NOT NULL";
+                        break;
                     case "varchar":
-                        dbfieldtype = "character varying(" + myFeld.DatabaseFieldSize + ") NOT NULL DEFAULT ''::character varying";
+                        dbfieldtype = "VARCHAR(" + myFeld.DatabaseFieldSize + ") NOT NULL DEFAULT ''";
                         break;
                 }
 
@@ -187,7 +189,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 }
 
                 felderliste += myFeld.DatabaseField;
-                wertliste += "@" + myFeld.DatabaseField;
+                wertliste += "?" + myFeld.DatabaseField;
             }
             insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
@@ -309,7 +311,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));                        
+                        myCmd.Parameters.Add(new MySqlParameter("?" + field.DatabaseField, value));                        
                     }
                 }
                
@@ -362,13 +364,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
         #region IDBViewable
         private DbConnection readDBConn;
-        private DbCommand readCmd = new NpgsqlCommand();
+        private DbCommand readCmd = new MySqlCommand();
 
         private void CheckAndEstablishReadConnection()
         {
             if (readDBConn == null)
             {
-                readDBConn = new NpgsqlConnection(ConnectionString);
+                readDBConn = new MySqlConnection(ConnectionString);
                 readDBConn.Open();
                 readDBConn.ChangeDatabase(myConfig.Database);
             } 

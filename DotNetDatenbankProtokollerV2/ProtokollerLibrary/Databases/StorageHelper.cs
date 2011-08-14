@@ -5,6 +5,7 @@ using System.Text;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
+using DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -24,6 +25,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases
                 return new ExcelStorage();
             else if (cfg.Storage is PostgreSQLConfig)
                 return new PostgreSQLStorage();
+            else if (cfg.Storage is MySQLConfig)
+                return new MySQLStorage();
             return null;
         }
     }

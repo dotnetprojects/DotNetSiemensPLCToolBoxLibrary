@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Threading;
-using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
@@ -29,8 +28,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 myThread.Abort();            
         }
 
-        public event ThreadExceptionEventHandler ThreadExceptionOccured;
-
         public void Connect_To_Database(StorageConfig config)
         {                        
             myConfig = config as ExcelConfig;            
@@ -40,12 +37,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             FileName = myConfig.Filename;
         }
 
-        private DatasetConfig _datasetConfig;
-
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
-        {
-            _datasetConfig = datasetConfig;
-
+        {            
             TableName = datasetConfig.Name;
 
             Workbook workbook;
@@ -119,10 +112,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                         }
                         catch (Exception ex)
                         {
-                            if (ThreadExceptionOccured != null)
-                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
-                            else
-                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
+                            throw ex;
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);
@@ -179,21 +169,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 int spalte = 0;
                 foreach (object akValue in values)
                 {
-                    if (akValue is DateTime)
-                    {
-                        if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Date)
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"YYYY\-MM\-DD");
-                        else if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.TimeOfDay)
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"hh:mm:ss");
-                        else
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"YYYY\-MM\-DD hh:mm:ss");
-                    }
-                    else if (akValue is Int16 || akValue is Int32 || akValue is Int64 || akValue is UInt16 || akValue is UInt32 || akValue is UInt64 || akValue is Byte || akValue is SByte)
-                        akWorksheet.Cells[zeile, spalte] = new Cell(akValue);
-                    else if (akValue is Single)
-                        akWorksheet.Cells[zeile, spalte] = new Cell(((Single)akValue).ToString(), @"0,00E+00");
-                    else
-                        akWorksheet.Cells[zeile, spalte] = new Cell(akValue.ToString());
+                    akWorksheet.Cells[zeile, spalte] = new Cell(akValue, new CellFormat(CellFormatType.Text, ""));
                     spalte++;
                 }
 

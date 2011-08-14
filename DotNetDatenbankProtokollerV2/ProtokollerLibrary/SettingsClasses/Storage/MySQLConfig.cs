@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
@@ -43,6 +44,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         {
             get { return _database; }
             set { _database = value; NotifyPropertyChanged("Database"); }
+        }
+
+        public override List<string> DatabaseFieldTypes
+        {
+            get { return new List<string>() { "bigint", "real", "datetime", "varchar" }; }
         }
 
         public override string ToString()
