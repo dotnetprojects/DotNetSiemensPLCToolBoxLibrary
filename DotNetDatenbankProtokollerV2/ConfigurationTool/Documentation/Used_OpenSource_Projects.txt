@@ -11,11 +11,13 @@ http://www.codeproject.com/KB/database/CsvReader.aspx (MIT)
 For Excel File writing: (2011-04-14) (xls)
 http://code.google.com/p/excellibrary/ (LGPL) //Has a Bug in Excel 2010 with to small files (#60)
 
-For Excel File writing: (xlsx)
+For Excel File writing: (xls,xlsx)
 #http://epplus.codeplex.com/ (GPL)
 #http://simpleooxml.codeplex.com/ 
 #http://www.codeproject.com/KB/office/excelxmllibrary.aspx (CPOL)
 #http://www.chrislaforetsoftware.com/products.html (LGPL)
+#http://excelpackage.codeplex.com/
+#http://code.google.com/p/npoi/
 
 For Communication:
 http://libnodave.sourceforge.net/ (LGPL)
