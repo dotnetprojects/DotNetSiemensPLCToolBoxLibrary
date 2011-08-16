@@ -69,6 +69,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\NetworkShare.cs" />
     <Compile Include="Common\SerializeToString.cs" />
     <Compile Include="Common\WPF\NullToFalseConverter.cs" />
     <Compile Include="Common\XMLReferenceSerializer.cs" />

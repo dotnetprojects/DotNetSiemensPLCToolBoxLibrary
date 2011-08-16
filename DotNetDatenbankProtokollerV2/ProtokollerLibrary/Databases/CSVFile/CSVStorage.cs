@@ -35,7 +35,24 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
             myConfig = config as CSVConfig;
             if (myConfig == null)
                 throw new Exception("Database Config is NULL");
+
+            if (!string.IsNullOrEmpty(myConfig.NetworkUserName))
+            {
+                try
+                {                    
+                    networkShare = new NetworkShare(Path.GetDirectoryName(myConfig.Textfile), myConfig.NetworkUserName, myConfig.NetworkPassword);
+                }
+                catch(Exception ex)
+                {
+                    if (ThreadExceptionOccured != null)
+                        ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                    else
+                        Logging.LogText(ex.Message, Logging.LogLevel.Error);
+                }
+            }
         }
+
+        private NetworkShare networkShare;
 
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
@@ -54,7 +71,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
             }
 
             if (!System.IO.File.Exists(myConfig.Textfile) || !myConfig.Append)
-            {
+            {                
                 writer = new System.IO.StreamWriter(myConfig.Textfile);
                 writer.WriteLine(zeile);
                 writer.Close();
@@ -160,6 +177,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         {
             if (myThread != null)
                 myThread.Abort();
+            if (networkShare != null)
+                networkShare.Dispose();
         }
 
         #region IDBViewable

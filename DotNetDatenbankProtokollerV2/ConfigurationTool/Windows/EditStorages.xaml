@@ -15,9 +15,9 @@
         <Grid Margin="12,12,165,12" Name="grid1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="27*" />
-                <RowDefinition Height="26*" />
+                <RowDefinition Height="28*" />
             </Grid.RowDefinitions>
-            <WPG:PropertyGrid ShowPreview="False" Grid.Row="1" Instance="{Binding ElementName=grdStorages, Path=SelectedItem}" FontSize="11"></WPG:PropertyGrid>
+            <WPG:PropertyGrid ShowPreview="False" Grid.Row="1" Instance="{Binding ElementName=grdStorages, Path=SelectedItem}" FontSize="11" ShowDescription="True"></WPG:PropertyGrid>
 
             <DataGrid AutoGenerateColumns="False" Name="grdStorages" Margin="0,0,0,3" ItemsSource="{Binding Storages, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
                 <DataGrid.Columns>

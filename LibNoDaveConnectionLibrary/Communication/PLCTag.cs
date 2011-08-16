@@ -343,6 +343,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        public void ClearValue()
+        {
+            _value = null;
+        }
+
         public String ValueAsString
         {
             get { return GetValueAsString(); }

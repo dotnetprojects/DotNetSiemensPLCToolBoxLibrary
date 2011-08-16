@@ -7,15 +7,6 @@ using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
-    //[DataContract(IsReference = true, Namespace = "")]
-    //[KnownType(typeof(AccessConfig))]
-    //[KnownType(typeof(CSVConfig))]
-    //[KnownType(typeof(MsSQLConfig))]
-    //[KnownType(typeof(MySQLConfig))]
-    //[KnownType(typeof(ODBCConfig))]
-    //[KnownType(typeof(PostgreSQLConfig))]
-    //[KnownType(typeof(SQLiteConfig))]
-
     [XmlInclude(typeof(AccessConfig))]
     [XmlInclude(typeof(CSVConfig))]
     [XmlInclude(typeof(ExcelConfig))]

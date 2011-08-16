@@ -34,6 +34,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
 
         public static void Save()
         {
+            foreach (var ds in ProtokollerConfiguration.ActualConfigInstance.Datasets)
+            {
+                foreach (var rw in ds.DatasetConfigRows)
+                {
+                    if (rw.PLCTag != null)
+                        rw.PLCTag.ClearValue();
+                }
+            }
+
             string conf = SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
             RegistryKey regKey = Registry.LocalMachine;
             regKey = regKey.CreateSubKey("SYSTEM\\CurrentControlSet\\services\\" + StaticServiceConfig.MyServiceName + "\\Parameters");
