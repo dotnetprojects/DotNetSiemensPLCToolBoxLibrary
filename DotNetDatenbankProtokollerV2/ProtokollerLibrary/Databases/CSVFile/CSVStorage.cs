@@ -156,7 +156,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                         zeile += myConfig.Seperator;
                     string akV = "";
                     if (akValue != null)
-                        akV = akValue.ToString();
+                    {
+                        if (akValue is float)
+                        {
+                            var fl = (float) akValue;
+                            akV = fl.ToString();
+                            if (myConfig.SwitchPunctation)
+                                akV = akV.Replace('.', '!').Replace(',', '.').Replace('!', ',');
+                        }
+                        else
+                            akV = akValue.ToString();
+                    }
                     if (myConfig.UseQuotes)
                         zeile += "\"" + akV + "\"";
                     else

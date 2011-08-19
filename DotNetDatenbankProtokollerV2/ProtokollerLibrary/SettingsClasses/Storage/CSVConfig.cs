@@ -27,6 +27,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
             set { _useQuotes = value; NotifyPropertyChanged("UseQuotes"); }
         }
 
+        private bool _switchPunctation;
+        [Description("Switches Comma and Point")]         
+        public bool SwitchPunctation
+        {
+            get { return _switchPunctation; }
+            set { _switchPunctation = value; NotifyPropertyChanged("SwitchPunctation"); }
+        }
+
         private bool _append = true;
         public bool Append
         {
