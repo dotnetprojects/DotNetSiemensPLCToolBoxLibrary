@@ -182,7 +182,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             return ReadDBF(dbfFile, null, '/');
         }
 
-        public static DataTable ReadDBF(string dbfFile, object zipfile, char DirSeperator)
+        public static DataTable ReadDBF(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
             long start = DateTime.Now.Ticks;
             DataTable dt = new DataTable();
@@ -197,16 +197,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             int fieldIndex;
 
             // If there isn't even a file, just return an empty DataTable
-            if ((false == ZipHelper.FileExists(zipfile,dbfFile)))
+            if ((false == _ziphelper.FileExists(dbfFile)))
             {
                 return dt;
             }
 
             BinaryReader br = null;
 
-            openMemoFile(dbfFile, zipfile, DirSeperator);
+            openMemoFile(dbfFile, _ziphelper, DirSeperator);
 
-            readMDXFile(dbfFile, zipfile, DirSeperator);
+            readMDXFile(dbfFile, _ziphelper, DirSeperator);
             //Dictionary<int, byte[]> memoLookup = ReadDBT(dbfFile);
 
             try
@@ -214,9 +214,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 // Read the header into a buffer
                 //br = new BinaryReader(new FileStream(dbfFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 
-                Stream tmpStream = ZipHelper.GetReadStream(zipfile, dbfFile);
+                Stream tmpStream = _ziphelper.GetReadStream(dbfFile);
                 br = new BinaryReader(tmpStream);
-                byte[] completeBuffer = br.ReadBytes((int)ZipHelper.GetStreamLength(zipfile, dbfFile, tmpStream));
+                byte[] completeBuffer = br.ReadBytes((int)_ziphelper.GetStreamLength(dbfFile, tmpStream));
+                tmpStream.Close();
                 br.Close();
                 br = new BinaryReader(new MemoryStream(completeBuffer));
 
@@ -462,12 +463,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
 
 
-        private static void readMDXFile(string dbfFile, object zipfile, char DirSeperator)
+        private static void readMDXFile(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
             string mdxFile =
                 Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".mdx";
 
-            if (ZipHelper.FileExists(zipfile, mdxFile))
+            if (_ziphelper.FileExists(mdxFile))
             {
                 BinaryReader mdxReader = null;
                 try
@@ -476,10 +477,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     GCHandle handle;
                     //mdxReader = new BinaryReader(new FileStream(mdxFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                     //mdxReader = new BinaryReader(ZipHelper.GetReadStream(zipfile, mdxFile));
-                    
-                    Stream tmpStream = ZipHelper.GetReadStream(zipfile, mdxFile);
+
+                    Stream tmpStream = _ziphelper.GetReadStream(mdxFile);
                     mdxReader = new BinaryReader(tmpStream);
-                    byte[] completeBuffer = mdxReader.ReadBytes((int)ZipHelper.GetStreamLength(zipfile, mdxFile, tmpStream));
+                    byte[] completeBuffer = mdxReader.ReadBytes((int)_ziphelper.GetStreamLength(mdxFile, tmpStream));
                     mdxReader.Close();
                     mdxReader = new BinaryReader(new MemoryStream(completeBuffer));
 
@@ -550,16 +551,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         /// <param name="row"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool WriteValue(string dbfFile, string column, int row, object value, object zipfile)
+        public static bool WriteValue(string dbfFile, string column, int row, object value, ZipHelper _ziphelper, char DirSeperator)
         {
-            if (zipfile != null)
-                throw new Exception("Write to Zipped Files is not supported!");
+            //if (zipfile != null)
+            //    throw new Exception("Write to Zipped Files is not supported!");
 
             int BytesToRecordStart = 0;
             long start = DateTime.Now.Ticks;
             
             // If there isn't even a file, just return an empty DataTable
-            if ((false == File.Exists(dbfFile)))
+            if ((false == _ziphelper.FileExists(dbfFile)))
             {
                 return false;
             }
@@ -570,23 +571,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             try
             {
                 // Read the header into a buffer
-                br = new BinaryReader(new FileStream(dbfFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                byte[] buffer = br.ReadBytes(Marshal.SizeOf(typeof (DBFHeader)));
+                Stream tmpStream = _ziphelper.GetReadStream(dbfFile);
+                br = new BinaryReader(tmpStream);
+                byte[] completeBuffer = br.ReadBytes((int)_ziphelper.GetStreamLength(dbfFile, tmpStream));
+                tmpStream.Close();
+                br.Close();
+                br = new BinaryReader(new MemoryStream(completeBuffer));
+
+                byte[] buffer = br.ReadBytes(Marshal.SizeOf(typeof(DBFHeader)));
+
 
                 // Marshall the header into a DBFHeader structure
                 GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                DBFHeader header = (DBFHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (DBFHeader));
+                DBFHeader header = (DBFHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DBFHeader));
                 handle.Free();
 
                 // Read in all the field descriptors. Per the spec, 13 (0D) marks the end of the field descriptors
                 ArrayList fields = new ArrayList();
+
                 while ((13 != br.PeekChar()))
                 {
-                    buffer = br.ReadBytes(Marshal.SizeOf(typeof (FieldDescriptor)));
+                    buffer = br.ReadBytes(Marshal.SizeOf(typeof(FieldDescriptor)));
                     handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                    fields.Add((FieldDescriptor) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (FieldDescriptor)));
+                    fields.Add((FieldDescriptor)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(FieldDescriptor)));
                     handle.Free();
-                }                
+                }               
 
 
                 char writeFieldType = ' ';
@@ -601,15 +610,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 }
 
                 br.Close();
-                
-                bw = new BinaryWriter(File.OpenWrite(dbfFile));
+
+                Stream strm = _ziphelper.GetWriteStream(dbfFile);
+                bw = new BinaryWriter(strm);
 
                 if (column != "DELETED_FLAG")
                     BytesToRecordStart++;
                 else
                     BytesToRecordStart = 0;
 
-                ((FileStream) bw.BaseStream).Seek(header.headerLen + row*header.recordLen + BytesToRecordStart, SeekOrigin.Begin);
+                (/*(FileStream)*/ bw.BaseStream).Seek(header.headerLen + row*header.recordLen + BytesToRecordStart, SeekOrigin.Begin);
 
                 if (column == "DELETED_FLAG")
                     if ((bool)value == true)
@@ -667,12 +677,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                             bw.Write(Encoding.ASCII.GetBytes(value.ToString().PadRight(writeFieldLength, ' ')));
                             break;
                         default:
-                            br.Close();
+                            //br.Close();
                             return false;
                             break;
                     }
                 }
-                bw.Close();                
+
+                _ziphelper.WriteBackStream(dbfFile, strm);
+
+                bw.Close();
             }
             finally
             {
@@ -695,11 +708,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         #region DBT (Memo) Functions
         private static int memoBlockLength = 512;
         private static BinaryReader dbtReader = null;
-        private static void openMemoFile(string dbfFile, object zipfile, char DirSeperator)
+        private static void openMemoFile(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
             string dbtFile = Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".dbt";
 
-            if (ZipHelper.FileExists(zipfile, dbtFile))
+            if (_ziphelper.FileExists(dbtFile))
             {
                 dbtReader = null;
                 try
@@ -707,9 +720,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     //dbtReader = new BinaryReader(new FileStream(dbtFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                     //dbtReader=new BinaryReader(ZipHelper.GetReadStream(zipfile, dbtFile));
 
-                    Stream tmpStream = ZipHelper.GetReadStream(zipfile, dbtFile);
+                    Stream tmpStream = _ziphelper.GetReadStream(dbtFile);
                     dbtReader = new BinaryReader(tmpStream);
-                    byte[] completeBuffer = dbtReader.ReadBytes((int)ZipHelper.GetStreamLength(zipfile, dbtFile, tmpStream));
+                    byte[] completeBuffer = dbtReader.ReadBytes((int)_ziphelper.GetStreamLength(dbtFile, tmpStream));
                     dbtReader.Close();
                     dbtReader = new BinaryReader(new MemoryStream(completeBuffer));
 

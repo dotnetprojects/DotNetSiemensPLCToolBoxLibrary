@@ -16,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal bool _showDeleted = false;
 
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
-        internal object _zipfile;
+        internal ZipHelper _ziphelper = new ZipHelper(null);
 
         public Step5Project(string filename, bool showDeleted)
         {
@@ -29,7 +29,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(filename, ".s5d");
                 if (string.IsNullOrEmpty(_projectfilename))
                     throw new Exception("Zip-File contains no valid Step5 Project !");
-                this._zipfile = ZipHelper.OpenZipfile(filename);
+                this._ziphelper = new ZipHelper(filename);
             }
 
             ProjectFile = filename;
@@ -46,8 +46,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             _projectLoaded = true;
 
             //Read Step5 Project into a Byte-Array
-            Stream fsProject = ZipHelper.GetReadStream(_zipfile, _projectfilename);
-            s5ProjectByteArray = new byte[ZipHelper.GetStreamLength(_zipfile, _projectfilename, fsProject)];
+            Stream fsProject = _ziphelper.GetReadStream(_projectfilename);
+            s5ProjectByteArray = new byte[_ziphelper.GetStreamLength(_projectfilename, fsProject)];
             fsProject.Read(s5ProjectByteArray, 0, s5ProjectByteArray.Length);
             fsProject.Close();
 
@@ -291,9 +291,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            if (ZipHelper.FileExists(_zipfile, _projectfilename.ToLower().Replace("st.s5d","z0.seq")))
+            if (_ziphelper.FileExists(_projectfilename.ToLower().Replace("st.s5d", "z0.seq")))
             {
-                Stream symTabStream = ZipHelper.GetReadStream(_zipfile, _projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
+                Stream symTabStream = _ziphelper.GetReadStream(_projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
 
                 SymbolTable symtab=new SymbolTable();
                 symtab.LoadSymboltable(symTabStream);               
@@ -428,7 +428,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         public override string ToString()
         {
             string retVal = base.ToString();
-            if (_zipfile != null)
+            if (_ziphelper.IsZipped())
                 retVal += "(zipped)";
             if (_showDeleted == true)
                 retVal += " (show deleted)";

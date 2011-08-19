@@ -20,9 +20,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
             List<ProjectBlockInfo> tmpBlocks = new List<ProjectBlockInfo>();
 
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "S7CONTAI.DBF"))
+            if (((Step7ProjectV5)Project)._ziphelper.FileExists(Folder + "S7CONTAI.DBF"))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "S7CONTAI.DBF", ((Step7ProjectV5)Project)._zipfile,((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = DBF.ParseDBF.ReadDBF(Folder + "S7CONTAI.DBF", ((Step7ProjectV5)Project)._ziphelper, ((Step7ProjectV5)Project)._DirSeperator);
                 foreach (DataRow row in dbfTbl.Rows)
                 {
                     if (!(bool)row["DELETED_FLAG"] || showDeleted)
@@ -66,9 +66,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
             S7SourceBlock retVal = new S7SourceBlock();
 
-            if (ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, srcInfo.Filename))
+            if (((Step7ProjectV5)Project)._ziphelper.FileExists(srcInfo.Filename))
             {
-                Stream strm = ZipHelper.GetReadStream(((Step7ProjectV5)Project)._zipfile, srcInfo.Filename);
+                Stream strm = ((Step7ProjectV5)Project)._ziphelper.GetReadStream(srcInfo.Filename);
 
                 retVal.Text = new System.IO.StreamReader(strm,Encoding.UTF7).ReadToEnd();
                 //ReadToEnd();
