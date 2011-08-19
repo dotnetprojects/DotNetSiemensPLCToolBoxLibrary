@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
 #if SHARPZIPLIB
-
+//using ICSharpCode.SharpZipLib.Zip;
+using Ionic.Zip;
 #endif
+
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
@@ -28,13 +29,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             string name = null;
             foreach (ZipEntry zipEntry in zf)
             {
-                if (zipEntry.Name.ToLower().EndsWith(ending))
+                if (zipEntry.FileName.ToLower().EndsWith(ending))
                 {
-                    name = zipEntry.Name;
+                    name = zipEntry.FileName;
                     break;
                 }
             }            
-            zf.Close();
+            zf.Dispose();
             return name;
 #else
             return null;
@@ -56,7 +57,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             if (zipfile != null)
             {
                 ZipFile zf = (ZipFile) zipfile;                
-                zf.Close();
+                zf.Dispose();
             }
 #endif
         }
@@ -73,8 +74,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             else
             {
                 ZipFile zf = (ZipFile)zipfile;
-                int fileEntry = zf.FindEntry(file.Replace("\\", "/"), true);
-                return zf.GetInputStream(fileEntry);
+                //int fileEntry = zf.FindEntry(file.Replace("\\", "/"), true);                
+                //return zf.GetInputStream(fileEntry);
+                return zf[file.Replace("\\", "/")].InputStream;                
             }
 #endif
         }
@@ -91,7 +93,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             else
             {
                 ZipFile zf = (ZipFile)zipfile;
-                return zf.GetEntry(file.Replace("\\", "/")).Size;
+                //return zf.GetEntry(file.Replace("\\", "/")).Size;
+                return zf[file.Replace("\\", "/")].UncompressedSize;
             }
 #endif
         }
@@ -107,8 +110,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             else
             {
                 ZipFile zf = (ZipFile)zipfile;
-                int fileEntry = zf.FindEntry(file.Replace("\\","/"), true);
-                return fileEntry >= 0;                    
+                //int fileEntry = zf.FindEntry(file.Replace("\\","/"), true);
+                //return fileEntry >= 0;     
+                return zf.ContainsEntry(file.Replace("\\", "/"));                
             }
 #endif
         }
