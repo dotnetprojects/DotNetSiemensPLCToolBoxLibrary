@@ -1948,13 +1948,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int buffPos = 0;
                     if (res == 0)
                     {
-                        value._readValueFromBuffer(myBuff, buffPos);                        
+                        value._readValueFromBuffer(myBuff, buffPos);
+                        value.ItemDoesNotExist = false;
                     }
                     else if (res == -1025)
                     {
                         this.Disconnect();
                         return;
                     }
+                    else if (res == 5 || res == 10)
+                        value.ItemDoesNotExist = true;
                     else
                         throw new Exception("Error: " + libnodave.daveStrerror(res));
                 }
