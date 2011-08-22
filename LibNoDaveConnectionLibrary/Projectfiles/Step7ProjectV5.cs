@@ -153,7 +153,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             set { _s7ProgrammFolders = value; }
         }
 
-        public List<BlocksOfflineFolder> BlocksOfflineFolders { get; set; }
+        private List<BlocksOfflineFolder> _blocksOfflineFolders;
+        public List<BlocksOfflineFolder> BlocksOfflineFolders
+        {
+            get
+            {
+                if (!_projectLoaded)
+                    LoadProject();
+                return _blocksOfflineFolders;
+            }
+            set { _blocksOfflineFolders = value; }
+        }
 
         override internal void LoadProject()
         {
@@ -615,6 +625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         x.ID = (int) row["ID"];
                         x.Folder = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + x.ID.ToString("X").PadLeft(8, '0') + _DirSeperator;
                         tmpBlocksOfflineFolders.Add(x);
+                        _blocksOfflineFolders.Add(x);
                     }
                 }
             }
