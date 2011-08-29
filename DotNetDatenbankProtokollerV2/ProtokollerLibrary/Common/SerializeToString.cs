@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
@@ -60,17 +61,28 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
 
         public static T DeSerialize(string txt)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(T));
-            StringReader stringReader = new StringReader(txt);
-            XmlTextReader xmlReader = new XmlTextReader(stringReader);
-            T retVal =(T) ser.Deserialize(xmlReader);
-            xmlReader.Close();
-            stringReader.Close();
+            T retVal = default(T);
+            if (txt == null)
+                return retVal;
+            try
+            {
+                XmlSerializer ser = new XmlSerializer(typeof(T));
+                StringReader stringReader = new StringReader(txt);
+                XmlTextReader xmlReader = new XmlTextReader(stringReader);
+                retVal = (T)ser.Deserialize(xmlReader);
+                xmlReader.Close();
+                stringReader.Close();
+            }
+            catch (Exception)
+            {
+            }
             return retVal;
         }
 
         public static T DataContractDeSerialize(string txt)
         {
+            if (txt == null)
+                return default(T);
             DataContractSerializer serializer = new DataContractSerializer(typeof(T));
 
             byte[] byteArray = Encoding.ASCII.GetBytes(txt);

@@ -191,11 +191,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         void tmpTrigger_ThreadExceptionOccured(object sender, ThreadExceptionEventArgs e)
         {
             if (ThreadExceptionOccured != null)
+            {
                 context.Send(delegate
                                  {
                                      ThreadExceptionOccured.Invoke(sender, e);
-                                 }, null);                
-            Dispose();
+                                 }, null);
+                Dispose();
+            }
+            else
+            {
+                Logging.LogText("Exception occured! " + e.Exception.Message + "; " + e.Exception.StackTrace, Logging.LogLevel.Error);
+                Dispose(); //Möglicherweise ein Restart hier rein??
+            }
+            
         }        
 
         public void Dispose()
