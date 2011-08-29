@@ -201,7 +201,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             else
             {
                 Logging.LogText("Exception occured! " + e.Exception.Message + "; " + e.Exception.StackTrace, Logging.LogLevel.Error);
-                Dispose(); //Möglicherweise ein Restart hier rein??
+                //Dispose(); //Möglicherweise ein Restart hier rein??
             }
             
         }        
