@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 
@@ -26,6 +27,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
         {
             _datasetConfigRows = new ObservableCollection<DatasetConfigRow>();
             _triggerTimeSpan = new TimeSpan(0, 0, 0, 0, 500);
+        }
+
+        public DatasetConfig Clone()
+        {
+            return SerializeToString<DatasetConfig>.DeSerialize(SerializeToString<DatasetConfig>.Serialize(this));
         }
 
         [Browsable(false)]

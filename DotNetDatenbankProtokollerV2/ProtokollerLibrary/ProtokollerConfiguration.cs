@@ -67,24 +67,29 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         {
             ProtokollerConfiguration retVal = SerializeToString<ProtokollerConfiguration>.DeSerialize(txt);
 
+            ReReferenceProtokollerConfiguration(retVal);
+
+            return retVal;
+        }
+
+        public static void ReReferenceProtokollerConfiguration(ProtokollerConfiguration cfg)
+        {
             //Recreate the References, because XMLSerializer creates copies all the time!
-            foreach (DatasetConfig datasetConfig in retVal.Datasets)
+            foreach (DatasetConfig datasetConfig in cfg.Datasets)
             {
                 if (datasetConfig.Storage != null)
-                    datasetConfig.Storage = retVal.Storages.Where(c => c.Name == datasetConfig.Storage.Name).FirstOrDefault();
+                    datasetConfig.Storage = cfg.Storages.Where(c => c.Name == datasetConfig.Storage.Name).FirstOrDefault();
                 if (datasetConfig.TriggerConnection != null)
-                    datasetConfig.TriggerConnection = retVal.Connections.Where(c => c.Name == datasetConfig.TriggerConnection.Name).FirstOrDefault();
+                    datasetConfig.TriggerConnection = cfg.Connections.Where(c => c.Name == datasetConfig.TriggerConnection.Name).FirstOrDefault();
 
                 foreach (DatasetConfigRow datasetConfigRow in datasetConfig.DatasetConfigRows)
                 {
                     if (datasetConfigRow.Connection != null)
                     {
-                        datasetConfigRow.Connection = retVal.Connections.Where(c => c.Name == datasetConfigRow.Connection.Name).FirstOrDefault();
+                        datasetConfigRow.Connection = cfg.Connections.Where(c => c.Name == datasetConfigRow.Connection.Name).FirstOrDefault();
                     }
                 }
-            }
-
-            return retVal;
+            }            
         }
 
         public static void LoadFromFile(string filename)

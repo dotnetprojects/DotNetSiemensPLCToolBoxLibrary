@@ -203,6 +203,15 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             e.Handled = false;
         }
 
-                          
+        private void cmdCopyDataset_Click(object sender, RoutedEventArgs e)
+        {
+            if (grdDatasets.SelectedItem != null)
+            {
+                var newDS = ((DatasetConfig) grdDatasets.SelectedItem).Clone();
+                newDS.Name += "_" + (ProtokollerConfiguration.ActualConfigInstance.Datasets.Count + 1);
+                ProtokollerConfiguration.ActualConfigInstance.Datasets.Add(newDS);
+                ProtokollerConfiguration.ReReferenceProtokollerConfiguration(ProtokollerConfiguration.ActualConfigInstance);
+            }            
+        }                          
     }
 }

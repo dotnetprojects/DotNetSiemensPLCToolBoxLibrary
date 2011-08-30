@@ -10,7 +10,7 @@
              xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
              xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
              mc:Ignorable="d" 
-             d:DesignHeight="426" d:DesignWidth="765" Name="myControl">
+             d:DesignHeight="426" d:DesignWidth="806" Name="myControl">
     
     <UserControl.Resources>
         <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
@@ -239,5 +239,6 @@
         <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="12,0,0,12" Name="cmdAddDataset" VerticalAlignment="Bottom" Width="53" Click="cmdAddDataset_Click" />
         <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="118,0,0,12" Name="cmdRemoveDataset" VerticalAlignment="Bottom" Width="53" Click="cmdRemoveDataset_Click" />
         <Rectangle HorizontalAlignment="Left" Margin="176,5,0,5" Name="rectangle2" Stroke="Black" Width="2" Fill="Black" />
+        <Button Content="Copy" Height="23" HorizontalAlignment="Left" Margin="71,0,0,12" Name="cmdCopyDataset" VerticalAlignment="Bottom" Width="41" Click="cmdCopyDataset_Click" />
     </Grid>
 </UserControl>
