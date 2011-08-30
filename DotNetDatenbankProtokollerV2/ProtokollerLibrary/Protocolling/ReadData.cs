@@ -26,6 +26,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 if (usedConnection.Connection.GetType() == typeof(LibNoDaveConfig))
                 {                   
                     PLCConnection plcConn = (PLCConnection)activConnections[usedConnection.Connection];
+                    
+                    //if (usedConnection.Connection is LibNoDaveConfig)                    
+                    //    if (!((LibNoDaveConfig)usedConnection.Connection).StayConnected)
+                    //        plcConn.Connect();
+                    if (!plcConn.Connected)
+                        plcConn.Connect();
+
                     if (plcConn.Connected)
                     {
                         plcConn.ReadValues(tags);
@@ -37,6 +44,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                 else
                                     throw new Exception("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress);
                         }
+
+                        if (usedConnection.Connection is LibNoDaveConfig)
+                            if (!((LibNoDaveConfig)usedConnection.Connection).StayConnected)
+                                plcConn.Disconnect();
+                    
                     }
                     else
                     {

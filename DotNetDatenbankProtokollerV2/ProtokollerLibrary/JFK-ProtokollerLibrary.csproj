@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\AdditionalDlls\C5.dll</HintPath>
+    </Reference>
     <Reference Include="ExcelLibrary">
       <HintPath>..\AdditionalDlls\ExcelLibrary.dll</HintPath>
     </Reference>
@@ -54,6 +57,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Quartz">
+      <HintPath>..\AdditionalDlls\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -90,6 +96,7 @@
     <Compile Include="Common\Logging.cs" />
     <Compile Include="Protocolling\ReadData.cs" />
     <Compile Include="Protocolling\ProtokollerInstance.cs" />
+    <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />

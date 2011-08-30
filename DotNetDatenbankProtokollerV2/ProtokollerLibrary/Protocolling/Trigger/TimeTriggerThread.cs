@@ -10,7 +10,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
 {
-    class TimeTriggerThread:IDisposable
+    internal class TimeTriggerThread:IDisposable
     {
         private IDBInterface dbInterface;
         private DatasetConfig datasetConfig;

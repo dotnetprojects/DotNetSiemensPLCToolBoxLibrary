@@ -32,6 +32,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             }
         }
 
+        private bool _stayConnected = true;
+        [System.ComponentModel.Description("If set to false, after every Read Request, the Connection will be closed!")]        
+        public bool StayConnected
+        {
+            get { return _stayConnected; }
+            set { _stayConnected = value; }
+        }
+
         public override string ToString()
         {
             return Configuration.ToString();

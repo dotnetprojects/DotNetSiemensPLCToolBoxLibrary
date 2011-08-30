@@ -61,7 +61,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         {
                             PLCConnection plcConn = ConnectionList[connectionConfig] as PLCConnection;
                             TCPFunctions tcpipFunc = ConnectionList[connectionConfig] as TCPFunctions;
-                            if (plcConn != null && !plcConn.Connected)
+                            if (plcConn != null && !plcConn.Connected && ((LibNoDaveConfig) connectionConfig).StayConnected)
                             {
                                 try
                                 {
@@ -101,6 +101,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     try
                     {
                         tmpConn.Connect();
+                        if (!plcConnConf.StayConnected)
+                            tmpConn.Disconnect();
                     }
                     catch (Exception ex)
                     {
@@ -177,6 +179,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger)
                     {
                         TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                        tmpTrigger.StartTrigger();
+                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
+                        myDisposables.Add(tmpTrigger);
+                    }
+                    else if (datasetConfig.Trigger == DatasetTriggerType.Quartz_Trigger)
+                    {
+                        QuartzTriggerThread tmpTrigger = new QuartzTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
                         tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
                         myDisposables.Add(tmpTrigger);

@@ -64,7 +64,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _name = value; NotifyPropertyChanged("Name"); }
         }
 
-        
+        #region Time Trigger        
         private TimeSpan _triggerTimeSpan;
         [XmlIgnore]
         public TimeSpan TriggerTimeSpan
@@ -78,14 +78,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             get { return _triggerTimeSpan.Ticks; }
             set { _triggerTimeSpan = new TimeSpan(value); }
         }
+        #endregion
 
-        private DatasetTriggerType _trigger;
-        public DatasetTriggerType Trigger
-        {
-            get { return _trigger; }
-            set { _trigger = value; NotifyPropertyChanged("Trigger"); }
-        }
-
+        #region Tag Handshake Trigger
         private PLCTag _triggerReadBit;
         public PLCTag TriggerReadBit
         {
@@ -106,5 +101,26 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             get { return _triggerconnection; }
             set { _triggerconnection = value; NotifyPropertyChanged("TriggerConnection"); }
         }
+        #endregion
+
+        #region Quartz Trigger
+
+        private string _cronTab;
+        public string CronTab
+        {
+            get { return _cronTab; }
+            set { _cronTab = value; }
+        }
+
+        #endregion
+        
+        private DatasetTriggerType _trigger;
+        public DatasetTriggerType Trigger
+        {
+            get { return _trigger; }
+            set { _trigger = value; NotifyPropertyChanged("Trigger"); }
+        }
+
+        
     }
 }

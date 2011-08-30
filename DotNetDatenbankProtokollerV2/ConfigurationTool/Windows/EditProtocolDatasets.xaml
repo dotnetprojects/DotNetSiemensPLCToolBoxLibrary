@@ -18,6 +18,7 @@
 
         <WPF1:IntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0"></WPF1:IntToVisibilityConverter>
         <WPF1:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1"></WPF1:IntToVisibilityConverter>
+        <WPF1:IntToVisibilityConverter x:Key="VisConv3Visible" VisibleValue="3"></WPF1:IntToVisibilityConverter>
         
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="dtrigger">
             <ObjectDataProvider.MethodParameters>
@@ -48,7 +49,7 @@
 
         <DataGrid IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
                   ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}"
-                  AutoGenerateColumns="False" Margin="184,214,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+                  AutoGenerateColumns="False" Margin="184,239,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"></EventSetter>
@@ -163,9 +164,9 @@
         </DataGrid>
         
         <Button IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
-                Content="Add" Margin="183,185,0,0" Name="cmdAddDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdAddDatasetRow_Click" />
+                Content="Add" Margin="186,210,0,0" Name="cmdAddDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdAddDatasetRow_Click" />
         <Button IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
-                Content="Remove" Margin="247,185,0,0" Name="cmdRemoveDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdRemoveDatasetRow_Click" />
+                Content="Remove" Margin="247,210,0,0" Name="cmdRemoveDatasetRow" HorizontalAlignment="Left" Width="53" Height="23" VerticalAlignment="Top" Click="cmdRemoveDatasetRow_Click" />
         <Label IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Content="Trigger-Type" HorizontalAlignment="Left" Margin="183,76,0,0" Width="91" Height="26" VerticalAlignment="Top" Padding="0" VerticalContentAlignment="Center" />
         <ComboBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
                   ItemsSource="{Binding Source={StaticResource dtrigger}}"
@@ -202,11 +203,24 @@
         <GroupBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Header="Time-Trigger" Height="73" Margin="184,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="285" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv0Visible}}">
             <Grid>
                 <Label HorizontalAlignment="Left" Width="109" Height="19" VerticalAlignment="Top" Margin="1,3,0,0" Padding="1" Content="Trigger Interval:"></Label>
-                <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="145,18,0,0" Name="textBox1" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerTimeSpan}" VerticalAlignment="Top" Width="122" />
+                <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="145,18,0,0" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerTimeSpan}" VerticalAlignment="Top" Width="122" />
                 <Label Content="(hh:mm:ss.ms)" Height="19" HorizontalAlignment="Left" Margin="16,25,0,0" Padding="1" VerticalAlignment="Top" Width="94" />
             </Grid>
         </GroupBox>
 
+        <GroupBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Header="Quartz-Trigger" Height="99" Margin="184,105,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="560" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv3Visible}}">
+            <Grid>
+                <Label HorizontalAlignment="Left" Width="109" Height="19" VerticalAlignment="Top" Margin="1,3,0,0" Padding="1" Content="Cron Tabelle"></Label>
+                <TextBox BorderBrush="Black" Height="50" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="6,20,0,0" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.CronTab}" VerticalAlignment="Top" Width="211" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" />
+                <TextBlock Height="58" HorizontalAlignment="Left" Margin="223,11,0,0" Text="Trigger anhand eine Cron Tabelle. Infos was man eingeben kann gibts hier:" VerticalAlignment="Top" Width="301" TextWrapping="Wrap" />
+
+
+                <TextBlock Margin="223,54,24,6">
+                    <Hyperlink WPF1:HyperlinkUtility.LaunchDefaultBrowser="True" NavigateUri="http://quartznet.sourceforge.net/tutorial/lesson_6.html">http://quartznet.sourceforge.net/tutorial/lesson_6.html</Hyperlink>
+                </TextBlock>
+            </Grid>
+        </GroupBox>
+        
         <TextBox IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
                  Text="{Binding ElementName=grdDatasets, Path=SelectedItem.Name}"
                  Height="26" HorizontalAlignment="Left" Margin="266,12,0,0" VerticalAlignment="Top" Width="179" BorderBrush="Black" Name="txtTableName" KeyUp="txt_Enter_ValueUpdater" />
