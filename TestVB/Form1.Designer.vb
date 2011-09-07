@@ -28,6 +28,8 @@ Partial Class Form1
         Me.cmdReadMulti = New System.Windows.Forms.Button()
         Me.cmdStopPLC = New System.Windows.Forms.Button()
         Me.cmdDiagPuffer = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'cmdReadMW100
@@ -84,11 +86,29 @@ Partial Class Form1
         Me.cmdDiagPuffer.Text = "Diagnosepuffer"
         Me.cmdDiagPuffer.UseVisualStyleBackColor = True
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(232, 55)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(108, 27)
+        Me.Button1.TabIndex = 2
+        Me.Button1.Text = "Adresse Auslesen"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(151, 29)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(189, 20)
+        Me.TextBox1.TabIndex = 3
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(361, 414)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.cmdDiagPuffer)
         Me.Controls.Add(Me.cmdStopPLC)
         Me.Controls.Add(Me.cmdWriteMW100)
@@ -98,6 +118,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents cmdReadMW100 As System.Windows.Forms.Button
@@ -106,5 +127,7 @@ Partial Class Form1
     Friend WithEvents cmdReadMulti As System.Windows.Forms.Button
     Friend WithEvents cmdStopPLC As System.Windows.Forms.Button
     Friend WithEvents cmdDiagPuffer As System.Windows.Forms.Button
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
 
 End Class

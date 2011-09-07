@@ -110,7 +110,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     TcpListener server = new TcpListener(local_ip, connection_port);
                     server.Start();
-
+                    
                     tcpClient = null;
                     tcpClient = server.AcceptTcpClient();
 

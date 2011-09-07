@@ -1,10 +1,7 @@
-﻿Postgres Support
-Database Browser Functionality (Fwd, Backwd, SQL) (Auto Add Limit)
-MySQl Support
-MsSQL Support
+﻿MsSQL Support
 FireBird Support
-TCP/IP with multiple Telegramms
 MDB/ACCDB Support
 ODBC Support
 DBF RW Support
 Oracle ??
+Ingres db??

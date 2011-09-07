@@ -88,7 +88,6 @@
     <Compile Include="Databases\StorageHelper.cs" />
     <Compile Include="Databases\Interfaces\IDBInterface.cs" />
     <None Include="Databases\MsSQL\db_mssql.cs" />
-    <None Include="Databases\MySQL\db_mysql.cs" />
     <None Include="Databases\ODBC\db_odbc.cs" />
     <Compile Include="Databases\Interfaces\IDBViewable.cs" />
     <Compile Include="Databases\SQLite\SQLLiteStorage.cs" />
@@ -102,6 +101,7 @@
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
     <Compile Include="StaticServiceConfig.cs" />
     <Compile Include="TCPIP\TCPFunctions.cs" />
+    <Compile Include="TCPIP\TCPFunctionsAsync.cs" />
     <Compile Include="Protocolling\Trigger\PLCTagTriggerThread.cs" />
     <Compile Include="ProtokollerConfiguration.cs" />
     <Compile Include="SettingsClasses\Connections\ConnectionConfig.cs" />

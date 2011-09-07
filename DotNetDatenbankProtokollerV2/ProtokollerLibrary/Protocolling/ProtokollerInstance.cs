@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
@@ -114,11 +115,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 else if (tcpipConnConf != null)
                 {
                     //todo: legth of tcp conn
-                    TCPFunctions tmpConn = new TCPFunctions(new SynchronizationContext(), tcpipConnConf.IPasIPAddres, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, 0);
+                    //TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddres, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, 0);
                     
-                    tmpConn.Connect();
+                    //tmpConn.Connect();
                     
-                    ConnectionList.Add(connectionConfig, tmpConn);
+                    //ConnectionList.Add(connectionConfig, tmpConn);
                 }
             }            
 
@@ -173,26 +174,40 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     {
                         PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
+                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         myDisposables.Add(tmpTrigger);
                     }
                     else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger)
                     {
                         TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
+                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         myDisposables.Add(tmpTrigger);
                     }
                     else if (datasetConfig.Trigger == DatasetTriggerType.Quartz_Trigger)
                     {
                         QuartzTriggerThread tmpTrigger = new QuartzTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
                         tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
+                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         myDisposables.Add(tmpTrigger);
                     }
                     else if (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
                     {
+                        TCPIPConfig tcpipConnConf = datasetConfig.TriggerConnection as TCPIPConfig;
 
+                        tcpipConnConf.MultiTelegramme = tcpipConnConf.MultiTelegramme <= 0 ? 1 : tcpipConnConf.MultiTelegramme;
+                        
+                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddres, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
+                        tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                        tmpConn.TelegrammRecievedSend += (bytes) =>
+                                                             {
+                                                                 IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(datasetConfig.DatasetConfigRows, bytes, StartedAsService);
+                                                                 if (values != null)
+                                                                     akDBInterface.Write(values);
+                                                             };
+                        
+                        tmpConn.Connect();
+                        ConnectionList.Add(tcpipConnConf, tmpConn);
                     }
             }
         }

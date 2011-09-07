@@ -241,7 +241,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else
                     _LibNoDaveDataType = value;
-                NotifyPropertyChanged("LibNoDaveDataType"); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("DataTypeStringFormat"); 
+                NotifyPropertyChanged("LibNoDaveDataType");
+                NotifyPropertyChanged("S7FormatAddress");
+                NotifyPropertyChanged("DataTypeStringFormat");
+                NotifyPropertyChanged("ReadByteSize");
             }
         }
         
@@ -291,9 +294,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         public int ArraySize
         {
-            get { return _arraySize; }
-            set { _arraySize = value == 0 ? 1 : value;
-            NotifyPropertyChanged("ArraySize"); NotifyPropertyChanged("S7FormatAddress"); 
+            get
+            {
+                if (LibNoDaveDataType== TagDataType.String || LibNoDaveDataType==TagDataType.CharArray|| LibNoDaveDataType==TagDataType.ByteArray)
+                    return _arraySize; 
+                return 1;
+            }
+            set
+            {
+                _arraySize = value == 0 ? 1 : value;
+                NotifyPropertyChanged("ArraySize");
+                NotifyPropertyChanged("S7FormatAddress");
+                NotifyPropertyChanged("ReadByteSize");
             }
         }
 
@@ -470,7 +482,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return ret.ToString();
             }
 
-            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); }
+            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("ReadByteSize"); }
         }
 
         public string GetControlValueAsString()
@@ -1196,6 +1208,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
                         break;
                 }
+        }
+
+        /// <summary>
+        /// This Parses the PLCTag From a Byte Array
+        /// this is used, when the Tag is not Read via my Functions, but the PLCTags are used as Wrapper
+        /// </summary>
+        /// <param name="buff"></param>
+        /// <param name="startpos"></param>
+        public void ParseValueFromByteArray(byte[] buff, int startpos)
+        {
+            _readValueFromBuffer(buff, 0);
         }
 
         internal virtual void _readValueFromBuffer(byte[] buff, int startpos)

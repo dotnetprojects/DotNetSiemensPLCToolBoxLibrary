@@ -11,7 +11,33 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
     static class ReadData
-    {               
+    {       
+        public static int GetCountOfBytesToRead(IEnumerable<DatasetConfigRow> datasetConfigRows)
+        {
+            int cntBytes = 0;
+
+            foreach (var itm in datasetConfigRows)
+                cntBytes += itm.PLCTag.ReadByteSize;
+
+            return cntBytes;
+        }
+
+        public static IEnumerable<object> ReadDataFromByteBuffer(IEnumerable<DatasetConfigRow> datasetConfigRows, byte[] bytes, bool StartedAsService)
+        {
+            int pos = 0;
+
+            foreach (var itm in datasetConfigRows)
+            {
+                itm.PLCTag.ParseValueFromByteArray(bytes, pos);
+                pos += itm.PLCTag.ReadByteSize;
+            }
+
+            var values = from n in datasetConfigRows
+                         select n.PLCTag.Value;
+
+            return values;
+        }
+
         public static IEnumerable<object> ReadDataFromPLCs(IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
             var usedConnections = from n in datasetConfigRows

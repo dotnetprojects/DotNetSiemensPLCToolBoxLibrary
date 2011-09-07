@@ -18,8 +18,11 @@
 
         <WPF1:IntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0"></WPF1:IntToVisibilityConverter>
         <WPF1:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1"></WPF1:IntToVisibilityConverter>
+        <WPF1:IntToVisibilityConverter x:Key="VisConv2Visible" VisibleValue="2"></WPF1:IntToVisibilityConverter>
         <WPF1:IntToVisibilityConverter x:Key="VisConv3Visible" VisibleValue="3"></WPF1:IntToVisibilityConverter>
-        
+
+        <WPF1:IntToHiddenConverter x:Key="VisConv2Hidden" HiddenValue="2" />
+
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="dtrigger">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="Datasets:DatasetTriggerType"></x:Type>
@@ -47,7 +50,8 @@
             </DataGrid.Columns>
         </DataGrid>       
 
-        <DataGrid IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
+        <DataGrid IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
+                  Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Hidden}}"
                   ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}"
                   AutoGenerateColumns="False" Margin="184,239,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
             <DataGrid.Resources>
@@ -240,5 +244,116 @@
         <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="118,0,0,12" Name="cmdRemoveDataset" VerticalAlignment="Bottom" Width="53" Click="cmdRemoveDataset_Click" />
         <Rectangle HorizontalAlignment="Left" Margin="176,5,0,5" Name="rectangle2" Stroke="Black" Width="2" Fill="Black" />
         <Button Content="Copy" Height="23" HorizontalAlignment="Left" Margin="71,0,0,12" Name="cmdCopyDataset" VerticalAlignment="Bottom" Width="41" Click="cmdCopyDataset_Click" />
+        <GroupBox Header="Connection" Height="73" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="184,105,0,0" VerticalAlignment="Top" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}" Width="390">
+            <Grid>
+                <Rectangle Height="270" HorizontalAlignment="Left" Margin="-6,-112,0,0" Name="rectangle3" Stroke="Black" VerticalAlignment="Top" Width="0" />
+                <Label Content="Trigger Connection:" Height="19" HorizontalAlignment="Left" Margin="76,6,0,0" Padding="1" VerticalAlignment="Top" Width="114" />
+                <ComboBox Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" Margin="104,23,0,0" Name="comboBox1" SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerConnection}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="114">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}" Margin="184,239,12,12" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Database-Field" IsReadOnly="False" SortMemberPath="DatabaseField" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding DatabaseField, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseField}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Database-Fieldtype" IsReadOnly="False" SortMemberPath="DatabaseFieldType" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=GetGrdDatsetsObject.SelectedItem.Storage.DatabaseFieldTypes}" Margin="0" Padding="0" SelectedItem="{Binding DatabaseFieldType}" VerticalAlignment="Top">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="3,0,0,0" Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseFieldType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Database-Fieldsize" IsReadOnly="False" SortMemberPath="DatabaseFieldSize" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding DatabaseFieldSize, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DatabaseFieldSize}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="PLC-Value Size" IsReadOnly="False" SortMemberPath="PLCTag.ArraySize" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <Button Click="cmdSelectBitFromProjectInDataRowsList_Click" Content="P" DockPanel.Dock="Right" HorizontalAlignment="Left" Name="cmdSelectBitFromProjectInDataRowsList" />
+                                <Button Click="cmdEditBitInDataRowsList_Click" Content="..." DockPanel.Dock="Right" HorizontalAlignment="Left" Name="cmdEditBitInDataRowsList" />
+                                <TextBox Margin="0" Padding="0" Text="{Binding PLCTag.ArraySize, Mode=TwoWay}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.S7FormatAddress}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="PLC-Value Type" IsReadOnly="False" SortMemberPath="PLCTag.LibNoDaveDataType" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource tagdatatype}}" Margin="0" Padding="0" SelectedItem="{Binding PLCTag.LibNoDaveDataType}" VerticalAlignment="Top">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="3,0,0,0" Text="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.LibNoDaveDataType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="PLC-Value Type" IsReadOnly="False" SortMemberPath="PLCTag.LibNoDaveDataType" Width="Auto">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown" />
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 </UserControl>
