@@ -114,7 +114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             if (initalizationString.Contains(","))
             {
-                string[] values = initalizationString.Split();
+                string[] values = initalizationString.Split(',');
                 this.ValueName = values[0];
                 this.ChangeAddressFromString(values[1]);
                 if (values.Length > 1)
