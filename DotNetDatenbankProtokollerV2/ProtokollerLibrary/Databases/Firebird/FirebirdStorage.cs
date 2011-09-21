@@ -237,6 +237,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                     {
                         return false;
                     }
+                    myDBConn.ChangeDatabase(myConfig.Database);
                 }
                 else
                 {

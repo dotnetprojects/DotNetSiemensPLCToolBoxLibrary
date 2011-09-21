@@ -27,6 +27,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases
                 return new PostgreSQLStorage();
             else if (cfg.Storage is MySQLConfig)
                 return new MySQLStorage();
+            else if (cfg.Storage is Excel2007Config)
+                return new Excel2007Storage();
             return null;
         }
     }

@@ -61,8 +61,24 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
             else
             {
-                tcpClient = new TcpClient(plc_ip.ToString(), connection_port);                
+                tcpClient = new TcpClient();
+                tcpClient.BeginConnect(local_ip, connection_port, new AsyncCallback(DoBeginnConnectCallback), tcpClient);
+            }
+        }
+
+        public void DoBeginnConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                var tcpc = (TcpClient)ar.AsyncState;
+                tcpc.EndConnect(ar);
+
                 beginRead();
+            }
+            catch (Exception ex)
+            {
+                if (AsynchronousExceptionOccured != null)
+                    AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
             }
         }
 
@@ -72,6 +88,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             {
                 TcpListener listener = (TcpListener) ar.AsyncState;
                 tcpClient = listener.EndAcceptTcpClient(ar);
+
+                //Multiple Clients may Connect???
+                //tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), listener);
 
                 beginRead();
             }

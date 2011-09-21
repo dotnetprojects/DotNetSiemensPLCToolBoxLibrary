@@ -34,6 +34,9 @@
     <Reference Include="C5">
       <HintPath>..\AdditionalDlls\C5.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\AdditionalDlls\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="ExcelLibrary">
       <HintPath>..\AdditionalDlls\ExcelLibrary.dll</HintPath>
     </Reference>
@@ -79,6 +82,7 @@
     <Compile Include="Common\SerializeToString.cs" />
     <Compile Include="Common\WPF\NullToFalseConverter.cs" />
     <Compile Include="Common\XMLReferenceSerializer.cs" />
+    <Compile Include="Databases\Excel2007\Excel2007Storage.cs" />
     <Compile Include="Databases\CSVFile\CSVStorage.cs" />
     <Compile Include="Databases\Excel\ExcelStorage.cs" />
     <Compile Include="Databases\Firebird\FirebirdStorage.cs" />
@@ -97,6 +101,7 @@
     <Compile Include="Protocolling\ProtokollerInstance.cs" />
     <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />
+    <Compile Include="SettingsClasses\Storage\Excel2007Config.cs" />
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
     <Compile Include="StaticServiceConfig.cs" />

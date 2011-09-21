@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:WPG="clr-namespace:WPG;assembly=WPG" xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary" mc:Ignorable="d" 
-             d:DesignHeight="348" d:DesignWidth="508">
+             d:DesignHeight="427" d:DesignWidth="508">
     <Grid>
         <Button Content="Add CSV Storage" Margin="0,12,12,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="147" Name="cmdAddCSVStorage" Click="cmdAddCSVStorage_Click" />
         <Button Content="Add SQLite Storage" HorizontalAlignment="Right" Margin="0,43,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddSQLiteStorage" Click="cmdAddSQLiteStorage_Click" />
@@ -40,5 +40,8 @@
             <GridSplitter Grid.Row="0" Height="3" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
         </Grid>
         <Button Content="Add Excel Storage" Height="25" HorizontalAlignment="Right" Margin="0,74,12,0" Name="cmdAddExcelStorage" VerticalAlignment="Top" Width="147" Click="cmdAddExcelStorage_Click" />
+        <Button Content="Add Excel 2007 Storage" Height="25" HorizontalAlignment="Right" Margin="0,229,12,0" Name="cmdAddExcel2007Storage" VerticalAlignment="Top" Width="147" Click="cmdAddExcel2007Storage_Click" />
+        <Button Content="Add Firebird Storage" Height="25" HorizontalAlignment="Right" IsEnabled="False" Margin="0,260,12,0" Name="button1" VerticalAlignment="Top" Visibility="Visible" Width="147" />
+        <Button Content="Add Ingres Storage" Height="25" HorizontalAlignment="Right" IsEnabled="False" Margin="0,291,12,0" Name="button2" VerticalAlignment="Top" Visibility="Visible" Width="147" />
     </Grid>
 </UserControl>

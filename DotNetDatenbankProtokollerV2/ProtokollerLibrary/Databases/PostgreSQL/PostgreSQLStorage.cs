@@ -281,6 +281,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                     {
                         return false;
                     }
+                    myDBConn.ChangeDatabase(myConfig.Database);
                 }
                 else
                 {

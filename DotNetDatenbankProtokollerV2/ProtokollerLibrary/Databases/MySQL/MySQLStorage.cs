@@ -283,6 +283,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                     {
                         return false;
                     }
+                    myDBConn.ChangeDatabase(myConfig.Database);
                 }
                 else
                 {
