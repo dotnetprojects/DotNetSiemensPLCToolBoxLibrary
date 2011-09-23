@@ -11,7 +11,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             get { return _ip; }
             set { _ip = value; NotifyPropertyChanged("IP"); }
         }
-        public IPAddress IPasIPAddres { get { return IPAddress.Parse(_ip); } }
+        public IPAddress IPasIPAddress { get { return IPAddress.Parse(_ip); } }
 
 
         private int _port = 2000;
