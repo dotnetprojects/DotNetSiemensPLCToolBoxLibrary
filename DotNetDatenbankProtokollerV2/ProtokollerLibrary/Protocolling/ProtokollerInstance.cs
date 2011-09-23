@@ -197,7 +197,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                         tcpipConnConf.MultiTelegramme = tcpipConnConf.MultiTelegramme <= 0 ? 1 : tcpipConnConf.MultiTelegramme;
                         
-                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddres, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
+                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         tmpConn.TelegrammRecievedSend += (bytes) =>
                                                              {
