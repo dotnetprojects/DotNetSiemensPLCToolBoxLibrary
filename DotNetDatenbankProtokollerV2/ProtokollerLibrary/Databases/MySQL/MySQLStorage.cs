@@ -299,6 +299,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
             for (int n = 0; n < _maxAdd; n++)
             //foreach (IEnumerable<object> values in _intValueList)
             {
+                myCmd.Parameters.Clear();
+
                 IEnumerable<object>  values = _intValueList[n];
 
 
@@ -321,8 +323,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                 nomol:
                 try
                 {
-                    myCmd.ExecuteNonQuery();
-                    myCmd.Parameters.Clear();
+                    myCmd.ExecuteNonQuery();                    
                 }
                 catch (System.Data.SQLite.SQLiteException ex)
                 {

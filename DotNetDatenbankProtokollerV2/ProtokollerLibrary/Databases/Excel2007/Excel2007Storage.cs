@@ -11,7 +11,7 @@ using OfficeOpenXml;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 {
-    public class Excel2007Storage : IDBInterface, IDBViewable
+    public class Excel2007Storage : IDBInterface
     {
         private Excel2007Config myConfig;
         //private IEnumerable<DatasetConfigRow> fieldList;
@@ -65,18 +65,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             }
             if (akWorksheet == null)
             {
-                akWorksheet = new ExcelWorksheet(TableName);
-                workbook.Worksheets.Add(akWorksheet);
+                akWorksheet = workbook.Worksheets.Add(TableName);
             }
 
-            int n = 0;
+            int n = 1;
+            
             foreach (DatasetConfigRow myFeld in datasetConfig.DatasetConfigRows)
             {
-                akWorksheet.Cells[0, n].Value = myFeld.DatabaseField;
+               
+                akWorksheet.Cells[1, n].Value = myFeld.DatabaseField;
                 n++;
             }
 
-            workbook.Save(FileName);
             ep.Save();
             ep.Dispose();
         }
@@ -143,30 +143,46 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
         }
 
 
-
+        private int zeile = 0;
+            
         public bool _internal_Write()
         {
 
+            ExcelPackage ep;
+            ep = new ExcelPackage(new FileInfo(FileName));
+            var workbook = ep.Workbook;
 
-            Workbook workbook;
-            if (File.Exists(FileName))
-                workbook = Workbook.Load(FileName);
-            else
-                workbook = new Workbook();
 
-            Worksheet akWorksheet = null;
-            foreach (Worksheet worksheet in workbook.Worksheets)
+            ExcelWorksheet akWorksheet = null;
+            foreach (ExcelWorksheet worksheet in workbook.Worksheets)
             {
                 if (worksheet.Name == TableName)
                     akWorksheet = worksheet;
             }
             if (akWorksheet == null)
             {
-                akWorksheet = new Worksheet(TableName);
-                workbook.Worksheets.Add(akWorksheet);
+                akWorksheet = workbook.Worksheets.Add(TableName);
             }
 
-            int zeile = akWorksheet.Cells.Rows.Count;
+
+            if (zeile <= 0)
+            {
+                while (true)
+                {
+                    zeile++;
+                    try
+                    {
+                        if (string.IsNullOrEmpty(akWorksheet.Cells[zeile, 1].Value.ToString()))
+                            break;
+                    }
+                    catch (Exception ex)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+                zeile++;
             //for (; zeile < akWorksheet.Cells.Rows.Count; zeile++)
             //{
             //    if (akWorksheet.Cells[0, zeile] == null)
@@ -181,7 +197,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 
                 IEnumerable<object> values = _intValueList[n];
 
-                int spalte = 0;
+                int spalte = 1;
                 foreach (object akValue in values)
                 {
                     if (akValue is DateTime)
@@ -189,20 +205,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 
                         if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
                             DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Date)
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"YYYY\-MM\-DD");
+                            akWorksheet.Cells[zeile, spalte].Value = akValue;
                         else if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
                                  DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.TimeOfDay)
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"hh:mm:ss");
+                            akWorksheet.Cells[zeile, spalte].Value = akValue;
                         else
-                            akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"YYYY\-MM\-DD·hh:mm:ss");
+                            akWorksheet.Cells[zeile, spalte].Value = akValue;
                     }
                     else if (akValue is Int16 || akValue is Int32 || akValue is Int64 || akValue is UInt16 ||
                              akValue is UInt32 || akValue is UInt64 || akValue is Byte || akValue is SByte)
-                        akWorksheet.Cells[zeile, spalte] = new Cell(akValue);
+                        akWorksheet.Cells[zeile, spalte].Value = akValue;
                     else if (akValue is Single)
-                        akWorksheet.Cells[zeile, spalte] = new Cell(((Single) akValue).ToString(), @"0,00E+00");
+                        akWorksheet.Cells[zeile, spalte].Value = akValue;
                     else
-                        akWorksheet.Cells[zeile, spalte] = new Cell(akValue.ToString());
+                        akWorksheet.Cells[zeile, spalte].Value = akValue;
 
                     spalte++;
                 }
@@ -210,8 +226,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 zeile++;
             }
 
-            workbook.Save(FileName);
-
+            ep.Save();
             return true;
         }
 
@@ -220,76 +235,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             if (myThread != null)
                 myThread.Abort();
         }
-
-        
-        #region IDBViewable
-
-        public DataTable ReadData(DatasetConfig datasetConfig, long Start, int Count)
-        {
-            try
-            {
-                Workbook workbook = Workbook.Load(FileName);
-
-                Worksheet akWorksheet = null;
-                foreach (Worksheet worksheet in workbook.Worksheets)
-                {
-                    if (worksheet.Name == datasetConfig.Name)
-                        akWorksheet = worksheet;
-                }
-
-                if (akWorksheet != null)
-                {
-                    int fieldCount = akWorksheet.Cells.LastColIndex;
-
-
-                    DataTable tbl = new DataTable();
-                    int n = 0;
-                    
-                    for (int i = 0; i <= fieldCount; i++)
-                        tbl.Columns.Add(akWorksheet.Cells[0, i].StringValue);
-
-
-                    for (int j =(int) Start+1; j < Start + Count; j++)
-                    {
-                        if (j < akWorksheet.Cells.Rows.Count)
-                        {
-                            string[] values = new string[fieldCount+1];
-                            for (int i = 0; i <= fieldCount; i++)
-                                values[i] = akWorksheet.Cells[j, i].StringValue;
-                            tbl.Rows.Add(values);
-                        }
-                        n++;
-                    }
-                    return tbl;
-                }
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return null;
-        }
-
-        public Int64 ReadCount(DatasetConfig datasetConfig)
-        {
-            if (File.Exists(FileName))
-            {
-                Workbook workbook = Workbook.Load(FileName);
-
-                Worksheet akWorksheet = null;
-                foreach (Worksheet worksheet in workbook.Worksheets)
-                {
-                    if (worksheet.Name == datasetConfig.Name)
-                        akWorksheet = worksheet;
-                }
-                if (akWorksheet != null)
-                {
-                    return akWorksheet.Cells.Rows.Count;
-                }
-
-            }
-            return 0;
-        }
-        #endregion         
+               
     }
 }

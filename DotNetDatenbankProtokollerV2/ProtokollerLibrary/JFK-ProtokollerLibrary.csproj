@@ -101,6 +101,7 @@
     <Compile Include="Protocolling\ProtokollerInstance.cs" />
     <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />
+    <Compile Include="SettingsClasses\Connections\TCPIPProxyConfig.cs" />
     <Compile Include="SettingsClasses\Storage\Excel2007Config.cs" />
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
