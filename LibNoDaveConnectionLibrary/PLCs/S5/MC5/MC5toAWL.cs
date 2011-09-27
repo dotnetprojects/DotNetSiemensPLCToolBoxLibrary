@@ -95,7 +95,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     if (commentBlock[nr + 1] == 0x00)
                     {
                         netzwnr = zeile;
-                        if (retVal.Networks.Count>netzwnr - 1)
+                        if (retVal.Networks.Count>netzwnr - 1 && netzwnr>0)
                         {
                             ((S5FunctionBlockNetwork) retVal.Networks[netzwnr - 1]).Name = cmt;
                             commandLineNumerList.Clear();
