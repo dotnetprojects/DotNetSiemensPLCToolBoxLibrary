@@ -343,7 +343,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                             case (byte)'C': // String
                                 {
-                                    row[fieldIndex + 1] = Encoding.UTF7.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] {' '});
+
+                                    //row[fieldIndex + 1] = System.Text.Encoding.Default.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
+                                    row[fieldIndex + 1] = System.Text.Encoding.GetEncoding("Windows-1252").GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
+                                    //row[fieldIndex + 1] = System.Text.Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
                                     break;
                                 }
                             case (byte)'M': // Memo
