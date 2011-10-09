@@ -32,8 +32,8 @@ using System.Net;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
+//using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
+//using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -192,6 +192,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 20:   //AS511            
                     _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
                     break;
+#if !IPHONE
                 case 50:
                     _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
                     if (_fds.rfd.ToInt32() == -1)
@@ -200,6 +201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         throw new Exception("Error: " + libnodave.daveStrS7onlineError());
                     }
                     break;
+#endif
                 case 122:
                 case 123:
                 case 124:
@@ -314,7 +316,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             Connected = true;
         }
 
-
+		/*
         private Interface myIf;
         private Connection myConn;
         public void ConnectTestwithNewInterface()
@@ -385,6 +387,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             myConn = myIf.ConnectPlc(connConf);
         }
+        */
 
         public void PLCStop()
         {

@@ -6,14 +6,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
     public class DiagnosticEntry
     {
+#if IPHONE
+		private static System.Resources.ResourceManager _Resources;
+#else
         private static System.ComponentModel.ComponentResourceManager _Resources;
+#endif
+
+#if !IPHONE
         private System.ComponentModel.ComponentResourceManager _MyResource
-        {
+#else
+		private System.Resources.ResourceManager _MyResource
+#endif
+		{
             get
             {
                 if (_Resources == null)
+#if !IPHONE
                     _Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
-                return _Resources;
+#else
+					_Resources = new System.Resources.ResourceManager(typeof(DiagnosticEntry));			
+#endif
+				return _Resources;
             }
         }
 

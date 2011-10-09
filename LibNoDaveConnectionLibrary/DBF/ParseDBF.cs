@@ -345,9 +345,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                                 {
 
                                     //row[fieldIndex + 1] = System.Text.Encoding.Default.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-                                    row[fieldIndex + 1] = System.Text.Encoding.GetEncoding("Windows-1252").GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-                                    //row[fieldIndex + 1] = System.Text.Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-                                    break;
+#if !IPHONE            
+									row[fieldIndex + 1] = System.Text.Encoding.GetEncoding("Windows-1252").GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
+#else
+                                    row[fieldIndex + 1] = System.Text.Encoding.Default.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
+#endif
+								break;
                                 }
                             case (byte)'M': // Memo
                                 {
