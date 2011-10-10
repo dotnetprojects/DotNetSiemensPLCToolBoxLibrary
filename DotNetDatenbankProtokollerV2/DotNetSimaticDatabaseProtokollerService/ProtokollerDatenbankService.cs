@@ -31,7 +31,7 @@ namespace DotNetSimaticDatabaseProtokollerService
             }
             catch (Exception ex)
             {
-                Logging.LogText("Exception occured! " + ex.Message + "; " + ex.StackTrace, Logging.LogLevel.Error);
+                Logging.LogText("Exception occured! ",ex, Logging.LogLevel.Error);
             }
         }
 

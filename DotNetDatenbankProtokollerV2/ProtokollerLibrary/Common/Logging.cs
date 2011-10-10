@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Common
@@ -11,7 +12,27 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
 
         private static EventLog eventlog = new EventLog(StaticServiceConfig.Company, ".", StaticServiceConfig.MyServiceName + "Service");
 
-        public static EventLogEntryCollection LogEntries { get { return new EventLog(StaticServiceConfig.Company, ".", StaticServiceConfig.MyServiceName + "Service").Entries; } }            
+        public static EventLogEntryCollection LogEntries { get { return new EventLog(StaticServiceConfig.Company, ".", StaticServiceConfig.MyServiceName + "Service").Entries; } }
+
+        public static string LogText(string Message, Exception ex, LogLevel MessageLogLevel)
+        {
+            Message += "\r\n";
+            Message += "Message: " + ex.Message + "\r\n";
+            Message += "Stacktrace: " + ex.StackTrace + "\r\n";
+
+            Exception inner = ex.InnerException;
+            int i = 0;
+            while (inner != null)
+            {
+                i++;
+                Message += "Inner Exception (" + i.ToString() + ") :";
+                Message += "Message:" + inner.Message + "\r\n";
+                Message += "Stacktrace: " + ex.StackTrace + "\r\n";
+                inner = inner.InnerException;
+            }
+
+            return LogText(Message, MessageLogLevel);
+        }
 
         public static string LogText(string Message, LogLevel MessageLogLevel)
         {

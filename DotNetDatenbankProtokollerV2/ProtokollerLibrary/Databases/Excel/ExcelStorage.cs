@@ -122,7 +122,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                             if (ThreadExceptionOccured != null)
                                 ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
                             else
-                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
+                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);

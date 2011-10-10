@@ -74,7 +74,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
             {
                 if (ex.Number != 1007)
                 {
-                    Logging.LogText("Database could not be created. Storage: " + myConfig.Name + " Error:" + ex.Message, Logging.LogLevel.Error);
+                    Logging.LogText("Database could not be created. Storage: " + myConfig.Name, ex, Logging.LogLevel.Error);
                     throw ex;
                 }
             }
@@ -108,13 +108,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                     }
                     catch (Exception ex_ex)
                     {
-                        Logging.LogText("Database-table could not be created. Storage: " + myConfig.Name + ", Table: " + dataTable + ", Error:" + ex.Message, Logging.LogLevel.Error);
+                        Logging.LogText("Database-table could not be created. Storage: " + myConfig.Name + ", Table: " + dataTable, ex, Logging.LogLevel.Error);
                         throw ex_ex;
                     }
                 }
                 else
                 {
-                    Logging.LogText("Error accessing Table. Storage: " + myConfig.Name + " Error:" + ex.Message, Logging.LogLevel.Error);
+                    Logging.LogText("Error accessing Table. Storage: " + myConfig.Name, ex, Logging.LogLevel.Error);
                     throw ex;
                 }
             }            
@@ -245,7 +245,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                             if (ThreadExceptionOccured != null)
                                 ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
                             else
-                                Logging.LogText(ex.Message, Logging.LogLevel.Error);
+                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         }
 
                         _intValueList.RemoveRange(0, _maxAdd);

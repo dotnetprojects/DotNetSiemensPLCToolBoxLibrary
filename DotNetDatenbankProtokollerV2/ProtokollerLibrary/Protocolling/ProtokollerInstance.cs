@@ -75,7 +75,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logging.LogText("Connection: " + connectionConfig.Name + " Error: " + ex.Message, Logging.LogLevel.Warning);
+                                    Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
                                 }
                             }
                         }
@@ -107,7 +107,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogText("Connection: " + connectionConfig.Name + " Error:" + ex.Message, Logging.LogLevel.Warning);
+                        Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
                     }
 
                     ConnectionList.Add(connectionConfig, tmpConn);
@@ -224,7 +224,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
             else
             {
-                Logging.LogText("Exception occured! " + e.Exception.Message + "; " + e.Exception.StackTrace, Logging.LogLevel.Error);
+                Logging.LogText("Exception occured! ", e.Exception, Logging.LogLevel.Error);
                 //Dispose(); //Möglicherweise ein Restart hier rein??
             }
             
