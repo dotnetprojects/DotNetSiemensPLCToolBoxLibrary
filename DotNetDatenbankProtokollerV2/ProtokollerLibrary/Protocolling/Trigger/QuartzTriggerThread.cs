@@ -80,6 +80,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             }
             catch (ThreadAbortException ex)
             {
+                //ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+            }
+            catch (Exception ex)
+            {
                 ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
             }
         }

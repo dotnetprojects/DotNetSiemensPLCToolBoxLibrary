@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -67,9 +68,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                 {
                     if (triggerConn.Connected)
                     {
-                        //Read the Trigger Bit
-                        triggerConn.ReadValue(readBit);
-
+                        try
+                        {
+                            //Read the Trigger Bit
+                            triggerConn.ReadValue(readBit);
+                        }
+                        catch(Exception ex)
+                        {
+                            Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);                          
+                        }
                         //If the cycle counter is 0, switch to the slower interval (it means that no new data was there for a long time! ;-)
                         if (cycle_counter > 0)
                         {
@@ -89,7 +96,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                                 dbInterface.Write(values);
 
                                 quittBit.Value = true;
-                                triggerConn.WriteValue(quittBit);
+                                try
+                                {
+                                    triggerConn.WriteValue(quittBit);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logging.LogText("Error: Exception during WriteValue, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                }
                             }
                         }
                         else if (!(bool) readBit.Value)
@@ -98,7 +112,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             {
                                 alreadyWritten = false;
                                 quittBit.Value = false;
-                                triggerConn.WriteValue(quittBit);
+                                try
+                                {
+                                    triggerConn.WriteValue(quittBit);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logging.LogText("Error: Exception during WriteValue, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                }
                             }
                         }
                     }
@@ -107,6 +128,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                 }
             }
             catch (ThreadAbortException ex)
+            {
+                //ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+            }
+            catch (Exception ex)
             {
                 ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
             }

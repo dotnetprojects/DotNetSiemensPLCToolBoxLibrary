@@ -61,7 +61,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     if (plcConn.Connected)
                     {
-                        plcConn.ReadValues(tags);
+                        try
+                        {
+                            plcConn.ReadValues(tags);
+                        }
+                        catch(Exception ex)
+                        {
+                            Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                            return null;
+                        }
                         foreach (var plcTag in tags)
                         {
                             if (plcTag.ItemDoesNotExist)

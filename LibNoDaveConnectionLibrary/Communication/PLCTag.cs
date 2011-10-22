@@ -245,6 +245,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 NotifyPropertyChanged("S7FormatAddress");
                 NotifyPropertyChanged("DataTypeStringFormat");
                 NotifyPropertyChanged("ReadByteSize");
+                NotifyPropertyChanged("ArraySize");
             }
         }
         

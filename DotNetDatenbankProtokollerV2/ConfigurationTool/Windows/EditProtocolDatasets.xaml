@@ -305,15 +305,13 @@
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <DockPanel LastChildFill="True">
-                                <Button Click="cmdSelectBitFromProjectInDataRowsList_Click" Content="P" DockPanel.Dock="Right" HorizontalAlignment="Left" Name="cmdSelectBitFromProjectInDataRowsList" />
-                                <Button Click="cmdEditBitInDataRowsList_Click" Content="..." DockPanel.Dock="Right" HorizontalAlignment="Left" Name="cmdEditBitInDataRowsList" />
                                 <TextBox Margin="0" Padding="0" Text="{Binding PLCTag.ArraySize, Mode=TwoWay}" />
                             </DockPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding PLCTag.S7FormatAddress}" />
+                            <TextBlock Text="{Binding PLCTag.ArraySize}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -335,12 +333,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="PLC-Value Type" IsReadOnly="False" SortMemberPath="PLCTag.LibNoDaveDataType" Width="Auto">
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
+                <DataGridTemplateColumn Header="PLC-Read Byte Size" IsReadOnly="True" SortMemberPath="PLCTag.LibNoDaveDataType" Width="Auto">               
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
