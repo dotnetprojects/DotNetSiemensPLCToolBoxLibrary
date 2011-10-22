@@ -67,8 +67,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         }
                         catch(Exception ex)
                         {
-                            Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
-                            return null;
+                            if (StartedAsService)
+                            {
+                                Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                return null;
+                            }
+                            
+                            throw;
                         }
                         foreach (var plcTag in tags)
                         {

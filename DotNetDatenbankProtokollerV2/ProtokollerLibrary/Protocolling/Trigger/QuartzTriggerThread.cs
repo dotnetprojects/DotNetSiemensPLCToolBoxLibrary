@@ -84,7 +84,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             }
             catch (Exception ex)
             {
-                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                if (StartedAsService)
+                    ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                else
+                    throw;
             }
         }
 
