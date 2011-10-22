@@ -68,6 +68,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get { return _bitAddress; }
             set { _bitAddress = value;
+                _bitAddress = _bitAddress > 7 ? 7 : _bitAddress;
+                _bitAddress = _bitAddress < 0 ? 0 : _bitAddress;
+
             NotifyPropertyChanged("BitAddress"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }

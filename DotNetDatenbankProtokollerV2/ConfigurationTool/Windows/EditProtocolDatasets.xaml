@@ -53,7 +53,7 @@
         <DataGrid IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
                   Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Hidden}}"
                   ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}"
-                  AutoGenerateColumns="False" Margin="184,239,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+                  AutoGenerateColumns="False" Margin="184,239,12,12" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DataGridCell_PreviewMouseLeftButtonDown"></EventSetter>
@@ -257,7 +257,7 @@
                 </ComboBox>
             </Grid>
         </GroupBox>
-        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}" Margin="184,239,12,12" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}">
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}" Margin="184,239,12,12" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Database-Field" IsReadOnly="False" SortMemberPath="DatabaseField" Width="Auto">
                     <DataGridTemplateColumn.CellEditingTemplate>
