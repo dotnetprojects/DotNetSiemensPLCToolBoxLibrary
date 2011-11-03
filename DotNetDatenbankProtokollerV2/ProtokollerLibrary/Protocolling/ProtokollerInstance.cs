@@ -199,7 +199,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         
                         TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
-                        tmpConn.TelegrammRecievedSend += (bytes) =>
+                        tmpConn.DataRecieved += (bytes) =>
                                                              {
                                                                  IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(datasetConfig.DatasetConfigRows, bytes, StartedAsService);
                                                                  if (values != null)

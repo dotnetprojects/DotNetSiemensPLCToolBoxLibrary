@@ -1009,6 +1009,66 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return null;
         }
 
+        public byte[] PLCPutBlockFromMC7toPLC(string BlockName, byte[] buffer)
+        {
+            if (AutoConnect && !Connected)
+                Connect();
+
+            if (_dc != null)
+                lock (_dc)
+                {
+                    string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
+                    string block = "";
+                    int nr = 0;
+                    if (tmp.Length > 3 && tmp.Substring(0, 3) == "SDB")
+                    {
+                        block = tmp.Substring(0, 3);
+                        nr = Int32.Parse(tmp.Substring(3));
+                    }
+                    else
+                    {
+                        block = tmp.Substring(0, 2);
+                        nr = Int32.Parse(tmp.Substring(2));
+                    }
+                    DataTypes.PLCBlockType blk = DataTypes.PLCBlockType.AllBlocks;
+
+                    switch (block)
+                    {
+                        case "FC":
+                            blk = DataTypes.PLCBlockType.FC;
+                            break;
+                        case "FB":
+                            blk = DataTypes.PLCBlockType.FB;
+                            break;
+                        case "DB":
+                            blk = DataTypes.PLCBlockType.DB;
+                            break;
+                        case "OB":
+                            blk = DataTypes.PLCBlockType.OB;
+                            break;
+                        case "SDB":
+                            blk = DataTypes.PLCBlockType.SDB;
+                            break;
+                    }
+                    if (blk == DataTypes.PLCBlockType.AllBlocks || nr < 0)
+                        throw new Exception("Unsupported Block Type!");
+
+                    int readsize = buffer.Length;
+                    int ret = _dc.putProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
+
+                    if (ret == 0 && readsize > 0)
+                    {
+                        byte[] retVal = new byte[readsize];
+                        Array.Copy(buffer, retVal, readsize);
+                        return retVal;
+                    }
+                    else if (ret == 53825)
+                        throw new Exception("PLC is Password Protected, unlock before downloading Blocks!");
+                    else
+                        return null;
+                }
+            return null;
+        }
         public void PLCDeleteBlock(string BlockName)
         {
             if (AutoConnect && !Connected)

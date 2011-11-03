@@ -22,33 +22,35 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private TcpClient tcpClient;
         private TcpListener tcpListener;
 
-        private IPAddress plc_ip;
         private IPAddress local_ip;
         private int connection_port;
         private bool connection_active;
         private SynchronizationContext context;
 
-        private int tele_length;
+        private int fixedLength = -1;
 
         public delegate void TegramRecievedEventHandler(byte[] telegramm);
-        public event TegramRecievedEventHandler TelegrammRecievedSend;
+        public event TegramRecievedEventHandler DataRecieved;
 
-        public delegate void ConnectionEstablishedEventHandler(int Number);
-        public event ConnectionEstablishedEventHandler ConnectionEstablished;
+        public event Action ConnectionEstablished;        
+        public event Action ConnectionClosed;
 
-        public delegate void ConnectionClosedEventHandler(int Number);
-        public event ConnectionClosedEventHandler ConnectionClosed;
-
-        public TCPFunctionsAsync(SynchronizationContext context, IPAddress PlcIP, int connection_port, bool connection_active, int tele_length)
-        {
-            this.tele_length = tele_length;
-
-            this.plc_ip = PlcIP;
+        public TCPFunctionsAsync(SynchronizationContext context, IPAddress IP, int connection_port, bool connection_active)
+        {            
             this.context = context;
+            if (context == null)
+                context = new SynchronizationContext();
+
             this.connection_port = connection_port;
             this.connection_active = connection_active;
 
-            local_ip = Dns.GetHostByName(Dns.GetHostName()).AddressList[0];
+            local_ip = IP; // Dns.GetHostByName(Dns.GetHostName()).AddressList[0];
+        }
+
+        public TCPFunctionsAsync(SynchronizationContext context, IPAddress IP, int connection_port, bool connection_active, int FixedLength)
+            : this(context, IP, connection_port, connection_active)
+        {
+            fixedLength = FixedLength;
         }
 
         public void Connect()
@@ -73,6 +75,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 var tcpc = (TcpClient)ar.AsyncState;
                 tcpc.EndConnect(ar);
 
+                if (ConnectionEstablished != null)
+                    context.Post(delegate { ConnectionEstablished(); }, null);                   
+
                 beginRead();
             }
             catch (Exception ex)
@@ -89,6 +94,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 TcpListener listener = (TcpListener) ar.AsyncState;
                 tcpClient = listener.EndAcceptTcpClient(ar);
 
+                if (ConnectionEstablished != null)
+                    context.Post(delegate { ConnectionEstablished(); }, null);                   
+
                 //Multiple Clients may Connect???
                 //tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), listener);
 
@@ -103,16 +111,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
 
         private Byte[] readBytes;
-        private int readBytesCount;
+        private int readPos = 0;
 
         private void beginRead()
         {
             try
             {
-                readBytes = new Byte[tele_length];
+                if (fixedLength<0)
+                    readBytes = new Byte[65536];
+                else
+                    readBytes = new Byte[fixedLength];
 
-                readBytesCount = 0;
-                tcpClient.Client.BeginReceive(readBytes, readBytesCount, tele_length - readBytesCount, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
+                tcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
             }
             catch (Exception ex)
             {
@@ -129,14 +139,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                 int cnt = tcpClient.Client.EndReceive(ar);
 
-                readBytesCount += cnt;
-                if (readBytesCount < tele_length)
-                    tcpClient.Client.BeginReceive(readBytes, readBytesCount, tele_length - readBytesCount, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
-                else
+                if (cnt > 0 && fixedLength<0)
                 {
-                    context.Post(delegate { TelegrammRecievedSend(readBytes); }, null);
+                    byte[] rec = new byte[cnt];
+                    Array.Copy(readBytes, 0, rec, 0, cnt);
+                    context.Post(delegate { DataRecieved(rec); }, null);
                     beginRead();
                 }
+                else
+                {
+                    readPos += cnt;
+                    if (readPos < fixedLength)
+                        tcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
+                    else
+                    {
+                        context.Post(delegate { DataRecieved(readBytes); }, null);
+                        beginRead();
+                    }
+                }
+                
             }
             catch (Exception ex)
             {

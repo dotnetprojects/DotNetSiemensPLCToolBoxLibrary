@@ -106,6 +106,7 @@
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
     <Compile Include="StaticServiceConfig.cs" />
+    <Compile Include="TCPIP\SocketExtensions.cs" />
     <Compile Include="TCPIP\TCPFunctions.cs" />
     <Compile Include="TCPIP\TCPFunctionsAsync.cs" />
     <Compile Include="Protocolling\Trigger\PLCTagTriggerThread.cs" />
