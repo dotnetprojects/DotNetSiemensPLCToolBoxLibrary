@@ -1222,7 +1222,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="startpos"></param>
         public void ParseValueFromByteArray(byte[] buff, int startpos)
         {
-            _readValueFromBuffer(buff, 0);
+            _readValueFromBuffer(buff, startpos);
         }
 
         internal virtual void _readValueFromBuffer(byte[] buff, int startpos)

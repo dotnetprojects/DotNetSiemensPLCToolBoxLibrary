@@ -14,6 +14,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
+using DotNetSimaticDatabaseProtokollerLibrary.TCPIP;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
@@ -196,8 +197,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         TCPIPConfig tcpipConnConf = datasetConfig.TriggerConnection as TCPIPConfig;
 
                         tcpipConnConf.MultiTelegramme = tcpipConnConf.MultiTelegramme <= 0 ? 1 : tcpipConnConf.MultiTelegramme;
-                        
-                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
+
+                        if (tcpipConnConf.MultiTelegramme == 0)
+                            tcpipConnConf.MultiTelegramme = 1;
+                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(null, tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         tmpConn.DataRecieved += (bytes) =>
                                                              {

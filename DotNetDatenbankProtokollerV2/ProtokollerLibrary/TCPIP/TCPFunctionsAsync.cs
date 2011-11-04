@@ -5,7 +5,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 
-namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
+namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 {
     public class TCPFunctionsAsync : IDisposable
     {
@@ -13,13 +13,53 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             if (tcpClient != null)
                 tcpClient.Close();
-            if (tcpListener!=null)
+            if (tcpListener != null)
                 tcpListener.Stop();
         }
 
+        /// <summary>
+        /// Status of the socket client
+        /// </summary>
+        public enum Status
+        {
+            /// <summary>client is not connected with the server</summary>
+            STOPPED = 0,
+            /// <summary>the client try to connect the server</summary>
+            STARTED = 1,
+            /// <summary>the client try to connect the server</summary>
+            CONNECTING = 2,
+            /// <summary>the client is connected</summary>
+            CONNECTED = 3,
+        }
+
+        #region Properties & Events
+
+        public Status State = Status.STOPPED;
+
+        public string Name { get; set; }
+
+        public string LastErrorMessage { get; set; }
+
+        public bool AutoConnect { get; set; }
+
+        /// <summary>
+        /// On a Socket Server, allow multiple Clients 
+        /// </summary>
+        public bool AllowMultipleClients { get; set; }
+
+
+        public event Action<TcpClient> ConnectionEstablished;
+        public event Action<TcpClient> ConnectionClosed;
+        public event Action<byte[]> DataRecieved;
+
         public event ThreadExceptionEventHandler AsynchronousExceptionOccured;
 
+        #endregion
+
+        #region Private Fields
+
         private TcpClient tcpClient;
+        private List<TcpClient> tcpClientsFromListener = new List<TcpClient>();
         private TcpListener tcpListener;
 
         private IPAddress local_ip;
@@ -29,17 +69,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         private int fixedLength = -1;
 
-        public delegate void TegramRecievedEventHandler(byte[] telegramm);
-        public event TegramRecievedEventHandler DataRecieved;
+        private Dictionary<TcpClient, byte[]> readBytesPerCennection = new Dictionary<TcpClient, byte[]>();
+        private Dictionary<TcpClient, int> readBytesCountPerCennection = new Dictionary<TcpClient, int>();
+        //private Byte[] readBytes;
+        //private int readPos = 0;
 
-        public event Action ConnectionEstablished;        
-        public event Action ConnectionClosed;
+        #endregion
+
+        #region Konstruktoren
 
         public TCPFunctionsAsync(SynchronizationContext context, IPAddress IP, int connection_port, bool connection_active)
-        {            
+        {
             this.context = context;
-            if (context == null)
-                context = new SynchronizationContext();
 
             this.connection_port = connection_port;
             this.connection_active = connection_active;
@@ -52,6 +93,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             fixedLength = FixedLength;
         }
+
+        public TCPFunctionsAsync(SynchronizationContext context, IPEndPoint endPoint, bool connection_active, int FixedLength)
+            : this(context, endPoint.Address, endPoint.Port, connection_active, FixedLength)
+        { }
+
+        public TCPFunctionsAsync(SynchronizationContext context, IPEndPoint endPoint, bool connection_active)
+            : this(context, endPoint.Address, endPoint.Port, connection_active)
+        { }
+
+        #endregion
 
         public void Connect()
         {
@@ -68,6 +119,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
         }
 
+        public void Disconnect()
+        { }
+
         public void DoBeginnConnectCallback(IAsyncResult ar)
         {
             try
@@ -76,9 +130,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 tcpc.EndConnect(ar);
 
                 if (ConnectionEstablished != null)
-                    context.Post(delegate { ConnectionEstablished(); }, null);                   
+                    if (context == null)
+                        ConnectionEstablished(tcpc);
+                    else
+                        context.Post(delegate { ConnectionEstablished(tcpc); }, null);
 
-                beginRead();
+                beginRead(tcpc);
             }
             catch (Exception ex)
             {
@@ -91,38 +148,49 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             try
             {
-                TcpListener listener = (TcpListener) ar.AsyncState;
-                tcpClient = listener.EndAcceptTcpClient(ar);
+                TcpListener listener = (TcpListener)ar.AsyncState;
+                var akTcpClient = listener.EndAcceptTcpClient(ar);
+
+                tcpClientsFromListener.Add(akTcpClient);
 
                 if (ConnectionEstablished != null)
-                    context.Post(delegate { ConnectionEstablished(); }, null);                   
+                    if (context == null)
+                        ConnectionEstablished(tcpClient);
+                    else
+                        context.Post(delegate { ConnectionEstablished(tcpClient); }, null);
 
-                //Multiple Clients may Connect???
-                //tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), listener);
+                if (AllowMultipleClients)
+                    tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), listener);
 
-                beginRead();
+                beginRead(akTcpClient);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
             }
         }
 
-
-        private Byte[] readBytes;
-        private int readPos = 0;
-
-        private void beginRead()
+        private void beginRead(TcpClient akTcpClient)
         {
             try
             {
-                if (fixedLength<0)
+                if (readBytesPerCennection.ContainsKey(akTcpClient))
+                {
+                    readBytesPerCennection.Remove(akTcpClient);
+                    readBytesCountPerCennection.Remove(akTcpClient);
+                }
+                byte[] readBytes;
+
+                if (fixedLength < 0)
                     readBytes = new Byte[65536];
                 else
                     readBytes = new Byte[fixedLength];
 
-                tcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
+                readBytesPerCennection.Add(akTcpClient, readBytes);
+                readBytesCountPerCennection.Add(akTcpClient, 0);
+
+                akTcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
             }
             catch (Exception ex)
             {
@@ -135,48 +203,70 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             try
             {
-                TcpClient tcpClient = (TcpClient) ar.AsyncState;
+                TcpClient akTcpClient = (TcpClient)ar.AsyncState;
 
-                int cnt = tcpClient.Client.EndReceive(ar);
+                var readBytes = readBytesPerCennection[akTcpClient];
+                var readPos = readBytesCountPerCennection[akTcpClient];
 
-                if (cnt > 0 && fixedLength<0)
+                int cnt = akTcpClient.Client.EndReceive(ar);
+                if (cnt > 0 && fixedLength < 0)
                 {
                     byte[] rec = new byte[cnt];
                     Array.Copy(readBytes, 0, rec, 0, cnt);
-                    context.Post(delegate { DataRecieved(rec); }, null);
-                    beginRead();
+                    if (context == null)
+                        DataRecieved(rec);
+                    else
+                        context.Post(delegate { DataRecieved(rec); }, null);
+                    beginRead(akTcpClient);
                 }
                 else
                 {
                     readPos += cnt;
+                    readBytesCountPerCennection[akTcpClient] = readPos;
                     if (readPos < fixedLength)
-                        tcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), tcpClient);
+                        akTcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
                     else
                     {
-                        context.Post(delegate { DataRecieved(readBytes); }, null);
-                        beginRead();
+                        if (context == null)
+                            DataRecieved(readBytes);
+                        else
+                            context.Post(delegate { DataRecieved(readBytes); }, null);
+                        beginRead(akTcpClient);
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+
+                string sMsg = "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
+                this.LastErrorMessage = sMsg;
             }
         }
 
-        public void SendData(string telegramm)
+        public bool SendData(string telegramm)
         {
-            SendData(Encoding.ASCII.GetBytes(telegramm));
+            return SendData(Encoding.ASCII.GetBytes(telegramm));
         }
 
-        public void SendData(byte[] telegramm)
+        public bool SendData(byte[] telegramm)
         {
-            if (tcpClient == null)
-                throw new Exception("Send not possible, not connected");
-            NetworkStream stream = tcpClient.GetStream();
-            stream.Write(telegramm, 0, telegramm.Length);
+            try
+            {
+                if (tcpClient == null)
+                    throw new Exception("Send not possible, not connected");
+                NetworkStream stream = tcpClient.GetStream();
+                stream.Write(telegramm, 0, telegramm.Length);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string sMsg = "TCPSocketClientAndServer.SendData(byte[]) - error: " + ex.Message;
+                this.LastErrorMessage = sMsg;
+            }
+            return false;
         }
     }
 }
