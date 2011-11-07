@@ -38,7 +38,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             return values;
         }
 
-        public static IEnumerable<object> ReadDataFromPLCs(IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
+        public static IEnumerable<object> ReadDataFromPLCs(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
             var usedConnections = from n in datasetConfigRows
                                   group n by n.Connection into g       //Es wird in das Object g hineingruppiert.
@@ -99,7 +99,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             var values = from n in datasetConfigRows
                          select n.PLCTag.Value;
-
+            
             return values;
         }
     }

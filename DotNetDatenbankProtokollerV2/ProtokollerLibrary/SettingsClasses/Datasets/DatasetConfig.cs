@@ -55,7 +55,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _maxDatasets = value; NotifyPropertyChanged("MaxDatasets"); }
         }
 
-        
+        private string _dateTimeDatabaseField;
+        public string DateTimeDatabaseField
+        {
+            get { return _dateTimeDatabaseField; }
+            set { _dateTimeDatabaseField = value; NotifyPropertyChanged("DateTimeDatabaseField"); }
+        }
+
         private ObservableCollection<DatasetConfigRow> _datasetConfigRows;
         public ObservableCollection<DatasetConfigRow> DatasetConfigRows
         {

@@ -80,6 +80,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             }
         }
 
+        private string dateFieldName;
+
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.dataTable = dataTable;
@@ -129,7 +131,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             }
             myReader.Close();
 
-            foreach (DatasetConfigRow myFeld in fieldList)
+
+            //Wenn Date Time Feld gesetzt...
+            dateFieldName = datasetConfig.DateTimeDatabaseField;
+            var createFieldList = new List<DatasetConfigRow>(fieldList);
+            if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+                createFieldList.Add(new DatasetConfigRow() { DatabaseField = dateFieldName, DatabaseFieldType = "TEXT" });
+
+
+            foreach (DatasetConfigRow myFeld in createFieldList)
             {
                 foreach (string existMyFeld in existDBFelderliste)
                 {
@@ -164,7 +174,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
             //Create Insert Command
             string wertliste = "", felderliste = "";
-            foreach (DatasetConfigRow myFeld in fieldList)
+            foreach (DatasetConfigRow myFeld in createFieldList)
             {
                 if (wertliste != "")
                 {
@@ -293,6 +303,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         {
                             IEnumerable<object> values = _intValueList[n];
 
+                            if (!string.IsNullOrEmpty(dateFieldName))
+                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) {Value = DateTime.Now.ToString("yyyy.MM.dd - HH:mm:ss.fff")});
+                            
                             using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
                             using (IEnumerator<object> e2 = values.GetEnumerator())
                             {
@@ -407,7 +420,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         public DataTable ReadData(DatasetConfig datasetConfig, string sql, int Count)
         {
-            try
+            //try
             {
                 CheckAndEstablishReadConnection();
 
@@ -425,7 +438,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
                 return myTbl;
             }
-            catch (Exception ex)
+            //catch (Exception ex)
             { }
             return null;
         }

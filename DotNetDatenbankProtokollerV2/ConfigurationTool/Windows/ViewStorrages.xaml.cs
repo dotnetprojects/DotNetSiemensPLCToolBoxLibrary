@@ -44,6 +44,8 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
             txtSQL.IsEnabled = false;
             cmdSQL.IsEnabled = false;
+            txtSearch.IsEnabled = false;
+            cmdSearch.IsEnabled = false;
 
             try
             {
@@ -63,6 +65,8 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     txtSQL.Text = "SELECT * FROM " + datasetConfig.Name + " LIMIT " + 1000.ToString();
                     txtSQL.IsEnabled = true;
                     cmdSQL.IsEnabled = true;
+                    txtSearch.IsEnabled = true;
+                    cmdSearch.IsEnabled = true;
                 }
             }
             catch (Exception ex)
@@ -192,11 +196,19 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             {
                 txtFromDataset.Text = "";
                 lblToDataset.Content = null;
+                lblError.Content = null;
 
-                DataTable tbl = dbViewSQL.ReadData(datasetConfig, txtSQL.Text, 1000);
-                if (tbl != null)
-                    grdDatasetFields.ItemsSource = tbl.DefaultView;
-                lblDataCount.Content = dbView.ReadCount(datasetConfig);
+                try
+                {
+                    DataTable tbl = dbViewSQL.ReadData(datasetConfig, txtSQL.Text, 1000);
+                    if (tbl != null)
+                        grdDatasetFields.ItemsSource = tbl.DefaultView;
+                    lblDataCount.Content = dbView.ReadCount(datasetConfig);
+                }
+                catch (Exception ex)
+                {
+                    lblError.Content = ex.Message.Replace("\r", "").Replace("\n", "");
+                }
             }
         }
 
@@ -206,5 +218,22 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 cmdSQL_Click(null, null);
         }
 
+       
+        private void cmdSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string sql = "SELECT * FROM " + datasetConfig.Name + " WHERE ";
+            bool first = true;
+            foreach (DataGridColumn dataGridColumn in grdDatasetFields.Columns)
+            {
+                if (!first)
+                    sql += "OR ";
+                sql += dataGridColumn.Header + " LIKE '%" + txtSearch.Text + "%' ";
+                first = false;
+            }
+            txtSQL.Text = sql;
+            cmdSQL_Click(sender, e);
+        }
+
+       
     }
 }

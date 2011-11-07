@@ -348,5 +348,7 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
+        <Label Content="Write PC DateTime to following Field" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="462,12,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="214" ToolTip="If this is Empty, PC Date is not saved to database!" />
+        <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="497,34,0,0" Name="textBox1" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.DateTimeDatabaseField}" VerticalAlignment="Top" Width="179" />
     </Grid>
 </UserControl>

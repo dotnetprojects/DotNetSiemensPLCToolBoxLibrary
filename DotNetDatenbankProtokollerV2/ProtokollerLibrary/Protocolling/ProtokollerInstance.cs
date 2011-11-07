@@ -148,12 +148,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         public void TestDataRead(DatasetConfig testDataset)
         {
-            ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList, false);
+            ReadData.ReadDataFromPLCs(testDataset, testDataset.DatasetConfigRows, ConnectionList, false);
         }
 
         public void TestDataReadWrite(DatasetConfig testDataset)
         {
-            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromPLCs(testDataset.DatasetConfigRows, ConnectionList, false));
+            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromPLCs(testDataset, testDataset.DatasetConfigRows, ConnectionList, false));
         }
 
         private void OpenStoragesAndCreateTriggers(bool CreateTriggers, bool StartedAsService)
@@ -211,6 +211,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         
                         tmpConn.Connect();
                         ConnectionList.Add(tcpipConnConf, tmpConn);
+                        myDisposables.Add(tmpConn);
                     }
             }
         }
