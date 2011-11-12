@@ -164,6 +164,20 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Sub Field List (mostly not used)" Width="Auto" IsReadOnly="False" SortMemberPath="StringSubFields">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringSubFields}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding StringSubFields, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                
             </DataGrid.Columns>           
         </DataGrid>
         
@@ -339,6 +353,19 @@
                             <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Sub Field List (mostly not used)" Width="Auto" IsReadOnly="False" SortMemberPath="StringSubFields">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringSubFields}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding StringSubFields, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
             </DataGrid.Columns>

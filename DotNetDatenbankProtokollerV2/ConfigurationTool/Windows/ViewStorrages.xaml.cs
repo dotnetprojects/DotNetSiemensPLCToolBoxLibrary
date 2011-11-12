@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
@@ -232,6 +233,37 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             }
             txtSQL.Text = sql;
             cmdSQL_Click(sender, e);
+        }
+
+        private void grdDatasetFields_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                string col = grdDatasetFields.SelectedCells[0].Column.Header.ToString();
+                var cfgRow = datasetConfig.DatasetConfigRows.FirstOrDefault((itm) => itm.DatabaseField == col);
+                if (cfgRow != null && !string.IsNullOrEmpty(cfgRow.StringSubFields))
+                {
+                    string txt = "";
+                    var fld = cfgRow.StringSubFields.Split('|');
+                    int pos = 0;
+                    for (int n = 0; n < fld.Length; n += 2)
+                    {
+
+                        string fldName = fld[n];
+                        int fldLen = Convert.ToInt32(fld[n + 1]);
+                        string wrt = ((DataRowView)grdDatasetFields.SelectedCells[0].Item)[col].ToString().Substring(pos, fldLen);
+                        pos += fldLen;
+
+                        txt += (fldName + ":").PadRight(20,' ') + "\t" + wrt + "\n";
+
+                    }
+                    MessageBox.Show(txt);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
        

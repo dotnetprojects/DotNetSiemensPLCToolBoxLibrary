@@ -14,7 +14,7 @@
     </UserControl.Resources>
     
     <Grid>
-        <DataGrid AutoGenerateColumns="True" Margin="12,112,12,33" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
+        <DataGrid AutoGenerateColumns="True" Margin="12,112,12,33" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" SelectionUnit="Cell" MouseDoubleClick="grdDatasetFields_MouseDoubleClick" IsReadOnly="True">
             </DataGrid>
         <Label Content="Dataset" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Padding="0" VerticalAlignment="Top" Width="55" VerticalContentAlignment="Center" />
         <ComboBox ItemsSource="{Binding Datasets, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" HorizontalAlignment="Left" Margin="60,12,0,0" Name="cmbStorage" Width="209" VerticalContentAlignment="Center" SelectionChanged="cmbStorage_SelectionChanged" Unloaded="cmbStorage_Unloaded" Height="26" VerticalAlignment="Top">

@@ -47,6 +47,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _connection = value; NotifyPropertyChanged("Connection"); }
         }
 
+        //This is not needed when using a TCP/IP Connection, but we need the Type and Length! So we ignor the Address when using this!
         private PLCTag _plcTag=new PLCTag();
         public PLCTag PLCTag
         {
@@ -54,6 +55,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _plcTag = value; NotifyPropertyChanged("PLCTag"); }
         }
 
-        //This is not needed when using a TCP/IP Connection, but we need the Type and Length! So we ignor the Address when using this!
+
+        private string _stringSubFields = "";
+        [Description("List of Fixed Length Fields in the String (f.E: TYPE|4|NR|2...)")]
+        public string StringSubFields
+        {
+            get { return _stringSubFields; }
+            set { _stringSubFields = value; NotifyPropertyChanged("StringSubFields"); }
+        }
+
+
     }   
 }
