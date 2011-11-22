@@ -47,6 +47,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (SymbolTable)myFrm.retVal;
         }
 
+        public static S7DataBlock SelectDataBlock(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            myFrm.SelectPart = SelectPartType.DataBlock;
+            myFrm.ShowDialog();
+            return (S7DataBlock)myFrm.retVal;
+        }
+
+        public static S7FunctionBlock SelectFunctionBlock(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            myFrm.SelectPart = SelectPartType.DataBlock;
+            myFrm.ShowDialog();
+            return (S7FunctionBlock)myFrm.retVal;
+        }
+
+
         public static S7VATBlock SelectVAT()
         {
             return SelectVAT("");

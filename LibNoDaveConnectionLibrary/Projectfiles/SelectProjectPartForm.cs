@@ -264,6 +264,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
+            else if (SelectPart == SelectPartType.DataBlock)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    S7ProjectBlockInfo tmp = (S7ProjectBlockInfo)lstProjectFolder.SelectedItem;
+                    if (tmp.BlockType == PLCBlockType.DB)
+                    {
+                        retVal = ((IBlocksFolder)tmp.ParentFolder).GetBlock(tmp);
+                        ((Block)retVal).ParentFolder = tmp.ParentFolder;
+                    }
+                }
+            }
+            else if (SelectPart == SelectPartType.FunctionBlock)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    S7ProjectBlockInfo tmp = (S7ProjectBlockInfo)lstProjectFolder.SelectedItem;
+                    if (tmp.BlockType == PLCBlockType.FC || tmp.BlockType == PLCBlockType.FB || tmp.BlockType == PLCBlockType.OB)
+                    {
+                        retVal = ((IBlocksFolder)tmp.ParentFolder).GetBlock(tmp);
+                        ((Block)retVal).ParentFolder = tmp.ParentFolder;
+                    }
+                }
+            }
             else if (SelectPart == SelectPartType.DataType)
             {
                 if (lstProjectFolder.SelectedItem != null)
