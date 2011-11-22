@@ -408,6 +408,18 @@ namespace JFK_VarTab
                     string stoeTxtEn = "";
 
                     stoeTxt = plcDataRow.Comment;
+
+                    if (chkCombineStructComments.Checked)
+                    {
+                        var par = plcDataRow.Parent;
+                        while (par != null)
+                        {
+                            stoeTxt = par.Comment + stoeTxt;
+                            par = par.Parent;
+                        }
+                    }
+                    
+                    
                     if (stoeTxt.Contains(";"))
                     {
                         stoeTxt = "Störort: " + stoeTxt.Split(';')[0] + ", " + stoeTxt.Split(';')[1];

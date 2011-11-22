@@ -109,6 +109,7 @@
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkCombineStructComments = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -309,6 +310,7 @@
             // 
             // grpVisu
             // 
+            this.grpVisu.Controls.Add(this.chkCombineStructComments);
             this.grpVisu.Controls.Add(this.cmdCreateWinCCFlexibleTags);
             this.grpVisu.Controls.Add(this.chkExpandArrays);
             this.grpVisu.Controls.Add(this.chkUseErrPrefix);
@@ -347,7 +349,7 @@
             this.chkExpandArrays.AutoSize = true;
             this.chkExpandArrays.Location = new System.Drawing.Point(25, 330);
             this.chkExpandArrays.Name = "chkExpandArrays";
-            this.chkExpandArrays.Size = new System.Drawing.Size(94, 17);
+            this.chkExpandArrays.Size = new System.Drawing.Size(117, 19);
             this.chkExpandArrays.TabIndex = 4;
             this.chkExpandArrays.Text = "Expand Arrays";
             this.chkExpandArrays.UseVisualStyleBackColor = true;
@@ -364,9 +366,9 @@
             // chkFixedErrorNumber
             // 
             this.chkFixedErrorNumber.AutoSize = true;
-            this.chkFixedErrorNumber.Location = new System.Drawing.Point(20, 94);
+            this.chkFixedErrorNumber.Location = new System.Drawing.Point(20, 89);
             this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
-            this.chkFixedErrorNumber.Size = new System.Drawing.Size(116, 17);
+            this.chkFixedErrorNumber.Size = new System.Drawing.Size(152, 19);
             this.chkFixedErrorNumber.TabIndex = 4;
             this.chkFixedErrorNumber.Text = "Fixed Error Number";
             this.chkFixedErrorNumber.UseVisualStyleBackColor = true;
@@ -884,6 +886,17 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
+            // chkCombineStructComments
+            // 
+            this.chkCombineStructComments.Checked = true;
+            this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCombineStructComments.Location = new System.Drawing.Point(20, 107);
+            this.chkCombineStructComments.Name = "chkCombineStructComments";
+            this.chkCombineStructComments.Size = new System.Drawing.Size(223, 19);
+            this.chkCombineStructComments.TabIndex = 6;
+            this.chkCombineStructComments.Text = "Combine Struct/UDT Comments";
+            this.chkCombineStructComments.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1007,6 +1020,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem searchPasswordToolStripMenuItem;
         private System.Windows.Forms.Button cmdCreateWinCCFlexibleTags;
+        private System.Windows.Forms.CheckBox chkCombineStructComments;
 
     }
 }
