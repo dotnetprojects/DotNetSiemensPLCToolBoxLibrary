@@ -41,7 +41,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         private DbConnection myDBConn;
         private DbCommand myCmd = new SQLiteCommand();
         private DbDataReader myReader;
-        
+
+        private static Dictionary<string, object> FileNameLockObjects = new Dictionary<string, object>();
         
         public void Close()
         {
@@ -60,9 +61,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         public void Connect_To_Database(StorageConfig config)
         {
+            
             myConfig = config as SQLiteConfig;
             if (myConfig == null)
                 throw new Exception("Database Config is NULL");
+
+            if (!FileNameLockObjects.ContainsKey(myConfig.DatabaseFile))
+                FileNameLockObjects.Add(myConfig.DatabaseFile,new object());
+
             try
             {
                 myDBConn = new System.Data.SQLite.SQLiteConnection(ConnectionString);
@@ -90,90 +96,94 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             this.dataTable = dataTable;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
-            //Look if Table exists, when not, create it!
-            try
+            List<DatasetConfigRow> createFieldList;
+
+            lock (FileNameLockObjects[myConfig.DatabaseFile])
             {
-                string sql = "SELECT * FROM " + dataTable + ";";
-                myCmd.Connection = myDBConn;
-                myCmd.CommandText = sql;
-                myReader = myCmd.ExecuteReader();
-
-            }
-            catch (System.Data.SQLite.SQLiteException ex)
-            {
-                if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Error)
-                {
-                    try
-                    {
-                        string sql = "CREATE TABLE " + dataTable + " (id INTEGER PRIMARY KEY ASC AUTOINCREMENT); ";
-
-                        myCmd.CommandText = sql;
-                        myCmd.ExecuteNonQuery();
-
-                        sql = "SELECT * FROM " + dataTable + ";";
-                        myCmd.CommandText = sql;
-                        myReader = myCmd.ExecuteReader();
-                    }
-                    catch (System.Data.SQLite.SQLiteException ex_ex)
-                    {
-                        throw ex_ex;
-                    }
-                }
-                else
-                {
-                    throw ex;
-                }
-            }
-
-            //Look for the Fields, create or alter them!
-            List<String> existDBFelderliste = new List<string>();
-
-            for (int n = 0; n < myReader.FieldCount; n++)
-            {
-                existDBFelderliste.Add(myReader.GetName(n));
-            }
-            myReader.Close();
-
-
-            //Wenn Date Time Feld gesetzt...
-            dateFieldName = datasetConfig.DateTimeDatabaseField;
-            var createFieldList = new List<DatasetConfigRow>(fieldList);
-            if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
-                createFieldList.Add(new DatasetConfigRow() { DatabaseField = dateFieldName, DatabaseFieldType = "TEXT" });
-
-
-            foreach (DatasetConfigRow myFeld in createFieldList)
-            {
-                foreach (string existMyFeld in existDBFelderliste)
-                {
-                    if (myFeld.DatabaseField.ToLower() == existMyFeld.ToLower())
-                    {
-                        goto nextFeld;
-                    }
-                }
-
-                //Feld existiert nicht -> erzeugen
-
-                string sql = "ALTER TABLE " + dataTable + " ADD COLUMN " + myFeld.DatabaseField + " " + myFeld.DatabaseFieldType;
-
+                //Look if Table exists, when not, create it!
                 try
                 {
+                    string sql = "SELECT * FROM " + dataTable + ";";
                     myCmd.Connection = myDBConn;
                     myCmd.CommandText = sql;
-                    myCmd.ExecuteNonQuery();
+                    myReader = myCmd.ExecuteReader();
 
                 }
                 catch (System.Data.SQLite.SQLiteException ex)
                 {
-                    throw ex;
+                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Error)
+                    {
+                        try
+                        {
+                            string sql = "CREATE TABLE " + dataTable + " (id INTEGER PRIMARY KEY ASC AUTOINCREMENT); ";
+
+                            myCmd.CommandText = sql;
+                            myCmd.ExecuteNonQuery();
+
+                            sql = "SELECT * FROM " + dataTable + ";";
+                            myCmd.CommandText = sql;
+                            myReader = myCmd.ExecuteReader();
+                        }
+                        catch (System.Data.SQLite.SQLiteException ex_ex)
+                        {
+                            throw ex_ex;
+                        }
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
                 }
 
-                nextFeld:
-                //Irgendeine anweisung, da sonst der Sprung nicht geht...
+                //Look for the Fields, create or alter them!
+                List<String> existDBFelderliste = new List<string>();
+
+                for (int n = 0; n < myReader.FieldCount; n++)
                 {
+                    existDBFelderliste.Add(myReader.GetName(n));
+                }
+                myReader.Close();
+
+
+                //Wenn Date Time Feld gesetzt...
+                dateFieldName = datasetConfig.DateTimeDatabaseField;
+                createFieldList = new List<DatasetConfigRow>(fieldList);
+                if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+                    createFieldList.Add(new DatasetConfigRow() {DatabaseField = dateFieldName, DatabaseFieldType = "TEXT"});
+
+
+                foreach (DatasetConfigRow myFeld in createFieldList)
+                {
+                    foreach (string existMyFeld in existDBFelderliste)
+                    {
+                        if (myFeld.DatabaseField.ToLower() == existMyFeld.ToLower())
+                        {
+                            goto nextFeld;
+                        }
+                    }
+
+                    //Feld existiert nicht -> erzeugen
+
+                    string sql = "ALTER TABLE " + dataTable + " ADD COLUMN " + myFeld.DatabaseField + " " + myFeld.DatabaseFieldType;
+
+                    try
+                    {
+                        myCmd.Connection = myDBConn;
+                        myCmd.CommandText = sql;
+                        myCmd.ExecuteNonQuery();
+
+                    }
+                    catch (System.Data.SQLite.SQLiteException ex)
+                    {
+                        throw ex;
+                    }
+
+                    nextFeld:
+                    //Irgendeine anweisung, da sonst der Sprung nicht geht...
+                    {
+                    }
                 }
             }
-
 
             //Create Insert Command
             string wertliste = "", felderliste = "";
@@ -261,120 +271,127 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         public bool _internal_Write()
         {
-            //Look if the Connection is still open..
-            try
+            lock (FileNameLockObjects[myConfig.DatabaseFile])
             {
-                string sql = "SELECT id FROM " + dataTable + " WHERE id = 0";
-                myCmd.Connection = myDBConn;
-                myCmd.CommandText = sql;
-                myCmd.ExecuteNonQuery();
-            }
-
-            catch (Exception)
-            {
-                myDBConn.Close(); //Verbindung schließen!
-                if (myDBConn.State != System.Data.ConnectionState.Open)
+                //Look if the Connection is still open..
+                try
                 {
-                    myDBConn.Open();
+                    string sql = "SELECT id FROM " + dataTable + " WHERE id = 0";
+                    myCmd.Connection = myDBConn;
+                    myCmd.CommandText = sql;
+                    myCmd.ExecuteNonQuery();
+                }
+
+                catch (Exception)
+                {
+                    myDBConn.Close(); //Verbindung schließen!
                     if (myDBConn.State != System.Data.ConnectionState.Open)
+                    {
+                        myDBConn.Open();
+                        if (myDBConn.State != System.Data.ConnectionState.Open)
+                        {
+                            return false;
+                        }
+                    }
+                    else
                     {
                         return false;
                     }
                 }
-                else
+
+                //Add the Fields to the Database
+                myCmd.Connection = myDBConn;
+                myCmd.CommandText = insertCommand;
+
+                int tryCounter = 0;
+                nomol:
+                try
                 {
-                    return false;
-                }
-            }
 
-            //Add the Fields to the Database
-            myCmd.Connection = myDBConn;
-            myCmd.CommandText = insertCommand;
-
-            int tryCounter = 0;
-        nomol:
-            try
-            {
-
-                using (DbTransaction dbTrans = myDBConn.BeginTransaction())
-                {
-                    using (DbCommand cmd = myDBConn.CreateCommand())
+                    using (DbTransaction dbTrans = myDBConn.BeginTransaction())
                     {
-                        cmd.CommandText = insertCommand;
-                        for (int n = 0; n < _maxAdd; n++)
-                            //foreach (IEnumerable<object> values in _intValueList)
+                        using (DbCommand cmd = myDBConn.CreateCommand())
                         {
-                            IEnumerable<object> values = _intValueList[n];
-
-                            if (!string.IsNullOrEmpty(dateFieldName))
-                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) {Value = DateTime.Now.ToString("yyyy.MM.dd - HH:mm:ss.fff")});
-                            
-                            using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
-                            using (IEnumerator<object> e2 = values.GetEnumerator())
+                            cmd.CommandText = insertCommand;
+                            for (int n = 0; n < _maxAdd; n++)
+                                //foreach (IEnumerable<object> values in _intValueList)
                             {
-                                while (e1.MoveNext() && e2.MoveNext())
-                                {
-                                    //foreach (DatasetConfigRow field in fieldList)
-                                    //{
-                                    DatasetConfigRow field = e1.Current;
-                                    Object value = e2.Current; //values[fnr++];
+                                IEnumerable<object> values = _intValueList[n];
 
-                                    switch (field.PLCTag.LibNoDaveDataType)
+                                if (!string.IsNullOrEmpty(dateFieldName))
+                                    cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) {Value = DateTime.Now.ToString("yyyy.MM.dd - HH:mm:ss.fff")});
+
+                                using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
+                                using (IEnumerator<object> e2 = values.GetEnumerator())
+                                {
+                                    while (e1.MoveNext() && e2.MoveNext())
                                     {
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Int:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dint:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Word:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dword:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Byte:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDByte:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDWord:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDDWord:
-                                            cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString()});
-                                            break;
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Float:
-                                            cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString().Replace(',', '.')});
-                                            break;
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.DateTime:
-                                            cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) { Value = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss.fffffff") });
-                                            break;
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String:
-                                        case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.CharArray:
-                                            cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = (String) value});
-                                            break;
+                                        //foreach (DatasetConfigRow field in fieldList)
+                                        //{
+                                        DatasetConfigRow field = e1.Current;
+                                        Object value = e2.Current; //values[fnr++];
+
+                                        switch (field.PLCTag.LibNoDaveDataType)
+                                        {
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Int:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dint:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Word:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dword:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Byte:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDByte:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDWord:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDDWord:
+                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString()});
+                                                break;
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Float:
+                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString().Replace(',', '.')});
+                                                break;
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.DateTime:
+                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = ((DateTime) value).ToString("yyyy-MM-dd HH:mm:ss.fffffff")});
+                                                break;
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.CharArray:
+                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = (String) value});
+                                                break;
+                                        }
                                     }
                                 }
+                                cmd.ExecuteNonQuery();
                             }
-                            cmd.ExecuteNonQuery();
+
+                            //Ringpufferarchiv...
+                            if (datasetConfig.MaxDatasets > 0)
+                            {
+                                string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + datasetConfig.MaxDatasets.ToString() + ")";
+                                cmd.CommandText = delstr;
+                                cmd.ExecuteNonQuery();
+                            }
                         }
 
-                        //Ringpufferarchiv...
-                        if (datasetConfig.MaxDatasets > 0)
-                        {
-                            string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + datasetConfig.MaxDatasets.ToString() + ")";
-                            cmd.CommandText = delstr;
-                            cmd.ExecuteNonQuery();
-                        }
+                        dbTrans.Commit();
                     }
-
-                    dbTrans.Commit();
                 }
-            }
-            catch (System.Data.SQLite.SQLiteException ex)
-            {
-                if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Locked || ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Busy)
+                catch (System.Data.SQLite.SQLiteException ex)
                 {
-                    tryCounter++;
-                    if (tryCounter > 20)
-                        throw new Exception("SQLLite-Datenbank nach 20 Versuchen immer noch locked oder busy!!");
-                    goto nomol;
+                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Locked || ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Busy)
+                    {
+                        tryCounter++;
+                        if (tryCounter > 20)
+                            throw new Exception("SQLLite-Datenbank nach 20 Versuchen immer noch locked oder busy!!");
+                        goto nomol;
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return true;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }            
-                       
-            return true;        
         }
 
         public void Dispose()

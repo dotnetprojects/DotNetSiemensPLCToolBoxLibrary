@@ -44,6 +44,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         }
 
         [Browsable(false)]
+        [XmlIgnore]
         public virtual List<string> DatabaseFieldTypes
         {
             get { return new List<string>() {"Test"}; }

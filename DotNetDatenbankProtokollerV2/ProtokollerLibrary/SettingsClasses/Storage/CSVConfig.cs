@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
@@ -56,7 +57,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
             get { return _networkpassword; }
             set { _networkpassword = value; NotifyPropertyChanged("NetworkPassword"); }
         }
-       
+
+        [XmlIgnore]
         public List<string> DatabaseFieldTypes
         {
             get { return new List<string>() { "TEXT" }; }

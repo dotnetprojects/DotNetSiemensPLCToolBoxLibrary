@@ -204,9 +204,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(null, tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
                         tmpConn.AllowMultipleClients = tcpipConnConf.AcceptMultipleConnections;
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                        var conf = datasetConfig;
                         tmpConn.DataRecieved += (bytes) =>
-                                                             {
-                                                                 IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(datasetConfig.DatasetConfigRows, bytes, StartedAsService);
+                                                    {                                                        
+                                                                 IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, bytes, StartedAsService);
                                                                  if (values != null)
                                                                      akDBInterface.Write(values);
                                                              };

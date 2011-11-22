@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
@@ -20,6 +21,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
             set { _append = value; NotifyPropertyChanged("Append"); }
         }
 
+        [XmlIgnore]
         public List<string> DatabaseFieldTypes
         {
             get { return new List<string>() { "AUTO" }; }

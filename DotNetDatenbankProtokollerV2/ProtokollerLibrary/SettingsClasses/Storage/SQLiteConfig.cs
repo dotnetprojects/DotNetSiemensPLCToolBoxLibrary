@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
@@ -13,8 +15,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         {
             get { return this._databasefile; }
             set { this._databasefile = value; NotifyPropertyChanged("DatabaseFile"); }
-        }        
+        }
 
+        [XmlIgnore]
         public override List<string> DatabaseFieldTypes
         {
             get { return new List<string>() { "INTEGER", "REAL", "TEXT", "BLOB", "NUMERIC" }; }

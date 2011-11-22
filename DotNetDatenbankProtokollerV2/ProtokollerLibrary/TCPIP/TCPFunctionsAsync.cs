@@ -226,7 +226,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                     var readPos = readBytesCountPerCennection[akTcpClient];
                     
                     int cnt = akTcpClient.Client.EndReceive(ar);
-                    if (cnt > 0 && fixedLength < 0)
+                    if (cnt > 0 && fixedLength <= 0)
                     {
                         byte[] rec = new byte[cnt];
                         Array.Copy(readBytes, 0, rec, 0, cnt);
