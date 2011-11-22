@@ -14,6 +14,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
 
         public static EventLogEntryCollection LogEntries { get { return new EventLog(StaticServiceConfig.Company, ".", StaticServiceConfig.MyServiceName + "Service").Entries; } }
 
+        public static void ClearLog()
+        {            
+            (new EventLog(StaticServiceConfig.Company, ".", StaticServiceConfig.MyServiceName + "Service")).Clear();
+        }
+
         public static string LogText(string Message, Exception ex, LogLevel MessageLogLevel)
         {
             Message += "\r\n";

@@ -39,6 +39,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             set { _multiTelegramme = value; NotifyPropertyChanged("MultiTelegramme"); }
         }
 
+        private bool _acceptMultipleConnections;
+        [System.ComponentModel.Description("If set, a passive Connection can Accept more than one Client!")]
+        public bool AcceptMultipleConnections
+        {
+            get { return _acceptMultipleConnections; }
+            set { _acceptMultipleConnections = value; NotifyPropertyChanged("AcceptMultipleConnections"); }
+        }
+
         public override string ToString()
         {
             return "TCP/IP-Verbindung (IP:" + IP + ", Port:" + Port.ToString() + ", Passive:" + PassiveConnection.ToString() + ")";

@@ -82,8 +82,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         private string dateFieldName;
 
+        private DatasetConfig datasetConfig;
+
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
+            this.datasetConfig = datasetConfig;
             this.dataTable = dataTable;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
@@ -345,9 +348,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         }
 
                         //Ringpufferarchiv...
-                        if (myConfig.MaxDatasets > 0)
+                        if (datasetConfig.MaxDatasets > 0)
                         {
-                            string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + myConfig.MaxDatasets.ToString() + ")";
+                            string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + datasetConfig.MaxDatasets.ToString() + ")";
                             cmd.CommandText = delstr;
                             cmd.ExecuteNonQuery();
                         }

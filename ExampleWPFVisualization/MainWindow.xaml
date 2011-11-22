@@ -1,11 +1,10 @@
 ﻿<Window x:Class="ExampleWPFVisualization.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters" xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours" Title="MainWindow" Height="334" Width="329">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters" xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours" Title="MainWindow" Height="434" Width="748">
     <Window.Resources>
         <ResourceDictionary>            
-            <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">
-                <!--
-                <Converters:IntRangeToBrushConverter.IntRangeValues> 
+            <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">                
+                <!--<Converters:IntRangeToBrushConverter.IntRangeValues> 
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="0-5000" Value="Red" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="5001-10000" Value="Blue" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="10001-15000" Value="Green" />

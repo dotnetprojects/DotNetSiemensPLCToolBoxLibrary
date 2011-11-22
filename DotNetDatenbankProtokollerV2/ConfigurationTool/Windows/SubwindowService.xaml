@@ -23,5 +23,6 @@
         <Button Content="Uninstall" Height="25" HorizontalAlignment="Left" Margin="159,112,0,0" VerticalAlignment="Top" Width="131" Name="cmdUninstall" Click="cmdUninstall_Click" />
         <Label Content="Service State:" Height="23" HorizontalAlignment="Left" Margin="13,3,0,0" Name="label1" VerticalAlignment="Top" Width="126" />
         <Label Height="26" HorizontalAlignment="Left" Margin="22,28,0,0" Name="lblServiceState" VerticalAlignment="Top" Width="268" BorderBrush="Black" BorderThickness="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+        <Button Content="Clear" Height="25" HorizontalAlignment="Right" Margin="0,126,21,0" Name="cmdClearLog" VerticalAlignment="Top" Width="131" Click="cmdClearLog_Click" />
     </Grid>
 </UserControl>

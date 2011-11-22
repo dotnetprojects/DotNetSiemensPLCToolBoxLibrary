@@ -37,6 +37,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.cmdReadStruct = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button2
@@ -67,12 +68,12 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(54, 73);
+            this.label1.Location = new System.Drawing.Point(12, 101);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(239, 39);
             this.label1.TabIndex = 4;
             this.label1.Text = "Dieses BeispielPRg liest einen 10 Zeichen String \r\nvon DB1.DBX0.0 (also 12 Bytes)" +
-                "\r\nund zeigt Ihn an!";
+    "\r\nund zeigt Ihn an!";
             // 
             // lblString
             // 
@@ -106,7 +107,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(297, 108);
+            this.button4.Location = new System.Drawing.Point(298, 122);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(108, 35);
             this.button4.TabIndex = 7;
@@ -114,11 +115,22 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(249, 58);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(157, 40);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "Config Connection via Code";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(416, 262);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.cmdReadStruct);
             this.Controls.Add(this.lblString);
@@ -143,5 +155,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button cmdReadStruct;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }

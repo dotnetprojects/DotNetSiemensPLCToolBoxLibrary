@@ -159,7 +159,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
             {
                 foreach (DatasetConfigRow datasetConfigRow in datasetConfig.DatasetConfigRows)
                 {
-                    if (datasetConfigRow.Connection == null)
+                    if (datasetConfigRow.Connection == null && datasetConfig.Trigger != DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
                         error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Connection not Set!" + Environment.NewLine;
                 }
 

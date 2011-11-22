@@ -38,7 +38,7 @@
     
     <Grid Visibility="Visible">
         
-        <DataGrid AutoGenerateColumns="False" Margin="12,10,0,45" Name="grdDatasets" ItemsSource="{Binding Datasets, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" HorizontalAlignment="Left" Width="159">
+        <DataGrid AutoGenerateColumns="False" Margin="12,10,0,45" Name="grdDatasets" ItemsSource="{Binding Datasets, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" HorizontalAlignment="Left" Width="159" SelectionChanged="grdDatasets_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Name" Width="*" IsReadOnly="True" SortMemberPath="Name">
                     <DataGridTemplateColumn.CellTemplate>
@@ -271,7 +271,7 @@
                 </ComboBox>
             </Grid>
         </GroupBox>
-        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}" Margin="184,239,12,12" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}">
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" ItemsSource="{Binding ElementName=grdDatasets, Path=SelectedItem.DatasetConfigRows}" Margin="184,239,12,12" Visibility="{Binding ElementName=cmbTriggerType, Path=SelectedItem, Converter={StaticResource VisConv2Visible}}" Name="grdDatasetFieldsEthernet">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Database-Field" IsReadOnly="False" SortMemberPath="DatabaseField" Width="Auto">
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -376,6 +376,9 @@
             </DataGrid.Resources>
         </DataGrid>
         <Label Content="Write PC DateTime to following Field" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="462,12,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="214" ToolTip="If this is Empty, PC Date is not saved to database!" />
-        <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="497,34,0,0" Name="textBox1" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.DateTimeDatabaseField}" VerticalAlignment="Top" Width="179" />
+        <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="497,34,0,0" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.DateTimeDatabaseField}" VerticalAlignment="Top" Width="179" />
+        <Label Height="18" HorizontalAlignment="Right" Margin="0,215,12,0" Name="lblSize" VerticalAlignment="Top" Width="93" Padding="0" HorizontalContentAlignment="Right" />
+        <Label Content="Max Datasets" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="186,180,0,0" Padding="0" ToolTip="If this is Empty, PC Date is not saved to database!" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="214" />
+        <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="266,180,0,0" Text="{Binding ElementName=grdDatasets, Path=SelectedItem.MaxDatasets}" VerticalAlignment="Top" Width="179" />
     </Grid>
 </UserControl>

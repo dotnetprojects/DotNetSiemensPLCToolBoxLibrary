@@ -47,8 +47,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _storage = value; NotifyPropertyChanged("Storage"); }
         }
 
-        private int _maxDatasets;
-        [System.ComponentModel.Description("0 means unlimeted. If a Value bigger than 0 is set, only this amout of Datasets will be stored, the oldest one will be removed!")]
+        private int _maxDatasets = 1000000;
+        [System.ComponentModel.Description("0 means unlimited. If a Value bigger than 0 is set, only this amout of Datasets will be stored, the oldest one will be removed! (Only used if supported by the Storrage!)")]
         public int MaxDatasets
         {
             get { return _maxDatasets; }

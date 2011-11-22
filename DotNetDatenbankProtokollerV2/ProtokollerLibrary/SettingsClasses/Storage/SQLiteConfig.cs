@@ -13,15 +13,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         {
             get { return this._databasefile; }
             set { this._databasefile = value; NotifyPropertyChanged("DatabaseFile"); }
-        }
-
-
-        private int _maxDatasets = 1000000;
-        public int MaxDatasets
-        {
-            get { return _maxDatasets; }
-            set { _maxDatasets = value; }
-        }
+        }        
 
         public override List<string> DatabaseFieldTypes
         {

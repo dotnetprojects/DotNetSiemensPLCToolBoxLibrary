@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -186,8 +187,13 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         {
             DatasetConfig conf = grdDatasets.SelectedItem as DatasetConfig;
             if (grdDatasetFields.SelectedItem != null)
-                conf.DatasetConfigRows.Remove((DatasetConfigRow)grdDatasetFields.SelectedItem);
-        
+            {
+                if (grdDatasetFields.Visibility == System.Windows.Visibility.Visible)
+                    conf.DatasetConfigRows.Remove((DatasetConfigRow)grdDatasetFields.SelectedItem);
+                else
+                    conf.DatasetConfigRows.Remove((DatasetConfigRow) grdDatasetFieldsEthernet.SelectedItem);
+            }
+
         }
 
         private void txt_Enter_ValueUpdater(object sender, KeyEventArgs e)
@@ -212,6 +218,25 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 ProtokollerConfiguration.ActualConfigInstance.Datasets.Add(newDS);
                 ProtokollerConfiguration.ReReferenceProtokollerConfiguration(ProtokollerConfiguration.ActualConfigInstance);
             }            
-        }                          
+        }
+
+        private void grdDatasets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (grdDatasets.SelectedItem != null)
+                {
+                    var DS = ((DatasetConfig) grdDatasets.SelectedItem);
+                    int sz = 0;
+                    foreach (var datasetConfigRow in DS.DatasetConfigRows)
+                    {
+                        sz += datasetConfigRow.PLCTag.ReadByteSize;
+                    }
+                    lblSize.Content = sz.ToString();
+                }
+            }
+            catch (Exception)
+            { }
+        }                                  
     }
 }

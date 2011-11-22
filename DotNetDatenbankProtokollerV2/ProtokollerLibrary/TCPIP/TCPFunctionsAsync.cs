@@ -9,8 +9,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 {
     public class TCPFunctionsAsync : IDisposable
     {
+        private bool disposed = false;
         public void Dispose()
         {
+            disposed = true;
+
             if (tcpClient != null)
                 tcpClient.Close();
             if (tcpListener != null)
@@ -25,7 +28,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             /// <summary>client is not connected with the server</summary>
             STOPPED = 0,
             /// <summary>the client try to connect the server</summary>
-            STARTED = 1,
+            LISTENING = 1,
             /// <summary>the client try to connect the server</summary>
             CONNECTING = 2,
             /// <summary>the client is connected</summary>
@@ -40,7 +43,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public string LastErrorMessage { get; set; }
 
-        public bool AutoConnect { get; set; }
+        public bool AutoReConnect { get; set; }
 
         /// <summary>
         /// On a Socket Server, allow multiple Clients 
@@ -108,14 +111,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             if (!this.connection_active)
             {
+                this.State = Status.LISTENING;
                 tcpListener = new TcpListener(local_ip, connection_port);
                 tcpListener.Start();
                 tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), tcpListener);
             }
             else
             {
+                this.State = Status.CONNECTING;
                 tcpClient = new TcpClient();
-                tcpClient.BeginConnect(local_ip, connection_port, new AsyncCallback(DoBeginnConnectCallback), tcpClient);
+                tcpClient.BeginConnect(local_ip, connection_port, new AsyncCallback(DoBeginnConnectCallback), tcpClient);                
             }
         }
 
@@ -126,6 +131,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             try
             {
+                this.State = Status.CONNECTED;
                 var tcpc = (TcpClient)ar.AsyncState;
                 tcpc.EndConnect(ar);
 
@@ -141,6 +147,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             {
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+
+                string sMsg = "TCPSocketClientAndServer.DoBeginConnectCallback(IAsyncResult) - error: " + ex.Message;
+                this.LastErrorMessage = sMsg;
             }
         }
 
@@ -148,6 +157,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             try
             {
+                this.State = Status.CONNECTED;
                 TcpListener listener = (TcpListener)ar.AsyncState;
                 var akTcpClient = listener.EndAcceptTcpClient(ar);
 
@@ -168,6 +178,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             {
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+
+                string sMsg = "TCPSocketClientAndServer.DoAcceptTcpClientCallback(IAsyncResult) - error: " + ex.Message;
+                this.LastErrorMessage = sMsg;
             }
         }
 
@@ -196,54 +209,58 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             {
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+
+                string sMsg = "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
+                this.LastErrorMessage = sMsg;
             }
         }
 
         void DoReadCallback(IAsyncResult ar)
         {
-            try
-            {
-                TcpClient akTcpClient = (TcpClient)ar.AsyncState;
-
-                var readBytes = readBytesPerCennection[akTcpClient];
-                var readPos = readBytesCountPerCennection[akTcpClient];
-
-                int cnt = akTcpClient.Client.EndReceive(ar);
-                if (cnt > 0 && fixedLength < 0)
+            if (!disposed)
+                try
                 {
-                    byte[] rec = new byte[cnt];
-                    Array.Copy(readBytes, 0, rec, 0, cnt);
-                    if (context == null)
-                        DataRecieved(rec);
-                    else
-                        context.Post(delegate { DataRecieved(rec); }, null);
-                    beginRead(akTcpClient);
-                }
-                else
-                {
-                    readPos += cnt;
-                    readBytesCountPerCennection[akTcpClient] = readPos;
-                    if (readPos < fixedLength)
-                        akTcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
-                    else
+                    TcpClient akTcpClient = (TcpClient) ar.AsyncState;
+
+                    var readBytes = readBytesPerCennection[akTcpClient];
+                    var readPos = readBytesCountPerCennection[akTcpClient];
+                    
+                    int cnt = akTcpClient.Client.EndReceive(ar);
+                    if (cnt > 0 && fixedLength < 0)
                     {
+                        byte[] rec = new byte[cnt];
+                        Array.Copy(readBytes, 0, rec, 0, cnt);
                         if (context == null)
-                            DataRecieved(readBytes);
+                            DataRecieved(rec);
                         else
-                            context.Post(delegate { DataRecieved(readBytes); }, null);
+                            context.Post(delegate { DataRecieved(rec); }, null);
                         beginRead(akTcpClient);
                     }
+                    else
+                    {
+                        readPos += cnt;
+                        readBytesCountPerCennection[akTcpClient] = readPos;
+                        if (readPos < fixedLength)
+                            akTcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
+                        else
+                        {
+                            if (context == null)
+                                DataRecieved(readBytes);
+                            else
+                                context.Post(delegate { DataRecieved(readBytes); }, null);
+                            beginRead(akTcpClient);
+                        }
+                    }
+
                 }
+                catch (Exception ex)
+                {
+                    if (AsynchronousExceptionOccured != null)
+                        AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
 
-            }
-            catch (Exception ex)
-            {
-                if (AsynchronousExceptionOccured != null)
-                    AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
-
-                string sMsg = "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
-                this.LastErrorMessage = sMsg;
-            }
+                    string sMsg = "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
+                    this.LastErrorMessage = sMsg;
+                }
         }
 
         public bool SendData(string telegramm)

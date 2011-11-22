@@ -137,5 +137,10 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 lblServiceState.Content = "Service not installed!";
             }
         }
+
+        private void cmdClearLog_Click(object sender, RoutedEventArgs e)
+        {
+            Logging.ClearLog();
+        }
     }
 }

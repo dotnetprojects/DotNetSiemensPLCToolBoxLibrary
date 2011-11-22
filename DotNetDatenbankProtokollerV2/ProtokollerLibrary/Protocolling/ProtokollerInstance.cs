@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -201,6 +202,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         if (tcpipConnConf.MultiTelegramme == 0)
                             tcpipConnConf.MultiTelegramme = 1;
                         TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(null, tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
+                        tmpConn.AllowMultipleClients = tcpipConnConf.AcceptMultipleConnections;
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                         tmpConn.DataRecieved += (bytes) =>
                                                              {
@@ -208,7 +210,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                                                  if (values != null)
                                                                      akDBInterface.Write(values);
                                                              };
-                        
+                        tmpConn.ConnectionEstablished += (TcpClient tcp) =>
+                                                             {
+                                                                 Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                             };
+                        tmpConn.ConnectionClosed += (TcpClient tcp) =>
+                                                        {
+                                                            Logging.LogText("Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                        };
+                        Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
                         tmpConn.Connect();
                         ConnectionList.Add(tcpipConnConf, tmpConn);
                         myDisposables.Add(tmpConn);

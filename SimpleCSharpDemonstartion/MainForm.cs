@@ -133,5 +133,12 @@ namespace SimpleCSharpDemonstration
             lblString.Text = tag.ValueAsString;  
             
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var cfg = new PLCConnectionConfiguration() {ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration, ConnectionName = "MyPrivateConnection"};
+            Configuration.ShowConfiguration(cfg);
+            myConn = new PLCConnection(cfg);
+        }
     }
 }
