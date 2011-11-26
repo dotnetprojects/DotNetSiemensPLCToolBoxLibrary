@@ -108,7 +108,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 if (rowTr.StartsWith("//"))
                 {
-                    lastrow.Comment += rowTr;
+                    if (lastrow != null)
+                        lastrow.Comment += rowTr;
+                    else
+                    {
+                        if (commnew != null)
+                            if (string.IsNullOrEmpty(akDataRow.Comment))
+                                akDataRow.Comment += rowTr;
+                            else
+                                akDataRow.Comment += "\r\n" + rowTr;
+                    }
                 }
                 else
                 {
@@ -150,6 +159,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case "STRUCT":
                         case "END_VAR":
                         case "":
+                            if (commnew != null)
+                                if (string.IsNullOrEmpty(akDataRow.Comment))
+                                    akDataRow.Comment += commnew;
+                                else
+                                    akDataRow.Comment += "\r\n" + commnew;
                             break;
                         default:
 
