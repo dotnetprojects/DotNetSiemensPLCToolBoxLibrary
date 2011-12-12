@@ -386,7 +386,7 @@ namespace JFK_VarTab
             if (myDB.Structure != null && myDB.Structure.Children != null)
                 cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
 
-            string varname = txtConnectionName + "_" + "STOERUNGEN_DB" + myDB.BlockNumber;
+            string varname = txtConnectionName.Text + "_" + "STOERUNGEN_DB" + myDB.BlockNumber;
 
             string tags = varname + ";" + txtConnectionName.Text + ";DB " + myDB.BlockNumber + " DBW 0;Int;;" + ((cnt - 2) / 2).ToString() + ";2;1 s;;;;;0;10;0;100;0;;0;\r\n";
 
@@ -510,6 +510,17 @@ namespace JFK_VarTab
                     {
                         string stoeTxt = "";
                         stoeTxt = plcDataRow.Comment;
+
+                        if (chkCombineStructComments.Checked)
+                        {
+                            var par = plcDataRow.Parent;
+                            while (par != null)
+                            {
+                                stoeTxt = par.Comment + stoeTxt;
+                                par = par.Parent;
+                            }
+                        }
+                    
 
                         char anfC = plcDataRow.Comment[0];
                         if (anfC.ToString() == txtErrPrefix.Text || !chkUseErrPrefix.Checked)
