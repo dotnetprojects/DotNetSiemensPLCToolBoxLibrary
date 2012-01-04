@@ -26,7 +26,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         public enum Status
         {
             /// <summary>client is not connected with the server</summary>
-            STOPPED = 0,
+            DISCONNECTED = 0,
             /// <summary>the client try to connect the server</summary>
             LISTENING = 1,
             /// <summary>the client try to connect the server</summary>
@@ -37,13 +37,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         #region Properties & Events
 
-        public Status State = Status.STOPPED;
+        public Status State = Status.DISCONNECTED;
 
         public string Name { get; set; }
 
         public string LastErrorMessage { get; set; }
 
-        public bool AutoReConnect { get; set; }
+        private bool _autoReConnect = true;
+        public bool AutoReConnect
+        {
+            get { return _autoReConnect; }
+            set { _autoReConnect = value; }
+        }
 
         /// <summary>
         /// On a Socket Server, allow multiple Clients 
@@ -69,6 +74,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         private int connection_port;
         private bool connection_active;
         private SynchronizationContext context;
+
+        public bool UseKeepAlive { get; set; }
 
         private int fixedLength = -1;
 
@@ -129,11 +136,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public void DoBeginnConnectCallback(IAsyncResult ar)
         {
+            TcpClient tcpc = null;
             try
             {
                 this.State = Status.CONNECTED;
-                var tcpc = (TcpClient)ar.AsyncState;
+                tcpc = (TcpClient)ar.AsyncState;
                 tcpc.EndConnect(ar);
+
+                if (UseKeepAlive)
+                    tcpc.Client.SetKeepAlive(50, 100);
 
                 if (ConnectionEstablished != null)
                     if (context == null)
@@ -144,12 +155,31 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 beginRead(tcpc);
             }
             catch (Exception ex)
-            {
-                if (AsynchronousExceptionOccured != null)
-                    AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
-
+            {                
                 string sMsg = "TCPSocketClientAndServer.DoBeginConnectCallback(IAsyncResult) - error: " + ex.Message;
                 this.LastErrorMessage = sMsg;
+
+                if (ex is SocketException && (((SocketException)ex).ErrorCode == 10060 || ((SocketException)ex).ErrorCode == 10061))
+                {
+                    if (tcpc != null)
+                        tcpc.Close();
+
+                    if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                        if (context == null)
+                            ConnectionClosed(tcpClient);
+                        else
+                            context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                    this.State = Status.DISCONNECTED;
+
+                    if (!AllowMultipleClients || connection_active)
+                        if (AutoReConnect) Connect();
+                }
+                else
+                {
+                    if (AsynchronousExceptionOccured != null)
+                        AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+                }
             }
         }
 
@@ -160,6 +190,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 this.State = Status.CONNECTED;
                 TcpListener listener = (TcpListener)ar.AsyncState;
                 var akTcpClient = listener.EndAcceptTcpClient(ar);
+                
+                if (UseKeepAlive)
+                    akTcpClient.Client.SetKeepAlive(50, 100);
 
                 tcpClientsFromListener.Add(akTcpClient);
 
@@ -186,41 +219,99 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         private void beginRead(TcpClient akTcpClient)
         {
-            try
+            if (!disposed && akTcpClient.Connected == false)
             {
-                if (readBytesPerCennection.ContainsKey(akTcpClient))
-                {
-                    readBytesPerCennection.Remove(akTcpClient);
-                    readBytesCountPerCennection.Remove(akTcpClient);
-                }
-                byte[] readBytes;
+                this.State = Status.DISCONNECTED;
+                akTcpClient.Close();
 
-                if (fixedLength < 0)
-                    readBytes = new Byte[65536];
-                else
-                    readBytes = new Byte[fixedLength];
+                if (ConnectionClosed != null)
+                    if (context == null)
+                        ConnectionClosed(tcpClient);
+                    else
+                        context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                readBytesPerCennection.Add(akTcpClient, readBytes);
-                readBytesCountPerCennection.Add(akTcpClient, 0);
-
-                akTcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
+                if (!AllowMultipleClients || connection_active)
+                    if (AutoReConnect) Connect();
+                return;
             }
-            catch (Exception ex)
-            {
-                if (AsynchronousExceptionOccured != null)
-                    AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
 
-                string sMsg = "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
-                this.LastErrorMessage = sMsg;
+            if (!disposed)
+            {
+                try
+                {
+                    if (readBytesPerCennection.ContainsKey(akTcpClient))
+                    {
+                        readBytesPerCennection.Remove(akTcpClient);
+                        readBytesCountPerCennection.Remove(akTcpClient);
+                    }
+                    byte[] readBytes;
+
+                    if (fixedLength < 0)
+                        readBytes = new Byte[65536];
+                    else
+                        readBytes = new Byte[fixedLength];
+
+                    readBytesPerCennection.Add(akTcpClient, readBytes);
+                    readBytesCountPerCennection.Add(akTcpClient, 0);
+
+                    akTcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
+                }
+                catch (Exception ex)
+                {
+                    
+                    string sMsg = "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
+                    this.LastErrorMessage = sMsg;
+
+                    if (ex is SocketException && ((SocketException)ex).ErrorCode == 10060)
+                    {
+                        akTcpClient.Close();
+
+                        if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                            if (context == null)
+                                ConnectionClosed(tcpClient);
+                            else
+                                context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                        this.State = Status.DISCONNECTED;
+
+                        if (!AllowMultipleClients || connection_active)
+                            if (AutoReConnect) Connect();
+                    }
+                    else
+                    {
+                        if (AsynchronousExceptionOccured != null)
+                            AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+                    }
+                }
             }
         }
 
         void DoReadCallback(IAsyncResult ar)
         {
+            TcpClient akTcpClient = (TcpClient)ar.AsyncState;
+
+            if (!disposed && akTcpClient.Connected == false)
+            {
+               
+                akTcpClient.Close();
+
+                if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                    if (context == null)
+                        ConnectionClosed(tcpClient);
+                    else
+                        context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                this.State = Status.DISCONNECTED;
+
+                if (!AllowMultipleClients || connection_active)
+                    if (AutoReConnect) Connect();
+                return;
+            }
+
             if (!disposed)
                 try
                 {
-                    TcpClient akTcpClient = (TcpClient) ar.AsyncState;
+                    
 
                     var readBytes = readBytesPerCennection[akTcpClient];
                     var readPos = readBytesCountPerCennection[akTcpClient];
@@ -255,11 +346,30 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 }
                 catch (Exception ex)
                 {
-                    if (AsynchronousExceptionOccured != null)
-                        AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
-
+                  
                     string sMsg = "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
                     this.LastErrorMessage = sMsg;
+
+                    if (ex is SocketException && ((SocketException)ex).ErrorCode == 10060)
+                    {
+                        akTcpClient.Close();
+
+                        if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                            if (context == null)
+                                ConnectionClosed(tcpClient);
+                            else
+                                context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                        this.State = Status.DISCONNECTED;
+
+                        if (!AllowMultipleClients || connection_active)
+                            if (AutoReConnect) Connect();
+                    }
+                    else
+                    {
+                        if (AsynchronousExceptionOccured != null)
+                            AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+                    }
                 }
         }
 

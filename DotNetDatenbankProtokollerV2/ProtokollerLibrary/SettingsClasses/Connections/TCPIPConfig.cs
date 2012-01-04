@@ -23,6 +23,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             set { _port = value; NotifyPropertyChanged("Port"); }
         }
 
+        private bool _useTcpKeepAlive;
+        public bool UseTcpKeepAlive
+        {
+            get { return _useTcpKeepAlive; }
+            set { _useTcpKeepAlive = value; NotifyPropertyChanged("UseTcpKeepAlive"); }
+        }
+
         private bool _passiveConnection;
         [System.ComponentModel.Description("If not set, the Connection trys to contact the Partner, if Passive, it waits for the Partner to connect!")]
         public bool PassiveConnection
