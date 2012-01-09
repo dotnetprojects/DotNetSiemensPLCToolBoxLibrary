@@ -1,3 +1,8 @@
+/*
+ * Code from http://www.codeproject.com/KB/bugs/LoadDBF.aspx
+ */
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
