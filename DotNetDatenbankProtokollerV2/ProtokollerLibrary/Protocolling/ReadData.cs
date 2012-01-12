@@ -33,7 +33,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
 
             var values = from n in datasetConfigRows
-                         select n.PLCTag.Value;
+                         select n.Value;
 
             return values;
         }
@@ -98,7 +98,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
 
             var values = from n in datasetConfigRows
-                         select n.PLCTag.Value;
+                         select n.Value;
             
             return values;
         }

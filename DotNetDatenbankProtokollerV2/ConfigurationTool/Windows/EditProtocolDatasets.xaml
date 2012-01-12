@@ -10,7 +10,7 @@
              xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
              xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
              mc:Ignorable="d" 
-             d:DesignHeight="426" d:DesignWidth="806" Name="myControl">
+             d:DesignHeight="483" d:DesignWidth="984" Name="myControl">
     
     <UserControl.Resources>
         <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
@@ -161,6 +161,19 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Multiplier (0 = none)" Width="Auto" IsReadOnly="False" SortMemberPath="Multiplier">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Multiplier}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding Multiplier, Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -353,6 +366,19 @@
                             <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Multiplier (0 = none)" Width="Auto" IsReadOnly="False" SortMemberPath="Multiplier">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Multiplier}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0" Padding="0" Text="{Binding Multiplier, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Header="Sub Field List (mostly not used)" Width="Auto" IsReadOnly="False" SortMemberPath="StringSubFields">

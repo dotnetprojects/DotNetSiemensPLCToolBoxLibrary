@@ -15,55 +15,112 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));                
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
+
         private string _databaseField;
+
         public string DatabaseField
         {
             get { return _databaseField; }
-            set { _databaseField = value; NotifyPropertyChanged("DatabaseField"); }
+            set
+            {
+                _databaseField = value;
+                NotifyPropertyChanged("DatabaseField");
+            }
         }
 
         private string _databaseFieldType;
+
         public string DatabaseFieldType
         {
             get { return _databaseFieldType; }
-            set { _databaseFieldType = value; NotifyPropertyChanged("DatabaseFieldType"); }
+            set
+            {
+                _databaseFieldType = value;
+                NotifyPropertyChanged("DatabaseFieldType");
+            }
         }
 
         private int _databaseFieldSize;
+
         public int DatabaseFieldSize
         {
             get { return _databaseFieldSize; }
-            set { _databaseFieldSize = value; NotifyPropertyChanged("DatabaseFieldSize"); }
+            set
+            {
+                _databaseFieldSize = value;
+                NotifyPropertyChanged("DatabaseFieldSize");
+            }
         }
 
         //Hier gibts auch Interne Felder wie DateTime und Index!
         private ConnectionConfig _connection;
+
         public ConnectionConfig Connection
         {
             get { return _connection; }
-            set { _connection = value; NotifyPropertyChanged("Connection"); }
+            set
+            {
+                _connection = value;
+                NotifyPropertyChanged("Connection");
+            }
         }
 
         //This is not needed when using a TCP/IP Connection, but we need the Type and Length! So we ignor the Address when using this!
-        private PLCTag _plcTag=new PLCTag();
+        private PLCTag _plcTag = new PLCTag();
+
         public PLCTag PLCTag
         {
             get { return _plcTag; }
-            set { _plcTag = value; NotifyPropertyChanged("PLCTag"); }
+            set
+            {
+                _plcTag = value;
+                NotifyPropertyChanged("PLCTag");
+            }
         }
 
+        private double _multiplier = 0;
+
+        public double Multiplier
+        {
+            get { return _multiplier; }
+            set
+            {
+                _multiplier = value;
+                NotifyPropertyChanged("Multiplier");
+            }
+        }
 
         private string _stringSubFields = "";
+
         [Description("List of Fixed Length Fields in the String (f.E: TYPE|4|NR|2...)")]
         public string StringSubFields
         {
             get { return _stringSubFields; }
-            set { _stringSubFields = value; NotifyPropertyChanged("StringSubFields"); }
+            set
+            {
+                _stringSubFields = value;
+                NotifyPropertyChanged("StringSubFields");
+            }
         }
 
-
-    }   
+        public object Value
+        {
+            get
+            {
+                if (Multiplier != 0 && (PLCTag.Value is double || PLCTag.Value is float || PLCTag.Value is int || PLCTag.Value is uint || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int64 || PLCTag.Value is UInt64))
+                {
+                    try
+                    {                        
+                        return Convert.ToDouble(PLCTag.Value)*Multiplier;
+                    }
+                    catch (Exception)
+                    { }
+                }
+                return PLCTag.Value;
+            }
+        }
+    }
 }
