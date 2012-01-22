@@ -37,6 +37,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         private void showBlock(object myBlock, int netzwerknr, int zeile)
         {
+            var aa = ((S7FunctionBlock) myBlock).LastCodeChange;
             this.netzwerknr = netzwerknr;
             this.zeile = zeile;
 

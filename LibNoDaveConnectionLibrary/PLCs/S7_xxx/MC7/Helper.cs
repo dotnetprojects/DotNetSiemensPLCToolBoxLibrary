@@ -672,11 +672,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             string Result;
 
             DT = new DateTime(1984, 1, 1, 0, 0, 0, 0);
-            DT.AddMilliseconds((b1 * 0x1000000) + (b2 * 0x10000) + (b3 * 0x100) + b4);
-            DT.AddDays((b5 * 0x100) + b6);
-            Result = DT.Day.ToString() + "." + DT.Month.ToString() + "." + DT.Year.ToString() + " " + DT.Hour.ToString() +
-                     ":" + DT.Minute.ToString() + ":" + DT.Second.ToString() + "." + DT.Millisecond.ToString();
-
+            DT = DT.AddMilliseconds((b1 * 0x1000000) + (b2 * 0x10000) + (b3 * 0x100) + b4);
+            DT = DT.AddDays((b5 * 0x100) + b6);
+           
             return DT;
         }
 

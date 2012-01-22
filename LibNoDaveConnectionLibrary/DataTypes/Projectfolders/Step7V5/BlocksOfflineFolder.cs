@@ -143,6 +143,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public bool knowHowProtection = false;
             public string username;
             public string version;
+            public DateTime LastCodeChange;
+            public DateTime LastInterfaceChange;
         }
 
         private Dictionary<string, tmpBlock> tmpBlocks;
@@ -278,7 +280,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             addinfo = (byte[])row["ADDINFO"];
                         int mc5codelen = (int)row["MC5LEN"];
                         int ssbpartlen = (int)row["SSBLEN"];
-                        int addinfolen = (int)row["ADDLEN"];
+                        int addinfolen = (int)row["ADDLEN"];                                    
 
                         if (mc5code != null && mc5code.Length > mc5codelen)
                             Array.Resize<byte>(ref mc5code, mc5codelen);
@@ -334,6 +336,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             //Network Information in addinfo
                             myTmpBlk.nwinfo = addinfo;
                             //This line contains Network Information, and after it the Position of the JumpMarks
+
+                            var ts1 = (string)row["TIMESTAMP1"];
+                            myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]); 
+
+                            ts1 = (string)row["TIMESTAMP2"];
+                            myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 ||
                                  subblktype == 9) //FC, OB, FB, SFC, SFB
@@ -461,7 +470,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
-
+                    
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
 
