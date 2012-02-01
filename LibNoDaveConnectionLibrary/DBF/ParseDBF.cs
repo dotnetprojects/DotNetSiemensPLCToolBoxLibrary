@@ -57,6 +57,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             [MarshalAs(UnmanagedType.ByValTStr /* Array */, SizeConst = 7)] //Changed Type to Sting, Monotouch Compiler has Problems with Bytearrays when using PtrtoStructure
             public string /* byte[] */ reserved3;
             public byte indexFlag;
+
+            public override string ToString()
+            {
+                return "Field-Name: " + fieldName;
+            }
         }
         #endregion
 
