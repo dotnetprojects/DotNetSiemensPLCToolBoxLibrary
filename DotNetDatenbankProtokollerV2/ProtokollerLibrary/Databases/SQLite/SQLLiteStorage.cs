@@ -424,7 +424,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 CheckAndEstablishReadConnection();
 
                 readCmd.Connection = readDBConn;
-                readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
+                readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
                 DbDataReader akReader = readCmd.ExecuteReader();
 
                 DataTable myTbl = new DataTable();
@@ -448,6 +448,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 readCmd.CommandText = sql.Trim();
                 if (readCmd.CommandText.EndsWith(";"))
                     readCmd.CommandText = readCmd.CommandText.Substring(0, readCmd.CommandText.Length - 1);
+                if (!readCmd.CommandText.Contains("ORDER BY"))
+                    readCmd.CommandText += " ORDER BY id DESC";                                
                 if (!readCmd.CommandText.Contains("LIMIT") && !readCmd.CommandText.Contains("OFFSET"))
                     readCmd.CommandText += " LIMIT " + Count.ToString();                
                 DbDataReader akReader = readCmd.ExecuteReader();

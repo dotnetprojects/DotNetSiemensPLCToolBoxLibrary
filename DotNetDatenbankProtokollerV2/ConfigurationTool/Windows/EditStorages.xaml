@@ -7,7 +7,7 @@
     <Grid>
         <Button Content="Add CSV Storage" Margin="0,12,12,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="147" Name="cmdAddCSVStorage" Click="cmdAddCSVStorage_Click" />
         <Button Content="Add SQLite Storage" HorizontalAlignment="Right" Margin="0,43,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddSQLiteStorage" Click="cmdAddSQLiteStorage_Click" />
-        <Button Content="Add MsSQL Storage" HorizontalAlignment="Right" Margin="0,167,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMsSQLStorage" Click="cmdAddMsSQLStorage_Click" Visibility="Visible" IsEnabled="False" />
+        <Button Content="Add MsSQL Storage" HorizontalAlignment="Right" Margin="0,167,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMsSQLStorage" Click="cmdAddMsSQLStorage_Click" Visibility="Visible" IsEnabled="True" />
         <Button Content="Add PostgreSQL Storage" HorizontalAlignment="Right" Margin="0,136,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddPostgreSQLStorage" Click="cmdAddPostgreSQLStorage_Click" Visibility="Visible" />
         <Button Content="Add MySQL Storage" HorizontalAlignment="Right" Margin="0,105,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddMySQLStorage" Click="cmdAddMySQLStorage_Click" Visibility="Visible" />
         <Button Content="Add ODBC Storage" HorizontalAlignment="Right" Margin="0,198,12,0" Width="147" Height="25" VerticalAlignment="Top" Name="cmdAddODBCStorage" Click="cmdAddODBCStorage_Click" Visibility="Visible" IsEnabled="False" />

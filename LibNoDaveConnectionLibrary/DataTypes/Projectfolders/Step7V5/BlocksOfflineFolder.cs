@@ -378,6 +378,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                         else if (subblktype == 27) //VAT                        
                         {
+                            var ts1 = (string)row["TIMESTAMP1"];
+                            myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+
+                            ts1 = (string)row["TIMESTAMP2"];
+                            myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+
+
                             //VAT in MC5Code (Absolut adressed)
                             myTmpBlk.mc7code = mc5code;
                             //VAT in ADDINFO (Symbolic adressed)
@@ -447,6 +454,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 {
                     S7VATBlock retValBlock = new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber);
                     retValBlock.Attributes = step7Attributes;
+
+                    retValBlock.LastCodeChange = myTmpBlk.LastCodeChange;
+                    retValBlock.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
+
                     return retValBlock;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
@@ -457,6 +468,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
+
+                    retVal.LastCodeChange = myTmpBlk.LastCodeChange;
+                    retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
                     return retVal;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
@@ -465,6 +479,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     S7FunctionBlock retVal = new S7FunctionBlock();
                     blkInfo._Block = retVal;
+
+                    retVal.LastCodeChange = myTmpBlk.LastCodeChange;
+                    retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
 
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;

@@ -49,6 +49,7 @@
             this.cmdUndeleteBlock = new System.Windows.Forms.Button();
             this.txtUndeleteName = new System.Windows.Forms.TextBox();
             this.grpVisu = new System.Windows.Forms.GroupBox();
+            this.chkCombineStructComments = new System.Windows.Forms.CheckBox();
             this.cmdCreateWinCCFlexibleTags = new System.Windows.Forms.Button();
             this.chkExpandArrays = new System.Windows.Forms.CheckBox();
             this.chkUseErrPrefix = new System.Windows.Forms.CheckBox();
@@ -109,7 +110,6 @@
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chkCombineStructComments = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -333,6 +333,17 @@
             this.grpVisu.TabIndex = 16;
             this.grpVisu.TabStop = false;
             this.grpVisu.Text = "Visualization Toolbox";
+            // 
+            // chkCombineStructComments
+            // 
+            this.chkCombineStructComments.Checked = true;
+            this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCombineStructComments.Location = new System.Drawing.Point(20, 107);
+            this.chkCombineStructComments.Name = "chkCombineStructComments";
+            this.chkCombineStructComments.Size = new System.Drawing.Size(223, 19);
+            this.chkCombineStructComments.TabIndex = 6;
+            this.chkCombineStructComments.Text = "Combine Struct/UDT Comments";
+            this.chkCombineStructComments.UseVisualStyleBackColor = true;
             // 
             // cmdCreateWinCCFlexibleTags
             // 
@@ -885,17 +896,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
-            // 
-            // chkCombineStructComments
-            // 
-            this.chkCombineStructComments.Checked = true;
-            this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCombineStructComments.Location = new System.Drawing.Point(20, 107);
-            this.chkCombineStructComments.Name = "chkCombineStructComments";
-            this.chkCombineStructComments.Size = new System.Drawing.Size(223, 19);
-            this.chkCombineStructComments.TabIndex = 6;
-            this.chkCombineStructComments.Text = "Combine Struct/UDT Comments";
-            this.chkCombineStructComments.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

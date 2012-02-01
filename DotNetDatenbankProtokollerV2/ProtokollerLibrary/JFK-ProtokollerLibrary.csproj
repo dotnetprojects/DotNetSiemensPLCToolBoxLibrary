@@ -69,7 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AdditionalDlls\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,11 +89,11 @@
     <Compile Include="Databases\Excel\ExcelStorage.cs" />
     <Compile Include="Databases\Firebird\FirebirdStorage.cs" />
     <Compile Include="Databases\Interfaces\IDBViewableSQL.cs" />
+    <Compile Include="Databases\MsSQL\MsSQLStorage.cs" />
     <Compile Include="Databases\MySQL\MySQLStorage.cs" />
     <Compile Include="Databases\PostgreSQL\PostgreSQLStorage.cs" />
     <Compile Include="Databases\StorageHelper.cs" />
     <Compile Include="Databases\Interfaces\IDBInterface.cs" />
-    <None Include="Databases\MsSQL\db_mssql.cs" />
     <None Include="Databases\ODBC\db_odbc.cs" />
     <Compile Include="Databases\Interfaces\IDBViewable.cs" />
     <Compile Include="Databases\SQLite\SQLLiteStorage.cs" />
@@ -101,6 +103,9 @@
     <Compile Include="Protocolling\ProtokollerInstance.cs" />
     <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />
+    <Compile Include="Remoting\RemotingClientAndServerClasses.cs" />
+    <Compile Include="Remoting\RemotingClient.cs" />
+    <Compile Include="Remoting\RemotingServer.cs" />
     <Compile Include="SettingsClasses\Connections\TCPIPProxyConfig.cs" />
     <Compile Include="SettingsClasses\Storage\Excel2007Config.cs" />
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +16,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite;
 using DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger;
+using DotNetSimaticDatabaseProtokollerLibrary.Remoting;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
@@ -39,6 +44,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         public void Start(bool StartedAsService)
         {
+            
+
             context = SynchronizationContext.Current;
 
             Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
