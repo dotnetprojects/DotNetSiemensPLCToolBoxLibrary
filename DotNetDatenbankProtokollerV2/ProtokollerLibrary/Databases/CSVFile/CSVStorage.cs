@@ -210,7 +210,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         {
             try
             {
-                using (CsvReader csv = new CsvReader(new StreamReader(myConfig.Textfile), true, myConfig.Seperator))
+                using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname()), true, myConfig.Seperator))
                 {
                     int fieldCount = csv.FieldCount;
                     string[] headers = csv.GetFieldHeaders();
@@ -247,7 +247,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
         public Int64 ReadCount(DatasetConfig datasetConfig)
         {
-            using (CsvReader csv = new CsvReader(new StreamReader(myConfig.Textfile), true, myConfig.Seperator))
+            using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname()), true, myConfig.Seperator))
             {
                 int n = 0;
 
