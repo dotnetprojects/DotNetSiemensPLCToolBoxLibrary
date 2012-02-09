@@ -20,6 +20,8 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         private IDBViewableSQL dbViewSQL;
         private DatasetConfig datasetConfig;
 
+        private string dbFieldNames = "*";
+
         private long CurrentNumber = 0;
         public ViewStorrages()
         {
@@ -60,10 +62,20 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     lblDataCount.Content = dbView.ReadCount(datasetConfig);
                 }
 
+                if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+                {
+                    /*dbFieldNames = datasetConfig.DateTimeDatabaseField;
+                    foreach (var datasetConfigRow in datasetConfig.DatasetConfigRows)
+                    {
+                        if (datasetConfigRow.DatabaseField.ToLower().Trim() != datasetConfig.DateTimeDatabaseField.ToLower().Trim())
+                            dbFieldNames += ", " + datasetConfigRow.DatabaseField;
+                    }*/
+                    dbFieldNames = datasetConfig.DateTimeDatabaseField + ",*";
+                }
 
                 if (dbViewSQL != null)
                 {
-                    txtSQL.Text = "SELECT * FROM " + datasetConfig.Name + " LIMIT " + 1000.ToString();
+                    txtSQL.Text = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + 1000.ToString();
                     txtSQL.IsEnabled = true;
                     cmdSQL.IsEnabled = true;
                     txtSearch.IsEnabled = true;
@@ -222,15 +234,16 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
        
         private void cmdSearch_Click(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM " + datasetConfig.Name + " WHERE ";
+            string sql = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " WHERE ";
             bool first = true;
-            foreach (DataGridColumn dataGridColumn in grdDatasetFields.Columns)
+            foreach (var rows in datasetConfig.DatasetConfigRows)
             {
                 if (!first)
                     sql += "OR ";
-                sql += dataGridColumn.Header + " LIKE '%" + txtSearch.Text + "%' ";
+                sql += rows.DatabaseField + " LIKE '%" + txtSearch.Text + "%' ";
                 first = false;
             }
+            sql += "ORDER BY id DESC";
             txtSQL.Text = sql;
             cmdSQL_Click(sender, e);
         }
@@ -262,7 +275,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
         }
 

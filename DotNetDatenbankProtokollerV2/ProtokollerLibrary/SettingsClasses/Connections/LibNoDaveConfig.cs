@@ -14,6 +14,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             set { _configuration = value; NotifyPropertyChanged("Configuration"); }
         }
 
+        public bool SynchronizePLCTime { get; set; }
+
         public override string Name
         {
             get

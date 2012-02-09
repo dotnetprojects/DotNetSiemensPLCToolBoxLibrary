@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -7,11 +8,28 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
     public class CSVConfig : StorageConfig
     {
-        private string _textfile = "c:\\csvfile.csv";
+        private string _textfile = "c:\\data_{yyyy}_{MM}_{dd}.csv";
+        [Description("Possible PlaceHolders: {yyyy}, {yy}, {MM}, {dd}, {hh}, {mm}, {ss}")]
         public string Textfile
         {
             get { return this._textfile; }
             set { this._textfile = value; NotifyPropertyChanged("Textfile"); }
+        }
+
+        public string ParseTextFilname()
+        {
+            var dt = DateTime.Now;
+            var retVal = Textfile;
+
+            retVal = retVal.Replace("{dd}", dt.ToString("dd"));
+            retVal = retVal.Replace("{MM}", dt.ToString("MM"));
+            retVal = retVal.Replace("{yyyy}", dt.ToString("yyyy"));
+            retVal = retVal.Replace("{yy}", dt.ToString("yy"));
+            retVal = retVal.Replace("{hh}", dt.ToString("dd"));
+            retVal = retVal.Replace("{mm}", dt.ToString("mm"));
+            retVal = retVal.Replace("{ss}", dt.ToString("ss"));
+
+            return retVal;
         }
 
         private char _seperator = ';';

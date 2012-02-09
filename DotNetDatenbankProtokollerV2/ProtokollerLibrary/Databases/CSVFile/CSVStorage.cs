@@ -16,6 +16,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         private CSVConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
+        private DatasetConfig datasetConfig;
         private string insertCommand = "";
 
         private System.IO.StreamWriter writer = null;
@@ -57,8 +58,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.dataTable = dataTable;
+            this.datasetConfig = datasetConfig;
+            
             this.fieldList = datasetConfig.DatasetConfigRows;
 
+
+            writeHeader(myConfig.ParseTextFilname());
+            
+        }
+
+        private void writeHeader(string filename)
+        {
             string zeile = "";
             foreach (DatasetConfigRow myFeld in fieldList)
             {
@@ -70,9 +80,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                     zeile += myFeld.DatabaseField;
             }
 
-            if (!System.IO.File.Exists(myConfig.Textfile) || !myConfig.Append)
-            {                
-                writer = new System.IO.StreamWriter(myConfig.Textfile);
+            if (!System.IO.File.Exists(filename) || !myConfig.Append)
+            {
+                writer = new System.IO.StreamWriter(filename);
                 writer.WriteLine(zeile);
                 writer.Close();
             }
@@ -143,6 +153,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
         public bool _internal_Write()
         {
+            var fnm = myConfig.ParseTextFilname();
+            writeHeader(fnm);
+
             string zeilen = "";
             for (int n = 0; n < _maxAdd; n++)
             {
@@ -176,7 +189,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 zeilen += zeile + Environment.NewLine;
             }
 
-            writer = new System.IO.StreamWriter(myConfig.Textfile, true);
+            writer = new System.IO.StreamWriter(fnm, true);
             writer.Write(zeilen);
             writer.Close();
 

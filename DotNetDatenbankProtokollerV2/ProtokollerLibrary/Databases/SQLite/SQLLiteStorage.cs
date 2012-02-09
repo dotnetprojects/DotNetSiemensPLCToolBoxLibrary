@@ -423,8 +423,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             //{
                 CheckAndEstablishReadConnection();
 
+                var dbFieldNames = "*";
+                if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+                {
+                    /*dbFieldNames = datasetConfig.DateTimeDatabaseField;
+                    foreach (var datasetConfigRow in datasetConfig.DatasetConfigRows)
+                    {
+                        if (datasetConfigRow.DatabaseField.ToLower().Trim() != datasetConfig.DateTimeDatabaseField.ToLower().Trim())
+                            dbFieldNames += ", " + datasetConfigRow.DatabaseField;
+                    }*/
+                    dbFieldNames = datasetConfig.DateTimeDatabaseField + ",*";
+                }
+
                 readCmd.Connection = readDBConn;
-                readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
+            readCmd.CommandText = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
                 DbDataReader akReader = readCmd.ExecuteReader();
 
                 DataTable myTbl = new DataTable();
@@ -448,7 +460,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 readCmd.CommandText = sql.Trim();
                 if (readCmd.CommandText.EndsWith(";"))
                     readCmd.CommandText = readCmd.CommandText.Substring(0, readCmd.CommandText.Length - 1);
-                if (!readCmd.CommandText.Contains("ORDER BY"))
+                if (!readCmd.CommandText.Contains("ORDER BY") && !readCmd.CommandText.Contains("LIMIT") && !readCmd.CommandText.Contains("OFFSET"))
                     readCmd.CommandText += " ORDER BY id DESC";                                
                 if (!readCmd.CommandText.Contains("LIMIT") && !readCmd.CommandText.Contains("OFFSET"))
                     readCmd.CommandText += " LIMIT " + Count.ToString();                

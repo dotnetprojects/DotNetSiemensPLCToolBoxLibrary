@@ -39,9 +39,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public Status State = Status.DISCONNECTED;
 
+        public string StateString
+        {
+            get
+            {
+                string retVal = State.ToString();
+                if (tcpClient != null)
+                    retVal = "Local-Port: " + tcpClient.Client.LocalEndPoint + ": " + retVal;
+                return retVal;
+            }
+        }
+
         public string Name { get; set; }
 
         public string LastErrorMessage { get; set; }
+
+        public string LastMessage { get; set; }
 
         private bool _autoReConnect = true;
         public bool AutoReConnect
@@ -58,7 +71,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public event Action<TcpClient> ConnectionEstablished;
         public event Action<TcpClient> ConnectionClosed;
-        public event Action<byte[]> DataRecieved;
+        public event Action<byte[], TcpClient> DataRecieved;
 
         public event ThreadExceptionEventHandler AsynchronousExceptionOccured;
 
@@ -77,12 +90,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public bool UseKeepAlive { get; set; }
 
+        public bool Started { get { return State != Status.DISCONNECTED; } }
         private int fixedLength = -1;
 
         private Dictionary<TcpClient, byte[]> readBytesPerCennection = new Dictionary<TcpClient, byte[]>();
         private Dictionary<TcpClient, int> readBytesCountPerCennection = new Dictionary<TcpClient, int>();
         //private Byte[] readBytes;
         //private int readPos = 0;
+
+        private object lockObject = new object();
 
         #endregion
 
@@ -114,7 +130,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         #endregion
 
-        public void Connect()
+        public void StartAsync()
+        {
+            Start();
+        }
+
+        public void Start()
         {
             if (!this.connection_active)
             {
@@ -125,23 +146,59 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             }
             else
             {
-                this.State = Status.CONNECTING;
-                tcpClient = new TcpClient();
-                tcpClient.BeginConnect(local_ip, connection_port, new AsyncCallback(DoBeginnConnectCallback), tcpClient);                
+                lock (lockObject)
+                {
+                    if (this.State != Status.CONNECTING)
+                    {
+                        if (tcpClient != null)
+                        {
+                            tcpClient.Close();
+                            tcpClient = null;
+                        }
+
+                        this.State = Status.CONNECTING;
+
+                        var tcpc = new TcpClient();
+                        tcpc.BeginConnect(local_ip, connection_port, new AsyncCallback(DoBeginnConnectCallback), tcpc);
+                    }
+                }
             }
         }
 
-        public void Disconnect()
-        { }
+        public void Stop()
+        {
+            if (tcpClient != null)
+                tcpClient.Close();
+            if (tcpListener != null)
+                tcpListener.Stop();
+
+            foreach (var client in tcpClientsFromListener)
+            {
+                client.Close();
+            }
+            tcpClientsFromListener.Clear();
+
+            tcpClient = null;
+            tcpListener = null;
+            this.State = Status.DISCONNECTED;
+        }
 
         public void DoBeginnConnectCallback(IAsyncResult ar)
         {
             TcpClient tcpc = null;
             try
             {
-                this.State = Status.CONNECTED;
                 tcpc = (TcpClient)ar.AsyncState;
                 tcpc.EndConnect(ar);
+
+                this.State = Status.CONNECTED;
+
+                if (tcpClient == null)
+                    tcpClient = tcpc;
+                else
+                {
+                    throw new Exception("Error: TCP Client already assigned");
+                }
 
                 if (UseKeepAlive)
                     tcpc.Client.SetKeepAlive(50, 100);
@@ -155,11 +212,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 beginRead(tcpc);
             }
             catch (Exception ex)
-            {                
-                string sMsg = "TCPSocketClientAndServer.DoBeginConnectCallback(IAsyncResult) - error: " + ex.Message;
+            {
+                string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.DoBeginConnectCallback(IAsyncResult) - error: " + ex.Message;
                 this.LastErrorMessage = sMsg;
 
-                if (ex is SocketException && (((SocketException)ex).ErrorCode == 10060 || ((SocketException)ex).ErrorCode == 10061))
+                if (ex is SocketException)// && (((SocketException)ex).ErrorCode == 10060 || ((SocketException)ex).ErrorCode == 10061 || ((SocketException)ex).ErrorCode == 10065))
                 {
                     if (tcpc != null)
                         tcpc.Close();
@@ -170,10 +227,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                         else
                             context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                    this.State = Status.DISCONNECTED;
+                    Stop();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect) Connect();
+                        if (AutoReConnect) Start();
                 }
                 else
                 {
@@ -190,7 +247,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 this.State = Status.CONNECTED;
                 TcpListener listener = (TcpListener)ar.AsyncState;
                 var akTcpClient = listener.EndAcceptTcpClient(ar);
-                
+
                 if (UseKeepAlive)
                     akTcpClient.Client.SetKeepAlive(50, 100);
 
@@ -212,7 +269,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 if (AsynchronousExceptionOccured != null)
                     AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
 
-                string sMsg = "TCPSocketClientAndServer.DoAcceptTcpClientCallback(IAsyncResult) - error: " + ex.Message;
+                string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.DoAcceptTcpClientCallback(IAsyncResult) - error: " + ex.Message;
                 this.LastErrorMessage = sMsg;
             }
         }
@@ -221,17 +278,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             if (!disposed && akTcpClient.Connected == false)
             {
-                this.State = Status.DISCONNECTED;
-                akTcpClient.Close();
-
-                if (ConnectionClosed != null)
+                if (ConnectionClosed != null && this.State == Status.CONNECTED)
                     if (context == null)
                         ConnectionClosed(tcpClient);
                     else
                         context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
+                //if (this.State != Status.CONNECTING)
+                Stop();
+
                 if (!AllowMultipleClients || connection_active)
-                    if (AutoReConnect) Connect();
+                    if (AutoReConnect && this.State != Status.CONNECTING) Start();
                 return;
             }
 
@@ -258,24 +315,23 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 }
                 catch (Exception ex)
                 {
-                    
-                    string sMsg = "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
+
+                    string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
                     this.LastErrorMessage = sMsg;
 
-                    if (ex is SocketException && ((SocketException)ex).ErrorCode == 10060)
+                    if (ex is SocketException) // && ((SocketException)ex).ErrorCode == 10060)
                     {
-                        akTcpClient.Close();
-
                         if (ConnectionClosed != null && this.State == Status.CONNECTED)
                             if (context == null)
                                 ConnectionClosed(tcpClient);
                             else
                                 context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                        this.State = Status.DISCONNECTED;
+                        //if (this.State != Status.CONNECTING)
+                        Stop();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect) Connect();
+                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
                     }
                     else
                     {
@@ -290,42 +346,55 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             TcpClient akTcpClient = (TcpClient)ar.AsyncState;
 
-            if (!disposed && akTcpClient.Connected == false)
+            if (!disposed && (akTcpClient.Client == null || akTcpClient.Connected == false))
             {
-               
-                akTcpClient.Close();
-
                 if (ConnectionClosed != null && this.State == Status.CONNECTED)
                     if (context == null)
                         ConnectionClosed(tcpClient);
                     else
                         context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                this.State = Status.DISCONNECTED;
+                //if (this.State != Status.CONNECTING)
+                Stop();
 
                 if (!AllowMultipleClients || connection_active)
-                    if (AutoReConnect) Connect();
+                    if (AutoReConnect && this.State != Status.CONNECTING) Start();
                 return;
             }
 
             if (!disposed)
                 try
                 {
-                    
+
 
                     var readBytes = readBytesPerCennection[akTcpClient];
                     var readPos = readBytesCountPerCennection[akTcpClient];
-                    
+
                     int cnt = akTcpClient.Client.EndReceive(ar);
                     if (cnt > 0 && fixedLength <= 0)
                     {
                         byte[] rec = new byte[cnt];
                         Array.Copy(readBytes, 0, rec, 0, cnt);
+                        LastMessage = DateTime.Now.ToString() + " - Recieved " + readBytes.Length + " Bytes";
                         if (context == null)
-                            DataRecieved(rec);
+                            DataRecieved(rec, akTcpClient);
                         else
-                            context.Post(delegate { DataRecieved(rec); }, null);
+                            context.Post(delegate { DataRecieved(rec, akTcpClient); }, null);
                         beginRead(akTcpClient);
+                    }
+                    else if (cnt == 0)
+                    {
+                        if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                            if (context == null)
+                                ConnectionClosed(tcpClient);
+                            else
+                                context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                        //if (this.State != Status.CONNECTING)
+                        Stop();
+
+                        if (!AllowMultipleClients || connection_active)
+                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
                     }
                     else
                     {
@@ -335,10 +404,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                             akTcpClient.Client.BeginReceive(readBytes, readPos, readBytes.Length - readPos, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
                         else
                         {
+                            LastMessage = DateTime.Now.ToString() + " - Recieved " + readBytes.Length + " Bytes";
                             if (context == null)
-                                DataRecieved(readBytes);
+                                DataRecieved(readBytes, akTcpClient);
                             else
-                                context.Post(delegate { DataRecieved(readBytes); }, null);
+                                context.Post(delegate { DataRecieved(readBytes, akTcpClient); }, null);
                             beginRead(akTcpClient);
                         }
                     }
@@ -346,24 +416,23 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                 }
                 catch (Exception ex)
                 {
-                  
-                    string sMsg = "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
+
+                    string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
                     this.LastErrorMessage = sMsg;
 
-                    if (ex is SocketException && ((SocketException)ex).ErrorCode == 10060)
+                    if (ex is SocketException) // && ((SocketException)ex).ErrorCode == 10060)
                     {
-                        akTcpClient.Close();
-
                         if (ConnectionClosed != null && this.State == Status.CONNECTED)
                             if (context == null)
                                 ConnectionClosed(tcpClient);
                             else
                                 context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                        this.State = Status.DISCONNECTED;
+                        //if (this.State != Status.CONNECTING)
+                        Stop();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect) Connect();
+                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
                     }
                     else
                     {
@@ -371,6 +440,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                             AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
                     }
                 }
+        }
+
+        public bool SendStringData(string telegramm)
+        {
+            return SendData(telegramm);
         }
 
         public bool SendData(string telegramm)
@@ -390,8 +464,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             }
             catch (Exception ex)
             {
-                string sMsg = "TCPSocketClientAndServer.SendData(byte[]) - error: " + ex.Message;
+                string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.SendData(byte[]) - error: " + ex.Message;
                 this.LastErrorMessage = sMsg;
+
+                if (ex is SocketException || ex is InvalidOperationException) // && ((SocketException)ex).ErrorCode == 10060)
+                {
+                    if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                        if (context == null)
+                            ConnectionClosed(tcpClient);
+                        else
+                            context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                    if (this.State != Status.CONNECTING)
+                        Stop();
+
+                    if (!AllowMultipleClients || connection_active)
+                        if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                }
+
+
             }
             return false;
         }

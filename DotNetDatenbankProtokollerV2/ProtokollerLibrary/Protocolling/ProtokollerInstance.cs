@@ -32,6 +32,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private Dictionary<ConnectionConfig, Object> ConnectionList = new Dictionary<ConnectionConfig, object>();
         private Dictionary<DatasetConfig, IDBInterface> DatabaseInterfaces = new Dictionary<DatasetConfig, IDBInterface>();
 
+        private System.Threading.Timer synTimer;
+
         private List<IDisposable> myDisposables = new List<IDisposable>();
         private Thread myReEstablishConnectionsThread;
 
@@ -50,7 +52,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
             EstablishConnections();
-            OpenStoragesAndCreateTriggers(true, StartedAsService);            
+            OpenStoragesAndCreateTriggers(true, StartedAsService);
+
+            synTimer = new Timer(synchronizePLCTimes, null, 0, 60000);            
         }
 
         public void StartTestMode()
@@ -94,6 +98,33 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
             catch (ThreadAbortException)
             {
+            }
+        }
+
+        private void synchronizePLCTimes(object tmp)
+        {
+            foreach (ConnectionConfig connectionConfig in akConfig.Connections)
+            {
+                LibNoDaveConfig plcConnConf = connectionConfig as LibNoDaveConfig;
+                if (plcConnConf != null)
+                {
+                    PLCConnection tmpConn = (PLCConnection)ConnectionList[connectionConfig];
+
+                    if (plcConnConf.SynchronizePLCTime)
+                    {
+                        try
+                        {
+                            if (!tmpConn.Connected)
+                                tmpConn.Connect();
+
+                            tmpConn.PLCSetTime(DateTime.Now);
+                            if (!plcConnConf.StayConnected)
+                                tmpConn.Disconnect();
+                        }
+                        catch (Exception ex)
+                        { }
+                    }                    
+                }
             }
         }
 
@@ -212,8 +243,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         tmpConn.AllowMultipleClients = tcpipConnConf.AcceptMultipleConnections;
                         tmpConn.UseKeepAlive = tcpipConnConf.UseTcpKeepAlive;
                         tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                        tmpConn.AutoReConnect = true;
                         var conf = datasetConfig;
-                        tmpConn.DataRecieved += (bytes) =>
+                        tmpConn.DataRecieved += (bytes, tcpClient) =>
                                                     {                                                        
                                                                  IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, bytes, StartedAsService);
                                                                  if (values != null)
@@ -228,7 +260,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                                             Logging.LogText("Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
                                                         };
                         Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
-                        tmpConn.Connect();
+                        tmpConn.Start();
                         ConnectionList.Add(tcpipConnConf, tmpConn);
                         myDisposables.Add(tmpConn);
                     }
@@ -276,6 +308,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             {
                 dbInterface.Close();
             }
+
+            if (synTimer != null)
+                synTimer.Dispose();
         }
     }
 }
