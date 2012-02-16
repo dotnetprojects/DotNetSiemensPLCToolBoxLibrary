@@ -33,6 +33,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 {
     public class SQLLiteStorage : IDBInterface, IDBViewable, IDBViewableSQL
     {
+         private Action<string> _newDataCallback;
+         public SQLLiteStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
         private SQLiteConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
@@ -389,6 +395,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 {
                     throw ex;
                 }
+
+                if (_newDataCallback != null)
+                    _newDataCallback(datasetConfig.Name);
 
                 return true;
             }

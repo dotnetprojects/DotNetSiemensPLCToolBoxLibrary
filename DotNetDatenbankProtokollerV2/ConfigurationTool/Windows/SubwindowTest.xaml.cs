@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.Protocolling;
+using DotNetSimaticDatabaseProtokollerLibrary.Remoting;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -77,6 +78,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         }
 
         private ProtokollerInstance testinstance = null;
+        
         private void cmdTestService_Click(object sender, RoutedEventArgs e)
         {
             lblError.Text = "";
@@ -105,7 +107,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             catch (Exception ex)
             {
                 lblError.Text = ex.Message;
-            }
+            }                        
         }
 
         void testinstance_ThreadExceptionOccured(object sender, ThreadExceptionEventArgs e)

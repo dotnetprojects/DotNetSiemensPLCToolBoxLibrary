@@ -14,6 +14,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 {
     public class PostgreSQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
     {
+        private Action<string> _newDataCallback;
+        public PostgreSQLStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
+
         private PostgreSQLConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;

@@ -1,46 +1,214 @@
 ﻿<UserControl x:Class="DotNetSimaticDatabaseProtokollerConfigurationTool.Windows.ViewStorrages"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:System="clr-namespace:System;assembly=mscorlib" 
-             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary" 
-             xmlns:Datasets="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;assembly=JFK-ProtokollerLibrary" xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary" xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF" mc:Ignorable="d" 
-             d:DesignHeight="426" d:DesignWidth="765">
-    
+             xmlns:Datasets="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;assembly=JFK-ProtokollerLibrary"
+             xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary"
+             xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
+             d:DesignHeight="426"
+             d:DesignWidth="765"
+             mc:Ignorable="d">
+
     <UserControl.Resources>
         <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
-        
+
     </UserControl.Resources>
-    
+
     <Grid>
-        <DataGrid AutoGenerateColumns="True" Margin="12,112,12,62" Name="grdDatasetFields" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" SelectionUnit="Cell" MouseDoubleClick="grdDatasetFields_MouseDoubleClick" IsReadOnly="True">
-            </DataGrid>
-        <Label Content="Dataset" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Padding="0" VerticalAlignment="Top" Width="55" VerticalContentAlignment="Center" />
-        <ComboBox ItemsSource="{Binding Datasets, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" HorizontalAlignment="Left" Margin="60,12,0,0" Name="cmbStorage" Width="209" VerticalContentAlignment="Center" SelectionChanged="cmbStorage_SelectionChanged" Unloaded="cmbStorage_Unloaded" Height="26" VerticalAlignment="Top">
+        <DataGrid Name="grdDatasetFields"
+                  Margin="12,112,12,62"
+                  AutoGenerateColumns="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  MouseDoubleClick="grdDatasetFields_MouseDoubleClick"
+                  SelectionUnit="Cell" />
+        <Label Width="55"
+               Height="26"
+               Margin="12,12,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="Dataset"
+               Padding="0" />
+        <ComboBox Name="cmbStorage"
+                  Width="209"
+                  Height="26"
+                  Margin="60,12,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  VerticalContentAlignment="Center"
+                  ItemsSource="{Binding Datasets,
+                                        Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"
+                  SelectionChanged="cmbStorage_SelectionChanged"
+                  Unloaded="cmbStorage_Unloaded">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
-            </ComboBox.ItemTemplate>                             
+            </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Content="&lt;&lt;" Height="30" HorizontalAlignment="Left" Margin="12,76,0,0" Name="cmdBeginn" VerticalAlignment="Top" Width="62" Click="cmdBeginn_Click" />
-        <Button Content="&gt;&gt;" Height="30" HorizontalAlignment="Left" Margin="216,76,0,0" Name="cmdEnd" VerticalAlignment="Top" Width="62" Click="cmdEnd_Click" />
-        <Button Content="&gt;" Height="30" HorizontalAlignment="Left" Margin="148,76,0,0" Name="cmdFwd" VerticalAlignment="Top" Width="62" Click="cmdFwd_Click" />
-        <Button Content="&lt;" Height="30" HorizontalAlignment="Left" Margin="80,76,0,0" Name="cmdBack" VerticalAlignment="Top" Width="62" Click="cmdBack_Click" />
-        <TextBox Height="26" Margin="313,12,109,0" Name="txtSQL" VerticalAlignment="Top" KeyDown="txtSQL_KeyDown" />
-        <Label Content="SQL" Height="26" HorizontalAlignment="Left" Margin="284,10,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="23" />
-        <Button Content="Execute" Height="26" Margin="0,12,12,0" Name="cmdSQL" VerticalAlignment="Top" HorizontalAlignment="Right" Width="91" IsEnabled="False" Click="cmdSQL_Click" />
-        <Label Content="Datasets" Height="26" HorizontalAlignment="Left"  Margin="313,80,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65" />
-        <TextBox Height="26" Margin="366,80,0,0" Name="txtFromDataset" VerticalAlignment="Top" HorizontalAlignment="Left" Width="93" TextAlignment="Center" Text="0" KeyDown="txtFromDataset_KeyDown" TextChanged="txtFromDataset_TextChanged" />
-        <Label Content="-" Height="26" HorizontalAlignment="Left" Margin="465,78,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="11" FontSize="16" FontWeight="ExtraBold" />
-        <Label Content="" Height="26" HorizontalAlignment="Right" Margin="0,80,12,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="91" BorderBrush="Black" BorderThickness="1" HorizontalContentAlignment="Center" Name="lblDataCount" />
-        <TextBox Padding="0" Text="{Binding ElementName=cmbStorage, Path=SelectedItem.Storage, StringFormat=$ }" Height="14" HorizontalAlignment="Left" Margin="60,38,0,0" TextAlignment="Center" VerticalAlignment="Top" Width="209" FontSize="8" IsReadOnly="True" />
-        <Label BorderBrush="Black" BorderThickness="1" Content="" Height="26" HorizontalContentAlignment="Center" Margin="479,80,0,0" Name="lblToDataset" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="103" />
-        <Label Height="44" Margin="47,0,12,12" Name="lblError" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" BorderThickness="1" BorderBrush="Black" />
-        <Label Content="Error" Height="18" HorizontalAlignment="Left" Margin="12,0,0,25" Padding="0" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Width="55" />
-        <TextBox Height="26" Margin="343,39,109,0" Name="txtSearch" VerticalAlignment="Top" />
-        <Button Content="Suche" Height="26" HorizontalAlignment="Right" IsEnabled="False" Margin="0,39,12,0" Name="cmdSearch" VerticalAlignment="Top" Width="91" Click="cmdSearch_Click" />
-        <Label Content="Textsuche" Height="26" HorizontalAlignment="Left" Margin="284,37,0,0" Padding="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="64" />
+        <Button Name="cmdBeginn"
+                Width="62"
+                Height="30"
+                Margin="12,76,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdBeginn_Click"
+                Content="&lt;&lt;" />
+        <Button Name="cmdEnd"
+                Width="62"
+                Height="30"
+                Margin="216,76,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdEnd_Click"
+                Content="&gt;&gt;" />
+        <Button Name="cmdFwd"
+                Width="62"
+                Height="30"
+                Margin="148,76,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdFwd_Click"
+                Content="&gt;" />
+        <Button Name="cmdBack"
+                Width="62"
+                Height="30"
+                Margin="80,76,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdBack_Click"
+                Content="&lt;" />
+        <TextBox Name="txtSQL"
+                 Height="26"
+                 Margin="313,12,109,0"
+                 VerticalAlignment="Top"
+                 KeyDown="txtSQL_KeyDown" />
+        <Label Width="23"
+               Height="26"
+               Margin="284,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="SQL"
+               Padding="0" />
+        <Button Name="cmdSQL"
+                Width="91"
+                Height="26"
+                Margin="0,12,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdSQL_Click"
+                Content="Execute"
+                IsEnabled="False" />
+        <Label Width="65"
+               Height="26"
+               Margin="313,80,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="Datasets"
+               Padding="0" />
+        <TextBox Name="txtFromDataset"
+                 Width="93"
+                 Height="26"
+                 Margin="366,80,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 KeyDown="txtFromDataset_KeyDown"
+                 Text="0"
+                 TextAlignment="Center"
+                 TextChanged="txtFromDataset_TextChanged" />
+        <Label Width="11"
+               Height="26"
+               Margin="465,78,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="-"
+               FontSize="16"
+               FontWeight="ExtraBold"
+               Padding="0" />
+        <Label Name="lblDataCount"
+               Width="91"
+               Height="26"
+               Margin="0,80,12,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"
+               Content=""
+               Padding="0" />
+        <TextBox Width="209"
+                 Height="14"
+                 Margin="60,38,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 FontSize="8"
+                 IsReadOnly="True"
+                 Padding="0"
+                 Text="{Binding ElementName=cmbStorage,
+                                Path=SelectedItem.Storage,
+                                StringFormat=$}"
+                 TextAlignment="Center" />
+        <Label Name="lblToDataset"
+               Width="103"
+               Height="26"
+               Margin="479,80,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"
+               Content=""
+               Padding="0" />
+        <Label Name="lblError"
+               Height="44"
+               Margin="47,0,12,12"
+               VerticalAlignment="Bottom"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"
+               Padding="0" />
+        <Label Width="55"
+               Height="18"
+               Margin="12,0,0,25"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               VerticalContentAlignment="Center"
+               Content="Error"
+               Padding="0" />
+        <TextBox Name="txtSearch"
+                 Height="26"
+                 Margin="343,39,109,0"
+                 VerticalAlignment="Top" />
+        <Button Name="cmdSearch"
+                Width="91"
+                Height="26"
+                Margin="0,39,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdSearch_Click"
+                Content="Suche"
+                IsEnabled="False" />
+        <Label Width="64"
+               Height="26"
+               Margin="284,37,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="Textsuche"
+               Padding="0" />
     </Grid>
 </UserControl>

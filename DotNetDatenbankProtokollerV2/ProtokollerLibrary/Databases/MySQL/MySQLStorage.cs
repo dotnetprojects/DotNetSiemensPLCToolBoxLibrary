@@ -14,6 +14,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 {
     public class MySQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
     {
+        private Action<string> _newDataCallback;
+        public MySQLStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
         private MySQLConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;

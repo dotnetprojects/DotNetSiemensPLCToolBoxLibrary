@@ -11,6 +11,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
 {
     class FirebirdStorage : IDBInterface
     {
+        private Action<string> _newDataCallback;
+        public FirebirdStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
+
         private SQLiteConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;

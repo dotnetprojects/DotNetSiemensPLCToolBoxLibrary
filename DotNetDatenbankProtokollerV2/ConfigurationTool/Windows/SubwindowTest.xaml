@@ -1,28 +1,79 @@
 ﻿<UserControl x:Class="DotNetSimaticDatabaseProtokollerConfigurationTool.Windows.SubwindowTest"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:WPG="clr-namespace:WPG;assembly=WPG" mc:Ignorable="d" 
-             d:DesignHeight="348" d:DesignWidth="800" xmlns:my="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
-             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary" Unloaded="UserControl_Unloaded">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:my="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
+             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary"
+             xmlns:WPG="clr-namespace:WPG;assembly=WPG"
+             d:DesignHeight="348"
+             d:DesignWidth="800"
+             Unloaded="UserControl_Unloaded"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
 
     </UserControl.Resources>
     <Grid>
-        <Button IsEnabled="{Binding ElementName=cmbTriggerConnection, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"  Content="Test Read of Data (without Storrage)" Margin="22,62,0,0" HorizontalAlignment="Left" Width="251" Height="25" VerticalAlignment="Top" Name="cmdTest" Click="cmdTest_Click" />
-        <ComboBox Height="23" HorizontalAlignment="Left" ItemsSource="{Binding Datasets, Source={x:Static my:ProtokollerConfiguration.ActualConfigInstance}}" Margin="22,36,0,0" Name="cmbTriggerConnection" SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.TriggerConnection}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="251">
+        <Button Name="cmdTest"
+                Width="251"
+                Height="25"
+                Margin="22,62,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdTest_Click"
+                Content="Test Read of Data (without Storrage)"
+                IsEnabled="{Binding ElementName=cmbTriggerConnection,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <ComboBox Name="cmbTriggerConnection"
+                  Width="251"
+                  Height="23"
+                  Margin="22,36,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  VerticalContentAlignment="Center"
+                  ItemsSource="{Binding Datasets,
+                                        Source={x:Static my:ProtokollerConfiguration.ActualConfigInstance}}"
+                  SelectedItem="{Binding ElementName=grdDatasets,
+                                         Path=SelectedItem.TriggerConnection}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Label Content="Dataset" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="110" />
-        <Button IsEnabled="{Binding ElementName=cmbTriggerConnection, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Content="Test Trigger Bits" Height="25" HorizontalAlignment="Left" Margin="22,124,0,0" Name="cmdTestTriggers" VerticalAlignment="Top" Width="251" Click="cmdTestTriggers_Click" />
-        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" ItemsSource="{Binding ElementName=cmbTriggerConnection, Path=SelectedItem.DatasetConfigRows}" Margin="22,186,21,12" Name="grdDatasetFields">
+        <Label Width="110"
+               Margin="12,12,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Dataset" />
+        <Button Name="cmdTestTriggers"
+                Width="251"
+                Height="25"
+                Margin="22,124,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdTestTriggers_Click"
+                Content="Test Trigger Bits"
+                IsEnabled="{Binding ElementName=cmbTriggerConnection,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <DataGrid Name="grdDatasetFields"
+                  Margin="22,186,21,12"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True"
+                  ItemsSource="{Binding ElementName=cmbTriggerConnection,
+                                        Path=SelectedItem.DatasetConfigRows}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Database-Field" IsReadOnly="False" SortMemberPath="DatabaseField" Width="Auto">                    
+                <DataGridTemplateColumn Width="Auto"
+                                        Header="Database-Field"
+                                        IsReadOnly="False"
+                                        SortMemberPath="DatabaseField">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DatabaseField}" />
@@ -30,7 +81,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="PLC-Value" IsReadOnly="False" SortMemberPath="PLCTag.Value" Width="Auto">
+                <DataGridTemplateColumn Width="Auto"
+                                        Header="PLC-Value"
+                                        IsReadOnly="False"
+                                        SortMemberPath="PLCTag.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding PLCTag.Value}" />
@@ -38,14 +92,51 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-            
+
         </DataGrid>
-        <Label Content="Error:" HorizontalAlignment="Left" Margin="506,36,0,0" VerticalAlignment="Top" Width="110" />
-        <Button Content="Test Read of Data (with Storrage)" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=cmbTriggerConnection, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="22,93,0,0" Name="cmdTestWithStorrage" VerticalAlignment="Top" Width="251" Click="cmdTestWithStorrage_Click" />
-        <Button Content="Test as Service" Height="25" HorizontalAlignment="Left" Margin="289,62,0,0" Name="cmdTestService" VerticalAlignment="Top" Width="187" Click="cmdTestService_Click" />
-        <TextBlock Height="83" HorizontalAlignment="Left" Margin="289,97,0,0" Text="With the upper Button, you test the Protocoller, like when you run it as a Windows Service! To Stop it, leave this Window!" VerticalAlignment="Top" Width="187" Name="textBlock1" TextWrapping="Wrap" />
-        <Border BorderThickness="1" BorderBrush="Black" Margin="516,60,21,0" Height="120" VerticalAlignment="Top">
-            <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Name="lblError" Text="" TextWrapping="Wrap" />
+        <Label Width="110"
+               Margin="506,36,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Error:" />
+        <Button Name="cmdTestWithStorrage"
+                Width="251"
+                Height="25"
+                Margin="22,93,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdTestWithStorrage_Click"
+                Content="Test Read of Data (with Storrage)"
+                IsEnabled="{Binding ElementName=cmbTriggerConnection,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <Button Name="cmdTestService"
+                Width="187"
+                Height="25"
+                Margin="289,62,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdTestService_Click"
+                Content="Test as Service" />
+        <TextBlock Name="textBlock1"
+                   Width="187"
+                   Height="83"
+                   Margin="289,97,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Text="With the upper Button, you test the Protocoller, like when you run it as a Windows Service! To Stop it, leave this Window!"
+                   TextWrapping="Wrap" />
+        <Border Height="120"
+                Margin="516,60,21,0"
+                VerticalAlignment="Top"
+                BorderBrush="Black"
+                BorderThickness="1">
+            <TextBox Name="lblError"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     IsReadOnly="True"
+                     Text=""
+                     TextWrapping="Wrap" />
         </Border>
     </Grid>
 </UserControl>

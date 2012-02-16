@@ -37,17 +37,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private List<IDisposable> myDisposables = new List<IDisposable>();
         private Thread myReEstablishConnectionsThread;
 
+        //private Remoting.RemotingServer remotingServer;
+
         public event ThreadExceptionEventHandler ThreadExceptionOccured;
 
         public ProtokollerInstance(ProtokollerConfiguration akConfig)
         {
             this.akConfig = akConfig;           
         }
-
+        
         public void Start(bool StartedAsService)
         {
-            
 
+            //Remoting Server für Benachrichtigung an Client das neue Daten da sind
+            /*remotingServer = new RemotingServer();
+            remotingServer.Start();*/
+           
             context = SynchronizationContext.Current;
 
             Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
@@ -201,7 +206,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             {
                 IDBInterface akDBInterface = null;
 
-                akDBInterface = StorageHelper.GetStorage(datasetConfig);
+                akDBInterface = StorageHelper.GetStorage(datasetConfig, RemotingServer.ClientComms.CallNotifyEvent);
                 akDBInterface.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
                 
                 DatabaseInterfaces.Add(datasetConfig, akDBInterface);
@@ -246,11 +251,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         tmpConn.AutoReConnect = true;
                         var conf = datasetConfig;
                         tmpConn.DataRecieved += (bytes, tcpClient) =>
-                                                    {                                                        
-                                                                 IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, bytes, StartedAsService);
-                                                                 if (values != null)
-                                                                     akDBInterface.Write(values);
-                                                             };
+                                                    {
+                                                        if (tcpipConnConf.MultiTelegramme == 0)
+                                                            tcpipConnConf.MultiTelegramme = 1;
+                                                        for (int j = 1; j <= tcpipConnConf.MultiTelegramme; j++)
+                                                        {
+                                                            var ln = bytes.Length/tcpipConnConf.MultiTelegramme;
+                                                            byte[] tmpArr = new byte[ln];
+                                                            Array.Copy(bytes, (j*ln) - 1, tmpArr, 0, ln);
+
+                                                            IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, tmpArr, StartedAsService);
+                                                            if (values != null)
+                                                                akDBInterface.Write(values);
+                                                        }
+                                                    };
                         tmpConn.ConnectionEstablished += (TcpClient tcp) =>
                                                              {
                                                                  Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);

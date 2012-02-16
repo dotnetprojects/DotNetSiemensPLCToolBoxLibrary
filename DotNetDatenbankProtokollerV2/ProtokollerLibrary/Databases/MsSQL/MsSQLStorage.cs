@@ -15,6 +15,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 {
     public class MsSQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
     {
+        private Action<string> _newDataCallback;
+        public MsSQLStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
         private MsSQLConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;

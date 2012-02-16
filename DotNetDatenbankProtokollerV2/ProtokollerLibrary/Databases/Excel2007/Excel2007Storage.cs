@@ -13,6 +13,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 {
     public class Excel2007Storage : IDBInterface
     {
+        private Action<string> _newDataCallback;
+        public Excel2007Storage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
         private Excel2007Config myConfig;
         //private IEnumerable<DatasetConfigRow> fieldList;
         private string TableName;

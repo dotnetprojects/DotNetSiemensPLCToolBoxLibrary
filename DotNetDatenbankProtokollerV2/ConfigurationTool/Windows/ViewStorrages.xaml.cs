@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
+using DotNetSimaticDatabaseProtokollerLibrary.Remoting;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -23,10 +24,29 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         private string dbFieldNames = "*";
 
         private long CurrentNumber = 0;
+
+        //private RemotingClient remotingClient;
+
+
         public ViewStorrages()
         {
             InitializeComponent();
-        }
+
+            /*
+            remotingClient = new RemotingClient();
+            remotingClient.DataArrived += s =>
+                    {
+                        this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Background, (System.Windows.Forms.MethodInvoker) delegate()
+                            {
+                                datasetConfig = cmbStorage.SelectedItem as DatasetConfig;
+                                if (s == datasetConfig.Name)
+                                {
+                                    cmdBeginn_Click(null, null);
+                                }
+                            });
+                    };
+            remotingClient.Start();*/
+        }       
        
         private void cmbStorage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -40,7 +60,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             grdDatasetFields.ItemsSource = null;
 
             datasetConfig = cmbStorage.SelectedItem as DatasetConfig;
-            dbIf = StorageHelper.GetStorage(datasetConfig);
+            dbIf = StorageHelper.GetStorage(datasetConfig, null);
             dbIf.Connect_To_Database(datasetConfig.Storage);
             dbView = dbIf as IDBViewable;
             dbViewSQL = dbIf as IDBViewableSQL;

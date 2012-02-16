@@ -13,6 +13,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 {
     public class CSVStorage : IDBInterface, IDBViewable
     {
+        private Action<string> _newDataCallback;
+        public CSVStorage(Action<string> NewDataCallback)
+        {
+            _newDataCallback = NewDataCallback;
+        }
+
         private CSVConfig myConfig;
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
