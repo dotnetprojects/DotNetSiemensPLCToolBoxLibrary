@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Kopplungstester.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SequenceNumberPosition" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="SequenceNumberLength" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="SendPort" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">2001</Value>
+    </Setting>
+    <Setting Name="RecievePort" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">2002</Value>
+    </Setting>
+    <Setting Name="SendConnectionActive" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RecieveConnectionActive" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UseOnlyOneConnection" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Setting" Provider="Kopplungstester.CustomSettingsProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="QuittData" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Collections.Generic.List&lt;TCPFunctions.QuittConfig.QuittText&gt;" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SendeTelegramm" Provider="Kopplungstester.CustomSettingsProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RecieveTelegramm" Provider="Kopplungstester.CustomSettingsProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="IPAddress" Provider="Kopplungstester.CustomSettingsProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.100</Value>
+    </Setting>
+    <Setting Name="AutomaticQuitt" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Laufnummer" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SendDataList" Provider="Kopplungstester.CustomSettingsProvider" Type="System.Collections.Generic.List&lt;Kopplungstester.MainForm.storeSendData&gt;" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
