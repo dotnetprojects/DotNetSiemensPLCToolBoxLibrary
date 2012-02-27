@@ -30,6 +30,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             set { _useTcpKeepAlive = value; NotifyPropertyChanged("UseTcpKeepAlive"); }
         }
 
+        private bool _dontUseFixedTcpLength = false;
+        [System.ComponentModel.Description("If this is set, we dont wait to recieve e telegramm with the full Length, but then also only the fields are filled, wich can be filled!")]
+        public bool DontUseFixedTCPLength
+        {
+            get { return _dontUseFixedTcpLength; }
+            set { _dontUseFixedTcpLength = value; }
+        }
+
         private bool _passiveConnection;
         [System.ComponentModel.Description("If not set, the Connection trys to contact the Partner, if Passive, it waits for the Partner to connect!")]
         public bool PassiveConnection

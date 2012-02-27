@@ -28,8 +28,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             foreach (var itm in datasetConfigRows)
             {
-                itm.PLCTag.ParseValueFromByteArray(bytes, pos);
-                pos += itm.PLCTag.ReadByteSize;
+                if (pos < bytes.Length)
+                {
+                    itm.PLCTag.ParseValueFromByteArray(bytes, pos);
+                    pos += itm.PLCTag.ReadByteSize;
+                }
             }
 
             var values = from n in datasetConfigRows
