@@ -186,11 +186,14 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         private void cmdRemoveDatasetRow_Click(object sender, RoutedEventArgs e)
         {
             DatasetConfig conf = grdDatasets.SelectedItem as DatasetConfig;
-            if (grdDatasetFields.SelectedItem != null)
+            if (grdDatasetFields.Visibility == System.Windows.Visibility.Visible)
             {
-                if (grdDatasetFields.Visibility == System.Windows.Visibility.Visible)
+                if (grdDatasetFields.SelectedItem != null)
                     conf.DatasetConfigRows.Remove((DatasetConfigRow)grdDatasetFields.SelectedItem);
-                else
+            }
+            else
+            {
+                if (grdDatasetFieldsEthernet.SelectedItem != null)
                     conf.DatasetConfigRows.Remove((DatasetConfigRow) grdDatasetFieldsEthernet.SelectedItem);
             }
 
