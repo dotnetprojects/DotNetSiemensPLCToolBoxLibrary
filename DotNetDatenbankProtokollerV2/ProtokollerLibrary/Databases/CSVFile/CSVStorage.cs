@@ -23,7 +23,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
         private DatasetConfig datasetConfig;
-        private string insertCommand = "";
+        
+        private string dateFieldName;
 
         private System.IO.StreamWriter writer = null;
 
@@ -76,6 +77,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         private void writeHeader(string filename)
         {
             string zeile = "";
+
+            dateFieldName = datasetConfig.DateTimeDatabaseField;
+
+            if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+            {
+                if (myConfig.UseQuotes)
+                    zeile += "\"" + datasetConfig.DateTimeDatabaseField + "\"";
+                else
+                    zeile += datasetConfig.DateTimeDatabaseField;
+            }
+
             foreach (DatasetConfigRow myFeld in fieldList)
             {
                 if (zeile != "")
@@ -168,6 +180,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 string zeile = "";
 
                 IEnumerable<object> values = _intValueList[n];
+
+                if (!string.IsNullOrEmpty(dateFieldName))
+                {
+                    string akV = "";
+                    akV = DateTime.Now.ToString("yyyy.MM.dd-HH:mm:ss");
+                    if (myConfig.UseQuotes)
+                        zeile += "\"" + akV + "\"";
+                    else
+                        zeile += akV;
+                }
 
                 foreach (object akValue in values)
                 {
