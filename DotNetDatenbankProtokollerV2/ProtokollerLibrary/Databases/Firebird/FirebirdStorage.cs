@@ -60,9 +60,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
             }
         }
 
+        private DatasetConfig datasetConfig;
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.dataTable = dataTable;
+            this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
             //Look if Table exists, when not, create it!
@@ -187,16 +189,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
             {
                 while (true)
                 {
-
-
                     if (_intValueList.Count > 0)
                     {
+                        bool ok = false;
                         lock (_intValueList)
                             _maxAdd = _intValueList.Count;
                         
                         try
                         {                           
-                            _internal_Write();                            
+                            ok = _internal_Write();                            
                         }
                         catch (ThreadAbortException)
                         {
@@ -210,7 +211,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                                 Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         }
 
-                        _intValueList.RemoveRange(0, _maxAdd);
+                        if (ok)
+                            _intValueList.RemoveRange(0, _maxAdd);
                     }
                     else
                         Thread.Sleep(20);
@@ -236,20 +238,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
 
             catch (Exception)
             {
-                myDBConn.Close(); //Verbindung schließen!
+                myDBConn.Close(); //Verbindung schließen!          
+                myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
                 {
-                    myDBConn.Open();
-                    if (myDBConn.State != System.Data.ConnectionState.Open)
-                    {
-                        return false;
-                    }
-                    myDBConn.ChangeDatabase(myConfig.DatabaseFile);
-                }
-                else
-                {
+                    Logging.LogText("Error ReConnecting to Database! Dataset:" + datasetConfig.Name, Logging.LogLevel.Error);
                     return false;
                 }
+                myDBConn.ChangeDatabase(myConfig.DatabaseFile);
             }
 
             //Add the Fields to the Database

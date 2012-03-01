@@ -224,7 +224,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
                         try
                         {
-                            ok=_internal_Write();
+                            ok = _internal_Write();
                         }
                         catch (ThreadAbortException)
                         {
@@ -267,18 +267,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             catch (Exception ex)
             {
                 myDBConn.Close(); //Verbindung schließen!
+                myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
                 {
-                    myDBConn.Open();
-                    if (myDBConn.State != System.Data.ConnectionState.Open)
-                    {
-                        Logging.LogText("Error Connecting to Database", Logging.LogLevel.Error);
-                        return false;
-                    }
-                }
-                else
-                {
-                    Logging.LogText("Error Closing Database Connection", Logging.LogLevel.Error);
+                    Logging.LogText("Error ReConnecting to Database! Dataset:" + datasetConfig.Name, Logging.LogLevel.Error);
                     return false;
                 }
             }
@@ -372,18 +364,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             CheckAndEstablishReadConnection();
 
             readCmd.Connection = readDBConn;
-            readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
+
+            readCmd.CommandText = "WITH " + datasetConfig.Name + "_withRowNumber AS ( SELECT ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber' FROM " + datasetConfig.Name + " ) SELECT * FROM " + datasetConfig.Name + "_withRowNumber WHERE RowNumber BETWEEN 10 AND 20;";
+            //readCmd.CommandText = "SELECT *, ROW_NUMBER() OVER(ORDER BY id DESC) AS [RowNum] FROM " + datasetConfig.Name + " WHERE RowNum BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString();
+            //readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
             DbDataReader akReader = readCmd.ExecuteReader();
 
             DataTable myTbl = new DataTable();
             myTbl.Load(akReader);
             akReader.Close();
 
-            return myTbl;
-            //}
-            //catch (Exception ex)
-            //{ }
-            //return null;
+            return myTbl;  
         }
 
         public DataTable ReadData(DatasetConfig datasetConfig, string sql, int Count)
@@ -396,10 +387,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 readCmd.CommandText = sql.Trim();
                 if (readCmd.CommandText.EndsWith(";"))
                     readCmd.CommandText = readCmd.CommandText.Substring(0, readCmd.CommandText.Length - 1);
-                if (!readCmd.CommandText.Contains("ORDER BY"))
-                    readCmd.CommandText += " ORDER BY id DESC";
-                if (!readCmd.CommandText.Contains("LIMIT") && !readCmd.CommandText.Contains("OFFSET"))
-                    readCmd.CommandText += " LIMIT " + Count.ToString();
+                //if (!readCmd.CommandText.Contains("ORDER BY"))
+                //    readCmd.CommandText += " ORDER BY id DESC";
+                //if (!readCmd.CommandText.Contains("LIMIT") && !readCmd.CommandText.Contains("OFFSET"))
+                //    readCmd.CommandText += " LIMIT " + Count.ToString();
                 DbDataReader akReader = readCmd.ExecuteReader();
 
                 DataTable myTbl = new DataTable();

@@ -132,12 +132,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 {
                     if (_intValueList.Count > 0)
                     {
+                        bool ok = false;
                         lock (_intValueList)
                             _maxAdd = _intValueList.Count;
 
                         try
                         {
-                            _internal_Write();
+                            ok = _internal_Write();
                         }
                         catch (ThreadAbortException)
                         {
@@ -151,7 +152,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                                 Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         }
 
-                        _intValueList.RemoveRange(0, _maxAdd);
+                        if (ok)
+                            _intValueList.RemoveRange(0, _maxAdd);
                     }
                     else
                         Thread.Sleep(20);
