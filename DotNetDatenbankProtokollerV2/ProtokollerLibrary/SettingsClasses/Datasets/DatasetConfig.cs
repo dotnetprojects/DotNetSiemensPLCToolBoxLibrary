@@ -62,6 +62,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _dateTimeDatabaseField = value; NotifyPropertyChanged("DateTimeDatabaseField"); }
         }
 
+        private string _dateTimeDatabaseFieldFormat = "yyyy.MM.dd-HH:mm:ss";
+
+        public string DateTimeDatabaseFieldFormat
+        {
+            get { return _dateTimeDatabaseFieldFormat; }
+            set
+            {
+                _dateTimeDatabaseFieldFormat = value;
+                if (string.IsNullOrEmpty(value))
+                    _dateTimeDatabaseFieldFormat = "yyyy.MM.dd-HH:mm:ss";
+                NotifyPropertyChanged("DateTimeDatabaseFieldFormat");
+            }
+        }
+
         private ObservableCollection<DatasetConfigRow> _datasetConfigRows;
         public ObservableCollection<DatasetConfigRow> DatasetConfigRows
         {

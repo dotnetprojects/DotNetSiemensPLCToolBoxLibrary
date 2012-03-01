@@ -216,7 +216,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 while (true)
                 {
 
-
+                    bool ok = false;
                     if (_intValueList.Count > 0)
                     {
                         lock (_intValueList)
@@ -224,7 +224,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
                         try
                         {
-                            _internal_Write();
+                            ok=_internal_Write();
                         }
                         catch (ThreadAbortException)
                         {
@@ -238,7 +238,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                                 Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         }
 
-                        _intValueList.RemoveRange(0, _maxAdd);
+                        if (ok)
+                            _intValueList.RemoveRange(0, _maxAdd);
                     }
                     else
                         Thread.Sleep(20);
@@ -271,11 +272,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                     myDBConn.Open();
                     if (myDBConn.State != System.Data.ConnectionState.Open)
                     {
+                        Logging.LogText("Error Connecting to Database", Logging.LogLevel.Error);
                         return false;
                     }
                 }
                 else
                 {
+                    Logging.LogText("Error Closing Database Connection", Logging.LogLevel.Error);
                     return false;
                 }
             }
@@ -332,8 +335,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 }
             }            
             catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+            {          
                 throw ex;
             }
 

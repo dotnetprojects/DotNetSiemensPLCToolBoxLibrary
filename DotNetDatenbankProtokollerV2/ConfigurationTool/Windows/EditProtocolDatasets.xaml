@@ -887,6 +887,17 @@
                                      Converter={StaticResource myNullToFalseConverter}}"
                  Text="{Binding ElementName=grdDatasets,
                                 Path=SelectedItem.DateTimeDatabaseField}" />
+        <TextBox Width="179"
+                 Height="26"
+                 Margin="497,60,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 BorderBrush="Black"
+                 IsEnabled="{Binding ElementName=grdDatasets,
+                                     Path=SelectedItem,
+                                     Converter={StaticResource myNullToFalseConverter}}"
+                 Text="{Binding ElementName=grdDatasets,
+                                Path=SelectedItem.DateTimeDatabaseFieldFormat}" />
         <Label Name="lblSize"
                Width="93"
                Height="18"
