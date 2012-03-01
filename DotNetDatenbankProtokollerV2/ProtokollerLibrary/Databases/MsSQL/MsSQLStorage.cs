@@ -313,7 +313,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                                     DatasetConfigRow field = e1.Current;
                                     Object value = e2.Current; //values[fnr++];
 
-                                    cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value.ToString()});
+                                    cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value});
                                 }
                             }
                             cmd.ExecuteNonQuery();

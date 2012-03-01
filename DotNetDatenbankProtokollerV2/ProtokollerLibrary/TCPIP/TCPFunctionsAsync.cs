@@ -303,7 +303,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                     }
                     byte[] readBytes;
 
-                    if (fixedLength < 0)
+                    if (fixedLength <= 0)
                         readBytes = new Byte[65536];
                     else
                         readBytes = new Byte[fixedLength];
