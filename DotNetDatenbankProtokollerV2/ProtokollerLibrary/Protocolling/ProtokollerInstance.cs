@@ -143,6 +143,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                 if (plcConnConf != null)
                 {
+                    Logging.LogText("Connection: " + connectionConfig.Name + " is starting...", Logging.LogLevel.Information);
+
                     PLCConnection tmpConn = new PLCConnection(plcConnConf.Configuration);
                     try
                     {
@@ -204,80 +206,89 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             foreach (DatasetConfig datasetConfig in akConfig.Datasets)
             {
-                IDBInterface akDBInterface = null;
+                try
+                {
+                    IDBInterface akDBInterface = null;
 
-                akDBInterface = StorageHelper.GetStorage(datasetConfig, RemotingServer.ClientComms.CallNotifyEvent);
-                akDBInterface.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
-                
-                DatabaseInterfaces.Add(datasetConfig, akDBInterface);
+                    akDBInterface = StorageHelper.GetStorage(datasetConfig, RemotingServer.ClientComms.CallNotifyEvent);
+                    akDBInterface.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
 
-                akDBInterface.Connect_To_Database(datasetConfig.Storage);
-                akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
+                    DatabaseInterfaces.Add(datasetConfig, akDBInterface);
 
-                if (CreateTriggers)
-                    if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)
-                    {
-                        PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
-                        tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
-                        myDisposables.Add(tmpTrigger);
-                    }
-                    else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger)
-                    {
-                        TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
-                        tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
-                        myDisposables.Add(tmpTrigger);
-                    }
-                    else if (datasetConfig.Trigger == DatasetTriggerType.Quartz_Trigger)
-                    {
-                        QuartzTriggerThread tmpTrigger = new QuartzTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
-                        tmpTrigger.StartTrigger();
-                        tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
-                        myDisposables.Add(tmpTrigger);
-                    }
-                    else if (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
-                    {
-                        TCPIPConfig tcpipConnConf = datasetConfig.TriggerConnection as TCPIPConfig;
+                    Logging.LogText("DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
 
-                        tcpipConnConf.MultiTelegramme = tcpipConnConf.MultiTelegramme <= 0 ? 1 : tcpipConnConf.MultiTelegramme;
+                    akDBInterface.Connect_To_Database(datasetConfig.Storage);
+                    akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
 
-                        if (tcpipConnConf.MultiTelegramme == 0)
-                            tcpipConnConf.MultiTelegramme = 1;
-                        TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(null, tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, tcpipConnConf.DontUseFixedTCPLength ? -1 : ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
-                        tmpConn.AllowMultipleClients = tcpipConnConf.AcceptMultipleConnections;
-                        tmpConn.UseKeepAlive = tcpipConnConf.UseTcpKeepAlive;
-                        tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
-                        tmpConn.AutoReConnect = true;
-                        var conf = datasetConfig;
-                        tmpConn.DataRecieved += (bytes, tcpClient) =>
-                                                    {
-                                                        if (tcpipConnConf.MultiTelegramme == 0)
-                                                            tcpipConnConf.MultiTelegramme = 1;
-                                                        for (int j = 1; j <= tcpipConnConf.MultiTelegramme; j++)
+                    if (CreateTriggers)
+                        if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)
+                        {
+                            PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                            tmpTrigger.StartTrigger();
+                            tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                            myDisposables.Add(tmpTrigger);
+                        }
+                        else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger)
+                        {
+                            TimeTriggerThread tmpTrigger = new TimeTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                            tmpTrigger.StartTrigger();
+                            tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                            myDisposables.Add(tmpTrigger);
+                        }
+                        else if (datasetConfig.Trigger == DatasetTriggerType.Quartz_Trigger)
+                        {
+                            QuartzTriggerThread tmpTrigger = new QuartzTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                            tmpTrigger.StartTrigger();
+                            tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                            myDisposables.Add(tmpTrigger);
+                        }
+                        else if (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
+                        {
+                            TCPIPConfig tcpipConnConf = datasetConfig.TriggerConnection as TCPIPConfig;
+
+                            tcpipConnConf.MultiTelegramme = tcpipConnConf.MultiTelegramme <= 0 ? 1 : tcpipConnConf.MultiTelegramme;
+
+                            if (tcpipConnConf.MultiTelegramme == 0)
+                                tcpipConnConf.MultiTelegramme = 1;
+                            TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(null, tcpipConnConf.IPasIPAddress, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, tcpipConnConf.DontUseFixedTCPLength ? -1 : ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows)*tcpipConnConf.MultiTelegramme);
+                            tmpConn.AllowMultipleClients = tcpipConnConf.AcceptMultipleConnections;
+                            tmpConn.UseKeepAlive = tcpipConnConf.UseTcpKeepAlive;
+                            tmpConn.AsynchronousExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                            tmpConn.AutoReConnect = true;
+                            var conf = datasetConfig;
+                            tmpConn.DataRecieved += (bytes, tcpClient) =>
                                                         {
-                                                            var ln = bytes.Length/tcpipConnConf.MultiTelegramme;
-                                                            byte[] tmpArr = new byte[ln];
-                                                            Array.Copy(bytes, ((j - 1)*ln), tmpArr, 0, ln);
+                                                            if (tcpipConnConf.MultiTelegramme == 0)
+                                                                tcpipConnConf.MultiTelegramme = 1;
+                                                            for (int j = 1; j <= tcpipConnConf.MultiTelegramme; j++)
+                                                            {
+                                                                var ln = bytes.Length/tcpipConnConf.MultiTelegramme;
+                                                                byte[] tmpArr = new byte[ln];
+                                                                Array.Copy(bytes, ((j - 1)*ln), tmpArr, 0, ln);
 
-                                                            IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, tmpArr, StartedAsService);
-                                                            if (values != null)
-                                                                akDBInterface.Write(values);
-                                                        }
-                                                    };
-                        tmpConn.ConnectionEstablished += (TcpClient tcp) =>
-                                                             {
-                                                                 Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
-                                                             };
-                        tmpConn.ConnectionClosed += (TcpClient tcp) =>
-                                                        {
-                                                            Logging.LogText("Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, tmpArr, StartedAsService);
+                                                                if (values != null)
+                                                                    akDBInterface.Write(values);
+                                                            }
                                                         };
-                        Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
-                        tmpConn.Start();
-                        ConnectionList.Add(tcpipConnConf, tmpConn);
-                        myDisposables.Add(tmpConn);
-                    }
+                            tmpConn.ConnectionEstablished += (TcpClient tcp) =>
+                                                                 {
+                                                                     Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                 };
+                            tmpConn.ConnectionClosed += (TcpClient tcp) =>
+                                                            {
+                                                                Logging.LogText("Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                            };
+                            Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                            tmpConn.Start();
+                            ConnectionList.Add(tcpipConnConf, tmpConn);
+                            myDisposables.Add(tmpConn);
+                        }
+                }
+                catch (Exception ex)
+                {
+                    Logging.LogText("Error in OpenStorragesAndCreateTriggers occured!", ex, Logging.LogLevel.Error);
+                }
             }
         }
 
