@@ -64,9 +64,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
             }
         }
 
+        private DatasetConfig datasetConfig;
+
         public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.dataTable = dataTable;
+            this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
             string sql = "";
