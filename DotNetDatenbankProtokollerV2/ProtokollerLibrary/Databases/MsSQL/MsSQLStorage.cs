@@ -279,17 +279,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             myCmd.Connection = myDBConn;
             myCmd.CommandText = insertCommand;
 
-            int tryCounter = 0;
-            nomol:
             try
             {
 
-                using (DbTransaction dbTrans = myDBConn.BeginTransaction())
+                //using (DbTransaction dbTrans = myDBConn.BeginTransaction())
                 {
                     using (DbCommand cmd = myDBConn.CreateCommand())
                     {
                         cmd.CommandText = insertCommand;
-                        cmd.Transaction = dbTrans;
+                        //cmd.Transaction = dbTrans;
                         for (int n = 0; n < _maxAdd; n++)
                             //foreach (IEnumerable<object> values in _intValueList)
                         {
@@ -323,7 +321,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                         }
                     }
 
-                    dbTrans.Commit();
+                    //dbTrans.Commit();
                 }
             }            
             catch (Exception ex)
