@@ -123,6 +123,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        private int BaseBlockNumber
+        {
+            get
+            {
+                if (this.Parent != null)
+                    return Parent.BaseBlockNumber;
+                return PlcBlock.BlockNumber;
+            }
+        }
+
         private PLCTag _plctag;
         public PLCTag PlcTag
         {
@@ -133,42 +143,43 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                 switch (DataType)
                 {
+
                     case S7DataRowType.BOOL:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Bool;
                         _plctag.BitAddress = BlockAddress.BitAddress;
                         break;
                     case S7DataRowType.WORD:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Word;                        
                         break;
                     case S7DataRowType.DWORD:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Dword;
                         break;
                     case S7DataRowType.INT:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Int;
                         break;
                     case S7DataRowType.DINT:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Dint;
                         break;
                     case S7DataRowType.REAL:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.Float;
                         break;
                     case S7DataRowType.DATE_AND_TIME:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.DateTime;
                         break;
                     case S7DataRowType.CHAR:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.CharArray;
                         _plctag.ArraySize = this.GetArrayLines();
                         break;
                     case S7DataRowType.STRING:
-                        _plctag = new PLCTag() { DatablockNumber = PlcBlock.BlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = TagDataSource.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.LibNoDaveDataType = TagDataType.String;
                         _plctag.ArraySize = this.StringSize;
                         break;

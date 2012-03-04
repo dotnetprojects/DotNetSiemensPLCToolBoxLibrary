@@ -365,7 +365,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
             readCmd.Connection = readDBConn;
 
-            readCmd.CommandText = "WITH " + datasetConfig.Name + "_withRowNumber AS ( SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber' FROM " + datasetConfig.Name + " ) SELECT * FROM " + datasetConfig.Name + "_withRowNumber WHERE RowNumber BETWEEN 10 AND 20;";
+            readCmd.CommandText = "WITH " + datasetConfig.Name + "_withRowNumber AS ( SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber' FROM " + datasetConfig.Name + " ) SELECT * FROM " + datasetConfig.Name + "_withRowNumber WHERE RowNumber BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString() + ";";
             //readCmd.CommandText = "SELECT *, ROW_NUMBER() OVER(ORDER BY id DESC) AS [RowNum] FROM " + datasetConfig.Name + " WHERE RowNum BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString();
             //readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
             DbDataReader akReader = readCmd.ExecuteReader();
