@@ -93,6 +93,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             }
         }
 
+        private double _precision = 0;
+        [Description("This is used for Precision (When this is used, Databasefieldtype has to be a Textfield, because Value is Converted to Text)")]
+        public double Precision
+        {
+            get { return _precision; }
+            set
+            {
+                _precision = value;
+                NotifyPropertyChanged("Precision");
+            }
+        }
+
+
         private string _stringSubFields = "";
 
         [Description("List of Fixed Length Fields in the String (f.E: TYPE|4|NR|2...)")]
@@ -110,11 +123,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
         {
             get
             {
-                if (Multiplier != 0 && (PLCTag.Value is double || PLCTag.Value is float || PLCTag.Value is int || PLCTag.Value is uint || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int64 || PLCTag.Value is UInt64))
+                if ((Multiplier != 0 || Precision != 0) && (PLCTag.Value is double || PLCTag.Value is float || PLCTag.Value is int || PLCTag.Value is uint || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int64 || PLCTag.Value is UInt64))
                 {
+                    string sFormat = "";
+                    if (Precision != 0)
+                    {
+                        sFormat = "F" + Precision.ToString();
+                    }
+
                     try
-                    {                        
-                        return Convert.ToDouble(PLCTag.Value)*Multiplier;
+                    {
+                        if (Multiplier != 0)
+                            return (Convert.ToDouble(PLCTag.Value) * Multiplier).ToString(sFormat);
+                        else
+                            return (Convert.ToDouble(PLCTag.Value)).ToString(sFormat);
                     }
                     catch (Exception)
                     { }

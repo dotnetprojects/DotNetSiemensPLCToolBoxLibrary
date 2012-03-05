@@ -219,6 +219,27 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="Auto"
+                                        Header="PLC-Value Size"
+                                        IsReadOnly="False"
+                                        SortMemberPath="PLCTag.ArraySize">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBox Margin="0"
+                                         Padding="0"
+                                         Text="{Binding PLCTag.ArraySize,
+                                                        Mode=TwoWay}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PLCTag.ArraySize}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="Auto"
                                         Header="PLC-Value Type"
                                         IsReadOnly="False"
                                         SortMemberPath="PLCTag.LibNoDaveDataType">
@@ -259,6 +280,25 @@
                             <TextBox Margin="0"
                                      Padding="0"
                                      Text="{Binding Multiplier,
+                                                    Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="Auto"
+                                        Header="Precision (0 = std)"
+                                        IsReadOnly="False"
+                                        SortMemberPath="Precision">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Precision}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0"
+                                     Padding="0"
+                                     Text="{Binding Precision,
                                                     Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
@@ -839,6 +879,25 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="Auto"
+                                        Header="Precision (0 = std)"
+                                        IsReadOnly="False"
+                                        SortMemberPath="Precision">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Precision}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="0"
+                                     Padding="0"
+                                     Text="{Binding Precision,
+                                                    Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="Auto"
                                         Header="Sub Field List (mostly not used)"
                                         IsReadOnly="False"
                                         SortMemberPath="StringSubFields">
@@ -878,7 +937,7 @@
                ToolTip="If this is Empty, PC Date is not saved to database!" />
         <TextBox Width="179"
                  Height="26"
-                 Margin="497,34,0,0"
+                 Margin="671,12,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  BorderBrush="Black"
@@ -889,7 +948,7 @@
                                 Path=SelectedItem.DateTimeDatabaseField}" />
         <TextBox Width="179"
                  Height="26"
-                 Margin="497,60,0,0"
+                 Margin="671,38,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  BorderBrush="Black"
@@ -929,5 +988,17 @@
                                      Converter={StaticResource myNullToFalseConverter}}"
                  Text="{Binding ElementName=grdDatasets,
                                 Path=SelectedItem.MaxDatasets}" />
+        <Label Width="176"
+               Height="26"
+               Margin="491,39,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="DateTime Format (for CSV etc.)"
+               IsEnabled="{Binding ElementName=grdDatasets,
+                                   Path=SelectedItem,
+                                   Converter={StaticResource myNullToFalseConverter}}"
+               Padding="0"
+               ToolTip="If this is Empty, PC Date is not saved to database!" />
     </Grid>
 </UserControl>
