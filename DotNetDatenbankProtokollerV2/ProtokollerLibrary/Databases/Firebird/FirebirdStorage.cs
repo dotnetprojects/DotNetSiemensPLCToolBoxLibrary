@@ -255,6 +255,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
             for (int n = 0; n < _maxAdd; n++)
             //foreach (IEnumerable<object> values in _intValueList)
             {
+                myCmd.Parameters.Clear();
+                
                 IEnumerable<object>  values = _intValueList[n];
 
 

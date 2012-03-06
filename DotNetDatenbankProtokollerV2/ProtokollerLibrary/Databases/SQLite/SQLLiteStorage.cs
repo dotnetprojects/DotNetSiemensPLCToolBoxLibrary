@@ -318,6 +318,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                             for (int n = 0; n < _maxAdd; n++)
                                 //foreach (IEnumerable<object> values in _intValueList)
                             {
+                                cmd.Parameters.Clear();
+
                                 IEnumerable<object> values = _intValueList[n];
 
                                 if (!string.IsNullOrEmpty(dateFieldName))
