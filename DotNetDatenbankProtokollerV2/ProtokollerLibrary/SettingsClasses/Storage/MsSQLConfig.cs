@@ -8,15 +8,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
     public class MsSQLConfig : StorageConfig
     {
         private string _server = "localhost";
-        //[DataMember]        
         public string Server
         {
             get { return _server; }
             set { _server = value; NotifyPropertyChanged("Server"); }
         }
 
+        private bool _combineMultipleInsertsInATransaction;
+        public bool CombineMultipleInsertsInATransaction
+        {
+            get { return _combineMultipleInsertsInATransaction; }
+            set { _combineMultipleInsertsInATransaction = value; NotifyPropertyChanged("CombineMultipleInsertsInATransaction"); }
+        }
+
         private int _port = 1433;
-        //[DataMember]
         public int Port
         {
             get { return _port; }
@@ -24,7 +29,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         }
 
         private string _username;
-        //[DataMember]
         public string Username
         {
             get { return _username; }
@@ -32,7 +36,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         }
 
         private string _password;
-        //[DataMember]
         public string Password
         {
             get { return _password; }
@@ -40,7 +43,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         }
 
         private string _database;
-        //[DataMember]
         public string Database
         {
             get { return _database; }

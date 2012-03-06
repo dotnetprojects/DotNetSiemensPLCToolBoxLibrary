@@ -275,21 +275,21 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 }
             }
 
-            //Add the Fields to the Database
-            myCmd.Connection = myDBConn;
-            myCmd.CommandText = insertCommand;
-
             try
             {
+                DbTransaction dbTrans = null;
 
-                //using (DbTransaction dbTrans = myDBConn.BeginTransaction())
+                if (myConfig.CombineMultipleInsertsInATransaction)
+                    dbTrans = myDBConn.BeginTransaction();
                 {
                     using (DbCommand cmd = myDBConn.CreateCommand())
                     {
                         cmd.CommandText = insertCommand;
-                        //cmd.Transaction = dbTrans;
-                        for (int n = 0; n < _maxAdd; n++)
-                            //foreach (IEnumerable<object> values in _intValueList)
+
+                        if (myConfig.CombineMultipleInsertsInATransaction)
+                            cmd.Transaction = dbTrans;
+                        
+                        for (int n = 0; n < _maxAdd; n++)                            
                         {
                             cmd.Parameters.Clear();
 
@@ -303,10 +303,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                             {
                                 while (e1.MoveNext() && e2.MoveNext())
                                 {
-                                    //foreach (DatasetConfigRow field in fieldList)
-                                    //{
                                     DatasetConfigRow field = e1.Current;
-                                    Object value = e2.Current; //values[fnr++];
+                                    Object value = e2.Current; 
 
                                     cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value});
                                 }
@@ -323,12 +321,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                         }
                     }
 
-                    //dbTrans.Commit();
+                    if (myConfig.CombineMultipleInsertsInATransaction && dbTrans != null)
+                        dbTrans.Commit();
+                }
+
+                if (dbTrans != null)
+                {
+                    dbTrans.Dispose();
                 }
             }            
             catch (Exception ex)
-            {          
-                throw ex;
+            {
+                throw;
             }
 
             return true;
