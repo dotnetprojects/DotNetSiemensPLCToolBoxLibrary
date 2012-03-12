@@ -10,7 +10,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step7ProjectV5 : Project, IDisposable
-    {        
+    {
         private string _offlineblockdb;
 
         internal bool _showDeleted = false;
@@ -20,7 +20,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         //When a Zip File is used, here is the s7p name!
         internal string _projectfilename;
-        
+
         internal char _DirSeperator
         {
             get
@@ -47,7 +47,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (string.IsNullOrEmpty(_projectfilename))
                     throw new Exception("Zip-File contains no valid Step7 Project !");
                 this._ziphelper = new ZipHelper(projectfile);
-                
+
             }
             LoadProjectHeader(projectfile, showDeleted);
         }
@@ -72,7 +72,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             ProjectDescription = System.Text.Encoding.UTF7.GetString(projectFile, 5 + projectFile[4] + 2, projectFile[projectFile[4] + 6]);
             //Fertig
 
-            _offlineblockdb = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + "BSTCNTOF.DBF";     
+            _offlineblockdb = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + "BSTCNTOF.DBF";
         }
 
         public override string ToString()
@@ -104,7 +104,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         /*
         private Step7ProjectFolder _step7ProjectStructure;
-        
+
         public Step7ProjectFolder Step7ProjectStructure
         {
             get
@@ -177,7 +177,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectStructure.Name = this.ToString();
 
-            //Get The Project Stations...            
+            //Get The Project Stations...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HOBJECT1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
@@ -202,17 +202,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     break;
                                 case 1315650:
                                     x.StationType = PLCType.Simatic400H;
-                                    break;                                
+                                    break;
                             }
                             x.Parent = ProjectStructure;
                             ProjectStructure.SubItems.Add(x);
                         }
                     }
-                }                               
+                }
             }
 
 
-            //Get The CP Folders   
+            //Get The CP Folders
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HRELATI1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
@@ -224,9 +224,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         foreach (DataRow row in dbfTbl.Rows)
                         {
                             if (!(bool)row["DELETED_FLAG"] || _showDeleted)
-                            {                                
+                            {
                                 if ((int)row["TUNITID"] == z.ID &&
-                                    ((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
+                                    ((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314970 || (int)row["TUNITTYP"] == 1315650))//as in "Get The Project Stations"
                                 {
                                     var x = new CPFolder() {Project = this};
                                     x.UnitID = Convert.ToInt32(row["TUNITID"]);
@@ -243,7 +243,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            //Get The CPU 300 Folders   
+            //Get The CPU 300 Folders
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk31ax" + _DirSeperator + "HRELATI1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk31ax" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
@@ -274,7 +274,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            //Get The CPU 300 ET200s Folders   
+            //Get The CPU 300 ET200s Folders
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hkcomx" + _DirSeperator + "HRELATI1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hkcomx" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
@@ -305,7 +305,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
-            //Get The CPU 400 Folders   
+            //Get The CPU 400 Folders
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HRELATI1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
@@ -338,7 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
 
             /*
-            //Get The HW Folder for the Station...               
+            //Get The HW Folder for the Station...
             if (ZipHelper.FileExists(_zipfile,ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HRELATI1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HRELATI1.DBF", _zipfile, _DirSeperator);
@@ -350,7 +350,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         foreach (DataRow row in dbfTbl.Rows)
                         {
                             if (!(bool)row["DELETED_FLAG"] || _showDeleted)
-                            {  
+                            {
                                 if ((int)row["SOBJID"] == z.ID && (int)row["RELID"] == 1315838)
                                 {
                                     var x = new CPUFolder() {Project = this};
@@ -377,7 +377,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
             */
 
-            //Get The CPU(ET200S)...    
+            //Get The CPU(ET200S)...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hkcomx" + _DirSeperator + "HOBJECT1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hkcomx" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
@@ -400,11 +400,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            //Get The CPU(300)...    
+            //Get The CPU(300)...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk31ax" + _DirSeperator + "HOBJECT1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk31ax" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
-                
+
                 foreach (var y in CPUFolders)
                 {
                     foreach (DataRow row in dbfTbl.Rows)
@@ -424,7 +424,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
 
 
-            //Get The CPU(400)...    
+            //Get The CPU(400)...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HOBJECT1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
@@ -447,13 +447,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            //Get The CPs...    
+            //Get The CPs...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HOBJECT1.DBF"))
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
 
                 foreach (var y in CPFolders)
-                {                    
+                {
                     foreach (DataRow row in dbfTbl.Rows)
                     {
                         if (!(bool)row["DELETED_FLAG"] || _showDeleted)
@@ -461,7 +461,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             if ((int)row["ID"] == y.ID)
                             {
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
-                                if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;                                
+                                if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;
                             }
                         }
                     }
@@ -486,7 +486,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         S7ProgrammFolders.Add(x);
                         tmpS7ProgrammFolders.Add(x);
                     }
-                }                
+                }
             }
 
             //Combine Folder and CPU (300)
@@ -609,7 +609,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            var tmpBlocksOfflineFolders = new List<BlocksOfflineFolder>();            
+            var tmpBlocksOfflineFolders = new List<BlocksOfflineFolder>();
             //Create the Programm Block folders...
             if (_ziphelper.FileExists(ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + "BSTCNTOF.DBF"))
             {
