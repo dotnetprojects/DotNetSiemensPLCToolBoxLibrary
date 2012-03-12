@@ -12,6 +12,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         public String ProjectDescription { get; set; }
 
         private ProjectFolder _ProjectStructure;
+        public enum Language {Deutsch,English};
+        public Language ProjectLanguage {get; set;}
+
         public ProjectFolder ProjectStructure
         {
             get
@@ -28,10 +31,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         public override string ToString()
         {
             string retVal = ProjectName;
-            
+
             if (ProjectName == null)
                 retVal= ProjectFile;
-            
+
             return retVal;
         }
 

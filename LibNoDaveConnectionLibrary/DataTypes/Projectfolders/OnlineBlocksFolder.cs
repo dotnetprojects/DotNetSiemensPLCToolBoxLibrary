@@ -100,12 +100,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
         public Block GetBlock(string BlockName)
         {
             byte[] tmp = Connection.PLCGetBlockInMC7(BlockName);
-            return MC7Converter.GetAWLBlock(tmp, 0, (S7ProgrammFolder) Parent);
+            return MC7Converter.GetAWLBlock(tmp, (int)Project.ProjectLanguage, (S7ProgrammFolder) Parent);
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
         {
             return GetBlock(((ProjectPlcBlockInfo)blkInfo).BlockName);
-        }       
+        }
     }
 }
