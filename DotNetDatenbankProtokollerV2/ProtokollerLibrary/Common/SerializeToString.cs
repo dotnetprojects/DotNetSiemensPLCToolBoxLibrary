@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Polenter.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Common
 {
@@ -12,6 +13,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
         public static string Serialize(T obj)
         {
             // XML-Serialisieren in String
+            
             XmlSerializer serializer = new XmlSerializer(obj.GetType());
 
             // Serialisieren in MemoryStream
@@ -27,7 +29,31 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
             namespaces.Add(string.Empty, string.Empty);
 
             serializer.Serialize(writer, obj, namespaces);
+            
+            // Stream in String umwandeln 
+            StreamReader r = new StreamReader(ms);
+            r.BaseStream.Seek(0, SeekOrigin.Begin);
 
+            return r.ReadToEnd();
+        }
+
+        public static string SharpSerializerSerialize(T obj)
+        {
+            var settings = new SharpSerializerXmlSettings(); // for xml mode
+
+            // configure the type serialization
+            settings.IncludeAssemblyVersionInTypeName = false;
+            settings.IncludeCultureInTypeName = false;
+            settings.IncludePublicKeyTokenInTypeName = false;            
+
+            // XML-Serialisieren in String
+            var serializer = new SharpSerializer();
+
+            // Serialisieren in MemoryStream
+            MemoryStream ms = new MemoryStream();
+
+            serializer.Serialize(obj, ms);
+            
             // Stream in String umwandeln 
             StreamReader r = new StreamReader(ms);
             r.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -57,6 +83,27 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
             r.BaseStream.Seek(0, SeekOrigin.Begin);
 
             return r.ReadToEnd();
+        }
+
+        public static T SharpSerializerDeSerialize(string txt)
+        {
+            T retVal = default(T);
+            if (txt == null)
+                return retVal;
+            try
+            {
+                MemoryStream stream = new MemoryStream();
+                StreamWriter writer = new StreamWriter(stream);
+                writer.Write(txt);
+                writer.Flush();
+
+                var serializer = new SharpSerializer();
+                retVal = (T)serializer.Deserialize(stream);               
+            }
+            catch (Exception)
+            {
+            }
+            return retVal;
         }
 
         public static T DeSerialize(string txt)

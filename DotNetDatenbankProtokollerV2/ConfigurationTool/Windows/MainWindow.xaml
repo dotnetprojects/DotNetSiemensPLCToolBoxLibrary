@@ -1,28 +1,71 @@
 ﻿<Window x:Class="DotNetSimaticDatabaseProtokollerConfigurationTool.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="536" Width="996" Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed" Icon="/JFK-ProtokollerConfigurationTool;component/Images/Crystal_Clear_app_korganizer.png">
+        Title="MainWindow"
+        Width="996"
+        Height="536"
+        Closed="Window_Closed"
+        Closing="Window_Closing"
+        Icon="/JFK-ProtokollerConfigurationTool;component/Images/Crystal_Clear_app_korganizer.png"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180" />
             <ColumnDefinition Width="369*" />
         </Grid.ColumnDefinitions>
         <TreeView Grid.Column="0" Margin="0,0,5,0">
-            <TreeViewItem IsExpanded="True" Header="Main">
-                <TreeViewItem IsExpanded="True" Header="Information" Name="itmInformation" Selected="itmInformation_Selected" />
-                <TreeViewItem IsExpanded="True" Header="Protocolling" Name="itmProtocoling" Selected="itmProtocoling_Selected">
-                    <TreeViewItem IsExpanded="True" Header="Connections" Name="itmConnections" Selected="itmConnections_Selected" />
-                    <TreeViewItem IsExpanded="True" Header="Storages" Name="itmStorages" Selected="itmStorages_Selected" />
-                    <TreeViewItem IsExpanded="True" Header="Datasets" Name="itmProtocolDatasets" Selected="itmProtocolDatasets_Selected" />
+            <TreeViewItem Header="Main" IsExpanded="True">
+                <TreeViewItem Name="itmInformation"
+                              Header="Information"
+                              IsExpanded="True"
+                              Selected="itmInformation_Selected" />
+                <TreeViewItem Name="itmProtocoling"
+                              Header="Protocolling"
+                              IsExpanded="True"
+                              Selected="itmProtocoling_Selected">
+                    <TreeViewItem Name="itmCommon"
+                                  Header="Common"
+                                  IsExpanded="True"
+                                  Selected="itmCommon_Selected" />
+                    <TreeViewItem Name="itmConnections"
+                                  Header="Connections"
+                                  IsExpanded="True"
+                                  Selected="itmConnections_Selected" />
+                    <TreeViewItem Name="itmStorages"
+                                  Header="Storages"
+                                  IsExpanded="True"
+                                  Selected="itmStorages_Selected" />
+                    <TreeViewItem Name="itmProtocolDatasets"
+                                  Header="Datasets"
+                                  IsExpanded="True"
+                                  Selected="itmProtocolDatasets_Selected" />
                 </TreeViewItem>
-                <TreeViewItem IsExpanded="True" Header="Test" Name="itmTest" Selected="itmTest_Selected" />
-                <TreeViewItem IsExpanded="True" Header="Service" Name="itmService" Selected="itmService_Selected" />
-                <TreeViewItem IsExpanded="True" Header="Database-Viewer" Name="itmDatabaseViewer" Selected="itmDatabaseViewer_Selected" />
+                <TreeViewItem Name="itmTest"
+                              Header="Test"
+                              IsExpanded="True"
+                              Selected="itmTest_Selected" />
+                <TreeViewItem Name="itmService"
+                              Header="Service"
+                              IsExpanded="True"
+                              Selected="itmService_Selected" />
+                <TreeViewItem Name="itmDatabaseViewer"
+                              Header="Database-Viewer"
+                              IsExpanded="True"
+                              Selected="itmDatabaseViewer_Selected" />
             </TreeViewItem>
         </TreeView>
-        <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="5" Name="gridSplitter1" ResizeDirection="Columns" VerticalAlignment="Stretch" />
-        <Border Grid.Column="1" BorderBrush="#FF828790" BorderThickness="1">
-            <ContentControl  HorizontalAlignment="Stretch" Name="sideContent" VerticalAlignment="Stretch"/>
+        <GridSplitter Name="gridSplitter1"
+                      Grid.Column="0"
+                      Width="5"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Stretch"
+                      ResizeDirection="Columns" />
+        <Border Grid.Column="1"
+                BorderBrush="#FF828790"
+                BorderThickness="1">
+            <ContentControl Name="sideContent"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" />
         </Border>
     </Grid>
 </Window>

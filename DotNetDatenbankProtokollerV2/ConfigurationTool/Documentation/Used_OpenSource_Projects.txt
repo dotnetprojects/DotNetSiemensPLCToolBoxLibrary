@@ -2,8 +2,15 @@
 
 # = noch nicht benutzt/implementiert (Lizenzfragen??)
 
-Propertygrid:
-http://wpg.codeplex.com (Ms-PL)
+Webserver:
+http://msdn.microsoft.com/en-us/library/dd767375(v=vs.90).aspx
+alternative: http://www.codeproject.com/Articles/11342/MiniHttpd-an-HTTP-web-server-library
+
+Serializer: (with Reference support!)
+http://sharpserializer.codeplex.com/
+
+Propertygrid and more...:
+http://wpftoolkit.codeplex.com (Ms-PL)
 
 For CSV Parsing: (3.7.2)
 http://www.codeproject.com/KB/database/CsvReader.aspx (MIT)
@@ -18,6 +25,9 @@ For Excel File writing: (xls,xlsx)
 #http://www.chrislaforetsoftware.com/products.html (LGPL)
 #http://excelpackage.codeplex.com/
 #http://code.google.com/p/npoi/
+
+For better Serialization:
+http://sharpserializer.codeplex.com/
 
 For Communication:
 http://libnodave.sourceforge.net/ (LGPL)

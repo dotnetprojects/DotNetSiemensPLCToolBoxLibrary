@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
@@ -21,6 +23,8 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using DotNetSimaticDatabaseProtokollerLibrary.TCPIP;
+using DotNetSimaticDatabaseProtokollerLibrary.aspx;
+
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
@@ -37,6 +41,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private List<IDisposable> myDisposables = new List<IDisposable>();
         private Thread myReEstablishConnectionsThread;
 
+        private AspxVirtualRoot webServer = null;
+
         //private Remoting.RemotingServer remotingServer;
 
         public event ThreadExceptionEventHandler ThreadExceptionOccured;
@@ -52,7 +58,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             //Remoting Server für Benachrichtigung an Client das neue Daten da sind
             /*remotingServer = new RemotingServer();
             remotingServer.Start();*/
-           
+
+            if (akConfig.UseWebserver)
+            {
+                AspxVirtualRoot virtualRoot = new AspxVirtualRoot(8088);
+                virtualRoot.Configure("/", System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "web"));
+            }
+
             context = SynchronizationContext.Current;
 
             Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
@@ -315,6 +327,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             Logging.LogText("Protokoller gestopt", Logging.LogLevel.Information);
             if (myReEstablishConnectionsThread != null)
                 myReEstablishConnectionsThread.Abort();
+
+            if (webServer != null)
+                webServer.Dispose();
 
             foreach (var disposable in myDisposables)
             {

@@ -55,9 +55,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPG, Version=2.0.4085.23144, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDlls\WPG.dll</HintPath>
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\AdditionalDlls\WPFToolkit.Extended.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\EditCommonSettings.xaml.cs">
+      <DependentUpon>EditCommonSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SubwindowService.xaml.cs">
       <DependentUpon>SubwindowService.xaml</DependentUpon>
     </Compile>
@@ -93,6 +95,10 @@
     <Compile Include="WPF\HyperlinkUtility.cs" />
     <Compile Include="WPF\IntToVisibilityConverter.cs" />
     <Compile Include="WPF\StringToPLCValueBoolConverter.cs" />
+    <Page Include="Windows\EditCommonSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\SubwindowService.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

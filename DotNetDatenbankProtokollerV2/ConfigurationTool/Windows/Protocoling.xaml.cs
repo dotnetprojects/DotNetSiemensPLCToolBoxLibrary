@@ -55,6 +55,6 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             dlg.Filter = "*.conf|*.conf";
             if (dlg.ShowDialog() == true)
                 ProtokollerConfiguration.LoadFromFile(dlg.FileName);
-        }        
+        }               
     }
 }

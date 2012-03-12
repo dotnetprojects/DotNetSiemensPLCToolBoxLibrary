@@ -93,6 +93,12 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             
         }
 
+        private void itmCommon_Selected(object sender, RoutedEventArgs e)
+        {
+            sideContent.Content = new EditCommonSettings();
+            e.Handled = true;
+        }
+
        
 
     }

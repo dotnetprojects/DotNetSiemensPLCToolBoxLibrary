@@ -58,6 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AdditionalDlls\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="Polenter.SharpSerializer, Version=2.18.0.0, Culture=neutral, PublicKeyToken=8f4f20011571ee5f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AdditionalDlls\Polenter.SharpSerializer.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Quartz">
@@ -71,7 +75,9 @@
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,6 +86,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="aspx\AspxException.cs" />
+    <Compile Include="aspx\AspxNetEngine.cs" />
+    <Compile Include="aspx\AspxPage.cs" />
+    <Compile Include="aspx\AspxRequestInfo.cs" />
+    <Compile Include="aspx\AspxVirtualRoot.cs" />
     <Compile Include="Common\NetworkShare.cs" />
     <Compile Include="Common\SerializeToString.cs" />
     <Compile Include="Common\WPF\NullToFalseConverter.cs" />

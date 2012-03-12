@@ -10,6 +10,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using Microsoft.Win32;
+using Polenter.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary
 {
@@ -24,6 +25,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         public ObservableCollection<StorageConfig> Storages { get; set; }
         [DataMember]        
         public ObservableCollection<DatasetConfig> Datasets { get; set; }
+
+        #region Webserver        
+        [DataMember]
+        public bool UseWebserver { get; set; }
+
+        private int _webserverPort = 80;
+        [DataMember]
+        public int WebserverPort
+        {
+            get { return _webserverPort; }
+            set { _webserverPort = value; }
+        }
+
+        [DataMember]
+        public string  WebserverPath { get; set; }
+        #endregion
 
         /// <summary>
         /// Config has Changed, and was not Saved!
@@ -58,6 +75,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         public static void SaveToFile(string filename)
         {
             StreamWriter fstrm = new StreamWriter(filename, false);
+           
             string conf = SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
             fstrm.Write(conf);
             fstrm.Close();

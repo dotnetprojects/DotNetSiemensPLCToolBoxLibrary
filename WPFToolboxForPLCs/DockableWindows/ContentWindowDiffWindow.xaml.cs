@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 using AvalonDock;
+using DiffMatchPatch;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Rendering;
 using WPFToolboxForSiemensPLCs.AvalonEdit;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
@@ -21,7 +28,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         {
             InitializeComponent();
 
-            string highlighterFile = "";
+           
 
            
             InitFolding();
@@ -31,24 +38,32 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             foldingUpdateTimer1.Tick += foldingUpdateTimerA_Tick;
             foldingUpdateTimer1.Start();
 
-            DispatcherTimer foldingUpdateTimer2 = new DispatcherTimer();
-            foldingUpdateTimer2.Interval = TimeSpan.FromSeconds(2);
-            foldingUpdateTimer2.Tick += foldingUpdateTimerB_Tick;
-            foldingUpdateTimer2.Start();
-
-
+            string highlighterFile = "";
+            highlighterFile = "WPFToolboxForSiemensPLCs.AvalonEdit.AWL_Step5_Highlighting.xshd";              
+            IHighlightingDefinition customHighlighting;
+            using (Stream s = typeof(MainWindow).Assembly.GetManifestResourceStream(highlighterFile))
+            {
+                if (s == null)
+                    throw new InvalidOperationException("Could not find embedded resource");
+                using (XmlReader reader = new XmlTextReader(s))
+                {
+                    customHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.
+                        HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            HighlightingManager.Instance.RegisterHighlighting("Custom Highlighting", new string[] { ".cool" }, customHighlighting);
+            txtResult.SyntaxHighlighting = customHighlighting;
+           
             this.DataContext = this;
         }
 
         #region Folding
         FoldingManager foldingManagerA;
-        FoldingManager foldingManagerB;
         AbstractFoldingStrategy foldingStrategyA;
-        AbstractFoldingStrategy foldingStrategyB;
-
+        
         void InitFolding()
         {
-            if (textEditorA.SyntaxHighlighting == null)
+            if (txtResult.SyntaxHighlighting == null)
             {
                 foldingStrategyA = null;
             }
@@ -60,7 +75,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             if (foldingStrategyA != null)
             {
                 if (foldingManagerA == null)
-                    foldingManagerA = FoldingManager.Install(textEditorA.TextArea);
+                    foldingManagerA = FoldingManager.Install(txtResult.TextArea);
                 foldingStrategyA.UpdateFoldings(foldingManagerA, textEditorA.Document);
             }
             else
@@ -70,70 +85,27 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     FoldingManager.Uninstall(foldingManagerA);
                     foldingManagerA = null;
                 }
-            }
-
-
-
-            if (textEditorB.SyntaxHighlighting == null)
-            {
-                foldingStrategyB = null;
-            }
-            else
-            {
-                foldingStrategyB = new BraceFoldingStrategy();
-
-            }
-            if (foldingStrategyB != null)
-            {
-                if (foldingManagerB == null)
-                    foldingManagerB = FoldingManager.Install(textEditorB.TextArea);
-                foldingStrategyB.UpdateFoldings(foldingManagerB, textEditorB.Document);
-            }
-            else
-            {
-                if (foldingManagerB != null)
-                {
-                    FoldingManager.Uninstall(foldingManagerB);
-                    foldingManagerB = null;
-                }
-            }
-
+            }            
         }
 
         void foldingUpdateTimerA_Tick(object sender, EventArgs e)
         {
             if (foldingStrategyA != null)
             {
-                foldingStrategyA.UpdateFoldings(foldingManagerA, textEditorA.Document);
+                foldingStrategyA.UpdateFoldings(foldingManagerA, txtResult.Document);
             }
 
             if (foldingManagerA!=null)
                 foreach (var fld in foldingManagerA.AllFoldings)
                 {
-                    if (textEditorA.Document.Text.Substring(fld.StartOffset, 8) == "Netzwerk")
-                        fld.Title = textEditorA.Document.Text.Substring(fld.StartOffset, 11) + " ...";
+                    if (txtResult.Document.Text.Substring(fld.StartOffset, 8) == "Netzwerk")
+                        fld.Title = txtResult.Document.Text.Substring(fld.StartOffset, 11) + " ...";
                     else
-                        fld.Title = textEditorA.Document.Text.Substring(fld.StartOffset, 3) + "...";
+                        fld.Title = txtResult.Document.Text.Substring(fld.StartOffset, 3) + "...";
                 }
 
         }
 
-        void foldingUpdateTimerB_Tick(object sender, EventArgs e)
-        {
-            if (foldingStrategyB != null)
-            {
-                foldingStrategyB.UpdateFoldings(foldingManagerB, textEditorB.Document);
-            }
-            if (foldingManagerB != null)
-                foreach (var fld in foldingManagerB.AllFoldings)
-                {
-                    if (textEditorB.Document.Text.Substring(fld.StartOffset, 8) == "Netzwerk")
-                        fld.Title = textEditorB.Document.Text.Substring(fld.StartOffset, 11) + " ...";
-                    else
-                        fld.Title = textEditorB.Document.Text.Substring(fld.StartOffset, 3) + "...";
-                }
-
-        }
         #endregion
 
         private void textEditorA_DragOver(object sender, System.Windows.DragEventArgs e)
@@ -301,6 +273,87 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
         private void textEditorB_DragOver(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.Copy;
+        }
+
+        public class DiffColorizer : ColorizingTransformer
+        {
+            private List<DiffColor> diffColors;
+            public DiffColorizer(List<DiffColor> DiffColors)
+            {
+                this.diffColors = DiffColors;
+            }
+
+            DocumentLine currentDocumentLine;
+            int firstLineStart;
+            int currentDocumentLineStartOffset, currentDocumentLineEndOffset;
+
+            /// <summary>
+            /// Gets the current ITextRunConstructionContext.
+            /// </summary>
+            protected ITextRunConstructionContext CurrentContext { get; private set; }
+                
+            TextArea textArea;
+			
+            protected override void Colorize(ITextRunConstructionContext context)
+            {                  
+                int lineStartOffset = context.VisualLine.FirstDocumentLine.Offset;
+                int lineEndOffset = context.VisualLine.LastDocumentLine.Offset + context.VisualLine.LastDocumentLine.TotalLength;
+
+                foreach (var diffcol in diffColors)
+                {
+                    int segmentStart = diffcol.StartOffset;
+                    int segmentEnd = diffcol.EndOffset;
+                    if (segmentEnd <= lineStartOffset)
+                        continue;
+                    if (segmentStart >= lineEndOffset)
+                        continue;
+                    int startColumn;
+                    if (segmentStart < lineStartOffset)
+                        startColumn = 0;
+                    else
+                        startColumn = context.VisualLine.GetVisualColumn(lineStartOffset + diffcol.StartOffset); // ValidateVisualColumn(diffcol.StartOffset, diffcol.StartVisualColumn, textArea.Selection.EnableVirtualSpace);
+
+                    int endColumn;
+                    if (segmentEnd > lineEndOffset)
+                        endColumn = int.MaxValue ; //: context.VisualLine.VisualLengthWithEndOfLineMarker;
+                    else
+                        endColumn = context.VisualLine.GetVisualColumn(lineStartOffset + diffcol.EndOffset); // ValidateVisualColumn(diffcol.StartOffset, diffcol.StartVisualColumn, textArea.Selection.EnableVirtualSpace);
+                        //endColumn = context.VisualLine.ValidateVisualColumn(diffcol.EndOffset, diffcol.EndVisualColumn, textArea.Selection.EnableVirtualSpace);
+
+                    var col = diffcol;
+
+                    ChangeVisualElements(
+                        startColumn, endColumn,
+                        element => element.TextRunProperties.SetBackgroundBrush(col.Color));
+                }
+            }            
+        }
+
+        public class DiffColor
+        {
+            public Brush Color { get; set; }
+            public int StartOffset { get; set; }
+            public int EndOffset { get; set; }
+        }
+        private void cmdCompare_Click(object sender, RoutedEventArgs e)
+        {
+            List<DiffColor> diffColors=new List<DiffColor>();
+            
+            diff_match_patch comparer=new diff_match_patch();
+            var result = comparer.diff_main(textEditorA.Text, textEditorB.Text);
+            
+            txtResult.Document.Text = "";
+            foreach (var diff in result)
+            {
+                if (diff.operation == Operation.INSERT)
+                    diffColors.Add(new DiffColor() { Color = Brushes.Green, StartOffset = txtResult.Document.Text.Length, EndOffset = txtResult.Document.Text.Length + diff.text.Length });
+                else if (diff.operation == Operation.DELETE)
+                    diffColors.Add(new DiffColor() { Color = Brushes.Red, StartOffset = txtResult.Document.Text.Length, EndOffset = txtResult.Document.Text.Length + diff.text.Length });
+                txtResult.Document.Text += diff.text;
+            }
+            //txtResult.TextArea.TextView.LineTransformers.Clear();
+            txtResult.TextArea.TextView.LineTransformers.Add(new DiffColorizer(diffColors));
+
         }
 
     }

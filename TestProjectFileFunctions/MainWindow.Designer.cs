@@ -91,9 +91,6 @@
             this.dBStructResizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.searchPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.telegrammSimulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.varTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertCallsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExpandDatablockArrays = new System.Windows.Forms.ToolStripMenuItem();
@@ -360,7 +357,7 @@
             this.chkExpandArrays.AutoSize = true;
             this.chkExpandArrays.Location = new System.Drawing.Point(25, 330);
             this.chkExpandArrays.Name = "chkExpandArrays";
-            this.chkExpandArrays.Size = new System.Drawing.Size(117, 19);
+            this.chkExpandArrays.Size = new System.Drawing.Size(94, 17);
             this.chkExpandArrays.TabIndex = 4;
             this.chkExpandArrays.Text = "Expand Arrays";
             this.chkExpandArrays.UseVisualStyleBackColor = true;
@@ -379,7 +376,7 @@
             this.chkFixedErrorNumber.AutoSize = true;
             this.chkFixedErrorNumber.Location = new System.Drawing.Point(20, 89);
             this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
-            this.chkFixedErrorNumber.Size = new System.Drawing.Size(152, 19);
+            this.chkFixedErrorNumber.Size = new System.Drawing.Size(116, 17);
             this.chkFixedErrorNumber.TabIndex = 4;
             this.chkFixedErrorNumber.Text = "Fixed Error Number";
             this.chkFixedErrorNumber.UseVisualStyleBackColor = true;
@@ -572,7 +569,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
-            this.toolsToolStripMenuItem1,
             this.optionsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -690,27 +686,6 @@
             this.searchPasswordToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
             this.searchPasswordToolStripMenuItem.Text = "Search Password";
             this.searchPasswordToolStripMenuItem.Click += new System.EventHandler(this.searchPasswordToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem1
-            // 
-            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.telegrammSimulatorToolStripMenuItem,
-            this.varTabToolStripMenuItem});
-            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
-            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem1.Text = "Tools";
-            // 
-            // telegrammSimulatorToolStripMenuItem
-            // 
-            this.telegrammSimulatorToolStripMenuItem.Name = "telegrammSimulatorToolStripMenuItem";
-            this.telegrammSimulatorToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.telegrammSimulatorToolStripMenuItem.Text = "Telegramm Simulator";
-            // 
-            // varTabToolStripMenuItem
-            // 
-            this.varTabToolStripMenuItem.Name = "varTabToolStripMenuItem";
-            this.varTabToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.varTabToolStripMenuItem.Text = "VarTab";
             // 
             // optionsToolStripMenuItem
             // 
@@ -1006,9 +981,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblToolStripFileSystemFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem telegrammSimulatorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem varTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem downloadOnlineBlockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem convertCallsToolStripMenuItem;
