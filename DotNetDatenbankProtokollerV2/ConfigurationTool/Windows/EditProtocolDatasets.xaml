@@ -1000,5 +1000,16 @@
                                    Converter={StaticResource myNullToFalseConverter}}"
                Padding="0"
                ToolTip="If this is Empty, PC Date is not saved to database!" />
+        <Button Name="cmdAddDatasetRowsFromProjectFile"
+                Width="129"
+                Height="23"
+                Margin="0,210,123,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdAddDatasetRowsFromProjectFile_Click"
+                Content="Multi Add"
+                IsEnabled="{Binding ElementName=grdDatasets,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
     </Grid>
 </UserControl>

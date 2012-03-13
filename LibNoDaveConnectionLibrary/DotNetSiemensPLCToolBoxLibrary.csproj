@@ -189,6 +189,12 @@
     <Compile Include="DBF\ParseDBF.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7VATRow.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
+    <Compile Include="Projectfiles\SelectProjectPartMultiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
+      <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\PLCTag.cs" />
     <Compile Include="Projectfiles\SelectPartType.cs" />
@@ -252,6 +258,9 @@
     <Content Include="Documentation\Step7Projectfiles.txt" />
     <Content Include="Documentation\SZLs.txt" />
     <Content Include="Documentation\Info.txt" />
+    <EmbeddedResource Include="Projectfiles\SelectProjectPartMultiForm.resx">
+      <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\FolderImages\closed_folder.ico" />
     <EmbeddedResource Include="Resources\FolderImages\opened_folder.ico" />
     <EmbeddedResource Include="Resources\FolderImages\s5.ico" />

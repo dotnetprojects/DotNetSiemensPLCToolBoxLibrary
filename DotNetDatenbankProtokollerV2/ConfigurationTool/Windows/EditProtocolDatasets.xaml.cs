@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -240,6 +241,78 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             }
             catch (Exception)
             { }
-        }                                  
+        }
+
+        private void cmdAddDatasetRowsFromProjectFile_Click(object sender, RoutedEventArgs e)
+        {
+            string DataBaseTyp;
+            string DataBlockTyp;
+            //Anpassungen von Henning Göpfert-Dürwald & Christoph Reinshaus
+
+            var tags = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectTAGs("");
+            if (tags != null)
+            {
+                foreach (PLCTag tag in tags)
+                {
+                    #region Create new row
+                    DatasetConfig conf = grdDatasets.SelectedItem as DatasetConfig;
+
+                    ConnectionConfig akConn = null;
+                    string FieldType = "";
+                    if (conf.DatasetConfigRows.Count > 0)
+                    {
+                        akConn = conf.DatasetConfigRows[conf.DatasetConfigRows.Count - 1].Connection;
+                        FieldType = conf.DatasetConfigRows[conf.DatasetConfigRows.Count - 1].DatabaseFieldType;
+                    }
+
+                    conf.DatasetConfigRows.Add(new DatasetConfigRow() { DatabaseField = "Row_" + (conf.DatasetConfigRows.Count + 1).ToString(), Connection = akConn, DatabaseFieldType = FieldType });
+                    #endregion
+
+                    DatasetConfigRow confRow = grdDatasetFields.Items[grdDatasetFields.Items.Count - 1] as DatasetConfigRow;
+                    confRow.PLCTag = tag;
+                    DataBlockTyp = tag.LibNoDaveDataType.ToString();
+                    DataBaseTyp = "";
+                    confRow.DatabaseField = tag.ValueName;
+
+                    #region Preselect DataBase DataTypes
+                    if (true)
+                    {
+                        switch (DataBlockTyp)
+                        {
+                            case "Float":
+                                DataBaseTyp = "float";
+                                break;
+
+                            case "Int":
+                                DataBaseTyp = "int";
+                                break;
+
+                            case "Date":
+                                DataBaseTyp = "date";
+                                break;
+
+                            case "DateTime":
+                                DataBaseTyp = "datetime";
+                                break;
+
+                            case "Time":
+                                DataBaseTyp = "time";
+                                break;
+
+                            case "Dint":
+                                DataBaseTyp = "bigint";
+                                break;
+
+                            default:
+                                DataBaseTyp = "";
+                                break;
+                        }
+                    }
+                    #endregion
+
+                    confRow.DatabaseFieldType = DataBaseTyp;
+                }
+            }
+        }                 
     }
 }

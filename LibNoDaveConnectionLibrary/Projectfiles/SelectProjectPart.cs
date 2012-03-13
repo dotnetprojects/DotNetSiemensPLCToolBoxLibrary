@@ -1,4 +1,5 @@
 #if !IPHONE
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -105,6 +106,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             myFrm.Close();
             myFrm.Dispose();
             return retVal;
+        }
+
+        //This is used to select multiple Tags from a Step 7 Project
+        public static List<PLCTag> SelectTAGs(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartMultiForm myFrm = new SelectProjectPartMultiForm(FileAndProjectInternalFolder);
+            myFrm.SelectPart = SelectPartType.Tag;
+            myFrm.ShowDialog();
+            var tags = myFrm.SelectedTags;
+            myFrm.Dispose();
+            return tags;
         }
     }
 }
