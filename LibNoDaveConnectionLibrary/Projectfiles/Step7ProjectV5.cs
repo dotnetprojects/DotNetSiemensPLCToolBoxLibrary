@@ -32,8 +32,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        public Step7ProjectV5(string projectfile, bool showDeleted)
+            : this(projectfile, showDeleted, null)
+        { }
 
-        public Step7ProjectV5(string projectfile, bool showDeleted, Encoding prEn = null )
+        public Step7ProjectV5(string projectfile, bool showDeleted, Encoding prEn)
         {
             _projectfilename = projectfile;
 
