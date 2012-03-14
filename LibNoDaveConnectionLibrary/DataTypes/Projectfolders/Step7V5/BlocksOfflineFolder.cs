@@ -350,7 +350,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             //Interface in mc5code
                             if (mc5code != null)
                                 myTmpBlk.blkinterface =
-                                    System.Text.Encoding.GetEncoding("Windows-1251").GetString(mc5code);
+                                    Project.ProjectEncoding.GetString(mc5code);
                         }
                         else if (subblktype == 19 || subblktype == 17 || subblktype == 18 || subblktype == 22 ||
                                  subblktype == 21) //FC, OB, FB, SFC, SFB
@@ -366,7 +366,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             //DB Structure in Plain Text (Structure and StartValues!)
                             if (mc5code != null)
                                 myTmpBlk.blkinterface =
-                                    System.Text.Encoding.GetEncoding("Windows-1251").GetString(mc5code);
+                                    Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
                             myTmpBlk.addinfo = addinfo;
                         }
@@ -440,9 +440,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         step7Attributes = new List<Step7Attribute>();
                         for (int j = 0; j < myTmpBlk.uda[0]; j++)
                         {
-                            string t1 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
+                            string t1 = Project.ProjectEncoding.GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
                             uPos += myTmpBlk.uda[uPos] + 1;
-                            string t2 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
+                            string t2 = Project.ProjectEncoding.GetString(myTmpBlk.uda, uPos + 1, myTmpBlk.uda[uPos]);
                             uPos += myTmpBlk.uda[uPos] + 1;
                             step7Attributes.Add(new Step7Attribute(t1, t2));
                         }
@@ -452,7 +452,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 //Begin with the Block Reading...
                 if (blkInfo.BlockType == PLCBlockType.VAT)
                 {
-                    S7VATBlock retValBlock = new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber);
+                    S7VATBlock retValBlock = new S7VATBlock(myTmpBlk.mc7code, myTmpBlk.comments, plcblkifo.BlockNumber, Project.ProjectEncoding);
                     retValBlock.Attributes = step7Attributes;
 
                     retValBlock.LastCodeChange = myTmpBlk.LastCodeChange;
@@ -495,9 +495,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     if (myTmpBlk.blockdescription != null)
                     {
-                        retVal.Title = System.Text.Encoding.GetEncoding("Windows-1251").GetString(myTmpBlk.blockdescription, 3, myTmpBlk.blockdescription[1] - 4);
-//                        retVal.Description = System.Text.Encoding.UTF7.GetString(myTmpBlk.blockdescription, myTmpBlk.blockdescription[1], myTmpBlk.blockdescription.Length - myTmpBlk.blockdescription[1] - 1).Replace("\n", Environment.NewLine);
-                        retVal.Description = System.Text.Encoding.GetEncoding("Windows-1251").GetString(myTmpBlk.blockdescription, myTmpBlk.blockdescription[1], myTmpBlk.blockdescription.Length - myTmpBlk.blockdescription[1] - 1).Replace("\n", Environment.NewLine);
+                        retVal.Title = Project.ProjectEncoding.GetString(myTmpBlk.blockdescription, 3, myTmpBlk.blockdescription[1] - 4);
+                        retVal.Description = Project.ProjectEncoding.GetString(myTmpBlk.blockdescription, myTmpBlk.blockdescription[1], myTmpBlk.blockdescription.Length - myTmpBlk.blockdescription[1] - 1).Replace("\n", Environment.NewLine);
                     }
 
                     if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB)
@@ -545,8 +544,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     if (cmt[n + 5] == 0x06)
                                     {
                                         //NWKomentar:
-                                        string tx1 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(cmt, n + 6, startNWKomm - 7);
-                                        string tx2 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(cmt, n + startNWKomm, lenNWKommZeile - startNWKomm - 1).Replace("\n", Environment.NewLine);
+                                        string tx1 = Project.ProjectEncoding.GetString(cmt, n + 6, startNWKomm - 7);
+                                        string tx2 = Project.ProjectEncoding.GetString(cmt, n + startNWKomm, lenNWKommZeile - startNWKomm - 1).Replace("\n", Environment.NewLine);
                                         n += lenNWKommZeile;
 
                                         if (retVal.AWLCode.Count > j)
@@ -630,7 +629,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             subCnt = 0;
                                         }
 
-                                        string tx1 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(cmt, n + 6, kommLen);
+                                        string tx1 = Project.ProjectEncoding.GetString(cmt, n + 6, kommLen);
                                         if (subCnt == 0)
                                             lastRow.Comment = tx1;
                                         else

@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public class S7VATBlock : S7Block
-    {                
+    {
         public List<PLCTag> Rows{ get; set;}
         public List<S7VATRow> VATRows { get; set; }
 
-        public S7VATBlock(byte[] hexCode, byte[] comments, int blocknumber)
+        public S7VATBlock(byte[] hexCode, byte[] comments, int blocknumber, Encoding projEncoding)
         {
             BlockType = PLCBlockType.VAT;
             //BlockLanguage=
@@ -23,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             VATRows = new List<S7VATRow>();
 
             int akAddr = 36;
-            
+
             while (akAddr < hexCode.Length)
             {
                 if (hexCode[akAddr] != 0x00)
@@ -124,7 +125,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     //0x30
                     akAddr++;
                     akAddr++;
-                    //again 
+                    //again
                     akAddr++;
                     akAddr++;
                     //again size
@@ -220,13 +221,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     akAddr++;
                     Rows.Add(tmp);
                     VATRows.Add(new S7VATRow() { LibNoDaveValue = tmp });
-                    
+
                 }
                 else
                 {
                     akAddr++;
                     VATRows.Add(new S7VATRow() {});
-                }                
+                }
             }
 
             //string aa = System.Text.Encoding.ASCII.GetString(comments);
@@ -239,14 +240,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 int akLinePlus = comments[commentsRow + 2] + comments[commentsRow + 3]*0x100;
                 akLine += akLinePlus;
 
-                VATRows[akLine].Comment = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(comments, commentsRow + 6, akLen);
+                VATRows[akLine].Comment = projEncoding.GetString(comments, commentsRow + 6, akLen);
 
                 commentsRow += 6 + akLen;
                 akLine++;
             }
-            
+
         }
-        
+
         public override string ToString()
         {
             string retVal = "";

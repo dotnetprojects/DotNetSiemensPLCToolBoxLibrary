@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -14,6 +15,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private ProjectFolder _ProjectStructure;
         public enum Language {Deutsch,English};
         public Language ProjectLanguage {get; set;}
+        public Encoding ProjectEncoding = Encoding.GetEncoding("ISO-8859-1");
 
         public ProjectFolder ProjectStructure
         {

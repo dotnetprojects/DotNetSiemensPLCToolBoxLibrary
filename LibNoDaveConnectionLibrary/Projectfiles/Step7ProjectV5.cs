@@ -33,9 +33,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         }
 
 
-        public Step7ProjectV5(string projectfile, bool showDeleted)
+        public Step7ProjectV5(string projectfile, bool showDeleted, Encoding prEn = null )
         {
             _projectfilename = projectfile;
+
+            ProjectEncoding = (prEn == null ? prEn : Encoding.GetEncoding("ISO-8859-1")) ;
 
             if (projectfile.ToLower().EndsWith("zip"))
             {
