@@ -6,6 +6,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
     public class TCPIPConfig : ConnectionConfig
     {
         private string _ip = "192.168.1.100";
+        [System.ComponentModel.Description("On a Active Connection this is the IP of the Partner, on a Passive Connection, this has to be the IP of the used Ethernet Adaptor!")]
         public string IP
         {
             get { return _ip; }
