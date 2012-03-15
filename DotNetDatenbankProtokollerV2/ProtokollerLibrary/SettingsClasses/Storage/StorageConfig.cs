@@ -63,6 +63,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
                     return "int";
                     break;
 
+                case "word":
+                    return "word";
+                    break;
+
                 case "date":
                     return "date";
                     break;
