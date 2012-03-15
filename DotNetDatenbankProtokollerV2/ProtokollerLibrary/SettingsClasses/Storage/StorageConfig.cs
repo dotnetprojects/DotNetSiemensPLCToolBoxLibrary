@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
@@ -48,6 +49,37 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         public virtual List<string> DatabaseFieldTypes
         {
             get { return new List<string>() {"Test"}; }
+        }
+
+        public virtual string GetDefaultDatabaseFieldTypeForLibNoDaveTag(PLCTag tag)
+        {
+            switch (tag.LibNoDaveDataType.ToString().ToLower().Trim())
+            {
+                case "float":
+                    return "float";
+                    break;
+
+                case "int":
+                    return "int";
+                    break;
+
+                case "date":
+                    return "date";
+                    break;
+
+                case "datetime":
+                    return "datetime";
+                    break;
+
+                case "time":
+                    return "time";
+                    break;
+
+                case "dint":
+                    return "bigint";
+                    break;               
+            }
+            return "";
         }
     }
 }

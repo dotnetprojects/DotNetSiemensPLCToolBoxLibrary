@@ -140,6 +140,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             if (!this.connection_active)
             {
                 this.State = Status.LISTENING;
+
+                if (tcpListener != null)
+                    tcpListener.Stop();
+
                 tcpListener = new TcpListener(local_ip, connection_port);
                 tcpListener.Start();
                 tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), tcpListener);

@@ -40,7 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             _projectfilename = projectfile;
 
-            ProjectEncoding = (prEn == null ? prEn : Encoding.GetEncoding("ISO-8859-1")) ;
+            ProjectEncoding = (prEn ?? Encoding.GetEncoding("ISO-8859-1")) ;
 
             if (projectfile.ToLower().EndsWith("zip"))
             {

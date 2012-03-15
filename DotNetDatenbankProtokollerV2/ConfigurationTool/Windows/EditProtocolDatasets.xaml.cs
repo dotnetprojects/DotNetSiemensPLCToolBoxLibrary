@@ -270,46 +270,11 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
                     DatasetConfigRow confRow = grdDatasetFields.Items[grdDatasetFields.Items.Count - 1] as DatasetConfigRow;
                     confRow.PLCTag = tag;
-                    DataBlockTyp = tag.LibNoDaveDataType.ToString();
-                    DataBaseTyp = "";
+                    
                     confRow.DatabaseField = tag.ValueName;
 
-                    #region Preselect DataBase DataTypes
-                    if (true)
-                    {
-                        switch (DataBlockTyp)
-                        {
-                            case "Float":
-                                DataBaseTyp = "float";
-                                break;
-
-                            case "Int":
-                                DataBaseTyp = "int";
-                                break;
-
-                            case "Date":
-                                DataBaseTyp = "date";
-                                break;
-
-                            case "DateTime":
-                                DataBaseTyp = "datetime";
-                                break;
-
-                            case "Time":
-                                DataBaseTyp = "time";
-                                break;
-
-                            case "Dint":
-                                DataBaseTyp = "bigint";
-                                break;
-
-                            default:
-                                DataBaseTyp = "";
-                                break;
-                        }
-                    }
-                    #endregion
-
+                    DataBaseTyp = conf.Storage.GetDefaultDatabaseFieldTypeForLibNoDaveTag(tag);
+                    
                     confRow.DatabaseFieldType = DataBaseTyp;
                 }
             }
