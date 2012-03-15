@@ -273,9 +273,12 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     
                     confRow.DatabaseField = tag.ValueName;
 
-                    DataBaseTyp = conf.Storage.GetDefaultDatabaseFieldTypeForLibNoDaveTag(tag);
-                    
-                    confRow.DatabaseFieldType = DataBaseTyp;
+                    if (conf.Storage != null)
+                    {
+                        DataBaseTyp = conf.Storage.GetDefaultDatabaseFieldTypeForLibNoDaveTag(tag);
+
+                        confRow.DatabaseFieldType = DataBaseTyp;
+                    }
                 }
             }
         }                 
