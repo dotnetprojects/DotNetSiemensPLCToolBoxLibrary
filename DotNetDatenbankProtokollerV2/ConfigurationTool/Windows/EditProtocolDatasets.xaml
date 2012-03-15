@@ -72,7 +72,7 @@
         </DataGrid>
 
         <DataGrid Name="grdDatasetFields"
-                  Margin="184,239,12,12"
+                  Margin="184,239,68,12"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
@@ -722,7 +722,7 @@
             </Grid>
         </GroupBox>
         <DataGrid Name="grdDatasetFieldsEthernet"
-                  Margin="184,239,12,12"
+                  Margin="184,239,68,12"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
@@ -1011,5 +1011,50 @@
                 IsEnabled="{Binding ElementName=grdDatasets,
                                     Path=SelectedItem,
                                     Converter={StaticResource myNullToFalseConverter}}" />
+        <Button Name="cmdMoveUp"
+                Width="50"
+                Height="23"
+                Margin="0,269,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdMoveUp_Click"
+                Content="^"
+                IsEnabled="{Binding ElementName=grdDatasets,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <Button Name="cmdMoveDown"
+                Width="50"
+                Height="23"
+                Margin="0,419,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdMoveDown_Click"
+                Content="v"
+                IsEnabled="{Binding ElementName=grdDatasets,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <Button Name="cmdMoveToFirst"
+                Width="50"
+                Height="23"
+                Margin="0,240,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdMoveToFirst_Click"
+                Content="first"
+                IsEnabled="{Binding ElementName=grdDatasets,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+        <Button Name="cmdMoveToLast"
+                Width="50"
+                Height="23"
+                Margin="0,448,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdMoveToLast_Click"
+                Content="last"
+                IsEnabled="{Binding ElementName=grdDatasets,
+                                    Path=SelectedItem,
+                                    Converter={StaticResource myNullToFalseConverter}}" />
+
     </Grid>
 </UserControl>

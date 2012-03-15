@@ -281,6 +281,105 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     }
                 }
             }
-        }                 
+        }
+
+        private void cmdMoveUp_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid grd = grdDatasetFields;
+            if (grdDatasetFieldsEthernet.Visibility==Visibility.Visible)
+                grd = grdDatasetFieldsEthernet;
+
+            if (grd.SelectedItems.Count > 1)
+            {
+                if (grd.SelectedItems != null && grd.SelectedIndex >= 1)
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex - 1, grd.SelectedIndex + grd.SelectedItems.Count - 1);
+                }
+            }
+            else
+            {
+                if (grd.SelectedItem != null && grd.SelectedIndex >= 1)
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex, grd.SelectedIndex - 1);                    
+                }
+            }
+        }
+
+        private void cmdMoveDown_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid grd = grdDatasetFields;
+            if (grdDatasetFieldsEthernet.Visibility == Visibility.Visible)
+                grd = grdDatasetFieldsEthernet;
+
+            if (grd.SelectedItems.Count > 1)
+            {
+                if (grd.SelectedItems != null && (grd.SelectedIndex + grd.SelectedItems.Count) <= (grd.Items.Count - 1))
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex + grd.SelectedItems.Count, grd.SelectedIndex);                    
+                }
+            }
+            else
+            {
+                if (grd.SelectedItem != null && grd.SelectedIndex < grd.Items.Count - 1)
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex, grd.SelectedIndex + 1);
+                }
+            }
+        }
+
+        private void cmdMoveToFirst_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid grd = grdDatasetFields;
+            if (grdDatasetFieldsEthernet.Visibility == Visibility.Visible)
+                grd = grdDatasetFieldsEthernet;
+
+            if (grd.SelectedItems.Count > 1)
+            {
+                if (grd.SelectedItem != null && grd.SelectedIndex >= 1)
+                {
+                    int si = grd.SelectedIndex;
+                    for (int i = 1; i <= grd.SelectedItems.Count; i++)
+                    {
+                        ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(si + i - 1, 0 + i - 1);
+                    }
+                }
+            }
+            else
+            {
+                if (grd.SelectedItem != null && grd.SelectedIndex >= 1)
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex, 0);
+                }
+            }
+        }
+
+        private void cmdMoveToLast_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid grd = grdDatasetFields;
+            if (grdDatasetFieldsEthernet.Visibility == Visibility.Visible)
+                grd = grdDatasetFieldsEthernet;
+
+            if (grd.SelectedItems.Count > 1)
+            {
+                if ((grd.SelectedIndex + grd.SelectedItems.Count) < grd.Items.Count)
+                {
+                    int j = 1;
+                    int si = grd.SelectedIndex;
+                    int mi = grd.Items.Count - 1;
+                    for (int i = grd.SelectedItems.Count; i >= 1; i--)
+                    {
+                        ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(si + i - 1, mi - j + 1);                        
+                        j++;
+                    }
+                }
+            }
+            else
+            {
+                if (grd.SelectedItem != null && grd.SelectedIndex < grd.Items.Count - 1)
+                {
+                    ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows.Move(grd.SelectedIndex, grd.Items.Count - 1);
+                }
+            }
+        }
     }
 }
