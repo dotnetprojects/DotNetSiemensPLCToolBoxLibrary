@@ -722,7 +722,7 @@
             </Grid>
         </GroupBox>
         <DataGrid Name="grdDatasetFieldsEthernet"
-                  Margin="184,239,68,12"
+                  Margin="184,269,68,12"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
