@@ -7,6 +7,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     {
         List<ProjectBlockInfo> readPlcBlocksList();
 
+        List<ProjectBlockInfo> BlockInfos { get; }
+
         Block GetBlock(string BlockName);
         Block GetBlock(ProjectBlockInfo blkInfo);
     }

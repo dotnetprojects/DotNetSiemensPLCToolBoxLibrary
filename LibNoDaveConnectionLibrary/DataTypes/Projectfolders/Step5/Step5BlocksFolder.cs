@@ -18,6 +18,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             return step5BlocksinfoList;
         }
 
+        public List<ProjectBlockInfo> BlockInfos
+        {
+            get { return readPlcBlocksList(); }
+        }
+
         public Block GetBlock(string BlockName)
         {
             var tmp = GetBlockInfo(BlockName);

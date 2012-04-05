@@ -59,6 +59,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return intBlockList;
         }
 
+        public List<ProjectBlockInfo> BlockInfos
+        {
+            get { return readPlcBlocksList(); }
+        }
+
         private List<ProjectBlockInfo> intReadPlcBlocksList()
         {
             bool showDeleted = ((Step7ProjectV5)this.Project)._showDeleted;

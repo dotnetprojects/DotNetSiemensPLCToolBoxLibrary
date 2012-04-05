@@ -1,7 +1,7 @@
 ﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
     /// <summary>
-    /// This is the Main Folder, it Contains a Blocks Folder and a Symbol Table!
+    /// This is the Main Folder, it Contains a BlockInfos Folder and a Symbol Table!
     /// </summary>
     public interface IProgrammFolder
     {
