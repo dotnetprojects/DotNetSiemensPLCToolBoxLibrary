@@ -94,6 +94,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             S7DataRow lastrow = null;
 
+
+            Dictionary<string, S7Block> blkHelpers = new Dictionary<string, S7Block>();
+
             for (int n=0;n<rows.Length;n++) // (string row in rows)
             {
                 string rowTr = rows[n].Replace("\0", "").Trim();
@@ -181,7 +184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             int parseZustand = 0; //0=ParName, 1=AttributeName, 6=AfterAttributeName, 2=AttributeValue, 3=Type, 4=Value, 7=InnerValue (without '), 5=Comment
 
 
-                            if (!rows[n].Contains("\t"))
+                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ")) //    !rows[n].Contains("\t")
                             {
                                 if (rows.Length > n + 1)
                                 {
@@ -190,6 +193,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         int pos = rowTr.IndexOf("//");
                                         rowTr = rowTr.Substring(0, pos) + " " + rows[n + 1].Trim() + rowTr.Substring(pos);
                                     }
+                                    else if (rowTr.Contains("OF STRUCT"))
+                                    { }
                                     else if (rowTr[rowTr.Length-1]!=';')
                                     {
                                         rowTr += " " + rows[n + 1].Trim();
@@ -311,16 +316,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 addRW.DataType = S7DataRowType.SFB;
                                 akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
 
-                                S7FunctionBlock tmpBlk = ((S7FunctionBlock) myFld.GetBlock("SFB" + akRowTypeNumber.ToString()));
+                                string blkDesc = "SFB" + akRowTypeNumber.ToString();
+                                S7FunctionBlock tmpBlk;
+                                if (blkHelpers.ContainsKey(blkDesc))
+                                    tmpBlk = (S7FunctionBlock)blkHelpers[blkDesc];
+                                else
+                                {
+                                    tmpBlk = ((S7FunctionBlock)myFld.GetBlock(blkDesc));
+                                    blkHelpers.Add(blkDesc, tmpBlk);
+                                }
+                                
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.Parameter.Children);
+                                    addRW.AddRange(tmpBlk.Parameter.Children);                                    
                             }
                             else if (tmpType.Contains("UDT"))
                             {
                                 addRW.DataType = S7DataRowType.UDT;
                                 akRowTypeNumber = Convert.ToInt32(tmpType.Substring(4));
 
-                                S7DataBlock tmpBlk = ((S7DataBlock) myFld.GetBlock("UDT" + akRowTypeNumber.ToString()));
+                                string blkDesc = "UDT" + akRowTypeNumber.ToString();
+                                S7DataBlock tmpBlk;
+                                if (blkHelpers.ContainsKey(blkDesc))
+                                    tmpBlk = (S7DataBlock)blkHelpers[blkDesc];
+                                else
+                                {
+                                    tmpBlk = ((S7DataBlock)myFld.GetBlock(blkDesc));
+                                    blkHelpers.Add(blkDesc, tmpBlk);
+                                }
+
                                 if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
                                     addRW.AddRange(tmpBlk.Structure.Children);
 
@@ -339,7 +362,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 addRW.DataType = S7DataRowType.FB;
                                 akRowTypeNumber = Convert.ToInt32(tmpType.Substring(3));
 
-                                S7FunctionBlock tmpBlk = ((S7FunctionBlock) myFld.GetBlock("FB" + akRowTypeNumber.ToString()));
+                                string blkDesc = "FB" + akRowTypeNumber.ToString();
+                                S7FunctionBlock tmpBlk;
+                                if (blkHelpers.ContainsKey(blkDesc))
+                                    tmpBlk = (S7FunctionBlock) blkHelpers[blkDesc];
+                                else
+                                {
+                                    tmpBlk = ((S7FunctionBlock)myFld.GetBlock(blkDesc));
+                                    blkHelpers.Add(blkDesc, tmpBlk);
+                                }
+
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
                                     addRW.AddRange(tmpBlk.Parameter.Children);
                             }
