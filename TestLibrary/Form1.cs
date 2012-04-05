@@ -7,7 +7,10 @@ using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace JFK_VarTab
 {
@@ -578,6 +581,40 @@ namespace JFK_VarTab
                 vtab.Dispose();
                 vtab = null;
             }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11";
+
+            var ret = op.ShowDialog();
+            if (ret == DialogResult.OK)
+            {
+                Project tmp = Projects.LoadProject(op.FileName, false);
+                var prj = tmp as Step7ProjectV5;
+
+                if (prj!=null)
+                {
+                    foreach (BlocksOfflineFolder blocksOfflineFolder in prj.BlocksOfflineFolders)
+                    {
+                        foreach (var projectBlockInfo in blocksOfflineFolder.BlockInfos)
+                        {
+                            if (projectBlockInfo.BlockType == PLCBlockType.DB)
+                            {
+                                var tmpBlk = projectBlockInfo.GetBlock();
+                                var db = tmpBlk as S7DataBlock;
+                                var s = db.ToString();
+                                var ln = s.Split(new char[] {'\n'});
+                                listBox1.Items.AddRange(ln);
+                            }
+                        }
+                    }
+                }
+                
+            }
+
+
         }
 
        
