@@ -342,14 +342,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     {
                         int retInt = 0;
                         retInt =(len * this.GetArrayLines()) / 8;
+
+                        if (this.GetArrayLines() < 4)
+                            retInt++;
+
                         if ((len * this.GetArrayLines()) % 8 != 0) retInt++;
                         if ((len * this.GetArrayLines()) % 2 != 0) retInt++;
                         return retInt;
                     }
                     else
                     {
-                        int retInt = 0;
-                        retInt =(len * GetArrayLines());                        
+                        int retInt = (len*GetArrayLines());                       
                         if (retInt % 2 !=0) retInt++;
                         return retInt;
                     }
