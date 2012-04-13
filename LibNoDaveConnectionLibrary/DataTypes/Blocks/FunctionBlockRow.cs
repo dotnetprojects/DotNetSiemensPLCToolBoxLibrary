@@ -10,6 +10,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public string Label { get; set; }
 
+        public DotNetSiemensPLCToolBoxLibrary.Projectfiles.Project.Language ProjectLanguage { get; set; }
+
         private string _command;
         public string Command
         {

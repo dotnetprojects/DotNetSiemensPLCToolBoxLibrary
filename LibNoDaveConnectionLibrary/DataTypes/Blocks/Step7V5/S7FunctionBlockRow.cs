@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,7 +21,7 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,7 @@ using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
@@ -327,7 +328,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.AR1 |
                       SelectedStatusValues.AR2 | SelectedStatusValues.DB | SelectedStatusValues.STW) & mySel;
 
-            //Return STW as Required minimum every Time (even if nothing is read, 
+            //Return STW as Required minimum every Time (even if nothing is read,
             //but you need it to detect a not called line! (in a jump or smth. similar))
             //if (retVal == 0)
             //    retVal = SelectedStatusValues.STW;
@@ -579,12 +580,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand)
         {
             if (Command == "NETWORK")
-            {
-                if (string.IsNullOrEmpty(Comment))
-                    return "Netzwerk " + Parameter + " : " + NetworkName;
-                else
-                    return "Netzwerk " + Parameter + " : " + NetworkName + "\r\n\t Comment : " + Comment.Replace("\n", "\r\n\t           ");
-            }
+                return (ProjectLanguage == Project.Language.English ? "Network " : "Netzwerk ") + Parameter + " : " + NetworkName
+                       + ( string.IsNullOrEmpty(Comment) ? string.Empty : "\r\n\t Comment : " + Comment.Replace("\n", "\r\n\t           ") );
 
             string retVal = "";
             if (Label == null || Label == "")
@@ -631,7 +628,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             if (!string.IsNullOrEmpty(cmt))
                 par = par.PadRight(14);
-
 
             return retVal + Command.PadRight(6) + par + (addSemicolonAfterCommand == true ? ";" : "") + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }

@@ -11,13 +11,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public DataTypes.PLCBlockType BlockType { get; set; }
         public DataTypes.PLCLanguage BlockLanguage { get; set; }
         public int BlockNumber { get; set; }
+        public DotNetSiemensPLCToolBoxLibrary.Projectfiles.Project.Language ProjectLanguage {get; set;}
         //public DateTime LastModified { get; set; }
 
         public string Name { get; set; }
 
         public ProjectFolder ParentFolder { get; set; }
 
-        
+
         public SymbolTableEntry SymbolTabelEntry
         {
             get

@@ -492,6 +492,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
+                    retVal.ProjectLanguage = Project.ProjectLanguage;
 
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;

@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,7 +21,7 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     /*
-     * These functions to Convert from MC7 to AWL could not be done withou the help of Steffen Krayer ! 
+     * These functions to Convert from MC7 to AWL could not be done withou the help of Steffen Krayer !
      * Many of the Code is from him (From his Delphi Prog) and also he created Excel sheets wich decribe
      * how MC7 for most of the AWL Commands looks.
      */
@@ -46,7 +46,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage, S7ProgrammFolder prjBlkFld)
 		{
-            
+
             /*
             string ttmp = "";
             for (int i = 0; i < MC7Code.Length; i++)
@@ -59,8 +59,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             S7Block retBlock = null;
             if (MC7Code != null)
-            {                
-                if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b))  
+            {
+                if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b))
                     retBlock = (S7Block) new S7DataBlock();
                 else
                     retBlock = (S7Block)new S7FunctionBlock();
@@ -69,7 +69,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 /*
                  * Description of a MC7 Block (Common)
-                 * 
+                 *
                  * 0,1     = Signature ('pp')
                  * 2       = Block Version
                  * 3       = Block Attribute (.0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
@@ -96,7 +96,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx+8,xx+9 = allways Zero
                  * xx+10-yy  = Interface
                  * yy+1-zz   = Networks
-                 * 
+                 *
                  */
 
                 /*
@@ -113,7 +113,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);
                 retBlock.BlockAttribute = Convert.ToString(MC7Code[3] - 1);
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage) MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
-                retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);                           
+                retBlock.ProjectLanguage = (DotNetSiemensPLCToolBoxLibrary.Projectfiles.Project.Language)MnemoricLanguage;
+                retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);
                 retBlock.BlockNumber = (MC7Code[6]*0x100) + MC7Code[7];
                 retBlock.Length = libnodave.getU32from(MC7Code, 8);
                 retBlock.Password = new byte[] {MC7Code[12], MC7Code[13], MC7Code[14], MC7Code[15]};
@@ -127,17 +128,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 int IntfStart = MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 2;
                 int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart + 1) + 2;
                 int IntfValStart = IntfStart + IntfLength + 3;
-               
+
                 retBlock.InterfaceSize = InterfaceLength_or_DBActualValuesLength;
                 retBlock.LocalDataSize = LocalDataLength;
                 retBlock.CodeSize = MC7Length_or_DBBodyLength;
 
-                int FooterStart = MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + InterfaceLength_or_DBActualValuesLength + retBlock.SegmentTableSize;                
+                int FooterStart = MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + InterfaceLength_or_DBActualValuesLength + retBlock.SegmentTableSize;
                 retBlock.Author = Helper.GetString(FooterStart + 0 , 8, MC7Code);
                 retBlock.Family = Helper.GetString(FooterStart + 8, 8, MC7Code);
                 retBlock.Name = Helper.GetString(FooterStart + 16, 8, MC7Code);
                 retBlock.Version = Helper.GetVersion(MC7Code[FooterStart + 24]);
-                
+
                 if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b))
                 {
                     //Instance DB??
@@ -145,14 +146,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         ((S7DataBlock) retBlock).IsInstanceDB = true;
                         ((S7DataBlock)retBlock).FBNumber = BitConverter.ToUInt16(MC7Code, MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 1);
-                    }                                   
+                    }
                     //((PLCDataBlock) retBlock).Structure = MC7toDB.GetDBInterface(IntfStart + 1, IntfLength, AWLStart, IntfValStart, MC7Code);
                     List<string> tmp = new List<string>();
                     ((S7DataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
                     //GetDBInterface(IntfStart+1, IntfLength, AWLStart, IntfValStart, SGDB);
                 }
                 else
-                {                
+                {
                     List<string> ParaList = new List<string>();
                     ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref ParaList, retBlock.BlockType, 0, false, retBlock);
 
@@ -163,7 +164,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     ((S7FunctionBlock) retBlock).Networks = NetWork.GetNetworksList((S7FunctionBlock) retBlock);
                 }
 
-                
+
             }
             return retBlock;
 		}
