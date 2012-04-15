@@ -72,12 +72,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         {
                             if (StartedAsService)
                             {
-                                string conName = plcConn.Configuration.ConnectionName.ToString();
-                                string conIP = plcConn.Configuration.CpuIP.ToString();
-                                if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
-                                    Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Error: Exception during ReadData from " + conName + " (" + conIP + "), maybe Connection interupted?", ex, Logging.LogLevel.Error);
-                                else
-                                    Logging.LogText("Error: Exception during ReadData from " + conName + " (" + conIP + "), maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
                                 return null;
                             }
                             
@@ -87,10 +82,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         {
                             if (plcTag.ItemDoesNotExist)
                                 if (StartedAsService)
-                                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
-                                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress, Logging.LogLevel.Error);
-                                    else
-                                        Logging.LogText("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress, Logging.LogLevel.Error);
+                                    Logging.LogText("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress, Logging.LogLevel.Error);
                                 else
                                     throw new Exception("Tag does not Exist! " + plcConn.Configuration.ConnectionName + ": " + plcTag.S7FormatAddress);
                         }
@@ -102,12 +94,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     }
                     else
                     {
-                        string conName = plcConn.Configuration.ConnectionName.ToString();
-                        string conIP = plcConn.Configuration.CpuIP.ToString();
-                        if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
-                            Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Error: Read Data from " + conName + " (" + conIP + ") returned \"null\" maybe a Connection is offline?", Logging.LogLevel.Error);
-                        else
-                            Logging.LogText("Error: Read Data from " + conName + " (" + conIP + ") returned \"null\" maybe a Connection is offline?", Logging.LogLevel.Error);
+                        Logging.LogText("Error: Read Data returned \"null\" maybe a Connection is offline?", Logging.LogLevel.Error);
                         return null;
                     }
                 }
