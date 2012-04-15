@@ -67,7 +67,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             context = SynchronizationContext.Current;
 
-            Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
+            if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Protokoller gestartet", Logging.LogLevel.Information);
+            else
+                Logging.LogText("Protokoller gestartet", Logging.LogLevel.Information);
             EstablishConnections();
             OpenStoragesAndCreateTriggers(true, StartedAsService);
 
@@ -97,7 +100,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                 try
                                 {
                                     plcConn.Connect();
-                                    Logging.LogText("Connection: " + connectionConfig.Name + " connected", Logging.LogLevel.Information);
+                                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection: " + connectionConfig.Name + " connected", Logging.LogLevel.Information);
+                                    else
+                                        Logging.LogText("Connection: " + connectionConfig.Name + " connected", Logging.LogLevel.Information);
                                 }
                                 catch (ThreadAbortException ex)
                                 {
@@ -105,7 +111,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
+                                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
+                                    else
+                                        Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
                                 }
                             }
                         }
@@ -155,7 +164,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                 if (plcConnConf != null)
                 {
-                    Logging.LogText("Connection: " + connectionConfig.Name + " is starting...", Logging.LogLevel.Information);
+                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection: " + connectionConfig.Name + " is starting...", Logging.LogLevel.Information);
+                    else
+                        Logging.LogText("Connection: " + connectionConfig.Name + " is starting...", Logging.LogLevel.Information);
 
                     PLCConnection tmpConn = new PLCConnection(plcConnConf.Configuration);
                     try
@@ -166,7 +178,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
+                        if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                            Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
+                        else
+                            Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
                     }
 
                     ConnectionList.Add(connectionConfig, tmpConn);
@@ -227,7 +242,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     DatabaseInterfaces.Add(datasetConfig, akDBInterface);
 
-                    Logging.LogText("DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
+                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
+                    else
+                        Logging.LogText("DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
 
                     akDBInterface.Connect_To_Database(datasetConfig.Storage);
                     akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
@@ -285,13 +303,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                                         };
                             tmpConn.ConnectionEstablished += (TcpClient tcp) =>
                                                                  {
-                                                                     Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                     if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                                                                         Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                     else
+                                                                         Logging.LogText("Connection established: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
                                                                  };
                             tmpConn.ConnectionClosed += (TcpClient tcp) =>
                                                             {
-                                                                Logging.LogText("Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                                                                    Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                                                                else
+                                                                    Logging.LogText(": Connection closed: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
                                                             };
-                            Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                            if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                                Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
+                            else
+                                Logging.LogText("Connection prepared: " + tcpipConnConf.IPasIPAddress + ", " + tcpipConnConf.Port, Logging.LogLevel.Information);
                             tmpConn.Start();
                             ConnectionList.Add(tcpipConnConf, tmpConn);
                             myDisposables.Add(tmpConn);
@@ -299,7 +326,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogText("Error in OpenStorragesAndCreateTriggers occured!", ex, Logging.LogLevel.Error);
+                    if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                        Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Error in OpenStorragesAndCreateTriggers occured!", ex, Logging.LogLevel.Error);
+                    else
+                        Logging.LogText("Error in OpenStorragesAndCreateTriggers occured!", ex, Logging.LogLevel.Error);
                 }
             }
         }
@@ -316,7 +346,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             }
             else
             {
-                Logging.LogText("Exception occured! ", e.Exception, Logging.LogLevel.Error);
+                if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                    Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Exception occured! ", e.Exception, Logging.LogLevel.Error);
+                else
+                    Logging.LogText("Exception occured! ", e.Exception, Logging.LogLevel.Error);
                 //Dispose(); //Möglicherweise ein Restart hier rein??
             }
             
@@ -324,7 +357,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         public void Dispose()
         {
-            Logging.LogText("Protokoller gestopt", Logging.LogLevel.Information);
+            if (ProtokollerConfiguration.ActualConfigInstance.CurrentService != null)
+                Logging.LogText(ProtokollerConfiguration.ActualConfigInstance.CurrentService + ": Protokoller gestopt", Logging.LogLevel.Information);
+            else
+                Logging.LogText("Protokoller gestopt", Logging.LogLevel.Information);
+
             if (myReEstablishConnectionsThread != null)
                 myReEstablishConnectionsThread.Abort();
 
