@@ -304,9 +304,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                                 while (e1.MoveNext() && e2.MoveNext())
                                 {
                                     DatasetConfigRow field = e1.Current;
-                                    Object value = e2.Current; 
-
-                                    cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value});
+                                    Object value = e2.Current;
+                                    if (field.DatabaseFieldType == "text" || field.DatabaseFieldType == "varchar" || field.DatabaseFieldType == "ntext" || field.DatabaseFieldType == "nvarchar" || field.DatabaseFieldType == "char" || field.DatabaseFieldType == "nchar")
+                                        cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = value.ToString() });
+                                    else
+                                        cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value});
                                 }
                             }
                             cmd.ExecuteNonQuery();
