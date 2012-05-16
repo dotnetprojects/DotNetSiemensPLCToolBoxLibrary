@@ -955,7 +955,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 lock (_dc)
                 {
                     //Todo: Better way to Split number and chars
-                    byte[] buffer = new byte[65536];
+                    //byte[] buffer = new byte[65536];
+                    byte[] buffer = new byte[1048576]; //Buffer with 1MB, this should be enough... (65536 is too small, because a DB can contain 65536 Bytes of data, but there is also Structure information!) 
+                    
                     string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
                     string block = "";
                     int nr = 0;
