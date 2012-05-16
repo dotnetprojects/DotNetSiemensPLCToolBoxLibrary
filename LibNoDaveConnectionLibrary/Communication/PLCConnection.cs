@@ -997,6 +997,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int readsize = buffer.Length;
                     int ret = _dc.getProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
 
+                    //If even 1MB of Buffer is too small, create a bigger one!
+                    //if (ret == 0 && readsize > 0 && readsize > buffer.Length)
+                    //{
+                    //    // resize buffer and reread data
+                    //    buffer = new byte[readsize];
+                    //    readsize = buffer.Length;
+                    //    ret = _dc.getProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
+                    //}
+                    
+
                     if (ret == 0 && readsize > 0)
                     {
                         byte[] retVal = new byte[readsize];
