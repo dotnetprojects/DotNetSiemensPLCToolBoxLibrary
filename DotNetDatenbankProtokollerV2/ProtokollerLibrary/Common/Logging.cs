@@ -51,7 +51,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
                     else if (MessageLogLevel == LogLevel.Information)
                         entrType = EventLogEntryType.Information;
 
-                    eventlog.WriteEntry(Message, entrType);                    
+                    try
+                    {
+                        eventlog.WriteEntry(Message, entrType);
+                    }
+                    catch (Exception ex)
+                    { }
                 }
                 else
                 {
