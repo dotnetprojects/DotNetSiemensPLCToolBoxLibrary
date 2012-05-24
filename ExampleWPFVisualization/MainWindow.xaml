@@ -1,56 +1,161 @@
 ﻿<Window x:Class="ExampleWPFVisualization.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization" xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters" xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours" Title="MainWindow" Height="434" Width="748">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours"
+        xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary"
+        xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters"
+        xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization"
+        Title="MainWindow"
+        Width="1040"
+        Height="592">
     <Window.Resources>
-        <ResourceDictionary>            
-            <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">                
-                <!--<Converters:IntRangeToBrushConverter.IntRangeValues> 
+        <ResourceDictionary>
+            <Converters:IntRangeToBrushConverter x:Key="FarbenConverter1">
+                <!--
+                    <Converters:IntRangeToBrushConverter.IntRangeValues>
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="0-5000" Value="Red" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="5001-10000" Value="Blue" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="10001-15000" Value="Green" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="15001-20000" Value="Orange" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="20001-25000" Value="Purple" />
                     <Converters:IntRangeToBrushConverter.IntRangeValue IntRange="25001-30000" Value="Brown" />
-                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange=">30000" Value="Yellow" />                    
-                </Converters:IntRangeToBrushConverter.IntRangeValues>-->
+                    <Converters:IntRangeToBrushConverter.IntRangeValue IntRange=">30000" Value="Yellow" />
+                    </Converters:IntRangeToBrushConverter.IntRangeValues>
+                -->
             </Converters:IntRangeToBrushConverter>
 
-            <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1" TrueValue="Green" FalseValue="Red"></Converters:BoolToBrushConverter>
-            
-            <Communication:PLCTag x:Key="Tag1" S7FormatAddress="DB1.DBW6" LibNoDaveDataType="Word" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag2" S7FormatAddress="DB1.DBW4" DataTypeStringFormat="Decimal" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag3" S7FormatAddress="DB1.DBD0" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag22" S7FormatAddress="DB1.DBD36" LibNoDaveDataType="Float" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag4" S7FormatAddress="M10.0" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag5" S7FormatAddress="MW200" LibNoDaveDataType="BCDDWord" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
-            <Communication:PLCTag x:Key="Tag6" DatablockNumber="1" ByteAddress="0" LibNoDaveDataType="DateTime" PropertyChanged="PLCTag_PropertyChanged"></Communication:PLCTag>
+            <Converters:BoolToBrushConverter x:Key="BoolBrushConverter1"
+                                             FalseValue="Red"
+                                             TrueValue="Green" />
+
+            <Communication:PLCTag x:Key="Tag1"
+                                  LibNoDaveDataType="Word"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="DB1.DBW6" />
+            <Communication:PLCTag x:Key="Tag2"
+                                  DataTypeStringFormat="Decimal"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="DB1.DBW4" />
+            <Communication:PLCTag x:Key="Tag3"
+                                  LibNoDaveDataType="Float"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="DB1.DBD0" />
+            <Communication:PLCTag x:Key="Tag22"
+                                  LibNoDaveDataType="Float"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="DB1.DBD36" />
+            <Communication:PLCTag x:Key="Tag4"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="M10.0" />
+            <Communication:PLCTag x:Key="Tag5"
+                                  LibNoDaveDataType="BCDDWord"
+                                  PropertyChanged="PLCTag_PropertyChanged"
+                                  S7FormatAddress="MW200" />
+            <Communication:PLCTag x:Key="Tag6"
+                                  ByteAddress="0"
+                                  DatablockNumber="1"
+                                  LibNoDaveDataType="DateTime"
+                                  PropertyChanged="PLCTag_PropertyChanged" />
         </ResourceDictionary>
     </Window.Resources>
     <Viewbox Stretch="Uniform">
-        
-    <Grid >
-            <Label Name="lblStatus" Margin="133,13,28,0" Height="23" VerticalAlignment="Top"></Label>
-                <Button Content="Config Connection" Height="26" HorizontalAlignment="Left" Margin="12,12,0,0" Name="cmdConfig" VerticalAlignment="Top" Width="110" Click="cmdConfig_Click" />
-        <Button Content="Start Visu" Height="25" HorizontalAlignment="Left" Margin="12,44,0,0" Name="cmdConnect" VerticalAlignment="Top" Width="110" Click="cmdConnect_Click" />
-        <Button Content="Stop Visu" Height="25" HorizontalAlignment="Left" Margin="138,44,0,0" Name="cmdStop" VerticalAlignment="Top" Width="110" Click="cmdStop_Click" IsEnabled="False" />
-            <TextBox Height="30" HorizontalAlignment="Left" Margin="14,131,0,0" VerticalAlignment="Top" Width="126" 
-                 Text="{Binding Source={StaticResource Tag1}, Path=ValueAsString}" 
-                 Background="{Binding Source={StaticResource Tag1}, Path=Value, Converter={StaticResource FarbenConverter1}}"
-                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"/>
-        
-        <TextBox Height="26" HorizontalAlignment="Left" Margin="8,175,0,0" VerticalAlignment="Top" Width="238" 
-                 Text="{Binding Source={StaticResource Tag2}, Path=ValueAsString}" 
-                 Background="{Binding Source={StaticResource Tag4}, Path=Value, Converter={StaticResource BoolBrushConverter1}}" 
-                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
-            <TextBox Height="26" HorizontalAlignment="Left" Margin="12,214,0,0" VerticalAlignment="Top" Width="238" 
-                 Text="{Binding Source={StaticResource Tag3}, Path=ValueAsString}" 
-                 Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text" />
-            <CheckBox Content="CheckBox" Height="15" Margin="0,115,0,0" Name="checkBox1" 
-                  IsChecked="{Binding Source={StaticResource Tag4}, Path=Value}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="128" />        
-        
-        <DatePicker Height="26" HorizontalAlignment="Right" Margin="0,0,35,139" Name="datePicker1" VerticalAlignment="Bottom" Width="170" 
-                    SelectedDate="{Binding Source={StaticResource Tag6}, Path=Value}" FirstDayOfWeek="Monday" SelectedDateFormat="Long" />
+
+        <Grid Width="389">
+            <Label Name="lblStatus"
+                   Height="23"
+                   Margin="133,13,28,0"
+                   VerticalAlignment="Top" />
+            <Button Name="cmdConfig"
+                    Width="110"
+                    Height="26"
+                    Margin="12,12,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="cmdConfig_Click"
+                    Content="Config Connection" />
+            <Button Name="cmdConnect"
+                    Width="110"
+                    Height="25"
+                    Margin="19,46,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="cmdConnect_Click"
+                    Content="Start Visu" />
+            <Button Name="cmdStop"
+                    Width="110"
+                    Height="25"
+                    Margin="138,44,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="cmdStop_Click"
+                    Content="Stop Visu"
+                    IsEnabled="False" />
+            <TextBox Width="126"
+                     Height="30"
+                     Margin="14,131,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Background="{Binding Source={StaticResource Tag1},
+                                          Path=Value,
+                                          Converter={StaticResource FarbenConverter1}}"
+                     Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"
+                     Text="{Binding Source={StaticResource Tag1},
+                                    Path=ValueAsString}" />
+
+            <TextBox Width="238"
+                     Height="26"
+                     Margin="8,175,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Background="{Binding Source={StaticResource Tag4},
+                                          Path=Value,
+                                          Converter={StaticResource BoolBrushConverter1}}"
+                     Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"
+                     Text="{Binding Source={StaticResource Tag2},
+                                    Path=ValueAsString}" />
+            <TextBox Width="238"
+                     Height="26"
+                     Margin="12,214,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Behaviours:InputBindingsManager.UpdatePropertySourceWhenEnterPressedProperty="TextBox.Text"
+                     Text="{Binding Source={StaticResource Tag3},
+                                    Path=ValueAsString}" />
+            <CheckBox Name="checkBox1"
+                      Width="128"
+                      Height="15"
+                      Margin="0,115,0,0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Content="CheckBox"
+                      IsChecked="{Binding Source={StaticResource Tag4},
+                                          Path=Value}" />
+
+            <DatePicker Name="datePicker1"
+                        Width="170"
+                        Height="26"
+                        Margin="0,0,68,138"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        FirstDayOfWeek="Monday"
+                        SelectedDate="{Binding Source={StaticResource Tag6},
+                                               Path=Value}"
+                        SelectedDateFormat="Long" />
+            <Button Name="button1"
+                    Width="115"
+                    Height="41"
+                    Margin="14,81,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Button" />
+            <Button Name="button2"
+                    Width="140"
+                    Height="39"
+                    Margin="244,132,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Button" />
         </Grid>
-        
+
     </Viewbox>
 </Window>
