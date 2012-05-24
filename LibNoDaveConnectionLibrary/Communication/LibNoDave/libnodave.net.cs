@@ -42,8 +42,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         */
         public struct daveOSserialType
         {
-            public IntPtr rfd;
-            public IntPtr wfd;
+            public volatile IntPtr rfd;
+            public volatile IntPtr wfd;
         }
         /*
             Protocol types to be used with new daveInterface:
@@ -587,8 +587,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     myDestinationIsIP = 1;
                     myDestination = new byte[] { (byte)Convert.ToInt32(ip[0]), (byte)Convert.ToInt32(ip[1]), (byte)Convert.ToInt32(ip[2]), (byte)Convert.ToInt32(ip[3]) };
                 }
-
-                ip = (routingDestination ?? "").Split('.');
+                ip = routingDestination.Split('.');
                 byte[] myRoutingDestination = new byte[4];
                 int routingDestinationIsIP = 0;
                 if (ip.Length < 4)

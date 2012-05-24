@@ -286,7 +286,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// This bit should be set in all Tags wich are used for indirect Addressing! (Becaus eit could be you read 2 bytes of a double, then the value chages in the plc, then you read the rest!)
         /// This is also used when Writing the Value, and when set, it is not splitted. When the Value is bigger then a PDU, an error occurs
         /// </summary>
-        public bool DontSplitValue
+        public virtual bool DontSplitValue
         {
             get { return _dontSplitValue; }
             set { _dontSplitValue = value; NotifyPropertyChanged("DontSplitValue"); }

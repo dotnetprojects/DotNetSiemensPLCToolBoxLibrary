@@ -955,9 +955,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 lock (_dc)
                 {
                     //Todo: Better way to Split number and chars
-                    //byte[] buffer = new byte[65536];
-                    byte[] buffer = new byte[1048576]; //Buffer with 1MB, this should be enough... (65536 is too small, because a DB can contain 65536 Bytes of data, but there is also Structure information!) 
-                    
+                    byte[] buffer = new byte[65536];
                     string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
                     string block = "";
                     int nr = 0;
@@ -996,16 +994,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     int readsize = buffer.Length;
                     int ret = _dc.getProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
-
-                    //If even 1MB of Buffer is too small, create a bigger one!
-                    //if (ret == 0 && readsize > 0 && readsize > buffer.Length)
-                    //{
-                    //    // resize buffer and reread data
-                    //    buffer = new byte[readsize];
-                    //    readsize = buffer.Length;
-                    //    ret = _dc.getProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
-                    //}
-                    
 
                     if (ret == 0 && readsize > 0)
                     {
@@ -2109,38 +2097,206 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public void WriteValues(IEnumerable<PLCTag> valueList)
         {
+            WriteValues(valueList, false);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="valueList"></param>
+        /// <param name="useWriteOptimation">If set to true, write optimation is enabled, but then, the order of your written values can varry, also a 4 byte value can be splittet written to the plc!</param>
+        public void WriteValues(IEnumerable<PLCTag> valueList, bool useWriteOptimation)
+        {
             if (AutoConnect && !Connected)
                 Connect();
 
             if (_dc != null)
                 lock (_dc)
                 {
+
+                    if (useWriteOptimation)
+                    {
+                        #region Optimize Writing List....
+
+                        List<PLCTag> orderedList = new List<PLCTag>();
+                        orderedList.AddRange(valueList);
+                        orderedList.Sort(new SorterForPLCTags());
+
+                        List<PLCTag> writeTagList = new List<PLCTag>();
+
+                        //Go through the List of PLC Tags and Combine the ones, where the Byte Address does not differ...
+                        TagDataSource oldDataSource = 0;
+                        int oldDB = 0, oldByteAddress = 0, oldLen = 0;
+                        int cntCombinedTags = 0;
+                        PLCTag lastTag = null;
+                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() {LibNoDaveDataType = TagDataType.ByteArray};
+                        foreach (PLCTag plcTag in orderedList)
+                        {
+                            if (cntCombinedTags == 0) // && plcTag.LibNoDaveDataType!=TagDataType.Bool)
+                            {
+                                oldDataSource = plcTag.LibNoDaveDataSource;
+                                oldDB = plcTag.DatablockNumber;
+                                oldByteAddress = plcTag.ByteAddress;
+                                oldLen = plcTag._internalGetSize();
+                                lastTag = plcTag;
+                                cntCombinedTags++;
+                            }
+                            else
+                            {
+                                if (plcTag.LibNoDaveDataType != TagDataType.Bool && oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen)
+                                {
+                                    //todo: test if this is correct
+                                    if (cntCombinedTags == 1)
+                                        rdHlp.PLCTags.Add(lastTag, 0);
+
+                                    cntCombinedTags++;
+                                    int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
+                                    oldLen = oldLen < newlen ? newlen : oldLen;
+                                    if (oldLen%2 != 0) oldLen++;
+                                    rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
+                                    rdHlp.ByteAddress = oldByteAddress;
+                                    rdHlp.ArraySize = oldLen;
+                                    rdHlp.LibNoDaveDataSource = oldDataSource;
+                                    rdHlp.DatablockNumber = oldDB;
+                                    lastTag = plcTag;
+                                }
+                                else
+                                {
+                                    if (cntCombinedTags > 1)
+                                    {
+                                        writeTagList.Add(rdHlp);
+                                        rdHlp = new PLCTagReadHelper() {LibNoDaveDataType = TagDataType.ByteArray};
+                                        cntCombinedTags = 0;
+                                    }
+                                    else
+                                    {
+                                        writeTagList.Add(lastTag);
+                                        cntCombinedTags = 0;
+                                    }
+
+                                    if (plcTag.LibNoDaveDataType == TagDataType.Bool)
+                                    {
+                                        lastTag = plcTag;
+                                        writeTagList.Add(lastTag);
+                                    }
+                                    else
+                                    {
+                                        oldDataSource = plcTag.LibNoDaveDataSource;
+                                        oldDB = plcTag.DatablockNumber;
+                                        oldByteAddress = plcTag.ByteAddress;
+                                        oldLen = plcTag._internalGetSize();
+                                        if (oldLen%2 != 0) oldLen++;
+                                        lastTag = plcTag;
+                                        cntCombinedTags++;
+                                    }
+
+
+                                }
+                            }
+
+                        }
+                        if (cntCombinedTags > 1)
+                            writeTagList.Add(rdHlp);
+                        else if (cntCombinedTags == 1)
+                            writeTagList.Add(lastTag);
+
+                        #endregion
+
+                        //Enable write optimation...                
+                        valueList = writeTagList;
+                    }
+
                     //Get the Maximum Answer Len for One PDU
                     int maxWriteSize = _dc.getMaxPDULen() - 32; //32 = Header
                     int gesWriteSize = 0;
 
+                    int maxWriteVar = 12; //Is this limit reality? Maybe this is somewhere in the system Data...
+                    int anzWriteVar = 0;
+
+                    int splitPos = 0;
 
                     libnodave.resultSet rs;
                     int res;
 
-                    libnodave.PDU myPDU;
+                    var myPDU = _dc.prepareWriteRequest();
 
-                    myPDU = _dc.prepareWriteRequest();
-                    foreach (var libNoDaveValue in valueList)
+                    var valueListT = new List<PLCTag>(valueList);
+
+                    while (valueListT.Count > 0)
                     {
-                        int akVarSize = libNoDaveValue._internalGetSize();
-                        if (gesWriteSize + akVarSize + 12 <= maxWriteSize) //12 Header Größe Variable
+                        var currVal = valueListT[0];
+                        var currValSize = currVal._internalGetSize();
+
+                        if (gesWriteSize < maxWriteSize && //Maximale Byte Anzahl noch nicht erreicht
+                            anzWriteVar < maxWriteVar && ( //maximale Variablenanzahl noch nicht erreicht                        
+                                                         splitPos != 0 || //Value ist schon gesplitted
+                                                         !currVal.DontSplitValue || //Value Kann gesplitted Werden
+                                                         currValSize + 12 > maxWriteSize || //Value ist größer als ein request
+                                                         gesWriteSize + currValSize + 12 < maxWriteSize)) //Value passt noch rein
                         {
-                            byte[] wrt = new byte[akVarSize];
-                            libNoDaveValue._putControlValueIntoBuffer(wrt, 0);
-                            if (libNoDaveValue.LibNoDaveDataType == TagDataType.Bool)
-                                myPDU.addBitVarToWriteRequest(Convert.ToInt32(libNoDaveValue.LibNoDaveDataSource), libNoDaveValue.DatablockNumber, libNoDaveValue.ByteAddress * 8 + libNoDaveValue.BitAddress, 1, wrt);
+                            //Add Var to Request...
+
+
+                            //Wieviel Bytes hinzufügen? Den ganzen Tag oder einen Teil
+                            var maxCurrAddSize = maxWriteSize - 12 - gesWriteSize;
+
+                            //Kompletter Value passt noch rein...
+                            if (currValSize - splitPos <= maxCurrAddSize)
+                            {
+                                //Wert ist nicht gesplittet
+                                if (splitPos == 0)
+                                {
+                                    byte[] wrt = new byte[currValSize];
+                                    currVal._putControlValueIntoBuffer(wrt, 0);
+
+                                    if (currVal.LibNoDaveDataType == TagDataType.Bool)
+                                        myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
+                                    else
+                                        myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, currValSize, wrt);
+                                    gesWriteSize += 12 + wrt.Length;
+                                }
+                                    //Wert war gesplittet
+                                else
+                                {
+                                    byte[] tmp = new byte[currValSize];
+                                    currVal._putControlValueIntoBuffer(tmp, 0);
+
+                                    byte[] wrt = new byte[currValSize - splitPos];
+                                    Array.Copy(tmp, splitPos, wrt, 0, wrt.Length);
+                                    if (currVal.LibNoDaveDataType == TagDataType.Bool)
+                                        myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
+                                    else
+                                        myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, wrt.Length, wrt);
+                                    gesWriteSize += 12 + wrt.Length;
+
+                                }
+
+                                splitPos = 0;
+                                anzWriteVar++;
+                                valueListT.Remove(currVal); //Wert erledigt... löschen....
+                            }
+                                //Wert muss gesplittet werden...
                             else
-                                myPDU.addVarToWriteRequest(Convert.ToInt32(libNoDaveValue.LibNoDaveDataSource), libNoDaveValue.DatablockNumber, libNoDaveValue.ByteAddress, akVarSize, wrt);
-                            gesWriteSize += 12 + akVarSize;
+                            {
+                                byte[] tmp = new byte[currValSize];
+                                currVal._putControlValueIntoBuffer(tmp, 0);
+
+                                byte[] wrt = new byte[maxCurrAddSize];
+                                Array.Copy(tmp, splitPos, wrt, 0, maxCurrAddSize);
+                                if (currVal.LibNoDaveDataType == TagDataType.Bool)
+                                    myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
+                                else
+                                    myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, wrt.Length, wrt);
+                                gesWriteSize += 12 + wrt.Length;
+
+                                splitPos = splitPos + maxCurrAddSize;
+                                anzWriteVar++;
+                            }
+
                         }
                         else
                         {
+                            //Send Request
                             rs = new libnodave.resultSet();
                             res = _dc.execWriteRequest(myPDU, rs);
                             if (res == -1025)
@@ -2148,6 +2304,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 this.Disconnect();
                                 return;
                             }
+                            anzWriteVar = 0;
+                            gesWriteSize = 0;
+                            myPDU = _dc.prepareWriteRequest();
                         }
                     }
 
