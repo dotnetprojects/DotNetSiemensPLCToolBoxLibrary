@@ -407,7 +407,7 @@ namespace Kopplungstester
             quittConf.LengthSequenceNumber = Convert.ToInt32(Settings.Default.SequenceNumberLength);
             quittConf.AutomaticQuitt = Settings.Default.AutomaticQuitt;
 
-            myTCP = new TCPFunctions(SynchronizationContext.Current, IPAddress.Parse(Settings.Default.IPAddress), Settings.Default.UseOnlyOneConnection, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive, 228, Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive, 228, quittConf);
+            myTCP = new TCPFunctions(SynchronizationContext.Current, IPAddress.Parse(Settings.Default.IPAddress), Settings.Default.UseOnlyOneConnection, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive, Convert.ToInt32(Settings.Default.TelegramLength), Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive, 228, quittConf);
             myTCP.TelegrammRecievedRecieve += new TCPFunctions.TegramRecievedEventHandler(myTCP_TelegrammRecievedRecieve);
             myTCP.TelegrammRecievedSend += new TCPFunctions.TegramRecievedEventHandler(myTCP_TelegrammRecievedSend);
             myTCP.ConnectionEstablished += new TCPFunctions.ConnectionEstablishedEventHandler(myTCP_ConnectionEstablished);
@@ -515,10 +515,12 @@ namespace Kopplungstester
                 Disconnect();
 
                 CustomSettingsProvider.SettingsFileName = opn.FileName;
-                Settings.Default.Reload();
-                CustomSettingsProvider.SettingsFileName = CustomSettingsProvider.OriginalSettingsFileName;
 
+                Settings.Default.Reload();
+                
                 LoadSettings();
+
+                CustomSettingsProvider.SettingsFileName = CustomSettingsProvider.OriginalSettingsFileName;
             }
         }
 

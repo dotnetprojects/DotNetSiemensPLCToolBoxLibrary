@@ -15,6 +15,11 @@ namespace Kopplungstester
     {
         public void Dispose()
         {
+            if (serverRec != null)
+                serverRec.Stop();
+            if (serverSend != null)
+                serverSend.Stop();
+
             foreach (var thread in Threads)
             {
                 thread.Abort();
@@ -160,10 +165,10 @@ namespace Kopplungstester
             }
             else if (!onlyOneConnection)
             {
-                Thread send_wait_for_conn_thread = new Thread(new ThreadStart(InitRecieveClientActive));
-                send_wait_for_conn_thread.Name = "recieve_wait_for_conn_thread";
-                send_wait_for_conn_thread.Start();
-                Threads.Add(send_wait_for_conn_thread);
+                Thread recieve_wait_for_conn_thread = new Thread(new ThreadStart(InitRecieveClientActive));
+                recieve_wait_for_conn_thread.Name = "recieve_wait_for_conn_thread";
+                recieve_wait_for_conn_thread.Start();
+                Threads.Add(recieve_wait_for_conn_thread);
             }
         }
 
@@ -193,76 +198,34 @@ namespace Kopplungstester
             stream.Write(telegramm, 0, telegramm.Length);
         }
 
+        private TcpListener serverSend; 
         public void InitSendClientPassive()
         {
-            bool SendClosed = false;
-            while (true)
-            {                
-                if (ConnectionClosed != null && SendClosed)
-                {
-                    SendClosed = false;
-                    context.Post(delegate { ConnectionClosed(1); }, null);
-                }
-
-               
-
-                if (Send_Client == null || Send_Client.Connected == false)
-                {
-                    if (Send_Client!=null)
-                        Send_Client.Close();
-
-                    TcpListener server = new TcpListener(local_ip, send_connection_port);
-                    server.Start();
-                    
-                    Send_Client = null;
-                    if (onlyOneConnection)
-                        Recieve_Client = null;
-                    Send_Client = server.AcceptTcpClient();
-                    Send_Client.Client.SetKeepAlive(100, 20);
-
-                    SendClosed = true;
-                    
-                    if (ConnectionEstablished != null)
-                        context.Post(delegate { ConnectionEstablished(1); }, null);
-
-                    //Thread for Recieving Data
-                    if (ReceiveDataSendClientThread != null)
-                    {
-                        ReceiveDataSendClientThread.Abort();
-                        Threads.Remove(ReceiveDataSendClientThread);
-                    }
-                    ReceiveDataSendClientThread = new Thread(ReceiveDataSendClient);
-                    ReceiveDataSendClientThread.Name = "PReceiveDataSendClientThread";
-                    ReceiveDataSendClientThread.Start();
-                    Threads.Add(ReceiveDataSendClientThread);
-                    //End Thread
-
-                    if (onlyOneConnection)
-                        Recieve_Client = Send_Client;
-                }              
-            }
-        }
-
-        public void InitSendClientActive()
-        {
-            bool SendClosed = false;
-            while (true)
+            try
             {
-                try
-                {                    
+                bool SendClosed = false;
+                while (true)
+                {
+                    if (ConnectionClosed != null && SendClosed)
+                    {
+                        SendClosed = false;
+                        context.Post(delegate { ConnectionClosed(1); }, null);
+                    }
+
+
+
                     if (Send_Client == null || Send_Client.Connected == false)
                     {
-                        if (SendClosed)
-                        {
-                            SendClosed = false;
-                            context.Post(delegate { ConnectionClosed(1); }, null);
-                        }
+                        if (Send_Client != null)
+                            Send_Client.Close();
+
+                        serverSend = new TcpListener(local_ip, send_connection_port);
+                        serverSend.Start();
 
                         Send_Client = null;
                         if (onlyOneConnection)
                             Recieve_Client = null;
-                        
-                        Send_Client = new TcpClient(plc_ip.ToString(), send_connection_port);
+                        Send_Client = serverSend.AcceptTcpClient();
                         Send_Client.Client.SetKeepAlive(100, 20);
 
                         SendClosed = true;
@@ -277,7 +240,7 @@ namespace Kopplungstester
                             Threads.Remove(ReceiveDataSendClientThread);
                         }
                         ReceiveDataSendClientThread = new Thread(ReceiveDataSendClient);
-                        ReceiveDataSendClientThread.Name = "AReceiveDataSendClientThread";
+                        ReceiveDataSendClientThread.Name = "PReceiveDataSendClientThread";
                         ReceiveDataSendClientThread.Start();
                         Threads.Add(ReceiveDataSendClientThread);
                         //End Thread
@@ -285,17 +248,70 @@ namespace Kopplungstester
                         if (onlyOneConnection)
                             Recieve_Client = Send_Client;
                     }
-                    Thread.Sleep(1000);
-                }
-                catch (ThreadAbortException ex)
-                {
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Thread.Sleep(5000);
                 }
             }
+            catch (Exception  ex)
+            { }
+        }
+
+        public void InitSendClientActive()
+        {
+            try
+            {
+                bool SendClosed = false;
+                while (true)
+                {
+                    try
+                    {
+                        if (Send_Client == null || Send_Client.Connected == false)
+                        {
+                            if (SendClosed)
+                            {
+                                SendClosed = false;
+                                context.Post(delegate { ConnectionClosed(1); }, null);
+                            }
+
+                            Send_Client = null;
+                            if (onlyOneConnection)
+                                Recieve_Client = null;
+
+                            Send_Client = new TcpClient(plc_ip.ToString(), send_connection_port);
+                            Send_Client.Client.SetKeepAlive(100, 20);
+
+                            SendClosed = true;
+
+                            if (ConnectionEstablished != null)
+                                context.Post(delegate { ConnectionEstablished(1); }, null);
+
+                            //Thread for Recieving Data
+                            if (ReceiveDataSendClientThread != null)
+                            {
+                                ReceiveDataSendClientThread.Abort();
+                                Threads.Remove(ReceiveDataSendClientThread);
+                            }
+                            ReceiveDataSendClientThread = new Thread(ReceiveDataSendClient);
+                            ReceiveDataSendClientThread.Name = "AReceiveDataSendClientThread";
+                            ReceiveDataSendClientThread.Start();
+                            Threads.Add(ReceiveDataSendClientThread);
+                            //End Thread
+
+                            if (onlyOneConnection)
+                                Recieve_Client = Send_Client;
+                        }
+                        Thread.Sleep(1000);
+                    }
+                    catch (ThreadAbortException ex)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        Thread.Sleep(5000);
+                    }
+                }
+            }
+            catch (ThreadAbortException ex)
+            { }
         }
 
         public void ReceiveDataSendClient()
@@ -314,12 +330,16 @@ namespace Kopplungstester
 
                         if (TelegrammRecievedSend != null && len > 0)
                             context.Post(delegate { TelegrammRecievedSend(bytes); }, null);
-                        
+
                         //stream.Dispose();
+                    }
+                    catch (ThreadAbortException ex)
+                    {
+                        throw;
                     }
                     catch (Exception ex)
                     {
-                        if (stream!=null)
+                        if (stream != null)
                         {
                             stream.Dispose();
                             stream = null;
@@ -337,49 +357,55 @@ namespace Kopplungstester
             }
         }
 
+        private TcpListener serverRec;
         public void InitRecieveClientPassive()
         {
-            bool RecieveClosed = false;
-            while (true)
+            try
             {
-                if (RecieveClosed)
+                bool RecieveClosed = false;
+                while (true)
                 {
-                    RecieveClosed = false;
-                    context.Post(delegate { ConnectionClosed(1); }, null);
-                }
-
-               
-
-                if (Recieve_Client == null || Recieve_Client.Connected == false)
-                {
-                    if (Recieve_Client != null)
-                        Recieve_Client.Close();
-
-                    TcpListener server = new TcpListener(local_ip, recieve_connection_port);
-                    server.Start();
-
-                    Recieve_Client = null;
-                    Recieve_Client = server.AcceptTcpClient();
-                    Recieve_Client.Client.SetKeepAlive(100, 20);
-
-                    RecieveClosed = true;
-
-                    if (ConnectionEstablished != null)
-                        context.Post(delegate { ConnectionEstablished(2); }, null);
-
-                    //Thread for Recieving Data
-                    if (ReceiveDataRecieveClientThread != null)
+                    if (RecieveClosed)
                     {
-                        ReceiveDataRecieveClientThread.Abort();
-                        Threads.Remove(ReceiveDataRecieveClientThread);
+                        RecieveClosed = false;
+                        context.Post(delegate { ConnectionClosed(2); }, null);
                     }
-                    ReceiveDataRecieveClientThread = new Thread(ReceiveDataRecieveClient);
-                    ReceiveDataRecieveClientThread.Name = "PReceiveDataRecieveClientThread";
-                    ReceiveDataRecieveClientThread.Start();
-                    Threads.Add(ReceiveDataRecieveClientThread);
-                    //End Thread
-                }                
+
+
+
+                    if (Recieve_Client == null || Recieve_Client.Connected == false)
+                    {
+                        if (Recieve_Client != null)
+                            Recieve_Client.Close();
+
+                        serverRec = new TcpListener(local_ip, recieve_connection_port);
+                        serverRec.Start();
+                        
+                        Recieve_Client = null;
+                        Recieve_Client = serverRec.AcceptTcpClient();
+                        Recieve_Client.Client.SetKeepAlive(100, 20);
+
+                        RecieveClosed = true;
+
+                        if (ConnectionEstablished != null)
+                            context.Post(delegate { ConnectionEstablished(2); }, null);
+
+                        //Thread for Recieving Data
+                        if (ReceiveDataRecieveClientThread != null)
+                        {
+                            ReceiveDataRecieveClientThread.Abort();
+                            Threads.Remove(ReceiveDataRecieveClientThread);
+                        }
+                        ReceiveDataRecieveClientThread = new Thread(ReceiveDataRecieveClient);
+                        ReceiveDataRecieveClientThread.Name = "PReceiveDataRecieveClientThread";
+                        ReceiveDataRecieveClientThread.Start();
+                        Threads.Add(ReceiveDataRecieveClientThread);
+                        //End Thread
+                    }
+                }
             }
+            catch (Exception ex) //Kill this Thread when a Exception occurs!
+            { }
         }
 
         public void InitRecieveClientActive()
@@ -469,6 +495,10 @@ namespace Kopplungstester
                             }
                         //stream.Dispose();
                         //stream = null;
+                    }
+                    catch (ThreadAbortException ex)
+                    {
+                        throw;
                     }
                     catch(Exception ex)
                     {

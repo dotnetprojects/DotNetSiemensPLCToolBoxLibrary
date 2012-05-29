@@ -16,7 +16,13 @@ namespace Kopplungstester
 
     public class CustomSettingsProvider : SettingsProvider
     {
-        public static string SettingsFileName { get; set; }
+        private static string _settingsFileName;
+        public static string SettingsFileName
+        {
+            get { return _settingsFileName; }
+            set { _settingsFileName = value; }
+        }
+
         private static string _originalSettingsFileName;
         public static string OriginalSettingsFileName
         {
@@ -105,6 +111,8 @@ namespace Kopplungstester
             return values;
         }
 
+
+        private string _oldSettingsFileName = "";
         private XmlDocument _settingsXML = null;
 
         private XmlDocument SettingsXML
@@ -113,8 +121,12 @@ namespace Kopplungstester
             {
                 //If we dont hold an xml document, try opening one.  
                 //If it doesnt exist then create a new one ready.
-                if (_settingsXML == null)
+                
+
+                if (_settingsXML == null || _settingsFileName != _oldSettingsFileName)
                 {
+                    _oldSettingsFileName = _settingsFileName;
+
                     _settingsXML = new XmlDocument();
 
                     try

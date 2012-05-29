@@ -81,7 +81,6 @@ namespace Kopplungstester
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.numSequenceNumberLength = new System.Windows.Forms.NumericUpDown();
             this.numSequenceNumberPosition = new System.Windows.Forms.NumericUpDown();
-            this.ipAddressControl = new IPAddressControlLib.IPAddressControl();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -109,6 +108,9 @@ namespace Kopplungstester
             this.picConnection2 = new System.Windows.Forms.PictureBox();
             this.cmdDisconnect = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ipAddressControl = new IPAddressControlLib.IPAddressControl();
             this.faTabStrip1.SuspendLayout();
             this.faTabStripItemInfo.SuspendLayout();
             this.faTabStripItemSend.SuspendLayout();
@@ -151,6 +153,7 @@ namespace Kopplungstester
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // faTabStrip1
@@ -683,22 +686,6 @@ namespace Kopplungstester
             this.numSequenceNumberPosition.Size = new System.Drawing.Size(141, 21);
             this.numSequenceNumberPosition.TabIndex = 12;
             // 
-            // ipAddressControl
-            // 
-            this.ipAddressControl.AllowInternalTab = false;
-            this.ipAddressControl.AutoHeight = true;
-            this.ipAddressControl.BackColor = System.Drawing.SystemColors.Window;
-            this.ipAddressControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ipAddressControl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Kopplungstester.Properties.Settings.Default, "IPAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ipAddressControl.Location = new System.Drawing.Point(12, 52);
-            this.ipAddressControl.MinimumSize = new System.Drawing.Size(87, 21);
-            this.ipAddressControl.Name = "ipAddressControl";
-            this.ipAddressControl.ReadOnly = false;
-            this.ipAddressControl.Size = new System.Drawing.Size(141, 21);
-            this.ipAddressControl.TabIndex = 13;
-            this.ipAddressControl.Text = global::Kopplungstester.Properties.Settings.Default.IPAddress;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -719,6 +706,8 @@ namespace Kopplungstester
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.chkChanel2active);
             this.groupBox2.Controls.Add(this.numPort2);
             this.groupBox2.Controls.Add(this.numPort1);
@@ -731,7 +720,7 @@ namespace Kopplungstester
             this.groupBox2.Controls.Add(this.optOneChannel);
             this.groupBox2.Location = new System.Drawing.Point(216, 18);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(187, 232);
+            this.groupBox2.Size = new System.Drawing.Size(187, 303);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Verbindungs Parameter";
@@ -994,6 +983,46 @@ namespace Kopplungstester
             this.cmdDisconnect.UseVisualStyleBackColor = true;
             this.cmdDisconnect.Click += new System.EventHandler(this.cmdDisconnect_Click);
             // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "TelegramLength", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.numericUpDown2.Location = new System.Drawing.Point(29, 266);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(141, 21);
+            this.numericUpDown2.TabIndex = 16;
+            this.numericUpDown2.Value = global::Kopplungstester.Properties.Settings.Default.TelegramLength;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Enabled = false;
+            this.label11.Location = new System.Drawing.Point(9, 250);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(85, 13);
+            this.label11.TabIndex = 17;
+            this.label11.Text = "Telegrammlänge";
+            // 
+            // ipAddressControl
+            // 
+            this.ipAddressControl.AllowInternalTab = false;
+            this.ipAddressControl.AutoHeight = true;
+            this.ipAddressControl.BackColor = System.Drawing.SystemColors.Window;
+            this.ipAddressControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.ipAddressControl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Kopplungstester.Properties.Settings.Default, "IPAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ipAddressControl.Location = new System.Drawing.Point(12, 52);
+            this.ipAddressControl.MinimumSize = new System.Drawing.Size(87, 21);
+            this.ipAddressControl.Name = "ipAddressControl";
+            this.ipAddressControl.ReadOnly = false;
+            this.ipAddressControl.Size = new System.Drawing.Size(141, 21);
+            this.ipAddressControl.TabIndex = 13;
+            this.ipAddressControl.Text = global::Kopplungstester.Properties.Settings.Default.IPAddress;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1052,6 +1081,7 @@ namespace Kopplungstester
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picConnection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1135,5 +1165,7 @@ namespace Kopplungstester
         private System.Windows.Forms.TabPage faTabStripItemInfo;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }
