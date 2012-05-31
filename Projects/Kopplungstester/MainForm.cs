@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -13,12 +14,15 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using Kopplungstester.Properties;
+using Kopplungstester.TCPIP;
+using Kopplungstester.Common;
 
 namespace Kopplungstester
 {
     public partial class MainForm : Form
     {
-        private TCPFunctions myTCP;
+        private TCPFunctionsAsync myTCP_send;
+        private TCPFunctionsAsync myTCP_rec;
 
         public MainForm()
         {
@@ -34,24 +38,34 @@ namespace Kopplungstester
             dtaEmpfangstelegrammAufgeschluesselt.Rows.Clear();
             if (!string.IsNullOrEmpty(Settings.Default.RecieveTelegramm))
             {
-                DataRowCollection rows = DataSetConverter.ToDataSet(Settings.Default.RecieveTelegramm).Tables[0].Rows;
-                for (int n = 0; n < rows.Count - 1; n++)
+                try
                 {
-                    dtaEmpfangstelegrammAufgeschluesselt.Rows.Add(new object[] {rows[n][0], rows[n][1]});
+                    DataRowCollection rows = DataSetConverter.ToDataSet(Settings.Default.RecieveTelegramm).Tables[0].Rows;
+                    for (int n = 0; n < rows.Count - 1; n++)
+                    {
+                        dtaEmpfangstelegrammAufgeschluesselt.Rows.Add(new object[] { rows[n][0], rows[n][1] });
+                    }
                 }
+                catch (Exception)
+                { }
             }
 
             dtaSendTabelle.Rows.Clear();
             if (!string.IsNullOrEmpty(Settings.Default.SendeTelegramm))
             {
-                DataRowCollection rows = DataSetConverter.ToDataSet(Settings.Default.SendeTelegramm).Tables[0].Rows;
-                for (int n = 0; n < rows.Count - 1; n++)
+                try
                 {
-                    if (rows[n].ItemArray.Length > 2)
-                        dtaSendTabelle.Rows.Add(new object[] {rows[n][0], rows[n][1], rows[n][2]});
-                    else
-                        dtaSendTabelle.Rows.Add(new object[] {rows[n][0], rows[n][1]});
+                    DataRowCollection rows = DataSetConverter.ToDataSet(Settings.Default.SendeTelegramm).Tables[0].Rows;
+                    for (int n = 0; n < rows.Count - 1; n++)
+                    {
+                        if (rows[n].ItemArray.Length > 2)
+                            dtaSendTabelle.Rows.Add(new object[] {rows[n][0], rows[n][1], rows[n][2]});
+                        else
+                            dtaSendTabelle.Rows.Add(new object[] {rows[n][0], rows[n][1]});
+                    }
                 }
+                catch (Exception)
+                { }
             }
 
             FillQuitt();
@@ -122,14 +136,38 @@ namespace Kopplungstester
                 picConnection2.BackColor = Color.Green;
         }
 
-        private void myTCP_TelegrammRecievedSend(byte[] telegramm)
+        private void myTCP_TelegrammRecievedSend(byte[] telegramm, TcpClient clnt)
         {
             dtaSendQuittTable.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
         }
 
-        private void myTCP_TelegrammRecievedRecieve(byte[] telegramm)
+        private byte[] oldSequenceNumber;
+
+        private void myTCP_TelegrammRecievedRecieve(byte[] telegramm, TcpClient clnt)
         {
-            grdEmpfang.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
+            if (quittConf == null || !quittConf.AutomaticQuitt)
+            {
+                //Automaticly send a quitt Telegramm
+                byte[] quittTel = new byte[telegramm.Length];
+                Array.Copy(telegramm, quittTel, telegramm.Length);
+
+                foreach (var quittReplacmentByte in quittConf.QuittReplacmentBytes)
+                {
+                    Array.Copy(Encoding.ASCII.GetBytes(quittReplacmentByte.Value), 0, quittTel, quittReplacmentByte.Position, quittReplacmentByte.Value.Length);
+                }
+                myTCP_rec.SendData(quittTel);
+
+
+                //Neues telegramm nur wenn keine WDH aktiv!
+                //byte[] sequNr = new byte[quittConf.LengthSequenceNumber];
+                //Array.Copy(telegramm, quittConf.SequenceNumberPosition, sequNr, 0, quittConf.LengthSequenceNumber);
+
+                //if (oldSequenceNumber == null || !sequNr.ByteArrayCompare(oldSequenceNumber))
+                grdEmpfang.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
+                //oldSequenceNumber = sequNr;
+            }
+            else
+                grdEmpfang.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
         }
 
         private void Disconnect()
@@ -137,10 +175,16 @@ namespace Kopplungstester
             picConnection1.BackColor = Color.Red;
             picConnection2.BackColor = Color.Red;
 
-            if (myTCP != null)
+            if (myTCP_send != null)
             {
-                myTCP.Dispose();
-                myTCP = null;
+                myTCP_send.Dispose();
+                myTCP_send = null;
+            }
+
+            if (myTCP_rec != null)
+            {
+                myTCP_rec.Dispose();
+                myTCP_rec = null;
             }
         }
 
@@ -305,10 +349,15 @@ namespace Kopplungstester
             }
 
 
+            
+
             try
             {
-                if (myTCP != null)
-                    myTCP.SendData(bytes);
+                if (myTCP_send != null)
+                {
+                    myTCP_send.SendData(bytes);
+                    dtaSendSendTable.Rows.Add(new object[] { Encoding.ASCII.GetString(bytes) });
+                }
                 else
                     lblStatus.Text = "Senden nicht erfolgt, da nicht verbunden!";
             }
@@ -391,28 +440,52 @@ namespace Kopplungstester
             }
         }
 
+        private TCPFunctions.QuittConfig quittConf;
+
         private void cmdConnect_Click(object sender, EventArgs e)
         {
-            if (myTCP != null)
+            if (myTCP_send != null)
             {
-                myTCP.Dispose();
+                myTCP_send.Dispose();
             }
+
+            if (myTCP_rec != null)
+            {
+                myTCP_rec.Dispose();
+            }
+
+            myTCP_send = null;
+            myTCP_rec = null;
+
 
             picConnection1.BackColor = Color.Orange;
             picConnection2.BackColor = Color.Orange;
 
-            TCPFunctions.QuittConfig quittConf = new TCPFunctions.QuittConfig();
+            quittConf = new TCPFunctions.QuittConfig();
             quittConf.QuittReplacmentBytes.AddRange(Settings.Default.QuittData.ToArray());
             quittConf.SequenceNumberPosition = Convert.ToInt32(Settings.Default.SequenceNumberPosition);
             quittConf.LengthSequenceNumber = Convert.ToInt32(Settings.Default.SequenceNumberLength);
             quittConf.AutomaticQuitt = Settings.Default.AutomaticQuitt;
 
-            myTCP = new TCPFunctions(SynchronizationContext.Current, IPAddress.Parse(Settings.Default.IPAddress), Settings.Default.UseOnlyOneConnection, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive, Convert.ToInt32(Settings.Default.TelegramLength), Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive, 228, quittConf);
-            myTCP.TelegrammRecievedRecieve += new TCPFunctions.TegramRecievedEventHandler(myTCP_TelegrammRecievedRecieve);
-            myTCP.TelegrammRecievedSend += new TCPFunctions.TegramRecievedEventHandler(myTCP_TelegrammRecievedSend);
-            myTCP.ConnectionEstablished += new TCPFunctions.ConnectionEstablishedEventHandler(myTCP_ConnectionEstablished);
-            myTCP.ConnectionClosed += new TCPFunctions.ConnectionClosedEventHandler(myTCP_ConnectionClosed);
-            myTCP.Connect();
+            myTCP_send = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.SendConnectionActive ? IPAddress.Parse(Settings.Default.IPAddress) : null, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive);
+            myTCP_send.DataRecieved += myTCP_TelegrammRecievedSend;
+            myTCP_send.ConnectionEstablished += (c) => myTCP_ConnectionEstablished(1);
+            myTCP_send.ConnectionClosed += (c) => myTCP_ConnectionClosed(1);
+            myTCP_send.Start();
+                        
+
+            if (!Settings.Default.UseOnlyOneConnection)
+            {
+                myTCP_rec = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.RecieveConnectionActive ? IPAddress.Parse(Settings.Default.IPAddress) : null, Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive);
+                myTCP_rec.DataRecieved += myTCP_TelegrammRecievedRecieve;
+                myTCP_rec.ConnectionEstablished += (c) => myTCP_ConnectionEstablished(2);
+                myTCP_rec.ConnectionClosed += (c) => myTCP_ConnectionClosed(2);
+                myTCP_rec.Start();                               
+            }
+            else
+            {
+                myTCP_send.DataRecieved += myTCP_TelegrammRecievedRecieve;
+            }
         }
 
         private void myTCP_ConnectionClosed(int Number)
@@ -575,6 +648,22 @@ namespace Kopplungstester
                 var value = dtaSendQuittTable.Rows[e.RowIndex].Cells[0].Value;
                 lblLenEmpf.Text = value.ToString().Length.ToString();
             }
+        }
+
+        private void dtaSendSendTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void kryptonButton2_Click(object sender, EventArgs e)
+        {
+            grdEmpfang.Rows.Clear();
+        }
+
+        private void cmdClearSend_Click(object sender, EventArgs e)
+        {
+            dtaSendSendTable.Rows.Clear();
+            dtaSendQuittTable.Rows.Clear();
         }                
     }
 }

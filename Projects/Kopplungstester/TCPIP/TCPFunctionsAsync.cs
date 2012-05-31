@@ -5,7 +5,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 
-namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
+namespace Kopplungstester.TCPIP
 {
     public class TCPFunctionsAsync : IDisposable
     {

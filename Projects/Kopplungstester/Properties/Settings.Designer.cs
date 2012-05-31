@@ -230,18 +230,5 @@ namespace Kopplungstester.Properties {
                 this["SendDataList"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("228")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public decimal TelegramLength {
-            get {
-                return ((decimal)(this["TelegramLength"]));
-            }
-            set {
-                this["TelegramLength"] = value;
-            }
-        }
     }
 }

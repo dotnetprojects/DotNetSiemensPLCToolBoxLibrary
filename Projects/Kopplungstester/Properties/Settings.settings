@@ -47,8 +47,5 @@
     <Setting Name="SendDataList" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;Kopplungstester.MainForm.storeSendData&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="TelegramLength" Roaming="true" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">228</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

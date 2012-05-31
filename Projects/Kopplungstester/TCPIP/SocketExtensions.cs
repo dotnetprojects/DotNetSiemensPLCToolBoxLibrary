@@ -1,6 +1,9 @@
-﻿namespace System.Net.Sockets
+﻿using System;
+using System.Net.Sockets;
+
+namespace Kopplungstester.TCPIP
 {
-    /*public static class SocketExtensions
+    public static class SocketExtensions
     {
         private const int BytesPerLong = 4; // 32 / 8
         private const int BitsPerByte = 8;
@@ -49,5 +52,5 @@
 
             return true;
         }
-    }*/
+    }
 }

@@ -11,9 +11,50 @@ using System.Xml.Serialization;
 
 namespace Kopplungstester
 {
-    public class TCPFunctions : IDisposable
+    public class TCPFunctions    
     {
-        public void Dispose()
+        public class QuittConfig
+        {
+            [Serializable()]
+            public class QuittText
+            {
+                //This is neccessary, that the spaces stay
+                [XmlAttribute("xml:space")]
+                public String SpacePreserve = "preserve";
+
+                public QuittText()
+                { }
+
+                public QuittText(int Position, byte[] Value)
+                {
+                    this.Position = Position;
+                    this.Value = Encoding.ASCII.GetString(Value);
+                }
+
+                public QuittText(int Position, string Value)
+                {
+                    this.Position = Position;
+                    this.Value = Value;
+                }
+
+                [Description("The Offset at wich the Value should be Placed")]
+                public int Position { get; set; }
+                public string Value { get; set; }
+
+                public override string ToString()
+                {
+                    return "[" + Position.ToString() + "] " + Value;
+                }
+            }
+            public List<QuittText> QuittReplacmentBytes = new List<QuittText>();
+
+            public bool AutomaticQuitt;
+
+            public int SequenceNumberPosition;
+            public int LengthSequenceNumber;
+        }
+
+        /*public void Dispose()
         {
             if (serverRec != null)
                 serverRec.Stop();
@@ -518,6 +559,6 @@ namespace Kopplungstester
                     stream = null;
                 }
             }
-        }
+        }*/
     }
 }

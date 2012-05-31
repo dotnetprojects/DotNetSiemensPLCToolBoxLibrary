@@ -38,6 +38,7 @@ namespace Kopplungstester
             this.label9 = new System.Windows.Forms.Label();
             this.faTabStripItemSend = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmdClearSend = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.cmdSend = new System.Windows.Forms.Button();
@@ -59,6 +60,9 @@ namespace Kopplungstester
             this.Bezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Laenge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Wert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.dtaSendSendTable = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dtaSendQuittTable = new System.Windows.Forms.DataGridView();
             this.colSendQuittText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.faTabStripItemRecieve = new System.Windows.Forms.TabPage();
@@ -96,6 +100,7 @@ namespace Kopplungstester
             this.optOneChannel = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.ipAddressControl = new IPAddressControlLib.IPAddressControl();
             this.cmdSelectStep7UDT = new System.Windows.Forms.Button();
             this.cmdConnect = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -108,9 +113,6 @@ namespace Kopplungstester
             this.picConnection2 = new System.Windows.Forms.PictureBox();
             this.cmdDisconnect = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.ipAddressControl = new IPAddressControlLib.IPAddressControl();
             this.faTabStrip1.SuspendLayout();
             this.faTabStripItemInfo.SuspendLayout();
             this.faTabStripItemSend.SuspendLayout();
@@ -130,6 +132,11 @@ namespace Kopplungstester
             this.tableLayoutPanel5.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSendTabelle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtaSendSendTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSendQuittTable)).BeginInit();
             this.faTabStripItemRecieve.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -153,7 +160,6 @@ namespace Kopplungstester
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // faTabStrip1
@@ -167,7 +173,7 @@ namespace Kopplungstester
             this.faTabStrip1.Location = new System.Drawing.Point(3, 53);
             this.faTabStrip1.Name = "faTabStrip1";
             this.faTabStrip1.SelectedIndex = 0;
-            this.faTabStrip1.Size = new System.Drawing.Size(896, 496);
+            this.faTabStrip1.Size = new System.Drawing.Size(896, 569);
             this.faTabStrip1.TabIndex = 2;
             this.faTabStrip1.Text = "Sende Tabelle";
             // 
@@ -177,7 +183,7 @@ namespace Kopplungstester
             this.faTabStripItemInfo.Controls.Add(this.label9);
             this.faTabStripItemInfo.Location = new System.Drawing.Point(4, 22);
             this.faTabStripItemInfo.Name = "faTabStripItemInfo";
-            this.faTabStripItemInfo.Size = new System.Drawing.Size(888, 470);
+            this.faTabStripItemInfo.Size = new System.Drawing.Size(888, 543);
             this.faTabStripItemInfo.TabIndex = 3;
             this.faTabStripItemInfo.Text = "Info";
             // 
@@ -204,7 +210,7 @@ namespace Kopplungstester
             this.faTabStripItemSend.Controls.Add(this.tableLayoutPanel1);
             this.faTabStripItemSend.Location = new System.Drawing.Point(4, 22);
             this.faTabStripItemSend.Name = "faTabStripItemSend";
-            this.faTabStripItemSend.Size = new System.Drawing.Size(888, 470);
+            this.faTabStripItemSend.Size = new System.Drawing.Size(888, 543);
             this.faTabStripItemSend.TabIndex = 0;
             this.faTabStripItemSend.Text = "Sende Tabelle";
             // 
@@ -213,15 +219,30 @@ namespace Kopplungstester
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.Controls.Add(this.cmdClearSend, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(888, 470);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(888, 543);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // cmdClearSend
+            // 
+            this.cmdClearSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdClearSend.Location = new System.Drawing.Point(741, 514);
+            this.cmdClearSend.Name = "cmdClearSend";
+            this.cmdClearSend.Size = new System.Drawing.Size(144, 25);
+            this.cmdClearSend.TabIndex = 5;
+            this.cmdClearSend.Text = "CLR";
+            this.cmdClearSend.UseVisualStyleBackColor = true;
+            this.cmdClearSend.Click += new System.EventHandler(this.cmdClearSend_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -241,7 +262,8 @@ namespace Kopplungstester
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 99F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(144, 464);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(144, 505);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // lblStatus
@@ -306,13 +328,13 @@ namespace Kopplungstester
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 256);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(138, 205);
+            this.panel4.Size = new System.Drawing.Size(138, 246);
             this.panel4.TabIndex = 11;
             // 
             // lblLenEmpf
             // 
             this.lblLenEmpf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblLenEmpf.Location = new System.Drawing.Point(15, 118);
+            this.lblLenEmpf.Location = new System.Drawing.Point(15, 159);
             this.lblLenEmpf.Name = "lblLenEmpf";
             this.lblLenEmpf.Size = new System.Drawing.Size(40, 13);
             this.lblLenEmpf.TabIndex = 0;
@@ -321,7 +343,7 @@ namespace Kopplungstester
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 102);
+            this.label8.Location = new System.Drawing.Point(11, 143);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(40, 13);
             this.label8.TabIndex = 0;
@@ -340,9 +362,10 @@ namespace Kopplungstester
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.dtaSendQuittTable);
-            this.splitContainer2.Size = new System.Drawing.Size(732, 464);
-            this.splitContainer2.SplitterDistance = 371;
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
+            this.tableLayoutPanel1.SetRowSpan(this.splitContainer2, 2);
+            this.splitContainer2.Size = new System.Drawing.Size(732, 537);
+            this.splitContainer2.SplitterDistance = 305;
             this.splitContainer2.TabIndex = 4;
             // 
             // splitContainer3
@@ -359,8 +382,8 @@ namespace Kopplungstester
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.dtaSendTabelle);
-            this.splitContainer3.Size = new System.Drawing.Size(732, 371);
-            this.splitContainer3.SplitterDistance = 77;
+            this.splitContainer3.Size = new System.Drawing.Size(732, 305);
+            this.splitContainer3.SplitterDistance = 76;
             this.splitContainer3.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -375,7 +398,7 @@ namespace Kopplungstester
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(732, 77);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(732, 76);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // lstStoredSenddata
@@ -384,7 +407,7 @@ namespace Kopplungstester
             this.lstStoredSenddata.FormattingEnabled = true;
             this.lstStoredSenddata.Location = new System.Drawing.Point(3, 3);
             this.lstStoredSenddata.Name = "lstStoredSenddata";
-            this.lstStoredSenddata.Size = new System.Drawing.Size(626, 71);
+            this.lstStoredSenddata.Size = new System.Drawing.Size(626, 70);
             this.lstStoredSenddata.TabIndex = 0;
             this.lstStoredSenddata.DoubleClick += new System.EventHandler(this.lstStoredSenddata_DoubleClick);
             // 
@@ -394,7 +417,7 @@ namespace Kopplungstester
             this.panel3.Controls.Add(this.cmdAddSendeTele);
             this.panel3.Location = new System.Drawing.Point(635, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(94, 71);
+            this.panel3.Size = new System.Drawing.Size(94, 70);
             this.panel3.TabIndex = 1;
             // 
             // cmdRemoveSendeTele
@@ -429,7 +452,7 @@ namespace Kopplungstester
             this.dtaSendTabelle.Location = new System.Drawing.Point(0, 0);
             this.dtaSendTabelle.Name = "dtaSendTabelle";
             this.dtaSendTabelle.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtaSendTabelle.Size = new System.Drawing.Size(732, 290);
+            this.dtaSendTabelle.Size = new System.Drawing.Size(732, 225);
             this.dtaSendTabelle.TabIndex = 4;
             this.dtaSendTabelle.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtaSendTabelle_CellEndEdit);
             this.dtaSendTabelle.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dtaSendTabelle_RowsAdded);
@@ -449,8 +472,49 @@ namespace Kopplungstester
             this.Wert.HeaderText = "Wert";
             this.Wert.Name = "Wert";
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.dtaSendSendTable);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.dtaSendQuittTable);
+            this.splitContainer4.Size = new System.Drawing.Size(732, 228);
+            this.splitContainer4.SplitterDistance = 109;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // dtaSendSendTable
+            // 
+            this.dtaSendSendTable.AllowUserToAddRows = false;
+            this.dtaSendSendTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtaSendSendTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtaSendSendTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1});
+            this.dtaSendSendTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtaSendSendTable.Location = new System.Drawing.Point(0, 0);
+            this.dtaSendSendTable.Name = "dtaSendSendTable";
+            this.dtaSendSendTable.ReadOnly = true;
+            this.dtaSendSendTable.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtaSendSendTable.Size = new System.Drawing.Size(732, 109);
+            this.dtaSendSendTable.TabIndex = 7;
+            this.dtaSendSendTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtaSendSendTable_CellContentClick);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Gesendete Telegramme";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // dtaSendQuittTable
             // 
+            this.dtaSendQuittTable.AllowUserToAddRows = false;
             this.dtaSendQuittTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtaSendQuittTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtaSendQuittTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -458,22 +522,23 @@ namespace Kopplungstester
             this.dtaSendQuittTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSendQuittTable.Location = new System.Drawing.Point(0, 0);
             this.dtaSendQuittTable.Name = "dtaSendQuittTable";
+            this.dtaSendQuittTable.ReadOnly = true;
             this.dtaSendQuittTable.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtaSendQuittTable.Size = new System.Drawing.Size(732, 89);
-            this.dtaSendQuittTable.TabIndex = 5;
-            this.dtaSendQuittTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtaSendQuittTable_CellContentClick);
+            this.dtaSendQuittTable.Size = new System.Drawing.Size(732, 115);
+            this.dtaSendQuittTable.TabIndex = 6;
             // 
             // colSendQuittText
             // 
             this.colSendQuittText.HeaderText = "Empfangene Quittungen";
             this.colSendQuittText.Name = "colSendQuittText";
+            this.colSendQuittText.ReadOnly = true;
             // 
             // faTabStripItemRecieve
             // 
             this.faTabStripItemRecieve.Controls.Add(this.tableLayoutPanel2);
             this.faTabStripItemRecieve.Location = new System.Drawing.Point(4, 22);
             this.faTabStripItemRecieve.Name = "faTabStripItemRecieve";
-            this.faTabStripItemRecieve.Size = new System.Drawing.Size(888, 470);
+            this.faTabStripItemRecieve.Size = new System.Drawing.Size(888, 543);
             this.faTabStripItemRecieve.TabIndex = 1;
             this.faTabStripItemRecieve.Text = "Empfangs FIFO";
             // 
@@ -489,7 +554,7 @@ namespace Kopplungstester
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(888, 470);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(888, 543);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // kryptonButton2
@@ -502,6 +567,7 @@ namespace Kopplungstester
             this.kryptonButton2.TabIndex = 4;
             this.kryptonButton2.Text = "CLR";
             this.kryptonButton2.UseVisualStyleBackColor = true;
+            this.kryptonButton2.Click += new System.EventHandler(this.kryptonButton2_Click);
             // 
             // splitContainer1
             // 
@@ -517,12 +583,13 @@ namespace Kopplungstester
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dtaEmpfangstelegrammAufgeschluesselt);
-            this.splitContainer1.Size = new System.Drawing.Size(732, 464);
-            this.splitContainer1.SplitterDistance = 184;
+            this.splitContainer1.Size = new System.Drawing.Size(732, 537);
+            this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 5;
             // 
             // grdEmpfang
             // 
+            this.grdEmpfang.AllowUserToAddRows = false;
             this.grdEmpfang.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdEmpfang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdEmpfang.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -530,8 +597,9 @@ namespace Kopplungstester
             this.grdEmpfang.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grdEmpfang.Location = new System.Drawing.Point(0, 0);
             this.grdEmpfang.Name = "grdEmpfang";
+            this.grdEmpfang.ReadOnly = true;
             this.grdEmpfang.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grdEmpfang.Size = new System.Drawing.Size(732, 184);
+            this.grdEmpfang.Size = new System.Drawing.Size(732, 212);
             this.grdEmpfang.TabIndex = 4;
             this.grdEmpfang.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdEmpfang_CellClick);
             this.grdEmpfang.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdEmpfang_CellContentClick);
@@ -540,6 +608,7 @@ namespace Kopplungstester
             // 
             this.colEmpf.HeaderText = "Empfangstelegramme";
             this.colEmpf.Name = "colEmpf";
+            this.colEmpf.ReadOnly = true;
             // 
             // dtaEmpfangstelegrammAufgeschluesselt
             // 
@@ -553,7 +622,7 @@ namespace Kopplungstester
             this.dtaEmpfangstelegrammAufgeschluesselt.Location = new System.Drawing.Point(0, 0);
             this.dtaEmpfangstelegrammAufgeschluesselt.Name = "dtaEmpfangstelegrammAufgeschluesselt";
             this.dtaEmpfangstelegrammAufgeschluesselt.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtaEmpfangstelegrammAufgeschluesselt.Size = new System.Drawing.Size(732, 276);
+            this.dtaEmpfangstelegrammAufgeschluesselt.Size = new System.Drawing.Size(732, 321);
             this.dtaEmpfangstelegrammAufgeschluesselt.TabIndex = 5;
             // 
             // colEmpfBezeichnung
@@ -579,7 +648,7 @@ namespace Kopplungstester
             this.faTabStripItemSettings.Controls.Add(this.groupBox1);
             this.faTabStripItemSettings.Location = new System.Drawing.Point(4, 22);
             this.faTabStripItemSettings.Name = "faTabStripItemSettings";
-            this.faTabStripItemSettings.Size = new System.Drawing.Size(888, 470);
+            this.faTabStripItemSettings.Size = new System.Drawing.Size(888, 543);
             this.faTabStripItemSettings.TabIndex = 2;
             this.faTabStripItemSettings.Text = "Einstellungen";
             // 
@@ -706,8 +775,6 @@ namespace Kopplungstester
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.chkChanel2active);
             this.groupBox2.Controls.Add(this.numPort2);
             this.groupBox2.Controls.Add(this.numPort1);
@@ -720,7 +787,7 @@ namespace Kopplungstester
             this.groupBox2.Controls.Add(this.optOneChannel);
             this.groupBox2.Location = new System.Drawing.Point(216, 18);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(187, 303);
+            this.groupBox2.Size = new System.Drawing.Size(187, 232);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Verbindungs Parameter";
@@ -861,6 +928,22 @@ namespace Kopplungstester
             this.label1.TabIndex = 12;
             this.label1.Text = "IP - Adresse SPS";
             // 
+            // ipAddressControl
+            // 
+            this.ipAddressControl.AllowInternalTab = false;
+            this.ipAddressControl.AutoHeight = true;
+            this.ipAddressControl.BackColor = System.Drawing.SystemColors.Window;
+            this.ipAddressControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.ipAddressControl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Kopplungstester.Properties.Settings.Default, "IPAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ipAddressControl.Location = new System.Drawing.Point(12, 52);
+            this.ipAddressControl.MinimumSize = new System.Drawing.Size(87, 21);
+            this.ipAddressControl.Name = "ipAddressControl";
+            this.ipAddressControl.ReadOnly = false;
+            this.ipAddressControl.Size = new System.Drawing.Size(141, 21);
+            this.ipAddressControl.TabIndex = 13;
+            this.ipAddressControl.Text = global::Kopplungstester.Properties.Settings.Default.IPAddress;
+            // 
             // cmdSelectStep7UDT
             // 
             this.cmdSelectStep7UDT.Location = new System.Drawing.Point(281, 3);
@@ -893,7 +976,7 @@ namespace Kopplungstester
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(902, 552);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(902, 625);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
             // panel1
@@ -983,51 +1066,11 @@ namespace Kopplungstester
             this.cmdDisconnect.UseVisualStyleBackColor = true;
             this.cmdDisconnect.Click += new System.EventHandler(this.cmdDisconnect_Click);
             // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "TelegramLength", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.numericUpDown2.Location = new System.Drawing.Point(29, 266);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(141, 21);
-            this.numericUpDown2.TabIndex = 16;
-            this.numericUpDown2.Value = global::Kopplungstester.Properties.Settings.Default.TelegramLength;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Enabled = false;
-            this.label11.Location = new System.Drawing.Point(9, 250);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(85, 13);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "Telegrammlänge";
-            // 
-            // ipAddressControl
-            // 
-            this.ipAddressControl.AllowInternalTab = false;
-            this.ipAddressControl.AutoHeight = true;
-            this.ipAddressControl.BackColor = System.Drawing.SystemColors.Window;
-            this.ipAddressControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ipAddressControl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Kopplungstester.Properties.Settings.Default, "IPAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ipAddressControl.Location = new System.Drawing.Point(12, 52);
-            this.ipAddressControl.MinimumSize = new System.Drawing.Size(87, 21);
-            this.ipAddressControl.Name = "ipAddressControl";
-            this.ipAddressControl.ReadOnly = false;
-            this.ipAddressControl.Size = new System.Drawing.Size(141, 21);
-            this.ipAddressControl.TabIndex = 13;
-            this.ipAddressControl.Text = global::Kopplungstester.Properties.Settings.Default.IPAddress;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(902, 552);
+            this.ClientSize = new System.Drawing.Size(902, 625);
             this.Controls.Add(this.tableLayoutPanel4);
             this.Name = "MainForm";
             this.Text = "Kopplungstester";
@@ -1054,6 +1097,11 @@ namespace Kopplungstester
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtaSendTabelle)).EndInit();
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtaSendSendTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSendQuittTable)).EndInit();
             this.faTabStripItemRecieve.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -1081,7 +1129,6 @@ namespace Kopplungstester
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picConnection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnection2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1148,8 +1195,6 @@ namespace Kopplungstester
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.DataGridView dtaSendQuittTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSendQuittText;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.ListBox lstStoredSenddata;
@@ -1165,7 +1210,11 @@ namespace Kopplungstester
         private System.Windows.Forms.TabPage faTabStripItemInfo;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.DataGridView dtaSendSendTable;
+        private System.Windows.Forms.DataGridView dtaSendQuittTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSendQuittText;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.Button cmdClearSend;
     }
 }
