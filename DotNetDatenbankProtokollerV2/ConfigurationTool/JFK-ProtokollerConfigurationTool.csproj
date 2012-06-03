@@ -91,6 +91,7 @@
     <Compile Include="Windows\EditConnections.xaml.cs">
       <DependentUpon>EditConnections.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\ListIntToVisibilityConverter.cs" />
     <Compile Include="WPF\IntToHiddenConverter.cs" />
     <Compile Include="WPF\HyperlinkUtility.cs" />
     <Compile Include="WPF\IntToVisibilityConverter.cs" />

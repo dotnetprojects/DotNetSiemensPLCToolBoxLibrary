@@ -247,6 +247,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                             tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                             myDisposables.Add(tmpTrigger);
                         }
+                        else if (datasetConfig.Trigger == DatasetTriggerType.Time_Trigger_With_Value_Comparison)
+                        {
+                            TimeTriggerWithCheckForChangesThread tmpTrigger = new TimeTriggerWithCheckForChangesThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                            tmpTrigger.StartTrigger();
+                            tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
+                            myDisposables.Add(tmpTrigger);
+                        }
                         else if (datasetConfig.Trigger == DatasetTriggerType.Quartz_Trigger)
                         {
                             QuartzTriggerThread tmpTrigger = new QuartzTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
