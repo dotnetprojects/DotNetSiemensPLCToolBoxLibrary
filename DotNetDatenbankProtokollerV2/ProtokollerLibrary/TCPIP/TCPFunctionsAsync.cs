@@ -14,10 +14,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
         {
             disposed = true;
 
-            if (tcpClient != null)
-                tcpClient.Close();
-            if (tcpListener != null)
-                tcpListener.Stop();
+            Stop();
         }
 
         /// <summary>
@@ -260,6 +257,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
                 tcpClientsFromListener.Add(akTcpClient);
 
+                if (!AllowMultipleClients)
+                    tcpClient = akTcpClient;
+
                 if (ConnectionEstablished != null)
                     if (context == null)
                         ConnectionEstablished(tcpClient);
@@ -459,13 +459,32 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             return SendData(Encoding.ASCII.GetBytes(telegramm));
         }
 
+        public bool SendData(string telegramm, TcpClient client)
+        {
+            return SendData(Encoding.ASCII.GetBytes(telegramm), client);
+        }
+
         public bool SendData(byte[] telegramm)
+        {
+            if (AllowMultipleClients && !connection_active)
+            {
+                foreach (var clnt in tcpClientsFromListener)
+                {
+                    SendData(telegramm, clnt);
+                }
+                return true;
+            }
+            else
+                return SendData(telegramm, tcpClient);
+        }
+
+        public bool SendData(byte[] telegramm, TcpClient client)
         {
             try
             {
                 if (tcpClient == null)
                     throw new Exception("Send not possible, not connected");
-                NetworkStream stream = tcpClient.GetStream();
+                NetworkStream stream = client.GetStream();
                 stream.Write(telegramm, 0, telegramm.Length);
                 return true;
             }
