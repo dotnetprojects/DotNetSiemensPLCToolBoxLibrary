@@ -85,7 +85,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
         private Thread myThread;
 
         private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
-        private int _maxAdd = 0;
+        private volatile int _maxAdd = 0;
 
         /// <summary>
         /// The write is added to a List and then put into an extra Thread, so that the PLC gets it's quitt imidiatly
@@ -133,7 +133,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                         }
 
                         if (ok)
-                            _intValueList.RemoveRange(0, _maxAdd);
+                            lock (_intValueList)
+                                _intValueList.RemoveRange(0, _maxAdd);
                     }
                     else
                         Thread.Sleep(20);

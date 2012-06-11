@@ -281,9 +281,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                                                 tcpipConnConf.MultiTelegramme = 1;
                                                             for (int j = 1; j <= tcpipConnConf.MultiTelegramme; j++)
                                                             {
-                                                                var ln = bytes.Length/tcpipConnConf.MultiTelegramme;
+                                                                var ln = bytes.Length / tcpipConnConf.MultiTelegramme;
                                                                 byte[] tmpArr = new byte[ln];
-                                                                Array.Copy(bytes, ((j - 1)*ln), tmpArr, 0, ln);
+                                                                Array.Copy(bytes, ((j - 1) * ln), tmpArr, 0, ln);
 
                                                                 IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, tmpArr, StartedAsService);
                                                                 if (values != null)

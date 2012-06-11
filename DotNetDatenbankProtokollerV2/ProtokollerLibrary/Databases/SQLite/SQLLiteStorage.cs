@@ -212,7 +212,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         private Thread myThread;
 
         private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
-        private int _maxAdd = 0;
+        private volatile int _maxAdd = 0;
 
 
         /// <summary>
@@ -263,7 +263,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         }
 
                         if (ok)
-                            _intValueList.RemoveRange(0, _maxAdd);
+                            lock (_intValueList)
+                                _intValueList.RemoveRange(0, _maxAdd);
                     }
                     else
                         Thread.Sleep(20);

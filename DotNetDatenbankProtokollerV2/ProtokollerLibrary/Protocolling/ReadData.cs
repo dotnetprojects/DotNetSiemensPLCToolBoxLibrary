@@ -38,7 +38,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             var values = from n in datasetConfigRows
                          select n.Value;
 
-            return values;
+            return values.ToList();
         }
 
         public static IEnumerable<object> ReadDataFromPLCs(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
@@ -102,8 +102,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             var values = from n in datasetConfigRows
                          select n.Value;
-            
-            return values;
+
+            return values.ToList(); ;
         }
     }
 }

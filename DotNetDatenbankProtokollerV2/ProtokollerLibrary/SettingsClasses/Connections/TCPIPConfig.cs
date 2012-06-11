@@ -14,7 +14,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
         }
 
         [System.ComponentModel.Browsable(false)]
-        public IPAddress IPasIPAddress { get { return IPAddress.Parse(_ip); } }
+        public IPAddress IPasIPAddress
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_ip) && PassiveConnection)
+                    return IPAddress.Any;
+                return IPAddress.Parse(_ip);
+            }
+        }
 
 
         private int _port = 2000;
