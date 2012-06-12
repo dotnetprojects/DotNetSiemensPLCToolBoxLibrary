@@ -14,7 +14,7 @@
         </GroupBox>
         <GroupBox Header="Write Config" Height="116" HorizontalAlignment="Left" Margin="7,127,0,0" Name="groupBox2" VerticalAlignment="Top" Width="193">
             <Grid>
-                <RadioButton Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
+                <RadioButton Content="Use Visu Write Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
                 <RadioButton Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
                 <RadioButton Content="Trigger End of Cycle" HorizontalAlignment="Left" Margin="6,52,0,0" VerticalAlignment="Top" />
                 <RadioButton Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />

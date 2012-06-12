@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -71,6 +72,7 @@
     <Compile Include="CustomDataGrid.cs" />
     <Compile Include="VarTabRowItemTemplateSelector.cs" />
     <Compile Include="VarTabViewModel.cs" />
+    <Compile Include="WPF\ResolveElementName.cs" />
     <Page Include="ConfigConnectionsAndSymbolSources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\go-home-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\import.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

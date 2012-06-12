@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -22,16 +23,60 @@ namespace WPFVarTab
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : CustomChromeWindow
+    public partial class MainWindow : CustomChromeWindow, INotifyPropertyChanged
     {
-        private PLCConnection myConn = new PLCConnection("JFK-WPFVarTab");
+        private int _readTagsConfig;
+        private int _writeTagsConfig;
+        private ObservableCollection<string> _connections;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public int ReadTagsConfig { get; set; }
-        public int WriteTagsConfig { get; set; }
+        protected void NotifyPropertyChanged(String info)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(info));
+                PropertyChanged(this, new PropertyChangedEventArgs("ObjectAsString"));
+            }
+        }
 
+        public int ReadTagsConfig
+        {
+            get { return _readTagsConfig; }
+            set { _readTagsConfig = value; NotifyPropertyChanged("ReadTagsConfig"); }
+        }
+
+        public int WriteTagsConfig
+        {
+            get { return _writeTagsConfig; }
+            set { _writeTagsConfig = value; NotifyPropertyChanged("WriteTagsConfig"); }
+        }
+
+        public ObservableCollection<string> Connections
+        {
+            get { return _connections; }
+            set { _connections = value; NotifyPropertyChanged("Connections"); }
+        }
+
+
+        /*
+        public IEnumerable<string> Connections
+        {
+            get { return (IEnumerable<string>)GetValue(ConnectionsProperty); }
+            set { SetValue(ConnectionsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Connections.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConnectionsProperty =
+            DependencyProperty.Register("Connections", typeof(IEnumerable<string>), typeof(MainWindow), new UIPropertyMetadata(null));
+        */
+        
         public MainWindow()
         {
             InitializeComponent();
+
+            BuildConnectionList();
+
+            this.DataContext = this;
 
             ObservableCollection<S7VATRow> vatRows = new ObservableCollection<S7VATRow>();
             vatRows.Add(new S7VATRow() { LibNoDaveValue=new PLCTag() });
@@ -60,9 +105,15 @@ namespace WPFVarTab
 
         private void cmdConfigConnection_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.ShowConfiguration("JFK-WPFVarTab", true);
-            myConn = new PLCConnection("JFK-WPFVarTab");
+            Configuration.ShowConfiguration("JFK-WPFVarTab Connection 1", false);
         }
+
+        
+        private void BuildConnectionList()
+        {
+            Connections = new ObservableCollection<string>(PLCConnectionConfiguration.GetConfigurationNames());
+        }
+
 
         private void cmdOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -89,8 +140,8 @@ namespace WPFVarTab
             try
             {
                 lblStatus.Content = "";
-                myConn.Connect();
-                if (myConn.Connected)
+                //myConn.Connect();
+                //if (myConn.Connected)
                     ProgressBarOnlineStatus.IsIndeterminate = true;
             }
             catch(Exception ex)
