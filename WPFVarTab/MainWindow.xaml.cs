@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using CustomChromeLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
@@ -119,27 +121,6 @@ namespace WPFVarTab
         private void BuildConnectionList()
         {
             Connections = new ObservableCollection<string>(PLCConnectionConfiguration.GetConfigurationNames());
-        }
-
-
-        private void cmdOpen_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog opnDlg = new OpenFileDialog();
-            opnDlg.Filter = "Alle Unterstützten Datentypen (*.vartab; *.s7p; *.zip)|*.vartab;*s7p;*.zip";
-            var retVal = opnDlg.ShowDialog();
-            if (retVal == true)
-            {
-                string file = opnDlg.FileName;
-                string ext = System.IO.Path.GetExtension(file).ToLower();
-                if (ext == "vartab")
-                {
-
-                }
-                else
-                {
-                    DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectVAT(file);
-                }
-            }
         }
 
         private void cmdOnlineView_Click(object sender, RoutedEventArgs e)
@@ -333,6 +314,38 @@ namespace WPFVarTab
                                                             }
                                                         });
 
+        }
+
+        private void cmdOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog opnDlg = new OpenFileDialog();
+            opnDlg.Filter = "Alle Unterstützten Datentypen (*.wpfvartab)|*.wpfvartab";
+            var retVal = opnDlg.ShowDialog();
+            if (retVal == true)
+            {
+                varTabRows.Clear();
+
+                System.IO.FileStream jj = new FileStream(opnDlg.FileName, FileMode.Open);
+                System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
+                var saved = (ObservableCollection<VarTabRowWithConnection>)myXml.Deserialize(jj);
+                foreach (var varTabRowWithConnection in saved)
+                {
+                    varTabRows.Add(varTabRowWithConnection);
+                }
+            }
+        }
+
+        private void cmdSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDlg = new SaveFileDialog();
+            saveDlg.Filter = "*.wpfvartab|*.wpfvartab";
+            if (saveDlg.ShowDialog().Value)
+            {
+                System.IO.FileStream jj = new FileStream(saveDlg.FileName, FileMode.Create);
+                System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
+                myXml.Serialize(jj, varTabRows);
+                jj.Close();
+            }
         }
     }
 }

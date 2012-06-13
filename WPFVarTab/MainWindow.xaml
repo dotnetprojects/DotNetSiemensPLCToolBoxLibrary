@@ -87,7 +87,7 @@
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Save VarTab">
+                                        ToolTip="Save VarTab" Name="cmdSave" Click="cmdSave_Click">
                                     <Image Width="16" Height="16" Source="/WPFVarTab;component/Images/document-export.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
