@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using CustomChromeLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using Microsoft.Win32;
 
 namespace WPFVarTab
@@ -28,8 +29,9 @@ namespace WPFVarTab
         private int _readTagsConfig;
         private int _writeTagsConfig;
         private ObservableCollection<string> _connections;
+        private static Dictionary<string, PLCConnection> _connectionDictionary;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         protected void NotifyPropertyChanged(String info)
         {
             if (PropertyChanged != null)
@@ -57,19 +59,13 @@ namespace WPFVarTab
             set { _connections = value; NotifyPropertyChanged("Connections"); }
         }
 
-
-        /*
-        public IEnumerable<string> Connections
+        public static Dictionary<string, PLCConnection> ConnectionDictionary
         {
-            get { return (IEnumerable<string>)GetValue(ConnectionsProperty); }
-            set { SetValue(ConnectionsProperty, value); }
+            get { return _connectionDictionary; }
         }
 
-        // Using a DependencyProperty as the backing store for Connections.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ConnectionsProperty =
-            DependencyProperty.Register("Connections", typeof(IEnumerable<string>), typeof(MainWindow), new UIPropertyMetadata(null));
-        */
-        
+        private ObservableCollection<VarTabRowWithConnection> varTabRows;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,15 +74,8 @@ namespace WPFVarTab
 
             this.DataContext = this;
 
-            ObservableCollection<S7VATRow> vatRows = new ObservableCollection<S7VATRow>();
-            vatRows.Add(new S7VATRow() { LibNoDaveValue=new PLCTag() });
-            vatRows.Add(new S7VATRow() { LibNoDaveValue = new PLCTag() });
-            vatRows.Add(new S7VATRow() { LibNoDaveValue = new PLCTag() });
-            vatRows.Add(new S7VATRow() {Comment = "aa"});
-            vatRows.Add(new S7VATRow() { LibNoDaveValue = new PLCTag() });
-            vatRows.Add(new S7VATRow() { LibNoDaveValue = new PLCTag() });
-            dataGrid.ItemsSource = vatRows;
-            
+            varTabRows = new ObservableCollection<VarTabRowWithConnection>();
+            dataGrid.ItemsSource = varTabRows;
         }
 
         private void _OnShowSystemMenuCommand(object sender, ExecutedRoutedEventArgs e)
@@ -152,15 +141,18 @@ namespace WPFVarTab
 
         private void cmdConfigVarTab_Click(object sender, RoutedEventArgs e)
         {
-            ConfigVarTab subWin=new ConfigVarTab();
+            ConfigVarTab subWin = new ConfigVarTab(this);
             subWin.ShowDialog();
         }
 
+        private void cmdImportVarTab_Click(object sender, RoutedEventArgs e)
+        {
+            var s7Vat = SelectProjectPart.SelectVAT();
 
-
-
-
+            foreach (var S7VatRow in s7Vat.VATRows)
+            {
+                varTabRows.Add(new VarTabRowWithConnection(S7VatRow));
+            }
+        }
     }
-
-
 }

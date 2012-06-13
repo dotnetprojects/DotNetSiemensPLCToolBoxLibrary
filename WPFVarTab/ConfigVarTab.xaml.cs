@@ -18,8 +18,16 @@ namespace WPFVarTab
     /// </summary>
     public partial class ConfigVarTab : CustomChromeLibrary.CustomChromeWindow
     {
-        public ConfigVarTab()
+        private MainWindow _mainWindow;
+        public MainWindow MainWindow
         {
+            get { return _mainWindow; }
+        }
+
+        public ConfigVarTab(MainWindow mainWindow)
+        {
+            this._mainWindow = mainWindow;
+
             InitializeComponent();
         }
 

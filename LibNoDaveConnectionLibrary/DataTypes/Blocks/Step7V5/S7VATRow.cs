@@ -114,6 +114,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public override string ToString()
         {
+            if (_libNoDaveValue == null)
+                return null;
             return LibNoDaveValue.S7FormatAddress;
         }
     }

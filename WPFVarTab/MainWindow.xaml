@@ -95,14 +95,14 @@
                                         ToolTip="Config Connections" Name="cmdConfigConnection" Click="cmdConfigConnection_Click">
                                     <Image Source="/WPFVarTab;component/Images/configure-2.png" Width="16" Height="16"/>
                                 </Button>
-                                <Button Margin="2,7,0,2" 
+                                <ToggleButton Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
                                         ToolTip="Online View" Name="cmdOnlineView" Click="cmdOnlineView_Click">
                                     <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/zoom-3.png" />
-                                </Button>
+                                </ToggleButton>
                                 <Button Margin="2,7,0,2" 
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
@@ -124,15 +124,15 @@
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Import Step7 VarTab">
+                                        ToolTip="Import Step7 VarTab" Name="cmdImportVarTab" Click="cmdImportVarTab_Click">
                                     <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/import.png" />
                                 </Button>
-                                <ComboBox Margin="7,7,0,2" 
+                                <ComboBox Margin="7,7,0,2" WPFVarTab:ComboBoxExtension.IsNullable="True"
                                         VerticalAlignment="Top" 
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Stretch" 
                                         Height="26"
-                                        MinWidth="100"
+                                        MinWidth="160"
                                         Padding="3" ItemsSource="{Binding Connections}"
                                         ToolTip="Default Connection" HorizontalContentAlignment="Stretch">
                                     
@@ -175,13 +175,14 @@
                 <DataGridTemplateColumn Header="Connection" Width="170">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock></TextBlock>
+                            <TextBlock Text="{Binding ConnectionName}"></TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                     <DataTemplate>
-                        <ComboBox
-                        ItemsSource="{Binding ElementName=ThisWindow, Mode=TwoWay, Path=Connections}">
+                            <ComboBox Foreground="Black" WPFVarTab:ComboBoxExtension.IsNullable="True"
+                        ItemsSource="{Binding ElementName=ThisWindow, Mode=TwoWay, Path=Connections}"
+                                      SelectedItem="{Binding ConnectionName}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger>
                                     <behavior:ResolveElementName PropertyName="ItemsSource" />
