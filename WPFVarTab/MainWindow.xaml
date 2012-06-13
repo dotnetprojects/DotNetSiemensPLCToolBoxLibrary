@@ -4,7 +4,9 @@
         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" 
         xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
                         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                        xmlns:behavior="clr-namespace:WPFVarTab.WPF" Style="{DynamicResource GlassStyle}"
+                        xmlns:behavior="clr-namespace:WPFVarTab.WPF"
+                        xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs"
+                        Style="{DynamicResource GlassStyle}"
         Title="JFK-WPF-VarTab" Height="397" Width="784" Name="ThisWindow" WindowStyle="None" MinWidth="200" Icon="/WPFVarTab;component/Images/go-home-6.png" ResizeMode="CanResizeWithGrip">
 
     <Window.CommandBindings>
@@ -15,6 +17,7 @@
     </Window.CommandBindings>
     
     <Window.Resources>
+        <WPFToolboxForSiemensPLCs:BoolToBrushConverter x:Key="connectedConv" TrueValue="LightGreen" FalseValue="Red" />
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}" x:Key="resTagDataTypes">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="DataTypes:TagDataType"></x:Type>
@@ -108,7 +111,7 @@
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         HorizontalAlignment="Left" 
                                         Padding="3"
-                                        ToolTip="Control Values">
+                                        ToolTip="Control Values" Name="cmdControlValues" Click="cmdControlValues_Click">
                                     <Image  Width="16" Height="16" Source="/WPFVarTab;component/Images/draw-line-2.png" />
                                 </Button>
                                 <Button Margin="2,7,0,2" 
@@ -133,7 +136,9 @@
                                         HorizontalAlignment="Stretch" 
                                         Height="26"
                                         MinWidth="160"
-                                        Padding="3" ItemsSource="{Binding Connections}"
+                                        Padding="3" 
+                                          ItemsSource="{Binding Connections}"
+                                          SelectedItem="{Binding DefaultConnection}"
                                         ToolTip="Default Connection" HorizontalContentAlignment="Stretch">
                                     
 
@@ -161,7 +166,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Ellipse Width="16" Height="16" Fill="Red"></Ellipse>
+                            <Ellipse Width="16" Height="16" Fill="{Binding Connected, Converter={StaticResource connectedConv}, FallbackValue=Red}"></Ellipse>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -169,9 +174,9 @@
                 <DataGridTextColumn Binding="{Binding S7FormatAddress, Mode=TwoWay}" Header="Address"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Symbol}" Header="Symbol"></DataGridTextColumn>
                 <!--<DataGridTextColumn Binding="{Binding LibNoDaveValue.LibNoDaveDataType}" Header="DataType"></DataGridTextColumn>-->
-                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDataTypes}}" SelectedItemBinding="{Binding LibNoDaveDataType}" Header="DataType"></DataGridComboBoxColumn>                
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDataTypes}}" SelectedItemBinding="{Binding LibNoDaveDataType, Mode=TwoWay}" Header="DataType"></DataGridComboBoxColumn>                
                 <!--<DataGridTextColumn Binding="{Binding LibNoDaveValue.DataTypeStringFormat}" Header="DisplayFormat"></DataGridTextColumn>-->
-                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDisplayDataTypes}}" SelectedItemBinding="{Binding DataTypeStringFormat}" Header="DisplayFormat"></DataGridComboBoxColumn>
+                <DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource resTagDisplayDataTypes}}" SelectedItemBinding="{Binding DataTypeStringFormat, Mode=TwoWay}" Header="DisplayFormat"></DataGridComboBoxColumn>
                 <DataGridTemplateColumn Header="Connection" Width="170">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -192,7 +197,7 @@
                     </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn IsReadOnly="True" Binding="{Binding LibNoDaveValue.Value}" Header="Value"></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding LibNoDaveValue.ValueAsString}" Header="Value"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LibNoDaveValue.Controlvalue}" Header="ControlValue"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Comment}" Header="Comment"></DataGridTextColumn>
             </WPFVarTab:CustomDataGrid.Columns>

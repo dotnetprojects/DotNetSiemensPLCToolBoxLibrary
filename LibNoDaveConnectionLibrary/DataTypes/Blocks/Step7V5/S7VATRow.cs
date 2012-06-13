@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -27,6 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         #region Wrapper for PLCTag Properties...
+        [XmlIgnore]
         public string S7FormatAddress
         {
             get
@@ -53,6 +55,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        [XmlIgnore]
         public TagDataType? LibNoDaveDataType
         {
             get
@@ -75,6 +78,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        [XmlIgnore]
         public TagDisplayDataType? DataTypeStringFormat
         {
             get

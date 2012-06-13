@@ -214,7 +214,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 return TagDisplayDataType.Decimal;
             }
-            set { _dataTypeStringFormat = value; NotifyPropertyChanged("DataTypeStringFormat"); }
+            set { _dataTypeStringFormat = value; NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
         }
 
         private TagDataType _LibNoDaveDataType;
@@ -827,7 +827,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             try
             {
                 plcAddress = plcAddress.Trim();
-                if (plcAddress.Substring(0, 2).ToLower() == "p#")
+                if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
                 {
                     string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
                     BitAddress = 0;

@@ -28,6 +28,8 @@ namespace WPFVarTab
         {
             this._mainWindow = mainWindow;
 
+            this.DataContext = this;
+
             InitializeComponent();
         }
 

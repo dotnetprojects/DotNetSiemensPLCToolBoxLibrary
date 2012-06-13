@@ -1436,7 +1436,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             int anzZeilen = 0;
 
-            List<byte> askBytes=new List<byte>();
+            List<byte> askBytes = new List<byte>();
 
             foreach (PLCTag plcTag in valueList)
             {
@@ -1517,7 +1517,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             byte[] para;
             byte[] data;
 
-            myPDU = new libnodave.PDU();
+            //myPDU = new libnodave.PDU();
             
             para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
             data = new byte[]
