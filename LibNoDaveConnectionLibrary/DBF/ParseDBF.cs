@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,175 +16,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 namespace DotNetSiemensPLCToolBoxLibrary.DBF
 {
     // Read an entire standard DBF file into a DataTable
-    public class ParseDBF
-    {
-        #region DBF-Types
-        // This is the file header for a DBF. We do this special layout with everything
-        // packed so we can read straight from disk into the structure to populate it
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct DBFHeader
-        {
-            public byte version;
-            public byte updateYear;
-            public byte updateMonth;
-            public byte updateDay;
-            public Int32 numRecords;
-            public Int16 headerLen;
-            public Int16 recordLen;
-            public Int16 reserved1;
-            public byte incompleteTrans;
-            public byte encryptionFlag;
-            public Int32 reserved2;
-            public Int64 reserved3;
-            public byte MDX;
-            public byte language;
-            public Int16 reserved4;
-        }
-
-        // This is the field descriptor structure. There will be one of these for each column in the table.
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct FieldDescriptor
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-            public string fieldName;
-            public byte fieldType;  //char
-            public Int32 address;
-            public byte fieldLen;
-            public byte count;
-            public Int16 reserved1;
-            public byte workArea;
-            public Int16 reserved2;
-            public byte flag;
-            [MarshalAs(UnmanagedType.ByValTStr /* Array */, SizeConst = 7)] //Changed Type to Sting, Monotouch Compiler has Problems with Bytearrays when using PtrtoStructure
-            public string /* byte[] */ reserved3;
-            public byte indexFlag;
-
-            public override string ToString()
-            {
-                return "Field-Name: " + fieldName;
-            }
-        }
-        #endregion
-
-        #region DBT-Types
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct DBTHeader
-        {
-            public Int32 nextBlockID;
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 4)]
-            public string /* byte[] */  reserved1;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
-            public string fileName;
-            public byte version; // 0x03 = Version III, 0x00 = Version IV
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 3)]
-            public string /*byte[]*/ reserved3;
-            public Int16 blockLength;
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 490)]
-            public string /*byte[]*/ reserved4;
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]        
-        private struct MemoHeader
-        {
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public byte[] reserved;
-            public Int16 startPosition;
-            public Int32 fieldLength;
-        }
-        #endregion
-
-        #region MDX-Types
-        // This is the file header for a MDX. We do this special layout with everything
-        // packed so we can read straight from disk into the structure to populate it
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct MDXHeader
-        {
-            public byte version;
-            public byte creationYear;
-            public byte creationMonth;
-            public byte creationDay;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-            public string fileName;            
-            public Int16 blockSize;
-            public Int16 blockSizeAdderN;
-            public byte productionIndexflag;
-            public byte numberOfEntrysInTag;
-            public byte lengthOfTag;
-            public byte reserved1;
-            public Int16 numberOfTagsInUse;
-            public Int16 reserved2;
-            public Int32 numberOfPagesInTagfile;
-            public Int32 pointerToFirstfreePage;
-            public Int32 numberOfBlockAviable;
-            public byte updateYear;
-            public byte updateMonth;
-            public byte updateDay;
-            public byte reserved3;
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 496)]
-            public string /*byte[]*/ garbage;                        
-        }
-
-        // This is the tag table header for a MDX. We do this special layout with everything
-        // packed so we can read straight from disk into the structure to populate it
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct MDX4TagTableHeader
-        {
-            public Int32 tagHeaderPageNumber;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-            public string tagName;            
-            public byte keyFormat; //0x00 = Calculated, 0x10 = Data Field
-            public byte forwardTagThreadLeft;
-            public byte forwardTagThreadRight;
-            public byte backwardTagThread;            
-            public byte reserved1;
-            public byte keyType; //C = Character, N = Numerical, B = Byte
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 10)]
-            public string /*byte[]*/ reserved2;            
-        }
-
-        // This is the tag table header for a MDX. We do this special layout with everything
-        // packed so we can read straight from disk into the structure to populate it
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct MDX7TagTableHeader
-        {
-            public Int32 tagHeaderPageNumber;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-            public string tagName;
-            public byte keyFormat; //0x00 = Calculated, 0x10 = Data Field
-            public byte forwardTagThreadLeft;
-            public byte forwardTagThreadRight;
-            public byte backwardTagThread;
-            public byte reserved1;
-            public byte keyType;  //C = Character, N = Numerical, B = Byte
-            [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 10)]
-            public string /*byte[]*/ reserved2;
-        } 
-
-        // This is the tag header for a MDX. We do this special layout with everything
-        // packed so we can read straight from disk into the structure to populate it
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
-        private struct MDXTagHeader //This is the same, like in the normal NDX File??
-        {
-            public Int32 pointerToRootPage;
-            public Int32 numPages;
-            public byte keyFormat;  //00h: Right, Left, DTOC //08h: Descending order //10h: String //20h: Distinct //40h: Unique
-            public byte keyType;
-            public Int16 reserved1;
-            public Int16 indexKeyLength;
-            public Int16 maxNumberOfKeysPage;
-            public Int16 secondaryKeyType;  //00h: DB4: C/N; DB3: C
-                                            //01h: DB4: D  ; DB3: N/D
-            public Int16 indeyKeyItemLength;
-            public Int16 version;
-            public byte reserved3;
-            public byte uniqueFlag;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] 
-            public string KeyString1; // 24..
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 233)]// 512 - 255 - 24
-            public string KeyString2;
-        }
-
-        #endregion
+    public class ParseDBF{
 
         #region DBF-Read-Funtions
         // Read an entire standard DBF file into a DataTable
@@ -197,12 +30,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             long start = DateTime.Now.Ticks;
             DataTable dt = new DataTable();
             BinaryReader recReader;
-            string number;
-            string year;
-            string month;
-            string day;
-            long lDate;
-            long lTime;
             DataRow row;
             int fieldIndex;
 
@@ -262,35 +89,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                 foreach (FieldDescriptor field in fields)
                 {
-                    number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
+                    byte[] NumberByteArray = recReader.ReadBytes(field.fieldLen);
                     switch (field.fieldType)
                     {
-                        case (byte)'N':
-                            if (number.IndexOf(".") > -1)
-                            {
+                        case dBaseType.N:
+                            if (dBaseConverter.N_IsDecimal(NumberByteArray)){
                                 col = new DataColumn(field.fieldName, typeof(decimal));
-                            }
-                            else
-                            {
+                            }else{
                                 col = new DataColumn(field.fieldName, typeof(int));
                             }
                             break;
-                        case (byte)'C':
+                        case dBaseType.C:
                             col = new DataColumn(field.fieldName, typeof(string));
                             break;
-                        case (byte)'T':
+                        case dBaseType.T:
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
-                        case (byte)'D':
+                        case dBaseType.D:
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
-                        case (byte)'L':
+                        case dBaseType.L:
                             col = new DataColumn(field.fieldName, typeof(bool));
                             break;
-                        case (byte)'F':
+                        case dBaseType.F:
                             col = new DataColumn(field.fieldName, typeof(Double));
                             break;
-                        case (byte)'M':
+                        case dBaseType.M:
                             //Field Type Memo...
                             col = new DataColumn(field.fieldName, typeof(byte[]));
                             break;
@@ -331,102 +155,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     {
                         switch (field.fieldType)
                         {
-                            case (byte)'N':  // Number
-                                number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
-                                if (IsNumber(number))
-                                {
-                                    if (number.IndexOf(".") > -1)
-                                    {
-                                        row[fieldIndex + 1] = decimal.Parse(number);
-                                    }
-                                    else
-                                    {
-                                        row[fieldIndex + 1] = int.Parse(number);
-                                    }
+                            case dBaseType.N:  // Number
+                                byte[] NumberBytes = recReader.ReadBytes(field.fieldLen);
+                                if (dBaseConverter.N_IsDecimal(NumberBytes)) {
+                                    row[fieldIndex + 1] = dBaseConverter.N_ToDecimal(NumberBytes);
+                                } else {
+                                    row[fieldIndex + 1] = dBaseConverter.N_ToInt(NumberBytes);
                                 }
-                                else
-                                {
-                                    row[fieldIndex + 1] = 0;
-                                }
-
                                 break;
 
-                            case (byte)'C': // String
-                                {
-
-                                    //row[fieldIndex + 1] = System.Text.Encoding.Default.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-#if !IPHONE            
-									row[fieldIndex + 1] = System.Text.Encoding.GetEncoding("Windows-1252").GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-#else
-                                    row[fieldIndex + 1] = System.Text.Encoding.Default.GetString(recReader.ReadBytes(field.fieldLen)).TrimEnd(new char[] { ' ' });
-#endif
+                            case dBaseType.C: // String
+							    row[fieldIndex + 1] = dBaseConverter.C_ToString( recReader.ReadBytes(field.fieldLen));
 								break;
-                                }
-                            case (byte)'M': // Memo
-                                {
-                                    int intRef;
-                                    
-                                    String strRef = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen)).Trim();
-                                    if (Int32.TryParse(strRef, out intRef))
-                                    {
-                                        row[fieldIndex + 1] = ReadMemoBlock(intRef);
-                                    }
-                                    else
-                                        row[fieldIndex + 1] = new byte[0];
-                                    break;
-                                }
 
-
-                            case (byte)'D': // Date (YYYYMMDD)
-                                year = Encoding.ASCII.GetString(recReader.ReadBytes(4));
-                                month = Encoding.ASCII.GetString(recReader.ReadBytes(2));
-                                day = Encoding.ASCII.GetString(recReader.ReadBytes(2));
-                                row[fieldIndex + 1] = System.DBNull.Value;
-                                try
-                                {
-                                    if (IsNumber(year) && IsNumber(month) && IsNumber(day))
-                                    {
-                                        if ((Int32.Parse(year) > 1900))
-                                        {
-                                            row[fieldIndex] = new DateTime(Int32.Parse(year), Int32.Parse(month), Int32.Parse(day));
-                                        }
-                                    }
-                                }
-                                catch
-                                { }
-
+                            case dBaseType.M: // Memo
+                                row[fieldIndex + 1] = ReadMemoBlock(dBaseConverter.N_ToInt(recReader.ReadBytes(field.fieldLen)));
                                 break;
 
-                            case (byte)'T': // Timestamp, 8 bytes - two integers, first for date, second for time
-                                // Date is the number of days since 01/01/4713 BC (Julian Days)
-                                // Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L (Milliseconds since midnight)
-                                lDate = recReader.ReadInt32();
-                                lTime = recReader.ReadInt32() * 10000L;
-                                row[fieldIndex + 1] = JulianToDateTime(lDate).AddTicks(lTime);
+                            case dBaseType.D: // Date (YYYYMMDD)
+                                DateTime DTFromFile = dBaseConverter.D_ToDateTime(recReader.ReadBytes(8));
+                                if (DTFromFile == DateTime.MinValue) {
+                                    row[fieldIndex + 1] = System.DBNull.Value;
+                                } else {
+                                    row[fieldIndex] = DTFromFile;
+                                }
                                 break;
 
-                            case (byte)'L': // Boolean (Y/N)
-                                if ('Y' == recReader.ReadByte())
-                                {
-                                    row[fieldIndex + 1] = true;
-                                }
-                                else
-                                {
-                                    row[fieldIndex + 1] = false;
-                                }
-
+                            case dBaseType.T:
+                                row[fieldIndex + 1] = dBaseConverter.T_ToDateTime(recReader.ReadBytes(8));
                                 break;
 
-                            case (byte)'F':
-                                number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
-                                if (IsNumber(number))
-                                {
-                                    row[fieldIndex + 1] = double.Parse(number);
-                                }
-                                else
-                                {
-                                    row[fieldIndex + 1] = 0.0F;
-                                }
+                            case dBaseType.L: // Boolean (Y/N)
+                                row[fieldIndex + 1] = dBaseConverter.L_ToBool(recReader.ReadByte());
+                                break;
+
+                            case dBaseType.F:
+                                row[fieldIndex + 1] = dBaseConverter.F_ToDouble(recReader.ReadBytes(field.fieldLen));
                                 break;
                         }
                         fieldIndex++;
@@ -472,80 +236,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         //this list can only contain
 
         #region MDX-Functions
-        private static void updateMDXFile(string dbfFile)
-        {
+
+        private static void updateMDXFile(string dbfFile){
 
         }
 
-
-
         private static void readMDXFile(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
-            string mdxFile =
-                Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".mdx";
-
-            if (_ziphelper.FileExists(mdxFile))
-            {
-                BinaryReader mdxReader = null;
-                try
-                {
-                    byte[] buffer;
-                    GCHandle handle;
-                    //mdxReader = new BinaryReader(new FileStream(mdxFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                    //mdxReader = new BinaryReader(ZipHelper.GetReadStream(zipfile, mdxFile));
-
-                    Stream tmpStream = _ziphelper.GetReadStream(mdxFile);
-                    mdxReader = new BinaryReader(tmpStream);
-                    byte[] completeBuffer = mdxReader.ReadBytes((int)_ziphelper.GetStreamLength(mdxFile, tmpStream));
-                    mdxReader.Close();
-                    mdxReader = new BinaryReader(new MemoryStream(completeBuffer));
-
-                    // Marshall the header into a MDXHeader structure
-                    buffer = mdxReader.ReadBytes(Marshal.SizeOf(typeof(MDXHeader)));
-                    handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                    MDXHeader header = (MDXHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(MDXHeader));
-                    handle.Free();
-
-                    //mdxReader.BaseStream.Position = 1024;
-
-                    List<MDX4TagTableHeader> tagtableheaders = new List<MDX4TagTableHeader>(header.numberOfEntrysInTag);
-                    for (int n = 0; n < header.numberOfTagsInUse ; n++)
-                    {
-                        // Marshall the header into a MDXHeader structure
-                        buffer = mdxReader.ReadBytes(header.lengthOfTag);                        
-                        handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                        MDX4TagTableHeader tagtableheader = (MDX4TagTableHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (MDX4TagTableHeader));                        
-                        handle.Free();
-
-                        tagtableheaders.Add(tagtableheader);
-                    }
-
-                    List<MDXTagHeader> tagheaders = new List<MDXTagHeader>(header.numberOfEntrysInTag);
-                    for (int n = 0; n < header.numberOfTagsInUse ; n++)
-                    {
-                        // Marshall the header into a MDXHeader structure
-                        mdxReader.BaseStream.Position = tagtableheaders[n].tagHeaderPageNumber*0x200;
-                        buffer = mdxReader.ReadBytes(Marshal.SizeOf(typeof(MDXTagHeader)));
-                        handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                        MDXTagHeader tagheader = (MDXTagHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(MDXTagHeader));
-                        handle.Free();
-
-                        tagheaders.Add(tagheader);
-                    }
+            string mdxFile = Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".mdx";
 
 
+            //TEST MDXFile
+            MDXFile mdxFileObject = new MDXFile(dbfFile, _ziphelper, DirSeperator, true);
 
-                    //And now, read the Values from the rows...
-
-                    //First value is the number of entrys,
-                    //indexkeylength, is the length of an entry, but + so many that it can be divided by 4!
-                    
-                }
-                finally
-                {
-                    mdxReader.Close();
-                }
-            }
         }
 
         //This function should wite a MDX file with the specified indexes.!
@@ -757,10 +460,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 }
             }
         }
-        private static byte[] ReadMemoBlock(int recordnumber)
-        {
+        private static byte[] ReadMemoBlock(int recordnumber){
             if (recordnumber == 0 || dbtReader == null)
-                return null;
+                return new byte[0];
 
             // Position reader at beginning of current block
             dbtReader.BaseStream.Position = memoBlockLength * recordnumber;
@@ -778,69 +480,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             return dbtReader.ReadBytes(bytesToRead);
         }
         #endregion
-
-        
-        #region Helper Functions        
-        /// <summary>
-        /// Simple function to test is a string can be parsed. There may be a better way, but this works
-        /// If you port this to .NET 2.0, use the new TryParse methods instead of this        
-        /// </summary>
-        /// <param name="number">string to test for parsing</param>
-        /// <returns>true if string can be parsed</returns>
-        public static bool IsNumber(string numberString)
-        {
-            Decimal dec;
-            return decimal.TryParse(numberString, out dec);
-
-            char[] numbers = numberString.ToCharArray();
-            int number_count = 0;
-            int point_count = 0;
-            int space_count = 0;
-
-            foreach (char number in numbers)
-            {
-                if ((number >= 48 && number <= 57))
-                {
-                    number_count += 1;
-                }
-                else if (number == 46)
-                {
-                    point_count += 1;
-                }
-                else if (number == 32)
-                {
-                    space_count += 1;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return (number_count > 0 && point_count < 2);
-        }        
-
-        /// <summary>
-        /// Convert a Julian Date to a .NET DateTime structure
-        /// Implemented from pseudo code at http://en.wikipedia.org/wiki/Julian_day
-        /// </summary>
-        /// <param name="lJDN">Julian Date to convert (days since 01/01/4713 BC)</param>
-        /// <returns>DateTime</returns>
-        private static DateTime JulianToDateTime(long lJDN)
-        {
-            double p = Convert.ToDouble(lJDN);
-            double s1 = p + 68569;
-            double n = Math.Floor(4 * s1 / 146097);
-            double s2 = s1 - Math.Floor((146097 * n + 3) / 4);
-            double i = Math.Floor(4000 * (s2 + 1) / 1461001);
-            double s3 = s2 - Math.Floor(1461 * i / 4) + 31;
-            double q = Math.Floor(80 * s3 / 2447);
-            double d = s3 - Math.Floor(2447 * q / 80);
-            double s4 = Math.Floor(q / 11);
-            double m = q + 2 - 12 * s4;
-            double j = 100 * (n - 49) + i + s4;
-            return new DateTime(Convert.ToInt32(j), Convert.ToInt32(m), Convert.ToInt32(d));
-        }
-        #endregion
     }
+
+    
 }
