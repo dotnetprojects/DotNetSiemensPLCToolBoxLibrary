@@ -2210,7 +2210,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int maxWriteSize = _dc.getMaxPDULen() - 32; //32 = Header
                     int gesWriteSize = 0;
 
-                    int maxWriteVar = 12; //Is this limit reality? Maybe this is somewhere in the system Data...
+                    //int maxWriteVar = 12; //Is this limit reality? Maybe this is somewhere in the system Data...
+                    int tagHeaderSize = 12 + 4; //12 bytes for the adress part, and 4 bytes header in the data part
                     int anzWriteVar = 0;
 
                     int splitPos = 0;
@@ -2228,17 +2229,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         var currValSize = currVal._internalGetSize();
 
                         if (gesWriteSize < maxWriteSize && //Maximale Byte Anzahl noch nicht erreicht
-                            anzWriteVar < maxWriteVar && ( //maximale Variablenanzahl noch nicht erreicht                        
+                            /*anzWriteVar < maxWriteVar &&*/ ( //maximale Variablenanzahl noch nicht erreicht                        
                                                          splitPos != 0 || //Value ist schon gesplitted
                                                          !currVal.DontSplitValue || //Value Kann gesplitted Werden
-                                                         currValSize + 12 > maxWriteSize || //Value ist größer als ein request
-                                                         gesWriteSize + currValSize + 12 < maxWriteSize)) //Value passt noch rein
+                                                         currValSize + tagHeaderSize > maxWriteSize || //Value ist größer als ein request
+                                                         gesWriteSize + currValSize + tagHeaderSize < maxWriteSize)) //Value passt noch rein
                         {
                             //Add Var to Request...
 
 
                             //Wieviel Bytes hinzufügen? Den ganzen Tag oder einen Teil
-                            var maxCurrAddSize = maxWriteSize - 12 - gesWriteSize;
+                            var maxCurrAddSize = maxWriteSize - tagHeaderSize - gesWriteSize;
 
                             //Kompletter Value passt noch rein...
                             if (currValSize - splitPos <= maxCurrAddSize)
@@ -2253,7 +2254,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
                                     else
                                         myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, currValSize, wrt);
-                                    gesWriteSize += 12 + wrt.Length;
+                                    gesWriteSize += tagHeaderSize + wrt.Length;
                                 }
                                     //Wert war gesplittet
                                 else
@@ -2267,7 +2268,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
                                     else
                                         myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, wrt.Length, wrt);
-                                    gesWriteSize += 12 + wrt.Length;
+                                    gesWriteSize += tagHeaderSize + wrt.Length;
 
                                 }
 
@@ -2287,7 +2288,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
                                 else
                                     myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.LibNoDaveDataSource), currVal.DatablockNumber, currVal.ByteAddress + splitPos, wrt.Length, wrt);
-                                gesWriteSize += 12 + wrt.Length;
+                                gesWriteSize += tagHeaderSize + wrt.Length;
 
                                 splitPos = splitPos + maxCurrAddSize;
                                 anzWriteVar++;
