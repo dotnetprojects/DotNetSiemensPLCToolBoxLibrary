@@ -115,6 +115,7 @@ namespace WPFVarTab
         private void cmdConfigConnection_Click(object sender, RoutedEventArgs e)
         {
             Configuration.ShowConfiguration("JFK-WPFVarTab Connection 1", false);
+            BuildConnectionList();
         }
 
         
@@ -346,6 +347,12 @@ namespace WPFVarTab
                 myXml.Serialize(jj, varTabRows);
                 jj.Close();
             }
+        }
+
+        private void ThisWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (BackgroundReadingThread != null)
+                BackgroundReadingThread.Abort();
         }
     }
 }

@@ -383,8 +383,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     _controlvalue = value;
                     _oldvalue = null;
-                    NotifyPropertyChanged("Controlvalue");                        
+                    NotifyPropertyChanged("Controlvalue");
+                    NotifyPropertyChanged("ControlValueAsString");    
                 }
+            }
+        }
+
+        public String ControlValueAsString
+        {
+            get { return Controlvalue != null ? Controlvalue.ToString() : null; }
+            set
+            {
+                ParseControlValueFromString((String)value);
+                NotifyPropertyChanged("ControlValueAsString");
             }
         }
 

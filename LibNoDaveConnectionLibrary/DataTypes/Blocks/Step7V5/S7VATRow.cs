@@ -39,7 +39,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (value == null || value.ToString().Trim() == "")
                     LibNoDaveValue = null;
                 else if (value.StartsWith("//"))
                 {
@@ -101,11 +101,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        [XmlIgnore]
+        public string ControlValueAsString
+        {
+            get
+            {
+                if (_libNoDaveValue != null)
+                    return _libNoDaveValue.ControlValueAsString;
+                return null;
+            }
+            set
+            {
+                if (_libNoDaveValue != null)
+                    _libNoDaveValue.ControlValueAsString = value;
+
+                NotifyInternalPLCTagPropertyChanges();
+            }
+        }
+
         private void NotifyInternalPLCTagPropertyChanges()
         {
             NotifyPropertyChanged("S7FormatAddress");
             NotifyPropertyChanged("LibNoDaveDataType");
             NotifyPropertyChanged("DataTypeStringFormat");
+            NotifyPropertyChanged("ControlValueAsString");
         }
 
         #endregion
