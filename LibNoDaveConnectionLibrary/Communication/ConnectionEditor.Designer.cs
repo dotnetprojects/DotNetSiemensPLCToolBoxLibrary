@@ -92,24 +92,21 @@
             // 
             // lstConnectionList
             // 
-            resources.ApplyResources(this.lstConnectionList, "lstConnectionList");
             this.lstConnectionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.lstConnectionList.FormattingEnabled = true;
+            resources.ApplyResources(this.lstConnectionList, "lstConnectionList");
             this.lstConnectionList.Name = "lstConnectionList";
-            this.toolTip.SetToolTip(this.lstConnectionList, resources.GetString("lstConnectionList.ToolTip"));
             this.lstConnectionList.SelectedIndexChanged += new System.EventHandler(this.lstConnectionList_SelectedIndexChanged);
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.toolTip.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // cmdConnectionAdd
             // 
             resources.ApplyResources(this.cmdConnectionAdd, "cmdConnectionAdd");
             this.cmdConnectionAdd.Name = "cmdConnectionAdd";
-            this.toolTip.SetToolTip(this.cmdConnectionAdd, resources.GetString("cmdConnectionAdd.ToolTip"));
             this.cmdConnectionAdd.UseVisualStyleBackColor = true;
             this.cmdConnectionAdd.Click += new System.EventHandler(this.cmdConnectionAdd_Click);
             // 
@@ -117,118 +114,101 @@
             // 
             resources.ApplyResources(this.cmdConnectionDelete, "cmdConnectionDelete");
             this.cmdConnectionDelete.Name = "cmdConnectionDelete";
-            this.toolTip.SetToolTip(this.cmdConnectionDelete, resources.GetString("cmdConnectionDelete.ToolTip"));
             this.cmdConnectionDelete.UseVisualStyleBackColor = true;
             this.cmdConnectionDelete.Click += new System.EventHandler(this.cmdConnectionDelete_Click);
             // 
             // lstLIBNODAVEConnectionType
             // 
-            resources.ApplyResources(this.lstLIBNODAVEConnectionType, "lstLIBNODAVEConnectionType");
             this.lstLIBNODAVEConnectionType.BackColor = System.Drawing.Color.White;
             this.lstLIBNODAVEConnectionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstLIBNODAVEConnectionType, "lstLIBNODAVEConnectionType");
             this.lstLIBNODAVEConnectionType.FormattingEnabled = true;
             this.lstLIBNODAVEConnectionType.Name = "lstLIBNODAVEConnectionType";
-            this.toolTip.SetToolTip(this.lstLIBNODAVEConnectionType, resources.GetString("lstLIBNODAVEConnectionType.ToolTip"));
             this.lstLIBNODAVEConnectionType.SelectedIndexChanged += new System.EventHandler(this.lstLIBNODAVEConnectionType_SelectedIndexChanged);
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.toolTip.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // lblLIBNODAVEEntryPoint
             // 
             resources.ApplyResources(this.lblLIBNODAVEEntryPoint, "lblLIBNODAVEEntryPoint");
             this.lblLIBNODAVEEntryPoint.Name = "lblLIBNODAVEEntryPoint";
-            this.toolTip.SetToolTip(this.lblLIBNODAVEEntryPoint, resources.GetString("lblLIBNODAVEEntryPoint.ToolTip"));
             // 
             // txtLIBNODAVECPURack
             // 
             resources.ApplyResources(this.txtLIBNODAVECPURack, "txtLIBNODAVECPURack");
             this.txtLIBNODAVECPURack.Name = "txtLIBNODAVECPURack";
-            this.toolTip.SetToolTip(this.txtLIBNODAVECPURack, resources.GetString("txtLIBNODAVECPURack.ToolTip"));
             this.txtLIBNODAVECPURack.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVECPURack
             // 
             resources.ApplyResources(this.lblLIBNODAVECPURack, "lblLIBNODAVECPURack");
             this.lblLIBNODAVECPURack.Name = "lblLIBNODAVECPURack";
-            this.toolTip.SetToolTip(this.lblLIBNODAVECPURack, resources.GetString("lblLIBNODAVECPURack.ToolTip"));
             // 
             // txtLIBNODAVECPUSlot
             // 
             resources.ApplyResources(this.txtLIBNODAVECPUSlot, "txtLIBNODAVECPUSlot");
             this.txtLIBNODAVECPUSlot.Name = "txtLIBNODAVECPUSlot";
-            this.toolTip.SetToolTip(this.txtLIBNODAVECPUSlot, resources.GetString("txtLIBNODAVECPUSlot.ToolTip"));
             this.txtLIBNODAVECPUSlot.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVECPUSlot
             // 
             resources.ApplyResources(this.lblLIBNODAVECPUSlot, "lblLIBNODAVECPUSlot");
             this.lblLIBNODAVECPUSlot.Name = "lblLIBNODAVECPUSlot";
-            this.toolTip.SetToolTip(this.lblLIBNODAVECPUSlot, resources.GetString("lblLIBNODAVECPUSlot.ToolTip"));
             // 
             // txtLIBNODAVECPUIP
             // 
             resources.ApplyResources(this.txtLIBNODAVECPUIP, "txtLIBNODAVECPUIP");
             this.txtLIBNODAVECPUIP.Name = "txtLIBNODAVECPUIP";
-            this.toolTip.SetToolTip(this.txtLIBNODAVECPUIP, resources.GetString("txtLIBNODAVECPUIP.ToolTip"));
             this.txtLIBNODAVECPUIP.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVECPUIP
             // 
             resources.ApplyResources(this.lblLIBNODAVECPUIP, "lblLIBNODAVECPUIP");
             this.lblLIBNODAVECPUIP.Name = "lblLIBNODAVECPUIP";
-            this.toolTip.SetToolTip(this.lblLIBNODAVECPUIP, resources.GetString("lblLIBNODAVECPUIP.ToolTip"));
             // 
             // lblLIBNODAVELokalCOMPort
             // 
             resources.ApplyResources(this.lblLIBNODAVELokalCOMPort, "lblLIBNODAVELokalCOMPort");
             this.lblLIBNODAVELokalCOMPort.Name = "lblLIBNODAVELokalCOMPort";
-            this.toolTip.SetToolTip(this.lblLIBNODAVELokalCOMPort, resources.GetString("lblLIBNODAVELokalCOMPort.ToolTip"));
             this.lblLIBNODAVELokalCOMPort.Click += new System.EventHandler(this.lblLIBNODAVELokalCOMPort_Click);
             // 
             // txtLIBNODAVELokalMPI
             // 
             resources.ApplyResources(this.txtLIBNODAVELokalMPI, "txtLIBNODAVELokalMPI");
             this.txtLIBNODAVELokalMPI.Name = "txtLIBNODAVELokalMPI";
-            this.toolTip.SetToolTip(this.txtLIBNODAVELokalMPI, resources.GetString("txtLIBNODAVELokalMPI.ToolTip"));
             this.txtLIBNODAVELokalMPI.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVELokalMPI
             // 
             resources.ApplyResources(this.lblLIBNODAVELokalMPI, "lblLIBNODAVELokalMPI");
             this.lblLIBNODAVELokalMPI.Name = "lblLIBNODAVELokalMPI";
-            this.toolTip.SetToolTip(this.lblLIBNODAVELokalMPI, resources.GetString("lblLIBNODAVELokalMPI.ToolTip"));
             // 
             // txtLIBNODAVECPUMPI
             // 
             resources.ApplyResources(this.txtLIBNODAVECPUMPI, "txtLIBNODAVECPUMPI");
             this.txtLIBNODAVECPUMPI.Name = "txtLIBNODAVECPUMPI";
-            this.toolTip.SetToolTip(this.txtLIBNODAVECPUMPI, resources.GetString("txtLIBNODAVECPUMPI.ToolTip"));
             this.txtLIBNODAVECPUMPI.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVECPUMPI
             // 
             resources.ApplyResources(this.lblLIBNODAVECPUMPI, "lblLIBNODAVECPUMPI");
             this.lblLIBNODAVECPUMPI.Name = "lblLIBNODAVECPUMPI";
-            this.toolTip.SetToolTip(this.lblLIBNODAVECPUMPI, resources.GetString("lblLIBNODAVECPUMPI.ToolTip"));
             // 
             // lstLIBNODAVEBusSpeed
             // 
-            resources.ApplyResources(this.lstLIBNODAVEBusSpeed, "lstLIBNODAVEBusSpeed");
             this.lstLIBNODAVEBusSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstLIBNODAVEBusSpeed, "lstLIBNODAVEBusSpeed");
             this.lstLIBNODAVEBusSpeed.FormattingEnabled = true;
             this.lstLIBNODAVEBusSpeed.Name = "lstLIBNODAVEBusSpeed";
-            this.toolTip.SetToolTip(this.lstLIBNODAVEBusSpeed, resources.GetString("lstLIBNODAVEBusSpeed.ToolTip"));
             this.lstLIBNODAVEBusSpeed.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
             // 
             // cmdOK
             // 
             resources.ApplyResources(this.cmdOK, "cmdOK");
             this.cmdOK.Name = "cmdOK";
-            this.toolTip.SetToolTip(this.cmdOK, resources.GetString("cmdOK.ToolTip"));
             this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
@@ -236,39 +216,34 @@
             // 
             resources.ApplyResources(this.cmdSave, "cmdSave");
             this.cmdSave.Name = "cmdSave";
-            this.toolTip.SetToolTip(this.cmdSave, resources.GetString("cmdSave.ToolTip"));
             this.cmdSave.UseVisualStyleBackColor = true;
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // lblConnectionName
             // 
-            resources.ApplyResources(this.lblConnectionName, "lblConnectionName");
             this.lblConnectionName.BackColor = System.Drawing.Color.White;
             this.lblConnectionName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblConnectionName, "lblConnectionName");
             this.lblConnectionName.Name = "lblConnectionName";
-            this.toolTip.SetToolTip(this.lblConnectionName, resources.GetString("lblConnectionName.ToolTip"));
             this.lblConnectionName.Click += new System.EventHandler(this.lblConnectionName_Click);
             // 
             // lstLIBNODAVELokalCOMPort
             // 
-            resources.ApplyResources(this.lstLIBNODAVELokalCOMPort, "lstLIBNODAVELokalCOMPort");
             this.lstLIBNODAVELokalCOMPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstLIBNODAVELokalCOMPort, "lstLIBNODAVELokalCOMPort");
             this.lstLIBNODAVELokalCOMPort.FormattingEnabled = true;
             this.lstLIBNODAVELokalCOMPort.Name = "lstLIBNODAVELokalCOMPort";
-            this.toolTip.SetToolTip(this.lstLIBNODAVELokalCOMPort, resources.GetString("lstLIBNODAVELokalCOMPort.ToolTip"));
             this.lstLIBNODAVELokalCOMPort.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVEBusSpeed
             // 
             resources.ApplyResources(this.lblLIBNODAVEBusSpeed, "lblLIBNODAVEBusSpeed");
             this.lblLIBNODAVEBusSpeed.Name = "lblLIBNODAVEBusSpeed";
-            this.toolTip.SetToolTip(this.lblLIBNODAVEBusSpeed, resources.GetString("lblLIBNODAVEBusSpeed.ToolTip"));
             // 
             // cmdUndo
             // 
             resources.ApplyResources(this.cmdUndo, "cmdUndo");
             this.cmdUndo.Name = "cmdUndo";
-            this.toolTip.SetToolTip(this.cmdUndo, resources.GetString("cmdUndo.ToolTip"));
             this.cmdUndo.UseVisualStyleBackColor = true;
             this.cmdUndo.Click += new System.EventHandler(this.cmdUndo_Click);
             // 
@@ -310,29 +285,26 @@
             // 
             resources.ApplyResources(this.btnConfigEntryPoint, "btnConfigEntryPoint");
             this.btnConfigEntryPoint.Name = "btnConfigEntryPoint";
-            this.toolTip.SetToolTip(this.btnConfigEntryPoint, resources.GetString("btnConfigEntryPoint.ToolTip"));
             this.btnConfigEntryPoint.UseVisualStyleBackColor = true;
             this.btnConfigEntryPoint.Click += new System.EventHandler(this.btnConfigEntryPoint_Click);
             // 
             // lstListEntryPoints
             // 
-            resources.ApplyResources(this.lstListEntryPoints, "lstListEntryPoints");
             this.lstListEntryPoints.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstListEntryPoints, "lstListEntryPoints");
             this.lstListEntryPoints.FormattingEnabled = true;
             this.lstListEntryPoints.Name = "lstListEntryPoints";
-            this.toolTip.SetToolTip(this.lstListEntryPoints, resources.GetString("lstListEntryPoints.ToolTip"));
             this.lstListEntryPoints.SelectedIndexChanged += new System.EventHandler(this.lstListEntryPoints_SelectedIndexChanged);
             // 
             // lblLIBNODAVELokalComSpeed
             // 
             resources.ApplyResources(this.lblLIBNODAVELokalComSpeed, "lblLIBNODAVELokalComSpeed");
             this.lblLIBNODAVELokalComSpeed.Name = "lblLIBNODAVELokalComSpeed";
-            this.toolTip.SetToolTip(this.lblLIBNODAVELokalComSpeed, resources.GetString("lblLIBNODAVELokalComSpeed.ToolTip"));
             // 
             // lstLIBNODAVELokalComSpeed
             // 
-            resources.ApplyResources(this.lstLIBNODAVELokalComSpeed, "lstLIBNODAVELokalComSpeed");
             this.lstLIBNODAVELokalComSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstLIBNODAVELokalComSpeed, "lstLIBNODAVELokalComSpeed");
             this.lstLIBNODAVELokalComSpeed.FormattingEnabled = true;
             this.lstLIBNODAVELokalComSpeed.Items.AddRange(new object[] {
             resources.GetString("lstLIBNODAVELokalComSpeed.Items"),
@@ -354,46 +326,40 @@
             resources.GetString("lstLIBNODAVELokalComSpeed.Items16"),
             resources.GetString("lstLIBNODAVELokalComSpeed.Items17")});
             this.lstLIBNODAVELokalComSpeed.Name = "lstLIBNODAVELokalComSpeed";
-            this.toolTip.SetToolTip(this.lstLIBNODAVELokalComSpeed, resources.GetString("lstLIBNODAVELokalComSpeed.ToolTip"));
             this.lstLIBNODAVELokalComSpeed.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVELokalComParity
             // 
             resources.ApplyResources(this.lblLIBNODAVELokalComParity, "lblLIBNODAVELokalComParity");
             this.lblLIBNODAVELokalComParity.Name = "lblLIBNODAVELokalComParity";
-            this.toolTip.SetToolTip(this.lblLIBNODAVELokalComParity, resources.GetString("lblLIBNODAVELokalComParity.ToolTip"));
             // 
             // lstLIBNODAVELokalComParity
             // 
-            resources.ApplyResources(this.lstLIBNODAVELokalComParity, "lstLIBNODAVELokalComParity");
             this.lstLIBNODAVELokalComParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstLIBNODAVELokalComParity, "lstLIBNODAVELokalComParity");
             this.lstLIBNODAVELokalComParity.FormattingEnabled = true;
             this.lstLIBNODAVELokalComParity.Items.AddRange(new object[] {
             resources.GetString("lstLIBNODAVELokalComParity.Items"),
             resources.GetString("lstLIBNODAVELokalComParity.Items1"),
             resources.GetString("lstLIBNODAVELokalComParity.Items2")});
             this.lstLIBNODAVELokalComParity.Name = "lstLIBNODAVELokalComParity";
-            this.toolTip.SetToolTip(this.lstLIBNODAVELokalComParity, resources.GetString("lstLIBNODAVELokalComParity.ToolTip"));
             this.lstLIBNODAVELokalComParity.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
             // 
             // txtRoutingDestination
             // 
             resources.ApplyResources(this.txtRoutingDestination, "txtRoutingDestination");
             this.txtRoutingDestination.Name = "txtRoutingDestination";
-            this.toolTip.SetToolTip(this.txtRoutingDestination, resources.GetString("txtRoutingDestination.ToolTip"));
             this.txtRoutingDestination.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblRoutingDestination
             // 
             resources.ApplyResources(this.lblRoutingDestination, "lblRoutingDestination");
             this.lblRoutingDestination.Name = "lblRoutingDestination";
-            this.toolTip.SetToolTip(this.lblRoutingDestination, resources.GetString("lblRoutingDestination.ToolTip"));
             // 
             // chkRouting
             // 
             resources.ApplyResources(this.chkRouting, "chkRouting");
             this.chkRouting.Name = "chkRouting";
-            this.toolTip.SetToolTip(this.chkRouting, resources.GetString("chkRouting.ToolTip"));
             this.chkRouting.UseVisualStyleBackColor = true;
             this.chkRouting.CheckedChanged += new System.EventHandler(this.ValueChanged);
             // 
@@ -401,58 +367,49 @@
             // 
             resources.ApplyResources(this.txtRoutingSubnetFirst, "txtRoutingSubnetFirst");
             this.txtRoutingSubnetFirst.Name = "txtRoutingSubnetFirst";
-            this.toolTip.SetToolTip(this.txtRoutingSubnetFirst, resources.GetString("txtRoutingSubnetFirst.ToolTip"));
             this.txtRoutingSubnetFirst.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblRoutingSubnet
             // 
             resources.ApplyResources(this.lblRoutingSubnet, "lblRoutingSubnet");
             this.lblRoutingSubnet.Name = "lblRoutingSubnet";
-            this.toolTip.SetToolTip(this.lblRoutingSubnet, resources.GetString("lblRoutingSubnet.ToolTip"));
             // 
             // txtRoutingSubnetSecond
             // 
             resources.ApplyResources(this.txtRoutingSubnetSecond, "txtRoutingSubnetSecond");
             this.txtRoutingSubnetSecond.Name = "txtRoutingSubnetSecond";
-            this.toolTip.SetToolTip(this.txtRoutingSubnetSecond, resources.GetString("txtRoutingSubnetSecond.ToolTip"));
             this.txtRoutingSubnetSecond.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblRoutingMinus
             // 
             resources.ApplyResources(this.lblRoutingMinus, "lblRoutingMinus");
             this.lblRoutingMinus.Name = "lblRoutingMinus";
-            this.toolTip.SetToolTip(this.lblRoutingMinus, resources.GetString("lblRoutingMinus.ToolTip"));
             // 
             // txtRoutingRack
             // 
             resources.ApplyResources(this.txtRoutingRack, "txtRoutingRack");
             this.txtRoutingRack.Name = "txtRoutingRack";
-            this.toolTip.SetToolTip(this.txtRoutingRack, resources.GetString("txtRoutingRack.ToolTip"));
             this.txtRoutingRack.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblRoutingRack
             // 
             resources.ApplyResources(this.lblRoutingRack, "lblRoutingRack");
             this.lblRoutingRack.Name = "lblRoutingRack";
-            this.toolTip.SetToolTip(this.lblRoutingRack, resources.GetString("lblRoutingRack.ToolTip"));
             // 
             // txtRoutingSlot
             // 
             resources.ApplyResources(this.txtRoutingSlot, "txtRoutingSlot");
             this.txtRoutingSlot.Name = "txtRoutingSlot";
-            this.toolTip.SetToolTip(this.txtRoutingSlot, resources.GetString("txtRoutingSlot.ToolTip"));
             this.txtRoutingSlot.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblRoutingSlot
             // 
             resources.ApplyResources(this.lblRoutingSlot, "lblRoutingSlot");
             this.lblRoutingSlot.Name = "lblRoutingSlot";
-            this.toolTip.SetToolTip(this.lblRoutingSlot, resources.GetString("lblRoutingSlot.ToolTip"));
             this.lblRoutingSlot.Click += new System.EventHandler(this.lblRoutingSlot_Click);
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.chkRouting);
             this.groupBox1.Controls.Add(this.txtRoutingDestination);
             this.groupBox1.Controls.Add(this.txtRoutingRack);
@@ -464,55 +421,48 @@
             this.groupBox1.Controls.Add(this.lblRoutingSlot);
             this.groupBox1.Controls.Add(this.lblRoutingSubnet);
             this.groupBox1.Controls.Add(this.lblRoutingMinus);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            this.toolTip.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
             // 
             // lblS7OnlineDevice
             // 
             resources.ApplyResources(this.lblS7OnlineDevice, "lblS7OnlineDevice");
             this.lblS7OnlineDevice.Name = "lblS7OnlineDevice";
-            this.toolTip.SetToolTip(this.lblS7OnlineDevice, resources.GetString("lblS7OnlineDevice.ToolTip"));
             // 
             // txtLIBNODAVECPUPort
             // 
             resources.ApplyResources(this.txtLIBNODAVECPUPort, "txtLIBNODAVECPUPort");
             this.txtLIBNODAVECPUPort.Name = "txtLIBNODAVECPUPort";
-            this.toolTip.SetToolTip(this.txtLIBNODAVECPUPort, resources.GetString("txtLIBNODAVECPUPort.ToolTip"));
             this.txtLIBNODAVECPUPort.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // lblLIBNODAVECPUPort
             // 
             resources.ApplyResources(this.lblLIBNODAVECPUPort, "lblLIBNODAVECPUPort");
             this.lblLIBNODAVECPUPort.Name = "lblLIBNODAVECPUPort";
-            this.toolTip.SetToolTip(this.lblLIBNODAVECPUPort, resources.GetString("lblLIBNODAVECPUPort.ToolTip"));
             // 
             // lblTimeoutDescr
             // 
             resources.ApplyResources(this.lblTimeoutDescr, "lblTimeoutDescr");
             this.lblTimeoutDescr.Name = "lblTimeoutDescr";
-            this.toolTip.SetToolTip(this.lblTimeoutDescr, resources.GetString("lblTimeoutDescr.ToolTip"));
             // 
             // lblTimeoutIPConnectDescr
             // 
             resources.ApplyResources(this.lblTimeoutIPConnectDescr, "lblTimeoutIPConnectDescr");
             this.lblTimeoutIPConnectDescr.Name = "lblTimeoutIPConnectDescr";
-            this.toolTip.SetToolTip(this.lblTimeoutIPConnectDescr, resources.GetString("lblTimeoutIPConnectDescr.ToolTip"));
             // 
             // cmdTest
             // 
             resources.ApplyResources(this.cmdTest, "cmdTest");
             this.cmdTest.Name = "cmdTest";
-            this.toolTip.SetToolTip(this.cmdTest, resources.GetString("cmdTest.ToolTip"));
             this.cmdTest.UseVisualStyleBackColor = true;
             this.cmdTest.Click += new System.EventHandler(this.cmdTest_Click);
             // 
             // lblState
             // 
-            resources.ApplyResources(this.lblState, "lblState");
             this.lblState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblState, "lblState");
             this.lblState.Name = "lblState";
-            this.toolTip.SetToolTip(this.lblState, resources.GetString("lblState.ToolTip"));
             // 
             // tryConnect
             // 
@@ -571,7 +521,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConnectionEditor";
-            this.toolTip.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.ConnectionEditor_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
