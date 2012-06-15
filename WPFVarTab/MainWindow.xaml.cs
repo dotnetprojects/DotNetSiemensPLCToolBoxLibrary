@@ -349,10 +349,10 @@ namespace WPFVarTab
             }
         }
 
-        private void ThisWindow_Unloaded(object sender, RoutedEventArgs e)
+        public void KillAllThreads()
         {
             if (BackgroundReadingThread != null)
                 BackgroundReadingThread.Abort();
-        }
+        }        
     }
 }
