@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             {
                 int akcnt = 0;
                 S7DataRowType akRwTp = (S7DataRowType) (preHeader[9] | 0xf00);
-                int anzTypes = ((preHeader[7] - 2)/2); //How many different Types are in the Header
+                int anzTypes = (((preHeader[6] * 256 + preHeader[7]) - 2)/2); //How many different Types are in the Header
                 for (int n = 1; n <= anzTypes; n++)
                 {
                     if (n == anzTypes)
