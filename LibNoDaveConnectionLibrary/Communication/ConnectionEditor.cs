@@ -64,6 +64,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private void LockControls()
         {
+            cmdTest.Enabled = false;
             lblLIBNODAVEEntryPoint.Enabled = false;
             lstListEntryPoints.Enabled = false;
             lblLIBNODAVECPURack.Enabled = false;
@@ -235,6 +236,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case 3:
                     case 4:
                     case 10:
+                        cmdTest.Enabled = true;
                         //lblLIBNODAVEEntryPoint.Enabled = true;
                         //lstListEntryPoints.Enabled = true;
                         lblLIBNODAVECPURack.Enabled = true;
@@ -256,6 +258,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         chkRouting.Checked = false;
                         break;
                     case 20:
+                        cmdTest.Enabled = true;
                         //lblLIBNODAVEEntryPoint.Enabled = true;
                         //lstListEntryPoints.Enabled = true;
                         //lblLIBNODAVECPURack.Enabled = true;
@@ -276,6 +279,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //lstLIBNODAVELokalComParity.Enabled = true;
                         break;
                     case 50:
+                        cmdTest.Enabled = true;
                         lblLIBNODAVEEntryPoint.Enabled = true;
                         lstListEntryPoints.Enabled = true;
                         btnConfigEntryPoint.Enabled = true;
@@ -288,6 +292,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     case 122: //ISO TCP
                     case 123: //ISO TCP CP 243
+                        cmdTest.Enabled = true;
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
                         lblLIBNODAVECPURack.Enabled = true;
@@ -308,6 +313,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     case 223:
                     case 224:
+                        cmdTest.Enabled = true;
                         chkNetlinkReset.Enabled = true;
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
@@ -332,6 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
 
                     case 230:
+                        cmdTest.Enabled = true;
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
                         lblLIBNODAVECPUMPI.Enabled = true;
