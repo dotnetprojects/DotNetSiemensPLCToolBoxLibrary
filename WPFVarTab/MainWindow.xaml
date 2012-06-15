@@ -283,7 +283,7 @@
             <StatusBarItem Width="120"
                            HorizontalAlignment="Right"
                            DockPanel.Dock="Right">
-                <Label Content="JFK-WPFVarTab 1.0" Padding="0" />
+                <Label Content="JFK-WPFVarTab 1.2" Padding="0" />
             </StatusBarItem>
             <StatusBarItem VerticalContentAlignment="Stretch" DockPanel.Dock="Right">
                 <ProgressBar Name="ProgressBarOnlineStatus"
