@@ -267,10 +267,11 @@ namespace WPFVarTab
         {
             var s7Vat = SelectProjectPart.SelectVAT();
 
-            foreach (var S7VatRow in s7Vat.VATRows)
-            {
-                varTabRows.Add(new VarTabRowWithConnection(S7VatRow));
-            }
+            if (s7Vat!=null)
+                foreach (var S7VatRow in s7Vat.VATRows)
+                {
+                    varTabRows.Add(new VarTabRowWithConnection(S7VatRow));
+                }
         }
 
         private void cmdControlValues_Click(object sender, RoutedEventArgs e)
