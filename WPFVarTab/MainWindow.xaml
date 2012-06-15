@@ -192,6 +192,8 @@
                                           ToolTip="Default Connection"
                                           WPFVarTab:ComboBoxExtension.IsNullable="True" />
                             </WrapPanel>
+
+                            <ccl:CaptionButtons />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
