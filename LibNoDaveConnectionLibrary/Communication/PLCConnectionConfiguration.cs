@@ -426,8 +426,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public static void DeleteConfiguration(string ConnectionName)
         {
 #if !IPHONE
-            Registry.CurrentUser.DeleteSubKeyTree(
-                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
+            try
+            {
+                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
+
+                Dictionary<String, PLCConnectionConfiguration> Connections = null;
+                if (File.Exists(ConfigurationPathAndFilename))
+                {
+                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
+                    Connections = ConnectionsDicSer.Deserialize(strm);
+                    //string txt = strm.ReadToEnd();
+                    strm.Close();
+                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                }
+                if (Connections == null)
+                    Connections = new Dictionary<string, PLCConnectionConfiguration>();
+
+                if (Connections.ContainsKey(ConnectionName))
+                    Connections.Remove(ConnectionName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(ConfigurationPathAndFilename));
+                StreamWriter sstrm = new StreamWriter(ConfigurationPathAndFilename, false);
+                ConnectionsDicSer.Serialize(Connections, sstrm);
+                //sstrm.Write(stxt);
+                //sstrm.Flush();
+                sstrm.Close();
+
+                return;
+
+                Registry.CurrentUser.DeleteSubKeyTree(
+                    "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
+            }
+            catch (Exception)
+            { }
 #endif
         }
 
