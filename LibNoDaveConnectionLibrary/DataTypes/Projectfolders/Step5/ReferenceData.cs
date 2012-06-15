@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
@@ -57,75 +58,82 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             Step5ProgrammFolder prgFld = (Step5ProgrammFolder) this.Parent;
             Step5BlocksFolder blkFld = (Step5BlocksFolder) prgFld.BlocksFolder;
             SymbolTable smyTab = (SymbolTable) prgFld.SymbolTable;
-            
-            foreach (ProjectBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
+
+            try
             {
-                if (projectBlockInfo.BlockType == PLCBlockType.S5_PB || projectBlockInfo.BlockType == PLCBlockType.S5_FB || projectBlockInfo.BlockType == PLCBlockType.S5_FX || projectBlockInfo.BlockType == PLCBlockType.S5_OB || projectBlockInfo.BlockType == PLCBlockType.S5_SB)
+                foreach (ProjectBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
                 {
-                    S5FunctionBlock blk = (S5FunctionBlock) projectBlockInfo.GetBlock();
-                    int networkNR = 0;                    
-                    foreach (Network network in blk.Networks)
+                    if (projectBlockInfo.BlockType == PLCBlockType.S5_PB || projectBlockInfo.BlockType == PLCBlockType.S5_FB || projectBlockInfo.BlockType == PLCBlockType.S5_FX || projectBlockInfo.BlockType == PLCBlockType.S5_OB || projectBlockInfo.BlockType == PLCBlockType.S5_SB)
                     {
-                        int rowNR = 0;
-                        networkNR++;
-                        string akdb = "";
+                        S5FunctionBlock blk = (S5FunctionBlock)projectBlockInfo.GetBlock();
+                        int networkNR = 0;
+                        foreach (Network network in blk.Networks)
+                        {
+                            int rowNR = 0;
+                            networkNR++;
+                            string akdb = "";
 
-                        foreach (S5FunctionBlockRow functionBlockRow in network.AWLCode)
-                        {                           
-                            if (!string.IsNullOrEmpty(functionBlockRow.Label))
-                                akdb = "";
-                            if (functionBlockRow.Command == "A" || functionBlockRow.Command == "AX")
-                                if (functionBlockRow.Parameter == "DB 0" || functionBlockRow.Parameter == "DX 0")
-                                    akdb = "";
-                                else
-                                    akdb = functionBlockRow.Parameter;
-
-                            
-
-                            rowNR++;
-                            if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
+                            foreach (S5FunctionBlockRow functionBlockRow in network.AWLCode)
                             {
-                                //Normal reference...
-                                string operand = functionBlockRow.Parameter;
-                                if (operand == "DB 0") operand = "DB ??";
-                                ReferenceDataEntry entr;
-                                operandIndexList.TryGetValue(operand, out entr);
-                                if (entr == null)
-                                {
-                                    SymbolTableEntry symb = null;
-                                    if (smyTab != null)
-                                        symb = smyTab.GetEntryFromOperand(operand);
-                                    entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = symb};
-                                    operandIndexList.Add(operand, entr);
-                                    _ReferenceDataEntrys.Add(entr);
-                                }
-                                entr.ReferencePoints.Add(new ReferencePoint() { Block = blk,Network = network,NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9] });
+                                if (!string.IsNullOrEmpty(functionBlockRow.Label))
+                                    akdb = "";
+                                if (functionBlockRow.Command == "A" || functionBlockRow.Command == "AX")
+                                    if (functionBlockRow.Parameter == "DB 0" || functionBlockRow.Parameter == "DX 0")
+                                        akdb = "";
+                                    else
+                                        akdb = functionBlockRow.Parameter;
 
-                                //Reference to DB
-                                if (akdb != "" )
-                                    if (functionBlockRow.Parameter.StartsWith("D ") || functionBlockRow.Parameter.StartsWith("DW") || functionBlockRow.Parameter.StartsWith("DL") || functionBlockRow.Parameter.StartsWith("DR") || functionBlockRow.Parameter.StartsWith("DX"))
+
+
+                                rowNR++;
+                                if (functionBlockRow.MC5LIB_SYMTAB_Row != null && ((ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9]) != ReferenceDataAccessMode.None)
+                                {
+                                    //Normal reference...
+                                    string operand = functionBlockRow.Parameter;
+                                    if (operand == "DB 0") operand = "DB ??";
+                                    ReferenceDataEntry entr;
+                                    operandIndexList.TryGetValue(operand, out entr);
+                                    if (entr == null)
                                     {
-                                        //Normal reference...
-                                        operand = akdb + "." + functionBlockRow.Parameter;
-                                        entr = null;
-                                        operandIndexList.TryGetValue(operand, out entr);
-                                        if (entr == null)
-                                        {
-                                            SymbolTableEntry symb = null;
-                                            if (smyTab != null)
-                                                symb = smyTab.GetEntryFromOperand(operand);
-                                            entr = new ReferenceDataEntry() {Operand = operand, SymbolTableEntry = symb};
-                                            operandIndexList.Add(operand, entr);
-                                            _ReferenceDataEntrys.Add(entr);
-                                        }
-                                        entr.ReferencePoints.Add(new ReferencePoint() {Block = blk, Network = network, NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode) functionBlockRow.MC5LIB_SYMTAB_Row[9]});
+                                        SymbolTableEntry symb = null;
+                                        if (smyTab != null)
+                                            symb = smyTab.GetEntryFromOperand(operand);
+                                        entr = new ReferenceDataEntry() { Operand = operand, SymbolTableEntry = symb };
+                                        operandIndexList.Add(operand, entr);
+                                        _ReferenceDataEntrys.Add(entr);
                                     }
+                                    entr.ReferencePoints.Add(new ReferencePoint() { Block = blk, Network = network, NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9] });
+
+                                    //Reference to DB
+                                    if (akdb != "")
+                                        if (functionBlockRow.Parameter.StartsWith("D ") || functionBlockRow.Parameter.StartsWith("DW") || functionBlockRow.Parameter.StartsWith("DL") || functionBlockRow.Parameter.StartsWith("DR") || functionBlockRow.Parameter.StartsWith("DX"))
+                                        {
+                                            //Normal reference...
+                                            operand = akdb + "." + functionBlockRow.Parameter;
+                                            entr = null;
+                                            operandIndexList.TryGetValue(operand, out entr);
+                                            if (entr == null)
+                                            {
+                                                SymbolTableEntry symb = null;
+                                                if (smyTab != null)
+                                                    symb = smyTab.GetEntryFromOperand(operand);
+                                                entr = new ReferenceDataEntry() { Operand = operand, SymbolTableEntry = symb };
+                                                operandIndexList.Add(operand, entr);
+                                                _ReferenceDataEntrys.Add(entr);
+                                            }
+                                            entr.ReferencePoints.Add(new ReferencePoint() { Block = blk, Network = network, NetworkNumber = networkNR, LineNumber = rowNR, BlockRow = functionBlockRow, AccessMode = (ReferenceDataAccessMode)functionBlockRow.MC5LIB_SYMTAB_Row[9] });
+                                        }
+                                }
                             }
                         }
-                    }
-                    
 
+
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was an error generating the Reference Data! Maybe the Step5 project is broken? \n" + ex.Message);
             }
 
             ReferenceDataLoaded = true;

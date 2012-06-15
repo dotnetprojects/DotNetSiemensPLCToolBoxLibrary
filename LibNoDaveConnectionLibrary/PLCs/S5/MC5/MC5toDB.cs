@@ -1,4 +1,6 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+﻿using System;
+using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
@@ -48,25 +50,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
             }
 
-            if (commentBlock != null &&  main._children != null && main._children.Count > 0)
+            try
             {
-                int nr = 28;
-                int hdlen = 0x7f & commentBlock[nr];
-
-                retVal.Name = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 1, hdlen);
-           
-                nr += hdlen + 1;
-                while (nr + 3 < commentBlock.Length)
+                if (commentBlock != null && main._children != null && main._children.Count > 0)
                 {
-                    int zeile = commentBlock[nr];
-                    int len = 0x7f & commentBlock[nr + 2];
-                    string cmt = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 3, len);
-                    main._children[zeile].Comment = cmt;
+                    int nr = 28;
+                    int hdlen = 0x7f & commentBlock[nr];
 
-                    nr += len + 3;
+                    retVal.Name = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 1, hdlen);
+
+                    nr += hdlen + 1;
+                    while (nr + 3 < commentBlock.Length)
+                    {
+                        int zeile = commentBlock[nr];
+                        int len = 0x7f & commentBlock[nr + 2];
+                        string cmt = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 3, len);
+                        main._children[zeile].Comment = cmt;
+
+                        nr += len + 3;
+                    }
+
                 }
-
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was an error parsing the Block Comments! Maybe the Step5 project is broken? \n" + ex.Message);
+            }
+
             return retVal;
         }
     }
