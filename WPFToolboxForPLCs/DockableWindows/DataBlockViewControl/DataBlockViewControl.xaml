@@ -90,6 +90,9 @@
                         <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="140">
                             <TextBlock Text="{Binding DataTypeAsString}" Margin="0"/>
                         </Border>
+                        <Border Padding="2" Width="160" BorderThickness="1,1,1,1" BorderBrush="Black">
+                                <TextBlock Text="{Binding ValueAsString}" Margin="0"/>
+                        </Border>
                         <Border Padding="2" Width="300" BorderThickness="1,1,1,1" BorderBrush="Black">
                                 <TextBlock Text="{Binding Comment}" Margin="0"/>
                         </Border>

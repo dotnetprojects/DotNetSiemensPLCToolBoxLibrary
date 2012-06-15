@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -27,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 {
                     if (n == anzTypes)
                     {
-                        int rowcnt = preHeader[n*4 + 11];
+                        int rowcnt =preHeader[n*4 + 10] * 256 + preHeader[n*4 + 11];
                         int crcnt = rowcnt - akcnt;
                         for (int p = 0; p < crcnt; p++)
                         {
@@ -37,7 +38,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     }
                     else
                     {
-                        int rowcnt = preHeader[n*4 + 11];
+                        int rowcnt = preHeader[n * 4 + 10] * 256 + preHeader[n * 4 + 11];
                         for (int p = akcnt; p < rowcnt; p++)
                         {
                             S7DataRow addRw = new S7DataRow("", akRwTp, retVal);
@@ -49,6 +50,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 }
 
             }
+
+            try
+            {
+                int st = 10;
+                foreach (var s7DataRow in main.Children)
+                {
+                    switch (s7DataRow.DataType)
+                    {
+                        case S7DataRowType.S5_KF:
+                            s7DataRow.Value = libnodave.getS16from(block, st);
+                            st += 2;
+                            break;
+                        case S7DataRowType.S5_KM:
+                            s7DataRow.Value = libnodave.getU16from(block, st);
+                            st += 2;
+                            break;
+                        case S7DataRowType.S5_KH:
+                            s7DataRow.Value = libnodave.getU16from(block, st);
+                            st += 2;
+                            break;
+                        case S7DataRowType.S5_KY:
+                            s7DataRow.Value = libnodave.getU16from(block, st);
+                            st += 2;
+                            break; 
+                        default:
+                            s7DataRow.Value = libnodave.getU16from(block, st);
+                            st += 2;
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+
 
             try
             {

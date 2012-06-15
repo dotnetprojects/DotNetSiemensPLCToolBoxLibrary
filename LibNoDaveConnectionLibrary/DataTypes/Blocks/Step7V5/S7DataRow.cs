@@ -26,7 +26,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -323,7 +325,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     case S7DataRowType.S5_KT:
                     case S7DataRowType.S5_KZ:
                     case S7DataRowType.S5_KY:
-                        len = 2;
+                        len = 1;
                         break;
                     case S7DataRowType.S5_KC:
                     case S7DataRowType.S5_C:
@@ -424,7 +426,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             akAddr.ByteAddress++;
                         }
                         if (akAddr.ByteAddress%2 != 0 && plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR)
-                            akAddr.ByteAddress++;
+                            if (!(this.PlcBlock is Step5.S5DataBlock))
+                            {
+                                akAddr.ByteAddress++;
+                            }
                         if (plcDataRow.Children != null && plcDataRow.Children.Count > 0)
                         {
                             plcDataRow._BlockAddress = new ByteBitAddress(akAddr);
@@ -482,6 +487,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         plcDataRow.ClearBlockAddress();
                     }
                 Parent.ClearBlockAddress();
+            }
+        }
+
+        public string ValueAsString
+        {
+            get
+            {
+                if (Value != null)
+                {
+                    if (DataType == S7DataRowType.S5_KY)
+                        return ((UInt16)Value / 256).ToString().PadLeft(3, '0') + "," + ((UInt16)Value % 256).ToString().PadLeft(3, '0');
+                    else if (DataType == S7DataRowType.S5_KF)
+                        return ((Int16)Value > 0 ? "+" : "") + Value.ToString();
+                    else if (DataType == S7DataRowType.S5_KH)
+                        return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo);
+                    else if (DataType == S7DataRowType.S5_KM)
+                    {
+                        var bt = BitConverter.GetBytes((UInt16)Value);
+                        string ret = "";
+                        foreach (byte b in bt)
+                        {
+                            if (ret != "") ret = " " + ret;
+                            ret = libnodave.dec2bin(b) + ret;
+
+                        }
+                        return ret;
+                    }
+                    return Value.ToString();
+                }
+                return null;
             }
         }
 

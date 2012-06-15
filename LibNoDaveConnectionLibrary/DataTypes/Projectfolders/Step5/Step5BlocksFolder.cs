@@ -13,9 +13,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         public List<ProjectBlockInfo> readPlcBlocksList()
         {
-            NumericComparer<ProjectBlockInfo> nc = new NumericComparer<ProjectBlockInfo>();
-            step5BlocksinfoList.Sort(nc);
-            return step5BlocksinfoList;
+            lock (step5BlocksinfoList)
+            {
+                NumericComparer<ProjectBlockInfo> nc = new NumericComparer<ProjectBlockInfo>();
+                step5BlocksinfoList.Sort(nc);
+                return new List<ProjectBlockInfo>(step5BlocksinfoList);
+            }
         }
 
         public List<ProjectBlockInfo> BlockInfos
@@ -33,10 +36,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         internal S5ProjectBlockInfo GetBlockInfo(string BlockName)
         {
-            foreach (S5ProjectBlockInfo projectBlockInfo in step5BlocksinfoList)
+            lock (step5BlocksinfoList)
             {
-                if (BlockName == projectBlockInfo.BlockType.ToString() + projectBlockInfo.BlockNumber.ToString())
-                    return projectBlockInfo;
+                foreach (S5ProjectBlockInfo projectBlockInfo in new List<ProjectBlockInfo>(step5BlocksinfoList))
+                {
+                    if (BlockName == projectBlockInfo.BlockType.ToString() + projectBlockInfo.BlockNumber.ToString())
+                        return projectBlockInfo;
+                }
             }
             return null;
         }
