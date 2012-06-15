@@ -354,6 +354,45 @@ namespace WPFVarTab
         {
             if (BackgroundReadingThread != null)
                 BackgroundReadingThread.Abort();
-        }        
+        }
+
+        private void dataGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            foreach (var plcConnection in ConnectionDictionary)
+                plcConnection.Value.WriteQueueClear();
+            
+            foreach (var selectedItem in dataGrid.SelectedItems)
+            {
+                var rw = selectedItem as VarTabRowWithConnection;
+
+                if (e.Key == Key.D1 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+                {
+                    if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
+                    {
+                        rw.LibNoDaveValue.ControlValueAsString = "1";
+                        rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
+                    }
+                }
+                else if (e.Key == Key.D0 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+                {
+                    if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
+                    {
+                        rw.LibNoDaveValue.ControlValueAsString = "0";
+                        rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
+                    }
+                }
+            }
+
+            foreach (var plcConnection in ConnectionDictionary)
+
+            {
+                if (WriteTagsConfig == 0)
+                    plcConnection.Value.WriteQueueWriteToPLC();
+                else
+
+                    plcConnection.Value.WriteQueueWriteToPLCWithVarTabFunctions((PLCTriggerVarTab)WriteTagsConfig + 1);
+            }
+        }   
     }
 }

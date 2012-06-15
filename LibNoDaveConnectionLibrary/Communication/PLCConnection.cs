@@ -54,6 +54,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private List<PLCTag> _writeQueue = new List<PLCTag>(); 
+
         private void NotifyPropertyChanged(String info)
         {
             if (PropertyChanged != null)
@@ -2093,6 +2095,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (res != 0)
                         throw new Exception("Error: " + libnodave.daveStrerror(res));
                 }
+        }
+
+        public void WriteQueueClear()
+        {
+            _writeQueue.Clear();
+        }
+
+        public void WriteQueueAdd(PLCTag tag)
+        {
+            _writeQueue.Add(tag);
+        }
+
+         
+        public void WriteQueueWriteToPLC()
+        {
+            if (_writeQueue.Count > 0)
+                WriteValues(_writeQueue, true);
+            _writeQueue.Clear();
+        }
+
+        public void WriteQueueWriteToPLCWithVarTabFunctions(PLCTriggerVarTab WriteTrigger)
+        {
+            if (_writeQueue.Count > 0)
+                WriteValuesWithVarTabFunctions(_writeQueue, WriteTrigger);
+            _writeQueue.Clear();
         }
 
         public void WriteValues(IEnumerable<PLCTag> valueList)

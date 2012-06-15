@@ -218,7 +218,7 @@
                                   CanUserResizeRows="False"
                                   CanUserSortColumns="False"
                                   ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}"
-                                  RowBackground="Azure">
+                                  RowBackground="Azure" KeyDown="dataGrid_KeyDown">
             <WPFVarTab:CustomDataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
