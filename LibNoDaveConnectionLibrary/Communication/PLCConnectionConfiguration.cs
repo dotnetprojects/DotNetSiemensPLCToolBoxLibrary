@@ -264,7 +264,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return Names;
                     }
             }
-            return null;
+            return new string[0];
 
             RegistryKey myConnectionKey =
                 Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
