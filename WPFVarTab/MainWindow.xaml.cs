@@ -38,6 +38,8 @@ namespace WPFVarTab
         private static Dictionary<string, PLCConnection> _connectionDictionary = new Dictionary<string, PLCConnection>();
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private volatile bool readFresh = false;
+        
         private Thread BackgroundReadingThread;
 
         protected void NotifyPropertyChanged(String info)
@@ -48,6 +50,8 @@ namespace WPFVarTab
                 PropertyChanged(this, new PropertyChangedEventArgs("ObjectAsString"));
             }
         }
+
+        public static bool IsOnline { get; set; }
 
         public int ReadTagsConfig
         {
@@ -169,6 +173,7 @@ namespace WPFVarTab
                     BackgroundReadingThread.Start();
 
                     ProgressBarOnlineStatus.IsIndeterminate = true;
+                    IsOnline = true;
                 }
                 else
                 {
@@ -183,6 +188,7 @@ namespace WPFVarTab
                     }
 
                     ProgressBarOnlineStatus.IsIndeterminate = false;
+                    IsOnline = false;
                 }
             }
             catch(Exception ex)
@@ -209,16 +215,25 @@ namespace WPFVarTab
                                                                                  select rw.LibNoDaveValue;
 
                                                                     PLCConnection.VarTabReadData rq = null;
-                                                                    if (ReadTagsConfig != 0)
-                                                                    {
-                                                                        rq =
-                                                                            conn.ReadValuesWithVarTabFunctions(
-                                                                                values,
-                                                                                (PLCTriggerVarTab)
-                                                                                ReadTagsConfig + 1);
-                                                                    }
+
                                                                     while (true)
                                                                     {
+                                                                        if (readFresh && ReadTagsConfig != 0 &&
+                                                                            rq != null)
+                                                                        {
+                                                                            readFresh = false;
+                                                                            rq.Dispose();
+                                                                            rq = null;
+                                                                        }
+
+                                                                        if (rq == null && ReadTagsConfig != 0)
+                                                                        {
+                                                                            rq =
+                                                                                conn.ReadValuesWithVarTabFunctions(
+                                                                                    values,
+                                                                                    (PLCTriggerVarTab)
+                                                                                    ReadTagsConfig + 1);
+                                                                        }
 
                                                                         if (ReadTagsConfig == 0)
                                                                             conn.ReadValues(values);
@@ -393,6 +408,30 @@ namespace WPFVarTab
 
                     plcConnection.Value.WriteQueueWriteToPLCWithVarTabFunctions((PLCTriggerVarTab)WriteTagsConfig + 1);
             }
-        }   
+        }
+
+        private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "Address")
+            {
+                readFresh = true;
+            }
+        }
+
+        private void cmdAddNumberOfRows_Click(object sender, RoutedEventArgs e)
+        {
+            var rw = dataGrid.SelectedItem as VarTabRowWithConnection;
+
+            if (rw != null && rw.LibNoDaveValue != null)
+            {
+                int idx = varTabRows.IndexOf(rw);
+                for (int n = 0; n < numberOfRows.Value; n++)
+                {
+                    rw = rw.GetNextRow();
+                    varTabRows.Insert(++idx, rw);
+                }
+            }
+        }
+   
     }
 }

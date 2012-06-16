@@ -10,6 +10,30 @@ namespace WPFVarTab
 {
     public class VarTabRowWithConnection : S7VATRow
     {
+        public VarTabRowWithConnection GetNextRow()
+        {
+            var rw = new VarTabRowWithConnection();
+            rw.LibNoDaveValue = new PLCTag(LibNoDaveValue);
+            rw.ConnectionName = ConnectionName;
+            
+            if (rw.LibNoDaveValue.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
+            {
+                if (rw.LibNoDaveValue.BitAddress < 7)
+                    rw.LibNoDaveValue.BitAddress++;
+                else
+                {
+                    rw.LibNoDaveValue.BitAddress = 0;
+                    rw.LibNoDaveValue.ByteAddress++;
+                }
+            }
+            else
+            {
+                rw.LibNoDaveValue.ByteAddress += rw.LibNoDaveValue.ReadByteSize;
+            }
+
+            return rw;
+        }
+
         public VarTabRowWithConnection()
         { }
 
@@ -40,7 +64,6 @@ namespace WPFVarTab
         {
             get
             {
-                
                 if (oldConn != null)
                 {
                     oldConn.PropertyChanged -= conn_PropertyChanged;

@@ -9,7 +9,7 @@
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
-                        Name="ThisWindow"
+                        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -218,7 +218,21 @@
                                   CanUserResizeRows="False"
                                   CanUserSortColumns="False"
                                   ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}"
-                                  RowBackground="Azure" KeyDown="dataGrid_KeyDown">
+                                  RowBackground="Azure" KeyDown="dataGrid_KeyDown" CellEditEnding="dataGrid_CellEditEnding">
+            <WPFVarTab:CustomDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Add " VerticalAlignment="Center" />
+                                <xctk:IntegerUpDown Width="40" Value="1" VerticalAlignment="Center" Name="numberOfRows" Minimum="1" Maximum="100" />
+                                <TextBlock Text=" Rows" VerticalAlignment="Center" />
+                                <Button Margin="5,0,0,0" VerticalAlignment="Center" Name="cmdAddNumberOfRows" Click="cmdAddNumberOfRows_Click">Ok</Button>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </ContextMenu>
+            </WPFVarTab:CustomDataGrid.ContextMenu>
             <WPFVarTab:CustomDataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
