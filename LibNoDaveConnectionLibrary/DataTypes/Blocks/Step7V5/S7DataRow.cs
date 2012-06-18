@@ -501,7 +501,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     else if (DataType == S7DataRowType.S5_KF)
                         return ((Int16)Value > 0 ? "+" : "") + Value.ToString();
                     else if (DataType == S7DataRowType.S5_KH)
-                        return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4,'0');
+                        return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
+                    else if (DataType == S7DataRowType.S5_KG)
+                        return ((float)Value).ToString();
+                    else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)
+                        return "'" + ((string)Value).PadLeft(4, ' ') + "'";
+                    else if (DataType == S7DataRowType.S5_KT)
+                        return ((TimeSpan) Value).ToString();
                     else if (DataType == S7DataRowType.S5_KM)
                     {
                         var bt = BitConverter.GetBytes((UInt16)Value);

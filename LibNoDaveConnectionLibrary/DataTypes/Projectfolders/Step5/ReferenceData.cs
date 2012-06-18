@@ -42,8 +42,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             return retval;
         }
 
-        public ReferenceData()
+        public ReferenceData(Step5ProgrammFolder Parent, Project Project)
         {
+            this.Parent = Parent;
+            this.Project = Project;
+
             Name = "ReferenzDaten";
 
             //Load Referencedata in a Background Thread.

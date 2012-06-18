@@ -30,6 +30,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     {
                         int rowcnt =preHeader[n*4 + 10] * 256 + preHeader[n*4 + 11];
                         int crcnt = rowcnt - akcnt;
+                        if (akRwTp == S7DataRowType.S5_KG || akRwTp == S7DataRowType.S5_C || akRwTp == S7DataRowType.S5_KC)
+                            crcnt = crcnt/2;
                         for (int p = 0; p < crcnt; p++)
                         {
                             S7DataRow addRw = new S7DataRow("", akRwTp, retVal);
@@ -39,12 +41,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     else
                     {
                         int rowcnt = preHeader[n * 4 + 10] * 256 + preHeader[n * 4 + 11];
+                        akcnt = rowcnt;
+                        if (akRwTp == S7DataRowType.S5_KG || akRwTp == S7DataRowType.S5_C || akRwTp == S7DataRowType.S5_KC)
+                            rowcnt = rowcnt / 2;
+                        
                         for (int p = akcnt; p < rowcnt; p++)
                         {
                             S7DataRow addRw = new S7DataRow("", akRwTp, retVal);
                             main.Add(addRw);
                         }
-                        akcnt = rowcnt;
+                        
                         akRwTp = (S7DataRowType) (preHeader[9 + n*4] | 0xf00);
                     }
                 }
@@ -80,6 +86,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             break;
                         case S7DataRowType.S5_KY:
                             s7DataRow.Value = libnodave.getU16from(block, st);
+                            st += 2;
+                            break;
+                        case S7DataRowType.S5_KG:
+                            s7DataRow.Value = libnodave.getFloatfrom(block, st);
+                            st += 4;
+                            break;
+                        case S7DataRowType.S5_C:
+                        case S7DataRowType.S5_KC:
+                            s7DataRow.Value = ((char) block[st]).ToString() + ((char) block[st + 1]).ToString() + ((char) block[st + 2]).ToString() + ((char) block[st + 3]).ToString();
+                            st += 4;
+                            break;
+                        case S7DataRowType.S5_KT:
+                            s7DataRow.Value = libnodave.getS5Timefrom(block, st);
                             st += 2;
                             break;
                         default:

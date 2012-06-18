@@ -303,7 +303,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 ProjectStructure.SubItems.Add(symtab);
             }
 
-            ProjectStructure.SubItems.Add(new ReferenceData() {Parent = ProjectStructure, Project = this});
+            ProjectStructure.SubItems.Add(new ReferenceData((Step5ProgrammFolder)ProjectStructure, this)); // { Parent = ProjectStructure, Project = this });
 
         }
 
