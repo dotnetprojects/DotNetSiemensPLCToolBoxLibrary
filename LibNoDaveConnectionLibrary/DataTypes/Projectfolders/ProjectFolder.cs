@@ -9,7 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     /// <summary>
     /// Base Abstract Class for every Project Folder.
     /// </summary>
-    public class ProjectFolder
+    public class ProjectFolder:IProjectFolder
     {
         public string Name { get; set; }
 

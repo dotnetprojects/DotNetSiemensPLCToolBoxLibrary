@@ -22,6 +22,7 @@ using CustomChromeLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using Microsoft.Win32;
 
@@ -37,6 +38,13 @@ namespace WPFVarTab
         private ObservableCollection<string> _connections;
         private static Dictionary<string, PLCConnection> _connectionDictionary = new Dictionary<string, PLCConnection>();
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private Dictionary<string, ISymbolTable> _dictonaryConnectionSymboltables = new Dictionary<string, ISymbolTable>();
+        public Dictionary<string, ISymbolTable> DictonaryConnectionSymboltables
+        {
+            get { return _dictonaryConnectionSymboltables; }
+            set { _dictonaryConnectionSymboltables = value; NotifyPropertyChanged("DictonaryConnectionSymboltables"); }
+        }
 
         private volatile bool readFresh = false;
         
@@ -431,6 +439,12 @@ namespace WPFVarTab
                     varTabRows.Insert(++idx, rw);
                 }
             }
+        }
+
+        private void cmdSetSymbolTabels_Click(object sender, RoutedEventArgs e)
+        {
+            var frm = new ConfigConnectionsAndSymbolSources(this);
+            frm.ShowDialog();
         }
    
     }

@@ -16,10 +16,20 @@ namespace WPFVarTab
     /// <summary>
     /// Interaction logic for ConfigConnectionsAndSymbolSources.xaml
     /// </summary>
-    public partial class ConfigConnectionsAndSymbolSources : Window
+    public partial class ConfigConnectionsAndSymbolSources : CustomChromeLibrary.CustomChromeWindow
     {
-        public ConfigConnectionsAndSymbolSources()
+        private MainWindow _mainWindow;
+        public MainWindow MainWindow
         {
+            get { return _mainWindow; }
+        }
+
+        public ConfigConnectionsAndSymbolSources(MainWindow mainWindow)
+        {
+            this._mainWindow = mainWindow;
+
+            this.DataContext = this;
+
             InitializeComponent();
         }
     }

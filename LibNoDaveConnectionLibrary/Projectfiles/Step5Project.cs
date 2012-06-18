@@ -18,6 +18,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
         internal ZipHelper _ziphelper = new ZipHelper(null);
 
+        public Step5BlocksFolder BlocksFolder { get; set; }
+
         public Step5Project(string filename, bool showDeleted)
         {
             _showDeleted = showDeleted;
@@ -72,7 +74,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16]*0x100);
             }
 
+
             Step5BlocksFolder blkFld = new Step5BlocksFolder() {Name = "Blocks", Project = this, Parent = ProjectStructure};
+            BlocksFolder = blkFld;
             ProjectStructure.SubItems.Add(blkFld);
 
             //int section_start = startpos;

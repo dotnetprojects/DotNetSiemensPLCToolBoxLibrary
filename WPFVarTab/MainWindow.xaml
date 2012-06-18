@@ -9,7 +9,8 @@
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
-                        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" Name="ThisWindow"
+                        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                        Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -179,6 +180,17 @@
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/import.png" />
                                 </Button>
+                                <Button Name="cmdSetSymbolTabels"
+                                        Margin="2,7,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Padding="3"
+                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="Select Symbol Tables" Click="cmdSetSymbolTabels_Click">
+                                    <Image Width="16"
+                                           Height="16"
+                                           Source="/WPFVarTab;component/Images/import2.png" />
+                                </Button>
                                 <ComboBox Height="26"
                                           MinWidth="160"
                                           Margin="7,7,0,2"
@@ -217,17 +229,29 @@
                                   CanUserDeleteRows="True"
                                   CanUserResizeRows="False"
                                   CanUserSortColumns="False"
+                                  CellEditEnding="dataGrid_CellEditEnding"
                                   ItemTemplateSelector="{StaticResource vartabrowItemTemplateSelector}"
-                                  RowBackground="Azure" KeyDown="dataGrid_KeyDown" CellEditEnding="dataGrid_CellEditEnding">
+                                  KeyDown="dataGrid_KeyDown"
+                                  RowBackground="Azure">
             <WPFVarTab:CustomDataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem>
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Add " VerticalAlignment="Center" />
-                                <xctk:IntegerUpDown Width="40" Value="1" VerticalAlignment="Center" Name="numberOfRows" Minimum="1" Maximum="100" />
-                                <TextBlock Text=" Rows" VerticalAlignment="Center" />
-                                <Button Margin="5,0,0,0" VerticalAlignment="Center" Name="cmdAddNumberOfRows" Click="cmdAddNumberOfRows_Click">Ok</Button>
+                                <TextBlock VerticalAlignment="Center" Text="Add " />
+                                <xctk:IntegerUpDown Name="numberOfRows"
+                                                    Width="40"
+                                                    VerticalAlignment="Center"
+                                                    Maximum="100"
+                                                    Minimum="1"
+                                                    Value="1" />
+                                <TextBlock VerticalAlignment="Center" Text=" Rows" />
+                                <Button Name="cmdAddNumberOfRows"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Click="cmdAddNumberOfRows_Click">
+                                    Ok
+                                </Button>
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>

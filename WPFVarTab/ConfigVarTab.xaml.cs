@@ -31,11 +31,6 @@ namespace WPFVarTab
             this.DataContext = this;
 
             InitializeComponent();
-        }
-
-        private void cmdClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        }        
     }
 }

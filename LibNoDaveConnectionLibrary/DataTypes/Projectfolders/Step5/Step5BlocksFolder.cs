@@ -7,7 +7,7 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
-    class Step5BlocksFolder : ProjectFolder, IBlocksFolder
+    public class Step5BlocksFolder : ProjectFolder, IBlocksFolder
     {
         internal List<ProjectBlockInfo> step5BlocksinfoList =new List<ProjectBlockInfo>();
 

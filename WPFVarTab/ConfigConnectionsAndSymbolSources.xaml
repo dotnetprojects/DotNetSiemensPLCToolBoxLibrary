@@ -1,8 +1,9 @@
-﻿<Window x:Class="WPFVarTab.ConfigConnectionsAndSymbolSources"
+﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.ConfigConnectionsAndSymbolSources"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ConfigConnectionsAndSymbolSources" Height="300" Width="300">
+                        xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
+                        Title="ConfigConnectionsAndSymbolSources" Height="300" Width="300" Style="{DynamicResource GlassStyle}" WindowStyle="ToolWindow">
     <Grid>
-        <DataGrid AutoGenerateColumns="False" Margin="12" Name="dtaConnectionsAndSymbolSources" />
+        <DataGrid AutoGenerateColumns="False" Margin="12" Name="dtaConnectionsAndSymbolSources" ItemsSource="{Binding MainWindow.DictonaryConnectionSymboltables}" />
     </Grid>
-</Window>
+</ccl:CustomChromeWindow>

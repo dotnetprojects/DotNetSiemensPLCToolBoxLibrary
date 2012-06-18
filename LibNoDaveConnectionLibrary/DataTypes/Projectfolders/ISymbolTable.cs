@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
-    public interface ISymbolTable
+    public interface ISymbolTable : IProjectFolder
     {
         String Folder { get; set; }
         

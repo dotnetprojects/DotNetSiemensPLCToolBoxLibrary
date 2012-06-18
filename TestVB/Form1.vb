@@ -4,6 +4,8 @@ Imports DotNetSiemensPLCToolBoxLibrary.DataTypes
 Imports DotNetSiemensPLCToolBoxLibrary
 Imports DotNetSiemensPLCToolBoxLibrary.Projectfiles
 Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
+Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
+Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 
 Public Class Form1
     Dim myConn As New PLCConnection("myVBExample")
@@ -107,6 +109,18 @@ Public Class Form1
                 End If
             Next
         End If
+
+    End Sub
+
+    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        Dim PRJ As Projectfiles.Step5Project
+        Dim fld As Step5BlocksFolder
+        Dim blk As S5dataBlock
+
+        PRJ = Projectfiles.Projects.LoadProject("D:\temp\_M13\M13@@@ST.S5D", False)
+        fld = PRJ.BlocksFolder
+        blk = fld.GetBlock("DB5")
+
 
     End Sub
 End Class
