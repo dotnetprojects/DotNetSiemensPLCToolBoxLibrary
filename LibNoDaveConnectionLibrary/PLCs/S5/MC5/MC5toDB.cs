@@ -54,8 +54,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             try
             {
                 int st = 10;
-                foreach (var s7DataRow in main.Children)
+
+                for (int n = 0; n < (block[8]*256 + block[9]) - 5; n++)
+                    //foreach (var s7DataRow in main.Children)
                 {
+                    if (main.Children.Count <= n)
+                    {
+                        var addVal = new S7DataRow("", S7DataRowType.S5_KH, retVal);
+                        main.Add(addVal);
+                    }
+                    var s7DataRow = main.Children[n];
                     switch (s7DataRow.DataType)
                     {
                         case S7DataRowType.S5_KF:
@@ -73,7 +81,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         case S7DataRowType.S5_KY:
                             s7DataRow.Value = libnodave.getU16from(block, st);
                             st += 2;
-                            break; 
+                            break;
                         default:
                             s7DataRow.Value = libnodave.getU16from(block, st);
                             st += 2;
