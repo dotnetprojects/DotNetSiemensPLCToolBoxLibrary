@@ -325,10 +325,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 _value = value;
                 if (!_value.Equals(_oldvalue))
-                {
-                    _oldvalue = _value;
+                {                    
                     NotifyPropertyChanged("Value");
-                    NotifyPropertyChanged("ValueAsString");                    
+                    NotifyPropertyChanged("ValueAsString");
+
+                    if (ValueChanged != null)
+                        ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
+
+                    if (MaximumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Maximum) >= 0)
+                        MaximumReached(this, new LimitReachedEventArgs(_oldvalue, Maximum));
+
+                    if (MinimumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Minimum) <= 0)
+                        MinimumReached(this, new LimitReachedEventArgs(_oldvalue, Minimum));
+
+                    _oldvalue = _value;
                 }                
 
                 if (BackupValuesCount > 0 && _oldvalues != null)
@@ -338,6 +348,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
                     NotifyPropertyChanged("OldValues");
                 }
+
+                
             }
         }
 
@@ -1357,7 +1369,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return 0;
         }
 
-       
+        #region Events for Tag Checking 
+
+        private bool _raiseValueChangedOnFirstRead = true;
+        public bool RaiseValueChangedOnFirstRead
+        {
+            get { return _raiseValueChangedOnFirstRead; }
+            set { _raiseValueChangedOnFirstRead = value; }
+        }
+
+        public delegate void ValueChangedEventHandler(PLCTag Sender, ValueChangedEventArgs e);
+        public class ValueChangedEventArgs
+        {
+            public ValueChangedEventArgs(object OldValue, object NewValue)
+            {
+                this.OldValue = OldValue;
+                this.NewValue = NewValue;
+            }
+            public object OldValue;
+            public object NewValue;
+        }
+        public event ValueChangedEventHandler ValueChanged;
+
+        public object Maximum { get; set; }
+        public object Minimum { get; set; }
+
+        public delegate void LimitReachedEventHandler(PLCTag Sender, LimitReachedEventArgs e);
+        public class LimitReachedEventArgs
+        {
+            public LimitReachedEventArgs(object Value, object Limit)
+            {
+                this.Value = Value;
+                this.Limit = Limit;
+            }
+            public object Value;
+            public object Limit;
+        }
+        public event LimitReachedEventHandler MaximumReached;
+        public event LimitReachedEventHandler MinimumReached;
+
+        #endregion
+
+        #region PropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged(String info)
@@ -1368,6 +1422,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        
+        #endregion
+
     }                   
 }
