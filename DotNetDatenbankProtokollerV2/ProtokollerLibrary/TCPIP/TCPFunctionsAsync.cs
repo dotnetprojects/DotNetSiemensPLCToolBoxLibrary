@@ -177,6 +177,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             if (tcpListener != null)
                 tcpListener.Stop();
 
+            tcpListener = null;
+            
             StopInternal();
         }
 
@@ -193,7 +195,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             tcpClientsFromListener.Clear();
 
             tcpClient = null;
-            tcpListener = null;
+            
             this.State = Status.DISCONNECTED;
         }
 
