@@ -105,6 +105,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         private Thread myThread;
 
         private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
+        private List<DateTime> _intDateTimesList = new List<DateTime>();
+
         private volatile int _maxAdd = 0;
 
         /// <summary>
@@ -114,7 +116,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         public void Write(IEnumerable<object> values)
         {
             lock (_intValueList)
+            {
                 _intValueList.Add(values);
+                _intDateTimesList.Add(DateTime.Now);
+            }
 
             if (myThread == null)
             {
@@ -154,7 +159,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
                         if (ok)
                             lock (_intValueList)
+                            {
                                 _intValueList.RemoveRange(0, _maxAdd);
+                                _intDateTimesList.RemoveRange(0, _maxAdd);
+                            }
                     }
                     else
                         Thread.Sleep(20);
@@ -179,11 +187,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 string zeile = "";
 
                 IEnumerable<object> values = _intValueList[n];
+                var addDateTime = _intDateTimesList[n];
 
                 if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
                 {
                     string akV = "";
-                    akV = DateTime.Now.ToString(datasetConfig.DateTimeDatabaseFieldFormat);
+                    akV = addDateTime.ToString(datasetConfig.DateTimeDatabaseFieldFormat);
                     if (myConfig.UseQuotes)
                         zeile += "\"" + akV + "\"";
                     else

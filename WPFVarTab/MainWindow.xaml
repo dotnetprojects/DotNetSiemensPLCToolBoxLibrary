@@ -197,9 +197,10 @@
                                         Margin="2,7,0,2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
+                                        Click="cmdSetSymbolTabels_Click"
                                         Padding="3"
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="Select Symbol Tables" Click="cmdSetSymbolTabels_Click">
+                                        ToolTip="Select Symbol Tables">
                                     <Image Width="16"
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/import2.png" />

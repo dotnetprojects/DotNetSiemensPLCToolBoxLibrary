@@ -212,6 +212,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         private Thread myThread;
 
         private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
+        private List<DateTime> _intDateTimesList = new List<DateTime>();
         private volatile int _maxAdd = 0;
 
 
@@ -222,7 +223,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         public void Write(IEnumerable<object> values)
         {
             lock (_intValueList)
+            {
                 _intValueList.Add(values);
+                _intDateTimesList.Add(DateTime.Now);
+            }
 
             if (myThread == null)
             {
@@ -264,7 +268,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
                         if (ok)
                             lock (_intValueList)
+                            {
                                 _intValueList.RemoveRange(0, _maxAdd);
+                                _intDateTimesList.RemoveRange(0, _maxAdd);
+                            }
                     }
                     else
                         Thread.Sleep(20);
@@ -322,9 +329,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                                 cmd.Parameters.Clear();
 
                                 IEnumerable<object> values = _intValueList[n];
+                                var addDateTime = _intDateTimesList[n];
 
                                 if (!string.IsNullOrEmpty(dateFieldName))
-                                    cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) {Value = DateTime.Now.ToString("yyyy.MM.dd - HH:mm:ss.fff")});
+                                    cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) { Value = addDateTime.ToString("yyyy.MM.dd - HH:mm:ss.fff") });
 
                                 using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
                                 using (IEnumerator<object> e2 = values.GetEnumerator())

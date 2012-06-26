@@ -138,14 +138,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
             {
                 this.State = Status.LISTENING;
 
-                if (tcpListener != null)
-                    tcpListener.Stop();
+                //if (tcpListener != null)
+                //    tcpListener.Stop();
 
                 if (local_ip == null)
                     local_ip = IPAddress.Any;
 
-                tcpListener = new TcpListener(local_ip, connection_port);
-                tcpListener.Start();
+                if (tcpListener == null)
+                {
+                    tcpListener = new TcpListener(local_ip, connection_port);
+                    tcpListener.Start();
+                }
                 tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), tcpListener);
             }
             else
@@ -171,10 +174,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
 
         public void Stop()
         {
-            if (tcpClient != null)
-                tcpClient.Close();
             if (tcpListener != null)
                 tcpListener.Stop();
+
+            StopInternal();
+        }
+
+        private void StopInternal()
+        {
+            if (tcpClient != null)
+                tcpClient.Close();
+
 
             foreach (var client in tcpClientsFromListener)
             {
@@ -231,7 +241,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                         else
                             context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                    Stop();
+                    StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
                         if (AutoReConnect) Start();
@@ -292,7 +302,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                         context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                 //if (this.State != Status.CONNECTING)
-                Stop();
+                StopInternal();
 
                 if (!AllowMultipleClients || connection_active)
                     if (AutoReConnect && this.State != Status.CONNECTING) Start();
@@ -335,7 +345,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                                 context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                         //if (this.State != Status.CONNECTING)
-                        Stop();
+                        StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
                             if (AutoReConnect && this.State != Status.CONNECTING) Start();
@@ -362,7 +372,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                         context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                 //if (this.State != Status.CONNECTING)
-                Stop();
+                StopInternal();
 
                 if (!AllowMultipleClients || connection_active)
                     if (AutoReConnect && this.State != Status.CONNECTING) Start();
@@ -398,7 +408,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                                 context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                         //if (this.State != Status.CONNECTING)
-                        Stop();
+                        StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
                             if (AutoReConnect && this.State != Status.CONNECTING) Start();
@@ -436,7 +446,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                                 context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                         //if (this.State != Status.CONNECTING)
-                        Stop();
+                        StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
                             if (AutoReConnect && this.State != Status.CONNECTING) Start();
@@ -502,7 +512,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.TCPIP
                             context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
                     if (this.State != Status.CONNECTING)
-                        Stop();
+                        StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
                         if (AutoReConnect && this.State != Status.CONNECTING) Start();
