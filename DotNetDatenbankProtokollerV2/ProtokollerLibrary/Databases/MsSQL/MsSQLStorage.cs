@@ -189,6 +189,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         private Thread myThread;
 
         private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
+        private List<DateTime> _intDateTimesList = new List<DateTime>();
+
         private volatile int _maxAdd = 0;
 
 
@@ -199,7 +201,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         public void Write(IEnumerable<object> values)
         {
             lock (_intValueList)
+            {
                 _intValueList.Add(values);
+                _intDateTimesList.Add(DateTime.Now);
+            }
 
             if (myThread == null)
             {
@@ -240,7 +245,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
                         if (ok)
                             lock (_intValueList)
+                            {
                                 _intValueList.RemoveRange(0, _maxAdd);
+                                _intDateTimesList.RemoveRange(0, _maxAdd);
+                            }
                     }
                     else
                         Thread.Sleep(20);
@@ -295,9 +303,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                             cmd.Parameters.Clear();
 
                             IEnumerable<object> values = _intValueList[n];
+                            var addDateTime = _intDateTimesList[n];
 
                             if (!string.IsNullOrEmpty(dateFieldName))
-                                cmd.Parameters.Add(new SqlParameter("@" + dateFieldName, System.Data.DbType.String) {Value = DateTime.Now});
+                                cmd.Parameters.Add(new SqlParameter("@" + dateFieldName, System.Data.DbType.String) { Value = addDateTime });
 
                             using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
                             using (IEnumerator<object> e2 = values.GetEnumerator())
