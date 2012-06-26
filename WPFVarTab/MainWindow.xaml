@@ -96,8 +96,20 @@
                                            Source="{Binding RelativeSource={RelativeSource TemplatedParent},
                                                             Path=Icon}" />
                                 </Button>
-                                <Button Name="cmdOpen"
+                                <Button Name="cmdNew"
                                         Margin="20,7,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        
+                                        Padding="3"
+                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="New VarTab" Click="cmdNew_Click">
+                                    <Image Width="16"
+                                           Height="16"
+                                           Source="/WPFVarTab;component/Images/document-new.png" />
+                                </Button>
+                                <Button Name="cmdOpen"
+                                        Margin="2,7,0,2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Click="cmdOpen_Click"
@@ -108,6 +120,7 @@
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/document-open-4.png" />
                                 </Button>
+
                                 <Button Name="cmdSave"
                                         Margin="2,7,0,2"
                                         HorizontalAlignment="Left"

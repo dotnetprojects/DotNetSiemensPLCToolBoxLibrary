@@ -446,6 +446,11 @@ namespace WPFVarTab
             var frm = new ConfigConnectionsAndSymbolSources(this);
             frm.ShowDialog();
         }
+
+        private void cmdNew_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
    
     }
 }
