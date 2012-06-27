@@ -744,6 +744,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                    
         }
 
+        public static string GetS5TimeFromTimeSpan(TimeSpan ts)
+        {
+            if (ts.Ticks > ((long)10000000 * 999))
+            {
+                //basis 3
+                var wr = ts.Ticks / 100000000;
+                return wr + "." + "3";
+            }
+            else if (ts.Ticks > (1000000 * 999))
+            {
+                //basis 2
+                var wr = ts.Ticks / 10000000;
+                return wr + "." + "2";
+            }
+            else if (ts.Ticks > (100000 * 999))
+            {
+                //basis 1
+                var wr = ts.Ticks / 1000000;
+                return wr + "." + "1";
+            }
+            else
+            {
+                //basis 0
+                var wr = ts.Ticks / 100000;
+                return wr + "." + "0";
+            }
+        }
+
+
         public static string GetS5Time(byte b1, byte b2)
         {
             bool found;

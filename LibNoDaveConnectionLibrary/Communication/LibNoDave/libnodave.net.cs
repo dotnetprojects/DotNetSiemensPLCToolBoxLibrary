@@ -1905,6 +1905,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             return tmp;
         }
 
+        public static float getS5Floatfrom(byte[] b, int pos)
+        {
+            //the bit 0 to bit 22 are the Mantissa
+            //bit 23 --> 0 is positive / 1 is negative 
+            //bit 24 to bit 30 exponent
+            //bit 31 => 0 is positive exponent / 1 is negative exponent
+
+            byte[] b1 = new byte[4];
+            b1[3] = 0;
+            b1[2] = (byte)(b[pos] & 0x7f);
+            b1[1] = (byte)(b[pos + 1] & 0xff);
+            b1[0] = (byte)(b[pos + 2] & 0xff);
+
+            var mantissa = b1[2] * 256 * 256 + b1[1] * 256 + b1[0];
+
+            var sign = (byte)(b[pos + 2] & 0x80);
+
+            b1[0] = b[pos + 3];
+
+            return 0;
+        }
+
         public static float getFloatfrom(byte[] b, int pos)
         {
             if (BitConverter.IsLittleEndian)

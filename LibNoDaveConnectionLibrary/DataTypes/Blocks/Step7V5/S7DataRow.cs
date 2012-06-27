@@ -59,6 +59,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             this.PlcBlock = plcblock;
             this.Name = name;
             this.DataType = datatype;
+
+            if (datatype == S7DataRowType.S5_KC || datatype == S7DataRowType.S5_C) StringSize = 2;
         }
 
         public S7DataRow DeepCopy()
@@ -321,17 +323,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     case S7DataRowType.S5_KF:
                     case S7DataRowType.S5_KM:
                     case S7DataRowType.S5_A:
-                    case S7DataRowType.S5_KG:
                     case S7DataRowType.S5_KT:
                     case S7DataRowType.S5_KZ:
                     case S7DataRowType.S5_KY:
-                        len = 1;
+                        len = 2;
+                        break;
+                    case S7DataRowType.S5_KG:
+                        len = 4;
                         break;
                     case S7DataRowType.S5_KC:
                     case S7DataRowType.S5_C:
-                        len = 2;
-                        if (StringSize > 0)
-                            len = StringSize;
+                        len = StringSize;
+                        //len = 2;
                         break;
                     case S7DataRowType.STRING:
                         len = StringSize + 2;
@@ -504,10 +507,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
                     else if (DataType == S7DataRowType.S5_KG)
                         return ((float)Value).ToString();
-                    else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)
-                        return "'" + ((string)Value).PadLeft(4, ' ') + "'";
-                    else if (DataType == S7DataRowType.S5_KT)
-                        return ((TimeSpan) Value).ToString();
+                    else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)                        
+                        return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
+                    else if (DataType == S7DataRowType.S5_KC)
+                        return "'" + ((string)Value).PadLeft(2, ' ') + "'";
+                    else if (DataType == S7DataRowType.S5_KT) 
+                        return Helper.GetS5TimeFromTimeSpan(((TimeSpan)Value));
                     else if (DataType == S7DataRowType.S5_KM)
                     {
                         var bt = BitConverter.GetBytes((UInt16)Value);
