@@ -177,6 +177,8 @@ namespace Kopplungstester.TCPIP
             if (tcpListener != null)
                 tcpListener.Stop();
 
+            tcpListener = null;
+
             StopInternal();
         }
 
@@ -184,7 +186,7 @@ namespace Kopplungstester.TCPIP
         {
             if (tcpClient != null)
                 tcpClient.Close();
-            
+
 
             foreach (var client in tcpClientsFromListener)
             {
@@ -193,7 +195,7 @@ namespace Kopplungstester.TCPIP
             tcpClientsFromListener.Clear();
 
             tcpClient = null;
-            tcpListener = null;
+
             this.State = Status.DISCONNECTED;
         }
 
@@ -268,7 +270,7 @@ namespace Kopplungstester.TCPIP
                 tcpClientsFromListener.Add(akTcpClient);
 
                 if (!AllowMultipleClients)
-                    tcpClient=akTcpClient;
+                    tcpClient = akTcpClient;
 
                 if (ConnectionEstablished != null)
                     if (context == null)
