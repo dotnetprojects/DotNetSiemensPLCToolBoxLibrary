@@ -371,13 +371,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             get
             {
-                if (_BlockAddress != null)
-                    return new ByteBitAddress(_BlockAddress);
-                else
-                {
+                if (_BlockAddress == null)
                     FillBlockAddresses(null);
-                    return new ByteBitAddress(_BlockAddress);
-                }
+                if (this.PlcBlock is Step5.S5DataBlock && _BlockAddress != null)
+                    return new ByteBitAddress(_BlockAddress.ByteAddress / 2, _BlockAddress.BitAddress);
+                return new ByteBitAddress(_BlockAddress);
+                
             }
         }
 
@@ -506,7 +505,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     else if (DataType == S7DataRowType.S5_KH)
                         return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
                     else if (DataType == S7DataRowType.S5_KG)
-                        return ((float)Value).ToString();
+                        return ((float)Value).ToString("");
                     else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)                        
                         return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
                     else if (DataType == S7DataRowType.S5_KC)

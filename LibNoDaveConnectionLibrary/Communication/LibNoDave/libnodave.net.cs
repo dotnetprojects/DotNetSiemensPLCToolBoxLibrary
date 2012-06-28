@@ -1914,17 +1914,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
             byte[] b1 = new byte[4];
             b1[3] = 0;
-            b1[2] = (byte)(b[pos] & 0x7f);
-            b1[1] = (byte)(b[pos + 1] & 0xff);
-            b1[0] = (byte)(b[pos + 2] & 0xff);
+            b1[2] = (byte)(b[pos + 1] & 0x7f);
+            b1[1] = (byte)(b[pos + 2]);
+            b1[0] = (byte)(b[pos + 3]);
+
+            
 
             var mantissa = b1[2] * 256 * 256 + b1[1] * 256 + b1[0];
+            //var mantissa = BitConverter.ToSingle(b1, 0);
+            float wrt = mantissa;
 
-            var sign = (byte)(b[pos + 2] & 0x80);
+            var sign = (byte)(b[pos + 1] & 0x80);
 
-            b1[0] = b[pos + 3];
+            var exp = (b[pos + 0]);// & 0x7f);
+            /*exp = (byte)(exp >> 1);
 
-            return 0;
+            while (exp >0)
+            {
+                wrt = wrt * 2.0f;
+                exp--;
+            }*/
+            
+            while (exp > 23)
+            {
+                wrt = wrt * 2.0f;
+                exp--;
+            }
+            while (exp < 23)
+            {
+                wrt = wrt / 2.0f;
+                exp++;
+            }           
+
+            return wrt*1000000;
         }
 
         public static float getFloatfrom(byte[] b, int pos)
