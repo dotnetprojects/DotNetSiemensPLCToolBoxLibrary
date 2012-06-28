@@ -33,7 +33,8 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    
+    using DotNetSiemensPLCToolBoxLibrary.General;
+
     public class S7DataRow : INotifyPropertyChanged
     {
         public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
@@ -505,7 +506,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     else if (DataType == S7DataRowType.S5_KH)
                         return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
                     else if (DataType == S7DataRowType.S5_KG)
-                        return ((float)Value).ToString("");
+                        return SingleExtensions.ToS5(((float)Value));
                     else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)                        
                         return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
                     else if (DataType == S7DataRowType.S5_KC)

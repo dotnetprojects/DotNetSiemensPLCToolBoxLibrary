@@ -33,6 +33,8 @@ using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 {
+    using System.Text.RegularExpressions;
+
     /*internal*/
     public class libnodave
     {
@@ -1918,15 +1920,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             b1[1] = (byte)(b[pos + 2]);
             b1[0] = (byte)(b[pos + 3]);
 
-            
+            var sign = (b[pos + 1] & 0x80);
 
-            var mantissa = b1[2] * 256 * 256 + b1[1] * 256 + b1[0];
+            long mantissa = b1[2] * 256 * 256 + b1[1] * 256 + b1[0];
             //var mantissa = BitConverter.ToSingle(b1, 0);
             float wrt = mantissa;
 
-            var sign = (byte)(b[pos + 1] & 0x80);
-
             var exp = (b[pos + 0]);// & 0x7f);
+
+            if (sign>0)
+            {
+                mantissa = mantissa ^ 0xffffffff;
+                mantissa = mantissa + 0x00800000;
+                wrt = mantissa;
+                wrt = -wrt;
+            }
+            
+
             /*exp = (byte)(exp >> 1);
 
             while (exp >0)
@@ -1944,9 +1954,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             {
                 wrt = wrt / 2.0f;
                 exp++;
-            }           
+            }
 
-            return wrt*1000000;
+            /* int k = 0;
+            while (wrt > 2.0f)
+            {
+                wrt = wrt / 2.0f;
+                k++;
+            }*/
+
+            return wrt;
         }
 
         public static float getFloatfrom(byte[] b, int pos)
