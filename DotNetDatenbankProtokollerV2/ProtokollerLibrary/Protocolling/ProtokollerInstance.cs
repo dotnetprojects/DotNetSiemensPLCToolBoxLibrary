@@ -22,8 +22,8 @@ using DotNetSimaticDatabaseProtokollerLibrary.Remoting;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
-using DotNetSimaticDatabaseProtokollerLibrary.TCPIP;
 using DotNetSimaticDatabaseProtokollerLibrary.aspx;
+using JFKCommonLibrary.Networking;
 
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
@@ -91,7 +91,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         if (ConnectionList.ContainsKey(connectionConfig))
                         {
                             PLCConnection plcConn = ConnectionList[connectionConfig] as PLCConnection;
-                            TCPFunctions tcpipFunc = ConnectionList[connectionConfig] as TCPFunctions;
                             if (plcConn != null && !plcConn.Connected && ((LibNoDaveConfig) connectionConfig).StayConnected)
                             {
                                 try
@@ -347,8 +346,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             {
                 if (conn is PLCConnection)
                     ((PLCConnection)conn).Dispose();
-                else if (conn is TCPFunctions)
-                    ((TCPFunctions)conn).Dispose();
+                else if (conn is TCPFunctionsAsync)
+                    ((TCPFunctionsAsync)conn).Dispose();
             }
 
             foreach (IDBInterface dbInterface in DatabaseInterfaces.Values)

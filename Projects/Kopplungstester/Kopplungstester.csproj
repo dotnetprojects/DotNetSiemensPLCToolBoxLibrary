@@ -53,10 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ByteArrayExtensions.cs" />
-    <Compile Include="Common\CustomSettingsProvider.cs" />
     <Compile Include="Common\InputBox.cs" />
-    <Compile Include="Common\StringExtension.cs" />
     <Compile Include="DataSetConverter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -73,8 +70,6 @@
     </Compile>
     <Compile Include="SocketExtensions.cs" />
     <Compile Include="TCPFunctions.cs" />
-    <Compile Include="TCPIP\SocketExtensions.cs" />
-    <Compile Include="TCPIP\TCPFunctionsAsync.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -100,6 +95,10 @@
     <Content Include="ExternalDLLs\IPAddressControlLib.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\JFKCommonLibrary\JFKCommonLibrary.csproj">
+      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
+      <Name>JFKCommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>

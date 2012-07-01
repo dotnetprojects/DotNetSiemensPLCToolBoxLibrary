@@ -13,8 +13,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using JFKCommonLibrary.Networking;
 using Kopplungstester.Properties;
-using Kopplungstester.TCPIP;
 using Kopplungstester.Common;
 
 namespace Kopplungstester

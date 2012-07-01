@@ -123,9 +123,6 @@
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
     <Compile Include="StaticServiceConfig.cs" />
-    <Compile Include="TCPIP\SocketExtensions.cs" />
-    <Compile Include="TCPIP\TCPFunctions.cs" />
-    <Compile Include="TCPIP\TCPFunctionsAsync.cs" />
     <Compile Include="Protocolling\Trigger\PLCTagTriggerThread.cs" />
     <Compile Include="ProtokollerConfiguration.cs" />
     <Compile Include="SettingsClasses\Connections\ConnectionConfig.cs" />
@@ -147,6 +144,10 @@
     <Folder Include="Databases\OleDB\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\JFKCommonLibrary\JFKCommonLibrary.csproj">
+      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
+      <Name>JFKCommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
