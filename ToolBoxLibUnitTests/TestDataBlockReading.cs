@@ -36,5 +36,51 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(test.Children[2].BlockAddress.ByteAddress, 10);
             Assert.AreEqual(test.Children[3].BlockAddress.ByteAddress, 12);
         }
+
+        [TestMethod]
+        public void TestDB2()
+        {
+            var txt = "\r\n  STRUCT \t\r\n   Fachkoordinate : ARRAY  [0 .. 67, 1 .. 2 ] OF //X, Z (1 = links, 2 = rechts)\r\n   STRUCT \t\r\n    X : DINT ;\t\r\n   END_STRUCT ;\t\r\n  END_STRUCT ;\t";
+            var par1 = new List<string>();
+            var fld = new BlocksOfflineFolder();
+            var blk = new S7Block();
+            var test =
+                DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.Parameter.GetInterfaceOrDBFromStep7ProjectString(txt,
+                                                                                                                ref par1,
+                                                                                                               PLCBlockType
+                                                                                                                    .DB,
+                                                                                                                false,
+                                                                                                                fld, blk);
+            Assert.AreEqual(test.Children[0].Name, "Fachkoordinate");
+            Assert.AreEqual(test.Children[0].ArrayStart[0], 0);
+            Assert.AreEqual(test.Children[0].ArrayStart[1], 1);
+            Assert.AreEqual(test.Children[0].ArrayStop[0], 67);
+            Assert.AreEqual(test.Children[0].ArrayStop[1], 2);
+            Assert.AreEqual(test.Children[0].ByteLength, 544);
+        }
+
+        [TestMethod]
+        public void TestDB3()
+        {
+            var txt = "\r\n  STRUCT \t\r\n   X_KOORDINATE : ARRAY  [0 .. 67, 0 .. 16, 1 .. 2 ] OF //X, Y, Z (Z1 = links, Z2 = rechts)\r\n   INT ;\t\r\n  END_STRUCT ;\t";
+            var par1 = new List<string>();
+            var fld = new BlocksOfflineFolder();
+            var blk = new S7Block();
+            var test =
+                DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.Parameter.GetInterfaceOrDBFromStep7ProjectString(txt,
+                                                                                                                ref par1,
+                                                                                                               PLCBlockType
+                                                                                                                    .DB,
+                                                                                                                false,
+                                                                                                                fld, blk);
+            Assert.AreEqual(test.Children[0].Name, "X_KOORDINATE");
+            Assert.AreEqual(test.Children[0].ArrayStart[0], 0);
+            Assert.AreEqual(test.Children[0].ArrayStart[1], 0);
+            Assert.AreEqual(test.Children[0].ArrayStart[2], 1);
+            Assert.AreEqual(test.Children[0].ArrayStop[0], 67);
+            Assert.AreEqual(test.Children[0].ArrayStop[1], 16);
+            Assert.AreEqual(test.Children[0].ArrayStop[2], 2);
+            Assert.AreEqual(test.Children[0].ByteLength, 4624);
+        }
     }
 }
