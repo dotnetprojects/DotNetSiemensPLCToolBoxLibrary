@@ -489,7 +489,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     {
                         plcDataRow.ClearBlockAddress();
                     }
-                Parent.ClearBlockAddress();
+                if (Parent != null)
+                    Parent.ClearBlockAddress();
             }
         }
 

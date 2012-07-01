@@ -184,7 +184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             int parseZustand = 0; //0=ParName, 1=AttributeName, 6=AfterAttributeName, 2=AttributeValue, 3=Type, 4=Value, 7=InnerValue (without '), 5=Comment
 
 
-                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ")) //    !rows[n].Contains("\t")
+                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && !rows[n].Contains("\r")) //    !rows[n].Contains("\t")
                             {
                                 if (rows.Length > n + 1)
                                 {
