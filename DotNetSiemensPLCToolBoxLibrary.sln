@@ -17,8 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFToolboxForSiemensPLCs", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E32FDB6-4CFE-448E-9223-C0F7DA793A7A}"
 	ProjectSection(SolutionItems) = preProject
+		DotNetSiemensPLCToolBoxLibrary.vsmdi = DotNetSiemensPLCToolBoxLibrary.vsmdi
 		LibNoDaveConnectionLibrary\Documentation\Info.txt = LibNoDaveConnectionLibrary\Documentation\Info.txt
 		LibNoDaveConnectionLibrary\Documentation\Licence.txt = LibNoDaveConnectionLibrary\Documentation\Licence.txt
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCSharpDemonstration", "SimpleCSharpDemonstartion\SimpleCSharpDemonstration.csproj", "{13451E45-2205-4842-A2A4-AFCBF0438221}"
@@ -53,7 +56,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{FD13B0E6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFKCommonLibrary", "JFKCommonLibrary\JFKCommonLibrary.csproj", "{B158CAB4-C341-4B87-8978-FE80D73F12C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBoxLibUnitTests", "ToolBoxLibUnitTests\ToolBoxLibUnitTests.csproj", "{5733381B-0B75-4E91-8EBA-5FAF45010BE0}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = DotNetSiemensPLCToolBoxLibrary.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|iPhone = Debug|iPhone
@@ -331,6 +339,20 @@ Global
 		{B158CAB4-C341-4B87-8978-FE80D73F12C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B158CAB4-C341-4B87-8978-FE80D73F12C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B158CAB4-C341-4B87-8978-FE80D73F12C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5733381B-0B75-4E91-8EBA-5FAF45010BE0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
