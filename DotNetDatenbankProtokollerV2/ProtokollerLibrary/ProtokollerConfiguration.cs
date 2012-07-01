@@ -9,8 +9,8 @@ using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
+using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
-using Polenter.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary
 {

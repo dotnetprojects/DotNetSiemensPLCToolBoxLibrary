@@ -12,6 +12,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using JFKCommonLibrary.WPF;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {

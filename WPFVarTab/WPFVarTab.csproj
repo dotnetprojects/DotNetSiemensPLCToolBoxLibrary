@@ -81,9 +81,6 @@
     <Compile Include="VarTabRowItemTemplateSelector.cs" />
     <Compile Include="VarTabRowWithConnection.cs" />
     <Compile Include="VarTabViewModel.cs" />
-    <Compile Include="WPF\BoolToValueConverter.cs" />
-    <Compile Include="WPF\IntToBoolConverter.cs" />
-    <Compile Include="WPF\ResolveElementName.cs" />
     <Page Include="ComboBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,6 +132,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JFKCommonLibrary\JFKCommonLibrary.csproj">
+      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
+      <Name>JFKCommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
@@ -174,6 +175,7 @@
   <ItemGroup>
     <Resource Include="Images\document-new.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

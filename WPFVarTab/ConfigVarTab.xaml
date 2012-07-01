@@ -1,14 +1,16 @@
 ﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.ConfigVarTab"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
-                        xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell" xmlns:WPFVarTab="clr-namespace:WPFVarTab" xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
+                       
+                        xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
                         Style="{DynamicResource GlassStyle}"
         Title="ConfigVarTab" Height="274" Width="213" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <ccl:CustomChromeWindow.Resources>
-        <WPFToolboxForSiemensPLCs:IntToBoolConverter x:Key="intToBool0" Value="0"/>
-        <WPFToolboxForSiemensPLCs:IntToBoolConverter x:Key="intToBool1" Value="1"/>
-        <WPFToolboxForSiemensPLCs:IntToBoolConverter x:Key="intToBool2" Value="2"/>
-        <WPFToolboxForSiemensPLCs:IntToBoolConverter x:Key="intToBool3" Value="3"/>
+        <Converters:IntToBoolConverter x:Key="intToBool0" Value="0"/>
+        <Converters:IntToBoolConverter x:Key="intToBool1" Value="1"/>
+        <Converters:IntToBoolConverter x:Key="intToBool2" Value="2"/>
+        <Converters:IntToBoolConverter x:Key="intToBool3" Value="3"/>
     </ccl:CustomChromeWindow.Resources>
     <Grid>
         <GroupBox Header="Read Config" Height="116" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">

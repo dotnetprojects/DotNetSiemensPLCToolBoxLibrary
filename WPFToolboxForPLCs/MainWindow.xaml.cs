@@ -17,6 +17,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using JFKCommonLibrary.WPF;
 using WPFToolboxForSiemensPLCs.DockableWindows;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 

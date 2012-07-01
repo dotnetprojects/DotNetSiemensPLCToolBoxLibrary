@@ -4,7 +4,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:NetworkEditor="clr-namespace:WPFToolboxForSiemensPLCs.Controls.NetworkEditor" xmlns:Blocks="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" xmlns:ExposeFirstVisibleItemBehavior="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons.ExposeFirstVisibleItemBehavior" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged" Closing="DocumentContent_Closing">
+             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" 
+    xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" 
+    xmlns:NetworkEditor="clr-namespace:WPFToolboxForSiemensPLCs.Controls.NetworkEditor" 
+    xmlns:Blocks="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary" 
+    xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" IsActiveDocumentChanged="DocumentContent_IsActiveDocumentChanged" Closing="DocumentContent_Closing">
     <ad:DocumentContent.Resources>
         <Style TargetType="ListBoxItem">
             <Style.Resources>
@@ -12,7 +16,7 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue"/>
             </Style.Resources>
         </Style>
-        <local:ItemLineNumbersConverter x:Key="ItemLineNumbersConverter" />
+        <Converters:ItemLineNumbersConverter x:Key="ItemLineNumbersConverter" />
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
             <ControlTemplate.Triggers>

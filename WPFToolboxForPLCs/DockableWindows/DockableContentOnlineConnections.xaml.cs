@@ -9,6 +9,7 @@ using AvalonDock;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using JFKCommonLibrary.WPF;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {

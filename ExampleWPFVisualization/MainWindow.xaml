@@ -1,11 +1,10 @@
 ﻿<Window x:Class="ExampleWPFVisualization.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Behaviours="clr-namespace:ExampleWPFVisualization.Behaviours"
         xmlns:Communication="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Communication;assembly=DotNetSiemensPLCToolBoxLibrary"
-        xmlns:Converters="clr-namespace:ExampleWPFVisualization.Converters"
         xmlns:ExampleWPFVisualization="clr-namespace:ExampleWPFVisualization"
-        Title="MainWindow"
+        xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+        xmlns:Behaviours="clr-namespace:JFKCommonLibrary.WPF.Behaviors;assembly=JFKCommonLibrary" Title="MainWindow"
         Width="1040"
         Height="592">
     <Window.Resources>

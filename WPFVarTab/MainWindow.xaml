@@ -1,15 +1,14 @@
 ﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.MainWindow"
                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                        xmlns:behavior="clr-namespace:WPFVarTab.WPF"
                         xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
                         xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
                         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
-                        xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
                         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                        xmlns:behavior="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
                         Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
@@ -26,7 +25,7 @@
     </Window.CommandBindings>
 
     <Window.Resources>
-        <WPFToolboxForSiemensPLCs:BoolToBrushConverter x:Key="connectedConv"
+        <behavior:BoolToBrushConverter x:Key="connectedConv"
                                                        FalseValue="Red"
                                                        TrueValue="LightGreen" />
         <ObjectDataProvider x:Key="resTagDataTypes"

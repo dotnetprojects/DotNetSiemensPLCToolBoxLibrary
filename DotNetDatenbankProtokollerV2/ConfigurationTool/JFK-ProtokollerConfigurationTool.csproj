@@ -91,11 +91,7 @@
     <Compile Include="Windows\EditConnections.xaml.cs">
       <DependentUpon>EditConnections.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\ListIntToVisibilityConverter.cs" />
-    <Compile Include="WPF\IntToHiddenConverter.cs" />
     <Compile Include="WPF\HyperlinkUtility.cs" />
-    <Compile Include="WPF\IntToVisibilityConverter.cs" />
-    <Compile Include="WPF\StringToPLCValueBoolConverter.cs" />
     <Page Include="Windows\EditCommonSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -177,6 +173,10 @@
     <Resource Include="Images\1.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\JFKCommonLibrary\JFKCommonLibrary.csproj">
+      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
+      <Name>JFKCommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>

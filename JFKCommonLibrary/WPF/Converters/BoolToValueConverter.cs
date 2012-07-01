@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace WPFToolboxForSiemensPLCs
+namespace JFKCommonLibrary.WPF.Converters
 {
     public class BoolToValueConverter<T> : IValueConverter
     {

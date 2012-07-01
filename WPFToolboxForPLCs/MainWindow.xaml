@@ -6,7 +6,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" 
-        xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs" Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000" Icon="/WPFToolboxForSiemensPLCs;component/Images/1.png" Closing="Window_Closing">
+        xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+        xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+        Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000" Icon="/WPFToolboxForSiemensPLCs;component/Images/1.png" Closing="Window_Closing">
 <Window.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
             <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />

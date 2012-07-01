@@ -10,6 +10,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using ICSharpCode.AvalonEdit.Highlighting;
+using JFKCommonLibrary.WPF;
 using WPFToolboxForSiemensPLCs.Controls.NetworkEditor;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows

@@ -5,7 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" 
+    xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" 
+    xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls"
+    xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
              Name="NetworkEditorWindow"
     >

@@ -7,23 +7,22 @@
              xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:WPF="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common.WPF;assembly=JFK-ProtokollerLibrary"
              xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
-             Name="myControl"
+             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" Name="myControl"
              d:DesignHeight="483"
              d:DesignWidth="984"
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <WPF:NullToFalseConverter x:Key="myNullToFalseConverter" />
-        <WPF1:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
+        <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
+        <Converters:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
 
-        <WPF1:ListIntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0,4" />
-        <WPF1:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1" />
-        <WPF1:IntToVisibilityConverter x:Key="VisConv2Visible" VisibleValue="2" />
-        <WPF1:IntToVisibilityConverter x:Key="VisConv3Visible" VisibleValue="3" />
+        <Converters:ListIntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0,4" />
+        <Converters:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1" />
+        <Converters:IntToVisibilityConverter x:Key="VisConv2Visible" VisibleValue="2" />
+        <Converters:IntToVisibilityConverter x:Key="VisConv3Visible" VisibleValue="3" />
 
-        <WPF1:IntToHiddenConverter x:Key="VisConv2Hidden" HiddenValue="2" />
+        <Converters:IntToHiddenConverter x:Key="VisConv2Hidden" HiddenValue="2" />
 
         <ObjectDataProvider x:Key="dtrigger"
                             MethodName="GetValues"

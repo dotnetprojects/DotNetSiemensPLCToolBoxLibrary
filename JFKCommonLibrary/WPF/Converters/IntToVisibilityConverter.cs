@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
-namespace WPFToolboxForSiemensPLCs
+namespace JFKCommonLibrary.WPF.Converters
 {
-    public class IntToBoolConverter : IValueConverter
+    public class IntToVisibilityConverter : IValueConverter
     {
-        public int Value { get; set; }
-        
+        public int VisibleValue { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null || (int)value != Value)
-                return false;
-            return true;
+            if (System.Convert.ToInt32(value) != VisibleValue)
+                return Visibility.Hidden;
+            return Visibility.Visible;            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((bool)value == true)
-                return Value;
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

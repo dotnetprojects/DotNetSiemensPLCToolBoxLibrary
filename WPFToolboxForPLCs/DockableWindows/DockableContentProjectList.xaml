@@ -1,7 +1,17 @@
-﻿<ad:DockableContent x:Class="WPFToolboxForSiemensPLCs.DockableWindows.DockableContentProjectList" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:WPFToolboxForSiemensPLCs.WPF_Addons" xmlns:WPFToolboxForSiemensPLCs="clr-namespace:WPFToolboxForSiemensPLCs" xmlns:Projectfolders="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;assembly=DotNetSiemensPLCToolBoxLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+﻿<ad:DockableContent 
+    x:Class="WPFToolboxForSiemensPLCs.DockableWindows.DockableContentProjectList" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" 
+    xmlns:s="clr-namespace:System;assembly=mscorlib" 
+    xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" 
+    xmlns:Projectfolders="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;assembly=DotNetSiemensPLCToolBoxLibrary"
+    xmlns:WPFToolboxForSiemensPLCs="clr-namespace:JFKCommonLibrary.WPF;assembly=JFKCommonLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
-	<ad:DockableContent.Resources>		
-		<local:TreeViewLineConverter x:Key="LineConverter" />
+	<ad:DockableContent.Resources>
+        <Converters:TreeViewLineConverter x:Key="LineConverter" />
 		<SolidColorBrush x:Key="GlyphBrush" Color="#444" />
 		<Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
 			<Setter Property="Focusable" Value="False" />

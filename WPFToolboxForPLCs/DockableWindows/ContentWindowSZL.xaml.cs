@@ -7,6 +7,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using JFKCommonLibrary.WPF.Converters;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
 {

@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using ExampleWPFVisualization.Converters;
 
 namespace ExampleWPFVisualization
 {

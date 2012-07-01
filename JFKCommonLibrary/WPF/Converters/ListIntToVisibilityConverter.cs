@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
 
-namespace DotNetSimaticDatabaseProtokollerConfigurationTool.WPF
+namespace JFKCommonLibrary.WPF.Converters
 {
     public class ListIntToVisibilityConverter : IValueConverter
     {

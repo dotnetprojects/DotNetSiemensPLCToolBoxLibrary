@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
-namespace WPFVarTab.WPF
+namespace JFKCommonLibrary.WPF.Converters
 {
     public class ResolveElementName : TargetedTriggerAction<FrameworkElement>
     {

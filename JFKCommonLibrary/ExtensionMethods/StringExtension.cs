@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kopplungstester
+namespace JFKCommonLibrary.ExtensionMethods
 {
     public static class StringExtension
     {
