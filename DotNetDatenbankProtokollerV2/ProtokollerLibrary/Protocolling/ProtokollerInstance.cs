@@ -28,6 +28,8 @@ using JFKCommonLibrary.Networking;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
+    using DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL;
+
     public class ProtokollerInstance : IDisposable
     {
         private SynchronizationContext context;
@@ -228,8 +230,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     Logging.LogText("DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
 
-                    akDBInterface.Connect_To_Database(datasetConfig.Storage);
-                    akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
+                    if (akDBInterface is MsSQLStorage)
+                    {
+                        var tmp = akDBInterface as MsSQLStorage;
+                        tmp.Initiate(datasetConfig);
+                    }
+                    else
+                    {
+                        akDBInterface.Connect_To_Database(datasetConfig.Storage);
+                        akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
+                    }
 
                     if (CreateTriggers)
                         if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)

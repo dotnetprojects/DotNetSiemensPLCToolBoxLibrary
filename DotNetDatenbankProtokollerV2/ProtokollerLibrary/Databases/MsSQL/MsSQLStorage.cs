@@ -26,6 +26,26 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         private string dataTable;
         private string insertCommand = "";
 
+        private bool _initiated = false;        
+        public void Initiate(DatasetConfig dsConfig)
+        {
+            datasetConfig = dsConfig;
+            Initiate();           
+        }
+        private void Initiate()
+        {
+            try
+            {
+                Connect_To_Database(datasetConfig.Storage);
+                CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
+                _initiated = true;
+            }
+            catch (Exception ex)
+            {
+                if (ThreadExceptionOccured != null) ThreadExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+            }
+        }
+
         private DbConnection myDBConn;
         private DbCommand myCmd = new SqlCommand();
         private DbDataReader myReader;
@@ -200,17 +220,23 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         /// <param name="values"></param>
         public void Write(IEnumerable<object> values)
         {
-            lock (_intValueList)
+            if (!_initiated) 
+                Initiate();
+            
+            if (_initiated)
             {
-                _intValueList.Add(values);
-                _intDateTimesList.Add(DateTime.Now);
-            }
+                lock (_intValueList)
+                {
+                    _intValueList.Add(values);
+                    _intDateTimesList.Add(DateTime.Now);
+                }
 
-            if (myThread == null)
-            {
-                myThread = new Thread(new ThreadStart(ThreadProc));
-                myThread.Name = "Thread from Storage: " + myConfig.Name + " for Table: " + dataTable;
-                myThread.Start();
+                if (myThread == null)
+                {
+                    myThread = new Thread(new ThreadStart(ThreadProc));
+                    myThread.Name = "Thread from Storage: " + myConfig.Name + " for Table: " + dataTable;
+                    myThread.Start();
+                }
             }
         }
 
