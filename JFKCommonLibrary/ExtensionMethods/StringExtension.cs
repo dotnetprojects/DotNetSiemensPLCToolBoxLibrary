@@ -20,5 +20,17 @@ namespace JFKCommonLibrary.ExtensionMethods
                 return mystr.Substring(0, FixedLength);
             return mystr;
         }
+
+        public static string ReplaceUmlaute(this string val)
+        {
+            val = val.Replace("ä", "ae");
+            val = val.Replace("ö", "oe");
+            val = val.Replace("ü", "ue");
+            val = val.Replace("Ä", "Ae");
+            val = val.Replace("Ö", "Oe");
+            val = val.Replace("Ü", "Ue");
+            val = val.Replace("ß", "ss");
+            return val;
+        }
     }
 }

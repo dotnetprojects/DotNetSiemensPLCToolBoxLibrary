@@ -60,6 +60,7 @@
     <Compile Include="Networking\SocketExtensions.cs" />
     <Compile Include="Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\ObservableDictionary.cs" />
     <Compile Include="Serialization\SerializeToString.cs" />
     <Compile Include="Serialization\XMLReferenceSerializer.cs" />
     <Compile Include="Settings\CustomSettingsProvider.cs" />

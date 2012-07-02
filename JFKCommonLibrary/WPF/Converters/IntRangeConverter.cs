@@ -76,6 +76,7 @@ namespace JFKCommonLibrary.WPF.Converters
         }
     }
 
+    public class IntRangeToStringConverter : IntRangeConverter<string> { } ;
     public class IntRangeToBrushConverter : IntRangeConverter<Brush> { } ;
     public class IntRangeToThicknessConverter : IntRangeConverter<Thickness> { } ;
     public class IntRangeToPointConverter : IntRangeConverter<Point> { } ;
