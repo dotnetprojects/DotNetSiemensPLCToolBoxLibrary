@@ -1,121 +1,168 @@
 ﻿<UserControl x:Class="TestProjectFileFunctions.DataBlockViewControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TestProjectFileFunctions" 
-             xmlns:Step7V51="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;assembly=DotNetSiemensPLCToolBoxLibrary" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:TestProjectFileFunctions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Step7V51="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;assembly=DotNetSiemensPLCToolBoxLibrary"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style TargetType="TreeViewItem">
             <Style.Resources>
-                <!-- Resources omitted for clarity… -->
+                <!--  Resources omitted for clarity…  -->
             </Style.Resources>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TreeViewItem">
                         <StackPanel Margin="0" Orientation="Vertical">
-                            <!-- Presents the Content -->
-                            <Border Padding="0" Margin="0" Name="sel">
-                            <ContentPresenter Margin="0"  Name="PART_Header" ContentSource="Header"/>
+                            <!--  Presents the Content  -->
+                            <Border Name="sel"
+                                    Margin="0"
+                                    Padding="0">
+                                <ContentPresenter Name="PART_Header"
+                                                  Margin="0"
+                                                  ContentSource="Header" />
                             </Border>
-                            <!-- Presents the Children -->
-                            <Border Padding="0" Margin="0">
-                                <ItemsPresenter x:Name="ItemsHost" Margin="0"/>
+                            <!--  Presents the Children  -->
+                            <Border Margin="0" Padding="0">
+                                <ItemsPresenter x:Name="ItemsHost" Margin="0" />
                             </Border>
                         </StackPanel>
 
                         <ControlTemplate.Triggers>
-                                                        <!--When the item is selected in the TreeView, use the 
-              "selected" colors and give it a drop shadow. -->
+                            <!--
+                                When the item is selected in the TreeView, use the
+                                "selected" colors and give it a drop shadow.
+                            -->
                             <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" TargetName="sel" Value="Blue"></Setter>
-                                <!-- Setters omitted for clarity... -->
+                                <Setter TargetName="sel" Property="Background" Value="Blue" />
+                                <!--  Setters omitted for clarity...  -->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
 
-            <!-- Make each TreeViewItem show it's children  in a StackPanel. -->
+            <!--  Make each TreeViewItem show it's children  in a StackPanel.  -->
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
-                        <StackPanel HorizontalAlignment="Left" IsItemsHost="True" Margin="0"/>
+                        <StackPanel Margin="0"
+                                    HorizontalAlignment="Left"
+                                    IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <local:TreeviewDepthWidthConverter  Width="19" x:Key="lengthConverter" />
-        <local:TreeviewDepthWidthConverter  Width="330" preWidth="19" x:Key="length2Converter" />
+        <local:TreeviewDepthWidthConverter x:Key="lengthConverter" Width="19" />
+        <local:TreeviewDepthWidthConverter x:Key="length2Converter"
+                                           Width="330"
+                                           preWidth="19" />
 
     </UserControl.Resources>
 
-    <Grid Background="White" Margin="0">
+    <Grid Margin="0" Background="White">
         <!--
             <StackPanel Height="20" Orientation="Horizontal" Margin="0">
             <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black">
-                <TextBlock TextAlignment="Right" Text="Address" Margin="0" Width="45"/>
+            <TextBlock TextAlignment="Right" Text="Address" Margin="0" Width="45"/>
             </Border>
-                <Border Padding="2" Width="330" BorderThickness="1,1,1,1" BorderBrush="Black">
-                <TextBlock Text="Name" Margin="0"/>                    
-            </Border>                
+            <Border Padding="2" Width="330" BorderThickness="1,1,1,1" BorderBrush="Black">
+            <TextBlock Text="Name" Margin="0"/>
+            </Border>
             <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="80">
-                <TextBlock Text="DataType" Margin="0"/>
+            <TextBlock Text="DataType" Margin="0"/>
             </Border>
             <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="300">
-                <TextBlock Text="Value" Margin="0"/>
+            <TextBlock Text="Value" Margin="0"/>
             </Border>
-        </StackPanel> -->
-            
-                <TreeView Padding="0" Margin="0" Name="MyTree">
+            </StackPanel>
+        -->
+
+        <TreeView Name="MyTree"
+                  Margin="0"
+                  Padding="0">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Step7V51:S7DataRow}" ItemsSource="{Binding Children}">
-                        <Grid Margin="0">
-                        <!--<Thumb x:Name="PART_Thumb" HorizontalAlignment="Left" Width="5" Margin="7 0 0 0" Cursor="SizeWE">
+                    <Grid Margin="0">
+                        <!--
+                            <Thumb x:Name="PART_Thumb" HorizontalAlignment="Left" Width="5" Margin="7 0 0 0" Cursor="SizeWE">
                             <Thumb.RenderTransform>
-                                <TranslateTransform X="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TreeviewDepthWidthConverter}}}" />
+                            <TranslateTransform X="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TreeviewDepthWidthConverter}}}" />
                             </Thumb.RenderTransform>
                             <Thumb.Template>
-                                <ControlTemplate>
-                                    <Border Background="Transparent" />
-                                </ControlTemplate>
+                            <ControlTemplate>
+                            <Border Background="Transparent" />
+                            </ControlTemplate>
                             </Thumb.Template>
-                        </Thumb>-->                
-                    <StackPanel Orientation="Horizontal" Margin="0">                       
-                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black">
-                            <TextBlock TextAlignment="Right" Text="{Binding BlockAddress}" Margin="0" Width="45"/>
-                        </Border>
-                        <Border Width="{Binding Converter={StaticResource lengthConverter}}"  Margin="0"/>
-                        <Border Padding="2" Width="{Binding Converter={StaticResource length2Converter}}" BorderThickness="1,1,1,1" BorderBrush="Black">
-                                <TextBlock Text="{Binding Name}" ToolTip="{Binding StructuredName}" Margin="0"/>
-                        </Border>
-                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="180">
-                                <TextBlock Text="{Binding DataTypeAsString}" Margin="0" ToolTip="{Binding DataTypeAsString}"/>
-                        </Border>
-                        <Border Padding="2" Width="300" BorderThickness="1,1,1,1" BorderBrush="Black">
-                                <TextBlock Text="{Binding Comment}" ToolTip="{Binding Comment}" Margin="0"/>
-                        </Border>
-                        <Border Padding="2" BorderThickness="1,1,1,1" BorderBrush="Black" Width="300">
-                            <TextBlock Text="{Binding Path=LibNoDaveValue.Value}" Margin="0"/>
-                        </Border>
-                    </StackPanel>
+                            </Thumb>
+                        -->
+                        <StackPanel Margin="0" Orientation="Horizontal">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Width="45"
+                                           Margin="0"
+                                           Text="{Binding BlockAddress}"
+                                           TextAlignment="Right" />
+                            </Border>
+                            <Border Width="{Binding Converter={StaticResource lengthConverter}}" Margin="0" />
+                            <Border Width="{Binding Converter={StaticResource length2Converter}}"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding Name}"
+                                           ToolTip="{Binding StructuredName}" />
+                            </Border>
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding DataTypeAsString}"
+                                           ToolTip="{Binding DataTypeAsString}" />
+                            </Border>
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding ValueAsString}"
+                                           ToolTip="{Binding ValueAsString}" />
+                            </Border>
+                            <Border Width="300"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding Comment}"
+                                           ToolTip="{Binding Comment}" />
+                            </Border>
+                            <Border Width="300"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0" Text="{Binding Path=LibNoDaveValue.Value}" />
+                            </Border>
+                        </StackPanel>
                     </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
 
             <!--
-            <TreeView.ItemsPanel>
+                <TreeView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Grid HorizontalAlignment="Center" IsItemsHost="True" />
+                <Grid HorizontalAlignment="Center" IsItemsHost="True" />
                 </ItemsPanelTemplate>
-            </TreeView.ItemsPanel>
+                </TreeView.ItemsPanel>
             -->
         </TreeView>
-            
-       
+
+
     </Grid>
 </UserControl>

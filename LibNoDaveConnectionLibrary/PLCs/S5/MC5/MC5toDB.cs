@@ -143,7 +143,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     nr += hdlen + 1;
                     while (nr + 3 < commentBlock.Length)
                     {
-                        int zeile = commentBlock[nr];
+                        int zeile = ((commentBlock[nr + 1] - 128) * 256) + commentBlock[nr];
                         int len = 0x7f & commentBlock[nr + 2];
                         string cmt = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 3, len);
                         //main._children[zeile].Comment = cmt;
