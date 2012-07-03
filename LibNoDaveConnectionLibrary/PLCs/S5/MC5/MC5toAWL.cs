@@ -67,6 +67,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 {
                     if (s5FunctionBlockRow.Command == "BLD" && s5FunctionBlockRow.Parameter == "255")
                     {
+                        if (nw != null)
+                            nw.AWLCode.Add(s5FunctionBlockRow);                     
                         nw = new S5FunctionBlockNetwork();
                         nw.Parent = retVal;
                         nw.AWLCode = new List<FunctionBlockRow>();
