@@ -28,9 +28,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
 
         #region Webserver        
         [DataMember]
-        public bool UseWebserver { get; set; }
+        public bool UseWebserver
+        {
+            get
+            {
+                return this.useWebserver;
+            }
+            set
+            {
+                this.useWebserver = value;
+            }
+        }
 
         private int _webserverPort = 80;
+
+        private bool useWebserver = false;
+
         [DataMember]
         public int WebserverPort
         {

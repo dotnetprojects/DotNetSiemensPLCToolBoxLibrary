@@ -13,7 +13,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 {
-    public class MsSQLStorage : IDBInterface, IDBViewable, IDBViewableSQL
+    public class MsSQLStorage : DBBaseClass, IDBViewable, IDBViewableSQL
     {
         private Action<string> _newDataCallback;
         public MsSQLStorage(Action<string> NewDataCallback)
@@ -26,33 +26,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         private string dataTable;
         private string insertCommand = "";
 
-        private bool _initiated = false;        
-        public void Initiate(DatasetConfig dsConfig)
-        {
-            datasetConfig = dsConfig;
-            Initiate();           
-        }
-        private void Initiate()
-        {
-            try
-            {
-                Connect_To_Database(datasetConfig.Storage);
-                CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
-                _initiated = true;
-            }
-            catch (Exception ex)
-            {
-                if (ThreadExceptionOccured != null) ThreadExceptionOccured(this, new ThreadExceptionEventArgs(ex));
-            }
-        }
-
         private DbConnection myDBConn;
         private DbCommand myCmd = new SqlCommand();
         private DbDataReader myReader;
+        
+        private string dateFieldName;
 
-        private static Dictionary<string, object> FileNameLockObjects = new Dictionary<string, object>();
+        private DatasetConfig datasetConfig;
 
-        public void Close()
+        public override void Close()
         {
             if (myThread != null)
                 myThread.Abort();
@@ -60,14 +42,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 myDBConn.Close();
         }
 
-        public event ThreadExceptionEventHandler ThreadExceptionOccured;
-
         private string ConnectionString
         {
             get { return string.Format("Data Source={0},{1};Network Library=DBMSSOCN;Initial Catalog={2};User ID={3};Password={4};", myConfig.Server, myConfig.Port, myConfig.Database,  myConfig.Username, myConfig.Password); }
         }
 
-        public void Connect_To_Database(StorageConfig config)
+        public override void Connect_To_Database(StorageConfig config)
         {
 
             myConfig = config as MsSQLConfig;
@@ -91,11 +71,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             }
         }
 
-        private string dateFieldName;
-
-        private DatasetConfig datasetConfig;
-
-        public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+       
+        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
             this.dataTable = dataTable;
@@ -203,92 +180,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             }
             insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
-
-
-
-        private Thread myThread;
-
-        private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
-        private List<DateTime> _intDateTimesList = new List<DateTime>();
-
-        private volatile int _maxAdd = 0;
-
-
-        /// <summary>
-        /// The write is added to a List and then put into an extra Thread, so that the PLC gets it's quitt imidiatly
-        /// </summary>
-        /// <param name="values"></param>
-        public void Write(IEnumerable<object> values)
-        {
-            if (!_initiated) 
-                Initiate();
-            
-            if (_initiated)
-            {
-                lock (_intValueList)
-                {
-                    _intValueList.Add(values);
-                    _intDateTimesList.Add(DateTime.Now);
-                }
-
-                if (myThread == null)
-                {
-                    myThread = new Thread(new ThreadStart(ThreadProc));
-                    myThread.Name = "Thread from Storage: " + myConfig.Name + " for Table: " + dataTable;
-                    myThread.Start();
-                }
-            }
-        }
-
-        private void ThreadProc()
-        {
-            try
-            {
-                while (true)
-                {
-
-                    bool ok = false;
-                    if (_intValueList.Count > 0)
-                    {
-                        lock (_intValueList)
-                            _maxAdd = _intValueList.Count;
-
-                        try
-                        {
-                            ok = _internal_Write();
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            throw;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ThreadExceptionOccured != null)
-                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
-                            else
-                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
-                        }
-
-                        if (ok)
-                            lock (_intValueList)
-                            {
-                                _intValueList.RemoveRange(0, _maxAdd);
-                                _intDateTimesList.RemoveRange(0, _maxAdd);
-                            }
-                    }
-                    else
-                        Thread.Sleep(20);
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                return;
-            }
-        }
-
-
-
-        public bool _internal_Write()
+        
+        protected override bool _internal_Write()
         {
             //Look if the Connection is still open..
             try
@@ -376,7 +269,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             return true;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (myThread != null)
                 myThread.Abort();

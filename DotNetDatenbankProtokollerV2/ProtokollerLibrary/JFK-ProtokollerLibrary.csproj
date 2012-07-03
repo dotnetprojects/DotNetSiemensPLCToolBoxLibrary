@@ -92,6 +92,7 @@
     <Compile Include="Databases\CSVFile\CSVStorage.cs" />
     <Compile Include="Databases\Excel\ExcelStorage.cs" />
     <Compile Include="Databases\Firebird\FirebirdStorage.cs" />
+    <Compile Include="Databases\Interfaces\DBBaseClass.cs" />
     <Compile Include="Databases\Interfaces\IDBViewableSQL.cs" />
     <Compile Include="Databases\MsSQL\MsSQLStorage.cs" />
     <Compile Include="Databases\MySQL\MySQLStorage.cs" />

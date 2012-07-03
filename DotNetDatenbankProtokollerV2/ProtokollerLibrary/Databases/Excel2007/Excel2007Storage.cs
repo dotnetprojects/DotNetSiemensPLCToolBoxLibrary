@@ -11,7 +11,7 @@ using OfficeOpenXml;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 {
-    public class Excel2007Storage : IDBInterface
+    public class Excel2007Storage : DBBaseClass
     {
         private Action<string> _newDataCallback;
         public Excel2007Storage(Action<string> NewDataCallback)
@@ -27,15 +27,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 
         //private System.IO.StreamWriter writer = null;
 
-        public void Close()
+        public override void Close()
         {
             if (myThread != null)
                 myThread.Abort();            
         }
 
-        public event ThreadExceptionEventHandler ThreadExceptionOccured;
-
-        public void Connect_To_Database(StorageConfig config)
+        public override void Connect_To_Database(StorageConfig config)
         {                        
             myConfig = config as Excel2007Config;            
             if (myConfig == null)
@@ -44,14 +42,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             FileName = myConfig.Filename;
         }
 
-        private DatasetConfig _datasetConfig;
-
-
-        public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {            
             TableName = datasetConfig.Name;
-            _datasetConfig = datasetConfig;
-
+            
             ExcelPackage ep;
             /*
             if (File.Exists(FileName))
@@ -87,74 +81,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             ep.Dispose();
         }
 
-        private Thread myThread;
-
-        private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
-        private volatile int _maxAdd = 0;
-
-        /// <summary>
-        /// The write is added to a List and then put into an extra Thread, so that the PLC gets it's quitt imidiatly
-        /// </summary>
-        /// <param name="values"></param>
-        public void Write(IEnumerable<object> values)
-        {
-            lock (_intValueList)
-                _intValueList.Add(values);
-
-            if (myThread == null)
-            {
-                myThread = new Thread(new ThreadStart(ThreadProc));
-                myThread.Name = "Thread from Storage: " + myConfig.Name + " for Table: " + TableName;
-                myThread.Start();
-            }
-        }
-
-        private void ThreadProc()
-        {
-            try
-            {
-                while (true)
-                {
-                    if (_intValueList.Count > 0)
-                    {
-                        bool ok = false;
-                        lock (_intValueList)
-                            _maxAdd = _intValueList.Count;
-
-                        try
-                        {
-                            ok = _internal_Write();
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            throw;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ThreadExceptionOccured != null)
-                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
-                            else
-                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
-                        }
-
-                        if (ok)
-                            lock (_intValueList)
-                                _intValueList.RemoveRange(0, _maxAdd);
-                    }
-                    else
-                        Thread.Sleep(20);
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                return;
-            }
-        }
-
-
+       
         private int zeile = 0;
-            
-        public bool _internal_Write()
+
+        protected override bool _internal_Write()
         {
 
             ExcelPackage ep;
@@ -198,8 +128,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             //        break;
             //}
 
-
-
             string zeilen = "";
             for (int n = 0; n < _maxAdd; n++)
             {
@@ -212,10 +140,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                     if (akValue is DateTime)
                     {
 
-                        if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
+                        if (datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
                             DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Date)
                             akWorksheet.Cells[zeile, spalte].Value = akValue;
-                        else if (_datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
+                        else if (datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
                                  DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.TimeOfDay)
                             akWorksheet.Cells[zeile, spalte].Value = akValue;
                         else
@@ -239,7 +167,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             return true;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (myThread != null)
                 myThread.Abort();

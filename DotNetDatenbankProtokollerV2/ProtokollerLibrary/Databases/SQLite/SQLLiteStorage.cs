@@ -31,7 +31,7 @@ Feldzuordnung bei SQLLite
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 {
-    public class SQLLiteStorage : IDBInterface, IDBViewable, IDBViewableSQL
+    public class SQLLiteStorage : DBBaseClass, IDBViewable, IDBViewableSQL
     {
          private Action<string> _newDataCallback;
          public SQLLiteStorage(Action<string> NewDataCallback)
@@ -50,7 +50,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         private static Dictionary<string, object> FileNameLockObjects = new Dictionary<string, object>();
         
-        public void Close()
+        public override void Close()
         {
             if (myThread != null)
                 myThread.Abort();
@@ -58,14 +58,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 myDBConn.Close();
         }
 
-        public event ThreadExceptionEventHandler ThreadExceptionOccured;
-
         private string ConnectionString
         {
             get { return string.Format("Data Source={0};Pooling=true;FailIfMissing=false", myConfig.DatabaseFile); }
         }
 
-        public void Connect_To_Database(StorageConfig config)
+        public override void Connect_To_Database(StorageConfig config)
         {
             
             myConfig = config as SQLiteConfig;
@@ -94,9 +92,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         private string dateFieldName;
 
-        private DatasetConfig datasetConfig;
-
-        public void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
             this.dataTable = dataTable;
@@ -207,85 +203,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
 
-
-
-        private Thread myThread;
-
-        private List<IEnumerable<object>> _intValueList = new List<IEnumerable<Object>>();
-        private List<DateTime> _intDateTimesList = new List<DateTime>();
-        private volatile int _maxAdd = 0;
-
-
-        /// <summary>
-        /// The write is added to a List and then put into an extra Thread, so that the PLC gets it's quitt imidiatly
-        /// </summary>
-        /// <param name="values"></param>
-        public void Write(IEnumerable<object> values)
-        {
-            lock (_intValueList)
-            {
-                _intValueList.Add(values);
-                _intDateTimesList.Add(DateTime.Now);
-            }
-
-            if (myThread == null)
-            {
-                myThread = new Thread(new ThreadStart(ThreadProc));
-                myThread.Name = "Thread from Storage: " + myConfig.Name + " for Table: " + dataTable;
-                myThread.Start();
-            }
-        }
-
-        private void ThreadProc()
-        {
-            try
-            {
-                while (true)
-                {
-
-
-                    if (_intValueList.Count > 0)
-                    {
-                        bool ok = false;
-                        lock (_intValueList)
-                            _maxAdd = _intValueList.Count;
-                        
-                        try
-                        {                           
-                            ok = _internal_Write();                            
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            throw;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ThreadExceptionOccured != null)
-                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
-                            else
-                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
-                        }
-
-                        if (ok)
-                            lock (_intValueList)
-                            {
-                                _intValueList.RemoveRange(0, _maxAdd);
-                                _intDateTimesList.RemoveRange(0, _maxAdd);
-                            }
-                    }
-                    else
-                        Thread.Sleep(20);
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                return;
-            }
-        }
-
-
-
-        public bool _internal_Write()
+        protected override bool _internal_Write()
         {
             lock (FileNameLockObjects[myConfig.DatabaseFile])
             {
@@ -410,7 +328,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (myThread != null)
                 myThread.Abort();

@@ -15,12 +15,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         /// <returns></returns>
         void Connect_To_Database(StorageConfig config); 
 
-        /// <summary>
+        /*/// <summary>
         /// Creates the Table and the Fields (or modifys them)
         /// </summary>
         /// <param name="fieldList"></param>
         /// <returns></returns>
-        void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig);
+        void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig);*/
+
+        void Initiate(DatasetConfig dsConfig);
 
         /// <summary>
         /// Writes the Values to the database

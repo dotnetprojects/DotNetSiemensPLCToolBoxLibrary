@@ -63,8 +63,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             if (akConfig.UseWebserver)
             {
-                AspxVirtualRoot virtualRoot = new AspxVirtualRoot(8088);
-                virtualRoot.Configure("/", System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "web"));
+                AspxVirtualRoot webServer = new AspxVirtualRoot(8088);
+                webServer.Configure("/", System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "web"));
             }
 
             context = SynchronizationContext.Current;
@@ -230,17 +230,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     Logging.LogText("DB Interface: " + datasetConfig.Name + " is starting...", Logging.LogLevel.Information);
 
-                    if (akDBInterface is MsSQLStorage)
-                    {
-                        var tmp = akDBInterface as MsSQLStorage;
-                        tmp.Initiate(datasetConfig);
-                    }
-                    else
-                    {
-                        akDBInterface.Connect_To_Database(datasetConfig.Storage);
-                        akDBInterface.CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
-                    }
-
+                    akDBInterface.Initiate(datasetConfig);
+                    
                     if (CreateTriggers)
                         if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)
                         {
@@ -345,7 +336,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 myReEstablishConnectionsThread.Abort();
 
             if (webServer != null)
+            {
+                webServer.StopListener();
                 webServer.Dispose();
+                webServer = null;
+            }
 
             foreach (var disposable in myDisposables)
             {
