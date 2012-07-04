@@ -54,26 +54,21 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         }
 
         #region Schreiben...
-        
+
         public void Write(IEnumerable<object> values)
         {
-            if (!_initiated)
-                Initiate();
-
-            if (_initiated)
+            lock (_intValueList)
             {
-                lock (_intValueList)
-                {
-                    _intValueList.Add(values);
-                    _intDateTimesList.Add(DateTime.Now);
-                }
+                _intValueList.Add(values);
+                _intDateTimesList.Add(DateTime.Now);
+            }
 
-                if (myThread == null)
-                {
-                    myThread = new Thread(new ThreadStart(ThreadProc));
-                    myThread.Name = "Thread from Storage: " + datasetConfig.Storage.Name + " for DataSet: " + datasetConfig.Name;
-                    myThread.Start();
-                }
+            if (myThread == null)
+            {
+                myThread = new Thread(new ThreadStart(ThreadProc));
+                myThread.Name = "Thread from Storage: " + datasetConfig.Storage.Name + " for DataSet: "
+                                + datasetConfig.Name;
+                myThread.Start();
             }
         }
 
@@ -91,38 +86,40 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
             {
                 while (true)
                 {
-
-                    bool ok = false;
-                    if (_intValueList.Count > 0)
+                    if (_initiated)
                     {
-                        lock (_intValueList)
-                            _maxAdd = _intValueList.Count;
+                        bool ok = false;
+                        if (_intValueList.Count > 0)
+                        {
+                            lock (_intValueList) _maxAdd = _intValueList.Count;
 
-                        try
-                        {
-                            ok = _internal_Write();
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            throw;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ThreadExceptionOccured != null)
-                                ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
-                            else
-                                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
-                        }
-
-                        if (ok)
-                            lock (_intValueList)
+                            try
                             {
-                                _intValueList.RemoveRange(0, _maxAdd);
-                                _intDateTimesList.RemoveRange(0, _maxAdd);
+                                ok = _internal_Write();
                             }
+                            catch (ThreadAbortException)
+                            {
+                                throw;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ThreadExceptionOccured != null) ThreadExceptionOccured.Invoke(this, new ThreadExceptionEventArgs(ex));
+                                else Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
+                            }
+
+                            if (ok)
+                                lock (_intValueList)
+                                {
+                                    _intValueList.RemoveRange(0, _maxAdd);
+                                    _intDateTimesList.RemoveRange(0, _maxAdd);
+                                }
+                        }
+                        else Thread.Sleep(20);
                     }
                     else
-                        Thread.Sleep(20);
+                    {
+                        this.Initiate();
+                    }
                 }
             }
             catch (ThreadAbortException)
