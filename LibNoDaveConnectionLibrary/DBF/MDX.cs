@@ -5,11 +5,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF {
+    /// <summary>
+    /// A MDX-Structure (Part of a MDX-File)
+    /// </summary>
    public class MDX:Index {
        private short shortTagPosition;
        private MDXTagHeader objTagHeader;
        private MDX4TagTableHeader objTagDescription;
        private MNode objNode;
+
 
        public MDX(short TagPosition) {
            this.shortTagPosition = TagPosition;

@@ -89,34 +89,37 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF {
             return add_entry(newkey, recno);
         }
 
-
+        /// <summary>
+        /// Builds a NodeKey from this Index
+        /// </summary>
+        /// <returns>The created NodeKey</returns>
         public NodeKey BuildKey() {
             NodeKey dataptr;
             int i;
-            Field f;
+            Field Field;
             double doubleer = 0.0;
-            switch (objKeyType) {
+            switch (this.objKeyType) {
                 case dBaseType.F:
-                    for (i = 0; i < keyControl.Count; i++) {
-                        f = keyControl[i];
-                        if (f.get() == null || f.get().Length == 0) {
-                        } else if (f.getType() == dBaseType.D) {
-                            doubleer += Util.DoubleDate(f.get());
+                    foreach(Field f in this.keyControl){
+                        Field = f;
+                        if (Field.get() == null || Field.get().Length == 0) {
+                        } else if (Field.getType() == dBaseType.D) {
+                            doubleer += Util.DoubleDate(Field.get());
                         } else {
-                            doubleer += Double.Parse(f.get());
+                            doubleer += Double.Parse(Field.get());
                         }
                     }/* endfor */
                     dataptr = new NodeKey(new NodeFloat(doubleer));
                     break;
                 case dBaseType.N:
                     for (i = 0; i < keyControl.Count; i++) {
-                        f = keyControl[i];
-                        if (f.get() == null || f.get().Length == 0) {
+                        Field = keyControl[i];
+                        if (Field.get() == null || Field.get().Length == 0) {
 
-                        } else if (f.getType() == dBaseType.D) {
-                            doubleer += Util.DoubleDate(f.get());
+                        } else if (Field.getType() == dBaseType.D) {
+                            doubleer += Util.DoubleDate(Field.get());
                         } else {
-                            doubleer += Double.Parse(f.get());
+                            doubleer += Double.Parse(Field.get());
                         }/* endfor */
                     }
                     dataptr = new NodeKey(doubleer);
@@ -124,9 +127,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF {
                 default:
                     StringBuilder sb = new StringBuilder();
                     for (i = 0; i < keyControl.Count; i++) {
-                        f = (Field)keyControl[i];
+                        Field = (Field)keyControl[i];
 
-                        sb.Append(f.get());
+                        sb.Append(Field.get());
                     }	/* endfor */
                     dataptr = new NodeKey(sb.ToString());
                     break;
