@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TCPForwarder" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SourceIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="SourcePort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2001</Value>
+    </Setting>
+    <Setting Name="SourceActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DestinationIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="DestinationPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2002</Value>
+    </Setting>
+    <Setting Name="DestinationActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

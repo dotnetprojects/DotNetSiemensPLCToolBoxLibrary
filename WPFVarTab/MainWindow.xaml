@@ -284,7 +284,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn Binding="{Binding S7FormatAddress, Mode=TwoWay}" Header="Address" />
-                <DataGridTextColumn Binding="{Binding LibNoDaveValue.Symbol}" Header="Symbol" />
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" IsReadOnly="True" />
                 <!--  <DataGridTextColumn Binding="{Binding LibNoDaveValue.LibNoDaveDataType}" Header="DataType"></DataGridTextColumn>  -->
                 <DataGridComboBoxColumn Header="DataType"
                                         ItemsSource="{Binding Source={StaticResource resTagDataTypes}}"

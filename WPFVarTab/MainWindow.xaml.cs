@@ -24,6 +24,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
 
 namespace WPFVarTab
@@ -36,11 +37,11 @@ namespace WPFVarTab
         private int _readTagsConfig;
         private int _writeTagsConfig;
         private ObservableCollection<string> _connections;
-        private static Dictionary<string, PLCConnection> _connectionDictionary = new Dictionary<string, PLCConnection>();
+        private static ObservableDictionary<string, PLCConnection> _connectionDictionary = new ObservableDictionary<string, PLCConnection>();
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private Dictionary<string, ISymbolTable> _dictonaryConnectionSymboltables = new Dictionary<string, ISymbolTable>();
-        public Dictionary<string, ISymbolTable> DictonaryConnectionSymboltables
+        private static ObservableDictionary<string, ISymbolTable> _dictonaryConnectionSymboltables = new ObservableDictionary<string, ISymbolTable>();
+        public ObservableDictionary<string, ISymbolTable> DictonaryConnectionSymboltables
         {
             get { return _dictonaryConnectionSymboltables; }
             set { _dictonaryConnectionSymboltables = value; NotifyPropertyChanged("DictonaryConnectionSymboltables"); }
@@ -79,7 +80,7 @@ namespace WPFVarTab
             set { _connections = value; NotifyPropertyChanged("Connections"); }
         }
 
-        public static Dictionary<string, PLCConnection> ConnectionDictionary
+        public static ObservableDictionary<string, PLCConnection> ConnectionDictionary
         {
             get { return _connectionDictionary; }
         }
@@ -87,14 +88,19 @@ namespace WPFVarTab
         public string DefaultConnection
         {
             get { return _defaultConnection; }
-            set { _defaultConnection = value; NotifyPropertyChanged("DefaultConnection"); }
+            set
+            {
+                _defaultConnection = value;
+                NotifyPropertyChanged("DefaultConnection");
+                RefreshSymbols();
+            }
         }
 
         public static string DefaultConnectionStatic
         {
             get { return _defaultConnection; }
-            set { _defaultConnection = value; }
         }
+
         private ObservableCollection<VarTabRowWithConnection> varTabRows;
         private static string _defaultConnection;
 
@@ -134,6 +140,13 @@ namespace WPFVarTab
         private void BuildConnectionList()
         {
             Connections = new ObservableCollection<string>(PLCConnectionConfiguration.GetConfigurationNames());
+            foreach (var item in Connections)
+            {
+                if (!DictonaryConnectionSymboltables.ContainsKey(item))
+                    DictonaryConnectionSymboltables.Add(item, null);
+            }
+
+            RefreshSymbols();
         }
 
         private void cmdOnlineView_Click(object sender, RoutedEventArgs e)
@@ -143,7 +156,7 @@ namespace WPFVarTab
                 var btn = sender as ToggleButton;
                 if (btn.IsChecked.Value)
                 {
-                    _connectionDictionary = new Dictionary<string, PLCConnection>();
+                    _connectionDictionary = new ObservableDictionary<string, PLCConnection>();
 
                     var conns = from rw in varTabRows group rw by rw.ConnectionName;
 
@@ -169,7 +182,7 @@ namespace WPFVarTab
                     }
 
 
-                    foreach (var plcConnection in _connectionDictionary)
+                    foreach (KeyValuePair<string, PLCConnection> plcConnection in _connectionDictionary)
                     {
                         plcConnection.Value.AutoConnect = false;
                         plcConnection.Value.Connect();
@@ -190,7 +203,7 @@ namespace WPFVarTab
 
                     Thread.Sleep(100);
 
-                    foreach (var plcConnection in _connectionDictionary)
+                    foreach (KeyValuePair<string, PLCConnection> plcConnection in _connectionDictionary)
                     {
                         plcConnection.Value.Disconnect();
                     }
@@ -295,6 +308,8 @@ namespace WPFVarTab
                 {
                     varTabRows.Add(new VarTabRowWithConnection(S7VatRow));
                 }
+
+            RefreshSymbols();
         }
 
         private void cmdControlValues_Click(object sender, RoutedEventArgs e)
@@ -382,7 +397,7 @@ namespace WPFVarTab
         private void dataGrid_KeyDown(object sender, KeyEventArgs e)
         {
 
-            foreach (var plcConnection in ConnectionDictionary)
+            foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
                 plcConnection.Value.WriteQueueClear();
             
             foreach (var selectedItem in dataGrid.SelectedItems)
@@ -407,7 +422,7 @@ namespace WPFVarTab
                 }
             }
 
-            foreach (var plcConnection in ConnectionDictionary)
+            foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
 
             {
                 if (WriteTagsConfig == 0)
@@ -424,6 +439,8 @@ namespace WPFVarTab
             {
                 readFresh = true;
             }
+            //var rw = e.Row.DataContext as VarTabRowWithConnection;
+            //RefreshSymbol(rw);
         }
 
         private void cmdAddNumberOfRows_Click(object sender, RoutedEventArgs e)
@@ -441,10 +458,51 @@ namespace WPFVarTab
             }
         }
 
+        private void RefreshSymbols()
+        {
+            if (varTabRows!=null)
+                foreach (var varTabRowWithConnection in varTabRows)
+                {
+                    RefreshSymbol(varTabRowWithConnection);
+                }
+        }
+
+        public static void RefreshSymbol(VarTabRowWithConnection varTabRowWithConnection)
+        {
+            string akConn = DefaultConnectionStatic;
+            if (!string.IsNullOrEmpty(varTabRowWithConnection.ConnectionName))
+                akConn = varTabRowWithConnection.ConnectionName;
+
+            if (akConn != null)
+            {
+                var symTab = _dictonaryConnectionSymboltables[akConn];
+
+                if (symTab == null)
+                    varTabRowWithConnection.Symbol = null;
+                else
+                {
+                    if (varTabRowWithConnection.S7FormatAddress != null)
+                    {
+                        var entry = symTab.GetEntryFromOperand(varTabRowWithConnection.S7FormatAddress);
+                        if (entry != null)
+                            varTabRowWithConnection.Symbol = entry.Symbol;
+                        else
+                            varTabRowWithConnection.Symbol = null;
+                    }
+                    else
+                        varTabRowWithConnection.Symbol = null;
+                }
+            }
+            else
+                varTabRowWithConnection.Symbol = null;
+        }
+
         private void cmdSetSymbolTabels_Click(object sender, RoutedEventArgs e)
         {
             var frm = new ConfigConnectionsAndSymbolSources(this);
             frm.ShowDialog();
+
+            RefreshSymbols();
         }
 
         private void cmdNew_Click(object sender, RoutedEventArgs e)

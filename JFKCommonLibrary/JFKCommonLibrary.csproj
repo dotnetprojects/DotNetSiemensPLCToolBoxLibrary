@@ -78,6 +78,7 @@
     <Compile Include="WPF\Converters\ListIntToVisibilityConverter.cs" />
     <Compile Include="WPF\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="WPF\Converters\NullToFalseConverter.cs" />
+    <Compile Include="WPF\Converters\ObjectToStringConverter.cs" />
     <Compile Include="WPF\Converters\ResolveElementName.cs" />
     <Compile Include="WPF\Converters\StringToPLCValueBoolConverter.cs" />
     <Compile Include="WPF\Converters\TreeViewLineConverter.cs" />

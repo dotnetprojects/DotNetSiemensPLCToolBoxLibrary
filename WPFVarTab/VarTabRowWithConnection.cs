@@ -5,11 +5,24 @@ using System.Text;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace WPFVarTab
 {
     public class VarTabRowWithConnection : S7VATRow
     {
+        public override string S7FormatAddress
+        {
+            get
+            {
+                return base.S7FormatAddress;
+            }
+            set
+            {
+                base.S7FormatAddress = value;
+                MainWindow.RefreshSymbol(this);
+            }
+        }
         public VarTabRowWithConnection GetNextRow()
         {
             var rw = new VarTabRowWithConnection();
@@ -58,9 +71,10 @@ namespace WPFVarTab
         }
 
         private PLCConnection oldConn;
+        private string _symbol;
 
         [XmlIgnore]
-        public PLCConnection Connection
+       public PLCConnection Connection
         {
             get
             {
@@ -87,6 +101,12 @@ namespace WPFVarTab
             }
         }
 
+        public string Symbol
+        {
+            get { return _symbol; }
+            set { _symbol = value; NotifyPropertyChanged("Symbol"); }
+        }
+
         void conn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Connected")
@@ -108,6 +128,8 @@ namespace WPFVarTab
                 NotifyPropertyChanged("ConnectionName");
                 NotifyPropertyChanged("Connection");
                 NotifyPropertyChanged("Online");
+
+                MainWindow.RefreshSymbol(this);
             }
         }
     }

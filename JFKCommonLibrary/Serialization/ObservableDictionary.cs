@@ -46,8 +46,6 @@ namespace JFKCommonLibrary.Serialization
         ICollection<KeyValuePair<TKey, TValue>>,
         IEnumerable<KeyValuePair<TKey, TValue>>,
         IDictionary,
-        ICollection,
-        IEnumerable,
         ISerializable,
         IDeserializationCallback,
         INotifyCollectionChanged,
@@ -271,7 +269,7 @@ namespace JFKCommonLibrary.Serialization
             {
                 this._version++;
 
-                DictionaryEntry entry;
+               DictionaryEntry entry;
                 int index = this.GetIndexAndEntryForKey(key, out entry);
                 this.FireEntryAddedNotifications(entry, index);
             }
@@ -288,7 +286,7 @@ namespace JFKCommonLibrary.Serialization
 
         private bool DoRemoveEntry(TKey key)
         {
-            DictionaryEntry entry;
+           DictionaryEntry entry;
             int index = this.GetIndexAndEntryForKey(key, out entry);
 
             bool result = this.RemoveEntry(key);
@@ -304,7 +302,7 @@ namespace JFKCommonLibrary.Serialization
 
         private void DoSetEntry(TKey key, TValue value)
         {
-            DictionaryEntry entry;
+           DictionaryEntry entry;
             int index = this.GetIndexAndEntryForKey(key, out entry);
 
             if (this.SetEntry(key, value))
@@ -777,7 +775,7 @@ namespace JFKCommonLibrary.Serialization
             DictionaryEntry IDictionaryEnumerator.Entry
             {
                 get
-                {
+                { 
                     this.ValidateCurrent();
                     return new DictionaryEntry(this._current.Key, this._current.Value);
                 }

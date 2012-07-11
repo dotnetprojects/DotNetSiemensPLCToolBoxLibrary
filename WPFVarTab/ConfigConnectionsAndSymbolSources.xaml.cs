@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace WPFVarTab
 {
@@ -31,6 +33,17 @@ namespace WPFVarTab
             this.DataContext = this;
 
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var dicEntry = (KeyValuePair<string, ISymbolTable>)btn.DataContext;
+
+            var symb=SelectProjectPart.SelectSymbolTable();
+
+            if (symb != null)
+                MainWindow.DictonaryConnectionSymboltables[dicEntry.Key] = symb;
         }
     }
 }

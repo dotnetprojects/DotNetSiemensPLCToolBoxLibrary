@@ -29,7 +29,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         #region Wrapper for PLCTag Properties...
         [XmlIgnore]
-        public string S7FormatAddress
+        public virtual string S7FormatAddress
         {
             get
             {
