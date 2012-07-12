@@ -373,14 +373,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                 myTmpBlk.blkinterface =
                                     Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
-                            myTmpBlk.addinfo = addinfo;
+                            myTmpBlk.addinfo = addinfo;                           
                         }
                         else if (subblktype == 10) //DB
                         {
-                            //actual Values in mc5code or maybe also the db code?
-                            //Ssbpart contains?
+                            //Need to check wich Information is stored here
                         }
-
+                        else if (subblktype == 0x14) //DB
+                        {
+                            //Need to check wich Information is stored here
+                        }
+                        else if (subblktype == 0x42) //DB
+                        {
+                            //Need to check wich Information is stored here
+                        }
                         else if (subblktype == 27) //VAT
                         {
                             var ts1 = (string)row["TIMESTAMP1"];

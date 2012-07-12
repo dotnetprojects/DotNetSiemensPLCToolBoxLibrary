@@ -507,7 +507,7 @@ namespace WPFVarTab
 
         private void cmdNew_Click(object sender, RoutedEventArgs e)
         {
-
+            varTabRows.Clear();
         }
    
     }
