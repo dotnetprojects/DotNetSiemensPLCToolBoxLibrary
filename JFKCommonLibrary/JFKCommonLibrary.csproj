@@ -68,6 +68,7 @@
     <Compile Include="WPF\Behaviors\InputBindingsManager.cs" />
     <Compile Include="WPF\Converters\BoolToValueConverter.cs" />
     <Compile Include="WPF\Converters\ByteIntArrayConverter.cs" />
+    <Compile Include="WPF\Converters\NullableBoolToValueConverter.cs" />
     <Compile Include="WPF\Converters\DatabindingDebugConverter.cs" />
     <Compile Include="WPF\Converters\IntRangeConverter.cs" />
     <Compile Include="WPF\Converters\IntToBoolConverter.cs" />

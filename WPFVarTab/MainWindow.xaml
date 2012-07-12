@@ -25,9 +25,11 @@
     </Window.CommandBindings>
 
     <Window.Resources>
-        <behavior:BoolToBrushConverter x:Key="connectedConv"
+        <behavior:NullableBoolToBrushConverter x:Key="connectedConv"
                                                        FalseValue="Red"
+                                                        NullValue="Transparent"
                                                        TrueValue="LightGreen" />
+           
         <ObjectDataProvider x:Key="resTagDataTypes"
                             MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">

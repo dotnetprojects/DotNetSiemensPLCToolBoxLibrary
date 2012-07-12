@@ -21,6 +21,7 @@ namespace WPFVarTab
             {
                 base.S7FormatAddress = value;
                 MainWindow.RefreshSymbol(this);
+                RaiseConnectedChanged();
             }
         }
         public VarTabRowWithConnection GetNextRow()
@@ -60,10 +61,13 @@ namespace WPFVarTab
         private bool _connected;
 
         [XmlIgnore]
-        public bool Connected
+        public bool? Connected
         {
             get
             {
+                if (string.IsNullOrEmpty(S7FormatAddress))
+                    return null;
+
                 if (Connection != null)
                     return Connection.Connected;
                 return false;
