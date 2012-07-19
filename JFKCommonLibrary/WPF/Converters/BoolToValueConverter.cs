@@ -29,4 +29,5 @@ namespace JFKCommonLibrary.WPF.Converters
     public class BoolToBrushConverter : BoolToValueConverter<Brush> { }
     public class BoolToVisibilityConverter : BoolToValueConverter<Visibility> { }
     public class BoolToObjectConverter : BoolToValueConverter<Object> { }
+    public class BoolToThicknessConverter : BoolToValueConverter<Thickness> { }
 }

@@ -24,6 +24,7 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
@@ -49,7 +50,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             var myConnectionEditor = new ConnectionEditor();
             myConnectionEditor.ShowDialog();
         }
-      
+
+        public static void ShowConfiguration(ICollection<PLCConnectionConfiguration> PLCConnectionConfigurationCollection)
+        {
+            var myConnectionEditor = new ConnectionEditor();
+            myConnectionEditor.InternalConnectionList = PLCConnectionConfigurationCollection;
+            myConnectionEditor.ShowDialog();
+        }
+
         public static PLCConnectionConfiguration ShowConfiguration(PLCConnectionConfiguration myConfig)
         {
             if (myConfig == null)

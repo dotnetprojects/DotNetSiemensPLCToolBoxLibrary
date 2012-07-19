@@ -47,6 +47,13 @@ namespace WPFVarTab
             set { _dictonaryConnectionSymboltables = value; NotifyPropertyChanged("DictonaryConnectionSymboltables"); }
         }
 
+        private ObservableCollection<PLCConnectionConfiguration> _configuredConnections = new ObservableCollection<PLCConnectionConfiguration>();        
+        public ObservableCollection<PLCConnectionConfiguration> ConfiguredConnections
+        {
+            get { return _configuredConnections; }
+            set { _configuredConnections = value; }
+        }
+
         private volatile bool readFresh = false;
         
         private Thread BackgroundReadingThread;
@@ -132,7 +139,7 @@ namespace WPFVarTab
 
         private void cmdConfigConnection_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.ShowConfiguration("JFK-WPFVarTab Connection 1", false);
+            Configuration.ShowConfiguration(ConfiguredConnections); // "JFK-WPFVarTab Connection 1", false);
             BuildConnectionList();
         }
 

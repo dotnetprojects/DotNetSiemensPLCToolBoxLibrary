@@ -80,4 +80,6 @@ namespace JFKCommonLibrary.WPF.Converters
     public class IntRangeToBrushConverter : IntRangeConverter<Brush> { } ;
     public class IntRangeToThicknessConverter : IntRangeConverter<Thickness> { } ;
     public class IntRangeToPointConverter : IntRangeConverter<Point> { } ;
+    public class IntRangeToIntConverter : IntRangeConverter<int> { } ;
+    public class IntRangeToDoubleConverter : IntRangeConverter<double> { } ;
 }

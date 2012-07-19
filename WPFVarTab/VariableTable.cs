@@ -14,7 +14,7 @@ namespace WPFVarTab
 
         public ObservableCollection<VarTabRowWithConnection> VarTabRows { get; set; }
 
-        public ObservableCollection<PLCConnection> Connections { get; set; }
+        public ObservableCollection<PLCConnectionConfiguration> ConfiguredConnections { get; set; }
 
         public Dictionary<PLCConnection, string> SymbolTable { get; set; }
     }

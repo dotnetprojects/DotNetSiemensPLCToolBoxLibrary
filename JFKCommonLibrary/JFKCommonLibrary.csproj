@@ -66,13 +66,13 @@
     <Compile Include="Settings\CustomSettingsProvider.cs" />
     <Compile Include="WPF\Behaviors\ExposeFirstVisibleItemBehavior.cs" />
     <Compile Include="WPF\Behaviors\InputBindingsManager.cs" />
+    <Compile Include="WPF\BitmapConversion.cs" />
     <Compile Include="WPF\Converters\BoolToValueConverter.cs" />
     <Compile Include="WPF\Converters\ByteIntArrayConverter.cs" />
     <Compile Include="WPF\Converters\NullableBoolToValueConverter.cs" />
     <Compile Include="WPF\Converters\DatabindingDebugConverter.cs" />
     <Compile Include="WPF\Converters\IntRangeConverter.cs" />
     <Compile Include="WPF\Converters\IntToBoolConverter.cs" />
-    <Compile Include="WPF\Converters\IntToBrushConverter.cs" />
     <Compile Include="WPF\Converters\IntToHiddenConverter.cs" />
     <Compile Include="WPF\Converters\IntToVisibilityConverter.cs" />
     <Compile Include="WPF\Converters\ItemLineNumbersConverter.cs" />

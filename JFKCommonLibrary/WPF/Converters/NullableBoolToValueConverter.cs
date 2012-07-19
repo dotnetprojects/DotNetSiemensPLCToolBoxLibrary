@@ -37,4 +37,5 @@ namespace JFKCommonLibrary.WPF.Converters
     public class NullableBoolToBrushConverter : NullableBoolToValueConverter<Brush> { }
     public class NullableBoolToVisibilityConverter : NullableBoolToValueConverter<Visibility> { }
     public class NullableBoolToObjectConverter : NullableBoolToValueConverter<Object> { }
+    public class NullableBoolToThicknessConverter : NullableBoolToValueConverter<Thickness> { }
 }

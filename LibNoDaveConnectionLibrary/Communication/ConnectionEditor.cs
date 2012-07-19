@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
@@ -12,6 +13,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public String DefaultConnectionName { get; set; }
         public bool ConnectionNameFixed { get; set; }
 
+        public ICollection<PLCConnectionConfiguration> InternalConnectionList { get; set; }
         /// <summary>
         /// When this is set, the Configuration is not read or stored to the Registry!
         /// </summary>
@@ -37,9 +39,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             FillEntryPointsList();
 
-            string[] Connections = PLCConnectionConfiguration.GetConfigurationNames();
-            if (Connections != null)
-                lstConnectionList.Items.AddRange(Connections);
+            if (InternalConnectionList != null)
+            {
+                foreach (var plcConnectionConfiguration in InternalConnectionList)
+                {
+                    lstConnectionList.Items.Add(plcConnectionConfiguration.ConnectionName);
+                }
+            }
+            else
+            {
+                string[] Connections = PLCConnectionConfiguration.GetConfigurationNames();
+                if (Connections != null)
+                    lstConnectionList.Items.AddRange(Connections);
+            }
 
             lblConnectionName.Text = DefaultConnectionName;
             lstConnectionList.Text = DefaultConnectionName;
@@ -120,8 +132,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             else
                 name = lstConnectionList.Text;
 
-            //var myConfig = new LibNoDaveConnectionConfiguration(name);
-            if (!ObjectSavedConfiguration)
+            if (InternalConnectionList!=null)
+            {
+                PLCConnectionConfiguration akConfig = null;
+                foreach (var plcConnectionConfiguration in InternalConnectionList)
+                {
+                    if (plcConnectionConfiguration.ConnectionName==name)
+                    {
+                        akConfig = plcConnectionConfiguration;
+                        break;
+                    }
+                }
+                if (akConfig == null)
+                    akConfig = new PLCConnectionConfiguration();
+                akConfig.ConnectionName = name;
+                akConfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
+                myConfig = akConfig;
+            }
+            else if (!ObjectSavedConfiguration)
             {
                 myConfig = new PLCConnectionConfiguration(name);
             }
@@ -530,13 +558,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 if (cfgName != "")
                 {
-                    PLCConnectionConfiguration tmp = new PLCConnectionConfiguration(cfgName);
-                    tmp.SaveConfiguration();
+                    if (InternalConnectionList != null)
+                    {
+                        var akConfig = new PLCConnectionConfiguration();
+                        akConfig.ConnectionName = cfgName;
+                        akConfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
+                        InternalConnectionList.Add(akConfig);
 
-                    lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
-                    lstConnectionList.SelectedItem = cfgName;
-                    lstLIBNODAVEConnectionType.Enabled = true;
+                        lstConnectionList.Items.Clear();
+                        foreach (var plcConnectionConfiguration in InternalConnectionList)
+                        {
+                            lstConnectionList.Items.Add(plcConnectionConfiguration.ConnectionName);
+                        }
+                        lstConnectionList.SelectedItem = cfgName;
+                        lstLIBNODAVEConnectionType.Enabled = true;
+                    }
+                    else
+                    {
+                        PLCConnectionConfiguration tmp = new PLCConnectionConfiguration(cfgName);
+                        tmp.SaveConfiguration();
+
+                        lstConnectionList.Items.Clear();
+                        lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
+                        lstConnectionList.SelectedItem = cfgName;
+                        lstLIBNODAVEConnectionType.Enabled = true;
+                    }
 
                 }
             }
@@ -559,16 +605,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     LockControls();
 
-                    PLCConnectionConfiguration.DeleteConfiguration(lstConnectionList.SelectedItem.ToString());
-                    lstConnectionList.Items.Clear();
-                    lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
-                    if (lstConnectionList.Items.Count > 0)
+                    if (InternalConnectionList != null)
                     {
-                        lstConnectionList.SelectedItem = lstConnectionList.Items[0];
-                        lstLIBNODAVEConnectionType_SelectedIndexChanged(sender, e);
+                        PLCConnectionConfiguration akConfig = null;
+                        foreach (var plcConnectionConfiguration in InternalConnectionList)
+                        {
+                            if (plcConnectionConfiguration.ConnectionName==lstConnectionList.SelectedItem.ToString())
+                                akConfig = plcConnectionConfiguration;
+                        }
+                        if (akConfig != null)
+                            InternalConnectionList.Remove(akConfig);
+                        lstConnectionList.Items.Clear();
+                        foreach (var plcConnectionConfiguration in InternalConnectionList)
+                        {
+                            lstConnectionList.Items.Add(plcConnectionConfiguration.ConnectionName);
+                        } 
+                        if (lstConnectionList.Items.Count > 0)
+                        {
+                            lstConnectionList.SelectedItem = lstConnectionList.Items[0];
+                            lstLIBNODAVEConnectionType_SelectedIndexChanged(sender, e);
+                        }
+                        else
+                            lstLIBNODAVEConnectionType.Enabled = false;
                     }
                     else
-                        lstLIBNODAVEConnectionType.Enabled = false;
+                    {
+                        PLCConnectionConfiguration.DeleteConfiguration(lstConnectionList.SelectedItem.ToString());
+                        lstConnectionList.Items.Clear();
+                        lstConnectionList.Items.AddRange(PLCConnectionConfiguration.GetConfigurationNames());
+                        if (lstConnectionList.Items.Count > 0)
+                        {
+                            lstConnectionList.SelectedItem = lstConnectionList.Items[0];
+                            lstLIBNODAVEConnectionType_SelectedIndexChanged(sender, e);
+                        }
+                        else
+                            lstLIBNODAVEConnectionType.Enabled = false;
+                    }
                 }
             }
         }
