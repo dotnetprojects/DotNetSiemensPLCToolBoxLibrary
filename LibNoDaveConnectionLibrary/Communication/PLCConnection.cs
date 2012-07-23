@@ -1011,7 +1011,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return null;
         }
 
-        public byte[] PLCPutBlockFromMC7toPLC(string BlockName, byte[] buffer)
+        public void PLCPutBlockFromMC7toPLC(string BlockName, byte[] buffer)
         {
             if (AutoConnect && !Connected)
                 Connect();
@@ -1060,16 +1060,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     if (ret == 0 && readsize > 0)
                     {
-                        byte[] retVal = new byte[readsize];
-                        Array.Copy(buffer, retVal, readsize);
-                        return retVal;
+                        return;
                     }
                     else if (ret == 53825)
                         throw new Exception("PLC is Password Protected, unlock before downloading Blocks!");
                     else
-                        return null;
+                        throw new Exception("Error from PLC! Code: " + ret);
                 }
-            return null;
+            return;
         }
         public void PLCDeleteBlock(string BlockName)
         {

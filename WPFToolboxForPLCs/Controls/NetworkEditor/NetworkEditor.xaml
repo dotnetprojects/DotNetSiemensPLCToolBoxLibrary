@@ -1,42 +1,58 @@
-﻿<UserControl 
-    x:Class="WPFToolboxForSiemensPLCs.Controls.NetworkEditor.NetworkEditor"
+﻿<UserControl x:Class="WPFToolboxForSiemensPLCs.Controls.NetworkEditor.NetworkEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit" 
-    xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit" 
-    xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls"
-    xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" mc:Ignorable="d" d:DesignHeight="339"  d:DesignWidth="482"
-             HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+             xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+             xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
+             xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              Name="NetworkEditorWindow"
-    >
+             HorizontalAlignment="Stretch"
+             HorizontalContentAlignment="Stretch"
+             d:DesignHeight="339"
+             d:DesignWidth="482"
+             mc:Ignorable="d">
     <UserControl.Resources>
 
-        <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
-            <ScrollViewer Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CanContentScroll="True" Content="{Binding Path=TextArea, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Hidden" Name="PART_ScrollViewer" Padding="{TemplateBinding Control.Padding}" VerticalContentAlignment="Top" VerticalScrollBarVisibility="Hidden" />
+        <ControlTemplate x:Key="TemplateEditor"
+                         x:Name="TemplateEditor"
+                         TargetType="avalonEdit:TextEditor">
+            <ScrollViewer Name="PART_ScrollViewer"
+                          HorizontalContentAlignment="Left"
+                          VerticalContentAlignment="Top"
+                          Background="{TemplateBinding Control.Background}"
+                          BorderBrush="{TemplateBinding Control.BorderBrush}"
+                          BorderThickness="{TemplateBinding Control.BorderThickness}"
+                          CanContentScroll="True"
+                          Content="{Binding Path=TextArea,
+                                            RelativeSource={RelativeSource TemplatedParent}}"
+                          Focusable="False"
+                          HorizontalScrollBarVisibility="Hidden"
+                          Padding="{TemplateBinding Control.Padding}"
+                          VerticalScrollBarVisibility="Hidden" />
             <ControlTemplate.Triggers>
                 <Trigger Property="avalonEdit:TextEditor.WordWrap" Value="True">
-                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" TargetName="PART_ScrollViewer" Value="Disabled" />
+                    <Setter TargetName="PART_ScrollViewer" Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <local:BoolToVisibilityConverter x:Key="TrueVisibleConverter" FalseValue="Collapsed" TrueValue="Visible" />
+        <local:BoolToVisibilityConverter x:Key="TrueVisibleConverter"
+                                         FalseValue="Collapsed"
+                                         TrueValue="Visible" />
         <local:NullToCollapsedConverter x:Key="NullCollapsedConverter" />
-        
+
         <Style TargetType="{x:Type avalonEdit:TextEditor}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-            <Setter Property="FlowDirection" Value="LeftToRight"/>
-            <!-- AvalonEdit does not support RTL, so ensure we use LTR by default -->
+            <Setter Property="FlowDirection" Value="LeftToRight" />
+            <!--  AvalonEdit does not support RTL, so ensure we use LTR by default  -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type avalonEdit:TextEditor}">
-                        <ContentPresenter Focusable="False"
-                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}">
-                        </ContentPresenter>
+                        <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}" Focusable="False" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -44,44 +60,52 @@
 
 
     </UserControl.Resources>
-    <Expander Grid.Row="2" HorizontalAlignment="Stretch" Name="myExpander">
+    <Expander Name="myExpander"
+              Grid.Row="2"
+              HorizontalAlignment="Stretch">
         <Expander.Header>
             <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Netzwerk "></TextBlock>
-                <TextBlock VerticalAlignment="Center" Text="{Binding NetworkNumber,ElementName=NetworkEditorWindow}" />
+                <TextBlock VerticalAlignment="Center" Text="Netzwerk " />
+                <TextBlock VerticalAlignment="Center" Text="{Binding NetworkNumber, ElementName=NetworkEditorWindow}" />
                 <TextBlock VerticalAlignment="Center" Text=" : " />
-                <TextBox VerticalAlignment="Center" BorderThickness="0" Text="{Binding Name}"></TextBox>
+                <TextBox VerticalAlignment="Center"
+                         BorderThickness="0"
+                         Text="{Binding Name}" />
             </StackPanel>
         </Expander.Header>
 
         <StackPanel>
-            <TextBox IsReadOnly="True" BorderThickness="0" Text="{Binding Comment}" Margin="25,4,0,3"/>
+            <TextBox Margin="25,4,0,3"
+                     BorderThickness="0"
+                     IsReadOnly="True"
+                     Text="{Binding Comment}" />
 
             <DockPanel LastChildFill="True">
-                <Controls:AWLOnlineStatusView 
-                    Margin="0 -23 0 0" 
-                    DockPanel.Dock="Right" 
-                    HorizontalAlignment="Right" 
-                    Visibility="{Binding DisplayNetwork.Parent.DiagnosticData,ElementName=NetworkEditorWindow,TargetNullValue=Collapsed,FallbackValue=Collapsed, Converter={StaticResource NullCollapsedConverter}}"
-                    CorespondingTextEditor="{Binding ElementName=textEditor}"
-                    DisplayNetwork="{Binding DisplayNetwork,ElementName=NetworkEditorWindow}">
-                </Controls:AWLOnlineStatusView>
+                <Controls:AWLOnlineStatusView Margin="0 -23 0 0"
+                                              HorizontalAlignment="Right"
+                                              CorespondingTextEditor="{Binding ElementName=textEditor}"
+                                              DisplayNetwork="{Binding DisplayNetwork,
+                                                                       ElementName=NetworkEditorWindow}"
+                                              DockPanel.Dock="Right"
+                                              Visibility="{Binding DisplayNetwork.Parent.DiagnosticData,
+                                                                   ElementName=NetworkEditorWindow,
+                                                                   TargetNullValue=Collapsed,
+                                                                   FallbackValue=Collapsed,
+                                                                   Converter={StaticResource NullCollapsedConverter}}" />
 
-                <avalonEdit:TextEditor 
-                HorizontalAlignment="Stretch"
-                BorderBrush="DarkGray"
-                BorderThickness="1"
-				Name="textEditor"
-				FontFamily="Consolas"
-				FontSize="10pt"
-                IsReadOnly="True"
-                ShowLineNumbers="True"
-                MouseHover="textEditor_MouseHover"
-                MouseHoverStopped="textEditor_MouseHoverStopped"
-                Visibility="Visible"
-                VerticalScrollBarVisibility="Hidden"
-                HorizontalScrollBarVisibility="Hidden">
-                </avalonEdit:TextEditor>
+                <avalonEdit:TextEditor Name="textEditor"
+                                       HorizontalAlignment="Stretch"
+                                       BorderBrush="DarkGray"
+                                       BorderThickness="1"
+                                       FontFamily="Consolas"
+                                       FontSize="10pt"
+                                       HorizontalScrollBarVisibility="Hidden"
+                                       IsReadOnly="True"
+                                       MouseHover="textEditor_MouseHover"
+                                       MouseHoverStopped="textEditor_MouseHoverStopped"
+                                       ShowLineNumbers="True"
+                                       VerticalScrollBarVisibility="Hidden"
+                                       Visibility="Visible" />
             </DockPanel>
 
         </StackPanel>
