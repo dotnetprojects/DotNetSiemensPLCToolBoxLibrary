@@ -17,13 +17,13 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         public EditStorages()
         {
             InitializeComponent();
-        }     
+        }
 
         private void cmdRemoveConnection_Click(object sender, RoutedEventArgs e)
         {
             if (grdStorages.SelectedItem != null)
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Remove((StorageConfig) grdStorages.SelectedItem);
-        }       
+        }
 
         private void cmdAddCSVStorage_Click(object sender, RoutedEventArgs e)
         {
@@ -56,7 +56,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                SQLiteConfig storage = new SQLiteConfig() { Name = val };
+                SQLiteConfig storage = new SQLiteConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -74,7 +74,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                MySQLConfig storage = new MySQLConfig() { Name = val };
+                MySQLConfig storage = new MySQLConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -92,7 +92,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                PostgreSQLConfig storage = new PostgreSQLConfig() { Name = val };
+                PostgreSQLConfig storage = new PostgreSQLConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -110,7 +110,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                MsSQLConfig storage = new MsSQLConfig() { Name = val };
+                MsSQLConfig storage = new MsSQLConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -128,7 +128,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                ODBCConfig storage = new ODBCConfig() { Name = val };
+                ODBCConfig storage = new ODBCConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -146,7 +146,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                ExcelConfig storage = new ExcelConfig() { Name = val };
+                ExcelConfig storage = new ExcelConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
@@ -164,11 +164,42 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                         return;
                     }
                 }
-                Excel2007Config storage = new Excel2007Config() { Name = val };
+                Excel2007Config storage = new Excel2007Config() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
             }
         }
 
-        
+        private void cmdAddPLCStorage_Click(object sender, RoutedEventArgs e)
+        {
+            string val = "Storage_" + (grdStorages.Items.Count + 1);
+            if (DotNetSiemensPLCToolBoxLibrary.General.InputBox.Show("Storage-Name", "Name of the Storage", ref val) == DialogResult.OK)
+            {
+                foreach (var tmp in ProtokollerConfiguration.ActualConfigInstance.Storages)
+                {
+                    if (tmp.Name.ToLower().Trim() == val.ToLower().Trim())
+                    {
+                        MessageBox.Show("A Storage with this Name already Exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                PLCConnectionConfiguration myIntConfig = new PLCConnectionConfiguration(val.Trim(), LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
+                myIntConfig = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myIntConfig);
+                if (myIntConfig != null)
+                {
+                    var storage = new PLCConfig() {Name = val};
+                    storage.Configuration = myIntConfig;
+                    ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
+                }
+            }
+        }
+
+        private void PropertyGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (grdConfig.SelectedProperty.Value is PLCConnectionConfiguration)
+            {
+                var myConfig = (PLCConfig) grdStorages.SelectedItem;
+                myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);
+            }
+        }
     }
 }

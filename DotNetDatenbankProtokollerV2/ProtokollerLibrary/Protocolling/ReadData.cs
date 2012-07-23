@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
+using DotNetSimaticDatabaseProtokollerLibrary.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -41,7 +42,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             return values.ToList();
         }
 
-        public static IEnumerable<object> ReadDataFromPLCs(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
+        public static IEnumerable<object> ReadDataFromDataSources(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
         {
             var usedConnections = from n in datasetConfigRows
                                   group n by n.Connection into g       //Es wird in das Object g hineingruppiert.
@@ -52,13 +53,29 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 var tags = from n in datasetConfigRows
                            where n.Connection == usedConnection.Connection
                            select n.PLCTag;
-                if (usedConnection.Connection.GetType() == typeof(LibNoDaveConfig))
+                if (usedConnection.Connection.GetType() == typeof(DatabaseConfig))
+                {
+                    //Read Data from a Database
+                    var dbConn = (DatabaseConnection)activConnections[usedConnection.Connection];
+
+                    var dta = dbConn.ReadData();
+
+                    try
+                    {                     
+                        foreach (var plcTag in tags)
+                        {
+                            plcTag.Value = dta[plcTag.ValueName];
+                        }
+                    }
+                    finally
+                    {
+                        dta.Close();
+                    }
+                }
+                else if (usedConnection.Connection.GetType() == typeof(LibNoDaveConfig))
                 {                   
                     PLCConnection plcConn = (PLCConnection)activConnections[usedConnection.Connection];
                     
-                    //if (usedConnection.Connection is LibNoDaveConfig)                    
-                    //    if (!((LibNoDaveConfig)usedConnection.Connection).StayConnected)
-                    //        plcConn.Connect();
                     if (!plcConn.Connected)
                         plcConn.Connect();
 

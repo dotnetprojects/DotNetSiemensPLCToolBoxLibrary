@@ -93,7 +93,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             cycle_counter = NoDataCycles;
                             ak_interval = NewDataInterval;
 
-                            IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig, datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
+                            IEnumerable<object> values = ReadData.ReadDataFromDataSources(datasetConfig, datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
                             if (values != null)
                             {
                                 dbInterface.Write(values);

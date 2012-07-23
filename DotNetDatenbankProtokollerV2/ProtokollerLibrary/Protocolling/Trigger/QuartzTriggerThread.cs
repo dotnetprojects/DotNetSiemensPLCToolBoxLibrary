@@ -74,7 +74,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
         {
             try
             {
-                IEnumerable<object> values = ReadData.ReadDataFromPLCs(datasetConfig, datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
+                IEnumerable<object> values = ReadData.ReadDataFromDataSources(datasetConfig, datasetConfig.DatasetConfigRows, activConnections, StartedAsService);
                 if (values != null)
                     dbInterface.Write(values);
             }

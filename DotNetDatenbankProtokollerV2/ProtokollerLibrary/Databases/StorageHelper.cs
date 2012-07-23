@@ -7,6 +7,7 @@ using DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL;
+using DotNetSimaticDatabaseProtokollerLibrary.Databases.PLC;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -32,6 +33,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases
                 return new Excel2007Storage(NewDataCallback);
             else if (cfg.Storage is MsSQLConfig)
                 return new MsSQLStorage(NewDataCallback);
+            else if (cfg.Storage is PLCConfig)
+                return new PLCStorage(NewDataCallback);
             return null;
         }
     }

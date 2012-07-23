@@ -39,5 +39,6 @@
         <Button Content="Add PLC Connection" HorizontalAlignment="Right" Margin="0,12,12,0" Name="cmdAddPLCConnection" Width="134" Click="cmdAddConnection_Click" Height="25" VerticalAlignment="Top" />
         <Button Content="Add TCP/IP Connection" HorizontalAlignment="Right" Margin="0,43,12,0" Width="134" Height="25" VerticalAlignment="Top" Name="cmdAddTCPIPConnection" Click="cmdAddTCPIPConnection_Click" />
         <Button Content="Remove" HorizontalAlignment="Right" Margin="0,0,12,12" Name="cmdRemoveConnection" Width="134" Height="25" VerticalAlignment="Bottom" Click="cmdRemoveConnection_Click" />
+        <Button Content="Add Database Connection" Height="25" HorizontalAlignment="Right" Margin="0,74,12,0" Name="cmdAddDatabaseConnection" VerticalAlignment="Top" Width="134" Click="cmdAddDatabaseConnection_Click" />
     </Grid>
 </UserControl>

@@ -26,17 +26,17 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             {
                 foreach (ConnectionConfig plcConnectionConfiguration in ProtokollerConfiguration.ActualConfigInstance.Connections)
                 {
-                    if (plcConnectionConfiguration.Name.ToLower().Trim()==val.ToLower().Trim())
+                    if (plcConnectionConfiguration.Name.ToLower().Trim() == val.ToLower().Trim())
                     {
-                        MessageBox.Show("A Connection with this Name already Exists!", "Error", MessageBoxButton.OK,MessageBoxImage.Error);
+                        MessageBox.Show("A Connection with this Name already Exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
-                    }                   
+                    }
                 }
                 PLCConnectionConfiguration myIntConfig = new PLCConnectionConfiguration(val.Trim(), LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
                 myIntConfig = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myIntConfig);
                 if (myIntConfig != null)
                 {
-                    LibNoDaveConfig myConfig=new LibNoDaveConfig();
+                    LibNoDaveConfig myConfig = new LibNoDaveConfig();
                     myConfig.Configuration = myIntConfig;
                     ProtokollerConfiguration.ActualConfigInstance.Connections.Add(myConfig);
                 }
@@ -52,11 +52,11 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
         private void grdConnections_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (grdConnections.SelectedItem!=null)
+            if (grdConnections.SelectedItem != null)
             {
                 if (grdConnections.SelectedItem is LibNoDaveConfig)
                 {
-                    LibNoDaveConfig myConfig = (LibNoDaveConfig)grdConnections.SelectedItem;
+                    LibNoDaveConfig myConfig = (LibNoDaveConfig) grdConnections.SelectedItem;
                     myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);
                 }
             }
@@ -77,7 +77,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     }
                 }
 
-                TCPIPConfig myConfig = new TCPIPConfig(){Name = val};
+                TCPIPConfig myConfig = new TCPIPConfig() {Name = val};
                 ProtokollerConfiguration.ActualConfigInstance.Connections.Add(myConfig);
                 //grdConnections.Items.Add(myConfig);
             }
@@ -87,8 +87,32 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         {
             if (prpGrid.SelectedProperty.Value is PLCConnectionConfiguration)
             {
-                LibNoDaveConfig myConfig = (LibNoDaveConfig)grdConnections.SelectedItem;
-                myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);             
+                LibNoDaveConfig myConfig = (LibNoDaveConfig) grdConnections.SelectedItem;
+                myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);
+            }
+        }
+
+        private void cmdAddDatabaseConnection_Click(object sender, RoutedEventArgs e)
+        {
+            string val = "Connection_" + (grdConnections.Items.Count + 1);
+            if (
+                DotNetSiemensPLCToolBoxLibrary.General.InputBox.Show("Connectionname", "Name of the Database Connection",
+                                                                     ref val) == DialogResult.OK)
+            {
+                foreach (
+                    ConnectionConfig plcConnectionConfiguration in
+                        ProtokollerConfiguration.ActualConfigInstance.Connections)
+                {
+                    if (plcConnectionConfiguration.Name.ToLower().Trim() == val.ToLower().Trim())
+                    {
+                        MessageBox.Show("A Connection with this Name already Exists!", "Error", MessageBoxButton.OK,
+                                        MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                var myConfig = new DatabaseConfig();
+                myConfig.Name = val;
+                ProtokollerConfiguration.ActualConfigInstance.Connections.Add(myConfig);
             }
         }
     }

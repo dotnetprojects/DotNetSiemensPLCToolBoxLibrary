@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
+using DotNetSimaticDatabaseProtokollerLibrary.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
@@ -153,6 +154,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             {
                 LibNoDaveConfig plcConnConf = connectionConfig as LibNoDaveConfig;
                 TCPIPConfig tcpipConnConf = connectionConfig as TCPIPConfig;
+                DatabaseConfig dbConnConf = connectionConfig as DatabaseConfig;
+
 
                 if (plcConnConf != null)
                 {
@@ -172,13 +175,26 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     ConnectionList.Add(connectionConfig, tmpConn);
                 }
+                else if (dbConnConf != null)
+                {
+                    var tmpConn = new DatabaseConnection(dbConnConf);
+                    try
+                    {
+                        tmpConn.Connect();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
+                    }
+                    ConnectionList.Add(connectionConfig, tmpConn);
+                }
                 else if (tcpipConnConf != null)
                 {
                     //todo: legth of tcp conn
                     //TCPFunctionsAsync tmpConn = new TCPFunctionsAsync(new SynchronizationContext(), tcpipConnConf.IPasIPAddres, tcpipConnConf.Port, !tcpipConnConf.PassiveConnection, 0);
-                    
+
                     //tmpConn.Connect();
-                    
+
                     //ConnectionList.Add(connectionConfig, tmpConn);
                 }
             }            
@@ -207,12 +223,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
         public void TestDataRead(DatasetConfig testDataset)
         {
-            ReadData.ReadDataFromPLCs(testDataset, testDataset.DatasetConfigRows, ConnectionList, false);
+            ReadData.ReadDataFromDataSources(testDataset, testDataset.DatasetConfigRows, ConnectionList, false);
         }
 
         public void TestDataReadWrite(DatasetConfig testDataset)
         {
-            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromPLCs(testDataset, testDataset.DatasetConfigRows, ConnectionList, false));
+            DatabaseInterfaces[testDataset].Write(ReadData.ReadDataFromDataSources(testDataset, testDataset.DatasetConfigRows, ConnectionList, false));
         }
 
         private void OpenStoragesAndCreateTriggers(bool CreateTriggers, bool StartedAsService)

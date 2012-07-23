@@ -88,6 +88,8 @@
     <Compile Include="aspx\AspxRequestInfo.cs" />
     <Compile Include="aspx\AspxVirtualRoot.cs" />
     <Compile Include="Common\NetworkShare.cs" />
+    <Compile Include="Connections\DatabaseConnection.cs" />
+    <Compile Include="Databases\PLC\PLCStorage.cs" />
     <Compile Include="Databases\Excel2007\Excel2007Storage.cs" />
     <Compile Include="Databases\CSVFile\CSVStorage.cs" />
     <Compile Include="Databases\Excel\ExcelStorage.cs" />
@@ -112,7 +114,9 @@
     <Compile Include="Remoting\RemotingClientAndServerClasses.cs" />
     <Compile Include="Remoting\RemotingClient.cs" />
     <Compile Include="Remoting\RemotingServer.cs" />
+    <Compile Include="SettingsClasses\Connections\DatabaseConfig.cs" />
     <Compile Include="SettingsClasses\Connections\TCPIPProxyConfig.cs" />
+    <Compile Include="SettingsClasses\Storage\PLCConfig.cs" />
     <Compile Include="SettingsClasses\Storage\Excel2007Config.cs" />
     <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
     <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
