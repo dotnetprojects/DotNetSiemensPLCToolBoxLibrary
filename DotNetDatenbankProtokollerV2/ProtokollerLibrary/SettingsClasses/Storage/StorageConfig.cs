@@ -16,7 +16,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
     [XmlInclude(typeof(ODBCConfig))]
     [XmlInclude(typeof(PostgreSQLConfig))]
     [XmlInclude(typeof(SQLiteConfig))]
-    [XmlInclude(typeof(Excel2007Config))] 
+    [XmlInclude(typeof(Excel2007Config))]
+    [XmlInclude(typeof(PLCConfig))] 
     public class StorageConfig: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

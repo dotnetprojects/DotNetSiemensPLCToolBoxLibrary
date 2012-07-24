@@ -108,6 +108,7 @@
     <Compile Include="Common\Logging.cs" />
     <Compile Include="Protocolling\ReadData.cs" />
     <Compile Include="Protocolling\ProtokollerInstance.cs" />
+    <Compile Include="Protocolling\Trigger\DatabaseTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerWithCheckForChangesThread.cs" />
     <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
     <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />

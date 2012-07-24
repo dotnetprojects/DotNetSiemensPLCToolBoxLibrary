@@ -69,7 +69,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     }
                     finally
                     {
-                        dta.Close();
+                        dta.Close();                  
                     }
                 }
                 else if (usedConnection.Connection.GetType() == typeof(LibNoDaveConfig))

@@ -8,7 +8,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
     [Serializable()]
     [XmlInclude(typeof(LibNoDaveConfig))]
     [XmlInclude(typeof(TCPIPConfig))]
-   
+    [XmlInclude(typeof(DatabaseConfig))]
+
     //[DataContract(IsReference = true, Namespace = "")]
     //[KnownType(typeof(LibNoDaveConfig))]
     //[KnownType(typeof(TCPIPConfig))]

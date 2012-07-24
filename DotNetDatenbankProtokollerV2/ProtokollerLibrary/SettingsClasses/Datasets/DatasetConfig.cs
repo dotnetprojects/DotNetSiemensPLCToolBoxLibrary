@@ -135,11 +135,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
         public string CronTab
         {
             get { return _cronTab; }
-            set { _cronTab = value; }
+            set { _cronTab = value; NotifyPropertyChanged("CronTab"); }
         }
 
         #endregion
-        
+
+        #region Database Trigger
+
+        private string _triggerSQL;
+        public string TriggerSQL
+        {
+            get { return _triggerSQL; }
+            set { _triggerSQL = value; NotifyPropertyChanged("TriggerSQL"); }
+        }
+
+        #endregion
+
         private DatasetTriggerType _trigger;
         public DatasetTriggerType Trigger
         {

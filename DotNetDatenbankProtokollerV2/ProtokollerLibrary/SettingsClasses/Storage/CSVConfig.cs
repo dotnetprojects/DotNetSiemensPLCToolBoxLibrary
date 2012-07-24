@@ -25,7 +25,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
             retVal = retVal.Replace("{MM}", dt.ToString("MM"));
             retVal = retVal.Replace("{yyyy}", dt.ToString("yyyy"));
             retVal = retVal.Replace("{yy}", dt.ToString("yy"));
-            retVal = retVal.Replace("{hh}", dt.ToString("dd"));
+            retVal = retVal.Replace("{hh}", dt.ToString("hh"));
             retVal = retVal.Replace("{mm}", dt.ToString("mm"));
             retVal = retVal.Replace("{ss}", dt.ToString("ss"));
 

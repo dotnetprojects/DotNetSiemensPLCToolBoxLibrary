@@ -52,6 +52,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Connections
             return cmd.ExecuteReader();
         }
 
+        public bool ReadTrigger(string sql)
+        {
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = sql;
+            var wrt = cmd.ExecuteScalar();
+            cmd.Dispose();
+            return Convert.ToBoolean(wrt);
+        }
+
         public void Dispose()
         {
             connection.Dispose();
