@@ -327,7 +327,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
                                 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.Parameter.Children);                                    
+                                    addRW.AddRange(tmpBlk.Parameter.DeepCopy().Children);                                    
                             }
                             else if (tmpType.Contains("UDT"))
                             {
@@ -345,7 +345,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
-                                    addRW.AddRange(tmpBlk.Structure.Children);
+                                    addRW.AddRange(tmpBlk.Structure.DeepCopy().Children);
 
                             }
                             else if (tmpType.Contains("BLOCK_FB"))
@@ -373,7 +373,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.Parameter.Children);
+                                    addRW.AddRange(tmpBlk.Parameter.DeepCopy().Children);
                             }
                             else if (tmpType.Contains("STRING"))
                             {
