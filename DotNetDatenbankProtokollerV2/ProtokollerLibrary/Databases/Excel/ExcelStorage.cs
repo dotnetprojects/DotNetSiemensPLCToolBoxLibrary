@@ -24,11 +24,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
         private ExcelConfig myConfig;
         //private IEnumerable<DatasetConfigRow> fieldList;
         private string TableName;
-        private string FileName;
         
-
-        //private System.IO.StreamWriter writer = null;
-
         public override void Close()
         {
             if (myThread != null)
@@ -40,17 +36,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             myConfig = config as ExcelConfig;            
             if (myConfig == null)
                 throw new Exception("Database Config is NULL");
-
-            FileName = myConfig.Filename;
         }
 
         protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {            
             TableName = datasetConfig.Name;
             
+            writeHeader(myConfig.ParseFileName());             
+        }
+
+        private void writeHeader(string filename)
+        {
             Workbook workbook;
-            if (File.Exists(FileName))
-                workbook = Workbook.Load(FileName);
+            if (File.Exists(filename))
+                workbook = Workbook.Load(filename);
             else
                 workbook = new Workbook();
 
@@ -73,17 +72,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 n++;
             }
 
-            workbook.Save(FileName);           
+            workbook.Save(filename);
         }
-
 
         protected override bool _internal_Write()
         {
-
+            var filename = myConfig.ParseFileName();
 
             Workbook workbook;
-            if (File.Exists(FileName))
-                workbook = Workbook.Load(FileName);
+            if (File.Exists(filename))
+                workbook = Workbook.Load(filename);
             else
                 workbook = new Workbook();
 
@@ -143,7 +141,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 zeile++;
             }
 
-            workbook.Save(FileName);
+            workbook.Save(filename);
 
             return true;
         }
@@ -161,7 +159,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
         {
             try
             {
-                Workbook workbook = Workbook.Load(FileName);
+                Workbook workbook = Workbook.Load(myConfig.ParseFileName());
 
                 Worksheet akWorksheet = null;
                 foreach (Worksheet worksheet in workbook.Worksheets)
@@ -205,9 +203,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
 
         public Int64 ReadCount(DatasetConfig datasetConfig)
         {
-            if (File.Exists(FileName))
+            if (File.Exists(myConfig.ParseFileName()))
             {
-                Workbook workbook = Workbook.Load(FileName);
+                Workbook workbook = Workbook.Load(myConfig.ParseFileName());
 
                 Worksheet akWorksheet = null;
                 foreach (Worksheet worksheet in workbook.Worksheets)

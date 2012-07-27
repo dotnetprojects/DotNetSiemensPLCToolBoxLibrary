@@ -22,10 +22,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
         private Excel2007Config myConfig;
         //private IEnumerable<DatasetConfigRow> fieldList;
         private string TableName;
-        private string FileName;
         
-
-        //private System.IO.StreamWriter writer = null;
 
         public override void Close()
         {
@@ -38,25 +35,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             myConfig = config as Excel2007Config;            
             if (myConfig == null)
                 throw new Exception("Database Config is NULL");
-
-            FileName = myConfig.Filename;
         }
 
         protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {            
             TableName = datasetConfig.Name;
-            
-            ExcelPackage ep;
-            /*
-            if (File.Exists(FileName))
-                
-                workbook = Workbook.Load(FileName);
-            else
-                workbook = new Workbook();*/
+        
+            writeHeader(myConfig.ParseFileName());
+        }
 
-            ep = new ExcelPackage(new FileInfo(FileName));
+        private void writeHeader(string filename)
+        {
+            ExcelPackage ep;
+
+            ep = new ExcelPackage(new FileInfo(filename));
             var workbook = ep.Workbook;
-            
+
             ExcelWorksheet akWorksheet = null;
             foreach (ExcelWorksheet worksheet in workbook.Worksheets)
             {
@@ -69,10 +63,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             }
 
             int n = 1;
-            
+
             foreach (DatasetConfigRow myFeld in datasetConfig.DatasetConfigRows)
             {
-               
+
                 akWorksheet.Cells[1, n].Value = myFeld.DatabaseField;
                 n++;
             }
@@ -81,14 +75,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             ep.Dispose();
         }
 
-       
         private int zeile = 0;
 
         protected override bool _internal_Write()
         {
+            var fileName = myConfig.ParseFileName();
 
             ExcelPackage ep;
-            ep = new ExcelPackage(new FileInfo(FileName));
+            ep = new ExcelPackage(new FileInfo(fileName));
             var workbook = ep.Workbook;
 
 
@@ -122,12 +116,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
             }
             else
                 zeile++;
-            //for (; zeile < akWorksheet.Cells.Rows.Count; zeile++)
-            //{
-            //    if (akWorksheet.Cells[0, zeile] == null)
-            //        break;
-            //}
-
+            
             string zeilen = "";
             for (int n = 0; n < _maxAdd; n++)
             {
