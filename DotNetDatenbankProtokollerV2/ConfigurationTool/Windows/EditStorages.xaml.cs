@@ -171,7 +171,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
         private void cmdAddPLCStorage_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Be carefull, wrting to the PLC as a Storrage is BETA and not much tested yet!");
+            MessageBox.Show("Be carefull, writing to the PLC as a Storrage is BETA and not much tested yet!");
             string val = "Storage_" + (grdStorages.Items.Count + 1);
             if (DotNetSiemensPLCToolBoxLibrary.General.InputBox.Show("Storage-Name", "Name of the Storage", ref val) == DialogResult.OK)
             {

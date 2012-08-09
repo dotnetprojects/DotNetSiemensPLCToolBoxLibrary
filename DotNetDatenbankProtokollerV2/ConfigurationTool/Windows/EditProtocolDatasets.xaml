@@ -1054,6 +1054,38 @@
                 IsEnabled="{Binding ElementName=grdDatasets,
                                     Path=SelectedItem,
                                     Converter={StaticResource myNullToFalseConverter}}" />
-
+        <CheckBox Content="Use for all PLC-Tags the following connection:" Height="16" HorizontalAlignment="Left" Margin="671,118,0,0" Name="chkUseSameConnection" VerticalAlignment="Top" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"/>
+        <ComboBox Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="119" Margin="671,143,0,0" Name="cmb_UseSameConnection"
+                  IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
+                  ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
+                  <!--SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Connections}">-->
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Content="Go" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="797,143,0,0" Name="btn_UseSameConnection" VerticalAlignment="Top" Width="53" Click="btn_UseSameConnection_Click" />
+        <CheckBox Content="Use the following Databasetype for PLC-Datatype" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="671,177,0,0" Name="chkConvertTypes" VerticalAlignment="Top" />
+        <ComboBox Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
+                  ItemsSource="{Binding Source={StaticResource tagdatatype}}"
+                    Padding="0"
+                    SelectedItem="{Binding PLCTag.LibNoDaveDataType}"
+                    Margin="671,199,0,0" Name="cmb_PLCType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="867,199,0,0" Name="cmb_DBType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65"
+                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=GetGrdDatsetsObject.SelectedItem.Storage.DatabaseFieldTypes}" SelectedItem="{Binding DatabaseFieldType}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Content="PLC-Type -&gt; Database" Height="23" HorizontalAlignment="Left" Margin="742,199,0,0" Name="btn_ConvertTypes" VerticalAlignment="Top" Width="119" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Click="button1_Click" />
     </Grid>
 </UserControl>

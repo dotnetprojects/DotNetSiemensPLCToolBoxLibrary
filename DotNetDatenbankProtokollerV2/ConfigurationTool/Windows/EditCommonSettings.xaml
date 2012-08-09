@@ -3,13 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
+             xmlns:Common="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common;assembly=JFK-ProtokollerLibrary"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-             d:DesignHeight="348"
-             d:DesignWidth="508"
-             mc:Ignorable="d">
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" Name="myControl"
+             xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended" mc:Ignorable="d" d:DesignHeight="590" d:DesignWidth="562">
+    <UserControl.Resources>
+        <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
+        <ObjectDataProvider x:Key="ErrorLevel"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Common:LogErrorLevel" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <ScrollViewer>
     <Grid>
-        <CheckBox Margin="10,10,0,0"
+       
+            <CheckBox Margin="10,10,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Content="Use Webserver"
@@ -18,5 +30,53 @@
         <extToolkit:IntegerUpDown Margin="68,34,0,0" HorizontalAlignment="Left" Width="104" Height="22" VerticalAlignment="Top" Value="{Binding WebserverPort,
                                       Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"></extToolkit:IntegerUpDown>
         <TextBlock HorizontalAlignment="Left" Margin="29,37,0,0" Text="Port:" VerticalAlignment="Top"  />
+        <CheckBox Content="Use Mailinformation" Height="16" HorizontalAlignment="Left" Margin="10,74,0,0" Name="checkBox1" VerticalAlignment="Top" IsChecked="{Binding UseMailInform, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"/>
+        <GroupBox Header="Settings for Mailinformation" Height="473" HorizontalAlignment="Left" Margin="8,96,0,0" Name="grp_Settings" VerticalAlignment="Top" Width="469" 
+                  IsEnabled="{Binding UseMailInform, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
+        <Grid Width="450">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="152*" />
+                <ColumnDefinition Width="322*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.ColumnSpan="2" Header="General" Height="86" HorizontalAlignment="Left" Margin="6,6,0,0" Name="grp_General" VerticalAlignment="Top" Width="438">
+                <Grid>
+                    <Label Content="Send Intervall:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label8" VerticalAlignment="Top" />
+                    <Label Content="Errorlevel:" Height="28" HorizontalAlignment="Left" Margin="8,35,0,0" Name="label9" VerticalAlignment="Top" />
+                    <extToolkit:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,7,0,0" Text="60000" Value="{Binding SendInterval, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="120" Name="iud_Intervall" />
+                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="87,0,0,9" Name="cmb_Errorlevel" VerticalAlignment="Bottom" Width="120"
+                            ItemsSource="{Binding Source={StaticResource ErrorLevel}}"
+                            SelectedItem="{Binding ErrorLevel, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
+                        </ComboBox>
+                        <Label Content="ms" Height="28" HorizontalAlignment="Left" Margin="213,6,0,0" Name="label10" VerticalAlignment="Top" />
+                    </Grid>
+            </GroupBox>
+            <GroupBox Grid.ColumnSpan="2" Header="Server" Height="196" HorizontalAlignment="Left" Margin="6,98,0,0" Name="grp_Server" VerticalAlignment="Top" Width="438">
+                <Grid Height="169">
+                    <extToolkit:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,43,0,0" Value="{Binding SmtpPort, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179" Text="25" Name="iud_SmtpPort" />
+                    <Label Content="Smtp Server:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" VerticalAlignment="Top" />
+                    <Label Content="Smtp Port:" Height="28" HorizontalAlignment="Left" Margin="6,42,0,0" Name="label2" VerticalAlignment="Top" />
+                        <CheckBox Content="Use Credentials" Height="16" HorizontalAlignment="Left" Margin="6,76,0,0" Name="checkBox2" VerticalAlignment="Top" IsChecked="{Binding UseCredentials, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" />
+                    <Label Content="Username:" Height="28" HorizontalAlignment="Left" Margin="6,98,0,0" Name="label3" VerticalAlignment="Top" />
+                    <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="6,135,0,0" Name="label4" VerticalAlignment="Top" />
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,8,0,0" Name="tb_SmtpServer" Text="{Binding SmtpServer, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179" />
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,100,0,0" Name="tb_Username" Text="{Binding SmtpUsername, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179"
+                             IsEnabled="{Binding UseCredentials, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"/>
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,135,0,0" Name="tb_Password" Text="{Binding SmtpPassword, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179"
+                             IsEnabled="{Binding UseCredentials, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.ColumnSpan="2" Header="Mail" Height="140" HorizontalAlignment="Left" Margin="6,300,0,0" Name="grp_Mail" VerticalAlignment="Top" Width="438">
+                <Grid>
+                    <Label Content="Sender:" Height="28" HorizontalAlignment="Left" Margin="6,10,0,0" Name="label5" VerticalAlignment="Top" />
+                    <Label Content="Recipient:" Height="28" HorizontalAlignment="Left" Margin="6,46,0,0" Name="label6" VerticalAlignment="Top" />
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,12,0,0" Name="tb_Sender" Text="{Binding Sender, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="324" />
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,46,0,0" Name="tb_Recipient" Text="{Binding Recipient, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="324" />
+                    <Label Content="Subject:" Height="28" HorizontalAlignment="Left" Margin="6,80,0,0" Name="label7" VerticalAlignment="Top" />
+                    <TextBox BorderBrush="Black" Height="26" HorizontalAlignment="Left" Margin="87,80,0,0" Name="tb_Subject" Text="{Binding Subject, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="324" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+        </GroupBox>
     </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -381,5 +381,37 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 }
             }
         }
+
+        private void btn_UseSameConnection_Click(object sender, RoutedEventArgs e)
+        {
+            if (chkUseSameConnection.IsChecked.Value)
+            {
+                ConnectionConfig newConnection = cmb_UseSameConnection.SelectedValue as ConnectionConfig;
+                if (newConnection != null)
+                {
+                    foreach (DatasetConfigRow item in ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows)
+                    {
+                        item.Connection = cmb_UseSameConnection.SelectedValue as ConnectionConfig;
+                    }
+                }
+                chkUseSameConnection.IsChecked = false;
+            }
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            if (chkConvertTypes.IsChecked.Value)
+            {
+                if (cmb_PLCType.SelectedValue.ToString() != "" && cmb_DBType.SelectedValue.ToString() != "")
+                {
+                    foreach (DatasetConfigRow item in ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows)
+                    {
+                        if (item.PLCTag.LibNoDaveDataType.ToString() == cmb_PLCType.SelectedValue.ToString())
+                            item.DatabaseFieldType = cmb_DBType.SelectedValue.ToString();
+                    }
+                }
+                chkConvertTypes.IsChecked = false;
+            }
+        }
     }
 }

@@ -55,6 +55,104 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         public string  WebserverPath { get; set; }
         #endregion
 
+        #region LoggingConfig
+        private bool useMailInform;
+
+        [DataMember]
+        public bool UseMailInform
+        {
+            get { return useMailInform; }
+            set { useMailInform = value; }
+        }
+
+        private string _SmtpServer;
+
+        [DataMember]
+        public string SmtpServer
+        {
+            get { return _SmtpServer; }
+            set { _SmtpServer = value; }
+        }
+
+        private int _SmtpPort = 25;
+
+        [DataMember]
+        public int SmtpPort
+        {
+            get { return _SmtpPort; }
+            set { _SmtpPort = value; }
+        }
+
+        public bool useCredentials;
+
+        [DataMember]
+        public bool UseCredentials
+        {
+            get { return this.useCredentials; }
+            set { this.useCredentials = value; }
+        }
+
+        public string _SmtpUsername;
+        public string _SmtpPassword;
+
+        [DataMember]
+        public string SmtpUsername
+        {
+            get { return _SmtpUsername; }
+            set { _SmtpUsername = value; }
+        }
+
+        [DataMember]
+        public string SmtpPassword
+        {
+            get { return _SmtpPassword; }
+            set { _SmtpPassword = value; }
+        }
+
+        public string _Sender;
+        public string _Recipient;
+        public string _Subject;
+        public int _SendInterval = 60000;
+
+        [DataMember]
+        public string Sender
+        {
+            get { return _Sender; }
+            set { _Sender = value; }
+        }
+
+        [DataMember]
+        public string Recipient
+        {
+            get { return _Recipient; }
+            set { _Recipient = value; }
+        }
+
+        [DataMember]
+        public string Subject
+        {
+            get { return _Subject; }
+            set { _Subject = value; }
+        }
+
+        [DataMember]
+        public int SendInterval
+        {
+            get { return _SendInterval; }
+            set { _SendInterval = value; }
+        }
+
+        private Common.LogErrorLevel _errorLevel;
+
+        [DataMember]
+        public Common.LogErrorLevel ErrorLevel
+        {
+            get { return _errorLevel; }
+            set { _errorLevel = value; }
+        }
+
+        #endregion
+
         /// <summary>
         /// Config has Changed, and was not Saved!
         /// </summary>
