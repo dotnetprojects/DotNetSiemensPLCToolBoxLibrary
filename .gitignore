@@ -4,3 +4,8 @@ bin/
 Build/
 *.user
 *.suo
+compiled/*.pdb
+compiled/**/*
+*.vshost.exe
+*.vshost.exe.config
+*.vshost.exe.manifest
