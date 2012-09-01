@@ -135,6 +135,17 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7ProjectBlockInfo.cs" />
     <Compile Include="DataTypes\TagDataType.cs" />
     <Compile Include="DataTypes\TagDisplayDataType.cs" />
+    <Compile Include="DBF\BTree.cs" />
+    <Compile Include="DBF\Field.cs" />
+    <Compile Include="DBF\Index.cs" />
+    <Compile Include="DBF\MDX.cs" />
+    <Compile Include="DBF\MDXFile.cs" />
+    <Compile Include="DBF\MNode.cs" />
+    <Compile Include="DBF\Node.cs" />
+    <Compile Include="DBF\NodeFloat.cs" />
+    <Compile Include="DBF\NodeKey.cs" />
+    <Compile Include="DBF\Structures.cs" />
+    <Compile Include="DBF\Util.cs" />
     <Compile Include="General\DictionarySerializer.cs" />
     <Compile Include="General\EndianAttribute.cs" />
     <Compile Include="General\IEnumerableExtensions.cs" />
