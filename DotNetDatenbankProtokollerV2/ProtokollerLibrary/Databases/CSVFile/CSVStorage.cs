@@ -95,6 +95,28 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                 writer.WriteLine(zeile);
                 writer.Close();
             }
+
+            DeleteOldFiles();
+        }
+
+        private void DeleteOldFiles()
+        {
+            if (string.IsNullOrEmpty(myConfig.DeletionSearchPattern) || myConfig.DeleteCSVsOlderThen.Ticks == 0)
+                return;
+            
+            var dir = Path.GetDirectoryName(myConfig.ParseTextFilname());
+
+            dir += dir.EndsWith("\\") ? "" : "\\";
+
+            var files = Directory.GetFiles(dir, myConfig.DeletionSearchPattern);
+            foreach (var file in files)
+            {
+                var info = new FileInfo(file);
+                if (info.LastWriteTimeUtc < DateTime.UtcNow.Subtract(myConfig.DeleteCSVsOlderThen))
+                {
+                    info.Delete();
+                }
+            }
         }
 
         protected override bool _internal_Write()

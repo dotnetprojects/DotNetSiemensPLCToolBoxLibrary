@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
-             xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-             mc:Ignorable="d" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" mc:Ignorable="d" 
              d:DesignHeight="427" d:DesignWidth="508">
     <Grid>
         <Button Content="Add CSV Storage" Margin="0,12,12,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Width="147" Name="cmdAddCSVStorage" Click="cmdAddCSVStorage_Click" />
@@ -19,7 +18,7 @@
                 <RowDefinition Height="27*" />
                 <RowDefinition Height="28*" />
             </Grid.RowDefinitions>
-            <extToolkit:PropertyGrid Grid.Row="1" SelectedObject="{Binding ElementName=grdStorages, Path=SelectedItem}" FontSize="11" MouseDoubleClick="PropertyGrid_MouseDoubleClick" Name="grdConfig"></extToolkit:PropertyGrid>
+            <xctk:PropertyGrid Grid.Row="1" SelectedObject="{Binding ElementName=grdStorages, Path=SelectedItem}" FontSize="11" MouseDoubleClick="PropertyGrid_MouseDoubleClick" Name="grdConfig"></xctk:PropertyGrid>
 
             <DataGrid AutoGenerateColumns="False" Name="grdStorages" Margin="0,0,0,3" ItemsSource="{Binding Storages, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">
                 <DataGrid.Columns>

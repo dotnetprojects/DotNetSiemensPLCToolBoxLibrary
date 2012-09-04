@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" Name="myControl"
-             xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended" mc:Ignorable="d" d:DesignHeight="590" d:DesignWidth="562">
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" mc:Ignorable="d" d:DesignHeight="590" d:DesignWidth="562">
     <UserControl.Resources>
         <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
         <ObjectDataProvider x:Key="ErrorLevel"
@@ -27,8 +27,8 @@
                   Content="Use Webserver"
                   IsChecked="{Binding UseWebserver,
                                       Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" />
-        <extToolkit:IntegerUpDown Margin="68,34,0,0" HorizontalAlignment="Left" Width="104" Height="22" VerticalAlignment="Top" Value="{Binding WebserverPort,
-                                      Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"></extToolkit:IntegerUpDown>
+        <xctk:IntegerUpDown Margin="68,34,0,0" HorizontalAlignment="Left" Width="104" Height="22" VerticalAlignment="Top" Value="{Binding WebserverPort,
+                                      Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"></xctk:IntegerUpDown>
         <TextBlock HorizontalAlignment="Left" Margin="29,37,0,0" Text="Port:" VerticalAlignment="Top"  />
         <CheckBox Content="Use Mailinformation" Height="16" HorizontalAlignment="Left" Margin="10,74,0,0" Name="checkBox1" VerticalAlignment="Top" IsChecked="{Binding UseMailInform, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"/>
         <GroupBox Header="Settings for Mailinformation" Height="473" HorizontalAlignment="Left" Margin="8,96,0,0" Name="grp_Settings" VerticalAlignment="Top" Width="469" 
@@ -42,7 +42,7 @@
                 <Grid>
                     <Label Content="Send Intervall:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label8" VerticalAlignment="Top" />
                     <Label Content="Errorlevel:" Height="28" HorizontalAlignment="Left" Margin="8,35,0,0" Name="label9" VerticalAlignment="Top" />
-                    <extToolkit:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,7,0,0" Text="60000" Value="{Binding SendInterval, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="120" Name="iud_Intervall" />
+                    <xctk:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,7,0,0" Text="60000" Value="{Binding SendInterval, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="120" Name="iud_Intervall" />
                         <ComboBox Height="23" HorizontalAlignment="Left" Margin="87,0,0,9" Name="cmb_Errorlevel" VerticalAlignment="Bottom" Width="120"
                             ItemsSource="{Binding Source={StaticResource ErrorLevel}}"
                             SelectedItem="{Binding ErrorLevel, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
@@ -52,7 +52,7 @@
             </GroupBox>
             <GroupBox Grid.ColumnSpan="2" Header="Server" Height="196" HorizontalAlignment="Left" Margin="6,98,0,0" Name="grp_Server" VerticalAlignment="Top" Width="438">
                 <Grid Height="169">
-                    <extToolkit:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,43,0,0" Value="{Binding SmtpPort, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179" Text="25" Name="iud_SmtpPort" />
+                    <xctk:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="87,43,0,0" Value="{Binding SmtpPort, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="179" Text="25" Name="iud_SmtpPort" />
                     <Label Content="Smtp Server:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" VerticalAlignment="Top" />
                     <Label Content="Smtp Port:" Height="28" HorizontalAlignment="Left" Margin="6,42,0,0" Name="label2" VerticalAlignment="Top" />
                         <CheckBox Content="Use Credentials" Height="16" HorizontalAlignment="Left" Margin="6,76,0,0" Name="checkBox2" VerticalAlignment="Top" IsChecked="{Binding UseCredentials, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" />

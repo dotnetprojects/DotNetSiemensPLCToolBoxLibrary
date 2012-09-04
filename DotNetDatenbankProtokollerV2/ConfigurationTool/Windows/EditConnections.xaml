@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
-             xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-             mc:Ignorable="d" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" mc:Ignorable="d" 
              d:DesignHeight="348" d:DesignWidth="508">
     <Grid>
         <Grid Margin="12,12,152,12" Name="grid1">
@@ -12,7 +11,7 @@
                 <RowDefinition Height="27*" />
                 <RowDefinition Height="26*" />
             </Grid.RowDefinitions>
-            <extToolkit:PropertyGrid Grid.Row="1" SelectedObject="{Binding ElementName=grdConnections, Path=SelectedItem}" FontSize="11" MouseDoubleClick="PropertyGrid_MouseDoubleClick" Name="prpGrid"></extToolkit:PropertyGrid>
+            <xctk:PropertyGrid Grid.Row="1" SelectedObject="{Binding ElementName=grdConnections, Path=SelectedItem}" FontSize="11" MouseDoubleClick="PropertyGrid_MouseDoubleClick" Name="prpGrid"></xctk:PropertyGrid>
 
 
             <DataGrid AutoGenerateColumns="False" Margin="0,0,0,3" Name="grdConnections" MouseDoubleClick="grdConnections_MouseDoubleClick" ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="True">

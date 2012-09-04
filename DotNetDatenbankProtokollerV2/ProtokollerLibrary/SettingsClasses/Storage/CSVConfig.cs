@@ -46,6 +46,30 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
             set { _useQuotes = value; NotifyPropertyChanged("UseQuotes"); }
         }
 
+        [XmlElement("DeleteCSVsOlderThen")]
+        [Browsable(false)]
+        public long DeleteCSVsOlderThenTicks //Because Timespan could not be Serialized, this helper Property is there!
+        {
+            get { return _deleteCSVsOlderThen.Ticks; }
+            set { _deleteCSVsOlderThen = new TimeSpan(value); }
+        }
+        private TimeSpan _deleteCSVsOlderThen = new TimeSpan(1, 0, 0, 0);
+        [Description("Deletes CSVs older then a specified TimeSpan. (can only be used if Date/Time Placeholders in the Filename are used!)")]
+        [XmlIgnore]
+        public TimeSpan DeleteCSVsOlderThen
+        {
+            get { return _deleteCSVsOlderThen; }
+            set { _deleteCSVsOlderThen = value; NotifyPropertyChanged("DeleteCSVsOlderThen"); }
+        }
+
+        private string _deletionSearchPattern = "*.csv";
+        [Description("this Pattern is used in the Logging Path for searchching for Files to delete!")]
+        public string DeletionSearchPattern
+        {
+            get { return _deletionSearchPattern; }
+            set { _deletionSearchPattern = value; NotifyPropertyChanged("DeletionSearchPattern"); }
+        }
+
         private bool _switchPunctation;
         [Description("Switches Comma and Point")]         
         public bool SwitchPunctation
