@@ -57,6 +57,7 @@
     <Compile Include="ExtensionMethods\ListBoxExtension.cs" />
     <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="ExtensionMethods\TreeViewExtensions.cs" />
+    <Compile Include="Forms\InputBox.cs" />
     <Compile Include="Networking\SocketExtensions.cs" />
     <Compile Include="Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
