@@ -120,9 +120,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 string[] values = initalizationString.Split(',');
                 this.ValueName = values[0];
                 this.ChangeAddressFromString(values[1]);
-                if (values.Length > 1)
-                    this.ChangeDataTypeFromString(values[2]);
                 if (values.Length > 2)
+                    this.ChangeDataTypeFromString(values[2]);
+                if (values.Length > 3)
                     this.ChangeDataTypeStringFormatFromString(values[3]);
             }
             else
@@ -1264,7 +1264,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.CharArray:
                     {
                         var sb = new StringBuilder();
-                        for (var n = 0; n < ArraySize; n++)
+                        for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
                             sb.Append((char)buff[n + startpos]);
                         _setValueProp = sb.ToString();
                     }
