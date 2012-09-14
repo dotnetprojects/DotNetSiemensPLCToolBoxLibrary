@@ -849,151 +849,154 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             try
             {
-                plcAddress = plcAddress.Trim();
-                if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
+                if (!string.IsNullOrEmpty(plcAddress))
                 {
-                    string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
-                    BitAddress = 0;
-                    if (!myPlcAddress[0].Contains("db"))
+                    plcAddress = plcAddress.Trim();
+                    if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
                     {
-                        DatablockNumber = 0;
-                        var tmp = myPlcAddress[0].Split('.')[0];
-                        if (tmp.Contains("e"))
-                            this.LibNoDaveDataSource = TagDataSource.Inputs;
-                        else if (tmp.Contains("a"))
-                            this.LibNoDaveDataSource = TagDataSource.Outputs;
-                        else if (tmp.Contains("l"))
-                            this.LibNoDaveDataSource = TagDataSource.LocalData;
-                        else if (tmp.Contains("v"))
-                            this.LibNoDaveDataSource = TagDataSource.PreviousLocalData;
-                        else if (tmp.Contains("m"))
-                            this.LibNoDaveDataSource = TagDataSource.Flags;
-                        else if (tmp.Contains("t"))
-                            this.LibNoDaveDataSource = TagDataSource.Timer;
-                        else if (tmp.Contains("z"))
-                            this.LibNoDaveDataSource = TagDataSource.Counter;
-                        ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
-                    }
-                    else
-                    {
-                        LibNoDaveDataSource = TagDataSource.Datablock;
-                        DatablockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
-                        ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
-                    }
-                    ArraySize = Convert.ToInt32(myPlcAddress[2]);
-
-                    if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
-                        this.LibNoDaveDataType = TagDataType.ByteArray;
-                    if (ArraySize != 8 && this.LibNoDaveDataType == TagDataType.DateTime)
-                        this.LibNoDaveDataType = TagDataType.ByteArray;
-
-                    if (this.LibNoDaveDataType == TagDataType.String)
-                        ArraySize -= 2;
-                }
-                else
-                {
-                    string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
-                    if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
-                    {
-                        this.LibNoDaveDataSource = TagDataSource.Datablock;
-                        this.DatablockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
-                        if (myPlcAddress[1].Contains("DBW"))
+                        string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
+                        BitAddress = 0;
+                        if (!myPlcAddress[0].Contains("db"))
                         {
-                            ArraySize = 2;
-                            if (this._internalGetSize() != 2)
-                                this.LibNoDaveDataType = TagDataType.Word;
-                        }
-                        else if (myPlcAddress[1].Contains("DBB"))
-                        {
-                            ArraySize = 1;
-                            if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                this.LibNoDaveDataType = TagDataType.Byte;
-                        }
-                        else if (myPlcAddress[1].Contains("DBD"))
-                        {
-                            ArraySize = 4;
-                            if (this._internalGetSize() != 4)
-                                this.LibNoDaveDataType = TagDataType.Dword;
-                        }
-                        else if (myPlcAddress[1].Contains("DBX"))
-                        {
-                            ArraySize = 1;
-                            this.LibNoDaveDataType = TagDataType.Bool;
-                            if (myPlcAddress.Length > 2)
-                                this.BitAddress = Convert.ToInt32(myPlcAddress[2]);
-                            else
-                                this.BitAddress = 0;
-                        }
-                        this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBX", "").Replace("DBB", "").Trim());
-                    }
-                    else
-                    {
-                        if (myPlcAddress[0].Contains("E"))
-                            this.LibNoDaveDataSource = TagDataSource.Inputs;
-                        else if (myPlcAddress[0].Contains("A"))
-                            this.LibNoDaveDataSource = TagDataSource.Outputs;
-                        else if (myPlcAddress[0].Contains("M"))
-                            this.LibNoDaveDataSource = TagDataSource.Flags;
-                        else if (myPlcAddress[0].Contains("T"))
-                            this.LibNoDaveDataSource = TagDataSource.Timer;
-                        else if (myPlcAddress[0].Contains("Z"))
-                            this.LibNoDaveDataSource = TagDataSource.Counter;
-
-                        if (myPlcAddress[0].Contains("W"))
-                        {
-                            ArraySize = 2;
-                            if (_internalGetSize() != 2)
-                                this.LibNoDaveDataType = TagDataType.Int;
-                        }
-                        else if (myPlcAddress[0].Contains("DBB"))
-                        {
-                            ArraySize = 1;
-                            if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                this.LibNoDaveDataType = TagDataType.Byte;
-                        }
-                        else if (myPlcAddress[0].Contains("D"))
-                        {
-                            ArraySize = 4;
-                            if (_internalGetSize() != 4)
-                                this.LibNoDaveDataType = TagDataType.Dint;
-                        }
-                        else if (myPlcAddress[0].Contains("B"))
-                        {
-                            ArraySize = 1;
-                            if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                this.LibNoDaveDataType = TagDataType.Byte;
-                        }
-                        else if (!myPlcAddress[0].Contains("T") && !myPlcAddress[0].Contains("Z"))
-                        {
-                            ArraySize = 1;
-                            this.LibNoDaveDataType = TagDataType.Bool;
-                            if (myPlcAddress.Length >= 2)
-                                this.BitAddress = Convert.ToInt32(myPlcAddress[1]);
-                            else
-                                this.BitAddress = 0;
-                        }
-                        else if (myPlcAddress[0].Contains("T"))
-                        {
-                            ArraySize = 1;
-                            this.LibNoDaveDataType = TagDataType.S5Time;                            
-                        }
-                        else if (myPlcAddress[0].Contains("Z"))
-                        {
-                            ArraySize = 1;
-                            this.LibNoDaveDataType = TagDataType.Int;
+                            DatablockNumber = 0;
+                            var tmp = myPlcAddress[0].Split('.')[0];
+                            if (tmp.Contains("e"))
+                                this.LibNoDaveDataSource = TagDataSource.Inputs;
+                            else if (tmp.Contains("a"))
+                                this.LibNoDaveDataSource = TagDataSource.Outputs;
+                            else if (tmp.Contains("l"))
+                                this.LibNoDaveDataSource = TagDataSource.LocalData;
+                            else if (tmp.Contains("v"))
+                                this.LibNoDaveDataSource = TagDataSource.PreviousLocalData;
+                            else if (tmp.Contains("m"))
+                                this.LibNoDaveDataSource = TagDataSource.Flags;
+                            else if (tmp.Contains("t"))
+                                this.LibNoDaveDataSource = TagDataSource.Timer;
+                            else if (tmp.Contains("z"))
+                                this.LibNoDaveDataSource = TagDataSource.Counter;
+                            ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
                         }
                         else
                         {
-                            ArraySize = 1;
-                            if (_internalGetSize() != 1)
-                                this.LibNoDaveDataType = TagDataType.Bool;
+                            LibNoDaveDataSource = TagDataSource.Datablock;
+                            DatablockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
+                            ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
+                        ArraySize = Convert.ToInt32(myPlcAddress[2]);
 
-                        this.ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].ToLower(), "[a-z]", "").Trim());
+                        if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
+                            this.LibNoDaveDataType = TagDataType.ByteArray;
+                        if (ArraySize != 8 && this.LibNoDaveDataType == TagDataType.DateTime)
+                            this.LibNoDaveDataType = TagDataType.ByteArray;
 
                         if (this.LibNoDaveDataType == TagDataType.String)
                             ArraySize -= 2;
-                    }                    
+                    }
+                    else
+                    {
+                        string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
+                        if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
+                        {
+                            this.LibNoDaveDataSource = TagDataSource.Datablock;
+                            this.DatablockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
+                            if (myPlcAddress[1].Contains("DBW"))
+                            {
+                                ArraySize = 2;
+                                if (this._internalGetSize() != 2)
+                                    this.LibNoDaveDataType = TagDataType.Word;
+                            }
+                            else if (myPlcAddress[1].Contains("DBB"))
+                            {
+                                ArraySize = 1;
+                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.LibNoDaveDataType = TagDataType.Byte;
+                            }
+                            else if (myPlcAddress[1].Contains("DBD"))
+                            {
+                                ArraySize = 4;
+                                if (this._internalGetSize() != 4)
+                                    this.LibNoDaveDataType = TagDataType.Dword;
+                            }
+                            else if (myPlcAddress[1].Contains("DBX"))
+                            {
+                                ArraySize = 1;
+                                this.LibNoDaveDataType = TagDataType.Bool;
+                                if (myPlcAddress.Length > 2)
+                                    this.BitAddress = Convert.ToInt32(myPlcAddress[2]);
+                                else
+                                    this.BitAddress = 0;
+                            }
+                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBX", "").Replace("DBB", "").Trim());
+                        }
+                        else
+                        {
+                            if (myPlcAddress[0].Contains("E"))
+                                this.LibNoDaveDataSource = TagDataSource.Inputs;
+                            else if (myPlcAddress[0].Contains("A"))
+                                this.LibNoDaveDataSource = TagDataSource.Outputs;
+                            else if (myPlcAddress[0].Contains("M"))
+                                this.LibNoDaveDataSource = TagDataSource.Flags;
+                            else if (myPlcAddress[0].Contains("T"))
+                                this.LibNoDaveDataSource = TagDataSource.Timer;
+                            else if (myPlcAddress[0].Contains("Z"))
+                                this.LibNoDaveDataSource = TagDataSource.Counter;
+
+                            if (myPlcAddress[0].Contains("W"))
+                            {
+                                ArraySize = 2;
+                                if (_internalGetSize() != 2)
+                                    this.LibNoDaveDataType = TagDataType.Int;
+                            }
+                            else if (myPlcAddress[0].Contains("DBB"))
+                            {
+                                ArraySize = 1;
+                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.LibNoDaveDataType = TagDataType.Byte;
+                            }
+                            else if (myPlcAddress[0].Contains("D"))
+                            {
+                                ArraySize = 4;
+                                if (_internalGetSize() != 4)
+                                    this.LibNoDaveDataType = TagDataType.Dint;
+                            }
+                            else if (myPlcAddress[0].Contains("B"))
+                            {
+                                ArraySize = 1;
+                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.LibNoDaveDataType = TagDataType.Byte;
+                            }
+                            else if (!myPlcAddress[0].Contains("T") && !myPlcAddress[0].Contains("Z"))
+                            {
+                                ArraySize = 1;
+                                this.LibNoDaveDataType = TagDataType.Bool;
+                                if (myPlcAddress.Length >= 2)
+                                    this.BitAddress = Convert.ToInt32(myPlcAddress[1]);
+                                else
+                                    this.BitAddress = 0;
+                            }
+                            else if (myPlcAddress[0].Contains("T"))
+                            {
+                                ArraySize = 1;
+                                this.LibNoDaveDataType = TagDataType.S5Time;
+                            }
+                            else if (myPlcAddress[0].Contains("Z"))
+                            {
+                                ArraySize = 1;
+                                this.LibNoDaveDataType = TagDataType.Int;
+                            }
+                            else
+                            {
+                                ArraySize = 1;
+                                if (_internalGetSize() != 1)
+                                    this.LibNoDaveDataType = TagDataType.Bool;
+                            }
+
+                            this.ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].ToLower(), "[a-z]", "").Trim());
+
+                            if (this.LibNoDaveDataType == TagDataType.String)
+                                ArraySize -= 2;
+                        }
+                    }
                 }
             }
             catch(Exception)
@@ -1009,140 +1012,145 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public void ChangeDataTypeFromString(String datatype)
         {
-            TagDataType tp = TagDataType.Word;
-            datatype = datatype.ToLower().Trim().Replace(" ", "");
-            switch (datatype)
+            if (!string.IsNullOrEmpty(datatype))
             {
-                case "bool":
-                    tp = TagDataType.Bool;
-                    break;
-                case "word":
-                    tp = TagDataType.Word;
-                    break;
-                case "int":
-                case "integer":
-                    tp = TagDataType.Int;
-                    break;
-                case "dword":
-                    tp = TagDataType.Dword;
-                    break;
-                case "dint":
-                    tp = TagDataType.Dint;
-                    break;
-                case "byte":
-                    tp = TagDataType.Byte;
-                    break;
-                case "sbyte":
-                    tp = TagDataType.SByte;
-                    break;
-                case "string":
-                    tp = TagDataType.String;
-                    break;
-                case "time":
-                    tp = TagDataType.Time;
-                    break;
-                case "s5time":
-                    tp = TagDataType.S5Time;
-                    break;
-                case "timeofday":
-                    tp = TagDataType.TimeOfDay;
-                    break;
-                case "date":
-                    tp = TagDataType.Date;
-                    break;
-                case "bcdbyte":
-                case "bcd":
-                    tp = TagDataType.BCDByte;
-                    break;
-                case "bcdword":
-                    tp = TagDataType.BCDWord;
-                    break;
-                case "bcddword":
-                    tp = TagDataType.BCDDWord;
-                    break;
-                case "datetime":
-                case "dateandtime":
-                    tp = TagDataType.DateTime;
-                    break;
-                case "char":
-                case "chararray":
-                    tp = TagDataType.CharArray;
-                    break;
-                case "bytearray":
-                    tp = TagDataType.ByteArray;
-                    break;
-                case "float":
-                case "real":
-                    tp = TagDataType.Float;
-                    break;                 
+                TagDataType tp = TagDataType.Word;
+                datatype = datatype.ToLower().Trim().Replace(" ", "");
+                switch (datatype)
+                {
+                    case "bool":
+                        tp = TagDataType.Bool;
+                        break;
+                    case "word":
+                        tp = TagDataType.Word;
+                        break;
+                    case "int":
+                    case "integer":
+                        tp = TagDataType.Int;
+                        break;
+                    case "dword":
+                        tp = TagDataType.Dword;
+                        break;
+                    case "dint":
+                        tp = TagDataType.Dint;
+                        break;
+                    case "byte":
+                        tp = TagDataType.Byte;
+                        break;
+                    case "sbyte":
+                        tp = TagDataType.SByte;
+                        break;
+                    case "string":
+                        tp = TagDataType.String;
+                        break;
+                    case "time":
+                        tp = TagDataType.Time;
+                        break;
+                    case "s5time":
+                        tp = TagDataType.S5Time;
+                        break;
+                    case "timeofday":
+                        tp = TagDataType.TimeOfDay;
+                        break;
+                    case "date":
+                        tp = TagDataType.Date;
+                        break;
+                    case "bcdbyte":
+                    case "bcd":
+                        tp = TagDataType.BCDByte;
+                        break;
+                    case "bcdword":
+                        tp = TagDataType.BCDWord;
+                        break;
+                    case "bcddword":
+                        tp = TagDataType.BCDDWord;
+                        break;
+                    case "datetime":
+                    case "dateandtime":
+                        tp = TagDataType.DateTime;
+                        break;
+                    case "char":
+                    case "chararray":
+                        tp = TagDataType.CharArray;
+                        break;
+                    case "bytearray":
+                        tp = TagDataType.ByteArray;
+                        break;
+                    case "float":
+                    case "real":
+                        tp = TagDataType.Float;
+                        break;
+                }
+                this.LibNoDaveDataType = tp;
             }
-            this.LibNoDaveDataType = tp;
         }
 
         public void ChangeDataTypeStringFormatFromString(String datatype)
         {
-
-            TagDisplayDataType tp = TagDisplayDataType.Decimal;
-            datatype = datatype.ToLower().Trim().Replace(" ", "");
-            switch (datatype.Replace(" ", "").Replace("_", "").Trim())
+            if (!string.IsNullOrEmpty(datatype))
             {
-                case "decimal":
-                case "dec":
-                    tp = TagDisplayDataType.Decimal;
-                    break;
-                case "hexadecimal":
-                case "hex":
-                    tp = TagDisplayDataType.Hexadecimal;
-                    break;
-                case "binary":
-                case "bin":
-                    tp = TagDisplayDataType.Binary;
-                    break;
-                case "pointer":
-                    tp = TagDisplayDataType.Pointer;
-                    break;
-                case "bool":
-                    tp = TagDisplayDataType.Bool;
-                    break;
-                case "byte":
-                case "bytearray":
-                    tp = TagDisplayDataType.ByteArray;
-                    break;
-                case "datetime":
-                    tp = TagDisplayDataType.DateTime;
-                    break;
-                case "date":                    
-                case "s7date":
-                    tp = TagDisplayDataType.S7Date;
-                    break;
-                case "s7timeofday":
-                case "timeofday":
-                    tp = TagDisplayDataType.S7TimeOfDay;
-                    break;
-                case "float":
-                case "real":
-                    tp = TagDisplayDataType.Float;
-                    break;
-                case "s5time":
-                    tp = TagDisplayDataType.S5Time;
-                    break;               
-                case "s7datetime":
-                case "dateandtime":
-                    tp = TagDisplayDataType.S7DateTime;
-                    break;
-                case "string":
-                case "strg":
-                    tp = TagDisplayDataType.String;
-                    break;
-                case "time":
-                case "s7time":
-                    tp = TagDisplayDataType.Time;
-                    break;
-                case "timespan":
-                    tp = TagDisplayDataType.TimeSpan;
-                    break;
+                TagDisplayDataType tp = TagDisplayDataType.Decimal;
+                datatype = datatype.ToLower().Trim().Replace(" ", "");
+                switch (datatype.Replace(" ", "").Replace("_", "").Trim())
+                {
+                    case "decimal":
+                    case "dec":
+                        tp = TagDisplayDataType.Decimal;
+                        break;
+                    case "hexadecimal":
+                    case "hex":
+                        tp = TagDisplayDataType.Hexadecimal;
+                        break;
+                    case "binary":
+                    case "bin":
+                        tp = TagDisplayDataType.Binary;
+                        break;
+                    case "pointer":
+                        tp = TagDisplayDataType.Pointer;
+                        break;
+                    case "bool":
+                        tp = TagDisplayDataType.Bool;
+                        break;
+                    case "byte":
+                    case "bytearray":
+                        tp = TagDisplayDataType.ByteArray;
+                        break;
+                    case "datetime":
+                        tp = TagDisplayDataType.DateTime;
+                        break;
+                    case "date":
+                    case "s7date":
+                        tp = TagDisplayDataType.S7Date;
+                        break;
+                    case "s7timeofday":
+                    case "timeofday":
+                        tp = TagDisplayDataType.S7TimeOfDay;
+                        break;
+                    case "float":
+                    case "real":
+                        tp = TagDisplayDataType.Float;
+                        break;
+                    case "s5time":
+                        tp = TagDisplayDataType.S5Time;
+                        break;
+                    case "s7datetime":
+                    case "dateandtime":
+                        tp = TagDisplayDataType.S7DateTime;
+                        break;
+                    case "string":
+                    case "strg":
+                        tp = TagDisplayDataType.String;
+                        break;
+                    case "time":
+                    case "s7time":
+                        tp = TagDisplayDataType.Time;
+                        break;
+                    case "timespan":
+                        tp = TagDisplayDataType.TimeSpan;
+                        break;
+                }
+                this.DataTypeStringFormat = tp;
             }
-            this.DataTypeStringFormat = tp;
         }
 
         public static PLCTag GetLibNoDaveValueFromString(String plcAddress)
