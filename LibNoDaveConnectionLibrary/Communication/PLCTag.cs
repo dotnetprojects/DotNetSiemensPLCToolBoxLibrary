@@ -394,7 +394,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_controlvalue == null || !_controlvalue.Equals(value))
                 {
                     _controlvalue = value;
-                    _oldvalue = null;
+                    //_oldvalue = null;
                     NotifyPropertyChanged("Controlvalue");
                     NotifyPropertyChanged("ControlValueAsString");    
                 }

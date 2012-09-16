@@ -171,6 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             _NeedDispose = true;
             //Debugging for LibNoDave
+            libnodave.daveSetDebug(0x0);
             //libnodave.daveSetDebug(0x1ffff);
 
             //_configuration.ReloadConfiguration();
