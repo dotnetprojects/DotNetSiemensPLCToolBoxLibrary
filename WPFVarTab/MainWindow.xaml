@@ -226,7 +226,7 @@
                                         Click="cmdExportAllConnections_Click"
                                         Padding="3"
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="Select Symbol Tables">
+                                        ToolTip="Export All Connections">
                                     <Image Width="16"
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/export3.png" />
@@ -238,7 +238,7 @@
                                         Click="cmdImportAllConnections_Click"
                                         Padding="3"
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                                        ToolTip="Select Symbol Tables">
+                                        ToolTip="Import All Connections">
                                     <Image Width="16"
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/import3.png" />
