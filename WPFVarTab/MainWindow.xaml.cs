@@ -139,7 +139,7 @@ namespace WPFVarTab
 
         private void cmdConfigConnection_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.ShowConfiguration(ConfiguredConnections); // "JFK-WPFVarTab Connection 1", false);
+            Configuration.ShowConfiguration("JFK-WPFVarTab Connection 1", false); //ConfiguredConnections); //
             BuildConnectionList();
         }
 
@@ -273,6 +273,10 @@ namespace WPFVarTab
 
                                                                     }
                                                                 }
+                                                                catch (ThreadAbortException ex)
+                                                                {
+                                                                    throw;
+                                                                }
                                                                 catch (Exception ex)
                                                                 {
                                                                 }
@@ -382,6 +386,24 @@ namespace WPFVarTab
             }
         }
 
+        private void cmdImportAllConnections_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog opnDlg = new OpenFileDialog();
+            opnDlg.Filter = "Alle Unterstützten Datentypen (*.connconf)|*.connconf";
+            var retVal = opnDlg.ShowDialog();
+            if (retVal == true)
+            {
+                System.IO.FileStream jj = new FileStream(opnDlg.FileName, FileMode.Open);
+                System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(List<PLCConnectionConfiguration>));
+                var saved = (List<PLCConnectionConfiguration>)myXml.Deserialize(jj);
+                PLCConnectionConfiguration.ImportConfigurations(saved);   
+             
+                this.BuildConnectionList();
+            }
+        }
+
+        
+
         private void cmdSave_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveDlg = new SaveFileDialog();
@@ -391,6 +413,19 @@ namespace WPFVarTab
                 System.IO.FileStream jj = new FileStream(saveDlg.FileName, FileMode.Create);
                 System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
                 myXml.Serialize(jj, varTabRows);
+                jj.Close();
+            }
+        }
+
+        private void cmdExportAllConnections_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDlg = new SaveFileDialog();
+            saveDlg.Filter = "*.connconf|*.connconf";
+            if (saveDlg.ShowDialog().Value)
+            {
+                System.IO.FileStream jj = new FileStream(saveDlg.FileName, FileMode.Create);
+                System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(List<PLCConnectionConfiguration>));
+                myXml.Serialize(jj, PLCConnectionConfiguration.ExportConfigurations());
                 jj.Close();
             }
         }

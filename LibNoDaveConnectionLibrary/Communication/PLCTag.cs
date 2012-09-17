@@ -1160,6 +1160,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return retValue;
         }
 
+        public bool LimitControlValuesRange { get; set; }
+
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
             if (Controlvalue!=null)
@@ -1192,7 +1194,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         buff[startpos] = Convert.ToByte(tmp1);
                         break;
                     case TagDataType.Byte:
-                        buff[startpos] = Convert.ToByte(Controlvalue);
+                                                buff[startpos] = Convert.ToByte(Controlvalue);
                         break;
                     case TagDataType.SByte:
                         buff[startpos] = (Byte)Convert.ToSByte(Controlvalue);

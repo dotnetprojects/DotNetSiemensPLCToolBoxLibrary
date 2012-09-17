@@ -219,6 +219,30 @@
                                           Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                           ToolTip="Default Connection"
                                           WPFVarTab:ComboBoxExtension.IsNullable="True" />
+                                <Button Name="cmdExportAllConnections"
+                                        Margin="2,7,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Click="cmdExportAllConnections_Click"
+                                        Padding="3"
+                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="Select Symbol Tables">
+                                    <Image Width="16"
+                                           Height="16"
+                                           Source="/WPFVarTab;component/Images/export3.png" />
+                                </Button>
+                                <Button Name="cmdImportAllConnections"
+                                        Margin="2,7,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Click="cmdImportAllConnections_Click"
+                                        Padding="3"
+                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        ToolTip="Select Symbol Tables">
+                                    <Image Width="16"
+                                           Height="16"
+                                           Source="/WPFVarTab;component/Images/import3.png" />
+                                </Button>
                             </WrapPanel>
 
                             <ccl:CaptionButtons />

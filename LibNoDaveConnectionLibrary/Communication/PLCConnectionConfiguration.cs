@@ -312,6 +312,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             this.ReloadConfiguration();
         }
 
+        /// <summary>
+        /// Normal Constructor of the Config Object
+        /// </summary>
+        /// <param name="ConnectionName"></param>
+        public static List<PLCConnectionConfiguration> ExportConfigurations()
+        {
+            List<PLCConnectionConfiguration> retVal = new List<PLCConnectionConfiguration>();
+            
+            foreach (var myName in GetConfigurationNames())
+            {
+                retVal.Add(new PLCConnectionConfiguration(myName));
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Normal Constructor of the Config Object
+        /// </summary>
+        /// <param name="ConnectionName"></param>
+        public static void ImportConfigurations(List<PLCConnectionConfiguration> configs)
+        {
+            foreach (var myConfig in configs)
+            {
+                myConfig.ConfigurationType = LibNodaveConnectionConfigurationType.RegistrySavedConfiguration;
+                myConfig.SaveConfiguration();
+            }            
+        }
+
         private static string ConfigurationPathAndFilename
         {
             get
