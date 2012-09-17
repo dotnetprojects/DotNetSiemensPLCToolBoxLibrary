@@ -205,18 +205,7 @@ namespace WPFVarTab
                 }
                 else
                 {
-                    if (BackgroundReadingThread != null)
-                        BackgroundReadingThread.Abort();
-
-                    Thread.Sleep(100);
-
-                    foreach (KeyValuePair<string, PLCConnection> plcConnection in _connectionDictionary)
-                    {
-                        plcConnection.Value.Disconnect();
-                    }
-
-                    ProgressBarOnlineStatus.IsIndeterminate = false;
-                    IsOnline = false;
+                    this.StopOnlineView();
                 }
             }
             catch(Exception ex)
@@ -225,12 +214,33 @@ namespace WPFVarTab
             }
         }
 
+        private void StopOnlineView()
+        {
+            if (this.BackgroundReadingThread != null)
+            {
+                this.BackgroundReadingThread.Abort();
+            }
+
+            Thread.Sleep(100);
+
+            foreach (KeyValuePair<string, PLCConnection> plcConnection in _connectionDictionary)
+            {
+                plcConnection.Value.Disconnect();
+            }
+
+            this.ProgressBarOnlineStatus.IsIndeterminate = false;
+            IsOnline = false;
+        }
+
         private void BackgroundReadingProc()
         {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            ParallelOptions po = new ParallelOptions();
+            po.CancellationToken = cts.Token;
+
             try
             {
-
-                Parallel.ForEach(_connectionDictionary, itm =>
+                Parallel.ForEach(_connectionDictionary, po, itm =>
                                                             {
                                                                 try
                                                                 {
@@ -271,6 +281,7 @@ namespace WPFVarTab
                                                                                 rq.RequestData();
                                                                         }
 
+                                                                        po.CancellationToken.ThrowIfCancellationRequested();
                                                                     }
                                                                 }
                                                                 catch (ThreadAbortException ex)
@@ -285,8 +296,12 @@ namespace WPFVarTab
             }
             catch (ThreadAbortException ex)
             {
-
+               cts.Cancel();
             }
+            catch (Exception ex)
+            {
+            }
+            cts.Cancel();
         }
        
         private void ReadPlcTagsFromConnection(PLCConnection conn)
@@ -362,7 +377,7 @@ namespace WPFVarTab
                                                             {
                                                                 MessageBox.Show("Error Writing to PLC: " +
                                                                                 ex.Message);
-                                                            }
+                                                            }                                                            
                                                         });
 
         }
@@ -550,6 +565,11 @@ namespace WPFVarTab
         private void cmdNew_Click(object sender, RoutedEventArgs e)
         {
             varTabRows.Clear();
+        }
+
+        private void ThisWindow_Closing(object sender, CancelEventArgs e)
+        {
+            StopOnlineView();
         }
    
     }

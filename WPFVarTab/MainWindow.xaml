@@ -18,7 +18,7 @@
                         Icon="/WPFVarTab;component/Images/go-home-6.png"
                         ResizeMode="CanResizeWithGrip"
                         Style="{DynamicResource GlassStyle}"
-                        WindowStyle="None">
+                        WindowStyle="None" Closing="ThisWindow_Closing">
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}" Executed="_OnShowSystemMenuCommand" />
