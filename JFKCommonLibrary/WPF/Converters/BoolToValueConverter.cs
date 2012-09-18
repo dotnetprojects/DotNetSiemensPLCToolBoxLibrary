@@ -15,7 +15,7 @@ namespace JFKCommonLibrary.WPF.Converters
             if (value == null)
                 return FalseValue;
             else
-                return (bool)value ? TrueValue : FalseValue;
+                return System.Convert.ToBoolean(value) ? TrueValue : FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -27,7 +27,16 @@ namespace JFKCommonLibrary.WPF.Converters
     public class BoolToStringConverter : BoolToValueConverter<String> { }
     public class BoolToBoolConverter : BoolToValueConverter<bool> { }
     public class BoolToBrushConverter : BoolToValueConverter<Brush> { }
-    public class BoolToVisibilityConverter : BoolToValueConverter<Visibility> { }
+
+    public class BoolToVisibilityConverter : BoolToValueConverter<Visibility>
+    {
+        public BoolToVisibilityConverter()
+        {
+            TrueValue = Visibility.Visible;
+            FalseValue = Visibility.Hidden;
+        }
+    }
+
     public class BoolToObjectConverter : BoolToValueConverter<Object> { }
     public class BoolToThicknessConverter : BoolToValueConverter<Thickness> { }
 }

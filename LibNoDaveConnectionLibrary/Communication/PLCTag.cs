@@ -202,7 +202,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDByte:
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
-                        if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary && _dataTypeStringFormat != TagDisplayDataType.Pointer)
+                        if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary && _dataTypeStringFormat != TagDisplayDataType.Pointer && _dataTypeStringFormat != TagDisplayDataType.String)
                             return TagDisplayDataType.Decimal;
                         return _dataTypeStringFormat;
                     case TagDataType.Float:
@@ -736,8 +736,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         IFormattable val = (IFormattable)myValue;
                         switch (DataTypeStringFormat)
                         {
+                            case TagDisplayDataType.String:
+                                switch (LibNoDaveDataType)
+                                {
+                                    case TagDataType.Int:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Int16)myValue));
+                                    case TagDataType.Dint:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Int32)myValue));
+                                    case TagDataType.Byte:
+                                        return Encoding.ASCII.GetString(new []{(Byte)myValue});
+                                    case TagDataType.SByte:
+                                        return Encoding.ASCII.GetString(new[] { BitConverter.GetBytes((SByte)myValue)[0] });
+                                    case TagDataType.Word:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt16)myValue));
+                                    case TagDataType.Dword:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));
+                                    case TagDataType.Float:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Single)myValue));
+                                    case TagDataType.BCDByte:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Byte)myValue));
+                                    case TagDataType.BCDWord:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt16)myValue));
+                                    case TagDataType.BCDDWord:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));                                        
+                                }
+                                break;
                             case TagDisplayDataType.Pointer:
-                                return "P#" + (Convert.ToInt32(myValue)/8).ToString() + "." + (Convert.ToInt32(myValue)%8).ToString();
+                                return "P#" + (Convert.ToInt32(myValue) / 8).ToString() + "." + (Convert.ToInt32(myValue) % 8).ToString();
                                 break;
                             case TagDisplayDataType.Hexadecimal:
                                 string ad = "";

@@ -340,46 +340,38 @@ namespace WPFVarTab
 
         private void cmdControlValues_Click(object sender, RoutedEventArgs e)
         {
-            if (!ProgressBarOnlineStatus.IsIndeterminate)
+            if (Properties.Settings.Default.AllowTagsControl)
             {
-                MessageBox.Show("You need to be in Viewing State toi Control Values!");
-                return;
+                if (!ProgressBarOnlineStatus.IsIndeterminate)
+                {
+                    MessageBox.Show("You need to be in Viewing State toi Control Values!");
+                    return;
+                }
+                Parallel.ForEach(_connectionDictionary, itm =>
+                    {
+                        try
+                        {
+                            var conn = itm.Value;
+
+                            var values = from rw in varTabRows where rw.Connection == conn && rw.LibNoDaveValue != null && rw.LibNoDaveValue.Controlvalue != null select rw.LibNoDaveValue;
+
+
+                            if (WriteTagsConfig == 0)
+                                conn.WriteValues(values);
+                            else
+                            {
+                                conn.WriteValuesWithVarTabFunctions(values, (PLCTriggerVarTab)WriteTagsConfig + 1);
+                            }
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error Writing to PLC: " + ex.Message);
+                        }
+                    });
+
             }
-            Parallel.ForEach(_connectionDictionary, itm =>
-                                                        {
-                                                            try
-                                                            {
-                                                                var conn = itm.Value;
-
-                                                                var values = from rw in varTabRows
-                                                                             where
-                                                                                 rw.Connection == conn &&
-                                                                                 rw.LibNoDaveValue != null &&
-                                                                                 rw.LibNoDaveValue.Controlvalue != null
-                                                                             select rw.LibNoDaveValue;
-
-
-                                                                if (WriteTagsConfig == 0)
-                                                                    conn.WriteValues(values);
-                                                                else
-                                                                {
-                                                                    conn.WriteValuesWithVarTabFunctions(values,
-                                                                                                        (
-                                                                                                        PLCTriggerVarTab
-                                                                                                        )
-                                                                                                        WriteTagsConfig +
-                                                                                                        1);
-                                                                }
-
-
-                                                            }
-                                                            catch (Exception ex)
-                                                            {
-                                                                MessageBox.Show("Error Writing to PLC: " +
-                                                                                ex.Message);
-                                                            }                                                            
-                                                        });
-
         }
 
         private void cmdOpen_Click(object sender, RoutedEventArgs e)
@@ -453,40 +445,41 @@ namespace WPFVarTab
 
         private void dataGrid_KeyDown(object sender, KeyEventArgs e)
         {
-
-            foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
-                plcConnection.Value.WriteQueueClear();
-            
-            foreach (var selectedItem in dataGrid.SelectedItems)
+            if (Properties.Settings.Default.AllowTagsControl)
             {
-                var rw = selectedItem as VarTabRowWithConnection;
+                foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
+                    plcConnection.Value.WriteQueueClear();
 
-                if (e.Key == Key.D1 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+                foreach (var selectedItem in dataGrid.SelectedItems)
                 {
-                    if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
+                    var rw = selectedItem as VarTabRowWithConnection;
+
+                    if (e.Key == Key.D1 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
                     {
-                        rw.LibNoDaveValue.ControlValueAsString = "1";
-                        rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
+                        if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
+                        {
+                            rw.LibNoDaveValue.ControlValueAsString = "1";
+                            rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
+                        }
+                    }
+                    else if (e.Key == Key.D0 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+                    {
+                        if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
+                        {
+                            rw.LibNoDaveValue.ControlValueAsString = "0";
+                            rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
+                        }
                     }
                 }
-                else if (e.Key == Key.D0 && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+
+                foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
                 {
-                    if (rw != null && rw.Connection != null && rw.LibNoDaveValue != null)
-                    {
-                        rw.LibNoDaveValue.ControlValueAsString = "0";
-                        rw.Connection.WriteQueueAdd(rw.LibNoDaveValue);
-                    }
+                    if (WriteTagsConfig == 0)
+                        plcConnection.Value.WriteQueueWriteToPLC();
+                    else
+
+                        plcConnection.Value.WriteQueueWriteToPLCWithVarTabFunctions((PLCTriggerVarTab)WriteTagsConfig + 1);
                 }
-            }
-
-            foreach (KeyValuePair<string, PLCConnection> plcConnection in ConnectionDictionary)
-
-            {
-                if (WriteTagsConfig == 0)
-                    plcConnection.Value.WriteQueueWriteToPLC();
-                else
-
-                    plcConnection.Value.WriteQueueWriteToPLCWithVarTabFunctions((PLCTriggerVarTab)WriteTagsConfig + 1);
             }
         }
 

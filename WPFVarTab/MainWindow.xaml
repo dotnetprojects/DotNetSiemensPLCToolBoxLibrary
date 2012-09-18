@@ -9,7 +9,7 @@
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
                         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                        Name="ThisWindow"
+                        xmlns:Properties="clr-namespace:WPFVarTab.Properties" Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -159,7 +159,7 @@
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/zoom-3.png" />
                                 </ToggleButton>
-                                <Button Name="cmdControlValues"
+                                <Button Name="cmdControlValues"                                        
                                         Margin="2,7,0,2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
@@ -167,6 +167,13 @@
                                         Padding="3"
                                         Shell:WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Control Values">
+                                    <Button.Visibility>
+                                        <Binding Path="AllowTagsControl" Source="{x:Static Properties:Settings.Default}">
+                                            <Binding.Converter>
+                                                <behavior:BoolToVisibilityConverter></behavior:BoolToVisibilityConverter>
+                                            </Binding.Converter>
+                                        </Binding>                                        
+                                    </Button.Visibility>
                                     <Image Width="16"
                                            Height="16"
                                            Source="/WPFVarTab;component/Images/draw-line-2.png" />
