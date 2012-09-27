@@ -589,6 +589,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     myDestinationIsIP = 1;
                     myDestination = new byte[] { (byte)Convert.ToInt32(ip[0]), (byte)Convert.ToInt32(ip[1]), (byte)Convert.ToInt32(ip[2]), (byte)Convert.ToInt32(ip[3]) };
                 }
+                routingDestination = routingDestination ?? "";
                 ip = routingDestination.Split('.');
                 byte[] myRoutingDestination = new byte[4];
                 int routingDestinationIsIP = 0;

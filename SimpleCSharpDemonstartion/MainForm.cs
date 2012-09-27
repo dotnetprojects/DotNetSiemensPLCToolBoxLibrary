@@ -62,13 +62,7 @@ namespace SimpleCSharpDemonstration
         private void button3_Click(object sender, EventArgs e)
         {
             DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
-            symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();
-            
-            if (symTab!=null)
-                foreach (var symbolTableEntry in symTab.SymbolTableEntrys)
-                {
-
-                }             
+            symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();            
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -108,6 +102,16 @@ namespace SimpleCSharpDemonstration
         private Connection aa, bb;
         private void button4_Click(object sender, EventArgs e)
         {
+            PLCConnectionConfiguration myconfig = new PLCConnectionConfiguration();
+            myconfig.Timeout = 5000000;
+            myconfig.CpuIP = "192.168.1.185";
+            myconfig.TimeoutIPConnect = 5000;
+            myconfig.ConnectionType = 122;
+            myconfig.ConnectionName = "Temp";
+            myconfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
+            PLCConnection myConn = new PLCConnection(myconfig);
+            myConn.Connect();
+            
             /*
             Stopwatch sw = new Stopwatch();
             Stopwatch sw2 = new Stopwatch();

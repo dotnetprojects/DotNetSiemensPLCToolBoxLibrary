@@ -244,6 +244,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //System.Windows.Forms.MessageBox.Show("Socket:" + _fds.rfd.ToString());
 
+            if (_configuration.ConnectionName == null) _configuration.ConnectionName = Guid.NewGuid().ToString();
+
             //Dave Interface Erzeugen
             _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
 
