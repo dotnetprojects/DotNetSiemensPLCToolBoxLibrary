@@ -24,6 +24,21 @@ namespace WPFVarTab
                 RaiseConnectedChanged();
             }
         }
+
+        public override int ArraySize
+        {
+            get
+            {
+                return base.ArraySize;
+            }
+            set
+            {
+                base.ArraySize = value;
+                MainWindow.RefreshSymbol(this);
+                RaiseConnectedChanged();
+            }
+        }
+
         public VarTabRowWithConnection GetNextRow()
         {
             var rw = new VarTabRowWithConnection();

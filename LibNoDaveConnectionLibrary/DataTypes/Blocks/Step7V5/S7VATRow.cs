@@ -56,6 +56,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         [XmlIgnore]
+        public virtual int ArraySize
+        {
+            get
+            {
+                if (_libNoDaveValue != null)
+                    return _libNoDaveValue.ArraySize;
+                return 0;
+            }
+            set
+            {
+                if (_libNoDaveValue == null) LibNoDaveValue = new PLCTag();
+                _libNoDaveValue.ArraySize = value;
+                NotifyInternalPLCTagPropertyChanges();
+            }
+        }
+
+        [XmlIgnore]
         public TagDataType? LibNoDaveDataType
         {
             get
@@ -125,6 +142,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             NotifyPropertyChanged("LibNoDaveDataType");
             NotifyPropertyChanged("DataTypeStringFormat");
             NotifyPropertyChanged("ControlValueAsString");
+            NotifyPropertyChanged("ArraySize");
         }
 
         #endregion

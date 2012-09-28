@@ -24,6 +24,7 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -292,7 +293,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _dontSplitValue = value; NotifyPropertyChanged("DontSplitValue"); }
         }
 
-        private int _arraySize = 2;
+        private int _arraySize = 1;
         /// <summary>
         /// Only valid (and used!) with String, CharArray and ByteArray Type!
         /// </summary>
@@ -300,9 +301,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get
             {
-                if (LibNoDaveDataType== TagDataType.String || LibNoDaveDataType==TagDataType.CharArray|| LibNoDaveDataType==TagDataType.ByteArray)
-                    return _arraySize; 
-                return 1;
+                //if (LibNoDaveDataType== TagDataType.String || LibNoDaveDataType==TagDataType.CharArray|| LibNoDaveDataType==TagDataType.ByteArray)
+                
+                return _arraySize; 
+                //return 1;
             }
             set
             {
@@ -465,7 +467,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                 }
 
-                if (LibNoDaveDataType == TagDataType.Bool)
+                if (LibNoDaveDataType == TagDataType.Bool && ArraySize < 2)
                 {
                     ret.Append(ByteAddress);
                     if (LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter)
@@ -509,7 +511,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return ret.ToString();
             }
 
-            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("ReadByteSize"); }
+            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("ReadByteSize"); NotifyPropertyChanged("ArraySize"); }
         }
 
         public string GetControlValueAsString()
@@ -652,6 +654,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 switch (LibNoDaveDataType)
                 {
+                    case TagDataType.String:
+                    case TagDataType.CharArray:
+                        return myValue.ToString();
+                    case TagDataType.ByteArray:
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append("{");
+                            foreach (Byte bt in ((System.Byte[])myValue))
+                            {
+                                if (sb.Length > 1) sb.Append(";");
+                                sb.Append(bt.ToString());
+                            }
+                            sb.Append("}");
+                            return sb.ToString();
+                        }
+
+                    case TagDataType.S5Time:
+                    case TagDataType.Time:
+                    case TagDataType.Bool:
+                    case TagDataType.DateTime:
+                    case TagDataType.Date:
+                    case TagDataType.TimeOfDay:
+                    case TagDataType.Int:
+                    case TagDataType.Dint:
+                    case TagDataType.Byte:
+                    case TagDataType.SByte:
+                    case TagDataType.Word:
+                    case TagDataType.Dword:
+                    case TagDataType.Float:
+                    case TagDataType.BCDByte:
+                    case TagDataType.BCDWord:
+                    case TagDataType.BCDDWord:
+                        if (ArraySize < 2)
+                        {
+                            return this.GetValueAsStringInternal(myValue);
+                        }
+                        else
+                        {
+                            string ret = "";
+                            var ienumer = myValue as IEnumerable;
+                            if (ienumer != null)
+                            {
+                                var enumer = ienumer.GetEnumerator();
+                                for (int i = 0; i < ArraySize; i++)
+                                {
+                                    if (enumer.MoveNext())
+                                    {
+                                        if (ret != "") ret += ";";
+                                        ret += this.GetValueAsStringInternal(enumer.Current);
+                                    }
+                                }
+                                return ret;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return "";
+        }
+
+
+        private string GetValueAsStringInternal(object myValue)
+        {
+            if (myValue != null)
+            {
+                switch (LibNoDaveDataType)
+                {
                     case TagDataType.S5Time:
                         {
                             var bt = new byte[2];
@@ -720,9 +790,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return sb.ToString();
                         }
                         return myValue.ToString();
-                    case TagDataType.String:                    
-                    case TagDataType.CharArray:
-                        return myValue.ToString();
+                    
                     case TagDataType.Int:
                     case TagDataType.Dint:
                     case TagDataType.Byte:
@@ -824,20 +892,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 return "2#" + ret;
 
                         }
-                        return val.ToString();
-                    case TagDataType.ByteArray:
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            sb.Append("{");
-                            foreach (Byte bt in ((System.Byte[]) myValue))
-                            {
-                                if (sb.Length > 1)
-                                    sb.Append(",");
-                                sb.Append(bt.ToString());
-                            }
-                            sb.Append("}");
-                            return sb.ToString();
-                        }
+                        return val.ToString();                    
                 }
             }
             return "";
@@ -909,10 +964,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         ArraySize = Convert.ToInt32(myPlcAddress[2]);
 
-                        if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
-                            this.LibNoDaveDataType = TagDataType.ByteArray;
-                        if (ArraySize != 8 && this.LibNoDaveDataType == TagDataType.DateTime)
-                            this.LibNoDaveDataType = TagDataType.ByteArray;
+
+                        var baseS = _internalGetBaseTypeSize();
+                        if (baseS > 0) ArraySize = ArraySize / baseS;
+
+                        //if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
+                        //    this.LibNoDaveDataType = TagDataType.ByteArray;
+                        //if (ArraySize != 8 && this.LibNoDaveDataType == TagDataType.DateTime)
+                        //    this.LibNoDaveDataType = TagDataType.ByteArray;
 
                         if (this.LibNoDaveDataType == TagDataType.String)
                             ArraySize -= 2;
@@ -926,7 +985,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             this.DatablockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
                             if (myPlcAddress[1].Contains("DBW"))
                             {
-                                ArraySize = 2;
+                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                    ArraySize = 2;
+                                else 
+                                    ArraySize = 1;
                                 if (this._internalGetSize() != 2)
                                     this.LibNoDaveDataType = TagDataType.Word;
                             }
@@ -938,7 +1000,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                             else if (myPlcAddress[1].Contains("DBD"))
                             {
-                                ArraySize = 4;
+                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                    ArraySize = 4;
+                                else 
+                                    ArraySize = 1;
                                 if (this._internalGetSize() != 4)
                                     this.LibNoDaveDataType = TagDataType.Dword;
                             }
@@ -968,7 +1033,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                             if (myPlcAddress[0].Contains("W"))
                             {
-                                ArraySize = 2;
+                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                    ArraySize = 2;
+                                else 
+                                    ArraySize = 1;
                                 if (_internalGetSize() != 2)
                                     this.LibNoDaveDataType = TagDataType.Int;
                             }
@@ -980,7 +1048,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                             else if (myPlcAddress[0].Contains("D"))
                             {
-                                ArraySize = 4;
+                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                    ArraySize = 4;
+                                else
+                                    ArraySize = 1;
                                 if (_internalGetSize() != 4)
                                     this.LibNoDaveDataType = TagDataType.Dint;
                             }
@@ -1316,54 +1387,240 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         _setValueProp = val;
                     }
                     break;
-                case TagDataType.Bool:
-                    _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
-                    break;
-                case TagDataType.Byte:
-                    _setValueProp = buff[startpos];                    
-                    break;
+
+                case TagDataType.Bool:                   
+                case TagDataType.Byte:                   
                 case TagDataType.SByte:
-                    _setValueProp = libnodave.getS8from(buff, startpos);
-                    break;
                 case TagDataType.Time:
-                    _setValueProp = libnodave.getTimefrom(buff, startpos);
-                    break;
                 case TagDataType.Date:
-                    _setValueProp = libnodave.getDatefrom(buff, startpos);
-                    break;
                 case TagDataType.TimeOfDay:
-                    _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
-                    break;
                 case TagDataType.Word:
-                    _setValueProp = libnodave.getU16from(buff, startpos);
-                    break;
                 case TagDataType.BCDByte:
-                    _setValueProp = libnodave.getBCD8from(buff, startpos);
-                    break;
                 case TagDataType.Int:
-                    _setValueProp = libnodave.getS16from(buff, startpos);
-                    break;
                 case TagDataType.S5Time:
-                    _setValueProp = libnodave.getS5Timefrom(buff, startpos);
-                    break;
                 case TagDataType.BCDWord:
-                    _setValueProp = libnodave.getBCD16from(buff, startpos);
-                    break;
                 case TagDataType.BCDDWord:
-                    _setValueProp = libnodave.getBCD32from(buff, startpos);
-                    break;
                 case TagDataType.Dint:
-                    _setValueProp = libnodave.getS32from(buff, startpos);
-                    break;
                 case TagDataType.Dword:
-                    _setValueProp = libnodave.getU32from(buff, startpos);                    
-                    break;
                 case TagDataType.Float:
-                    _setValueProp = libnodave.getFloatfrom(buff, startpos);
-                    break;
                 case TagDataType.DateTime:
-                    _setValueProp = libnodave.getDateTimefrom(buff, startpos);
-                    break;
+                    {
+                        if (ArraySize<2)
+                        {
+                            switch (LibNoDaveDataType)
+                            {
+                                case TagDataType.Bool:
+                                    _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
+                                    break;
+                                case TagDataType.Byte:
+                                    _setValueProp = buff[startpos];
+                                    break;
+                                case TagDataType.SByte:
+                                    _setValueProp = libnodave.getS8from(buff, startpos);
+                                    break;
+                                case TagDataType.Time:
+                                    _setValueProp = libnodave.getTimefrom(buff, startpos);
+                                    break;
+                                case TagDataType.Date:
+                                    _setValueProp = libnodave.getDatefrom(buff, startpos);
+                                    break;
+                                case TagDataType.TimeOfDay:
+                                    _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
+                                    break;
+                                case TagDataType.Word:
+                                    _setValueProp = libnodave.getU16from(buff, startpos);
+                                    break;
+                                case TagDataType.BCDByte:
+                                    _setValueProp = libnodave.getBCD8from(buff, startpos);
+                                    break;
+                                case TagDataType.Int:
+                                    _setValueProp = libnodave.getS16from(buff, startpos);
+                                    break;
+                                case TagDataType.S5Time:
+                                    _setValueProp = libnodave.getS5Timefrom(buff, startpos);
+                                    break;
+                                case TagDataType.BCDWord:
+                                    _setValueProp = libnodave.getBCD16from(buff, startpos);
+                                    break;
+                                case TagDataType.BCDDWord:
+                                    _setValueProp = libnodave.getBCD32from(buff, startpos);
+                                    break;
+                                case TagDataType.Dint:
+                                    _setValueProp = libnodave.getS32from(buff, startpos);
+                                    break;
+                                case TagDataType.Dword:
+                                    _setValueProp = libnodave.getU32from(buff, startpos);
+                                    break;
+                                case TagDataType.Float:
+                                    _setValueProp = libnodave.getFloatfrom(buff, startpos);
+                                    break;
+                                case TagDataType.DateTime:
+                                    _setValueProp = libnodave.getDateTimefrom(buff, startpos);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (LibNoDaveDataType)
+                            {
+                                case TagDataType.Bool:
+                                    {
+                                        var values = new List<bool>();
+                                        var akBit = BitAddress;
+                                        var akbyte = startpos;
+                                        for (int n = 0; n < ArraySize; n++)
+                                        {
+                                            values.Add(libnodave.getBit(buff[akbyte], akBit));
+                                            akBit++;
+                                            if (akBit>7)
+                                            {
+                                                akBit = 0;
+                                                akbyte++;
+                                            }
+                                        }
+
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }
+                                case TagDataType.Byte:
+                                    {
+                                        var values = new List<Byte>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(buff[startpos + n * mSize]);
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }                                                                        
+                                case TagDataType.SByte:
+                                    {
+                                        var values = new List<SByte>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++) 
+                                            values.Add(libnodave.getS8from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }                                     
+                                case TagDataType.Time:
+                                    {
+                                        var values = new List<TimeSpan>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getTimefrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }                                     
+                                case TagDataType.Date:
+                                    {
+                                        var values = new List<DateTime>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getDatefrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.TimeOfDay:
+                                    {
+                                        var values = new List<DateTime>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getTimeOfDayfrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.Word:
+                                    {
+                                        var values = new List<UInt16>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getU16from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.BCDByte:
+                                    {
+                                        var values = new List<int>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getBCD8from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.Int:
+                                    {
+                                        var values = new List<Int16>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getS16from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.S5Time:
+                                    {
+                                        var values = new List<TimeSpan>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getS5Timefrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.BCDWord:
+                                    {
+                                        var values = new List<Int32>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getBCD16from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.BCDDWord:
+                                    {
+                                        var values = new List<Int32>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getBCD32from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.Dint:
+                                    {
+                                        var values = new List<Int32>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getS32from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.Dword:
+                                    {
+                                        var values = new List<UInt32>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getU32from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.Float:
+                                    {
+                                        var values = new List<float>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getFloatfrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                                case TagDataType.DateTime:
+                                    {
+                                        var values = new List<DateTime>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getDateTimefrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    } 
+                            }
+                        }
+                    }
+                    break;                
             }
 
         }
@@ -1382,24 +1639,62 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return ArraySize;                    
                 case TagDataType.Byte:
                 case TagDataType.SByte:
-                case TagDataType.Bool:
-                case TagDataType.BCDByte:                                         
-                    return 1;                    
+                case TagDataType.BCDByte:                                       
                 case TagDataType.Word:                
                 case TagDataType.BCDWord:
                 case TagDataType.Int:
                 case TagDataType.S5Time:
-                case TagDataType.Date:
-                    return 2;                                    
+                case TagDataType.Date:                                          
                 case TagDataType.Dint:
                 case TagDataType.Dword:
                 case TagDataType.Time:                
                 case TagDataType.TimeOfDay:
                 case TagDataType.Float: 
-                case TagDataType.BCDDWord:
-                    return 4;                    
+                case TagDataType.BCDDWord:                    
                 case TagDataType.DateTime:
-                    return 8;                    
+                    return _internalGetBaseTypeSize() * ArraySize;
+                case TagDataType.Bool:
+                    {
+                        var akbyte = 1;
+                        var akBit = BitAddress;
+                        for (int i = 0; i < ArraySize; i++)
+                        {
+                            if (akBit > 7)
+                            {
+                                akbyte++;
+                                akBit = 0;
+                            }
+                            akBit++;
+                        }
+                        return akbyte;
+                    }
+            }
+            return 0;
+        }
+
+        internal virtual int _internalGetBaseTypeSize()
+        {
+            switch (LibNoDaveDataType)
+            {
+                case TagDataType.Byte:
+                case TagDataType.SByte:
+                case TagDataType.BCDByte:
+                    return 1;
+                case TagDataType.Word:
+                case TagDataType.BCDWord:
+                case TagDataType.Int:
+                case TagDataType.S5Time:
+                case TagDataType.Date:
+                    return 2;
+                case TagDataType.Dint:
+                case TagDataType.Dword:
+                case TagDataType.Time:
+                case TagDataType.TimeOfDay:
+                case TagDataType.Float:
+                case TagDataType.BCDDWord:
+                    return 4;
+                case TagDataType.DateTime:
+                    return 8;
             }
             return 0;
         }

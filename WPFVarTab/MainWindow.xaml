@@ -331,6 +331,9 @@
                                         ItemsSource="{Binding Source={StaticResource resTagDisplayDataTypes}}"
                                         SelectedItemBinding="{Binding DataTypeStringFormat,
                                                                       Mode=TwoWay}" />
+
+                <DataGridTextColumn Binding="{Binding ArraySize, Mode=TwoWay}" Header="ArraySize" />
+                
                 <DataGridTemplateColumn Width="170" Header="Connection">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -102,16 +102,6 @@ namespace SimpleCSharpDemonstration
         private Connection aa, bb;
         private void button4_Click(object sender, EventArgs e)
         {
-            PLCConnectionConfiguration myconfig = new PLCConnectionConfiguration();
-            myconfig.Timeout = 5000000;
-            myconfig.CpuIP = "192.168.1.185";
-            myconfig.TimeoutIPConnect = 5000;
-            myconfig.ConnectionType = 122;
-            myconfig.ConnectionName = "Temp";
-            myconfig.ConfigurationType = LibNodaveConnectionConfigurationType.ObjectSavedConfiguration;
-            PLCConnection myConn = new PLCConnection(myconfig);
-            myConn.Connect();
-            
             /*
             Stopwatch sw = new Stopwatch();
             Stopwatch sw2 = new Stopwatch();
@@ -133,7 +123,7 @@ namespace SimpleCSharpDemonstration
             PLCTag tag = new PLCTag("P#DB1.DBX0.0 BYTE 8");
             myConn.ReadValue(tag);
             myConn.Disconnect();
-            
+
             lblString.Text = tag.ValueAsString;  
             
         }
