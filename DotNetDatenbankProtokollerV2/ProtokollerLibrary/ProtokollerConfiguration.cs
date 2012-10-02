@@ -286,6 +286,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
 
             foreach (DatasetConfig datasetConfig in Datasets)
             {
+                if (datasetConfig.Storage == null)
+                    error += "Error: Dataset \"" + datasetConfig.Name + " - Storage is not set!" + Environment.NewLine;
+
                 foreach (DatasetConfigRow datasetConfigRow in datasetConfig.DatasetConfigRows)
                 {
                     if (datasetConfigRow.Connection == null && datasetConfig.Trigger != DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)

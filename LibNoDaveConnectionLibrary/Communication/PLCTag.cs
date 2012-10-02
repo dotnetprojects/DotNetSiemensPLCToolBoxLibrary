@@ -384,6 +384,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set
             {
                 ParseControlValueFromString((String) value);
+                NotifyPropertyChanged("ControlValueAsString");    
             }
         }
 
@@ -405,7 +406,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public String ControlValueAsString
         {
-            get { return Controlvalue != null ? Controlvalue.ToString() : null; }
+            get { return Controlvalue != null ? GetValueAsString(_controlvalue) : null; }
             set
             {
                 ParseControlValueFromString((String)value);
@@ -801,7 +802,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDByte:
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
-                        IFormattable val = (IFormattable)myValue;
+                        IFormattable val = myValue as IFormattable ?? 0;
                         switch (DataTypeStringFormat)
                         {
                             case TagDisplayDataType.String:
