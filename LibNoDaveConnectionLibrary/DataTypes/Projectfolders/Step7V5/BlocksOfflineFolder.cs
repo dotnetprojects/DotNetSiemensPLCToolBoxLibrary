@@ -150,6 +150,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public string version;
             public DateTime LastCodeChange;
             public DateTime LastInterfaceChange;
+            public bool IsInstanceDB = true;
+            public int FBNumber;
         }
 
         private Dictionary<string, tmpBlock> tmpBlocks;
@@ -378,6 +380,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         else if (subblktype == 10) //DB
                         {
                             //Need to check wich Information is stored here
+
+                            if (ssbpart != null && ssbpartlen > 2 && (ssbpart[0] == 0x0a || ssbpart[0] == 0x0b))
+                                // if ssbpart[0] == 5 this DB is normal
+                                // if ssbpart[0] == 10 this DB is instance for FB, 
+                                // I do not know what value for SFB
+                            myTmpBlk.IsInstanceDB = true;
+                            myTmpBlk.FBNumber = (int)ssbpart[1] + 256 * (int)ssbpart[2];
                         }
                         else if (subblktype == 0x14) //DB
                         {
@@ -475,6 +484,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 {
                     List<string> tmpList = new List<string>();
                     S7DataBlock retVal = new S7DataBlock();
+                    retVal.IsInstanceDB = myTmpBlk.IsInstanceDB; 
+                    retVal.FBNumber = myTmpBlk.FBNumber; 
                     retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
