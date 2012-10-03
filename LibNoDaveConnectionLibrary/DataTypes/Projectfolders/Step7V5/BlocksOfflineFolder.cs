@@ -150,7 +150,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public string version;
             public DateTime LastCodeChange;
             public DateTime LastInterfaceChange;
-            public bool IsInstanceDB = true;
+            public bool IsInstanceDB;
             public int FBNumber;
         }
 
