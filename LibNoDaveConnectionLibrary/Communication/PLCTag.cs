@@ -376,6 +376,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void ClearValue()
         {
             _value = null;
+            _oldvalue = null;
         }
 
         public String ValueAsString

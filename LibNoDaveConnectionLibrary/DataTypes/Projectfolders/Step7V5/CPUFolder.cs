@@ -5,5 +5,7 @@
         internal int UnitID;
         internal int TobjTyp;        
         public PLCType CpuType { get; set; }
+
+        public string PasswdHard { get; set; }
     }
 }

@@ -123,6 +123,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        public string Name
+        {
+            get { return Configuration.ConnectionName; }
+        }
+
         private bool _netlinkReseted = false;
 
         //LibNoDave used types

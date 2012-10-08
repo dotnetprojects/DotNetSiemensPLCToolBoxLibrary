@@ -136,7 +136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        private void NotifyInternalPLCTagPropertyChanges()
+        protected  virtual void NotifyInternalPLCTagPropertyChanges()
         {
             NotifyPropertyChanged("S7FormatAddress");
             NotifyPropertyChanged("LibNoDaveDataType");

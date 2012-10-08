@@ -452,6 +452,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
+            //Get The CPU(400) password
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HATTRME1.DBF"))
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hk41ax" + _DirSeperator + "HATTRME1.DBF", _ziphelper, _DirSeperator);
+                byte[] memoarray = null;
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"])
+                    {
+                        if ((int)row["ATTRIIDM"] == 111142)
+                        {
+                            if (row["MEMOARRAYM"] != DBNull.Value)
+                                memoarray = (byte[])row["MEMOARRAYM"];
+                            // memoarray[3] : level password (1-3)
+                            byte[] mempass = new byte[8];
+                            for (int i = 0; i < 8; i++)
+                            {
+                                if (i < 2) mempass[i] = (byte)(memoarray[i + 4] ^ 0xAA);
+                                else mempass[i] = (byte)(memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
+                            }
+                            string res = ProjectEncoding.GetString(mempass);
+                            foreach (var y in CPUFolders)
+                            {
+                                if ((int)row["IDM"] == y.ID)
+                                {
+                                    y.PasswdHard = res.Trim();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             //Get The CPs...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HOBJECT1.DBF"))
             {

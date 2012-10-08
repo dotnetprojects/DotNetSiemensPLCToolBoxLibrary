@@ -103,6 +103,21 @@ namespace WPFVarTab
             }
         }
 
+        private KeyValuePair<string, PLCConnection>? _defaultConnectionEntry;
+        public KeyValuePair<string, PLCConnection>? DefaultConnectionEntry
+        {
+            get { return _defaultConnectionEntry; }
+            set
+            {
+                _defaultConnectionEntry = value;
+                NotifyPropertyChanged("DefaultConnectionEntry");
+                if (value.HasValue)
+                    DefaultConnection = value.Value.Value.Name;
+                else
+                    DefaultConnection = null;
+            }
+        }
+
         public static string DefaultConnectionStatic
         {
             get { return _defaultConnection; }
@@ -146,11 +161,13 @@ namespace WPFVarTab
         
         private void BuildConnectionList()
         {
+            _connectionDictionary.Clear();
             Connections = new ObservableCollection<string>(PLCConnectionConfiguration.GetConfigurationNames());
             foreach (var item in Connections)
             {
                 if (!DictonaryConnectionSymboltables.ContainsKey(item))
                     DictonaryConnectionSymboltables.Add(item, null);
+                _connectionDictionary.Add(item, new PLCConnection(item));
             }
 
             RefreshSymbols();
@@ -167,11 +184,11 @@ namespace WPFVarTab
 
                     var conns = from rw in varTabRows group rw by rw.ConnectionName;
 
-                    foreach (var conn in conns)
+                    /*foreach (var conn in conns)
                     {
                         if (!string.IsNullOrEmpty(conn.Key))
                             _connectionDictionary.Add(conn.Key, new PLCConnection(conn.Key));
-                    }
+                    }*/
 
                     if (!string.IsNullOrEmpty(DefaultConnection) &&
                         !_connectionDictionary.ContainsKey(DefaultConnection))
@@ -188,12 +205,17 @@ namespace WPFVarTab
                             conn.Configuration.ConnectionName = conn.Configuration.ConnectionName;
                     }
 
-
-                    foreach (KeyValuePair<string, PLCConnection> plcConnection in _connectionDictionary)
-                    {
-                        plcConnection.Value.AutoConnect = false;
-                        plcConnection.Value.Connect();
-                    }
+                    Parallel.ForEach(_connectionDictionary, plcConnection =>
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        plcConnection.Value.AutoConnect = false;
+                                                                        plcConnection.Value.Connect();
+                                                                    }
+                                                                    catch (Exception ex)
+                                                                    {
+                                                                    }
+                                                                });
                     
                     var st = new ThreadStart(BackgroundReadingProc);
                     BackgroundReadingThread = new Thread(st);

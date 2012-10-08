@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -11,6 +14,47 @@ namespace WPFVarTab
 {
     public class VarTabRowWithConnection : S7VATRow
     {
+        public UIElement ValueAsUI
+        {
+            get
+            {
+                if (LibNoDaveValue != null)
+                {
+                    if (LibNoDaveValue.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
+                    {
+                        var bind = new Binding();
+                        bind.Path = new PropertyPath("LibNoDaveValue.Value");
+                        bind.Mode = BindingMode.TwoWay;
+                        var ctl = new CheckBox();
+                        ctl.Click += ctl_Checked_Changed;
+                        ctl.SetBinding(CheckBox.IsCheckedProperty, bind);
+                        return ctl;
+                    }
+                    else
+                    {
+                        var bind = new Binding();
+                        bind.Path = new PropertyPath("LibNoDaveValue.ValueAsString");
+                        var ctl = new TextBlock();
+                        ctl.SetBinding(TextBlock.TextProperty, bind);
+                        return ctl;
+                    }
+                }
+                return null;
+            }    
+        }
+
+        void ctl_Checked_Changed(object sender, RoutedEventArgs e)
+        {
+            if (Connection != null && Connected.HasValue && Connected.Value)
+            {
+                Connection.WriteValue(new PLCTag(LibNoDaveValue) {Controlvalue = ((CheckBox) sender).IsChecked.Value});             
+            }
+            if (LibNoDaveValue != null)
+            {
+                LibNoDaveValue.ClearValue();
+            }
+        }
+
         public override string S7FormatAddress
         {
             get
@@ -22,9 +66,16 @@ namespace WPFVarTab
                 base.S7FormatAddress = value;
                 MainWindow.RefreshSymbol(this);
                 RaiseConnectedChanged();
+                NotifyPropertyChanged("ValueAsUI");
             }
         }
 
+        protected override void NotifyInternalPLCTagPropertyChanges()
+        {
+            base.NotifyInternalPLCTagPropertyChanges();
+            NotifyPropertyChanged("ValueAsUI");
+        }
+        
         public override int ArraySize
         {
             get
