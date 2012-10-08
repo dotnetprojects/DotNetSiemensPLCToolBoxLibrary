@@ -233,6 +233,21 @@ namespace JFK_VarTab
 
                     lblToolStripFileSystemFolder.Text = src.Folder;
                 }
+                else if (tmp.myObject is CPUFolder)
+                {
+                    var cpu = tmp.myObject as CPUFolder;
+                    if (oldNode != treeStep7Project.SelectedNode)
+                    {
+                        lstListBox.Items.Clear();
+                        lstListBox.Items.Add("Password: " + cpu.PasswdHard);
+                        lstListBox.Items.Add("CpuType: " + cpu.CpuType);
+                   
+                    }
+                    viewBlockList.Visible = true;
+
+                   
+
+                }
             }
             oldNode = treeStep7Project.SelectedNode;
         }
