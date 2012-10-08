@@ -442,19 +442,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (row["MEMOARRAYM"] != DBNull.Value)
                                 memoarray = (byte[])row["MEMOARRAYM"];
-                            // memoarray[3] : level password (1-3)
-                            byte[] mempass = new byte[8];
-                            for (int i = 0; i < 8; i++)
+
+                            if (memoarray.Length >= 8)
                             {
-                                if (i < 2) mempass[i] = (byte)(memoarray[i + 4] ^ 0xAA);
-                                else mempass[i] = (byte)(memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
-                            }
-                            string res = ProjectEncoding.GetString(mempass);
-                            foreach (var y in CPUFolders)
-                            {
-                                if ((int)row["IDM"] == y.ID)
+                                // memoarray[3] : level password (1-3)
+                                byte[] mempass = new byte[8];
+                                for (int i = 0; i < 8; i++)
                                 {
-                                    y.PasswdHard = res.Trim();
+                                    if (i < 2) mempass[i] = (byte) (memoarray[i + 4] ^ 0xAA);
+                                    else mempass[i] = (byte) (memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
+                                }
+                                string res = ProjectEncoding.GetString(mempass);
+                                foreach (var y in CPUFolders)
+                                {
+                                    if ((int) row["IDM"] == y.ID)
+                                    {
+                                        y.PasswdHard = res.Trim();
+                                    }
                                 }
                             }
                         }
@@ -500,19 +504,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (row["MEMOARRAYM"] != DBNull.Value)
                                 memoarray = (byte[])row["MEMOARRAYM"];
-                            // memoarray[3] : level password (1-3)
-                            byte[] mempass = new byte[8];
-                            for (int i = 0; i < 8; i++)
+                            if (memoarray.Length >= 8)
                             {
-                                if (i < 2) mempass[i] = (byte)(memoarray[i + 4] ^ 0xAA);
-                                else mempass[i] = (byte)(memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
-                            }
-                            string res = ProjectEncoding.GetString(mempass);
-                            foreach (var y in CPUFolders)
-                            {
-                                if ((int)row["IDM"] == y.ID)
+                                // memoarray[3] : level password (1-3)
+                                byte[] mempass = new byte[8];
+                                for (int i = 0; i < 8; i++)
                                 {
-                                    y.PasswdHard = res.Trim();
+                                    if (i < 2) mempass[i] = (byte)(memoarray[i + 4] ^ 0xAA);
+                                    else mempass[i] = (byte)(memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
+                                }
+                                string res = ProjectEncoding.GetString(mempass);
+                                foreach (var y in CPUFolders)
+                                {
+                                    if ((int)row["IDM"] == y.ID)
+                                    {
+                                        y.PasswdHard = res.Trim();
+                                    }
                                 }
                             }
                         }

@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 using System.Xml.Serialization;
 using CustomChromeLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
@@ -396,6 +397,7 @@ namespace WPFVarTab
             }
         }
 
+       
         private void cmdOpen_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog opnDlg = new OpenFileDialog();
@@ -406,6 +408,7 @@ namespace WPFVarTab
                 varTabRows.Clear();
 
                 System.IO.FileStream jj = new FileStream(opnDlg.FileName, FileMode.Open);
+               
                 System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
                 var saved = (ObservableCollection<VarTabRowWithConnection>)myXml.Deserialize(jj);
                 foreach (var varTabRowWithConnection in saved)
@@ -439,6 +442,7 @@ namespace WPFVarTab
             saveDlg.Filter = "*.wpfvartab|*.wpfvartab";
             if (saveDlg.ShowDialog().Value)
             {
+                varTabRows[0].LibNoDaveValue.ParseValueFromByteArray(new byte[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,}, 0);
                 System.IO.FileStream jj = new FileStream(saveDlg.FileName, FileMode.Create);
                 System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
                 myXml.Serialize(jj, varTabRows);
