@@ -12,6 +12,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace WPFVarTab
 {
+    [Serializable]
     public class VarTabRowWithConnection : S7VATRow
     {
         public UIElement ValueAsUI

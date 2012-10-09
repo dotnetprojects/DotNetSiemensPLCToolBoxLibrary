@@ -77,6 +77,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private bool _itemDoesNotExist;
+        [XmlIgnore]
         public virtual bool ItemDoesNotExist
         {
             get { return _itemDoesNotExist; }
