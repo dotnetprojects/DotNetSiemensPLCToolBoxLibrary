@@ -380,6 +380,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _oldvalue = null;
         }
 
+        [XmlIgnore]
         public String ValueAsString
         {
             get { return GetValueAsString(); }
@@ -406,6 +407,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        [XmlIgnore]
         public String ControlValueAsString
         {
             get { return Controlvalue != null ? GetValueAsString(_controlvalue) : null; }

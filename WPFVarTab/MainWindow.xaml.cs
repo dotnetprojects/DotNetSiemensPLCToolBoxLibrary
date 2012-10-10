@@ -26,11 +26,9 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using JFKCommonLibrary.Serialization;
-
-
 using Microsoft.Win32;
 
-using Polenter.Serialization;
+
 
 namespace WPFVarTab
 {
@@ -412,13 +410,13 @@ namespace WPFVarTab
                 varTabRows.Clear();
 
                 System.IO.FileStream jj = new FileStream(opnDlg.FileName, FileMode.Open);
-               
+
+
+                var settings = new XmlReaderSettings(){CheckCharacters = false};
+                var read = XmlTextReader.Create(jj, settings);
                 System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
+                var saved = (ObservableCollection<VarTabRowWithConnection>)myXml.Deserialize(read);
 
-                var ser = new Polenter.Serialization.SharpSerializer(new SharpSerializerXmlSettings());
-                var saved = (ObservableCollection<VarTabRowWithConnection>)ser.Deserialize(jj);
-
-                //var saved = (ObservableCollection<VarTabRowWithConnection>)myXml.Deserialize(jj);
                 foreach (var varTabRowWithConnection in saved)
                 {
                     varTabRows.Add(varTabRowWithConnection);
@@ -453,8 +451,10 @@ namespace WPFVarTab
             if (saveDlg.ShowDialog().Value)
             {
                 System.IO.FileStream jj = new FileStream(saveDlg.FileName, FileMode.Create);
-                var ser = new Polenter.Serialization.SharpSerializer(new SharpSerializerXmlSettings());
-                ser.Serialize(varTabRows, jj);
+                
+                System.Xml.Serialization.XmlSerializer myXml = new XmlSerializer(typeof(ObservableCollection<VarTabRowWithConnection>));
+                myXml.Serialize(jj, varTabRows);
+
                 jj.Close();
             }
         }

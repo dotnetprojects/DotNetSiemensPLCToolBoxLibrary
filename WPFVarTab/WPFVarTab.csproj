@@ -43,10 +43,6 @@
     <Reference Include="Microsoft.Windows.Shell">
       <HintPath>..\externalDlls\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="Polenter.SharpSerializer, Version=2.18.0.0, Culture=neutral, PublicKeyToken=8f4f20011571ee5f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\externalDlls\Polenter.SharpSerializer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
