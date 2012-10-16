@@ -280,7 +280,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             S7DataRow addRW = new S7DataRow(tmpName, S7DataRowType.UNKNOWN, myBlk);
                             lastrow = addRW;
 
-                            if (tmpType.Contains("ARRAY  [") || tmpType.Contains("ARRAY ["))
+                            if (tmpType.Replace(" ","").Contains("ARRAY["))
                             {
                                 List<int> arrayStart = new List<int>();
                                 List<int> arrayStop = new List<int>();

@@ -135,13 +135,9 @@ namespace JFKCommonLibrary.Serialization
             byte[] byteArray = Encoding.ASCII.GetBytes(txt);
             MemoryStream ms = new MemoryStream(byteArray); 
 
-            //MemoryStream ms = new MemoryStream();
-            //StreamWriter r = new StreamWriter(ms);
-            //r.Write(txt);
-            //r.BaseStream.Seek(0, SeekOrigin.Begin);
             T retVal = (T)serializer.ReadObject(ms);
-            //r.Close();
             ms.Close();
+            
             return retVal;
         }
     }

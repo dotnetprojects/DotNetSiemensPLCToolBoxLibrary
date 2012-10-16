@@ -345,10 +345,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             //This line contains Network Information, and after it the Position of the JumpMarks
 
                             var ts1 = (string)row["TIMESTAMP1"];
-                            myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+                            if (ts1.Length == 5)
+                            {
+                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
+                            }
+                            else
+                            {
+                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+                            }
 
                             ts1 = (string)row["TIMESTAMP2"];
-                            myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+                            if (ts1.Length == 5)
+                            {
+                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
+                            }
+                            else
+                            {
+                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
+                            }
 
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 ||
