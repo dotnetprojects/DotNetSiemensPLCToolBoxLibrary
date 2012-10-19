@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,6 +15,10 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+
+using DotNetSimaticDatabaseProtokollerLibrary;
+using DotNetSimaticDatabaseProtokollerLibrary.Databases;
+using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 
 namespace SimpleCSharpDemonstration
 {
@@ -102,16 +107,12 @@ namespace SimpleCSharpDemonstration
         private Connection aa, bb;
         private void button4_Click(object sender, EventArgs e)
         {
-
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
 
             var db = myConn.PLCGetBlockInMC7("DB99");
             MessageBox.Show("DB:" + Encoding.ASCII.GetString(db));
             myConn.PLCPutBlockFromMC7toPLC("DB98", db);
-            
-          
-            
         }
 
         private void button5_Click(object sender, EventArgs e)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
 using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
@@ -255,16 +254,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 {
                     myCmd.ExecuteNonQuery();                   
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
-                {
-                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Locked || ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Busy)
-                    {
-                        tryCounter++;
-                        if (tryCounter > 20)
-                            throw new Exception("Datenbank nach 20 Versuchen immer noch locked!!");
-                        goto nomol;
-                    }
-                }
                 catch (Exception ex)
                 {
                     throw ex;
@@ -307,7 +296,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 readDBConn.ChangeDatabase(myConfig.Database);
             } 
         }
-        public DataTable ReadData(DatasetConfig datasetConfig, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
         {
             try
             {

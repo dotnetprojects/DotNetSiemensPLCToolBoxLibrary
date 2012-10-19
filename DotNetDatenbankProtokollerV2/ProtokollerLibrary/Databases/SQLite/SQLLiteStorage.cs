@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Threading;
+
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
@@ -60,7 +61,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
         private string ConnectionString
         {
-            get { return string.Format("Data Source={0};Pooling=true;FailIfMissing=false", myConfig.DatabaseFile); }
+            get
+            {
+                //return myConfig.DatabaseFile;
+                return string.Format("Data Source={0};Pooling=true;FailIfMissing=false", myConfig.DatabaseFile);
+            }
         }
 
         public override void Connect_To_Database(StorageConfig config)
@@ -75,12 +80,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
             try
             {
-                myDBConn = new System.Data.SQLite.SQLiteConnection(ConnectionString);
+                myDBConn = new SQLiteConnection(ConnectionString);
                 myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
                     throw new Exception("Unable to Open Database. Storage:" + config.Name);
             }
-            catch (System.Data.SQLite.SQLiteException ex)
+            catch (SQLiteException ex)
             {
                 throw ex;
             }
@@ -111,9 +116,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                     myReader = myCmd.ExecuteReader();
 
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (SQLiteException ex)
                 {
-                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Error)
+                    if (ex.ErrorCode == SQLiteErrorCode.Error)
                     {
                         try
                         {
@@ -126,7 +131,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                             myCmd.CommandText = sql;
                             myReader = myCmd.ExecuteReader();
                         }
-                        catch (System.Data.SQLite.SQLiteException ex_ex)
+                        catch (SQLiteException ex_ex)
                         {
                             throw ex_ex;
                         }
@@ -175,7 +180,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         myCmd.ExecuteNonQuery();
 
                     }
-                    catch (System.Data.SQLite.SQLiteException ex)
+                    catch (SQLiteException ex)
                     {
                         throw ex;
                     }
@@ -250,7 +255,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                                 var addDateTime = _intDateTimesList[n];
 
                                 if (!string.IsNullOrEmpty(dateFieldName))
-                                    cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) { Value = addDateTime.ToString("yyyy.MM.dd - HH:mm:ss.fff") });
+                                    cmd.Parameters.Add(new SQLiteParameter("@" + dateFieldName, System.Data.DbType.String) { Value = addDateTime.ToString("yyyy.MM.dd - HH:mm:ss.fff") });
 
                                 using (IEnumerator<DatasetConfigRow> e1 = fieldList.GetEnumerator())
                                 using (IEnumerator<object> e2 = values.GetEnumerator())
@@ -272,17 +277,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDByte:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDWord:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.BCDDWord:
-                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString()});
+                                                cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString()});
                                                 break;
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Float:
-                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString().Replace(',', '.')});
+                                                cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString().Replace(',', '.')});
                                                 break;
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.DateTime:
-                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = ((DateTime) value).ToString("yyyy-MM-dd HH:mm:ss.fffffff")});
+                                                cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = ((DateTime) value).ToString("yyyy-MM-dd HH:mm:ss.fffffff")});
                                                 break;
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.CharArray:
-                                                cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = (String) value});
+                                                cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = (String) value});
                                                 break;
                                         }
                                     }
@@ -302,9 +307,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                         dbTrans.Commit();
                     }
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (SQLiteException ex)
                 {
-                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Locked || ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Busy)
+                    if (ex.ErrorCode == SQLiteErrorCode.Busy || ex.ErrorCode == SQLiteErrorCode.Locked) //Locked || Busy
                     {
                         tryCounter++;
                         if (tryCounter > 20)
@@ -346,38 +351,51 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         {
             if (readDBConn == null)
             {
-                readDBConn = new System.Data.SQLite.SQLiteConnection(ConnectionString);
+                readDBConn = new SQLiteConnection(ConnectionString);
                 readDBConn.Open();
             } 
         }
 
-        public DataTable ReadData(DatasetConfig datasetConfig, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
         {
             //try
             //{
-                CheckAndEstablishReadConnection();
+            CheckAndEstablishReadConnection();
 
-                var dbFieldNames = "*";
-                if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+            var dbFieldNames = "*";
+            if (!string.IsNullOrEmpty(datasetConfig.DateTimeDatabaseField))
+            {
+                /*dbFieldNames = datasetConfig.DateTimeDatabaseField;
+                foreach (var datasetConfigRow in datasetConfig.DatasetConfigRows)
                 {
-                    /*dbFieldNames = datasetConfig.DateTimeDatabaseField;
-                    foreach (var datasetConfigRow in datasetConfig.DatasetConfigRows)
-                    {
-                        if (datasetConfigRow.DatabaseField.ToLower().Trim() != datasetConfig.DateTimeDatabaseField.ToLower().Trim())
-                            dbFieldNames += ", " + datasetConfigRow.DatabaseField;
-                    }*/
-                    dbFieldNames = datasetConfig.DateTimeDatabaseField + ",*";
-                }
+                    if (datasetConfigRow.DatabaseField.ToLower().Trim() != datasetConfig.DateTimeDatabaseField.ToLower().Trim())
+                        dbFieldNames += ", " + datasetConfigRow.DatabaseField;
+                }*/
+                dbFieldNames = datasetConfig.DateTimeDatabaseField + ",*";
+            }
 
-                readCmd.Connection = readDBConn;
-            readCmd.CommandText = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
-                DbDataReader akReader = readCmd.ExecuteReader();
+            string where = "";
+            if (!string.IsNullOrEmpty(filter))
+            {
+                where = " WHERE ";
+                bool first = true;
+                foreach (var rows in datasetConfig.DatasetConfigRows)
+                {
+                    if (!first) where += "OR ";
+                    where += rows.DatabaseField + " LIKE '%" + filter + "%' ";
+                    first = false;
+                }               
+            }
 
-                DataTable myTbl = new DataTable();
-                myTbl.Load(akReader);
-                akReader.Close();
+            readCmd.Connection = readDBConn;
+            readCmd.CommandText = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + where + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
+            DbDataReader akReader = readCmd.ExecuteReader();
 
-                return myTbl;
+            DataTable myTbl = new DataTable();
+            myTbl.Load(akReader);
+            akReader.Close();
+
+            return myTbl;
             //}
             //catch (Exception ex)
             //{ }

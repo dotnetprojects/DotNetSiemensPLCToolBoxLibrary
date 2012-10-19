@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;

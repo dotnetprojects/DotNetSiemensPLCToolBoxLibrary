@@ -48,7 +48,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                 if (myDBConn.State != System.Data.ConnectionState.Open)
                     throw new Exception();
             }
-            catch (System.Data.SQLite.SQLiteException ex)
+            catch (FbException ex)
             {
                 throw ex;
             }
@@ -72,9 +72,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                 myReader = myCmd.ExecuteReader();
 
             }
-            catch (System.Data.SQLite.SQLiteException ex)
+            catch (FbException ex)
             {
-                if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Error)
+                /*if (ex.ErrorCode == 0)
                 {
                     try
                     {
@@ -95,7 +95,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                 else
                 {
                     throw ex;
-                }
+                }*/
             }
 
             //Look for the Fields, create or alter them!
@@ -127,7 +127,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                     myCmd.ExecuteNonQuery();
 
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (FbException ex)
                 {
                     throw ex;
                 }
@@ -232,16 +232,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                 try
                 {
                     myCmd.ExecuteNonQuery();
-                }
-                catch (System.Data.SQLite.SQLiteException ex)
-                {
-                    if (ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Locked || ex.ErrorCode == System.Data.SQLite.SQLiteErrorCode.Busy)
-                    {
-                        tryCounter++;
-                        if (tryCounter > 20)
-                            throw new Exception("Datenbank nach 20 Versuchen immer noch locked!!");
-                        goto nomol;
-                    }
                 }
                 catch (Exception ex)
                 {

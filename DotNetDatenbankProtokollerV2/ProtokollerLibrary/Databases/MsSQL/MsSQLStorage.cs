@@ -292,7 +292,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             }
         }
 
-        public DataTable ReadData(DatasetConfig datasetConfig, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
         {
             //try
             //{

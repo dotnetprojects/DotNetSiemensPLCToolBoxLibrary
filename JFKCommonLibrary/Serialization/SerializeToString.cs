@@ -109,20 +109,14 @@ namespace JFKCommonLibrary.Serialization
         public static T DeSerialize(string txt)
         {
             T retVal = default(T);
-            if (txt == null)
-                return retVal;
-            try
-            {
-                XmlSerializer ser = new XmlSerializer(typeof(T));
-                StringReader stringReader = new StringReader(txt);
-                XmlTextReader xmlReader = new XmlTextReader(stringReader);
-                retVal = (T)ser.Deserialize(xmlReader);
-                xmlReader.Close();
-                stringReader.Close();
-            }
-            catch (Exception)
-            {
-            }
+            if (txt == null) return retVal;
+            XmlSerializer ser = new XmlSerializer(typeof(T));
+            StringReader stringReader = new StringReader(txt);
+            XmlTextReader xmlReader = new XmlTextReader(stringReader);
+            retVal = (T)ser.Deserialize(xmlReader);
+            xmlReader.Close();
+
+            stringReader.Close();
             return retVal;
         }
 

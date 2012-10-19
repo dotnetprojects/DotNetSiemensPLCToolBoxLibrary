@@ -76,7 +76,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 {
                     txtSQL.Text = "";
                     CurrentNumber = 0;
-                    DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                    DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber,  1000);
                     if (tbl != null)
                         grdDatasetFields.ItemsSource = tbl.DefaultView;
                     lblDataCount.Content = dbView.ReadCount(datasetConfig);
@@ -127,7 +127,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 txtFromDataset.Text = CurrentNumber.ToString();
                 lblToDataset.Content = (CurrentNumber + 1000).ToString();
 
-                DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber, 1000);
                 if (tbl != null)
                     grdDatasetFields.ItemsSource = tbl.DefaultView;
                 lblDataCount.Content = dbView.ReadCount(datasetConfig);
@@ -146,7 +146,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 txtFromDataset.Text = CurrentNumber.ToString();
                 lblToDataset.Content = (CurrentNumber + 1000).ToString();
 
-                DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber, 1000);
                 if (tbl != null)
                     grdDatasetFields.ItemsSource = tbl.DefaultView;
                 lblDataCount.Content = dbView.ReadCount(datasetConfig);
@@ -167,7 +167,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 lblToDataset.Content = (CurrentNumber + 1000).ToString();
                 lblDataCount.Content = cnt;
 
-                DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber, 1000);
                 if (tbl != null)
                     grdDatasetFields.ItemsSource = tbl.DefaultView;                
             }
@@ -183,7 +183,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 txtFromDataset.Text = CurrentNumber.ToString();
                 lblToDataset.Content = (CurrentNumber + 1000).ToString();
                 lblDataCount.Content = cnt;
-                DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber, 1000);
                 if (tbl != null)
                     grdDatasetFields.ItemsSource = tbl.DefaultView;
             }
@@ -211,7 +211,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                     txtFromDataset.Text = CurrentNumber.ToString();
                     lblToDataset.Content = (CurrentNumber + 1000).ToString();
                     lblDataCount.Content = cnt;
-                    DataTable tbl = dbView.ReadData(datasetConfig, CurrentNumber, 1000);
+                    DataTable tbl = dbView.ReadData(datasetConfig, null, CurrentNumber, 1000);
                     if (tbl != null)
                         grdDatasetFields.ItemsSource = tbl.DefaultView;
                 }
@@ -254,18 +254,18 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
        
         private void cmdSearch_Click(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " WHERE ";
-            bool first = true;
-            foreach (var rows in datasetConfig.DatasetConfigRows)
+            if (dbView != null)
             {
-                if (!first)
-                    sql += "OR ";
-                sql += rows.DatabaseField + " LIKE '%" + txtSearch.Text + "%' ";
-                first = false;
+                long cnt = dbView.ReadCount(datasetConfig);
+                CurrentNumber = 0;
+
+                txtFromDataset.Text = CurrentNumber.ToString();
+                lblToDataset.Content = (CurrentNumber + 1000).ToString();
+                lblDataCount.Content = cnt;
+                DataTable tbl = dbView.ReadData(datasetConfig, txtSearch.Text, CurrentNumber, 1000);
+                if (tbl != null)
+                    grdDatasetFields.ItemsSource = tbl.DefaultView;
             }
-            sql += "ORDER BY id DESC";
-            txtSQL.Text = sql;
-            cmdSQL_Click(sender, e);
         }
 
         private void grdDatasetFields_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

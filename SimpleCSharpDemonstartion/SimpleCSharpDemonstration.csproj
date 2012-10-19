@@ -76,6 +76,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetDatenbankProtokollerV2\ProtokollerLibrary\JFK-ProtokollerLibrary.csproj">
+      <Project>{d5b6cb09-2b0b-4c98-b44f-ec245c291cf8}</Project>
+      <Name>JFK-ProtokollerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>

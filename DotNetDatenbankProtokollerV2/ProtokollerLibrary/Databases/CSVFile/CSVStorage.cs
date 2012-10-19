@@ -185,7 +185,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
         #region IDBViewable
 
-        public DataTable ReadData(DatasetConfig datasetConfig, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
         {
             try
             {
@@ -195,12 +195,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                     string[] headers = csv.GetFieldHeaders();
 
                     DataTable tbl = new DataTable();
-                    
+
                     int n = 0;
                     long ende = Start + Count;
 
-                    for (int i = 0; i < fieldCount; i++)
-                        tbl.Columns.Add(headers[i]);
+                    for (int i = 0; i < fieldCount; i++) tbl.Columns.Add(headers[i]);
 
                     while (csv.ReadNextRecord())
                     {
@@ -208,11 +207,20 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
                         {
                             string[] values = new string[fieldCount];
                             for (int i = 0; i < fieldCount; i++)
+                            {
                                 values[i] = csv[i];
+                                if (!string.IsNullOrEmpty(filter))
+                                {
+                                    if (csv[i].ToLower().Contains(filter.ToLower()))
+                                    {
+                                        goto brk;
+                                    }
+                                }
+                            }
                             tbl.Rows.Add(values);
                         }
-                        if (n > ende)
-                            return tbl;
+                        brk:
+                        if (n > ende) return tbl;
                         n++;
                     }
                     return tbl;
