@@ -42,7 +42,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private System.Threading.Timer synTimer;
 
         private List<IDisposable> myDisposables = new List<IDisposable>();
-        private Thread myReEstablishConnectionsThread;
+        private List<Thread> myReEstablishConnectionsThreads;
+
+
 
         private AspxVirtualRoot webServer = null;
 
@@ -83,36 +85,36 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             OpenStoragesAndCreateTriggers(false, false);
         }
 
-        private void ReEstablishConnectionsThreadProc()
+        private void ReEstablishConnectionsThreadProc(object config)
         {
             try
             {
+                LibNoDaveConfig connectionConfig = config as LibNoDaveConfig;
                 while (true)
                 {
-                    foreach (ConnectionConfig connectionConfig in akConfig.Connections)
+
+                    if (ConnectionList.ContainsKey(connectionConfig))
                     {
-                        if (ConnectionList.ContainsKey(connectionConfig))
+                        PLCConnection plcConn = ConnectionList[connectionConfig] as PLCConnection;
+                        if (plcConn != null && !plcConn.Connected && ((LibNoDaveConfig)connectionConfig).StayConnected)
                         {
-                            PLCConnection plcConn = ConnectionList[connectionConfig] as PLCConnection;
-                            if (plcConn != null && !plcConn.Connected && ((LibNoDaveConfig) connectionConfig).StayConnected)
+                            try
                             {
-                                try
-                                {
-                                    plcConn.Connect();
-                                    Logging.LogText("Connection: " + connectionConfig.Name + " connected", Logging.LogLevel.Information);
-                                }
-                                catch (ThreadAbortException ex)
-                                {
-                                    throw ex;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
-                                }
+                                plcConn.Connect();
+                                Logging.LogText("Connection: " + connectionConfig.Name + " connected", Logging.LogLevel.Information);
+                            }
+                            catch (ThreadAbortException ex)
+                            {
+                                throw ex;
+                            }
+                            catch (Exception ex)
+                            {
+                                Logging.LogText("Connection: " + connectionConfig.Name, ex, Logging.LogLevel.Warning);
                             }
                         }
                     }
-                    Thread.Sleep(500);
+
+                    Thread.Sleep(connectionConfig.ReconnectInterval);
                 }
             }
             catch (ThreadAbortException)
@@ -197,10 +199,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
                     //ConnectionList.Add(connectionConfig, tmpConn);
                 }
-            }            
+            }
 
-            myReEstablishConnectionsThread = new Thread(new ThreadStart(ReEstablishConnectionsThreadProc)) { Name = "EstablishConnectionsThreadProc" };
-            myReEstablishConnectionsThread.Start();                        
+            myReEstablishConnectionsThreads = new List<Thread>();
+            foreach (ConnectionConfig connectionConfig in akConfig.Connections)
+            {
+                if (connectionConfig is LibNoDaveConfig)
+                {
+                    var thrd = new Thread(new ParameterizedThreadStart(ReEstablishConnectionsThreadProc)) { Name = "EstablishConnectionsThreadProc" };
+                    thrd.Start(connectionConfig as LibNoDaveConfig);
+                    this.myReEstablishConnectionsThreads.Add(thrd);
+                }
+            }
+                                  
 
         }
 
@@ -301,7 +312,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                                                                 byte[] tmpArr = new byte[ln];
                                                                 Array.Copy(bytes, ((j - 1) * ln), tmpArr, 0, ln);
 
-                                                                IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf.DatasetConfigRows, tmpArr, StartedAsService);
+                                                                IEnumerable<object> values = ReadData.ReadDataFromByteBuffer(conf, conf.DatasetConfigRows, tmpArr, StartedAsService);
                                                                 if (values != null)
                                                                     akDBInterface.Write(values);
                                                             }
@@ -348,8 +359,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         public void Dispose()
         {
             Logging.LogText("Protokoller gestopt", Logging.LogLevel.Information);
-            if (myReEstablishConnectionsThread != null)
-                myReEstablishConnectionsThread.Abort();
+            if (myReEstablishConnectionsThreads != null)
+                foreach (var myReEstablishConnectionsThread in myReEstablishConnectionsThreads)
+                {
+                    myReEstablishConnectionsThread.Abort();
+                }                
 
             if (webServer != null)
             {

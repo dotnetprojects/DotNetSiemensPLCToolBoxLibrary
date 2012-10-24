@@ -237,7 +237,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                                     if (field.DatabaseFieldType == "text" || field.DatabaseFieldType == "varchar" || field.DatabaseFieldType == "ntext" || field.DatabaseFieldType == "nvarchar" || field.DatabaseFieldType == "char" || field.DatabaseFieldType == "nchar")
                                         cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = value.ToString() });
                                     else
-                                        cmd.Parameters.Add(new SqlParameter() {ParameterName = "@" + field.DatabaseField, Value = value});
+                                    {
+                                        if (value is System.Single && field.DatabaseFieldType == "float")
+                                            cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = Convert.ToDouble(value) });
+                                        else
+                                            cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = value });
+                                    }
                                 }
                             }
                             cmd.ExecuteNonQuery();

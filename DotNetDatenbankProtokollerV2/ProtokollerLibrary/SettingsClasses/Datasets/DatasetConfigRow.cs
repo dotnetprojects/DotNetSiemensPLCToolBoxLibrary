@@ -105,9 +105,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             }
         }
 
-
         private string _stringSubFields = "";
-
         [Description("List of Fixed Length Fields in the String (f.E: TYPE|4|NR|2...)")]
         public string StringSubFields
         {
@@ -119,30 +117,30 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             }
         }
 
-        public object Value
+        public object Value(bool UseFloatIfMultiplierIsUsed)
         {
-            get
+            if ((Multiplier != 0 || Precision != 0) && (PLCTag.Value is double || PLCTag.Value is float || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int16 || PLCTag.Value is UInt16 || PLCTag.Value is int || PLCTag.Value is uint || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int64 || PLCTag.Value is UInt64))
             {
-                if ((Multiplier != 0 || Precision != 0) && (PLCTag.Value is double || PLCTag.Value is float || PLCTag.Value is int || PLCTag.Value is uint || PLCTag.Value is byte || PLCTag.Value is sbyte || PLCTag.Value is Int64 || PLCTag.Value is UInt64))
+                string sFormat = "";
+                if (Precision != 0)
                 {
-                    string sFormat = "";
-                    if (Precision != 0)
-                    {
-                        sFormat = "F" + Precision.ToString();
-                    }
-
-                    try
-                    {
-                        if (Multiplier != 0)
-                            return (Convert.ToDouble(PLCTag.Value) * Multiplier).ToString(sFormat);
-                        else
-                            return (Convert.ToDouble(PLCTag.Value)).ToString(sFormat);
-                    }
-                    catch (Exception)
-                    { }
+                    sFormat = "F" + Precision.ToString();
                 }
-                return PLCTag.Value;
+
+                try
+                {
+                    if (Multiplier != 0)
+                    {
+                        if (UseFloatIfMultiplierIsUsed) return (Convert.ToDouble(PLCTag.Value) * Multiplier);
+                        else return (Convert.ToDouble(PLCTag.Value) * Multiplier).ToString(sFormat);
+                    }
+                    else return (Convert.ToDouble(PLCTag.Value)).ToString(sFormat);
+                }
+                catch (Exception)
+                {
+                }
             }
+            return PLCTag.Value;
         }
     }
 }

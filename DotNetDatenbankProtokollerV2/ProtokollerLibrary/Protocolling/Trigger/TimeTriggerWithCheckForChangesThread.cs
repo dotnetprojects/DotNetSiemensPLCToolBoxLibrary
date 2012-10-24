@@ -61,10 +61,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             {
                                 if (val is IStructuralEquatable)
                                 { 
-                                    if (((IStructuralEquatable)val).Equals( oldValues[i], StructuralComparisons.StructuralEqualityComparer))
+                                    if (!((IStructuralEquatable)val).Equals( oldValues[i], StructuralComparisons.StructuralEqualityComparer))
                                         write = true;
                                 }
-                                else if (val != oldValues[i])
+                                else if (!val.Equals(oldValues[i]))
                                     write = true;
                                 i++;
 

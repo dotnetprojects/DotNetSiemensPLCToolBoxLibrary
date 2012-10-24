@@ -23,7 +23,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
             return cntBytes;
         }
 
-        public static IEnumerable<object> ReadDataFromByteBuffer(IEnumerable<DatasetConfigRow> datasetConfigRows, byte[] bytes, bool StartedAsService)
+        public static IEnumerable<object> ReadDataFromByteBuffer(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, byte[] bytes, bool StartedAsService)
         {
             int pos = 0;
 
@@ -36,10 +36,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 }
             }
 
-            var values = from n in datasetConfigRows
-                         select n.Value;
-
-            return values.ToList();
+            List<object> retVal = new List<object>();
+            foreach (var datasetConfigRow in datasetConfigRows)
+            {
+                retVal.Add(datasetConfigRow.Value(datasetConfig.UseFloatIfMultiplierIsUsed));
+            }
+            
+            return retVal;
         }
 
         public static IEnumerable<object> ReadDataFromDataSources(DatasetConfig datasetConfig, IEnumerable<DatasetConfigRow> datasetConfigRows, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
@@ -117,10 +120,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 }
             }
 
-            var values = from n in datasetConfigRows
-                         select n.Value;
+            List<object> retVal = new List<object>();
+            foreach (var datasetConfigRow in datasetConfigRows)
+            {
+                retVal.Add(datasetConfigRow.Value(datasetConfig.UseFloatIfMultiplierIsUsed));
+            }
 
-            return values.ToList(); ;
+            return retVal;            
         }
     }
 }

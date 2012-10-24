@@ -34,6 +34,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             return SerializeToString<DatasetConfig>.DeSerialize(SerializeToString<DatasetConfig>.Serialize(this));
         }
 
+        private bool _UseFloatIfMultiplierIsUsed = false;
+        public bool UseFloatIfMultiplierIsUsed
+        {
+            get { return _UseFloatIfMultiplierIsUsed; }
+            set
+            {
+                _UseFloatIfMultiplierIsUsed = value;
+                NotifyPropertyChanged("UseFloatIfMultiplierIsUsed");
+            }
+        }
+
         [Browsable(false)]
         public string ObjectAsString
         {

@@ -34,6 +34,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
             }
         }
 
+        public int _ReconnectInterval = 500;
+        public int ReconnectInterval
+        {
+            get { return _ReconnectInterval; }
+            set { _ReconnectInterval = value; }
+        }
+
         private bool _stayConnected = true;
         [System.ComponentModel.Description("If set to false, after every Read Request, the Connection will be closed!")]        
         public bool StayConnected
