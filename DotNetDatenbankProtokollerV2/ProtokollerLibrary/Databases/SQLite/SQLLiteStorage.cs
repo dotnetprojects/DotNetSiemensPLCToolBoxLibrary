@@ -356,7 +356,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             } 
         }
 
-        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count, DateTime? Fromdate, DateTime? ToDate)
         {
             //try
             //{

@@ -297,7 +297,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             }
         }
 
-        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count)
+        public DataTable ReadData(DatasetConfig datasetConfig, string filter, long Start, int Count, DateTime? FromDate, DateTime? ToDate)
         {
             //try
             //{
@@ -305,7 +305,38 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
             readCmd.Connection = readDBConn;
 
-            readCmd.CommandText = "WITH " + datasetConfig.Name + "_withRowNumber AS ( SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber' FROM " + datasetConfig.Name + " ) SELECT * FROM " + datasetConfig.Name + "_withRowNumber WHERE RowNumber BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString() + ";";
+            string where = "";
+            if (!string.IsNullOrEmpty(filter))
+            {
+                where = " WHERE ";
+                bool first = true;
+                foreach (var rows in datasetConfig.DatasetConfigRows)
+                {
+                    if (!first) where += "OR ";
+                    where += rows.DatabaseField + " LIKE '%" + filter + "%' ";
+                    first = false;
+                }
+            }
+
+            if (FromDate!=null)
+            {
+                if (string.IsNullOrEmpty(where)) where = " WHERE ";
+                else where += " AND ";
+
+                where += datasetConfig.DateTimeDatabaseField;
+                where += " >= '" + FromDate.Value.ToString("yyyyMMdd HH:mm:ss.mmm") + "'";
+            }
+
+            if (ToDate != null)
+            {
+                if (string.IsNullOrEmpty(where)) where = " WHERE ";
+                else where += " AND ";
+
+                where += datasetConfig.DateTimeDatabaseField;
+                where += " <= '" + ToDate.Value.ToString("yyyyMMdd HH:mm:ss.mmm") + "'";
+            }
+
+            readCmd.CommandText = "WITH " + datasetConfig.Name + "_withRowNumber AS ( SELECT *, ROW_NUMBER() OVER (ORDER BY id DESC) AS 'RowNumber' FROM " + datasetConfig.Name + where + " ) SELECT * FROM " + datasetConfig.Name + "_withRowNumber WHERE RowNumber BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString() + ";";
             //readCmd.CommandText = "SELECT *, ROW_NUMBER() OVER(ORDER BY id DESC) AS [RowNum] FROM " + datasetConfig.Name + " WHERE RowNum BETWEEN " + Start.ToString() + " AND " + (Start + Count).ToString();
             //readCmd.CommandText = "SELECT * FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + Count.ToString() + " OFFSET " + Start.ToString();
             DbDataReader akReader = readCmd.ExecuteReader();
