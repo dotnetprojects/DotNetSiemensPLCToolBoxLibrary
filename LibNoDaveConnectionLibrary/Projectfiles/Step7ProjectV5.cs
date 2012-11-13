@@ -443,7 +443,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             if (row["MEMOARRAYM"] != DBNull.Value)
                                 memoarray = (byte[])row["MEMOARRAYM"];
 
-                            if (memoarray.Length >= 8)
+                            if (memoarray.Length >= 12)
                             {
                                 // memoarray[3] : level password (1-3)
                                 byte[] mempass = new byte[8];
@@ -504,7 +504,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (row["MEMOARRAYM"] != DBNull.Value)
                                 memoarray = (byte[])row["MEMOARRAYM"];
-                            if (memoarray.Length >= 8)
+                            if (memoarray.Length >= 12)
                             {
                                 // memoarray[3] : level password (1-3)
                                 byte[] mempass = new byte[8];
