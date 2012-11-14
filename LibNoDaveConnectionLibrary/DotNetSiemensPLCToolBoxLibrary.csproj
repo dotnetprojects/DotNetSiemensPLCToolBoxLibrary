@@ -135,16 +135,26 @@
     <Compile Include="DataTypes\Blocks\Step7V5\S7ProjectBlockInfo.cs" />
     <Compile Include="DataTypes\TagDataType.cs" />
     <Compile Include="DataTypes\TagDisplayDataType.cs" />
-    <Compile Include="DBF\BTree.cs" />
-    <Compile Include="DBF\Field.cs" />
-    <Compile Include="DBF\Index.cs" />
-    <Compile Include="DBF\MDX.cs" />
-    <Compile Include="DBF\MDXFile.cs" />
-    <Compile Include="DBF\MNode.cs" />
-    <Compile Include="DBF\Node.cs" />
-    <Compile Include="DBF\NodeFloat.cs" />
-    <Compile Include="DBF\NodeKey.cs" />
-    <Compile Include="DBF\Structures.cs" />
+    <Compile Include="DBF\Index\BTree.cs" />
+    <Compile Include="DBF\Enums\dBaseType.cs" />
+    <Compile Include="DBF\Enums\TagHeaderKeyFormat.cs" />
+    <Compile Include="DBF\Enums\TagKeyFormat.cs" />
+    <Compile Include="DBF\Index\Field.cs" />
+    <Compile Include="DBF\Index\Index.cs" />
+    <Compile Include="DBF\Index\MDX\MDX.cs" />
+    <Compile Include="DBF\Index\MDX\MDXFile.cs" />
+    <Compile Include="DBF\Index\MDX\MNode.cs" />
+    <Compile Include="DBF\Index\Node.cs" />
+    <Compile Include="DBF\Index\NodeFloat.cs" />
+    <Compile Include="DBF\Index\NodeKey.cs" />
+    <Compile Include="DBF\Structures\DBFHeader.cs" />
+    <Compile Include="DBF\Structures\DBT\DBTHeader.cs" />
+    <Compile Include="DBF\Structures\FieldDescriptor.cs" />
+    <Compile Include="DBF\Structures\DBT\MemoHeader.cs" />
+    <Compile Include="DBF\Structures\MDX\MDX4TagTableHeader.cs" />
+    <Compile Include="DBF\Structures\MDX\MDX7TagTableHeader.cs" />
+    <Compile Include="DBF\Structures\MDX\MDXHeader.cs" />
+    <Compile Include="DBF\Structures\MDX\MDXTagHeader.cs" />
     <Compile Include="DBF\Util.cs" />
     <Compile Include="General\DictionarySerializer.cs" />
     <Compile Include="General\EndianAttribute.cs" />
@@ -257,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataTypes\Projectfolders\Step7V11\" />
+    <Folder Include="DBF\Index\NDX\" />
     <Folder Include="PLCs\S7_1xxx\" />
   </ItemGroup>
   <ItemGroup>

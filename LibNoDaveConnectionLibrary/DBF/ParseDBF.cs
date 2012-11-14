@@ -11,6 +11,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX;
+using DotNetSiemensPLCToolBoxLibrary.DBF.Structures;
+using DotNetSiemensPLCToolBoxLibrary.DBF.Structures.DBT;
 using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF
@@ -257,7 +261,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
         }*/
         #endregion
-
 
         #region DBF-Write-Functions
         /// <summary>
