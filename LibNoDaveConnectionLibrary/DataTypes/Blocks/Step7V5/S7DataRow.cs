@@ -423,12 +423,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     //int structlen = 0;
                     foreach (S7DataRow plcDataRow in Children)
                     {
-                        if (akAddr.BitAddress != 0 && plcDataRow._datatype != S7DataRowType.BOOL)
+                        if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray))
                         {
                             akAddr.BitAddress = 0;
                             akAddr.ByteAddress++;
                         }
-                        if (akAddr.ByteAddress%2 != 0 && plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR)
+                        if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray))
                             if (!(this.PlcBlock is Step5.S5DataBlock))
                             {
                                 akAddr.ByteAddress++;
