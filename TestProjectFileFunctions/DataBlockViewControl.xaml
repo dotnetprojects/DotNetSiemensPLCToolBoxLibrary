@@ -50,12 +50,14 @@
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
-                        <StackPanel Margin="0"
+                        <VirtualizingStackPanel  Margin="0"
                                     HorizontalAlignment="Left"
                                     IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
+
+            <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True" />                
         </Style>
 
         <local:TreeviewDepthWidthConverter x:Key="lengthConverter" Width="19" />
@@ -83,7 +85,7 @@
             </StackPanel>
         -->
 
-        <TreeView Name="MyTree"
+        <TreeView VirtualizingStackPanel.IsVirtualizing="True" Name="MyTree"
                   Margin="0"
                   Padding="0">
             <TreeView.Resources>
@@ -154,13 +156,11 @@
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
 
-            <!--
-                <TreeView.ItemsPanel>
+            <TreeView.ItemsPanel>
                 <ItemsPanelTemplate>
-                <Grid HorizontalAlignment="Center" IsItemsHost="True" />
+                    <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
-                </TreeView.ItemsPanel>
-            -->
+            </TreeView.ItemsPanel>
         </TreeView>
 
 
