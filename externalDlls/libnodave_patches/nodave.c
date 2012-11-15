@@ -3978,10 +3978,10 @@ int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	//LOG2("timeout wrt: %d \n",di->timeout);
 	t.tv_sec = di->timeout / 1000000;
 	t.tv_usec = di->timeout % 1000000;
-	LOG2("timeout s: %d \n",t.tv_sec);
-	LOG2("timeout ms: %d \n",t.tv_usec );
-	printf("Socket in Read: %d\n",di->fd.rfd);
-	LOG2("WSAGetLastError bef. Select: %d \n",WSAGetLastError());
+	//LOG2("timeout s: %d \n",t.tv_sec);
+	//LOG2("timeout ms: %d \n",t.tv_usec );
+	//printf("Socket in Read: %d\n",di->fd.rfd);
+	//LOG2("WSAGetLastError bef. Select: %d \n",WSAGetLastError());
 		
 	if (select(/* di->fd.rfd + */ 1, &FDS, NULL, NULL, &t) <= 0) {
 		LOG2("WSAGetLastError: %d \n", WSAGetLastError());
@@ -6012,20 +6012,45 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 	uc pablock[]= {	// parameters for parts of a block
 		0x1B,0
 	};
-
+	
 	uc progBlock[maxPBlockLen + 4]= {
 		0,maxPBlockLen,0,0xFB,	// This seems to be a fix prefix for program blocks
 	};
 
+	pup[11] = blockType;
+	paInsert[13] = blockType;
+	/*pup[12] = number / (10*10*10*10);
+	pup[13] = (number - (pup[12] * 10*10*10*10 )) / (10*10*10);
+	pup[14] = (number - (pup[13] * 10*10*10)) / (10*10);
+	pup[15] = (number - (pup[14] * 10*10)) / (10);
+	pup[16] = (number - (pup[15] * 10));
+	
+	pup[12] = pup[12] + 0x30;
+	pup[13] = pup[13] + 0x30;
+	pup[14] = pup[14] + 0x30;
+	pup[15] = pup[15] + 0x30;
+	pup[16] = pup[16] + 0x30;*/
+	
 	memcpy(progBlock+4,buffer,maxPBlockLen);
 
+	progBlock[9] = (blockType + 0x0A - 'A'); //Convert 'A' to 0x0A
+	if (blockType == '8') progBlock[9] = 0x08;
+	
+	progBlock[10] = number / 0x100;
+	progBlock[11] = number - (progBlock[10] * 0x100);
+		
+		
 	rawLen=daveGetU16from(progBlock+14);
 	netLen=daveGetU16from(progBlock+38);
 
-	pup[17]='P';
-	paInsert[19]='P';
 	sprintf((char*)pup+19,"1%06d%06d",rawLen,netLen);
 
+	sprintf((char*)pup+12,"%05d",number);
+	sprintf((char*)paInsert+14,"%05d",number);
+	
+	pup[17]='P';
+	paInsert[19]='P';
+	
 	p.header=dc->msgOut+dc->PDUstartO;
 	_daveInitPDUheader(&p, 1);
 	_daveAddParam(&p, pup, sizeof(pup)-1);
@@ -6052,13 +6077,22 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 				number=((PDUHeader*)p2.header)->number;
 				if (p2.param[0]==0x1B) {
 					//READFILE
-					memcpy(progBlock+4,buffer+cnt,maxPBlockLen);
+					memcpy(progBlock+4,buffer+(cnt*maxPBlockLen),maxPBlockLen);
+					
+					if (cnt == 0)
+					{
+						progBlock[9] = (blockType + 0x0A - 'A'); //Convert 'A' to 0x0A
+						if (blockType == '8') progBlock[9] = 0x08;
+	
+						progBlock[10] = number / 0x100;
+						progBlock[11] = number - (progBlock[10] * 0x100);						
+					}
 
 					p.header=dc->msgOut+dc->PDUstartO;
 					_daveInitPDUheader(&p, 3);
 					size = maxPBlockLen;
 
-					if (*length > (cnt+1) * maxPBlockLen)  
+					if (*length > ((cnt+1) * maxPBlockLen))  
 						pablock[1]=1;
 					else
 					{
@@ -6066,12 +6100,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 						pablock[1]=0;	//last block
 						blockCont=0;
 					}
-					//if (res==maxPBlockLen) pablock[1]=1;	//more blocks
-					//else {
-					//	pablock[1]=0;	//last block
-					//	blockCont=0;
-					//}    
-					progBlock[1]=res;
+					   
+					progBlock[1]=size;
 					_daveAddParam(&p, pablock, sizeof(pablock));
 					_daveAddData(&p, progBlock, size + 4 /* size of block) */);
 					((PDUHeader*)p.header)->number=number;
@@ -6079,7 +6109,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 						_daveDumpPDU(&p);
 					}
 					_daveExchange(dc,&p);
-				}    
+				}
+				cnt++;
 			} while (blockCont);  
 
 			res=_daveSetupReceivedPDU(dc, &p2);
