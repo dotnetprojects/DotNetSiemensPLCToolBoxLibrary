@@ -420,15 +420,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     if (akAddr.ByteAddress%2 != 0)
                         akAddr.ByteAddress++;
 
+                    bool lastRowWasArrayOrStruct = false;
+
                     //int structlen = 0;
                     foreach (S7DataRow plcDataRow in Children)
                     {
-                        if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray))
+                        if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
                         {
                             akAddr.BitAddress = 0;
                             akAddr.ByteAddress++;
                         }
-                        if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray))
+                        if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
                             if (!(this.PlcBlock is Step5.S5DataBlock))
                             {
                                 akAddr.ByteAddress++;
@@ -466,6 +468,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
                         }
                         //structlen += plcDataRow.ByteLength;
+
+                        lastRowWasArrayOrStruct = plcDataRow.WasArray;
                     }
                     //this. = structlen;
                 }
@@ -539,6 +543,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public bool ReadOnly { get; set; }
 
         public bool IsArray { get; set; }
+
+        internal bool WasFirstInArray { get; set; }
+        internal bool WasArray { get; set; }
 
         public List<int> ArrayStart { get; set; }
         public List<int> ArrayStop { get; set; }
@@ -677,6 +684,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                     S7DataRow tmp = (S7DataRow)retVal.DeepCopy();
                     tmp.Name = tmp.Name + "[" + nm + "]";
+                    tmp.WasFirstInArray = retVal.IsArray && i == 0;
+                    tmp.WasArray = retVal.IsArray;
                     tmp.IsArray = false;
                     arrAsList.Add(tmp);
 
