@@ -90,7 +90,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * Description of a MC7 Block (Function - Block)
                  * 36-xx     = AWL
                  * xx+1,     = 0x01
-                 * xx+2,xx+3 = Again Block number, Zero on OB
+                 * xx+2,xx+3 = Again Block number, Zero on OB            (but bytes swapped)
                  * xx+4,xx+5 = Interface Length (from xx+6 to yy)
                  * xx+6,xx+7 = Interface Blocks Count (In,Out,Satic,TMP etc) * 2
                  * xx+8,xx+9 = allways Zero
@@ -103,9 +103,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * Description of a MC7 Block (Data - Block)
                  * 36-xx   = AWL
                  * xx+1,     = 0x05 (DB) 0x10 (DI)
-                 * xx+2,xx+3 = Again Block Number or FB Number on a DI
-                 * xx+1    = Interface Length
-                 * xx-yy   = Interface
+                 * xx+2,xx+3 = Again Block Number or FB Number on a DI   (but bytes swapped)
+                 * xx+4,xx+5 = Interface Length 
+                 * xx+6-yy   = Interface
                  * yy-zz   = Start-Values
                  * xx      = Nertworks
                  */
@@ -125,9 +125,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.SegmentTableSize = libnodave.getU16from(MC7Code, 30); //(Length of networks?)
                 int LocalDataLength = libnodave.getU16from(MC7Code, 32);
                 int MC7Length_or_DBBodyLength = libnodave.getU16from(MC7Code, 34);
-                int IntfStart = MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 2;
-                int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart + 1) + 2;
-                int IntfValStart = IntfStart + IntfLength + 3;
+                int IntfStart = MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 3;
+                int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart) + 2;
+                int IntfValStart = IntfStart + IntfLength + 2;
 
                 retBlock.InterfaceSize = InterfaceLength_or_DBActualValuesLength;
                 retBlock.LocalDataSize = LocalDataLength;
@@ -147,10 +147,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         ((S7DataBlock) retBlock).IsInstanceDB = true;
                         ((S7DataBlock)retBlock).FBNumber = BitConverter.ToUInt16(MC7Code, MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + 1);
                     }
-                    //((PLCDataBlock) retBlock).Structure = MC7toDB.GetDBInterface(IntfStart + 1, IntfLength, AWLStart, IntfValStart, MC7Code);
+                    //((PLCDataBlock) retBlock).Structure = MC7toDB.GetDBInterface(IntfStart, IntfLength, AWLStart, IntfValStart, MC7Code);
+
+                    /*var interf = new byte[IntfLength];
+                    Array.Copy(MC7Code, IntfStart, interf, 0, IntfLength);
+                    string wr = "";
+                    for (int i=0;i<interf.Length-1;i=i+2)
+                    {
+                        wr += interf[i+1].ToString("X").PadLeft(2, '0');
+                        wr += interf[i].ToString("X").PadLeft(2, '0');
+                    }
+                    wr = wr;*/
                     List<string> tmp = new List<string>();
-                    ((S7DataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
-                    //GetDBInterface(IntfStart+1, IntfLength, AWLStart, IntfValStart, SGDB);
+                    ((S7DataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
+                    
                 }
                 else
                 {

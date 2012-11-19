@@ -333,7 +333,7 @@
             this.listBox2.Location = new System.Drawing.Point(9, 556);
             this.listBox2.MultiColumn = true;
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(573, 30);
+            this.listBox2.Size = new System.Drawing.Size(573, 108);
             this.listBox2.TabIndex = 17;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             this.listBox2.DoubleClick += new System.EventHandler(this.listBox2_DoubleClick);
@@ -668,7 +668,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(903, 593);
+            this.ClientSize = new System.Drawing.Size(903, 668);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);

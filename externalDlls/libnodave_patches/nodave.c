@@ -5989,13 +5989,14 @@ int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int number, ch
 	return res;
 }
 
-int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int * length) {
+int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber, char* buffer, int * length) {
 #define maxPBlockLen 0xDe	// real maximum 222 bytes
 
 	int res=0;
 	int cnt=0;
 	int size=0;
 	int blockNumber,rawLen,netLen,blockCont;
+	int number=0;
 
 	uc pup[]= {			// Load request
 		0x1A,0,1,0,0,0,0,0,9,
@@ -6036,8 +6037,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 	progBlock[9] = (blockType + 0x0A - 'A'); //Convert 'A' to 0x0A
 	if (blockType == '8') progBlock[9] = 0x08;
 	
-	progBlock[10] = number / 0x100;
-	progBlock[11] = number - (progBlock[10] * 0x100);
+	progBlock[10] = blknumber / 0x100;
+	progBlock[11] = blknumber - (progBlock[10] * 0x100);
 		
 		
 	rawLen=daveGetU16from(progBlock+14);
@@ -6045,8 +6046,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 
 	sprintf((char*)pup+19,"1%06d%06d",rawLen,netLen);
 
-	sprintf((char*)pup+12,"%05d",number);
-	sprintf((char*)paInsert+14,"%05d",number);
+	sprintf((char*)pup+12,"%05d",blknumber);
+	sprintf((char*)paInsert+14,"%05d",blknumber);
 	
 	pup[17]='P';
 	paInsert[19]='P';
@@ -6084,8 +6085,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, ch
 						progBlock[9] = (blockType + 0x0A - 'A'); //Convert 'A' to 0x0A
 						if (blockType == '8') progBlock[9] = 0x08;
 	
-						progBlock[10] = number / 0x100;
-						progBlock[11] = number - (progBlock[10] * 0x100);						
+						progBlock[10] = blknumber / 0x100;
+						progBlock[11] = blknumber - (progBlock[10] * 0x100);						
 					}
 
 					p.header=dc->msgOut+dc->PDUstartO;
