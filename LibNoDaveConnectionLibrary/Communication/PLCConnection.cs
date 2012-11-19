@@ -965,7 +965,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 lock (_dc)
                 {
                     //Todo: Better way to Split number and chars
-                    byte[] buffer = new byte[65536];
+                    byte[] buffer = new byte[65536 * 3];
                     string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
                     string block = "";
                     int nr = 0;

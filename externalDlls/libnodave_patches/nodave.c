@@ -1854,7 +1854,7 @@ int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploa
 			FLUSH;
 		}    
 	}
-	*len+=netLen;
+	*len=netLen;
 	return res;
 }
 
