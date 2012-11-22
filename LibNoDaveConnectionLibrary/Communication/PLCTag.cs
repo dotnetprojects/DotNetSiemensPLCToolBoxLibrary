@@ -729,14 +729,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     case TagDataType.S5Time:
                         {
-                            var bt = new byte[2];
-                            libnodave.putS5Timeat(bt, 0, (TimeSpan) myValue);
                             if (DataTypeStringFormat == TagDisplayDataType.S5Time)
+                            {
+                                var bt = new byte[2];
+                                libnodave.putS5Timeat(bt, 0, (TimeSpan)myValue);
                                 return Helper.GetS5Time(bt[0], bt[1]);
-                            return libnodave.getS5Timefrom(bt, 0).ToString();
+                            }
+                            return ((TimeSpan)myValue).ToString();
                         }
                     case TagDataType.Time:
-                        return myValue.ToString();                    
+                        {
+                            var tm = (TimeSpan)myValue;
+                            var ret = new StringBuilder("T#");
+                            if (tm.TotalMilliseconds < 0) ret.Append("-");
+                            if (tm.Days != 0) ret.Append(tm.Days + "D");
+                            if (tm.Hours != 0) ret.Append(tm.Hours + "H");
+                            if (tm.Minutes != 0) ret.Append(tm.Minutes + "M");
+                            if (tm.Seconds != 0) ret.Append(tm.Seconds + "S");
+                            if (tm.Milliseconds != 0) ret.Append(tm.Milliseconds + "MS");
+                            return ret.ToString();
+                        }                                         
                     case TagDataType.Bool:
                         if (DataTypeStringFormat == TagDisplayDataType.Binary)
                         {

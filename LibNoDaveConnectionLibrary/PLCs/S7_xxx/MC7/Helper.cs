@@ -25,11 +25,13 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -64,6 +66,184 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (b2 != null)
                 Array.Copy(b2, res, b2.Length);
             return res;
+        }
+
+        public static object StringValueToObject(string Value, S7DataRowType DataType)
+        {
+            if (DataType == S7DataRowType.WORD)
+                return Convert.ToUInt16(Helper.GetIntFromHexString(Value));
+            else if (DataType == S7DataRowType.BOOL)
+                return bool.Parse(Value);
+            else if (DataType == S7DataRowType.DWORD)
+                return Convert.ToUInt16(Helper.GetIntFromHexString(Value));
+            else if (DataType == S7DataRowType.BYTE)
+                return Convert.ToByte(Helper.GetIntFromHexString(Value));
+            else if (DataType == S7DataRowType.INT)
+                return Int16.Parse(Value);
+            else if (DataType == S7DataRowType.DINT)
+                return Int32.Parse(Value.Replace("L#", ""));
+            else if (DataType == S7DataRowType.REAL) 
+                return double.Parse(Value);
+            else if (DataType == S7DataRowType.S5TIME)
+                return Helper.GetTimespanFromS5TimeorTime(Value);
+            else if (DataType == S7DataRowType.TIME)
+                return Helper.GetTimespanFromS5TimeorTime(Value);
+            else if (DataType == S7DataRowType.DATE)
+                return Helper.GetDateTimeFromDateString(Value);
+            else if (DataType == S7DataRowType.TIME_OF_DAY)
+                return Helper.GetDateTimeFromTimeOfDayString(Value);
+            else if (DataType == S7DataRowType.CHAR)
+                return Value.ToString()[1];
+            else if (DataType == S7DataRowType.DATE_AND_TIME)
+                return Helper.GetDateTimeFromDateAndTimeString(Value);
+            else if (DataType == S7DataRowType.STRING)
+                return Value.ToString();
+            else if (DataType == S7DataRowType.STRUCT)
+                return null;
+            else if (DataType == S7DataRowType.UDT)
+                return null;
+
+            return null;
+        }
+
+        public static object DefaultValueForType(S7DataRowType DataType)
+        {
+            if (DataType == S7DataRowType.WORD)
+                return (UInt16)0;
+            else if (DataType == S7DataRowType.BOOL)
+                return false;
+            else if (DataType == S7DataRowType.BYTE)
+                return (byte)0;
+            else if (DataType == S7DataRowType.DWORD)
+                return (UInt32)0;
+            else if (DataType == S7DataRowType.INT)
+                return (Int16)0;
+            else if (DataType == S7DataRowType.DINT)
+                return (Int32)0;
+            else if (DataType == S7DataRowType.REAL)
+                return (double)0;
+            else if (DataType == S7DataRowType.S5TIME)
+                return new TimeSpan();
+            else if (DataType == S7DataRowType.TIME)
+                return new TimeSpan();
+            else if (DataType == S7DataRowType.DATE) 
+                return new DateTime(1990, 1, 1, 0, 0, 0, 0);
+            else if (DataType == S7DataRowType.TIME_OF_DAY)
+                return new DateTime(1990, 1, 1, 0, 0, 0, 0);
+            else if (DataType == S7DataRowType.CHAR)
+                return ' ';
+            else if (DataType == S7DataRowType.DATE_AND_TIME)
+                return new DateTime(1990, 1, 1, 0, 0, 0, 0);
+            else if (DataType == S7DataRowType.STRING)
+                return "";
+            else if (DataType == S7DataRowType.STRUCT)
+                return null;
+            else if (DataType == S7DataRowType.UDT)
+                return null;
+
+            return null;
+        }
+
+        public static string ValueToString(object Value, S7DataRowType DataType)
+        {
+            if (DataType == S7DataRowType.S5_KY) return ((UInt16)Value / 256).ToString().PadLeft(3, '0') + "," + ((UInt16)Value % 256).ToString().PadLeft(3, '0');
+            else if (DataType == S7DataRowType.S5_KF) return ((Int16)Value > 0 ? "+" : "") + Value.ToString();
+            else if (DataType == S7DataRowType.S5_KH) return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
+            else if (DataType == S7DataRowType.S5_KG) return SingleExtensions.ToS5(((float)Value));
+            else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC) return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
+            else if (DataType == S7DataRowType.S5_KC) return "'" + ((string)Value).PadLeft(2, ' ') + "'";
+            else if (DataType == S7DataRowType.S5_KT) return Helper.GetS5TimeFromTimeSpan(((TimeSpan)Value));
+            else if (DataType == S7DataRowType.S5_KM)
+            {
+                var bt = BitConverter.GetBytes((UInt16)Value);
+                string ret = "";
+                foreach (byte b in bt)
+                {
+                    if (ret != "") ret = " " + ret;
+                    ret = libnodave.dec2bin(b) + ret;
+
+                }
+                return ret;
+            }
+            else if (DataType == S7DataRowType.WORD) return "W#16#" + ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.BYTE) return "B#16#" + ((byte)Value).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.DWORD) return "DW#16#" + ((UInt32)Value).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.INT) return ((Int16)Value).ToString();
+            else if (DataType == S7DataRowType.DINT) return "L#" + ((Int32)Value).ToString();
+            else if (DataType == S7DataRowType.REAL) return ((DateTime)Value).ToString();
+            else if (DataType == S7DataRowType.S5TIME)
+            {
+                var bt = new byte[2];
+                libnodave.putS5Timeat(bt, 0, (TimeSpan)Value);
+                return Helper.GetS5Time(bt[0], bt[1]);
+            }
+            else if (DataType == S7DataRowType.TIME)
+            {
+                var tm = (TimeSpan)Value;
+                var ret = new StringBuilder("T#");
+                if (tm.TotalMilliseconds < 0) ret.Append("-");
+                if (tm.Days != 0) ret.Append(tm.Days + "D");
+                if (tm.Hours != 0) ret.Append(tm.Hours + "H");
+                if (tm.Minutes != 0) ret.Append(tm.Minutes + "M");
+                if (tm.Seconds != 0) ret.Append(tm.Seconds + "S");
+                if (tm.Milliseconds != 0 || tm.Ticks == 0) ret.Append(tm.Milliseconds + "MS");
+
+                return ret.ToString();
+            }
+            else if (DataType == S7DataRowType.DATE)
+            {
+                DateTime ak = (DateTime)Value;
+                StringBuilder sb = new StringBuilder();
+                sb.Append("D#");
+                sb.Append(ak.Year);
+                sb.Append("-");
+                sb.Append(ak.Month);
+                sb.Append("-");
+                sb.Append(ak.Day);
+                return sb.ToString();
+            }
+            else if (DataType == S7DataRowType.TIME_OF_DAY)
+            {
+                DateTime ak = (DateTime)Value;
+                StringBuilder sb = new StringBuilder();
+                sb.Append("TOD#");
+                sb.Append(ak.Hour);
+                sb.Append(":");
+                sb.Append(ak.Minute);
+                sb.Append(":");
+                sb.Append(ak.Second);
+                sb.Append(".");
+                sb.Append(ak.Millisecond.ToString().PadRight(3, '0'));
+                return sb.ToString();
+            }
+            else if (DataType == S7DataRowType.CHAR) return ((char)Value).ToString();
+            else if (DataType == S7DataRowType.DATE_AND_TIME)
+            {
+                DateTime ak = (DateTime)Value;
+                StringBuilder sb = new StringBuilder();
+                sb.Append("DT#");
+                sb.Append(ak.Year.ToString().Substring(2));
+                sb.Append("-");
+                sb.Append(ak.Month);
+                sb.Append("-");
+                sb.Append(ak.Day);
+                sb.Append("-");
+                sb.Append(ak.Hour);
+                sb.Append(":");
+                sb.Append(ak.Minute);
+                sb.Append(":");
+                sb.Append(ak.Second);
+                sb.Append(".");
+                sb.Append(ak.Millisecond.ToString().PadRight(3, '0'));
+                return sb.ToString();
+            }
+            else if (DataType == S7DataRowType.STRING) return Value.ToString();
+            else if (DataType == S7DataRowType.STRUCT) return null;
+            else if (DataType == S7DataRowType.UDT) return null;
+
+            if (Value != null) return Value.ToString();
+
+            return null;
         }
 
         public static bool IsNetwork(S7FunctionBlockRow row)
@@ -171,7 +351,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         static public int GetIntFromHexString(string myString)
         {
             int val = 0;
-            foreach (char tmp in myString.ToLower().Replace("dw#16#","").Replace("w#16#",""))
+            foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", ""))
             {
                 val *= 16;
                 switch (tmp)

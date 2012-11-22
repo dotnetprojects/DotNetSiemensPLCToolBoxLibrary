@@ -48,10 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
+    <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\Library\ConnectionConfig.cs" />
     <Compile Include="Communication\Library\Interfaces\ISONetworkInterface.cs" />
     <Compile Include="Communication\Library\internal\SocketExtensions.cs" />
     <Compile Include="Communication\Library\Pdus\Pdu_ReadRequest.cs" />
+    <Compile Include="Communication\Networking\SocketExtensions.cs" />
+    <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
     <Compile Include="Communication\Configuration.cs" />
     <Compile Include="Communication\Library\ByteFunctions.cs" />

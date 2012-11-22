@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using Polenter.Serialization;
 
 namespace JFKCommonLibrary.Serialization
 {
@@ -37,7 +36,7 @@ namespace JFKCommonLibrary.Serialization
             return r.ReadToEnd();
         }
 
-        public static string SharpSerializerSerialize(T obj)
+        /*public static string SharpSerializerSerialize(T obj)
         {
             var settings = new SharpSerializerXmlSettings(); // for xml mode
 
@@ -59,7 +58,7 @@ namespace JFKCommonLibrary.Serialization
             r.BaseStream.Seek(0, SeekOrigin.Begin);
 
             return r.ReadToEnd();
-        }
+        }*/
 
         public static string DataContractSerialize(T obj)
         {
@@ -85,7 +84,7 @@ namespace JFKCommonLibrary.Serialization
             return r.ReadToEnd();
         }
 
-        public static T SharpSerializerDeSerialize(string txt)
+        /*public static T SharpSerializerDeSerialize(string txt)
         {
             T retVal = default(T);
             if (txt == null)
@@ -104,7 +103,7 @@ namespace JFKCommonLibrary.Serialization
             {
             }
             return retVal;
-        }
+        }*/
 
         public static T DeSerialize(string txt)
         {

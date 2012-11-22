@@ -26,6 +26,9 @@
 using System;
 using System.Collections.Generic;
 
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]

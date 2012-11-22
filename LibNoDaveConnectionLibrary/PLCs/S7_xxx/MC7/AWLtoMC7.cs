@@ -40,33 +40,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             foreach (var myLine in ((S7FunctionBlock)myCmd).AWLCode)
             {
-                if (((S7FunctionBlockRow) myLine).MC7 != null)
-                    retVal.AddRange(((S7FunctionBlockRow)myLine).MC7);
+                if (((S7FunctionBlockRow)myLine).MC7 == null) 
+                    ((S7FunctionBlockRow)myLine).MC7 = GetMC7(((S7FunctionBlockRow)myLine));
+                retVal.AddRange(((S7FunctionBlockRow)myLine).MC7);
             }
             return retVal.ToArray();
         }
 
 
 
-        /*static public int GetSize(PLCFunctionBlockRow myCmd)
+        public static int GetSize(S7FunctionBlockRow myCmd)
         {
 
             int MN = 0; //Memnoic still needs to be implemented!
 
             //This function is there, because for a Jump it sould not call GetMC7, because then we can get circular calls!
             //A Jump in GetMC7 will also call this, to callculate the distance to the jump mark!            
-            if (Helper.IsJump(myCmd, MN))
-                return 4;
+            if (Helper.IsJump(myCmd, MN)) return 4;
             else
                 try
                 {
-                    return GetMC7(myCmd).Length;
+                    if (myCmd.MC7 == null) myCmd.MC7 = GetMC7(myCmd);
+                    return myCmd.MC7.Length;
                 }
                 catch (Exception)
                 {
                     return 0;
                 }
-        }*/
+        }
 
         static public byte[] GetMC7(S7FunctionBlockRow myCmd)
         {

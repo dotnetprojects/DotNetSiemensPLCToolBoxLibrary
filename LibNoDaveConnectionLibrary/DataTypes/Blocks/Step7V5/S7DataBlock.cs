@@ -32,7 +32,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         public int FBNumber { get; set;}  //If it is a Instance DB
         public bool IsInstanceDB { get; set; }
-        public S7DataRow Structure { get; set; }
+
+        public S7DataRow Structure
+        {
+            get
+            {
+                if (StructureFromString != null) 
+                    return StructureFromString;
+                return StructureFromMC7;
+            }
+            set
+            {
+                StructureFromString = Structure;
+                StructureFromMC7 = Structure;
+            }
+        }
+
+        public S7DataRow StructureFromString { get; set; }
+        public S7DataRow StructureFromMC7 { get; set; }
 
         /// <summary>
         /// With this function you get the Structure with expanden Arrays!

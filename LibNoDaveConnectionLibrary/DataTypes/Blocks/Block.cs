@@ -19,7 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public ProjectFolder ParentFolder { get; set; }
 
 
-        public SymbolTableEntry SymbolTabelEntry
+        public SymbolTableEntry SymbolTableEntry
         {
             get
             {

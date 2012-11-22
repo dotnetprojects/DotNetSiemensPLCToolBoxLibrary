@@ -28,6 +28,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        private S7DataRow _parameterWithoutTemp;
+        internal S7DataRow ParameterWithoutTemp
+        {
+            get { return _parameterWithoutTemp; }
+            set
+            {
+                _parameterWithoutTemp = value;
+                NotifyPropertyChanged("ParameterWithoutTemp");
+            }          
+        }
+
         private List<FunctionBlockRow> _awlCode;
         public List<FunctionBlockRow> AWLCode
         {

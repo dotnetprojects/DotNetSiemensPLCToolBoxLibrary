@@ -159,13 +159,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                     wr = wr;*/
                     List<string> tmp = new List<string>();
-                    ((S7DataBlock)retBlock).Structure = Parameter.GetInterface(IntfStart, IntfLength, IntfValStart, MC7Code, ref tmp, retBlock.BlockType, MC7Start_or_DBBodyStart, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
-                    
+                    var interfaceBytes = new byte[IntfLength + 3];
+                    var actualValues = new byte[MC7Length_or_DBBodyLength];
+                    Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
+                    Array.Copy(MC7Code, MC7Start_or_DBBodyStart, actualValues, 0, MC7Length_or_DBBodyLength);
+
+                    ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
+
                 }
                 else
                 {
+                    var interfaceBytes = new byte[IntfLength + 3];
+                    Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
+                    
                     List<string> ParaList = new List<string>();
-                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(IntfStart + 1, IntfLength, IntfValStart, MC7Code, ref ParaList, retBlock.BlockType, 0, false, retBlock);
+                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, null, ref ParaList, retBlock.BlockType, false, retBlock);
 
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + MC7Length_or_DBBodyLength + InterfaceLength_or_DBActualValuesLength, MC7Code);

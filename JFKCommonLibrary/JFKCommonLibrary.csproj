@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Polenter.SharpSerializer">
-      <HintPath>..\externalDlls\Polenter.SharpSerializer.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -89,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
-      <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
+      <Project>{e3ed87e8-b550-46ac-9196-9688d30efd29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
     </ProjectReference>
   </ItemGroup>

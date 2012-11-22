@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Step7V51="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;assembly=DotNetSiemensPLCToolBoxLibrary"
              d:DesignHeight="300"
-             d:DesignWidth="300"
+             d:DesignWidth="500"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -86,7 +86,7 @@
         -->
 
         <TreeView VirtualizingStackPanel.IsVirtualizing="True" Name="MyTree"
-                  Margin="0"
+                  Margin="0,30,0,0"
                   Padding="0">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Step7V51:S7DataRow}" ItemsSource="{Binding Children}">
@@ -128,6 +128,14 @@
                                 <TextBlock Margin="0"
                                            Text="{Binding DataTypeAsString}"
                                            ToolTip="{Binding DataTypeAsString}" />
+                            </Border>                            
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding StartValueAsString}"
+                                           ToolTip="{Binding StartValueAsString}" />
                             </Border>
                             <Border Width="180"
                                     BorderBrush="Black"
@@ -162,6 +170,8 @@
                 </ItemsPanelTemplate>
             </TreeView.ItemsPanel>
         </TreeView>
+        <RadioButton x:Name="chkProjectString" Content="Structure from Project String" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" IsChecked="True" Checked="chkProjectString_Checked"/>
+        <RadioButton x:Name="chkMC7Code" Content="Structure from MC7 Code" HorizontalAlignment="Left" Margin="262,5,0,0" VerticalAlignment="Top" Checked="chkMC7Code_Checked"/>
 
 
     </Grid>

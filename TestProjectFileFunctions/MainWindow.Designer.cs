@@ -103,10 +103,12 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
-            this.datablockView = new System.Windows.Forms.Integration.ElementHost();
-            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.datablockView = new System.Windows.Forms.Integration.ElementHost();
+            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
+            this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.createDokumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -357,7 +359,7 @@
             this.chkExpandArrays.AutoSize = true;
             this.chkExpandArrays.Location = new System.Drawing.Point(25, 330);
             this.chkExpandArrays.Name = "chkExpandArrays";
-            this.chkExpandArrays.Size = new System.Drawing.Size(94, 17);
+            this.chkExpandArrays.Size = new System.Drawing.Size(117, 19);
             this.chkExpandArrays.TabIndex = 4;
             this.chkExpandArrays.Text = "Expand Arrays";
             this.chkExpandArrays.UseVisualStyleBackColor = true;
@@ -376,7 +378,7 @@
             this.chkFixedErrorNumber.AutoSize = true;
             this.chkFixedErrorNumber.Location = new System.Drawing.Point(20, 89);
             this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
-            this.chkFixedErrorNumber.Size = new System.Drawing.Size(116, 17);
+            this.chkFixedErrorNumber.Size = new System.Drawing.Size(152, 19);
             this.chkFixedErrorNumber.TabIndex = 4;
             this.chkFixedErrorNumber.Text = "Fixed Error Number";
             this.chkFixedErrorNumber.UseVisualStyleBackColor = true;
@@ -570,6 +572,7 @@
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.optionsToolStripMenuItem,
+            this.toolsToolStripMenuItem1,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -832,18 +835,6 @@
             this.tableLayoutPanelVisu.Size = new System.Drawing.Size(758, 469);
             this.tableLayoutPanelVisu.TabIndex = 12;
             // 
-            // datablockView
-            // 
-            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datablockView.Location = new System.Drawing.Point(0, 0);
-            this.datablockView.Name = "datablockView";
-            this.datablockView.Size = new System.Drawing.Size(770, 535);
-            this.datablockView.TabIndex = 17;
-            this.datablockView.Text = "wpfElementHost";
-            this.datablockView.Visible = false;
-            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.datablockView.Child = this.dataBlockViewControl;
-            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
@@ -871,6 +862,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
+            // 
+            // datablockView
+            // 
+            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.datablockView.Location = new System.Drawing.Point(0, 0);
+            this.datablockView.Name = "datablockView";
+            this.datablockView.Size = new System.Drawing.Size(770, 535);
+            this.datablockView.TabIndex = 17;
+            this.datablockView.Text = "wpfElementHost";
+            this.datablockView.Visible = false;
+            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
+            this.datablockView.Child = this.dataBlockViewControl;
+            // 
+            // toolsToolStripMenuItem1
+            // 
+            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createDokumentationToolStripMenuItem});
+            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
+            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem1.Text = "Tools";
+            // 
+            // createDokumentationToolStripMenuItem
+            // 
+            this.createDokumentationToolStripMenuItem.Name = "createDokumentationToolStripMenuItem";
+            this.createDokumentationToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.createDokumentationToolStripMenuItem.Text = "Create Dokumentation";
+            this.createDokumentationToolStripMenuItem.Click += new System.EventHandler(this.createDokumentationToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -993,6 +1011,8 @@
         private System.Windows.Forms.ToolStripMenuItem searchPasswordToolStripMenuItem;
         private System.Windows.Forms.Button cmdCreateWinCCFlexibleTags;
         private System.Windows.Forms.CheckBox chkCombineStructComments;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem createDokumentationToolStripMenuItem;
 
     }
 }

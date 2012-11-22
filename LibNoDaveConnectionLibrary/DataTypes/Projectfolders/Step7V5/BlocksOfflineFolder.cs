@@ -142,6 +142,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public byte[] comments;
             public byte[] addinfo;
             public string blkinterface;
+            public byte[] blkinterfaceInMC5;
             public byte[] nwinfo;
             public byte[] blockdescription;
             public byte[] jumpmarks;
@@ -296,40 +297,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         if (addinfo != null && addinfo.Length > addinfolen)
                             Array.Resize<byte>(ref addinfo, addinfolen);
 
-                        /*
-                        string ttmc5, ttssb, ttadd;
-                        if (mc5code!=null)
-                            ttmc5 = System.Text.Encoding.GetEncoding("Windows-1251").GetString(mc5code);
-                        if (ssbpart!=null)
-                            ttssb = System.Text.Encoding.GetEncoding("Windows-1251").GetString(ssbpart);
-                        if (addinfo != null)
-                            ttadd = System.Text.Encoding.GetEncoding("Windows-1251").GetString(addinfo);
-                        */
-
-                        /*
-                        if (mc5code != null)
-                        {
-                            FileStream aa = new FileStream("c:\\temp\\aa\\mc5code_subblk" + subblktype.ToString() + ".txt", FileMode.Create);
-                            aa.Write(mc5code, 0, mc5code.Length);
-                            aa.Close();
-                        }
-                        if (ssbpart != null)
-                        {
-                            FileStream aa = new FileStream("c:\\temp\\aa\\ssbpart_subblk" + subblktype.ToString() + ".txt", FileMode.Create);
-                            aa.Write(ssbpart, 0, ssbpart.Length);
-                            aa.Close();
-                        }
-                        if (addinfo != null)
-                        {
-                            FileStream aa = new FileStream("c:\\temp\\aa\\addinfo_subblk" + subblktype.ToString() + ".txt", FileMode.Create);
-                            aa.Write(addinfo, 0, addinfo.Length);
-                            aa.Close();
-                        }
-                        */
-
-
-                        if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 ||
-                            subblktype == 15) //FC, OB, FB, SFC, SFB
+                        if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 || subblktype == 15) //FC, OB, FB, SFC, SFB
                         {
                             if (row["PASSWORD"] != DBNull.Value && (int)row["PASSWORD"] == 3)
                                 myTmpBlk.knowHowProtection = true;
@@ -365,8 +333,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             }
 
                         }
-                        else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 ||
-                                 subblktype == 9) //FC, OB, FB, SFC, SFB
+                        else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 || subblktype == 9) //FC, OB, FB, SFC, SFB
                         {
                             //Interface in mc5code
                             if (mc5code != null)
@@ -414,6 +381,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         else if (subblktype == 10) //DB
                         {
                             //Need to check wich Information is stored here
+                            myTmpBlk.mc7code = mc5code;
+                            myTmpBlk.blkinterfaceInMC5 = ssbpart;
 
                             if (ssbpart != null && ssbpartlen > 2 && (ssbpart[0] == 0x0a || ssbpart[0] == 0x0b))
                                 // if ssbpart[0] == 5 this DB is normal
@@ -519,8 +488,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     List<string> tmpList = new List<string>();
                     S7DataBlock retVal = new S7DataBlock();
                     retVal.IsInstanceDB = myTmpBlk.IsInstanceDB; 
-                    retVal.FBNumber = myTmpBlk.FBNumber; 
-                    retVal.Structure = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal);
+                    retVal.FBNumber = myTmpBlk.FBNumber;
+                    retVal.StructureFromString = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal, myTmpBlk.mc7code);
+                    if (myTmpBlk.blkinterfaceInMC5 != null)
+                    {
+                        //List<string> tmp = new List<string>();
+                        //retVal.StructureFromMC7 = Parameter.GetInterface(myTmpBlk.blkinterfaceInMC5, myTmpBlk.mc7code, ref tmp, blkInfo.BlockType, myTmpBlk.IsInstanceDB, retVal);
+                    }                        
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
@@ -711,6 +685,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     }
 
                     retVal.Networks = NetWork.GetNetworksList(retVal);
+
+                    retVal.ParentFolder = this;
 
                     return retVal;
                 }

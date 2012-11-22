@@ -504,33 +504,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 if (Value != null)
                 {
-                    if (DataType == S7DataRowType.S5_KY)
-                        return ((UInt16)Value / 256).ToString().PadLeft(3, '0') + "," + ((UInt16)Value % 256).ToString().PadLeft(3, '0');
-                    else if (DataType == S7DataRowType.S5_KF)
-                        return ((Int16)Value > 0 ? "+" : "") + Value.ToString();
-                    else if (DataType == S7DataRowType.S5_KH)
-                        return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
-                    else if (DataType == S7DataRowType.S5_KG)
-                        return SingleExtensions.ToS5(((float)Value));
-                    else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC)                        
-                        return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
-                    else if (DataType == S7DataRowType.S5_KC)
-                        return "'" + ((string)Value).PadLeft(2, ' ') + "'";
-                    else if (DataType == S7DataRowType.S5_KT) 
-                        return Helper.GetS5TimeFromTimeSpan(((TimeSpan)Value));
-                    else if (DataType == S7DataRowType.S5_KM)
-                    {
-                        var bt = BitConverter.GetBytes((UInt16)Value);
-                        string ret = "";
-                        foreach (byte b in bt)
-                        {
-                            if (ret != "") ret = " " + ret;
-                            ret = libnodave.dec2bin(b) + ret;
+                    return Helper.ValueToString(Value, DataType);
+                }
+                else
+                {
+                    return Helper.ValueToString(Helper.DefaultValueForType(DataType), DataType);
+                }
+                return null;
+            }
+        }
 
-                        }
-                        return ret;
-                    }
-                    return Value.ToString();
+        public string StartValueAsString
+        {
+            get
+            {
+                if (StartValue != null)
+                {
+                    return Helper.ValueToString(StartValue, DataType);
+                }
+                else
+                {
+                    return Helper.ValueToString(Helper.DefaultValueForType(DataType), DataType);
                 }
                 return null;
             }

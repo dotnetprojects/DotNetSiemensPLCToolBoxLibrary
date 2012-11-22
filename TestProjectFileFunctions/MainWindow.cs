@@ -277,10 +277,10 @@ namespace JFK_VarTab
                     {
                         //dataBlockViewControl.DataBlockRows = ((PLCDataBlock) tmp).Structure;
                         myBlk = (IDataBlock)tmp;
-                        expRow = myBlk.Structure;
-                        if (mnuExpandDatablockArrays.Checked)
-                            expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
-                        dataBlockViewControl.DataBlockRows = expRow;
+                        //expRow = myBlk.Structure;
+                        //if (mnuExpandDatablockArrays.Checked)
+                        //    expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
+                        dataBlockViewControl.DataBlock = myBlk;
                         
                         datablockView.Visible = true;
                        
@@ -909,10 +909,10 @@ namespace JFK_VarTab
             else
                 mnuExpandDatablockArrays.Checked = true;
             unwatchToolStripMenuItem_Click(sender, e);
-            expRow = myBlk.Structure;
-            if (mnuExpandDatablockArrays.Checked)
-                expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
-            dataBlockViewControl.DataBlockRows = expRow;
+            //expRow = myBlk.Structure;
+            //if (mnuExpandDatablockArrays.Checked)
+                //expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
+            dataBlockViewControl.DataBlock = myBlk;
         }
 
         private void treeStep7Project_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -1064,13 +1064,72 @@ namespace JFK_VarTab
             FolderBrowserDialog fldDlg = null;
 
             fldDlg = new FolderBrowserDialog();
-            fldDlg.Description = "Destination Diretory for Tags.csv!";
+            fldDlg.Description = "Destination Directory for Tags.csv!";
             if (fldDlg.ShowDialog() == DialogResult.OK)
             {
                 System.IO.StreamWriter swr;
 
                 swr = new System.IO.StreamWriter(fldDlg.SelectedPath + "\\Tags.csv");
                 swr.Write(tags.Replace(";", "\t"));
+                swr.Close();
+            }
+        }
+
+        private void createDokumentationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var myFB = (S7FunctionBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
+
+            var html = "";
+            html += "<html>";
+            html += "<body style=\"font-family: Courier New;\">";
+            if (myFB.SymbolTableEntry != null)
+            {
+                html += "<h3>" + myFB.SymbolTableEntry.Symbol + " (" + myFB.BlockName + ")" + "</h3>";
+            }
+            else
+            {
+                html += "<h3>" + myFB.BlockName + "</h3>";
+            }
+            
+            html += "<b>Beschreibung</b>";
+            html += "<ul>";
+            html += "<pre>" + myFB.Description + "</pre>";
+            html += "</ul>";
+            html += "<br>";
+            html += "<b>Parameter</b>";
+            html += "<ul>";
+            foreach (var par in myFB.Parameter.Children)
+            {
+                if (par.Name == "IN" || par.Name == "OUT" || par.Name == "IN_OUT")
+                foreach (var par2 in par.Children)
+                {
+                    html += "<b>" + par.Name.PadRight(6, ' ').Replace(" ", "&nbsp;") + ": <i>" + par2.Name + "</i></b>";
+                    html += "<ul>";
+                    html += "&nbsp;&nbsp;&nbsp;&nbsp;" + par2.Comment;
+                    html += "</ul>";
+                }       
+            }
+            html += "</ul>";
+            html += "</body>";
+            html += "</html>";
+
+            html = html.Replace("ü", "&uuml;");
+            html = html.Replace("ö", "&ouml;");
+            html = html.Replace("ä", "&auml;");
+            html = html.Replace("Ü", "&Uuml;");
+            html = html.Replace("Ö", "&Ouml;");
+            html = html.Replace("Ä", "&Auml;");
+            html = html.Replace("ß", "&szlig;");
+
+            FolderBrowserDialog fldDlg = null;
+            fldDlg = new FolderBrowserDialog();
+            fldDlg.Description = "Destination Directory for html";
+            if (fldDlg.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.StreamWriter swr;
+
+                swr = new System.IO.StreamWriter(fldDlg.SelectedPath + "\\" + myFB.BlockType + myFB.BlockNumber + ".html");
+                swr.Write(html);
                 swr.Close();
             }
         }
