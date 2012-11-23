@@ -56,17 +56,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     //Todo: Sometimes JumeMarks are seperated by 0x00 and somtimes by 0xD0 look what this means.
                     string aknm = "";
-                    if (JumpMarks[n] != 0)
+                    if (JumpMarks[n] != 0 && JumpMarks.Length >= n + 3)
                     {
-                        aknm += ((char) JumpMarks[n]);
+                        aknm += ((char)JumpMarks[n]);
                         if (JumpMarks[n + 1] != 0)
                         {
-                            aknm += ((char) JumpMarks[n + 1]);
+                            aknm += ((char)JumpMarks[n + 1]);
                             if (JumpMarks[n + 2] != 0)
                             {
-                                aknm += ((char) JumpMarks[n + 2]);
-                                if (JumpMarks[n + 3] != 0)
-                                    aknm += ((char) JumpMarks[n + 3]);
+                                aknm += ((char)JumpMarks[n + 2]);
+                                if (JumpMarks[n + 3] != 0) aknm += ((char)JumpMarks[n + 3]);
                             }
                         }
                     }

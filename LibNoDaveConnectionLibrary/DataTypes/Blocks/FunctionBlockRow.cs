@@ -22,5 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                 resetByte();
             }
         }
+
+        public string Comment { get; set; }
     }
 }

@@ -122,10 +122,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 CombinedCommands = null;
             }
         }
-
-
-        public string Comment { get; set; }
-
+        
         public string NetworkName { get; set; }
 
         private int _jumpwidth;
