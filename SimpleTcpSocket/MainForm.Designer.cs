@@ -33,19 +33,20 @@
             this.cmdConnect = new System.Windows.Forms.Button();
             this.tabMainTab = new System.Windows.Forms.TabControl();
             this.tabPageLogger = new System.Windows.Forms.TabPage();
-            this.tabPageSender = new System.Windows.Forms.TabPage();
-            this.cmdSave = new System.Windows.Forms.Button();
             this.txtRecieve = new System.Windows.Forms.TextBox();
-            this.chkActive = new System.Windows.Forms.CheckBox();
-            this.txtPort = new System.Windows.Forms.TextBox();
-            this.txtIP = new System.Windows.Forms.TextBox();
+            this.tabPageSender = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtSended = new System.Windows.Forms.TextBox();
+            this.txtRecieve2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.cmdSend = new System.Windows.Forms.Button();
             this.txtTelegramm = new System.Windows.Forms.TextBox();
-            this.txtSended = new System.Windows.Forms.TextBox();
-            this.txtRecieve2 = new System.Windows.Forms.TextBox();
+            this.cmdSave = new System.Windows.Forms.Button();
+            this.chkActive = new System.Windows.Forms.CheckBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.txtIP = new System.Windows.Forms.TextBox();
+            this.blLen = new System.Windows.Forms.Label();
             this.tabMainTab.SuspendLayout();
             this.tabPageLogger.SuspendLayout();
             this.tabPageSender.SuspendLayout();
@@ -110,29 +111,6 @@
             this.tabPageLogger.Text = "Logger";
             this.tabPageLogger.UseVisualStyleBackColor = true;
             // 
-            // tabPageSender
-            // 
-            this.tabPageSender.Controls.Add(this.tableLayoutPanel1);
-            this.tabPageSender.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSender.Name = "tabPageSender";
-            this.tabPageSender.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSender.Size = new System.Drawing.Size(668, 347);
-            this.tabPageSender.TabIndex = 1;
-            this.tabPageSender.Text = "Sender";
-            this.tabPageSender.UseVisualStyleBackColor = true;
-            // 
-            // cmdSave
-            // 
-            this.cmdSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cmdSave.Location = new System.Drawing.Point(594, 6);
-            this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(90, 33);
-            this.cmdSave.TabIndex = 7;
-            this.cmdSave.Text = "Save";
-            this.cmdSave.UseVisualStyleBackColor = false;
-            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
-            // 
             // txtRecieve
             // 
             this.txtRecieve.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -144,36 +122,16 @@
             this.txtRecieve.TabIndex = 0;
             this.txtRecieve.WordWrap = false;
             // 
-            // chkActive
+            // tabPageSender
             // 
-            this.chkActive.AutoSize = true;
-            this.chkActive.Checked = global::SimpleTcpSocket.Properties.Settings.Default.Active;
-            this.chkActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkActive.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SimpleTcpSocket.Properties.Settings.Default, "Active", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkActive.Location = new System.Drawing.Point(240, 8);
-            this.chkActive.Name = "chkActive";
-            this.chkActive.Size = new System.Drawing.Size(56, 17);
-            this.chkActive.TabIndex = 4;
-            this.chkActive.Text = "Active";
-            this.chkActive.UseVisualStyleBackColor = true;
-            // 
-            // txtPort
-            // 
-            this.txtPort.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SimpleTcpSocket.Properties.Settings.Default, "Port", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.txtPort.Location = new System.Drawing.Point(182, 6);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(52, 20);
-            this.txtPort.TabIndex = 3;
-            this.txtPort.Text = global::SimpleTcpSocket.Properties.Settings.Default.Port;
-            // 
-            // txtIP
-            // 
-            this.txtIP.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SimpleTcpSocket.Properties.Settings.Default, "IP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.txtIP.Location = new System.Drawing.Point(38, 6);
-            this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(99, 20);
-            this.txtIP.TabIndex = 1;
-            this.txtIP.Text = global::SimpleTcpSocket.Properties.Settings.Default.IP;
+            this.tabPageSender.Controls.Add(this.tableLayoutPanel1);
+            this.tabPageSender.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSender.Name = "tabPageSender";
+            this.tabPageSender.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSender.Size = new System.Drawing.Size(668, 347);
+            this.tabPageSender.TabIndex = 1;
+            this.tabPageSender.Text = "Sender";
+            this.tabPageSender.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -208,41 +166,6 @@
             this.splitContainer1.SplitterDistance = 156;
             this.splitContainer1.TabIndex = 0;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.4262F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.5738F));
-            this.tableLayoutPanel2.Controls.Add(this.cmdSend, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtTelegramm, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(656, 30);
-            this.tableLayoutPanel2.TabIndex = 9;
-            // 
-            // cmdSend
-            // 
-            this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdSend.Location = new System.Drawing.Point(537, 3);
-            this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(116, 24);
-            this.cmdSend.TabIndex = 8;
-            this.cmdSend.Text = "Send";
-            this.cmdSend.UseVisualStyleBackColor = false;
-            this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
-            // 
-            // txtTelegramm
-            // 
-            this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
-            this.txtTelegramm.Name = "txtTelegramm";
-            this.txtTelegramm.Size = new System.Drawing.Size(528, 20);
-            this.txtTelegramm.TabIndex = 9;
-            // 
             // txtSended
             // 
             this.txtSended.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -264,6 +187,97 @@
             this.txtRecieve2.Size = new System.Drawing.Size(656, 139);
             this.txtRecieve2.TabIndex = 1;
             this.txtRecieve2.WordWrap = false;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.4262F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.5738F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
+            this.tableLayoutPanel2.Controls.Add(this.txtTelegramm, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmdSend, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.blLen, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(656, 30);
+            this.tableLayoutPanel2.TabIndex = 9;
+            // 
+            // cmdSend
+            // 
+            this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdSend.Location = new System.Drawing.Point(540, 3);
+            this.cmdSend.Name = "cmdSend";
+            this.cmdSend.Size = new System.Drawing.Size(113, 24);
+            this.cmdSend.TabIndex = 8;
+            this.cmdSend.Text = "Send";
+            this.cmdSend.UseVisualStyleBackColor = false;
+            this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
+            // 
+            // txtTelegramm
+            // 
+            this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
+            this.txtTelegramm.Name = "txtTelegramm";
+            this.txtTelegramm.Size = new System.Drawing.Size(432, 20);
+            this.txtTelegramm.TabIndex = 9;
+            this.txtTelegramm.TextChanged += new System.EventHandler(this.txtTelegramm_TextChanged);
+            // 
+            // cmdSave
+            // 
+            this.cmdSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cmdSave.Location = new System.Drawing.Point(594, 6);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(90, 33);
+            this.cmdSave.TabIndex = 7;
+            this.cmdSave.Text = "Save";
+            this.cmdSave.UseVisualStyleBackColor = false;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // chkActive
+            // 
+            this.chkActive.AutoSize = true;
+            this.chkActive.Checked = global::SimpleTcpSocket.Properties.Settings.Default.Active;
+            this.chkActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkActive.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SimpleTcpSocket.Properties.Settings.Default, "Active", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkActive.Location = new System.Drawing.Point(240, 8);
+            this.chkActive.Name = "chkActive";
+            this.chkActive.Size = new System.Drawing.Size(56, 17);
+            this.chkActive.TabIndex = 4;
+            this.chkActive.Text = "Active";
+            this.chkActive.UseVisualStyleBackColor = true;
+            // 
+            // txtPort
+            // 
+            this.txtPort.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SimpleTcpSocket.Properties.Settings.Default, "Port", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtPort.Location = new System.Drawing.Point(182, 6);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(52, 20);
+            this.txtPort.TabIndex = 3;
+            this.txtPort.Text = global::SimpleTcpSocket.Properties.Settings.Default.Port;
+            // 
+            // txtIP
+            // 
+            this.txtIP.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SimpleTcpSocket.Properties.Settings.Default, "IP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtIP.Location = new System.Drawing.Point(38, 6);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(99, 20);
+            this.txtIP.TabIndex = 1;
+            this.txtIP.Text = global::SimpleTcpSocket.Properties.Settings.Default.IP;
+            // 
+            // blLen
+            // 
+            this.blLen.AutoSize = true;
+            this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.blLen.Location = new System.Drawing.Point(441, 0);
+            this.blLen.Name = "blLen";
+            this.blLen.Size = new System.Drawing.Size(93, 30);
+            this.blLen.TabIndex = 10;
+            this.blLen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -318,6 +332,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button cmdSend;
         private System.Windows.Forms.TextBox txtTelegramm;
+        private System.Windows.Forms.Label blLen;
     }
 }
 

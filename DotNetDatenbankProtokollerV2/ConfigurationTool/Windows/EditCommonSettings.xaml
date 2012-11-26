@@ -81,7 +81,14 @@
             <Label Content="Reconnect Intervall:" Height="28" HorizontalAlignment="Left" Margin="8,575,0,0" Name="label11" VerticalAlignment="Top" />
             <xctk:IntegerUpDown Height="22" HorizontalAlignment="Left" Margin="116,576,0,0" Name="integerUpDown1" Text="1000" Value="{Binding ReconnectInterval, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" VerticalAlignment="Top" Width="120" />
             <Label Content="ms" Height="28" HorizontalAlignment="Left" Margin="242,575,0,0" Name="label12" VerticalAlignment="Top" />
-        
+            <CheckBox Margin="242,10,0,0"
+            	HorizontalAlignment="Left"
+            	VerticalAlignment="Top"
+            	Content="Use WCF-Server"
+            	IsChecked="{Binding UseWCFService, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}" />
+            <xctk:IntegerUpDown Margin="281,37,0,0" HorizontalAlignment="Left" Width="104" Height="22" VerticalAlignment="Top" Value="{Binding WCFServicePort, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"/>
+            <TextBlock HorizontalAlignment="Left" Margin="242,40,0,0" Text="Port:" VerticalAlignment="Top"  />
+
         </Grid>
     </ScrollViewer>
 </UserControl>

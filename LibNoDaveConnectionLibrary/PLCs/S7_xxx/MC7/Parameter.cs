@@ -399,11 +399,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             if (tmpValue != "")
                             {
-                                addRW.StartValue = Helper.StringValueToObject(tmpValue, addRW.DataType);
+                                //Todo: Startvalues bei arrays...
+                                //Mehrere Values...
+                                //TRUE,6(FALSE),TRUE,TRUE,7(FALSE)
+                                if (addRW.IsArray)
+                                {
+                                    addRW.StartValue = tmpValue;
+                                }
+                                else
+                                {
+                                    addRW.StartValue = Helper.StringValueToObject(tmpValue, addRW.DataType);
+                                }
                             }
                             else
                             {
-                                addRW.StartValue = Helper.DefaultValueForType(addRW.DataType);
+                                if (!addRW.IsArray)
+                                    addRW.StartValue = Helper.DefaultValueForType(addRW.DataType);
                             }
 
                             //if (actualValues != null)

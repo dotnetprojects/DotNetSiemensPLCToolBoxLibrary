@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
@@ -47,6 +48,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         {
             get { return _database; }
             set { _database = value; NotifyPropertyChanged("Database"); }
+        }
+
+        private string _extendedConnectionString;
+        [Description("When this String is set, Username, Password and Port are not used!!")]
+        public string ExtendedConnectionString
+        {
+            get { return _extendedConnectionString; }
+            set { _extendedConnectionString = value; NotifyPropertyChanged("ExtendedConnectionString"); }
         }
 
         [XmlIgnore]

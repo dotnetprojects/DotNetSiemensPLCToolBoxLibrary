@@ -282,7 +282,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         static public DateTime GetDateTimeFromDateString(string myString)
         {
-            var tmp = myString.ToLower().Replace("d#", "").Split('-');
+            var tmp = myString.ToLower().Replace("d#", "").Replace("\t", "").Split('-');
 
             int y = 0, m = 0, d = 0;
             if (tmp.Length > 0)
@@ -300,7 +300,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         static public DateTime GetDateTimeFromTimeOfDayString(string myString)
         {
-            var tmp = myString.ToLower().Replace("tod#", "").Split(':');
+            var tmp = myString.ToLower().Replace("tod#", "").Replace("\t", "").Split(':');
 
             int h = 0, m = 0, s = 0, ms = 0;
             if (tmp.Length > 0)
@@ -321,7 +321,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         static public DateTime GetDateTimeFromDateAndTimeString(string myString)
         {
-            var tmp = myString.ToLower().Replace("dt#", "");
+            var tmp = myString.ToLower().Replace("dt#", "").Replace("\t", "");
             int pos = tmp.LastIndexOf('-');
 
             var tmp1 = tmp.Substring(0, pos);
@@ -351,7 +351,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         static public int GetIntFromHexString(string myString)
         {
             int val = 0;
-            foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", ""))
+            foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", "").Replace("\t",""))
             {
                 val *= 16;
                 switch (tmp)
@@ -383,7 +383,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         static public TimeSpan GetTimespanFromS5TimeorTime(string time)
         {
-            time = time.ToLower().Replace("s5t#", "").Replace("t#", "");
+            time = time.ToLower().Replace("s5t#", "").Replace("t#", "").Replace("\t", "");
             //need another text for ms (because it could be minute)
             time = time.Replace("ms", "a");
 
@@ -420,6 +420,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 else if (tmp == '-')
                 {
                     negativ = true;
+                }
+                else if (tmp == '\t')
+                {
+                    
                 }
                 else
                 {

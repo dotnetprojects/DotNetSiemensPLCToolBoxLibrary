@@ -518,7 +518,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             get
             {
-                if (StartValue != null)
+                if (this.IsArray)
+                {
+                    if (StartValue != null) return StartValue.ToString();
+                    return null;
+                }
+                else if (StartValue != null)
                 {
                     return Helper.ValueToString(StartValue, DataType);
                 }

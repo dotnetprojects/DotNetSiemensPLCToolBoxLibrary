@@ -74,6 +74,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -103,6 +104,10 @@
     <Compile Include="Databases\PostgreSQL\PostgreSQLStorage.cs" />
     <Compile Include="Databases\StorageHelper.cs" />
     <Compile Include="Databases\Interfaces\IDBInterface.cs" />
+    <Compile Include="wcfService\IProtocolService.cs" />
+    <Compile Include="wcfService\PolicyServer.cs" />
+    <Compile Include="wcfService\ProtocolService.cs" />
+    <Compile Include="wcfService\ProtocolRow.cs" />
     <None Include="Databases\ODBC\db_odbc.cs" />
     <Compile Include="Databases\Interfaces\IDBViewable.cs" />
     <Compile Include="Databases\SQLite\SQLLiteStorage.cs" />

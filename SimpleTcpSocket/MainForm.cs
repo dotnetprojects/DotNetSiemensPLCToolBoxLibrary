@@ -68,5 +68,11 @@ namespace SimpleTcpSocket
             txtSended.Text = DateTime.Now.ToString() + ": " + txtTelegramm.Text + Environment.NewLine + txtSended.Text;
             tcpFunc.SendStringData(txtTelegramm.Text);
         }
+
+        private void txtTelegramm_TextChanged(object sender, EventArgs e)
+        {
+            blLen.Text = "0";
+            if (txtTelegramm.Text != null) blLen.Text = txtTelegramm.Text.Length.ToString();
+        }
     }
 }

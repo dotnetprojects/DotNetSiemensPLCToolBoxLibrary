@@ -26,7 +26,34 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         [DataMember]        
         public ObservableCollection<DatasetConfig> Datasets { get; set; }
 
-        #region Webserver        
+        #region WCF Service
+        private bool useWCFService = false;
+        [DataMember]
+        public bool UseWCFService
+        {
+            get
+            {
+                return this.useWCFService;
+            }
+            set
+            {
+                this.useWCFService = value;
+            }
+        }
+
+        private int wCFServicePort = 9998;
+        [DataMember]
+        public int WCFServicePort
+        {
+            get { return wCFServicePort; }
+            set { wCFServicePort = value; }
+        }
+
+        #endregion
+
+        #region Webserver
+
+        private bool useWebserver = false;
         [DataMember]
         public bool UseWebserver
         {
@@ -41,9 +68,6 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         }
 
         private int _webserverPort = 80;
-
-        private bool useWebserver = false;
-
         [DataMember]
         public int WebserverPort
         {
@@ -297,6 +321,46 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
 
                 if (datasetConfig.Trigger==DatasetTriggerType.Tags_Handshake_Trigger && datasetConfig.TriggerConnection==null)
                     error += "Error: Dataset \"" + datasetConfig.Name + "\" Trigger Connection not set!" + Environment.NewLine;
+
+
+                /*
+                foreach (DatasetConfigRow datasetConfigRow in datasetConfig.DatasetConfigRows)
+                {
+                    //Look if PLC-Connection was selected
+                    if (datasetConfigRow.Connection == null && datasetConfig.Trigger != DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection) error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Connection not Set!" + Environment.NewLine;
+                    //Look if DatabaseFieldType was selected
+                    if (datasetConfigRow.DatabaseFieldType == "") error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - DatabaseFieldType not Set!" + Environment.NewLine;
+                    ////Look if PLC-ValueType was selected
+                    //if (datasetConfigRow.PLCTag.LibNoDaveDataType == null)
+                    //    error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - PLC-ValueType not Set!" + Environment.NewLine;
+
+                    PLCConnection conn = null as PLCConnection;
+                    if (datasetConfigRow.Connection != null)
+                    {
+                        try
+                        {
+                            conn = ConnectionList[datasetConfigRow.Connection] as PLCConnection;
+                        }
+                        catch
+                        {
+                            conn = null;
+                        }
+                    }
+                    else conn = null;
+                    if (conn != null)
+                    {
+                        try
+                        {
+                            conn.ReadValue(datasetConfigRow.PLCTag);
+                            if (datasetConfigRow.PLCTag.ItemDoesNotExist) error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
+                        }
+                        catch (Exception ex)
+                        {
+                            error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
+                        }
+                    }                    
+                }
+                */
 
             }
             //Look if a Dataset contains more than one TCP-IP Connection, this is not possible, because

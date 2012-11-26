@@ -8,6 +8,8 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +26,8 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using DotNetSimaticDatabaseProtokollerLibrary.aspx;
+using DotNetSimaticDatabaseProtokollerLibrary.wcfService;
+
 using JFKCommonLibrary.Networking;
 
 
@@ -31,7 +35,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 {
     using DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL;
 
-    public class ProtokollerInstance : IDisposable
+    public partial class ProtokollerInstance : IDisposable
     {
         private SynchronizationContext context;
 
@@ -44,7 +48,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         private List<IDisposable> myDisposables = new List<IDisposable>();
         private List<Thread> myReEstablishConnectionsThreads;
 
-
+        private WebServiceHost wcfWebService;
 
         private AspxVirtualRoot webServer = null;
 
@@ -56,7 +60,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             this.akConfig = akConfig;           
         }
-        
+
+        /*public ProtokollerInstance()
+        {
+            ProtokollerConfiguration.Load(false);
+            this.akConfig = ProtokollerConfiguration.ActualConfigInstance;            
+        }*/
+
         public void Start(bool StartedAsService)
         {
 
@@ -66,8 +76,21 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
 
             if (akConfig.UseWebserver)
             {
-                AspxVirtualRoot webServer = new AspxVirtualRoot(8088);
+                AspxVirtualRoot webServer = new AspxVirtualRoot(akConfig.WebserverPort);
                 webServer.Configure("/", System.IO.Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "web"));
+            }
+
+            if (akConfig.UseWCFService)
+            {
+                var serverName = "ProtocolService";
+                var addressWeb = new Uri("http://localhost:" + akConfig.WCFServicePort + "/");
+
+                wcfWebService = new WebServiceHost(this /*.GetType()*/, new Uri[] { addressWeb });
+
+                wcfWebService.AddServiceEndpoint(typeof(IProtocolService), new BasicHttpBinding(), serverName);
+                wcfWebService.AddServiceEndpoint(typeof(IPolicyRetriever), new WebHttpBinding(), "").Behaviors.Add(new WebHttpBehavior());
+
+                wcfWebService.Open();
             }
 
             context = SynchronizationContext.Current;
@@ -370,6 +393,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 webServer.StopListener();
                 webServer.Dispose();
                 webServer = null;
+            }
+
+            if (wcfWebService != null)
+            {
+                wcfWebService.Close();
+                wcfWebService = null;
             }
 
             foreach (var disposable in myDisposables)

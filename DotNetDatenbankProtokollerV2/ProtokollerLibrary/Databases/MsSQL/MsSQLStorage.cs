@@ -44,7 +44,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
         private string ConnectionString
         {
-            get { return string.Format("Data Source={0},{1};Network Library=DBMSSOCN;Initial Catalog={2};User ID={3};Password={4};", myConfig.Server, myConfig.Port, myConfig.Database,  myConfig.Username, myConfig.Password); }
+            get
+            {
+                if (!string.IsNullOrEmpty(myConfig.ExtendedConnectionString)) 
+                    return myConfig.ExtendedConnectionString;
+                return string.Format("Data Source={0},{1};Network Library=DBMSSOCN;Initial Catalog={2};User ID={3};Password={4};", myConfig.Server, myConfig.Port, myConfig.Database,  myConfig.Username, myConfig.Password);
+            }
         }
 
         public override void Connect_To_Database(StorageConfig config)
