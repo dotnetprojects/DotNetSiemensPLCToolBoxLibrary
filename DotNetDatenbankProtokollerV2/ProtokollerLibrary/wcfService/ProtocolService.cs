@@ -38,7 +38,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 else
                     storageLine.Timestamp = DateTime.ParseExact(row["datetime"].ToString(), "yyyy.MM.dd - HH:mm:ss.fff", null);
 
-                storageLine.Telegram = Convert.ToString(row["row"]);
+                storageLine.Telegram = Convert.ToString(row["data"]);
                 list.Add(storageLine);
             }
 
