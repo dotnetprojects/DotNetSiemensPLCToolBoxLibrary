@@ -79,6 +79,7 @@
     <Compile Include="DataTypes\Blocks\IFunctionBlock.cs" />
     <Compile Include="DataTypes\Blocks\Network.cs" />
     <Compile Include="DataTypes\Blocks\ProjectPlcBlockInfo.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlockAdressType.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
     <Compile Include="DataTypes\ReferenceDataAccessMode.cs" />
     <Compile Include="DataTypes\Blocks\Step5\S5FunctionBlockNetwork.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
     <Compile Include="Projectfiles\Projects.cs" />
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
+    <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Communication\ConnectionEditor.en.resx">

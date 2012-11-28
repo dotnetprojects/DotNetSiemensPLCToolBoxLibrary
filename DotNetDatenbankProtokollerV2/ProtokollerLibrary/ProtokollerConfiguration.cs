@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Windows;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
+using DotNetSimaticDatabaseProtokollerLibrary.Protocolling;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
@@ -196,15 +198,27 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
             }
 
             string conf = SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
+
+            /*
             RegistryKey regKey = Registry.LocalMachine;
             regKey = regKey.CreateSubKey("SYSTEM\\CurrentControlSet\\services\\" + StaticServiceConfig.MyServiceName + "\\Parameters");
             if (regKey != null)
             {
-                regKey.SetValue("XMLConfig", conf);
+                regKey.SetValue("XMLConfig", conf,RegistryValueKind.String);
                 ProtokollerConfiguration.ActualConfigInstance.isDirty = false;
             }
             else
                 MessageBox.Show("Error writing Config to the Registry, maybe you need to Login as Administrator?");
+            */
+            Directory.CreateDirectory(Path.GetDirectoryName(ConfigFileName()));
+            StreamWriter sstrm = new StreamWriter(ConfigFileName(), false);
+            sstrm.Write(conf);
+            sstrm.Close();            
+        }
+
+        private static string ConfigFileName()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), StaticServiceConfig.MyServiceName + "\\XMLConfig.config");
         }
 
         public static void SaveToFile(string filename)
@@ -252,22 +266,32 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
             fstrm.Close();
         }
 
-        public static void Load(bool doError)
+        public static void ImportFromRegistry()
         {
             RegistryKey regKey = Registry.LocalMachine;
             regKey = regKey.CreateSubKey("SYSTEM\\CurrentControlSet\\services\\" + StaticServiceConfig.MyServiceName + "\\Parameters");
             if (regKey != null)
             {
                 object conf = regKey.GetValue("XMLConfig");
-                if (conf!=null && (string)conf!="")
+                if (conf != null && (string)conf != "")
                 {
                     ProtokollerConfiguration.ActualConfigInstance = DeSerialize((string)conf);
                 }
                 else
                 {
-                    if (doError)
-                        MessageBox.Show("Error reading Config from the Registry, maybe you need to Login as Administrator, or no config has yet been created!");
+                    MessageBox.Show("Error reading Config from the Registry, maybe you need to Login as Administrator, or no config has yet been created!");
                 }
+            }
+        }
+
+        public static void Load()
+        {
+            if (File.Exists(ConfigFileName()))
+            {
+                StreamReader sstrm = new StreamReader(ConfigFileName(), false);
+                var conf = sstrm.ReadToEnd();
+                sstrm.Close();
+                ProtokollerConfiguration.ActualConfigInstance = DeSerialize(conf);                                
             }
         }
      
@@ -287,6 +311,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         {
             string error = "";
 
+            var ConnectionList = new Dictionary<ConnectionConfig, PLCConnection>();
+
             //Try to Connect to the PLCs
             if (TestConnections)
                 foreach (ConnectionConfig connectionConfig in Connections)
@@ -299,6 +325,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                             try
                             {
                                 myConn.Connect();
+                                ConnectionList.Add(connectionConfig, myConn);
                             }
                             catch (Exception ex)
                             {
@@ -308,8 +335,61 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                     }
                 }
 
+            var TCPIPKeys = new Dictionary<string, int>();
+
             foreach (DatasetConfig datasetConfig in Datasets)
             {
+                var DatasetConnectionKeys = new Dictionary<string, object>();
+
+                //Look if TCPIP Connection is only used in one Dataset, because we need the length for each Connection!
+                try
+                {
+                    if (datasetConfig.DatasetConfigRows.Count > 0)
+                    {
+                        if (datasetConfig.DatasetConfigRows[0].Connection != null)
+                        {
+                            var tcp = datasetConfig.DatasetConfigRows[0].Connection as TCPIPConfig;
+                            var byteCount = ReadData.GetCountOfBytesToRead(datasetConfig.DatasetConfigRows);
+                            if (tcp != null && !tcp.DontUseFixedTCPLength)
+                            {
+                                if (!TCPIPKeys.ContainsKey(datasetConfig.DatasetConfigRows[0].Connection.Name))
+                                {
+                                    TCPIPKeys.Add(datasetConfig.DatasetConfigRows[0].Connection.Name, byteCount);
+                                }
+
+                                if (TCPIPKeys[datasetConfig.DatasetConfigRows[0].Connection.Name] != byteCount)
+                                {
+                                    error += "Error: Dataset \"" + datasetConfig.Name + "\" - The same TCP/IP Connection is used in more than one Dataset with differnet bytes sizes, but fixed Length should be used!" + Environment.NewLine;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        error += "Error: Dataset \"" + datasetConfig.Name + "\" - No DatasetConfigRow is set!" + Environment.NewLine;
+                    }
+                }
+                catch
+                {
+                    error += "Error: Dataset \"" + datasetConfig.Name + "\" - The same TCP/IP Connection is used in more than one Dataset!" + Environment.NewLine;
+                }
+
+                //Look if Trigger on a Dataset with TCP/IP Connection is Incoming Data, and that this trigger is not used on a Connection without TCP/IP
+                try
+                {
+                    if (!(datasetConfig.TriggerConnection is TCPIPConfig && (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)))
+                        error += "Error: Dataset \"" + datasetConfig.Name + "\" - The selected Connection for incoming Trigger is no TCP/IP Connection !" + Environment.NewLine;
+                }
+                catch { }
+
+                //Look if Trigger Connection was selected (Handshake Trigger)
+                if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger && datasetConfig.TriggerConnection == null)
+                    error += "Error: Dataset \"" + datasetConfig.Name + "\" Trigger Connection not set!" + Environment.NewLine;
+
+                //Look if Trigger Connection was selected (TCPIP Trigger)
+                if (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection && datasetConfig.TriggerConnection == null)
+                    error += "Error: Dataset \"" + datasetConfig.Name + "\" Trigger Connection not set!" + Environment.NewLine;
+
                 if (datasetConfig.Storage == null)
                     error += "Error: Dataset \"" + datasetConfig.Name + " - Storage is not set!" + Environment.NewLine;
 
@@ -323,7 +403,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                     error += "Error: Dataset \"" + datasetConfig.Name + "\" Trigger Connection not set!" + Environment.NewLine;
 
 
-                /*
+                
                 foreach (DatasetConfigRow datasetConfigRow in datasetConfig.DatasetConfigRows)
                 {
                     //Look if PLC-Connection was selected
@@ -331,52 +411,66 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                     //Look if DatabaseFieldType was selected
                     if (datasetConfigRow.DatabaseFieldType == "") error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - DatabaseFieldType not Set!" + Environment.NewLine;
                     ////Look if PLC-ValueType was selected
-                    //if (datasetConfigRow.PLCTag.LibNoDaveDataType == null)
-                    //    error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - PLC-ValueType not Set!" + Environment.NewLine;
+                    if (datasetConfigRow.PLCTag.LibNoDaveDataType == null)
+                        error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - PLC-ValueType not Set!" + Environment.NewLine;
 
-                    PLCConnection conn = null as PLCConnection;
-                    if (datasetConfigRow.Connection != null)
+                    if (TestConnections && datasetConfig.Trigger != DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)
                     {
-                        try
+                        PLCConnection conn = null as PLCConnection;
+                        if (datasetConfigRow.Connection != null)
                         {
-                            conn = ConnectionList[datasetConfigRow.Connection] as PLCConnection;
+                            try
+                            {
+                                conn = ConnectionList[datasetConfigRow.Connection] as PLCConnection;
+                            }
+                            catch
+                            {
+                                conn = null;
+                            }
                         }
-                        catch
+                        else conn = null;
+                        if (conn != null)
                         {
-                            conn = null;
+                            try
+                            {
+                                conn.ReadValue(datasetConfigRow.PLCTag);
+                                if (datasetConfigRow.PLCTag.ItemDoesNotExist) error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
+                            }
+                            catch (Exception ex)
+                            {
+                                error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
+                            }
                         }
                     }
-                    else conn = null;
-                    if (conn != null)
-                    {
-                        try
-                        {
-                            conn.ReadValue(datasetConfigRow.PLCTag);
-                            if (datasetConfigRow.PLCTag.ItemDoesNotExist) error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
-                        }
-                        catch (Exception ex)
-                        {
-                            error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - Error Reading Value on Address " + datasetConfigRow.PLCTag.S7FormatAddress + " !" + Environment.NewLine;
-                        }
-                    }                    
-                }
-                */
-
+                }                
             }
-            //Look if a Dataset contains more than one TCP-IP Connection, this is not possible, because
-            //when a TCP/IP Connection is used, the Trigger needs to be the incoming Data from this Connection!
 
-            //Look if Trigger on a Dataset with TCP/IP Connection is Incoming Data, and that this trigger is not used on a Connection without TCP/IP
-
-            //Look if TCPIP Connection is only used in one Dataset, because we need the length for each Connection!
-
-            //Look if the Database Field Type is in the Field Types List
-            
             //Look if Connection Name exists only once
+            var ConnectionNames = new List<string>();
+            var ConnectionKeys = new Dictionary<string, object>();
+            foreach (ConnectionConfig item in Connections)
+            {
+                if (ConnectionKeys.ContainsKey(item.Name))
+                    error += "Error: Connection name \"" + item.Name + "\" - exist more than once!" + Environment.NewLine;
+                else
+                    ConnectionKeys.Add(item.Name, null);
+            }
 
             //Look if Storrage Name exists only once
+            var StorageNames = new List<string>();
+            var StoragesKeys = new Dictionary<string, object>();
+            foreach (StorageConfig item in Storages)
+            {
+                if (StoragesKeys.ContainsKey(item.Name))
+                    error += "Error: Storage name \"" + item.Name + "\" - exist more than once!" + Environment.NewLine;
+                else
+                    StoragesKeys.Add(item.Name, null);
+            }
 
-            //Look if Field Name Exists only Once
+           
+            //Look if the Database Field Type is in the Field Types List
+            
+            //Look if Field Name Exists only Once -> This is possible in excel, but not in databases
 
             if (error == "")
                 return null;

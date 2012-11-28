@@ -32,9 +32,10 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
-    public class S7Block:Block
-    {               
+    public class S7Block : Block
+    {
         public string BlockVersion;
+
         public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
         public List<Step7Attribute> Attributes { get; set; }
@@ -42,67 +43,44 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public double Length;
 
         public string Title { get; set; }
+
         public string Author { get; set; }
+
         public string Family { get; set; }
+
         public string Version { get; set; }
+
         public DateTime LastCodeChange { get; set; }
-        public DateTime LastInterfaceChange { get; set;}
+
+        public DateTime LastInterfaceChange { get; set; }
+
         public int InterfaceSize { get; set; }
+
         public int SegmentTableSize { get; set; }
+
         public int LocalDataSize { get; set; }
+
         public int CodeSize { get; set; }
 
         public bool KnowHowProtection { get; set; }
 
         private byte[] _password;
-        public byte[] Password { get
+
+        public byte[] Password
         {
-            return _password;
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = new byte[4];
+                if (value.Length >= 1) _password[0] = value[0];
+                if (value.Length >= 2) _password[1] = value[1];
+                if (value.Length >= 3) _password[2] = value[2];
+                if (value.Length >= 4) _password[3] = value[3];
+            }
         }
-             set
-             {
-                 _password = new byte[4];
-                 if (value.Length >= 1) _password[0] = value[0];
-                 if (value.Length >= 2) _password[1] = value[1];
-                 if (value.Length >= 3) _password[2] = value[2];
-                 if (value.Length >= 4) _password[3] = value[3];
-             }
-        }        
-    }
-
-    
-
-    /*
-    [Serializable()]
-    public class PLCDataBlockRow
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string StartValue { get; set; }
-        public string Comment { get; set; }
-
-        public override string ToString()
-        {
-            return "Name";
-        }
-    }
-    */
-
-    public enum PLCFunctionBlockAdressType
-    {
-        //Type:
-            //0 = Normale Adresse Bsp: T0, E0.1, AW4
-            //1 = Indirekte Adresse Bsp: T [DBW4], E [LD3]
-            //2 = AR adressierung: T[ar1, p#0.0], DBX [ar1, p#0.0]
-            //3 = Nur AR adressierung: [ar1, p#0.0]
-        Direct = 0,
-        Indirect = 1,
-        IndirectWithAR = 2,
-        CompleteIndirectWithAR = 3,
-        FCParameter = 4
-    }
-
-    
+    }        
 }
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestProjectFileFunctions.Properties {
+namespace ToolboxForSiemensPLCs.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,29 @@ namespace TestProjectFileFunctions.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection OpenedProjects {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["OpenedProjects"]));
+            }
+            set {
+                this["OpenedProjects"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProjectsPath {
+            get {
+                return ((string)(this["ProjectsPath"]));
+            }
+            set {
+                this["ProjectsPath"] = value;
             }
         }
     }

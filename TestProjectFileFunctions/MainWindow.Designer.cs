@@ -94,6 +94,8 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertCallsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExpandDatablockArrays = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.createDokumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -103,12 +105,11 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.datablockView = new System.Windows.Forms.Integration.ElementHost();
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
-            this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.createDokumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.hexBox = new Be.Windows.Forms.HexBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -715,6 +716,21 @@
             this.mnuExpandDatablockArrays.Text = "Expand Datablock Arrays";
             this.mnuExpandDatablockArrays.Click += new System.EventHandler(this.mnuExpandDatablockArrays_Click);
             // 
+            // toolsToolStripMenuItem1
+            // 
+            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createDokumentationToolStripMenuItem});
+            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
+            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem1.Text = "Tools";
+            // 
+            // createDokumentationToolStripMenuItem
+            // 
+            this.createDokumentationToolStripMenuItem.Name = "createDokumentationToolStripMenuItem";
+            this.createDokumentationToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.createDokumentationToolStripMenuItem.Text = "Create Dokumentation";
+            this.createDokumentationToolStripMenuItem.Click += new System.EventHandler(this.createDokumentationToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -742,10 +758,11 @@
             // 
             // mainSplitContainer.Panel2
             // 
-            this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
-            this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
             this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
             this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
+            this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
+            this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
+            this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
             this.mainSplitContainer.Size = new System.Drawing.Size(1171, 535);
             this.mainSplitContainer.SplitterDistance = 397;
             this.mainSplitContainer.TabIndex = 26;
@@ -835,6 +852,18 @@
             this.tableLayoutPanelVisu.Size = new System.Drawing.Size(758, 469);
             this.tableLayoutPanelVisu.TabIndex = 12;
             // 
+            // datablockView
+            // 
+            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.datablockView.Location = new System.Drawing.Point(0, 0);
+            this.datablockView.Name = "datablockView";
+            this.datablockView.Size = new System.Drawing.Size(770, 535);
+            this.datablockView.TabIndex = 17;
+            this.datablockView.Text = "wpfElementHost";
+            this.datablockView.Visible = false;
+            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
+            this.datablockView.Child = this.dataBlockViewControl;
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
@@ -863,32 +892,16 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // datablockView
+            // hexBox
             // 
-            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datablockView.Location = new System.Drawing.Point(0, 0);
-            this.datablockView.Name = "datablockView";
-            this.datablockView.Size = new System.Drawing.Size(770, 535);
-            this.datablockView.TabIndex = 17;
-            this.datablockView.Text = "wpfElementHost";
-            this.datablockView.Visible = false;
-            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.datablockView.Child = this.dataBlockViewControl;
-            // 
-            // toolsToolStripMenuItem1
-            // 
-            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createDokumentationToolStripMenuItem});
-            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
-            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem1.Text = "Tools";
-            // 
-            // createDokumentationToolStripMenuItem
-            // 
-            this.createDokumentationToolStripMenuItem.Name = "createDokumentationToolStripMenuItem";
-            this.createDokumentationToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.createDokumentationToolStripMenuItem.Text = "Create Dokumentation";
-            this.createDokumentationToolStripMenuItem.Click += new System.EventHandler(this.createDokumentationToolStripMenuItem_Click);
+            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.hexBox.Location = new System.Drawing.Point(0, 0);
+            this.hexBox.Name = "hexBox";
+            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.hexBox.Size = new System.Drawing.Size(770, 535);
+            this.hexBox.TabIndex = 18;
             // 
             // Form1
             // 
@@ -1013,6 +1026,7 @@
         private System.Windows.Forms.CheckBox chkCombineStructComments;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem createDokumentationToolStripMenuItem;
+        private Be.Windows.Forms.HexBox hexBox;
 
     }
 }

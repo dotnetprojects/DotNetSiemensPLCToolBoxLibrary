@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -19,6 +20,9 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using TestProjectFileFunctions;
+
+using ToolboxForSiemensPLCs.Properties;
+
 using Application = System.Windows.Forms.Application;
 using Color = System.Drawing.Color;
 using ContextMenu = System.Windows.Forms.ContextMenu;
@@ -159,6 +163,8 @@ namespace JFK_VarTab
             viewBlockList.Visible = false;            
            
             dtaSymbolTable.Visible = false;
+
+            hexBox.Visible = false;
                         
             txtTextBox.Visible = false;
             lblToolStripFileSystemFolder.Text = "";
@@ -770,7 +776,10 @@ namespace JFK_VarTab
             {
                 projects.Add(((ProjectFolder) myTreeNode.myObject).Project.ProjectFile);
             }
-            Settings.Default.OpenedProjects = projects.ToArray();
+
+            var col = new StringCollection();
+            col.AddRange(projects.ToArray());
+            Settings.Default.OpenedProjects =  col;
             Settings.Default.Save();
 
         }
@@ -820,7 +829,10 @@ namespace JFK_VarTab
             {
                 projects.Add(((ProjectFolder)myTreeNode.myObject).Project.ProjectFile);
             }
-            Settings.Default.OpenedProjects = projects.ToArray();
+
+            var col = new StringCollection();
+            col.AddRange(projects.ToArray());
+            Settings.Default.OpenedProjects = col;
             Settings.Default.Save();
         }            
        
@@ -850,7 +862,10 @@ namespace JFK_VarTab
             {
                 projects.Add(((ProjectFolder)myTreeNode.myObject).Project.ProjectFile);
             }
-            Settings.Default.OpenedProjects = projects.ToArray();
+
+            var col = new StringCollection();
+            col.AddRange(projects.ToArray());
+            Settings.Default.OpenedProjects = col;
             Settings.Default.Save();
         }
 

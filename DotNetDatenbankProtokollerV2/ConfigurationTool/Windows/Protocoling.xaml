@@ -44,7 +44,7 @@
         <Button Name="cmdSaveToFile"
                 Width="147"
                 Height="25"
-                Margin="36,201,0,0"
+                Margin="36,231,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="cmdSaveToFile_Click"
@@ -52,7 +52,7 @@
         <Button Name="cmdLoadFromFile"
                 Width="147"
                 Height="25"
-                Margin="36,232,0,0"
+                Margin="36,262,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="cmdLoadFromFile_Click"
@@ -70,5 +70,17 @@
                Margin="221,67,12,12"
                BorderBrush="Black"
                BorderThickness="1" />
+        <Button x:Name="cmdImport"
+        	Width="147"
+        	Height="45"
+        	Margin="36,157,0,0"
+        	HorizontalAlignment="Left"
+        	VerticalAlignment="Top" Click="cmdImport_Click"
+        	>
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" FontSize="9">Import Config from Registry</TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="7">(from an old Version)</TextBlock>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>

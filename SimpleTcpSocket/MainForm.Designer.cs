@@ -40,13 +40,15 @@
             this.txtSended = new System.Windows.Forms.TextBox();
             this.txtRecieve2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmdSend = new System.Windows.Forms.Button();
             this.txtTelegramm = new System.Windows.Forms.TextBox();
+            this.cmdSend = new System.Windows.Forms.Button();
+            this.blLen = new System.Windows.Forms.Label();
             this.cmdSave = new System.Windows.Forms.Button();
+            this.chkShowDate = new System.Windows.Forms.CheckBox();
+            this.chkShowRecievedLen = new System.Windows.Forms.CheckBox();
             this.chkActive = new System.Windows.Forms.CheckBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.txtIP = new System.Windows.Forms.TextBox();
-            this.blLen = new System.Windows.Forms.Label();
             this.tabMainTab.SuspendLayout();
             this.tabPageLogger.SuspendLayout();
             this.tabPageSender.SuspendLayout();
@@ -113,10 +115,13 @@
             // 
             // txtRecieve
             // 
+            this.txtRecieve.BackColor = System.Drawing.Color.White;
             this.txtRecieve.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtRecieve.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRecieve.Location = new System.Drawing.Point(3, 3);
             this.txtRecieve.Multiline = true;
             this.txtRecieve.Name = "txtRecieve";
+            this.txtRecieve.ReadOnly = true;
             this.txtRecieve.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtRecieve.Size = new System.Drawing.Size(662, 341);
             this.txtRecieve.TabIndex = 0;
@@ -168,10 +173,13 @@
             // 
             // txtSended
             // 
+            this.txtSended.BackColor = System.Drawing.Color.White;
             this.txtSended.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSended.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSended.Location = new System.Drawing.Point(0, 0);
             this.txtSended.Multiline = true;
             this.txtSended.Name = "txtSended";
+            this.txtSended.ReadOnly = true;
             this.txtSended.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtSended.Size = new System.Drawing.Size(656, 156);
             this.txtSended.TabIndex = 0;
@@ -179,10 +187,13 @@
             // 
             // txtRecieve2
             // 
+            this.txtRecieve2.BackColor = System.Drawing.Color.White;
             this.txtRecieve2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtRecieve2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRecieve2.Location = new System.Drawing.Point(0, 0);
             this.txtRecieve2.Multiline = true;
             this.txtRecieve2.Name = "txtRecieve2";
+            this.txtRecieve2.ReadOnly = true;
             this.txtRecieve2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtRecieve2.Size = new System.Drawing.Size(656, 139);
             this.txtRecieve2.TabIndex = 1;
@@ -191,9 +202,9 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.4262F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.5738F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.26119F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.73881F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel2.Controls.Add(this.txtTelegramm, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmdSend, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.blLen, 1, 0);
@@ -205,26 +216,38 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(656, 30);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
+            // txtTelegramm
+            // 
+            this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTelegramm.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
+            this.txtTelegramm.Name = "txtTelegramm";
+            this.txtTelegramm.Size = new System.Drawing.Size(447, 20);
+            this.txtTelegramm.TabIndex = 9;
+            this.txtTelegramm.TextChanged += new System.EventHandler(this.txtTelegramm_TextChanged);
+            // 
             // cmdSend
             // 
             this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdSend.Location = new System.Drawing.Point(540, 3);
+            this.cmdSend.Location = new System.Drawing.Point(534, 3);
             this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(113, 24);
+            this.cmdSend.Size = new System.Drawing.Size(119, 24);
             this.cmdSend.TabIndex = 8;
             this.cmdSend.Text = "Send";
             this.cmdSend.UseVisualStyleBackColor = false;
             this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
             // 
-            // txtTelegramm
+            // blLen
             // 
-            this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
-            this.txtTelegramm.Name = "txtTelegramm";
-            this.txtTelegramm.Size = new System.Drawing.Size(432, 20);
-            this.txtTelegramm.TabIndex = 9;
-            this.txtTelegramm.TextChanged += new System.EventHandler(this.txtTelegramm_TextChanged);
+            this.blLen.AutoSize = true;
+            this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.blLen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.blLen.Location = new System.Drawing.Point(456, 0);
+            this.blLen.Name = "blLen";
+            this.blLen.Size = new System.Drawing.Size(72, 30);
+            this.blLen.TabIndex = 10;
+            this.blLen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cmdSave
             // 
@@ -237,6 +260,32 @@
             this.cmdSave.Text = "Save";
             this.cmdSave.UseVisualStyleBackColor = false;
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // chkShowDate
+            // 
+            this.chkShowDate.AutoSize = true;
+            this.chkShowDate.Checked = global::SimpleTcpSocket.Properties.Settings.Default.ShowDate;
+            this.chkShowDate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowDate.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SimpleTcpSocket.Properties.Settings.Default, "ShowDate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkShowDate.Location = new System.Drawing.Point(448, 5);
+            this.chkShowDate.Name = "chkShowDate";
+            this.chkShowDate.Size = new System.Drawing.Size(79, 17);
+            this.chkShowDate.TabIndex = 9;
+            this.chkShowDate.Text = "Show Date";
+            this.chkShowDate.UseVisualStyleBackColor = true;
+            // 
+            // chkShowRecievedLen
+            // 
+            this.chkShowRecievedLen.AutoSize = true;
+            this.chkShowRecievedLen.Checked = global::SimpleTcpSocket.Properties.Settings.Default.ShowRecievedLen;
+            this.chkShowRecievedLen.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowRecievedLen.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SimpleTcpSocket.Properties.Settings.Default, "ShowRecievedLen", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkShowRecievedLen.Location = new System.Drawing.Point(448, 22);
+            this.chkShowRecievedLen.Name = "chkShowRecievedLen";
+            this.chkShowRecievedLen.Size = new System.Drawing.Size(89, 17);
+            this.chkShowRecievedLen.TabIndex = 8;
+            this.chkShowRecievedLen.Text = "Show Length";
+            this.chkShowRecievedLen.UseVisualStyleBackColor = true;
             // 
             // chkActive
             // 
@@ -269,21 +318,13 @@
             this.txtIP.TabIndex = 1;
             this.txtIP.Text = global::SimpleTcpSocket.Properties.Settings.Default.IP;
             // 
-            // blLen
-            // 
-            this.blLen.AutoSize = true;
-            this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.blLen.Location = new System.Drawing.Point(441, 0);
-            this.blLen.Name = "blLen";
-            this.blLen.Size = new System.Drawing.Size(93, 30);
-            this.blLen.TabIndex = 10;
-            this.blLen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 430);
+            this.Controls.Add(this.chkShowDate);
+            this.Controls.Add(this.chkShowRecievedLen);
             this.Controls.Add(this.cmdSave);
             this.Controls.Add(this.tabMainTab);
             this.Controls.Add(this.cmdConnect);
@@ -333,6 +374,8 @@
         private System.Windows.Forms.Button cmdSend;
         private System.Windows.Forms.TextBox txtTelegramm;
         private System.Windows.Forms.Label blLen;
+        private System.Windows.Forms.CheckBox chkShowRecievedLen;
+        private System.Windows.Forms.CheckBox chkShowDate;
     }
 }
 

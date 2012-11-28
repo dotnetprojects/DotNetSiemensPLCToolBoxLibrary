@@ -58,5 +58,29 @@ namespace SimpleTcpSocket.Properties {
                 this["Active"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowRecievedLen {
+            get {
+                return ((bool)(this["ShowRecievedLen"]));
+            }
+            set {
+                this["ShowRecievedLen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowDate {
+            get {
+                return ((bool)(this["ShowDate"]));
+            }
+            set {
+                this["ShowDate"] = value;
+            }
+        }
     }
 }

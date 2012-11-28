@@ -49,12 +49,20 @@ namespace SimpleTcpSocket
         {
             var wrt = Encoding.ASCII.GetString(arg1);
 
-            for (byte n = 0; n < 32; n++)
-            {
-                wrt = wrt.Replace(Encoding.ASCII.GetString(new byte[] { n }), "{0x" + n.ToString("X").PadLeft(2, '0') + "}");
-            }
+            string add = "";
 
-            txtRecieve.Text = DateTime.Now.ToString() + ": " + wrt + Environment.NewLine + txtRecieve.Text;
+            if (chkShowDate.Checked)
+            {
+                add += DateTime.Now.ToString();
+            }
+            if (chkShowRecievedLen.Checked)
+            {
+                if (!string.IsNullOrEmpty(add)) add += " - ";
+                add += wrt.Length.ToString().PadLeft(4, '0') + " Bytes";
+            }
+            if (!string.IsNullOrEmpty(add)) add += ": ";
+
+            txtRecieve.Text = add + wrt + Environment.NewLine + txtRecieve.Text;
             txtRecieve2.Text = txtRecieve.Text;
         }
 
@@ -65,8 +73,24 @@ namespace SimpleTcpSocket
 
         private void cmdSend_Click(object sender, EventArgs e)
         {
-            txtSended.Text = DateTime.Now.ToString() + ": " + txtTelegramm.Text + Environment.NewLine + txtSended.Text;
-            tcpFunc.SendStringData(txtTelegramm.Text);
+            var wrt = txtTelegramm.Text;
+
+            string add = "";
+
+            if (chkShowDate.Checked) 
+            {
+                add += DateTime.Now.ToString();
+            }
+            if (chkShowRecievedLen.Checked)
+            {
+                if (!string.IsNullOrEmpty(add)) add += " - ";
+                add += wrt.Length.ToString().PadLeft(4, '0') + " Bytes";
+            }
+            if (!string.IsNullOrEmpty(add)) add += ": ";
+
+            txtSended.Text = add + wrt + Environment.NewLine + txtSended.Text;
+            if (tcpFunc != null) 
+                tcpFunc.SendStringData(txtTelegramm.Text);
         }
 
         private void txtTelegramm_TextChanged(object sender, EventArgs e)

@@ -25,7 +25,7 @@ namespace DotNetSimaticDatabaseProtokollerService
         {
             try
             {
-                ProtokollerConfiguration.Load(false);
+                ProtokollerConfiguration.Load();
                 myInstance = new ProtokollerInstance(ProtokollerConfiguration.ActualConfigInstance);
                 myInstance.Start(true);
             }

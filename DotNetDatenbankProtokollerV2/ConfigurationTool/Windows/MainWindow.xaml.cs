@@ -45,7 +45,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         {
             try
             {
-                ProtokollerConfiguration.Load(false);
+                ProtokollerConfiguration.Load();
             }
             catch (Exception ex)
             { }

@@ -23,7 +23,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
         private void cmdReload_Click(object sender, RoutedEventArgs e)
         {
-            ProtokollerConfiguration.Load(true);
+            ProtokollerConfiguration.Load();
         }
 
         private void cmdClear_Click(object sender, RoutedEventArgs e)
@@ -55,6 +55,11 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             dlg.Filter = "*.conf|*.conf";
             if (dlg.ShowDialog() == true)
                 ProtokollerConfiguration.LoadFromFile(dlg.FileName);
+        }
+
+        private void cmdImport_Click(object sender, RoutedEventArgs e)
+        {
+            ProtokollerConfiguration.ImportFromRegistry();
         }               
     }
 }
