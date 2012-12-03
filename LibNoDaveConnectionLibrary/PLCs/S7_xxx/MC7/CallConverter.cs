@@ -30,7 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 for (int n = 0; n < myFct.AWLCode.Count; n++)
                 {
                     S7FunctionBlockRow row = (S7FunctionBlockRow)myFct.AWLCode[n];
-                    if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && ( row.Parameter == "1" ||  row.Parameter == "7") && inBld==0)
+                    if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && ( row.Parameter == "1" ||  row.Parameter == "7") && inBld==0)
                     {
                         retVal.AddRange(tempList);
                         tempList.Clear();
@@ -49,15 +49,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     else if (inBld > 0)
                     {
                         tempList.Add(row);
-                        if (row.Command == "=" && n > 0 && myFct.AWLCode[n - 1].Command == Memnoic.opBLD[myOpt.Memnoic])
+                        if (row.Command == "=" && n > 0 && myFct.AWLCode[n - 1].Command == Mnemonic.opBLD[(int)myOpt.Mnemonic])
                         {
                             //Do nothing, but this line needs to be there!
                         }
-                        else if (row.Command == Memnoic.opU[myOpt.Memnoic] || row.Command == Memnoic.opUN[myOpt.Memnoic] ||
-                                 row.Command == Memnoic.opO[myOpt.Memnoic] || row.Command == Memnoic.opON[myOpt.Memnoic] ||
-                                 row.Command == Memnoic.opO[myOpt.Memnoic] || row.Command == Memnoic.opON[myOpt.Memnoic] ||
-                                 row.Command == Memnoic.opX[myOpt.Memnoic] || row.Command == Memnoic.opXN[myOpt.Memnoic] ||
-                                 row.Command == Memnoic.opL[myOpt.Memnoic])
+                        else if (row.Command == Mnemonic.opU[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opUN[(int)myOpt.Mnemonic] ||
+                                 row.Command == Mnemonic.opO[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opON[(int)myOpt.Mnemonic] ||
+                                 row.Command == Mnemonic.opO[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opON[(int)myOpt.Mnemonic] ||
+                                 row.Command == Mnemonic.opX[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opXN[(int)myOpt.Mnemonic] ||
+                                 row.Command == Mnemonic.opL[(int)myOpt.Mnemonic])
                         {
                             akPar = row.Parameter;
                         }
@@ -90,7 +90,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             akPar = "";
                             db = "";
                         }
-                        else if (row.Command == Memnoic.opT[myOpt.Memnoic] && akPar != "")
+                        else if (row.Command == Mnemonic.opT[(int)myOpt.Mnemonic] && akPar != "")
                         {
                             if (afterCall == false)
                             {
@@ -107,20 +107,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             akPar = "";
                             db = "";
                         }
-                        else if (row.Command == Memnoic.opUC[myOpt.Memnoic])
+                        else if (row.Command == Mnemonic.opUC[(int)myOpt.Mnemonic])
                         {
                             //Commands after a Call --> Out-Para
                             callRow = row;
                             afterCall = true;
                         }
-                        else if (row.Command == Memnoic.opBLD[myOpt.Memnoic] && (row.Parameter == "2" || row.Parameter == "8"))
+                        else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "2" || row.Parameter == "8"))
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
                             //myFld.BlocksOfflineFolder.GetBlock()
                             S7DataRow para = myblkFld.GetInterface(callRow.Parameter);
 
                             newRow = new S7FunctionBlockRow();
-                            newRow.Command = Memnoic.opCALL[myOpt.Memnoic];
+                            newRow.Command = Mnemonic.opCALL[(int)myOpt.Mnemonic];
                             newRow.Parameter = callRow.Parameter;
                             //newRow.ExtParameter = new List<string>();
                             newRow.CallParameter=new List<S7FunctionBlockParameter>();
@@ -281,12 +281,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             }
                                             else if (akRow.DataType == S7DataRowType.TIMER)
                                             {
-                                                newPar.Value = Memnoic.adT[myOpt.Memnoic] + ak_address.ToString();
+                                                newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);
                                             }
                                             else if (akRow.DataType == S7DataRowType.COUNTER)
                                             {
-                                                newPar.Value = Memnoic.adZ[myOpt.Memnoic] + ak_address.ToString();
+                                                newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + ak_address.ToString();
                                                 newRow.CallParameter.Add(newPar);                                                                                      
                                             }
                                             else

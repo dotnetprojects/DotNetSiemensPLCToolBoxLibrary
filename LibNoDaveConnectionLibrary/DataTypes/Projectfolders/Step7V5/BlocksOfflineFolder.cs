@@ -437,7 +437,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public Block GetBlock(ProjectBlockInfo blkInfo)
         {
-            return GetBlock(blkInfo, new S7ConvertingOptions(){GenerateCallsfromUCs = false});
+            return GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { GenerateCallsfromUCs = false });
         }
 
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
@@ -517,7 +517,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
-                    retVal.ProjectLanguage = Project.ProjectLanguage;
+                    retVal.MnemonicLanguage = Project.ProjectLanguage;
 
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
@@ -539,7 +539,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         if (this.Parent is S7ProgrammFolder)
                             prgFld = (S7ProgrammFolder)this.Parent;
 
-                        retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, (int)Project.ProjectLanguage, myTmpBlk.mc7code, Networks, ParaList, prgFld);
+                        retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, (int)myConvOpt.Mnemonic, myTmpBlk.mc7code, Networks, ParaList, prgFld);
 
                         retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);
 
@@ -745,7 +745,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public string GetSourceBlock(ProjectBlockInfo blkInfo)
         {
             StringBuilder retVal = new StringBuilder();
-            Block blk = GetBlock(blkInfo, new S7ConvertingOptions() { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
+            Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
 
 
             S7Block fblk = (S7Block)blk;

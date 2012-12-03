@@ -18,6 +18,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using TestProjectFileFunctions;
 
@@ -273,7 +274,7 @@ namespace JFK_VarTab
 
                 Block tmp;
                 if (blkFld is BlocksOfflineFolder)
-                    tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)lstListBox.SelectedItem, new S7ConvertingOptions() { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
+                    tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)lstListBox.SelectedItem, new S7ConvertingOptions(MnemonicLanguage.English) { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
                 else
                     tmp = blkFld.GetBlock((ProjectBlockInfo) lstListBox.SelectedItem);
 
@@ -850,7 +851,8 @@ namespace JFK_VarTab
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11";
-
+            op.CheckFileExists = false;
+            op.ValidateNames = false;
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)
             {

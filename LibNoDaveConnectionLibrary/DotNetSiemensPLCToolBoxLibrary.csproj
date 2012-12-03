@@ -46,6 +46,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
@@ -80,7 +81,10 @@
     <Compile Include="DataTypes\Blocks\Network.cs" />
     <Compile Include="DataTypes\Blocks\ProjectPlcBlockInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlockAdressType.cs" />
+    <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V11\TIACPUFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V11\TIAProjectFolder.cs" />
     <Compile Include="DataTypes\ReferenceDataAccessMode.cs" />
     <Compile Include="DataTypes\Blocks\Step5\S5FunctionBlockNetwork.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7FunctionBlockNetwork.cs" />
@@ -204,7 +208,7 @@
     <Compile Include="DataTypes\AWL\Step7V5\S7ConvertingOptions.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\MC7toAWL.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\MC7toDB.cs" />
-    <Compile Include="PLCs\S7_xxx\MC7\Memnoic.cs" />
+    <Compile Include="PLCs\S7_xxx\MC7\Mnemonic.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\NetWork.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\Parameter.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7Block.cs" />
@@ -272,7 +276,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTypes\Projectfolders\Step7V11\" />
     <Folder Include="DBF\Index\NDX\" />
     <Folder Include="PLCs\S7_1xxx\" />
   </ItemGroup>
@@ -303,6 +306,7 @@
     <EmbeddedResource Include="Resources\FolderImages\s7_cp.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Documentation\System Software for S7-300 and S7-400 System and Standard Functions.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

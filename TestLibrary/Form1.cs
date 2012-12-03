@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
@@ -11,6 +12,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary.Source;
 
 namespace JFK_VarTab
 {
@@ -615,6 +617,14 @@ namespace JFK_VarTab
             }
 
 
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            var rd = new StreamReader("J:\\git\\s7\\Standard\\SRM\\Achse.awl");
+            AWLSourceParser.ParseAWL(rd.ReadToEnd(), null);
+            rd = new StreamReader("J:\\git\\s7\\Standard\\SRM\\Achsen.awl");
+            AWLSourceParser.ParseAWL(rd.ReadToEnd(), null);
         }
 
        

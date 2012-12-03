@@ -76,30 +76,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             if (myCmd.Command == "NETWORK")
                 return null;
-            else if (myCmd.Command == Memnoic.opTAK[MN])
+            else if (myCmd.Command == Mnemonic.opTAK[MN])
                 return new byte[] { 0x70, 0x02 };
-            else if (myCmd.Command == Memnoic.opPUSH[MN])
+            else if (myCmd.Command == Mnemonic.opPUSH[MN])
                 return new byte[] { 0x68, 0x2E };
-            else if (myCmd.Command == Memnoic.opPOP[MN])
+            else if (myCmd.Command == Mnemonic.opPOP[MN])
                 return new byte[] { 0x68, 0x3E };
-            else if (myCmd.Command == Memnoic.opENT[MN])
+            else if (myCmd.Command == Mnemonic.opENT[MN])
                 return new byte[] { 0x60, 0x08 };
-            else if (myCmd.Command == Memnoic.opLEAVE[MN])
+            else if (myCmd.Command == Mnemonic.opLEAVE[MN])
                 return new byte[] { 0x68, 0x4E };
-            else if (myCmd.Command == Memnoic.opPAR1[MN])
+            else if (myCmd.Command == Mnemonic.opPAR1[MN])
                 return new byte[] { 0xFE, 0x06 };
-            else if (myCmd.Command == Memnoic.opPAR2[MN])
+            else if (myCmd.Command == Mnemonic.opPAR2[MN])
                 return new byte[] { 0xFE, 0x0E };
-            else if (myCmd.Command == Memnoic.opNOP[MN])
+            else if (myCmd.Command == Mnemonic.opNOP[MN])
                 if (myCmd.Parameter == "0")
                     return new byte[] { 0x00, 0x00 };
                 else
                     return new byte[] { 0xFF, 0xFF };
-            else if (myCmd.Command == Memnoic.opINC[MN])
+            else if (myCmd.Command == Mnemonic.opINC[MN])
                 return new byte[] { 0x11, Convert.ToByte(myCmd.Parameter) };
-            else if (myCmd.Command == Memnoic.opBLD[MN])
+            else if (myCmd.Command == Mnemonic.opBLD[MN])
                 return new byte[] { 0x10, Convert.ToByte(myCmd.Parameter) };
-            else if (myCmd.Command == Memnoic.opDEC[MN])
+            else if (myCmd.Command == Mnemonic.opDEC[MN])
                 return new byte[] { 0x19, Convert.ToByte(myCmd.Parameter) };
             else if (myCmd.Command == "+D")
                 return new byte[] { 0x60, 0x0D };
@@ -109,7 +109,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 return new byte[] { 0x60, 0x0A };
             else if (myCmd.Command == "/D")
                 return new byte[] { 0x60, 0x0E };
-            else if (myCmd.Command == Memnoic.opMOD[MN])
+            else if (myCmd.Command == Mnemonic.opMOD[MN])
                 return new byte[] { 0x60, 0x01 };
             else if (myCmd.Command == "+I")
                 return new byte[] { 0x79, 0x05 };
@@ -119,25 +119,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 return new byte[] { 0x60, 0x04 };
             else if (myCmd.Command == "/I")
                 return new byte[] { 0x60, 0x00 };
-            else if (myCmd.Command == Memnoic.opSQR[MN])
+            else if (myCmd.Command == Mnemonic.opSQR[MN])
                 return new byte[] { 0x60, 0x1C };
-            else if (myCmd.Command == Memnoic.opSQRT[MN])
+            else if (myCmd.Command == Mnemonic.opSQRT[MN])
                 return new byte[] { 0x60, 0x14 };
-            else if (myCmd.Command == Memnoic.opEXP[MN])
+            else if (myCmd.Command == Mnemonic.opEXP[MN])
                 return new byte[] { 0x60, 0x1B };
-            else if (myCmd.Command == Memnoic.opLN[MN])
+            else if (myCmd.Command == Mnemonic.opLN[MN])
                 return new byte[] { 0x60, 0x13 };
-            else if (myCmd.Command == Memnoic.opSIN[MN])
+            else if (myCmd.Command == Mnemonic.opSIN[MN])
                 return new byte[] { 0x60, 0x10 };
-            else if (myCmd.Command == Memnoic.opCOS[MN])
+            else if (myCmd.Command == Mnemonic.opCOS[MN])
                 return new byte[] { 0x60, 0x11 };
-            else if (myCmd.Command == Memnoic.opTAN[MN])
+            else if (myCmd.Command == Mnemonic.opTAN[MN])
                 return new byte[] { 0x60, 0x12 };
-            else if (myCmd.Command == Memnoic.opASIN[MN])
+            else if (myCmd.Command == Mnemonic.opASIN[MN])
                 return new byte[] { 0x60, 0x18 };
-            else if (myCmd.Command == Memnoic.opACOS[MN])
+            else if (myCmd.Command == Mnemonic.opACOS[MN])
                 return new byte[] { 0x60, 0x19 };
-            else if (myCmd.Command == Memnoic.opATAN[MN])
+            else if (myCmd.Command == Mnemonic.opATAN[MN])
                 return new byte[] { 0x60, 0x1A };
             else if (myCmd.Command == "+R")
                 return new byte[] { 0x60, 0x0F };
@@ -147,81 +147,81 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 return new byte[] { 0x60, 0x07 };
             else if (myCmd.Command == "/R")
                 return new byte[] { 0x60, 0x03 };
-            else if (myCmd.Command == Memnoic.opBTI[MN])
+            else if (myCmd.Command == Mnemonic.opBTI[MN])
                 return new byte[] { 0x68, 0x0C };
-            else if (myCmd.Command == Memnoic.opITB[MN])
+            else if (myCmd.Command == Mnemonic.opITB[MN])
                 return new byte[] { 0x68, 0x08 };
-            else if (myCmd.Command == Memnoic.opBTD[MN])
+            else if (myCmd.Command == Mnemonic.opBTD[MN])
                 return new byte[] { 0x68, 0x08 };
-            else if (myCmd.Command == Memnoic.opITD[MN])
+            else if (myCmd.Command == Mnemonic.opITD[MN])
                 return new byte[] { 0x68, 0x1E };
-            else if (myCmd.Command == Memnoic.opDTB[MN])
+            else if (myCmd.Command == Mnemonic.opDTB[MN])
                 return new byte[] { 0x68, 0x0A };
-            else if (myCmd.Command == Memnoic.opDTR[MN])
+            else if (myCmd.Command == Mnemonic.opDTR[MN])
                 return new byte[] { 0x68, 0x06 };
-            else if (myCmd.Command == Memnoic.opINVI[MN])
+            else if (myCmd.Command == Mnemonic.opINVI[MN])
                 return new byte[] { 0x01, 0x00 };
-            else if (myCmd.Command == Memnoic.opINVD[MN])
+            else if (myCmd.Command == Mnemonic.opINVD[MN])
                 return new byte[] { 0x68, 0x0D };
-            else if (myCmd.Command == Memnoic.opNEGI[MN])
+            else if (myCmd.Command == Mnemonic.opNEGI[MN])
                 return new byte[] { 0x09, 0x00 };
-            else if (myCmd.Command == Memnoic.opNEGD[MN])
+            else if (myCmd.Command == Mnemonic.opNEGD[MN])
                 return new byte[] { 0x68, 0x07 };
-            else if (myCmd.Command == Memnoic.opNEGR[MN])
+            else if (myCmd.Command == Mnemonic.opNEGR[MN])
                 return new byte[] { 0x60, 0x06 };
-            else if (myCmd.Command == Memnoic.opTAW[MN])
+            else if (myCmd.Command == Mnemonic.opTAW[MN])
                 return new byte[] { 0x68, 0x1A };
-            else if (myCmd.Command == Memnoic.opTAD[MN])
+            else if (myCmd.Command == Mnemonic.opTAD[MN])
                 return new byte[] { 0x68, 0x1B };
-            else if (myCmd.Command == Memnoic.opRND[MN])
+            else if (myCmd.Command == Mnemonic.opRND[MN])
                 return new byte[] { 0x68, 0x5C };
-            else if (myCmd.Command == Memnoic.opTRUNC[MN])
+            else if (myCmd.Command == Mnemonic.opTRUNC[MN])
                 return new byte[] { 0x68, 0x5F };
-            else if (myCmd.Command == Memnoic.opRNDP[MN])
+            else if (myCmd.Command == Mnemonic.opRNDP[MN])
                 return new byte[] { 0x68, 0x5E };
-            else if (myCmd.Command == Memnoic.opRNDM[MN])
+            else if (myCmd.Command == Mnemonic.opRNDM[MN])
                 return new byte[] { 0x68, 0x5D };
-            else if (myCmd.Command == Memnoic.opABS[MN])
+            else if (myCmd.Command == Mnemonic.opABS[MN])
                 return new byte[] { 0x60, 0x02 };
-            else if (myCmd.Command == Memnoic.opBE[MN])
+            else if (myCmd.Command == Mnemonic.opBE[MN])
                 return new byte[] { 0x65, 0x00 };
-            else if (myCmd.Command == Memnoic.opBEA[MN])
+            else if (myCmd.Command == Mnemonic.opBEA[MN])
                 return new byte[] { 0x65, 0x01 };
-            else if (myCmd.Command == Memnoic.opBEB[MN])
+            else if (myCmd.Command == Mnemonic.opBEB[MN])
                 return new byte[] { 0x05, 0x00 };
-            else if (myCmd.Command == Memnoic.opCLR[MN])
+            else if (myCmd.Command == Mnemonic.opCLR[MN])
                 return new byte[] { 0x68, 0x1C };
-            else if (myCmd.Command == Memnoic.opNOT[MN])
+            else if (myCmd.Command == Mnemonic.opNOT[MN])
                 return new byte[] { 0x68, 0x2D };
-            else if (myCmd.Command == Memnoic.opSET[MN])
+            else if (myCmd.Command == Mnemonic.opSET[MN])
                 return new byte[] { 0x68, 0x1D };
-            else if (myCmd.Command == Memnoic.opSAVE[MN])
+            else if (myCmd.Command == Mnemonic.opSAVE[MN])
                 return new byte[] { 0x68, 0x2C };
-            else if (myCmd.Command == Memnoic.opUO[MN])
+            else if (myCmd.Command == Mnemonic.opUO[MN])
                 return new byte[] { 0xBA, 0x00 };
-            else if (myCmd.Command == Memnoic.opOO[MN])
+            else if (myCmd.Command == Mnemonic.opOO[MN])
                 return new byte[] { 0xBB, 0x00 };
-            else if (myCmd.Command == Memnoic.opUNO[MN])
+            else if (myCmd.Command == Mnemonic.opUNO[MN])
                 return new byte[] { 0xFF, 0xF1 };
-            else if (myCmd.Command == Memnoic.opONO[MN])
+            else if (myCmd.Command == Mnemonic.opONO[MN])
                 return new byte[] { 0xFF, 0xF3 };
-            else if (myCmd.Command == Memnoic.opMCRA[MN])
+            else if (myCmd.Command == Mnemonic.opMCRA[MN])
                 return new byte[] { 0x68, 0x3a };
-            else if (myCmd.Command == Memnoic.opMCRD[MN])
+            else if (myCmd.Command == Mnemonic.opMCRD[MN])
                 return new byte[] { 0x68, 0x3b };
-            else if (myCmd.Command == Memnoic.opMCRO[MN])
+            else if (myCmd.Command == Mnemonic.opMCRO[MN])
                 return new byte[] { 0x68, 0x3c };
-            else if (myCmd.Command == Memnoic.opMCRC[MN])
+            else if (myCmd.Command == Mnemonic.opMCRC[MN])
                 return new byte[] { 0x68, 0x3d };
-            else if (myCmd.Command == Memnoic.opXO[MN])
+            else if (myCmd.Command == Mnemonic.opXO[MN])
                 return new byte[] { 0xFF, 0xF4 };
-            else if (myCmd.Command == Memnoic.opXNO[MN])
+            else if (myCmd.Command == Mnemonic.opXNO[MN])
                 return new byte[] { 0xFF, 0xF5 };
-            else if (myCmd.Command == Memnoic.opTAR[MN])
+            else if (myCmd.Command == Mnemonic.opTAR[MN])
                 return new byte[] { 0xFE, 0x08 };
-            else if (myCmd.Command == Memnoic.opTDB[MN])
+            else if (myCmd.Command == Mnemonic.opTDB[MN])
                 return new byte[] { 0xFB, 0x7C };
-            else if (myCmd.Command == Memnoic.opUC[MN])
+            else if (myCmd.Command == Mnemonic.opUC[MN])
             {
                 switch (myCmd.GetParameterType())
                 {

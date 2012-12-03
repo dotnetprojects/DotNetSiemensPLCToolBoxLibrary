@@ -120,7 +120,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (AWLCode!=null)
                 foreach (var plcFunctionBlockRow in AWLCode)
                 {
-                    plcFunctionBlockRow.ProjectLanguage = ProjectLanguage;
+                    plcFunctionBlockRow.MnemonicLanguage = MnemonicLanguage;
                     //retVal.Append(/* "0x" + */ bytecnt.ToString(/* "X" */).PadLeft(4, '0') + "  :");
                     retVal.Append(plcFunctionBlockRow.ToString());
                     retVal.Append("\r\n");

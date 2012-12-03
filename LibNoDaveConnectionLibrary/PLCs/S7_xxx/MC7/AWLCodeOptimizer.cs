@@ -46,7 +46,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             {
                 S7FunctionBlockRow myAkVal = (S7FunctionBlockRow)myPLCBlock.AWLCode[n];
 
-                if (myAkVal.Command == Memnoic.opNOP[MN] || myAkVal.Command == Memnoic.opBLD[MN])
+                if (myAkVal.Command == Mnemonic.opNOP[MN] || myAkVal.Command == Mnemonic.opBLD[MN])
                 {
                     if (myAkVal.Label == "")
                         delLst.Add(myAkVal);
@@ -56,12 +56,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         delLst.Add(myAkVal);
                     }
                 }
-                else if (myAkVal.Command == Memnoic.opAUF[MN] && myAkVal.Label == "")
+                else if (myAkVal.Command == Mnemonic.opAUF[MN] && myAkVal.Label == "")
                     if (akdb == myAkVal.Parameter && !akdb.Contains("[") && myAkVal.Label == "")
                         delLst.Add(myAkVal);
                     else
                         akdb = myAkVal.Parameter;
-                else if (myAkVal.Label != "" || myAkVal.Command == Memnoic.opUC[akMemnoic] || myAkVal.Command == Memnoic.opCC[akMemnoic]) //If there is a Jump or Call, reset the actual DB!
+                else if (myAkVal.Label != "" || myAkVal.Command == Mnemonic.opUC[akMemnoic] || myAkVal.Command == Mnemonic.opCC[akMemnoic]) //If there is a Jump or Call, reset the actual DB!
                     akdb = "";
 
             }

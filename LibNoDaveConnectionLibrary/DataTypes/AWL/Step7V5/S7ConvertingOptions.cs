@@ -5,8 +5,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
     public class S7ConvertingOptions
     {
         public S7ConvertingOptions()
+            : this(MnemonicLanguage.German)
         {
-            this.Memnoic = 0;
+        }
+
+        public S7ConvertingOptions(MnemonicLanguage Mnemonic)
+        {
+            this.Mnemonic = Mnemonic;
             this.CombineDBOpenAndDBAccess = true;
             this.ReplaceDBAccessesWithSymbolNames = true;
             this.ReplaceDIAccessesWithSymbolNames = true;
@@ -17,7 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
         }
 
         public bool UseComments { get; set; }
-        public int Memnoic { get; set; }
+        public MnemonicLanguage Mnemonic { get; set; }
         public bool CombineDBOpenAndDBAccess { get; set; }
         public bool ReplaceDBAccessesWithSymbolNames { get; set; }
 

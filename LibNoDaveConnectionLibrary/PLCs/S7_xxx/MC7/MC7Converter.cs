@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -113,7 +114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);
                 retBlock.BlockAttribute = Convert.ToString(MC7Code[3] - 1);
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage) MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
-                retBlock.ProjectLanguage = (DotNetSiemensPLCToolBoxLibrary.Projectfiles.Project.Language)MnemoricLanguage;
+                retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
                 retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);
                 retBlock.BlockNumber = (MC7Code[6]*0x100) + MC7Code[7];
                 retBlock.Length = libnodave.getU32from(MC7Code, 8);

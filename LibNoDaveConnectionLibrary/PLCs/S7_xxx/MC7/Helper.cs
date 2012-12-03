@@ -563,7 +563,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk.AWLCode)
             {
-                if (plcFunctionBlockRow.Command == MC7.Memnoic.opTAR2[Memnoic] && plcFunctionBlockRow.Parameter.Contains("LD"))
+                if (plcFunctionBlockRow.Command == MC7.Mnemonic.opTAR2[Memnoic] && plcFunctionBlockRow.Parameter.Contains("LD"))
                 {
                     retVal.AddRange(tmpVal);
                     tmpVal.Clear();
@@ -573,7 +573,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     bitaddr = 0;
                     TarLdTarget = plcFunctionBlockRow.Parameter;
                 }
-                else if (combineStep == 1 && plcFunctionBlockRow.Command == MC7.Memnoic.opPAR2[Memnoic])
+                else if (combineStep == 1 && plcFunctionBlockRow.Command == MC7.Mnemonic.opPAR2[Memnoic])
                 {
                     tmpVal.Add(plcFunctionBlockRow);
                     byteaddr = Convert.ToInt32(plcFunctionBlockRow.Parameter.Split(new char[] {'#'})[1]);
@@ -584,7 +584,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     combineStep = 2;
                 }
                 else if (
-                    (combineStep == 2 && plcFunctionBlockRow.Command == MC7.Memnoic.opLAR2[Memnoic] && plcFunctionBlockRow.Parameter == TarLdTarget) ||
+                    (combineStep == 2 && plcFunctionBlockRow.Command == MC7.Mnemonic.opLAR2[Memnoic] && plcFunctionBlockRow.Parameter == TarLdTarget) ||
                     (combineStep == 0 && plcFunctionBlockRow.Parameter.Contains("[AR2,P#"))
                     )
                 {
@@ -627,24 +627,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             int MN = akMemnoic;
 
-            if (myCmd.Command == Memnoic.opSPA[MN]
-               || myCmd.Command == Memnoic.opSPB[MN]
-               || myCmd.Command == Memnoic.opSPBB[MN]
-               || myCmd.Command == Memnoic.opSPBI[MN]
-               || myCmd.Command == Memnoic.opSPBIN[MN]
-               || myCmd.Command == Memnoic.opSPBN[MN]
-               || myCmd.Command == Memnoic.opSPBNB[MN]
-               || myCmd.Command == Memnoic.opSPL[MN]
-               || myCmd.Command == Memnoic.opSPM[MN]
-               || myCmd.Command == Memnoic.opSPMZ[MN]
-               || myCmd.Command == Memnoic.opSPN[MN]
-               || myCmd.Command == Memnoic.opSPO[MN]
-               || myCmd.Command == Memnoic.opSPP[MN]
-               || myCmd.Command == Memnoic.opSPPZ[MN]
-               || myCmd.Command == Memnoic.opSPS[MN]
-               || myCmd.Command == Memnoic.opSPU[MN]
-               || myCmd.Command == Memnoic.opSPZ[MN]
-               || myCmd.Command == Memnoic.opLOOP[MN])
+            if (myCmd.Command == Mnemonic.opSPA[MN]
+               || myCmd.Command == Mnemonic.opSPB[MN]
+               || myCmd.Command == Mnemonic.opSPBB[MN]
+               || myCmd.Command == Mnemonic.opSPBI[MN]
+               || myCmd.Command == Mnemonic.opSPBIN[MN]
+               || myCmd.Command == Mnemonic.opSPBN[MN]
+               || myCmd.Command == Mnemonic.opSPBNB[MN]
+               || myCmd.Command == Mnemonic.opSPL[MN]
+               || myCmd.Command == Mnemonic.opSPM[MN]
+               || myCmd.Command == Mnemonic.opSPMZ[MN]
+               || myCmd.Command == Mnemonic.opSPN[MN]
+               || myCmd.Command == Mnemonic.opSPO[MN]
+               || myCmd.Command == Mnemonic.opSPP[MN]
+               || myCmd.Command == Mnemonic.opSPPZ[MN]
+               || myCmd.Command == Mnemonic.opSPS[MN]
+               || myCmd.Command == Mnemonic.opSPU[MN]
+               || myCmd.Command == Mnemonic.opSPZ[MN]
+               || myCmd.Command == Mnemonic.opLOOP[MN])
                 return true;
             return false;
         }       

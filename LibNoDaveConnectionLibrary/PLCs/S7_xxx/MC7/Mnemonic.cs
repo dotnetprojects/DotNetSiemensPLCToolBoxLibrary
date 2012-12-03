@@ -26,7 +26,7 @@
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
-    public static class Memnoic
+    public static class Mnemonic
     {
         public static string[] adB = new string[] { "B", "B" };
         public static string[] adW = new string[] { "W", "W" };

@@ -253,18 +253,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                             cmd.ExecuteNonQuery();
                         }
 
-                        //Ringpufferarchiv...
-                        if (datasetConfig.MaxDatasets > 0)
-                        {
-                            string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + datasetConfig.MaxDatasets.ToString() + ")";
-                            cmd.CommandText = delstr;
-                            cmd.ExecuteNonQuery();
-                        }
+                       
                     }
 
                     if (myConfig.CombineMultipleInsertsInATransaction && dbTrans != null)
                         dbTrans.Commit();
                 }
+
+
+                //Ringpufferarchiv...
+                if (datasetConfig.MaxDatasets > 0)
+                {
+                    using (DbCommand cmd = myDBConn.CreateCommand())
+                    {
+                        string delstr = "DELETE FROM " + dataTable + " WHERE id <= (SELECT max(id) FROM " + dataTable + ") - (" + datasetConfig.MaxDatasets.ToString() + ")";
+                        cmd.CommandText = delstr;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
 
                 if (dbTrans != null)
                 {

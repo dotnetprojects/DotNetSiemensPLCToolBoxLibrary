@@ -239,87 +239,87 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             isDBcall = System.Text.RegularExpressions.Regex.IsMatch(this.Parameter, "DB[0-9]");
 
             //Todo: Look at this commands wich registeres are changed
-            if (this.Command == Memnoic.opCALL[MN] || this.Command == Memnoic.opCC[MN] ||
-                this.Command == Memnoic.opENT[MN] || this.Command == Memnoic.opEXP[MN] ||
-                this.Command == Memnoic.opFR[MN] ||
-                this.Command == Memnoic.opINC[MN] || this.Command == Memnoic.opINVD[MN] ||
-                this.Command == Memnoic.opINVI[MN] || this.Command == Memnoic.opITB[MN] ||
-                this.Command == Memnoic.opITD[MN] ||
+            if (this.Command == Mnemonic.opCALL[MN] || this.Command == Mnemonic.opCC[MN] ||
+                this.Command == Mnemonic.opENT[MN] || this.Command == Mnemonic.opEXP[MN] ||
+                this.Command == Mnemonic.opFR[MN] ||
+                this.Command == Mnemonic.opINC[MN] || this.Command == Mnemonic.opINVD[MN] ||
+                this.Command == Mnemonic.opINVI[MN] || this.Command == Mnemonic.opITB[MN] ||
+                this.Command == Mnemonic.opITD[MN] ||
 
-                this.Command == Memnoic.opLC[MN] || this.Command == Memnoic.opLEAVE[MN] ||
-                this.Command == Memnoic.opLN[MN] || this.Command == Memnoic.opLOOP[MN] ||
-                this.Command == Memnoic.opMCRA[MN] || this.Command == Memnoic.opMCRC[MN] ||
-                this.Command == Memnoic.opMCRD[MN] || this.Command == Memnoic.opMCRO[MN] ||
-                this.Command == Memnoic.opNEGD[MN] ||
-                this.Command == Memnoic.opNEGI[MN] || this.Command == Memnoic.opNEGR[MN] ||
-                this.Command == Memnoic.opNOT[MN] ||
-                this.Command == Memnoic.opOD[MN] ||
-                this.Command == Memnoic.opONO[MN] || this.Command == Memnoic.opOO[MN] ||
-                this.Command == Memnoic.opOW[MN] || this.Command == Memnoic.opPAR1[MN] ||
-                this.Command == Memnoic.opPAR2[MN] ||
-                this.Command == Memnoic.opPOP[MN] || this.Command == Memnoic.opPUSH[MN] ||
-                this.Command == Memnoic.opRLD[MN] ||
-                this.Command == Memnoic.opRLDA[MN] || this.Command == Memnoic.opRND[MN] ||
-                this.Command == Memnoic.opRNDM[MN] || this.Command == Memnoic.opRNDP[MN] ||
-                this.Command == Memnoic.opRRD[MN] || this.Command == Memnoic.opRRDA[MN] ||
-                this.Command == Memnoic.opSA[MN] ||
-                this.Command == Memnoic.opSAVE[MN] || this.Command == Memnoic.opSE[MN] ||
-                this.Command == Memnoic.opSI[MN] ||
-                this.Command == Memnoic.opSS[MN] || this.Command == Memnoic.opSSD[MN] ||
-                this.Command == Memnoic.opSSI[MN] || this.Command == Memnoic.opSV[MN] ||
-                this.Command == Memnoic.opTRUNC[MN] ||
-                this.Command == Memnoic.opUO[MN] || this.Command == Memnoic.opUC[MN] ||
-                this.Command == Memnoic.opUNO[MN] || this.Command == Memnoic.opUD[MN] ||
-                this.Command == Memnoic.opUW[MN] ||
-                this.Command == Memnoic.opXNO[MN] || this.Command == Memnoic.opXO[MN] ||
-                this.Command == Memnoic.opXOD[MN] || this.Command == Memnoic.opXOW[MN] ||
-                this.Command == Memnoic.opZR[MN] || this.Command == Memnoic.opZV[MN])
+                this.Command == Mnemonic.opLC[MN] || this.Command == Mnemonic.opLEAVE[MN] ||
+                this.Command == Mnemonic.opLN[MN] || this.Command == Mnemonic.opLOOP[MN] ||
+                this.Command == Mnemonic.opMCRA[MN] || this.Command == Mnemonic.opMCRC[MN] ||
+                this.Command == Mnemonic.opMCRD[MN] || this.Command == Mnemonic.opMCRO[MN] ||
+                this.Command == Mnemonic.opNEGD[MN] ||
+                this.Command == Mnemonic.opNEGI[MN] || this.Command == Mnemonic.opNEGR[MN] ||
+                this.Command == Mnemonic.opNOT[MN] ||
+                this.Command == Mnemonic.opOD[MN] ||
+                this.Command == Mnemonic.opONO[MN] || this.Command == Mnemonic.opOO[MN] ||
+                this.Command == Mnemonic.opOW[MN] || this.Command == Mnemonic.opPAR1[MN] ||
+                this.Command == Mnemonic.opPAR2[MN] ||
+                this.Command == Mnemonic.opPOP[MN] || this.Command == Mnemonic.opPUSH[MN] ||
+                this.Command == Mnemonic.opRLD[MN] ||
+                this.Command == Mnemonic.opRLDA[MN] || this.Command == Mnemonic.opRND[MN] ||
+                this.Command == Mnemonic.opRNDM[MN] || this.Command == Mnemonic.opRNDP[MN] ||
+                this.Command == Mnemonic.opRRD[MN] || this.Command == Mnemonic.opRRDA[MN] ||
+                this.Command == Mnemonic.opSA[MN] ||
+                this.Command == Mnemonic.opSAVE[MN] || this.Command == Mnemonic.opSE[MN] ||
+                this.Command == Mnemonic.opSI[MN] ||
+                this.Command == Mnemonic.opSS[MN] || this.Command == Mnemonic.opSSD[MN] ||
+                this.Command == Mnemonic.opSSI[MN] || this.Command == Mnemonic.opSV[MN] ||
+                this.Command == Mnemonic.opTRUNC[MN] ||
+                this.Command == Mnemonic.opUO[MN] || this.Command == Mnemonic.opUC[MN] ||
+                this.Command == Mnemonic.opUNO[MN] || this.Command == Mnemonic.opUD[MN] ||
+                this.Command == Mnemonic.opUW[MN] ||
+                this.Command == Mnemonic.opXNO[MN] || this.Command == Mnemonic.opXO[MN] ||
+                this.Command == Mnemonic.opXOD[MN] || this.Command == Mnemonic.opXOW[MN] ||
+                this.Command == Mnemonic.opZR[MN] || this.Command == Mnemonic.opZV[MN])
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.AR1 |
                         SelectedStatusValues.AR2 | SelectedStatusValues.DB | SelectedStatusValues.STW) & mySel;
             else if (this.Command == "+I" || this.Command == "-I" || this.Command == "*I" || this.Command == "/I" || this.Command == "+D" || this.Command == "-D" || this.Command == "*D" || this.Command == "/D" || this.Command == "+R" || this.Command == "-R" || this.Command == "*R" || this.Command == "/R" || this.Command == "MOD")
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.STW) & mySel;
-            else if (this.Command == Memnoic.opPLU[MN] || this.Command == Memnoic.opABS[MN] || this.Command == Memnoic.opBTD[MN] ||
-                this.Command == Memnoic.opACOS[MN] || this.Command == Memnoic.opASIN[MN] || this.Command == Memnoic.opBTI[MN] ||
-                this.Command == Memnoic.opATAN[MN] || this.Command == Memnoic.opTAN[MN] || this.Command == Memnoic.opSIN[MN] ||
-                this.Command == Memnoic.opCOS[MN] || this.Command == Memnoic.opSQR[MN] || this.Command == Memnoic.opSQRT[MN] ||
-                this.Command == Memnoic.opDEC[MN] || this.Command == Memnoic.opTAW[MN] || this.Command == Memnoic.opTAD[MN] ||
-                this.Command == Memnoic.opDTB[MN] || this.Command == Memnoic.opDTR[MN] || this.Command == Memnoic.opSLD[MN] ||
-                this.Command == Memnoic.opSLW[MN] || this.Command == Memnoic.opSRD[MN] || this.Command == Memnoic.opSRW[MN])
+            else if (this.Command == Mnemonic.opPLU[MN] || this.Command == Mnemonic.opABS[MN] || this.Command == Mnemonic.opBTD[MN] ||
+                this.Command == Mnemonic.opACOS[MN] || this.Command == Mnemonic.opASIN[MN] || this.Command == Mnemonic.opBTI[MN] ||
+                this.Command == Mnemonic.opATAN[MN] || this.Command == Mnemonic.opTAN[MN] || this.Command == Mnemonic.opSIN[MN] ||
+                this.Command == Mnemonic.opCOS[MN] || this.Command == Mnemonic.opSQR[MN] || this.Command == Mnemonic.opSQRT[MN] ||
+                this.Command == Mnemonic.opDEC[MN] || this.Command == Mnemonic.opTAW[MN] || this.Command == Mnemonic.opTAD[MN] ||
+                this.Command == Mnemonic.opDTB[MN] || this.Command == Mnemonic.opDTR[MN] || this.Command == Mnemonic.opSLD[MN] ||
+                this.Command == Mnemonic.opSLW[MN] || this.Command == Mnemonic.opSRD[MN] || this.Command == Mnemonic.opSRW[MN])
                 retVal = (SelectedStatusValues.Akku1) & mySel;
-            else if (this.Command == Memnoic.opTAR[MN])
+            else if (this.Command == Mnemonic.opTAR[MN])
                 retVal = (SelectedStatusValues.AR1 | SelectedStatusValues.AR2) & mySel;
-            else if (this.Command == Memnoic.opLAR1[MN])
+            else if (this.Command == Mnemonic.opLAR1[MN])
                 retVal = (SelectedStatusValues.AR1) & mySel;
-            else if (this.Command == Memnoic.opLAR2[MN])
+            else if (this.Command == Mnemonic.opLAR2[MN])
                 retVal = (SelectedStatusValues.AR2) & mySel;
-            else if ((this.Command == Memnoic.opL[MN]) && isDBcall)
+            else if ((this.Command == Mnemonic.opL[MN]) && isDBcall)
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.DB) & mySel;
-            else if ((this.Command == Memnoic.opT[MN]) && isDBcall)
+            else if ((this.Command == Mnemonic.opT[MN]) && isDBcall)
                 retVal = (SelectedStatusValues.DB) & mySel;
-            else if (this.Command == Memnoic.opTAK[MN] || this.Command == Memnoic.opL[MN] || this.Command == Memnoic.opTAR1[MN] || this.Command == Memnoic.opTAR2[MN])
+            else if (this.Command == Mnemonic.opTAK[MN] || this.Command == Mnemonic.opL[MN] || this.Command == Mnemonic.opTAR1[MN] || this.Command == Mnemonic.opTAR2[MN])
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2) & mySel;
-            else if ((this.Command == Memnoic.opU[MN] || this.Command == Memnoic.opUN[MN] || this.Command == Memnoic.opO[MN] || this.Command == Memnoic.opON[MN] || this.Command == Memnoic.opX[MN] || this.Command == Memnoic.opXN[MN] || this.Command == Memnoic.opFN[MN] || this.Command == Memnoic.opFP[MN] || this.Command == Memnoic.opZUW[MN] || this.Command == Memnoic.opS[MN] || this.Command == Memnoic.opR[MN] || this.Command == Memnoic.opT[MN]) && isDBcall)
+            else if ((this.Command == Mnemonic.opU[MN] || this.Command == Mnemonic.opUN[MN] || this.Command == Mnemonic.opO[MN] || this.Command == Mnemonic.opON[MN] || this.Command == Mnemonic.opX[MN] || this.Command == Mnemonic.opXN[MN] || this.Command == Mnemonic.opFN[MN] || this.Command == Mnemonic.opFP[MN] || this.Command == Mnemonic.opZUW[MN] || this.Command == Mnemonic.opS[MN] || this.Command == Mnemonic.opR[MN] || this.Command == Mnemonic.opT[MN]) && isDBcall)
                 retVal = (SelectedStatusValues.STW | SelectedStatusValues.DB) & mySel;
-            else if (this.Command == Memnoic.opU[MN] || this.Command == Memnoic.opUN[MN] || this.Command == Memnoic.opO[MN] ||
-                    this.Command == Memnoic.opON[MN] || this.Command == Memnoic.opX[MN] || this.Command == Memnoic.opXN[MN] ||
-                    this.Command == Memnoic.opFN[MN] || this.Command == Memnoic.opFP[MN] || this.Command == Memnoic.opZUW[MN] ||
-                    this.Command == Memnoic.opS[MN] || this.Command == Memnoic.opR[MN] || this.Command == Memnoic.opBE[MN] ||
-                    this.Command == Memnoic.opBEA[MN] || this.Command == Memnoic.opBEB[MN] || this.Command == ")")
+            else if (this.Command == Mnemonic.opU[MN] || this.Command == Mnemonic.opUN[MN] || this.Command == Mnemonic.opO[MN] ||
+                    this.Command == Mnemonic.opON[MN] || this.Command == Mnemonic.opX[MN] || this.Command == Mnemonic.opXN[MN] ||
+                    this.Command == Mnemonic.opFN[MN] || this.Command == Mnemonic.opFP[MN] || this.Command == Mnemonic.opZUW[MN] ||
+                    this.Command == Mnemonic.opS[MN] || this.Command == Mnemonic.opR[MN] || this.Command == Mnemonic.opBE[MN] ||
+                    this.Command == Mnemonic.opBEA[MN] || this.Command == Mnemonic.opBEB[MN] || this.Command == ")")
                 retVal = (SelectedStatusValues.STW) & mySel;
-            else if (this.Command == Memnoic.opT[MN] || this.Command == Memnoic.opBLD[MN] || this.Command == Memnoic.opNOP[MN] ||
-                     this.Command == Memnoic.opSPA[MN])
+            else if (this.Command == Mnemonic.opT[MN] || this.Command == Mnemonic.opBLD[MN] || this.Command == Mnemonic.opNOP[MN] ||
+                     this.Command == Mnemonic.opSPA[MN])
                 retVal = 0;
-            else if (this.Command == Memnoic.opAUF[MN] || this.Command == Memnoic.opTDB[MN])
+            else if (this.Command == Mnemonic.opAUF[MN] || this.Command == Mnemonic.opTDB[MN])
                 retVal = (SelectedStatusValues.DB) & mySel;
-            else if (this.Command == Memnoic.opSPB[MN] || this.Command == Memnoic.opSPBB[MN] ||
-                     this.Command == Memnoic.opSPBI[MN] || this.Command == Memnoic.opSPBIN[MN] ||
-                     this.Command == Memnoic.opSPBN[MN] || this.Command == Memnoic.opSPBNB[MN] ||
-                     this.Command == Memnoic.opSPL[MN] || this.Command == Memnoic.opSPM[MN] ||
-                     this.Command == Memnoic.opSPMZ[MN] || this.Command == Memnoic.opSPN[MN] ||
-                     this.Command == Memnoic.opSPO[MN] || this.Command == Memnoic.opSPP[MN] ||
-                     this.Command == Memnoic.opSPPZ[MN] || this.Command == Memnoic.opSPS[MN] ||
-                     this.Command == Memnoic.opSPU[MN] || this.Command == Memnoic.opSPZ[MN] ||
-                     this.Command == Memnoic.opSET[MN] || this.Command == Memnoic.opCLR[MN])
+            else if (this.Command == Mnemonic.opSPB[MN] || this.Command == Mnemonic.opSPBB[MN] ||
+                     this.Command == Mnemonic.opSPBI[MN] || this.Command == Mnemonic.opSPBIN[MN] ||
+                     this.Command == Mnemonic.opSPBN[MN] || this.Command == Mnemonic.opSPBNB[MN] ||
+                     this.Command == Mnemonic.opSPL[MN] || this.Command == Mnemonic.opSPM[MN] ||
+                     this.Command == Mnemonic.opSPMZ[MN] || this.Command == Mnemonic.opSPN[MN] ||
+                     this.Command == Mnemonic.opSPO[MN] || this.Command == Mnemonic.opSPP[MN] ||
+                     this.Command == Mnemonic.opSPPZ[MN] || this.Command == Mnemonic.opSPS[MN] ||
+                     this.Command == Mnemonic.opSPU[MN] || this.Command == Mnemonic.opSPZ[MN] ||
+                     this.Command == Mnemonic.opSET[MN] || this.Command == Mnemonic.opCLR[MN])
                 retVal = (SelectedStatusValues.STW) & mySel;
             else
                 retVal = (SelectedStatusValues.Akku1 | SelectedStatusValues.Akku2 | SelectedStatusValues.AR1 |
@@ -577,7 +577,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand)
         {
             if (Command == "NETWORK")
-                return (ProjectLanguage == Project.Language.English ? "Network " : "Netzwerk ") + Parameter + " : " + NetworkName
+                return (MnemonicLanguage == MnemonicLanguage.English ? "Network " : "Netzwerk ") + Parameter + " : " + NetworkName
                        + ( string.IsNullOrEmpty(Comment) ? string.Empty : "\r\n\t Comment : " + Comment.Replace("\n", "\r\n\t           ") );
 
             string retVal = "";

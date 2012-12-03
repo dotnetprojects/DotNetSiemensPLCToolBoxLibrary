@@ -61,7 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     retVal.Add(new S7FunctionBlockRow()
                                    {
-                                       Command = Memnoic.opNOP[MN],
+                                       Command = Mnemonic.opNOP[MN],
                                        Parameter = "0"
                                    });
 
@@ -70,25 +70,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 else if (BD[pos] == 0x01 && BD[pos + 1] == 0x00)
                 {
-                    retVal.Add(new S7FunctionBlockRow() {Command = Memnoic.opINVI[MN]});
+                    retVal.Add(new S7FunctionBlockRow() {Command = Mnemonic.opINVI[MN]});
                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] {BD[pos], BD[pos + 1]};
                     pos += 2;
                 }
                 else if (BD[pos] == 0x05 && BD[pos + 1] == 0x00)
                 {
-                    retVal.Add(new S7FunctionBlockRow() {Command = Memnoic.opBEB[MN]});
+                    retVal.Add(new S7FunctionBlockRow() {Command = Mnemonic.opBEB[MN]});
                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] {BD[pos], BD[pos + 1]};
                     pos += 2;
                 }
                 else if (BD[pos] == 0x09 && BD[pos + 1] == 0x00)
                 {
-                    retVal.Add(new S7FunctionBlockRow() {Command = Memnoic.opNEGI[MN]});
+                    retVal.Add(new S7FunctionBlockRow() {Command = Mnemonic.opNEGI[MN]});
                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] {BD[pos], BD[pos + 1]};
                     pos += 2;
                 }
                 else if (BD[pos] == 0x49 && BD[pos + 1] == 0x00)
                 {
-                    retVal.Add(new S7FunctionBlockRow() {Command = Memnoic.opOW[MN]});
+                    retVal.Add(new S7FunctionBlockRow() {Command = Mnemonic.opOW[MN]});
                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] {BD[pos], BD[pos + 1]};
                     pos += 2;
                 }
@@ -100,19 +100,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     switch (BD[pos])
                     {
                         case (0x00):
-                            curr_op = HighByte < 0x90 ? Memnoic.opU[MN] : Memnoic.opUN[MN];
+                            curr_op = HighByte < 0x90 ? Mnemonic.opU[MN] : Mnemonic.opUN[MN];
                             break;
                         case (0x01):
-                            curr_op = HighByte < 0x90 ? Memnoic.opO[MN] : Memnoic.opON[MN];
+                            curr_op = HighByte < 0x90 ? Mnemonic.opO[MN] : Mnemonic.opON[MN];
                             break;
                         case (0x05):
-                            curr_op = HighByte < 0x90 ? Memnoic.opX[MN] : Memnoic.opXN[MN];
+                            curr_op = HighByte < 0x90 ? Mnemonic.opX[MN] : Mnemonic.opXN[MN];
                             break;
                         case (0x09):
-                            curr_op = HighByte < 0x90 ? Memnoic.opS[MN] : Memnoic.opR[MN];
+                            curr_op = HighByte < 0x90 ? Mnemonic.opS[MN] : Mnemonic.opR[MN];
                             break;
                         case (0x49):
-                            curr_op = HighByte < 0x90 ? Memnoic.opFP[MN] : Memnoic.opFN[MN];
+                            curr_op = HighByte < 0x90 ? Mnemonic.opFP[MN] : Mnemonic.opFN[MN];
                             break;
                     }
 
@@ -123,34 +123,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         case (0x10):
                         case (0x90):
-                            curr_ad = Memnoic.adE[MN];
+                            curr_ad = Mnemonic.adE[MN];
                             break;
                         case (0x20):
                         case (0xA0):
-                            curr_ad = Memnoic.adA[MN];
+                            curr_ad = Mnemonic.adA[MN];
                             break;
                         case (0x30):
                         case (0xB0):
-                            curr_ad = Memnoic.adM[MN];
+                            curr_ad = Mnemonic.adM[MN];
                             break;
                         case (0x40):
                         case (0xC0):
-                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
+                            if (retVal[retVal.Count - 1].Command == Mnemonic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
                             {
                                 ((S7FunctionBlockRow) retVal[retVal.Count - 1]).CombineDBAccess = true;
                                 //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
                                 //par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
                                 //retVal.RemoveAt(retVal.Count - 1);
                             }
-                            curr_ad = Memnoic.adDBX[MN];
+                            curr_ad = Mnemonic.adDBX[MN];
                             break;
                         case (0x50):
                         case (0xD0):
-                            curr_ad = Memnoic.adDIX[MN];
+                            curr_ad = Mnemonic.adDIX[MN];
                             break;
                         case (0x60):
                         case (0xE0):
-                            curr_ad = Memnoic.adL[MN];
+                            curr_ad = Mnemonic.adL[MN];
                             break;
                     }
                     int LowByte = BD[pos + 1] & 0x0F;
@@ -177,7 +177,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 switch (BD[pos + 1])
                                 {
                                     case 0x00:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opNOP[MN], Parameter = "0" });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opNOP[MN], Parameter = "0" });
                                         //Result = Result + Memnoic.opNOP[MN] + "0";
                                         ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                         pos += 2;
@@ -192,105 +192,105 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x02:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x04:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opFR[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opFR[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x0A:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = Memnoic.adMB[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = Mnemonic.adMB[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x0B:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opT[MN], Parameter = Memnoic.adMB[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opT[MN], Parameter = Mnemonic.adMB[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x0C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opLC[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opLC[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x10:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opBLD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opBLD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x11:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opINC[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opINC[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x12:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = Memnoic.adMW[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = Mnemonic.adMW[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x13:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opT[MN], Parameter = Memnoic.adMW[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opT[MN], Parameter = Mnemonic.adMW[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x14:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSA[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSA[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x19:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opDEC[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opDEC[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x1A:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = Memnoic.adMD[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = Mnemonic.adMD[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x1b:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opT[MN], Parameter = Memnoic.adMD[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opT[MN], Parameter = Mnemonic.adMD[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x1C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSV[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSV[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x1D:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opCC[MN], Parameter = Memnoic.adFC[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opCC[MN], Parameter = Mnemonic.adFC[MN] + Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opCC[MN] + Memnoic.adFC[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
                                 pos += 6;
@@ -298,7 +298,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x20:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opAUF[MN], Parameter = Memnoic.adDB[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opAUF[MN], Parameter = Mnemonic.adDB[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
@@ -332,7 +332,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x24:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSE[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSE[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opSE[MN] + Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -340,7 +340,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x28:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = "B#16#" + (BD[pos + 1]).ToString("X") });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = "B#16#" + (BD[pos + 1]).ToString("X") });
                                 //Result = Result + Memnoic.opL[MN] + "B#16#" + (BD[pos + 1]).ToString("X");
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -348,7 +348,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x29:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSLD[MN], Parameter = (BD[pos + 1]).ToString() });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSLD[MN], Parameter = (BD[pos + 1]).ToString() });
                                 //Result = Result + Memnoic.opSLD[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -356,7 +356,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x2C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSS[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSS[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opSS[MN] + Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -403,7 +403,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         //Result = Result + Helper.GetS5Time(BD[pos + 2], BD[pos + 3]);
                                         break;
                                 }
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = par });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = par });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                 pos += 4;
                             }
@@ -443,7 +443,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x34:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSI[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSI[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
@@ -489,7 +489,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         par = Helper.GetTOD(BD, pos + 2);
                                         break;
                                 }
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = par });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = par });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
                                 pos += 6;
                             }
@@ -529,14 +529,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x3C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opR[MN], Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opR[MN], Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x3D:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFC[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFC[MN] + Convert.ToString(BD[pos + 1]) });
 
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
 
@@ -562,7 +562,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 {
                                     case 0x00:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUW[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUW[MN] });
                                             //Result = Result + Memnoic.opUW[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
@@ -578,8 +578,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x17:
                                         retVal.Add(new S7FunctionBlockRow()
                                         {
-                                            Command = Memnoic.opZUW[MN],
-                                            Parameter = Memnoic.adE[MN] +
+                                            Command = Mnemonic.opZUW[MN],
+                                            Parameter = Mnemonic.adE[MN] +
                                                 Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." +
                                                 Convert.ToString(BD[pos + 1] - 0x10)
                                         });
@@ -599,8 +599,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x27:
                                         retVal.Add(new S7FunctionBlockRow()
                                         {
-                                            Command = Memnoic.opZUW[MN],
-                                            Parameter = Memnoic.adA[MN] +
+                                            Command = Mnemonic.opZUW[MN],
+                                            Parameter = Mnemonic.adA[MN] +
                                                 Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." +
                                                 Convert.ToString(BD[pos + 1] - 0x20)
                                         });
@@ -620,8 +620,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x37:
                                         retVal.Add(new S7FunctionBlockRow()
                                         {
-                                            Command = Memnoic.opZUW[MN],
-                                            Parameter = Memnoic.adM[MN] +
+                                            Command = Mnemonic.opZUW[MN],
+                                            Parameter = Mnemonic.adM[MN] +
                                                 Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." +
                                                 Convert.ToString(BD[pos + 1] - 0x30)
                                         });
@@ -639,14 +639,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string par = "";
                                             byte[] DBByte = null;
-                                            if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
+                                            if (retVal[retVal.Count - 1].Command == Mnemonic.opAUF[MN] && !((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter.Contains("["))// && CombineDBOpenAndCommand)
                                             {
                                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).CombineDBAccess = true;
                                                 //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
                                                 //par = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).Parameter + ".";
                                                 //retVal.RemoveAt(retVal.Count - 1);
                                             }
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opZUW[MN], Parameter = par + Memnoic.adDBX[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." + Convert.ToString(BD[pos + 1] - 0x40) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opZUW[MN], Parameter = par + Mnemonic.adDBX[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." + Convert.ToString(BD[pos + 1] - 0x40) });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             if (DBByte != null)
                                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = Helper.CombineByteArray(DBByte, ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7);
@@ -664,8 +664,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opZUW[MN],
-                                                               Parameter = Memnoic.adDIX[MN] +
+                                                               Command = Mnemonic.opZUW[MN],
+                                                               Parameter = Mnemonic.adDIX[MN] +
                                                                            Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                                            "." +
                                                                            Convert.ToString(BD[pos + 1] - 0x50)
@@ -687,8 +687,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x67:
                                         retVal.Add(new S7FunctionBlockRow()
                                         {
-                                            Command = Memnoic.opZUW[MN],
-                                            Parameter = Memnoic.adL[MN] +
+                                            Command = Mnemonic.opZUW[MN],
+                                            Parameter = Mnemonic.adL[MN] +
                                                 Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "." +
                                                 Convert.ToString(BD[pos + 1] - 0x60)
                                         });
@@ -710,8 +710,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opL[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opL[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opL[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -722,8 +722,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opFR[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opFR[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opFR[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -735,15 +735,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opL[MN],
-                                                       Parameter = Memnoic.adEB[MN] + Convert.ToString(BD[pos + 1])
+                                                       Command = Mnemonic.opL[MN],
+                                                       Parameter = Mnemonic.adEB[MN] + Convert.ToString(BD[pos + 1])
                                                    });
                                 //Result = Result + Memnoic.opL[MN] + Memnoic.adEB[MN] + Convert.ToString(BD[pos + 1]);
                                 else
                                     retVal.Add(new S7FunctionBlockRow()
                                     {
-                                        Command = Memnoic.opL[MN],
-                                        Parameter = Memnoic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80)
+                                        Command = Mnemonic.opL[MN],
+                                        Parameter = Mnemonic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80)
                                     });
                                 //Result = Result + Memnoic.opL[MN] + Memnoic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -755,15 +755,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opT[MN],
-                                                       Parameter = Memnoic.adEB[MN] + Convert.ToString(BD[pos + 1])
+                                                       Command = Mnemonic.opT[MN],
+                                                       Parameter = Mnemonic.adEB[MN] + Convert.ToString(BD[pos + 1])
                                                    });
                                 //Result = Result + Memnoic.opT[MN] + Memnoic.adEB[MN] + Convert.ToString(BD[pos + 1]);
                                 else
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opT[MN],
-                                                       Parameter = Memnoic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80)
+                                                       Command = Mnemonic.opT[MN],
+                                                       Parameter = Mnemonic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80)
                                                    });
                                 //Result = Result + Memnoic.opT[MN] + Memnoic.adAB[MN] + Convert.ToString(BD[pos + 1] - 0x80);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -774,8 +774,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opLC[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opLC[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opLC[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -794,13 +794,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     switch (BD[pos])
                                     {
                                         case 0x51:
-                                            cmd = Memnoic.opXOW[MN];
+                                            cmd = Mnemonic.opXOW[MN];
                                             retVal.Add(new S7FunctionBlockRow() { Command = cmd});
                                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                     pos += 2;
                                             break;
                                         case 0x58:
-                                            cmd = Memnoic.opPLU[MN];
+                                            cmd = Mnemonic.opPLU[MN];
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
                                                                Command = cmd,
@@ -829,48 +829,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     {
                                         case 0x51:
                                             if (BD[pos + 1] < 0xb0)
-                                                cmd = LowByte < 0x09 ? Memnoic.opU[MN] : Memnoic.opO[MN];
+                                                cmd = LowByte < 0x09 ? Mnemonic.opU[MN] : Mnemonic.opO[MN];
                                             else
-                                                cmd = LowByte < 0x09 ? Memnoic.opUN[MN] : Memnoic.opON[MN];
+                                                cmd = LowByte < 0x09 ? Mnemonic.opUN[MN] : Mnemonic.opON[MN];
                                             break;
                                         case 0x58:
                                             if (BD[pos + 1] < 0xb0)
-                                                cmd = LowByte < 0x09 ? Memnoic.opX[MN] : Memnoic.opS[MN];
+                                                cmd = LowByte < 0x09 ? Mnemonic.opX[MN] : Mnemonic.opS[MN];
                                             else
-                                                cmd = LowByte < 0x09 ? Memnoic.opXN[MN] : Memnoic.opR[MN];
+                                                cmd = LowByte < 0x09 ? Mnemonic.opXN[MN] : Mnemonic.opR[MN];
                                             break;
                                         case 0x59:
                                             if (BD[pos + 1] < 0xb0)
-                                                cmd = LowByte < 0x09 ? Memnoic.opZUW[MN] : Memnoic.opFP[MN];
+                                                cmd = LowByte < 0x09 ? Mnemonic.opZUW[MN] : Mnemonic.opFP[MN];
                                             else
-                                                cmd = LowByte < 0x09 ? "err1" : Memnoic.opFN[MN];//Don't know the Low Byte command
+                                                cmd = LowByte < 0x09 ? "err1" : Mnemonic.opFN[MN];//Don't know the Low Byte command
                                             break;
                                     }
                                     switch (BD[pos + 1] & 0x0F)
                                     {
                                         case 0x01:
                                         case 0x09:
-                                            par = Memnoic.adE[MN];
+                                            par = Mnemonic.adE[MN];
                                             break;
                                         case 0x02:
                                         case 0x0A:
-                                            par = Memnoic.adA[MN];
+                                            par = Mnemonic.adA[MN];
                                             break;
                                         case 0x03:
                                         case 0x0B:
-                                            par = Memnoic.adM[MN];
+                                            par = Mnemonic.adM[MN];
                                             break;
                                         case 0x04:
                                         case 0x0C:
-                                            par = Memnoic.adDBX[MN];
+                                            par = Mnemonic.adDBX[MN];
                                             break;
                                         case 0x05:
                                         case 0x0D:
-                                            par = Memnoic.adDIX[MN];
+                                            par = Mnemonic.adDIX[MN];
                                             break;
                                         case 0x06:
                                         case 0x0E:
-                                            par = Memnoic.adL[MN];
+                                            par = Mnemonic.adL[MN];
                                             break;
 
                                     }
@@ -880,27 +880,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                                         case 0x30:
                                         case 0xb0:
-                                            par += Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
+                                            par += Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x40:
                                         case 0xc0:
-                                            par += Memnoic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
+                                            par += Mnemonic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x50:
                                         case 0xd0:
-                                            par += Memnoic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
+                                            par += Mnemonic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x60:
                                         case 0xe0:
-                                            par += Memnoic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
+                                            par += Mnemonic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x70:
                                         case 0xf0:
-                                            par += Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
+                                            par += Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                     }
@@ -917,14 +917,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opL[MN],
-                                                       Parameter = Memnoic.adEW[MN] + Convert.ToString(BD[pos + 1])
+                                                       Command = Mnemonic.opL[MN],
+                                                       Parameter = Mnemonic.adEW[MN] + Convert.ToString(BD[pos + 1])
                                                    });
                                 else
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opL[MN],
-                                                       Parameter = Memnoic.adAW[MN] + Convert.ToString(BD[pos + 1] - 0x80)
+                                                       Command = Mnemonic.opL[MN],
+                                                       Parameter = Mnemonic.adAW[MN] + Convert.ToString(BD[pos + 1] - 0x80)
                                                    });                               
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -935,15 +935,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     if (BD[pos + 1] < 0x80)
                                         retVal.Add(new S7FunctionBlockRow()
                                                        {
-                                                           Command = Memnoic.opT[MN],
-                                                           Parameter = Memnoic.adEW[MN] + Convert.ToString(BD[pos + 1])
+                                                           Command = Mnemonic.opT[MN],
+                                                           Parameter = Mnemonic.adEW[MN] + Convert.ToString(BD[pos + 1])
                                                        });
                                     //Result = Result + Memnoic.opT[MN] + Memnoic.adEW[MN] + Convert.ToString(BD[pos + 1]);
                                     else                                        
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adAW[MN] + Convert.ToString(BD[pos + 1] - 0x80)
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adAW[MN] + Convert.ToString(BD[pos + 1] - 0x80)
                                             });
                                 //Result = Result + Memnoic.opT[MN] + Memnoic.adAW[MN] + Convert.ToString(BD[pos + 1] - 0x80);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -955,8 +955,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                     {
-                                        Command = Memnoic.opZR[MN],
-                                        Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                        Command = Mnemonic.opZR[MN],
+                                        Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                     });
                                 //Result = Result + Memnoic.opZR[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -968,8 +968,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                     {
-                                        Command = Memnoic.opCC[MN],
-                                        Parameter = Memnoic.adFB[MN] + Convert.ToString(BD[pos + 1])
+                                        Command = Mnemonic.opCC[MN],
+                                        Parameter = Mnemonic.adFB[MN] + Convert.ToString(BD[pos + 1])
                                     });
                                 //Result = Result + Memnoic.opCC[MN] + Memnoic.adFB[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -981,15 +981,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opL[MN],
-                                                       Parameter = Memnoic.adED[MN] + Convert.ToString(BD[pos + 1])
+                                                       Command = Mnemonic.opL[MN],
+                                                       Parameter = Mnemonic.adED[MN] + Convert.ToString(BD[pos + 1])
                                                    });
                                 //Result = Result + Memnoic.opL[MN] + Memnoic.adED[MN] + Convert.ToString(BD[pos + 1]);
                                 else
                                     retVal.Add(new S7FunctionBlockRow()
                                                    {
-                                                       Command = Memnoic.opL[MN],
-                                                       Parameter = Memnoic.adAD[MN] + Convert.ToString(BD[pos + 1] - 0x80)
+                                                       Command = Mnemonic.opL[MN],
+                                                       Parameter = Mnemonic.adAD[MN] + Convert.ToString(BD[pos + 1] - 0x80)
                                                    });
                                 //Result = Result + Memnoic.opL[MN] + Memnoic.adAD[MN] + Convert.ToString(BD[pos + 1] - 0x80);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -1001,14 +1001,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 if (BD[pos + 1] < 0x80)
                                     retVal.Add(new S7FunctionBlockRow()
                                     {
-                                        Command = Memnoic.opT[MN],
-                                        Parameter = Memnoic.adED[MN] + Convert.ToString(BD[pos + 1])
+                                        Command = Mnemonic.opT[MN],
+                                        Parameter = Mnemonic.adED[MN] + Convert.ToString(BD[pos + 1])
                                     });
                                 else
                                     retVal.Add(new S7FunctionBlockRow()
                                     {
-                                        Command = Memnoic.opT[MN],
-                                        Parameter = Memnoic.adAD[MN] + Convert.ToString(BD[pos + 1])
+                                        Command = Mnemonic.opT[MN],
+                                        Parameter = Mnemonic.adAD[MN] + Convert.ToString(BD[pos + 1])
                                     });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1018,8 +1018,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opS[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opS[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opS[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -1034,10 +1034,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         retVal.Add(new S7FunctionBlockRow() { Command = "/I" });
                                         break;
                                     case 0x01:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opMOD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opMOD[MN] });
                                         break;
                                     case 0x02:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opABS[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opABS[MN] });
                                         break;
                                     case 0x03:
                                         retVal.Add(new S7FunctionBlockRow() { Command = "/R" });
@@ -1049,7 +1049,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opPLU[MN],
+                                                               Command = Mnemonic.opPLU[MN],
                                                                Parameter = "L#" + Convert.ToString(libnodave.getS32from(BD, pos + 2))                                                               
                                                            });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
@@ -1058,13 +1058,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0x06:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opNEGR[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opNEGR[MN] });
                                         break;
                                     case 0x07:
                                         retVal.Add(new S7FunctionBlockRow() { Command = "*R" });
                                         break;
                                     case 0x08:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opENT[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opENT[MN] });
                                         break;
                                     case 0x09:
                                         retVal.Add(new S7FunctionBlockRow() { Command = "-D" });
@@ -1085,34 +1085,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         retVal.Add(new S7FunctionBlockRow() { Command = "+R" });
                                         break;
                                     case 0x10:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSIN[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSIN[MN] });
                                         break;
                                     case 0x11:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opCOS[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opCOS[MN] });
                                         break;
                                     case 0x12:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTAN[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTAN[MN] });
                                         break;
                                     case 0x13:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opLN[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opLN[MN] });
                                         break;
                                     case 0x14:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSQRT[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSQRT[MN] });
                                         break;
                                     case 0x18:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opASIN[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opASIN[MN] });
                                         break;
                                     case 0x19:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opACOS[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opACOS[MN] });
                                         break;
                                     case 0x1A:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opATAN[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opATAN[MN] });
                                         break;
                                     case 0x1b:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opEXP[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opEXP[MN] });
                                         break;
                                     case 0x1C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSQR[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSQR[MN] });
                                         break;
                                 }
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -1122,7 +1122,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x61:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSLW[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSLW[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opSLW[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1130,7 +1130,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x64:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRLD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRLD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opRLD[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1141,11 +1141,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 switch (BD[pos + 1])
                                 {
                                     case 0x00:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opBE[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opBE[MN] });
                                         //Result = Result + Memnoic.opBE[MN];
                                         break;
                                     case 0x01:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opBEA[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opBEA[MN] });
                                         //Result = Result + Memnoic.opBEA[MN];
                                         break;
                                 }
@@ -1158,114 +1158,114 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 switch (BD[pos + 1])
                                 {
                                     case 0x06:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opDTR[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opDTR[MN] });
                                         //Result = Result + Memnoic.opDTR[MN];
                                         break;
                                     case 0x07:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opNEGD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opNEGD[MN] });
                                         //Result = Result + Memnoic.opNEGD[MN];
                                         break;
                                     case 0x08:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opITB[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opITB[MN] });
                                         //Result = Result + Memnoic.opITB[MN];
                                         break;
                                     case 0x0C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opBTI[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opBTI[MN] });
                                         //Result = Result + Memnoic.opBTI[MN];
                                         break;
                                     case 0x0A:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opDTB[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opDTB[MN] });
                                         //Result = Result + Memnoic.opDTB[MN];
                                         break;
                                     case 0x0D:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opINVD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opINVD[MN] });
                                         //Result = Result + Memnoic.opINVD[MN];
                                         break;
                                     case 0x0E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opBTD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opBTD[MN] });
                                         //Result = Result + Memnoic.opBTD[MN];
                                         break;
                                     case 0x12:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSLW[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSLW[MN] });
                                         //Result = Result + Memnoic.opSLW[MN];
                                         break;
                                     case 0x13:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSLD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSLD[MN] });
                                         //Result = Result + Memnoic.opSLD[MN];
                                         break;
                                     case 0x17:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRLD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRLD[MN] });
                                         //Result = Result + Memnoic.opRLD[MN];
                                         break;
                                     case 0x18:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRLDA[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRLDA[MN] });
                                         //Result = Result + Memnoic.opRLDA[MN];
                                         break;
                                     case 0x1A:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTAW[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTAW[MN] });
                                         //Result = Result + Memnoic.opTAW[MN];
                                         break;
                                     case 0x1b:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTAD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTAD[MN] });
                                         //Result = Result + Memnoic.opTAD[MN];
                                         break;
                                     case 0x1C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opCLR[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opCLR[MN] });
                                         //Result = Result + Memnoic.opCLR[MN];
                                         break;
                                     case 0x1D:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSET[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSET[MN] });
                                         //Result = Result + Memnoic.opSET[MN];
                                         break;
                                     case 0x1E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opITD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opITD[MN] });
                                         //Result = Result + Memnoic.opITD[MN];
                                         break;
                                     case 0x22:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSRW[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSRW[MN] });
                                         //Result = Result + Memnoic.opSRW[MN];
                                         break;
                                     case 0x23:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSRD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSRD[MN] });
                                         //Result = Result + Memnoic.opSRD[MN];
                                         break;
                                     case 0x24:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSSI[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSSI[MN] });
                                         //Result = Result + Memnoic.opSSI[MN];
                                         break;
                                     case 0x25:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSSD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSSD[MN] });
                                         //Result = Result + Memnoic.opSSD[MN];
                                         break;
                                     case 0x27:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRRD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRRD[MN] });
                                         //Result = Result + Memnoic.opRRD[MN];
                                         break;
                                     case 0x28:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRRDA[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRRDA[MN] });
                                         //Result = Result + Memnoic.opRRDA[MN];
                                         break;
                                     case 0x2C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSAVE[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSAVE[MN] });
                                         //Result = Result + Memnoic.opSAVE[MN];
                                         break;
                                     case 0x2D:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opNOT[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opNOT[MN] });
                                         //Result = Result + Memnoic.opNOT[MN];
                                         break;
                                     case 0x2E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opPUSH[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opPUSH[MN] });
                                         //Result = Result + Memnoic.opPUSH[MN];
                                         break;
                                     case 0x37:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUD[MN] });
                                         //Result = Result + Memnoic.opUD[MN];
                                         break;
                                     case 0x34:
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opUW[MN],
+                                                               Command = Mnemonic.opUW[MN],
                                                                Parameter = "W#16#" +
                                                                            (libnodave.getU16from(BD, pos + 2)).ToString("X")
                                                            });
@@ -1280,7 +1280,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUD[MN],
+                                                Command = Mnemonic.opUD[MN],
                                                 Parameter = "DW#16#" + (libnodave.getU32from(BD,pos + 2).ToString("X"))
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
@@ -1289,30 +1289,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0x3A:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opMCRA[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opMCRA[MN] });
                                         //Result = Result + Memnoic.opMCRA[MN];
                                         break;
                                     case 0x3b:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opMCRD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opMCRD[MN] });
                                         //Result = Result + Memnoic.opMCRD[MN];
                                         break;
                                     case 0x3C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opMCRO[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opMCRO[MN] });
                                         //Result = Result + Memnoic.opMCRO[MN];
                                         break;
                                     case 0x3D:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opMCRC[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opMCRC[MN] });
                                         //Result = Result + Memnoic.opMCRC[MN];
                                         break;
                                     case 0x3E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opPOP[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opPOP[MN] });
                                         //Result = Result + Memnoic.opPOP[MN];
                                         break;
                                     case 0x44:
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opOW[MN],
+                                                Command = Mnemonic.opOW[MN],
                                                 Parameter = "W#16#" +
                                                             (libnodave.getU16from(BD, pos + 2)).ToString("X")
                                             });
@@ -1325,7 +1325,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opOD[MN],
+                                                Command = Mnemonic.opOD[MN],
                                                 Parameter = "DW#16#" + libnodave.getU32from(BD,pos + 2).ToString("X")                                               
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
@@ -1334,16 +1334,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0x47:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opOD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opOD[MN] });
                                         break;
                                     case 0x4E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opLEAVE[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opLEAVE[MN] });
                                         break;
                                     case 0x54:
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXOW[MN],
+                                                Command = Mnemonic.opXOW[MN],
                                                 Parameter = "W#16#" +
                                                      (libnodave.getU16from(BD, pos + 2)).ToString("X")
                                             });
@@ -1356,7 +1356,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXOD[MN],
+                                                Command = Mnemonic.opXOD[MN],
                                                 Parameter = "DW#16#" + libnodave.getU32from(BD, pos + 2).ToString("X")
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
@@ -1365,26 +1365,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0x57:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opXOD[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opXOD[MN] });
                                         break;
                                     case 0x5C:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRND[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRND[MN] });
                                         break;
                                     case 0x5D:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRNDM[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRNDM[MN] });
                                         break;
                                     case 0x5E:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRNDP[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRNDP[MN] });
                                         break;
                                     case 0x5F:
-                                        retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTRUNC[MN] });
+                                        retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTRUNC[MN] });
                                         break;
                                     default:
                                         {
                                             if ((BD[pos + 1] & 0x0F) == 0x01)
                                                 retVal.Add(new S7FunctionBlockRow()
                                                                {
-                                                                   Command = Memnoic.opSSI[MN],
+                                                                   Command = Mnemonic.opSSI[MN],
                                                                    Parameter = Convert.ToString((BD[pos + 1] >> 4) & 0x0F)
                                                                });
                                             else
@@ -1399,7 +1399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x69:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSRW[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSRW[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opSRW[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1407,7 +1407,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x6C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opZV[MN], Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opZV[MN], Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opZV[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1419,7 +1419,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 {
                                     case 0x02:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTAK[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTAK[MN] });
                                             //Result = Result + Memnoic.opTAK[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
@@ -1427,14 +1427,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x06:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opL[MN], Parameter = Memnoic.adSTW[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opL[MN], Parameter = Mnemonic.adSTW[MN] });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
                                         }
                                         break;
                                     case 0x07:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opT[MN], Parameter = Memnoic.adSTW[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opT[MN], Parameter = Mnemonic.adSTW[MN] });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
                                         }
@@ -1443,7 +1443,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opLOOP[MN],
+                                                               Command = Mnemonic.opLOOP[MN],
                                                                JumpWidth = libnodave.getS16from(BD, pos + 2)
                                                            });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -1454,7 +1454,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opSPL[MN],
+                                                               Command = Mnemonic.opSPL[MN],
                                                                JumpWidth = libnodave.getS16from(BD, pos + 2)
                                                            });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -1463,7 +1463,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x0b:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSPA[MN], JumpWidth = libnodave.getS16from(BD,pos+2) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSPA[MN], JumpWidth = libnodave.getS16from(BD,pos+2) });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
                                         }
@@ -1478,7 +1478,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x71:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opSSD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opSSD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 //Result = Result + Memnoic.opSSD[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
@@ -1486,14 +1486,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x74:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opRRD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opRRD[MN], Parameter = Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
                             break;
                         case 0x75:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFB[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFB[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
@@ -1517,57 +1517,57 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     {
                                         case 0x00:
                                         case 0x08:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opU[MN] : Memnoic.opS[MN];
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opU[MN] : Mnemonic.opS[MN];
                                             break;
                                         case 0x01:
                                         case 0x09:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opUN[MN] : Memnoic.opR[MN];
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opUN[MN] : Mnemonic.opR[MN];
                                             break;
                                         case 0x02:
                                         case 0x0A:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opO[MN] : Memnoic.opZUW[MN];
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opO[MN] : Mnemonic.opZUW[MN];
                                             break;
                                         case 0x03:
                                         case 0x0B:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opON[MN] : "err5"; //Ther is no Value for this???
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opON[MN] : "err5"; //Ther is no Value for this???
                                             break;
                                         case 0x04:
                                         case 0x0C:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opX[MN] : Memnoic.opFP[MN];
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opX[MN] : Mnemonic.opFP[MN];
                                             break;
                                         case 0x05:
                                         case 0x0D:
-                                            cmd += (HighByte < 0x90) ? Memnoic.opXN[MN] : Memnoic.opFN[MN];
+                                            cmd += (HighByte < 0x90) ? Mnemonic.opXN[MN] : Mnemonic.opFN[MN];
                                             break;
                                     }
 
                                     switch (HighByte)
                                     {
                                         case 0x10:
-                                            par += Memnoic.adE[MN];
+                                            par += Mnemonic.adE[MN];
                                             break;
                                         case 0x20:
-                                            par += Memnoic.adA[MN];
+                                            par += Mnemonic.adA[MN];
                                             break;
                                         case 0x30:
-                                            par += Memnoic.adM[MN];
+                                            par += Mnemonic.adM[MN];
                                             break;
                                         case 0x40:
-                                            par += Memnoic.adDBX[MN];
+                                            par += Mnemonic.adDBX[MN];
                                             break;
                                         case 0x50:
-                                            par += Memnoic.adDIX[MN];
+                                            par += Mnemonic.adDIX[MN];
                                             break;
                                         case 0x60:
-                                            par += Memnoic.adL[MN];
+                                            par += Mnemonic.adL[MN];
                                             break;
 
                                     }
                                     if (LowByte < 0x08)
-                                        par += "[" + Memnoic.adAR1[MN] + "," +
+                                        par += "[" + Mnemonic.adAR1[MN] + "," +
                                                Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
                                     else
-                                        par += "[" + Memnoic.adAR2[MN] + "," +
+                                        par += "[" + Mnemonic.adAR2[MN] + "," +
                                                Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
                                     retVal.Add(new S7FunctionBlockRow() { Command = cmd, Parameter = par });
                                     ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -1579,7 +1579,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case 0x7C:
                             {
-                                retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opR[MN], Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]) });
+                                retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opR[MN], Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1]) });
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                 pos += 2;
                             }
@@ -1600,11 +1600,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 {
                                     int LowByte = BD[pos + 1] & 0x0F;
                                     int HighByte = BD[pos + 1] & 0xF0;
-                                    cmd = Memnoic.opT[MN];
+                                    cmd = Mnemonic.opT[MN];
                                     //if (LowByte>= 0x05 && LowByte<=0x09 || LowByte >)
                                     //cmd = (LowByte <= 0x07) ? Memnoic.opL[MN] : Memnoic.opT[MN];
                                     if (LowByte <= 0x04|| ((LowByte >= 0x09) && LowByte <= 0x0c))
-                                        cmd = Memnoic.opL[MN];
+                                        cmd = Mnemonic.opL[MN];
 
                                     switch (HighByte)
                                     {
@@ -1613,27 +1613,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             {
                                                 case 0x01:
                                                 case 0x09:
-                                                    par += Memnoic.adPEB[MN];
+                                                    par += Mnemonic.adPEB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x0A:
-                                                    par += Memnoic.adPEW[MN];
+                                                    par += Mnemonic.adPEW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x0B:
-                                                    par += Memnoic.adPED[MN];
+                                                    par += Mnemonic.adPED[MN];
                                                     break;
                                                 case 0x05:
                                                 case 0x0D:
-                                                    par += Memnoic.adPAB[MN];
+                                                    par += Mnemonic.adPAB[MN];
                                                     break;
                                                 case 0x06:
                                                 case 0x0E:
-                                                    par += Memnoic.adPAW[MN];
+                                                    par += Mnemonic.adPAW[MN];
                                                     break;
                                                 case 0x07:
                                                 case 0x0F:
-                                                    par += Memnoic.adPAD[MN];
+                                                    par += Mnemonic.adPAD[MN];
                                                     break;
                                             }
                                             break;
@@ -1644,19 +1644,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adEB[MN];
+                                                    par += Mnemonic.adEB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adEW[MN];
+                                                    par += Mnemonic.adEW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adED[MN];
+                                                    par += Mnemonic.adED[MN];
                                                     break;
                                             }
                                             break;
@@ -1667,19 +1667,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adAB[MN];
+                                                    par += Mnemonic.adAB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adAW[MN];
+                                                    par += Mnemonic.adAW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adAD[MN];
+                                                    par += Mnemonic.adAD[MN];
                                                     break;
                                             }
                                             break;
@@ -1690,19 +1690,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adMB[MN];
+                                                    par += Mnemonic.adMB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adMW[MN];
+                                                    par += Mnemonic.adMW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adMD[MN];
+                                                    par += Mnemonic.adMD[MN];
                                                     break;
                                             }
                                             break;
@@ -1713,19 +1713,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adDBB[MN];
+                                                    par += Mnemonic.adDBB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adDBW[MN];
+                                                    par += Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adDBD[MN];
+                                                    par += Mnemonic.adDBD[MN];
                                                     break;
                                             }
                                             break;
@@ -1736,19 +1736,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adDIB[MN];
+                                                    par += Mnemonic.adDIB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adDIW[MN];
+                                                    par += Mnemonic.adDIW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adDID[MN];
+                                                    par += Mnemonic.adDID[MN];
                                                     break;
                                             }
                                             break;
@@ -1759,19 +1759,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case 0x05:
                                                 case 0x09:
                                                 case 0x0D:
-                                                    par += Memnoic.adLB[MN];
+                                                    par += Mnemonic.adLB[MN];
                                                     break;
                                                 case 0x02:
                                                 case 0x06:
                                                 case 0x0A:
                                                 case 0x0E:
-                                                    par += Memnoic.adLW[MN];
+                                                    par += Mnemonic.adLW[MN];
                                                     break;
                                                 case 0x03:
                                                 case 0x07:
                                                 case 0x0B:
                                                 case 0x0F:
-                                                    par += Memnoic.adLD[MN];
+                                                    par += Mnemonic.adLD[MN];
                                                     break;
                                             }
                                             break;
@@ -1781,16 +1781,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         par += Convert.ToString(libnodave.getU16from(BD, pos + 2));
                                     else if (BD[pos] == 0xBE)
                                         if (LowByte < 0x09)
-                                            par += "[" + Memnoic.adAR1[MN] + "," +
+                                            par += "[" + Mnemonic.adAR1[MN] + "," +
                                                          Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
                                         else
-                                            par += "[" + Memnoic.adAR2[MN] + "," +
+                                            par += "[" + Mnemonic.adAR2[MN] + "," +
                                                      Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
 
 
                                     //new
                                     byte[] DBByte = null;
-                                    if (retVal[retVal.Count - 1].Command == Memnoic.opAUF[MN] && par.Substring(0, 2) == "DB")// && CombineDBOpenAndCommand)
+                                    if (retVal[retVal.Count - 1].Command == Mnemonic.opAUF[MN] && par.Substring(0, 2) == "DB")// && CombineDBOpenAndCommand)
                                     {
                                         ((S7FunctionBlockRow)retVal[retVal.Count - 1]).CombineDBAccess = true;
                                         //DBByte = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
@@ -1822,8 +1822,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0x87:
                             retVal.Add(new S7FunctionBlockRow()
                                            {
-                                               Command = Memnoic.opU[MN],
-                                               Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                               Command = Mnemonic.opU[MN],
+                                               Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                                            Convert.ToString(BD[pos] - 0x80)
                                            });
                             //Result = Result + Memnoic.opU[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1841,8 +1841,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0x8F:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opO[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opO[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0x88)
                             });
                             //Result = Result + Memnoic.opO[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1860,8 +1860,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0x97:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opS[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opS[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0x90)
                             });
                             //Result = Result + Memnoic.opS[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1879,8 +1879,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0x9F:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opZUW[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opZUW[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0x98)
                             });
                             //Result = Result + Memnoic.opZUW[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1898,8 +1898,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xA7:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opUN[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opUN[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0xA0)
                             });
                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1917,8 +1917,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xAF:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opON[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opON[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0xA8)
                             });
                             //Result = Result + Memnoic.opON[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1936,8 +1936,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xB7:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opR[MN],
-                                Parameter = Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
+                                Command = Mnemonic.opR[MN],
+                                Parameter = Mnemonic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
                                             Convert.ToString(BD[pos] - 0xB0)
                             });
                             //Result = Result + Memnoic.opR[MN] + Memnoic.adM[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -1949,8 +1949,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opU[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opU[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opU[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -1961,8 +1961,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opO[MN],
-                                    Parameter = Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1])
+                                    Command = Mnemonic.opO[MN],
+                                    Parameter = Mnemonic.adZ[MN] + Convert.ToString(BD[pos + 1])
                                 });
                                 //Result = Result + Memnoic.opO[MN] + Memnoic.adZ[MN] + Convert.ToString(BD[pos + 1]);
                                 ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -1982,10 +1982,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     switch (BD[pos])
                                     {
                                         case 0xBA:
-                                            cmd = cmd + Memnoic.opUO[MN];
+                                            cmd = cmd + Mnemonic.opUO[MN];
                                             break;
                                         case 0xBB:
-                                            cmd = cmd + Memnoic.opOO[MN];
+                                            cmd = cmd + Mnemonic.opOO[MN];
                                             break;
                                     }
                                     retVal.Add(new S7FunctionBlockRow()
@@ -1998,7 +1998,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
                                 else
                                 {
-                                    cmd += HighByte < 0x80 ? Memnoic.opL[MN] : Memnoic.opT[MN];
+                                    cmd += HighByte < 0x80 ? Mnemonic.opL[MN] : Mnemonic.opT[MN];
 
                                     switch (BD[pos])
                                     {
@@ -2006,25 +2006,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (LowByte)
                                             {
                                                 case 0x00:
-                                                    par += HighByte < 0x80 ? Memnoic.adPEB[MN] : Memnoic.adPAB[MN];
+                                                    par += HighByte < 0x80 ? Mnemonic.adPEB[MN] : Mnemonic.adPAB[MN];
                                                     break;
                                                 case 0x01:
-                                                    par += Memnoic.adEB[MN];
+                                                    par += Mnemonic.adEB[MN];
                                                     break;
                                                 case 0x02:
-                                                    par += Memnoic.adAB[MN];
+                                                    par += Mnemonic.adAB[MN];
                                                     break;
                                                 case 0x03:
-                                                    par += Memnoic.adMB[MN];
+                                                    par += Mnemonic.adMB[MN];
                                                     break;
                                                 case 0x04:
-                                                    par += Memnoic.adDBB[MN];
+                                                    par += Mnemonic.adDBB[MN];
                                                     break;
                                                 case 0x05:
-                                                    par += Memnoic.adDIB[MN];
+                                                    par += Mnemonic.adDIB[MN];
                                                     break;
                                                 case 0x06:
-                                                    par += Memnoic.adLB[MN];
+                                                    par += Mnemonic.adLB[MN];
                                                     break;
                                             }
                                             break;
@@ -2032,46 +2032,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (LowByte)
                                             {
                                                 case 0x00:
-                                                    par += HighByte < 0x80 ? Memnoic.adPEW[MN] : Memnoic.adPAW[MN];
+                                                    par += HighByte < 0x80 ? Mnemonic.adPEW[MN] : Mnemonic.adPAW[MN];
                                                     break;
                                                 case 0x01:
-                                                    par += Memnoic.adEW[MN];
+                                                    par += Mnemonic.adEW[MN];
                                                     break;
                                                 case 0x02:
-                                                    par += Memnoic.adAW[MN];
+                                                    par += Mnemonic.adAW[MN];
                                                     break;
                                                 case 0x03:
-                                                    par += Memnoic.adMW[MN];
+                                                    par += Mnemonic.adMW[MN];
                                                     break;
                                                 case 0x04:
-                                                    par += Memnoic.adDBW[MN];
+                                                    par += Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x05:
-                                                    par += Memnoic.adDIW[MN];
+                                                    par += Mnemonic.adDIW[MN];
                                                     break;
                                                 case 0x06:
-                                                    par += Memnoic.adLW[MN];
+                                                    par += Mnemonic.adLW[MN];
                                                     break;
                                                 case 0x08:
-                                                    par += HighByte < 0x80 ? Memnoic.adPED[MN] : Memnoic.adPAD[MN];
+                                                    par += HighByte < 0x80 ? Mnemonic.adPED[MN] : Mnemonic.adPAD[MN];
                                                     break;
                                                 case 0x09:
-                                                    par += Memnoic.adED[MN];
+                                                    par += Mnemonic.adED[MN];
                                                     break;
                                                 case 0x0A:
-                                                    par += Memnoic.adAD[MN];
+                                                    par += Mnemonic.adAD[MN];
                                                     break;
                                                 case 0x0B:
-                                                    par += Memnoic.adMD[MN];
+                                                    par += Mnemonic.adMD[MN];
                                                     break;
                                                 case 0x0C:
-                                                    par += Memnoic.adDBD[MN];
+                                                    par += Mnemonic.adDBD[MN];
                                                     break;
                                                 case 0x0D:
-                                                    par += Memnoic.adDID[MN];
+                                                    par += Mnemonic.adDID[MN];
                                                     break;
                                                 case 0x0E:
-                                                    par += Memnoic.adLD[MN];
+                                                    par += Mnemonic.adLD[MN];
                                                     break;
                                             }
                                             break;
@@ -2081,43 +2081,43 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     {
                                         case 0x00: //Not from old programm, guessed Values!
                                         case 0x80:
-                                            par += "[" + Memnoic.adPED[MN] +
+                                            par += "[" + Mnemonic.adPED[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x10://Not from old programm, guessed Values!
                                         case 0x90:
-                                            par += "[" + Memnoic.adED[MN] +
+                                            par += "[" + Mnemonic.adED[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x20://Not from old programm, guessed Values!
                                         case 0xa0:
-                                            par += "[" + Memnoic.adAD[MN] +
+                                            par += "[" + Mnemonic.adAD[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x30:
                                         case 0xb0:
-                                            par += "[" + Memnoic.adMD[MN] +
+                                            par += "[" + Mnemonic.adMD[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x40:
                                         case 0xc0:
-                                            par += "[" + Memnoic.adDBD[MN] +
+                                            par += "[" + Mnemonic.adDBD[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x50:
                                         case 0xd0:
-                                            par += "[" + Memnoic.adDID[MN] +
+                                            par += "[" + Mnemonic.adDID[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
                                         case 0x60:
                                         case 0xe0:
-                                            par += "[" + Memnoic.adLD[MN] +
+                                            par += "[" + Mnemonic.adLD[MN] +
                                                    Convert.ToString(libnodave.getU16from(BD, pos + 2)) +
                                                    "]";
                                             break;
@@ -2155,91 +2155,91 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     switch (LowByte)
                                     {
                                         case 0x00:
-                                            cmd += Memnoic.opU[MN];
+                                            cmd += Mnemonic.opU[MN];
                                             break;
                                         case 0x01:
-                                            cmd += Memnoic.opUN[MN];
+                                            cmd += Mnemonic.opUN[MN];
                                             break;
                                         case 0x02:
-                                            cmd += Memnoic.opO[MN];
+                                            cmd += Mnemonic.opO[MN];
                                             break;
                                         case 0x03:
-                                            cmd += Memnoic.opON[MN];
+                                            cmd += Mnemonic.opON[MN];
                                             break;
                                         case 0x04:
-                                            cmd += Memnoic.opX[MN];
+                                            cmd += Mnemonic.opX[MN];
                                             break;
                                         case 0x05:
-                                            cmd += Memnoic.opXN[MN];
+                                            cmd += Mnemonic.opXN[MN];
                                             break;
                                         case 0x06:
-                                            cmd += Memnoic.opL[MN];
+                                            cmd += Mnemonic.opL[MN];
                                             break;
                                         case 0x08:
-                                            cmd += Memnoic.opFR[MN];
+                                            cmd += Mnemonic.opFR[MN];
                                             break;
                                         case 0x09:
-                                            cmd += Memnoic.opLC[MN];
+                                            cmd += Mnemonic.opLC[MN];
                                             break;
                                         case 0x0A:
-                                            cmd += HighByte < 0x80 ? Memnoic.opSA[MN] : Memnoic.opZR[MN];
+                                            cmd += HighByte < 0x80 ? Mnemonic.opSA[MN] : Mnemonic.opZR[MN];
                                             break;
                                         case 0x0B:
-                                            cmd += HighByte < 0x80 ? Memnoic.opSV[MN] : Memnoic.opS[MN];
+                                            cmd += HighByte < 0x80 ? Mnemonic.opSV[MN] : Mnemonic.opS[MN];
                                             break;
                                         case 0x0C:
-                                            cmd += Memnoic.opSE[MN];
+                                            cmd += Mnemonic.opSE[MN];
                                             break;
                                         case 0x0D:
-                                            cmd += HighByte < 0x80 ? Memnoic.opSS[MN] : Memnoic.opZV[MN];
+                                            cmd += HighByte < 0x80 ? Mnemonic.opSS[MN] : Mnemonic.opZV[MN];
                                             break;
                                         case 0x0E:
-                                            cmd += Memnoic.opSI[MN];
+                                            cmd += Mnemonic.opSI[MN];
                                             break;
                                         case 0x0F:
-                                            cmd += Memnoic.opR[MN];
+                                            cmd += Mnemonic.opR[MN];
                                             break;
                                     }
                                     if (HighByte < 0x80)
-                                        par += Memnoic.adT[MN];
+                                        par += Mnemonic.adT[MN];
                                     else
-                                        par += Memnoic.adZ[MN];
+                                        par += Mnemonic.adZ[MN];
 
                                     switch (HighByte)
                                     {
                                         case 0x00://Guessed Value, not from old PRG
                                         case 0x80:
-                                            par += "[" + Memnoic.adPEW[MN] +
+                                            par += "[" + Mnemonic.adPEW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x10://Guessed Value, not from old PRG
                                         case 0x90:
-                                            par += "[" + Memnoic.adEW[MN] +
+                                            par += "[" + Mnemonic.adEW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x20://Guessed Value, not from old Prg
                                         case 0xa0:
-                                            par += "[" + Memnoic.adAW[MN] +
+                                            par += "[" + Mnemonic.adAW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x30:
                                         case 0xb0:
-                                            par += "[" + Memnoic.adMW[MN] +
+                                            par += "[" + Mnemonic.adMW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x40:
                                         case 0xc0:
-                                            par += "[" + Memnoic.adDBW[MN] +
+                                            par += "[" + Mnemonic.adDBW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x50:
                                         case 0xd0:
-                                            par += "[" + Memnoic.adDIW[MN] +
+                                            par += "[" + Mnemonic.adDIW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                         case 0x60:
                                         case 0xe0:
-                                            par += "[" + Memnoic.adLW[MN] +
+                                            par += "[" + Mnemonic.adLW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]";
                                             break;
                                     }
@@ -2265,8 +2265,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opU[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opU[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xC0)
                                 });
                             //Result = Result + Memnoic.opU[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2274,8 +2274,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opU[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opU[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xC0)
                                 });
                             //Result = Result + Memnoic.opU[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2295,8 +2295,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opO[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opO[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xC8)
                                 });
                             //Result = Result + Memnoic.opO[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2304,8 +2304,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opO[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opO[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xC8)
                                 });
                             //Result = Result + Memnoic.opO[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2326,8 +2326,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opS[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opS[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xD0)
                                 });
                             //Result = Result + Memnoic.opS[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2335,8 +2335,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opS[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opS[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xD0)
                                 });
                             //Result = Result + Memnoic.opS[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2355,8 +2355,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opZUW[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opZUW[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xD8)
                                 });
                             //Result = Result + Memnoic.opZUW[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2364,8 +2364,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opZUW[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opZUW[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xD8)
                                 });
                             //Result = Result + Memnoic.opZUW[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2384,8 +2384,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opUN[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opUN[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xE0)
                                 });
                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2393,8 +2393,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opU[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opU[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xE0)
                                 });
                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2413,8 +2413,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opON[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opON[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xE8)
                                 });
                             //Result = Result + Memnoic.opON[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2422,8 +2422,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opON[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opON[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xE8)
                                 });
                             //Result = Result + Memnoic.opON[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2442,8 +2442,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (BD[pos + 1] < 0x80)
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opR[MN],
-                                    Parameter = Memnoic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opR[MN],
+                                    Parameter = Mnemonic.adE[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xF0)
                                 });
                             //Result = Result + Memnoic.opR[MN] + Memnoic.adE[MN] + Convert.ToString(BD[pos + 1]) + "." +
@@ -2451,8 +2451,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Memnoic.opR[MN],
-                                    Parameter = Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
+                                    Command = Mnemonic.opR[MN],
+                                    Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xF0)
                                 });
                             //Result = Result + Memnoic.opR[MN] + Memnoic.adA[MN] + Convert.ToString(BD[pos + 1] - 0x80) + "." +
@@ -2463,8 +2463,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xF8:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opU[MN],
-                                Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1])
+                                Command = Mnemonic.opU[MN],
+                                Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1])
                             });
                             //Result = Result + Memnoic.opU[MN] + Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]);
                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -2473,8 +2473,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xF9:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opO[MN],
-                                Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1])
+                                Command = Mnemonic.opO[MN],
+                                Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1])
                             });
                             //Result = Result + Memnoic.opO[MN] + Memnoic.adT[MN] + Convert.ToString(BD[pos + 1]);
                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -2486,7 +2486,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 {
                                     case 0x00:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opO[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opO[MN] });
                                             //Result = Result + Memnoic.opO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
@@ -2496,8 +2496,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adB[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adB[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adB[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2510,8 +2510,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adW[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adW[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adW[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2524,8 +2524,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adD[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adD[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adD[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2538,8 +2538,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adB[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adB[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adB[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2552,8 +2552,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adW[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adW[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adW[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2566,8 +2566,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adD[MN] + "[" + Memnoic.adAR1[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adD[MN] + "[" + Mnemonic.adAR1[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adD[MN] + "[" + Memnoic.adAR1[MN] + "," +
@@ -2580,8 +2580,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adB[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adB[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adB[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2594,8 +2594,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adW[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adW[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adW[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2608,8 +2608,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adD[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adD[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adD[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2622,8 +2622,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adB[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adB[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adB[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2636,8 +2636,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adW[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adW[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adW[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2650,8 +2650,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opT[MN],
-                                                Parameter = Memnoic.adD[MN] + "[" + Memnoic.adAR2[MN] + "," +
+                                                Command = Mnemonic.opT[MN],
+                                                Parameter = Mnemonic.adD[MN] + "[" + Mnemonic.adAR2[MN] + "," +
                                                     Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opT[MN] + Memnoic.adD[MN] + "[" + Memnoic.adAR2[MN] + "," +
@@ -2664,8 +2664,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2677,8 +2677,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2690,8 +2690,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2703,8 +2703,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2716,8 +2716,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2729,8 +2729,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2742,8 +2742,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2755,8 +2755,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2768,8 +2768,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2781,8 +2781,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2794,8 +2794,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2807,8 +2807,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2820,8 +2820,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opS[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opS[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opS[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2833,8 +2833,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opR[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opR[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opR[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2846,8 +2846,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opZUW[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opZUW[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opZUW[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2859,8 +2859,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFP[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opFP[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opFP[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2872,8 +2872,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFN[MN],
-                                                Parameter = "[" + Memnoic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opFN[MN],
+                                                Parameter = "[" + Mnemonic.adAR1[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opFN[MN] + "[" + Memnoic.adAR1[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2885,8 +2885,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opS[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opS[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opS[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2898,8 +2898,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opR[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opR[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opR[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2911,8 +2911,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opZUW[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opZUW[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opZUW[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2924,8 +2924,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFP[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opFP[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opFP[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2937,8 +2937,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFN[MN],
-                                                Parameter = "[" + Memnoic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
+                                                Command = Mnemonic.opFN[MN],
+                                                Parameter = "[" + Mnemonic.adAR2[MN] + "," + Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]"
                                             });
                                             //Result = Result + Memnoic.opFN[MN] + "[" + Memnoic.adAR2[MN] + "," +
                                             //         Helper.GetShortPointer(BD[pos + 2], BD[pos + 3]) + "]";
@@ -2950,8 +2950,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDB[MN] + "[" + Memnoic.adMW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDB[MN] + "[" + Mnemonic.adMW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDB[MN] + "[" + Memnoic.adMW[MN] +
@@ -2964,8 +2964,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDI[MN] + "[" + Memnoic.adMW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDI[MN] + "[" + Mnemonic.adMW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDI[MN] + "[" + Memnoic.adMW[MN] +
@@ -2978,8 +2978,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adDBLG[MN]
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adDBLG[MN]
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adDBLG[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -2990,8 +2990,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adDILG[MN]
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adDILG[MN]
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adDILG[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -3002,8 +3002,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDB[MN] + "[" + Memnoic.adDBW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDB[MN] + "[" + Mnemonic.adDBW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDB[MN] + "[" + Memnoic.adDBW[MN] +
@@ -3016,8 +3016,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDI[MN] + "[" + Memnoic.adDBW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDI[MN] + "[" + Mnemonic.adDBW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDI[MN] + "[" + Memnoic.adDBW[MN] +
@@ -3030,8 +3030,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adDBNO[MN]
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adDBNO[MN]
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adDBNO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -3042,8 +3042,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adDINO[MN]
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adDINO[MN]
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adDINO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -3054,8 +3054,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDB[MN] + "[" + Memnoic.adDIW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDB[MN] + "[" + Mnemonic.adDIW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDB[MN] + "[" + Memnoic.adDIW[MN] +
@@ -3068,8 +3068,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDI[MN] + "[" + Memnoic.adDIW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDI[MN] + "[" + Mnemonic.adDIW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDI[MN] + "[" + Memnoic.adDIW[MN] +
@@ -3082,8 +3082,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDB[MN] + "[" + Memnoic.adLW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDB[MN] + "[" + Mnemonic.adLW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDB[MN] + "[" + Memnoic.adLW[MN] +
@@ -3096,8 +3096,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDI[MN] + "[" + Memnoic.adLW[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDI[MN] + "[" + Mnemonic.adLW[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDI[MN] + "[" + Memnoic.adLW[MN] +
@@ -3108,7 +3108,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x70:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFC[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFC[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
 
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5], BD[pos + 6], BD[pos + 7] };
 
@@ -3138,19 +3138,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (BD[pos + 1] & 0xf0)
                                             {
                                                 case 0x30:
-                                                    par = Memnoic.adMW[MN];
+                                                    par = Mnemonic.adMW[MN];
                                                     break;
                                                 case 0x40:
-                                                    par = Memnoic.adDBW[MN];
+                                                    par = Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x50:
-                                                    par = Memnoic.adDIW[MN];
+                                                    par = Mnemonic.adDIW[MN];
                                                     break;
                                                 case 0x60:
-                                                    par = Memnoic.adLW[MN];
+                                                    par = Mnemonic.adLW[MN];
                                                     break;
                                             }
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFC[MN] + "[" + par + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]" });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFC[MN] + "[" + par + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]" });
 
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5], BD[pos + 6], BD[pos + 7] };
 
@@ -3180,19 +3180,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (BD[pos + 1] & 0xf0)
                                             {
                                                 case 0x30:
-                                                    par = Memnoic.adMW[MN];
+                                                    par = Mnemonic.adMW[MN];
                                                     break;
                                                 case 0x40:
-                                                    par = Memnoic.adDBW[MN];
+                                                    par = Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x60:
-                                                    par = Memnoic.adLW[MN];
+                                                    par = Mnemonic.adLW[MN];
                                                     break;
                                                 case 0x50:
-                                                    par = Memnoic.adDIW[MN];
+                                                    par = Mnemonic.adDIW[MN];
                                                     break;
                                             }
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFB[MN] + "[" + par + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]" });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFB[MN] + "[" + par + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]" });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
                                         }
@@ -3206,19 +3206,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (BD[pos + 1])
                                             {
                                                 case 0x61:
-                                                    par = Memnoic.adLW[MN];
+                                                    par = Mnemonic.adLW[MN];
                                                     break;
                                                 case 0x41:
-                                                    par = Memnoic.adDBW[MN];
+                                                    par = Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x51:
-                                                    par = Memnoic.adDIW[MN];
+                                                    par = Mnemonic.adDIW[MN];
                                                     break;
                                             }
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opCC[MN],
-                                                Parameter = Memnoic.adFC[MN] + "[" + par +
+                                                Command = Mnemonic.opCC[MN],
+                                                Parameter = Mnemonic.adFC[MN] + "[" + par +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
 
@@ -3235,19 +3235,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             switch (BD[pos + 1] & 0xf0)
                                             {
                                                 case 0x60:
-                                                    par = Memnoic.adLW[MN];
+                                                    par = Mnemonic.adLW[MN];
                                                     break;
                                                 case 0x40:
-                                                    par = Memnoic.adDBW[MN];
+                                                    par = Mnemonic.adDBW[MN];
                                                     break;
                                                 case 0x50:
-                                                    par = Memnoic.adDIW[MN];
+                                                    par = Mnemonic.adDIW[MN];
                                                     break;
                                             }
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opCC[MN],
-                                                Parameter = Memnoic.adFB[MN] + "[" + par +
+                                                Command = Mnemonic.opCC[MN],
+                                                Parameter = Mnemonic.adFB[MN] + "[" + par +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2)) + "]"
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -3258,8 +3258,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opCC[MN],
-                                                Parameter = Memnoic.adFC[MN] +
+                                                Command = Mnemonic.opCC[MN],
+                                                Parameter = Mnemonic.adFC[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5], BD[pos + 6], BD[pos + 7] };
@@ -3268,7 +3268,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x72:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adFB[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adFB[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
                                         }
@@ -3277,8 +3277,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opCC[MN],
-                                                Parameter = Memnoic.adFB[MN] +
+                                                Command = Mnemonic.opCC[MN],
+                                                Parameter = Mnemonic.adFB[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
 
@@ -3288,7 +3288,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x74:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adSFC[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adSFC[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
 
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5], BD[pos + 6], BD[pos + 7] };
 
@@ -3311,7 +3311,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x76:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opUC[MN], Parameter = Memnoic.adSFB[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opUC[MN], Parameter = Mnemonic.adSFB[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2)) });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
                                         }
@@ -3320,8 +3320,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDB[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDB[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDB[MN] +
@@ -3334,8 +3334,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opAUF[MN],
-                                                Parameter = Memnoic.adDI[MN] +
+                                                Command = Mnemonic.opAUF[MN],
+                                                Parameter = Mnemonic.adDI[MN] +
                                                      Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opAUF[MN] + Memnoic.adDI[MN] +
@@ -3346,7 +3346,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         break;
                                     case 0x7C:
                                         {
-                                            retVal.Add(new S7FunctionBlockRow() { Command = Memnoic.opTDB[MN] });
+                                            retVal.Add(new S7FunctionBlockRow() { Command = Mnemonic.opTDB[MN] });
                                             //Result = Result + Memnoic.opTDB[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
@@ -3357,7 +3357,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB0:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opU[MN];
+                                            cmd = Mnemonic.opU[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3372,7 +3372,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB1:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opUN[MN];
+                                            cmd = Mnemonic.opUN[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3387,7 +3387,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB2:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opO[MN];
+                                            cmd = Mnemonic.opO[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3402,7 +3402,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB3:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opON[MN];
+                                            cmd = Mnemonic.opON[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3417,7 +3417,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB4:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opX[MN];
+                                            cmd = Mnemonic.opX[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3432,7 +3432,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xB5:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opXN[MN];
+                                            cmd = Mnemonic.opXN[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3446,7 +3446,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xBB:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opS[MN];
+                                            cmd = Mnemonic.opS[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3461,7 +3461,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xBF:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opR[MN];
+                                            cmd = Mnemonic.opR[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3474,7 +3474,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x92:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opZUW[MN];
+                                            cmd = Mnemonic.opZUW[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3487,7 +3487,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x94:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opFP[MN];
+                                            cmd = Mnemonic.opFP[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3500,7 +3500,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0x95:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opFN[MN];
+                                            cmd = Mnemonic.opFN[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3517,7 +3517,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xc3:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opL[MN];
+                                            cmd = Mnemonic.opL[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3531,7 +3531,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xb8:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opFR[MN];
+                                            cmd = Mnemonic.opFR[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3544,7 +3544,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xA9:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opLC[MN];
+                                            cmd = Mnemonic.opLC[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3558,7 +3558,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xAA:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opSA[MN];
+                                            cmd = Mnemonic.opSA[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3571,7 +3571,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xAB:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opSV[MN];
+                                            cmd = Mnemonic.opSV[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3584,7 +3584,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xAC:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opSE[MN];
+                                            cmd = Mnemonic.opSE[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3597,7 +3597,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xAD:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opSS[MN];
+                                            cmd = Mnemonic.opSS[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3610,7 +3610,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xAE:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opSI[MN];
+                                            cmd = Mnemonic.opSI[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3623,7 +3623,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xBA:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opZR[MN];
+                                            cmd = Mnemonic.opZR[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3636,7 +3636,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xBD:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opZV[MN];
+                                            cmd = Mnemonic.opZV[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3652,7 +3652,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     //case 0xCB:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opT[MN];
+                                            cmd = Mnemonic.opT[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3665,7 +3665,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xCB:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opL[MN];
+                                            cmd = Mnemonic.opL[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "P##" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3679,7 +3679,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xD2:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opUC[MN];
+                                            cmd = Mnemonic.opUC[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3708,7 +3708,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xD8:
                                         {
                                             string cmd = "", par = "";
-                                            cmd = Memnoic.opAUF[MN];
+                                            cmd = Mnemonic.opAUF[MN];
                                             if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
@@ -3722,8 +3722,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opU[MN] + Memnoic.adT[MN] +
@@ -3736,8 +3736,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adT[MN] +
@@ -3750,8 +3750,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adT[MN] +
@@ -3764,8 +3764,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adT[MN] +
@@ -3778,8 +3778,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adT[MN] +
@@ -3792,8 +3792,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adT[MN] +
@@ -3806,8 +3806,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opL[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opL[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opL[MN] + Memnoic.adT[MN] +
@@ -3820,8 +3820,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFR[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opFR[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opFR[MN] + Memnoic.adT[MN] +
@@ -3834,8 +3834,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLC[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opLC[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLC[MN] + Memnoic.adT[MN] +
@@ -3848,8 +3848,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSA[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opSA[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opSA[MN] + Memnoic.adT[MN] +
@@ -3862,8 +3862,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSV[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opSV[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opSV[MN] + Memnoic.adT[MN] +
@@ -3876,8 +3876,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSE[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opSE[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opSE[MN] + Memnoic.adT[MN] +
@@ -3890,8 +3890,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSS[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opSS[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opSS[MN] + Memnoic.adT[MN] +
@@ -3904,8 +3904,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSI[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opSI[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opSI[MN] + Memnoic.adT[MN] +
@@ -3918,8 +3918,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opR[MN],
-                                                Parameter = Memnoic.adT[MN] +
+                                                Command = Mnemonic.opR[MN],
+                                                Parameter = Mnemonic.adT[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opR[MN] + Memnoic.adT[MN] +
@@ -3932,8 +3932,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opU[MN] + Memnoic.adZ[MN] +
@@ -3946,8 +3946,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adZ[MN] +
@@ -3960,8 +3960,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adZ[MN] +
@@ -3974,8 +3974,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adZ[MN] +
@@ -3988,8 +3988,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adZ[MN] +
@@ -4002,8 +4002,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adZ[MN] +
@@ -4016,8 +4016,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opFR[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opFR[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opFR[MN] + Memnoic.adZ[MN] +
@@ -4030,8 +4030,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opZR[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opZR[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opZR[MN] + Memnoic.adZ[MN] +
@@ -4044,8 +4044,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opS[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opS[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opS[MN] + Memnoic.adZ[MN] +
@@ -4058,8 +4058,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opZV[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opZV[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opZV[MN] + Memnoic.adZ[MN] +
@@ -4072,8 +4072,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opR[MN],
-                                                Parameter = Memnoic.adZ[MN] +
+                                                Command = Mnemonic.opR[MN],
+                                                Parameter = Mnemonic.adZ[MN] +
                                                     Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opR[MN] + Memnoic.adZ[MN] +
@@ -4093,8 +4093,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xFC:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opUN[MN],
-                                Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1])
+                                Command = Mnemonic.opUN[MN],
+                                Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1])
                             });
                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                             pos += 2;
@@ -4102,8 +4102,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         case 0xFD:
                             retVal.Add(new S7FunctionBlockRow()
                             {
-                                Command = Memnoic.opON[MN],
-                                Parameter = Memnoic.adT[MN] + Convert.ToString(BD[pos + 1])
+                                Command = Mnemonic.opON[MN],
+                                Parameter = Mnemonic.adT[MN] + Convert.ToString(BD[pos + 1])
                             });
                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                             pos += 2;
@@ -4116,8 +4116,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN],
-                                                Parameter = Memnoic.adAR2[MN]
+                                                Command = Mnemonic.opLAR1[MN],
+                                                Parameter = Mnemonic.adAR2[MN]
                                             });
                                             //Result = Result + Memnoic.opLAR1[MN] + Memnoic.adAR2[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4128,7 +4128,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opPAR1[MN],
+                                                Command = Mnemonic.opPAR1[MN],
                                                 Parameter = Helper.GetShortPointer(BD[pos + 2], BD[pos + 3])
                                             });
                                             //Result = Result + Memnoic.opPAR1[MN] +
@@ -4141,7 +4141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opLAR1[MN],
+                                                               Command = Mnemonic.opLAR1[MN],
                                                                Parameter = Helper.GetPointer(BD, pos + 2)
                                                            });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
@@ -4152,7 +4152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN]
+                                                Command = Mnemonic.opLAR1[MN]
                                             });
                                             //Result = Result + Memnoic.opLAR1[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4163,7 +4163,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN]
+                                                Command = Mnemonic.opTAR1[MN]
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4174,7 +4174,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opPAR1[MN]
+                                                Command = Mnemonic.opPAR1[MN]
                                             });
                                             //Result = Result + Memnoic.opPAR1[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4185,7 +4185,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR[MN]
+                                                Command = Mnemonic.opTAR[MN]
                                             });
                                             //Result = Result + Memnoic.opTAR[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4196,8 +4196,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN],
-                                                Parameter = Memnoic.adAR2[MN]
+                                                Command = Mnemonic.opTAR1[MN],
+                                                Parameter = Mnemonic.adAR2[MN]
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN] + Memnoic.adAR2[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4208,7 +4208,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opPAR2[MN],
+                                                Command = Mnemonic.opPAR2[MN],
                                                 Parameter = Helper.GetShortPointer(BD[pos + 2], BD[pos + 3])
                                             });
                                             //Result = Result + Memnoic.opPAR2[MN] +
@@ -4221,7 +4221,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN],
+                                                Command = Mnemonic.opLAR2[MN],
                                                 Parameter = Helper.GetPointer(BD,pos+2)
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] +
@@ -4235,7 +4235,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN]
+                                                Command = Mnemonic.opLAR2[MN]
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4246,7 +4246,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR2[MN]
+                                                Command = Mnemonic.opTAR2[MN]
                                             });
                                             //Result = Result + Memnoic.opTAR2[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4257,7 +4257,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opPAR2[MN]
+                                                Command = Mnemonic.opPAR2[MN]
                                             });
                                             //Result = Result + Memnoic.opPAR2[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4268,8 +4268,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN],
-                                                Parameter = Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR1[MN],
+                                                Parameter = Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
@@ -4279,8 +4279,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN],
-                                                Parameter = Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR1[MN],
+                                                Parameter = Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN] + Memnoic.adMD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4292,8 +4292,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN],
-                                                Parameter = Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR2[MN],
+                                                Parameter = Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] + Memnoic.adMD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4305,8 +4305,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR2[MN],
-                                                Parameter = Memnoic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR2[MN],
+                                                Parameter = Mnemonic.adMD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR2[MN] + Memnoic.adMD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4318,8 +4318,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN],
-                                                Parameter = Memnoic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR1[MN],
+                                                Parameter = Mnemonic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR1[MN] + Memnoic.adDBD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4331,8 +4331,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN],
-                                                Parameter = Memnoic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR1[MN],
+                                                Parameter = Mnemonic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN] + Memnoic.adDBD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4344,8 +4344,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN],
-                                                Parameter = Memnoic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR2[MN],
+                                                Parameter = Mnemonic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] + Memnoic.adDBD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4357,8 +4357,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR2[MN],
-                                                Parameter = Memnoic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR2[MN],
+                                                Parameter = Mnemonic.adDBD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR2[MN] + Memnoic.adDBD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4370,8 +4370,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN],
-                                                Parameter = Memnoic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR1[MN],
+                                                Parameter = Mnemonic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR1[MN] + Memnoic.adDID[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4383,8 +4383,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN],
-                                                Parameter = Memnoic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR1[MN],
+                                                Parameter = Mnemonic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN] + Memnoic.adDID[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4396,8 +4396,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN],
-                                                Parameter = Memnoic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR2[MN],
+                                                Parameter = Mnemonic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] + Memnoic.adDID[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4409,8 +4409,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR2[MN],
-                                                Parameter = Memnoic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR2[MN],
+                                                Parameter = Mnemonic.adDID[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR2[MN] + Memnoic.adDID[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4422,8 +4422,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR1[MN],
-                                                Parameter = Memnoic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR1[MN],
+                                                Parameter = Mnemonic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR1[MN] + Memnoic.adLD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4435,8 +4435,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR1[MN],
-                                                Parameter = Memnoic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR1[MN],
+                                                Parameter = Mnemonic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR1[MN] + Memnoic.adLD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4448,8 +4448,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opLAR2[MN],
-                                                Parameter = Memnoic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opLAR2[MN],
+                                                Parameter = Mnemonic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] + Memnoic.adLD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4461,8 +4461,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opTAR2[MN],
-                                                Parameter = Memnoic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
+                                                Command = Mnemonic.opTAR2[MN],
+                                                Parameter = Mnemonic.adLD[MN] + Convert.ToString(libnodave.getU16from(BD, pos + 2))
                                             });
                                             //Result = Result + Memnoic.opTAR2[MN] + Memnoic.adLD[MN] +
                                             //         Convert.ToString(Helper.GetWord(BD[pos + 2], BD[pos + 3]));
@@ -4475,7 +4475,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     case 0xE0:
                                         retVal.Add(new S7FunctionBlockRow()
                                                     {
-                                                        Command = Memnoic.opSRD[MN],
+                                                        Command = Mnemonic.opSRD[MN],
                                                         Parameter = Convert.ToString(BD[pos + 1] - 0xC0)
                                                     });
                                         //Result = Result + Memnoic.opSRD[MN] + Convert.ToString(BD[pos + 1] - 0xC0);
@@ -4490,7 +4490,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             case 0xE0:
                                                 retVal.Add(new S7FunctionBlockRow()
                                                                {
-                                                                   Command = Memnoic.opSRD[MN],
+                                                                   Command = Mnemonic.opSRD[MN],
                                                                    Parameter = Convert.ToString(BD[pos + 1] - 0xC0)
                                                                });
                                                 //Result = Result + Memnoic.opSRD[MN] + Convert.ToString(BD[pos + 1] - 0xC0);
@@ -4515,8 +4515,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opU[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4527,8 +4527,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4539,8 +4539,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4551,8 +4551,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4563,8 +4563,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4575,8 +4575,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adOS[MN]
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adOS[MN]
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adOS[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4587,7 +4587,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
-                                                               Command = Memnoic.opSPS[MN],
+                                                               Command = Mnemonic.opSPS[MN],
                                                                JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -4598,8 +4598,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opU[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4610,8 +4610,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4622,8 +4622,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4634,8 +4634,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4646,8 +4646,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4658,8 +4658,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adOV[MN]
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adOV[MN]
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adOV[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4670,7 +4670,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPO[MN],
+                                                Command = Mnemonic.opSPO[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -4681,7 +4681,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + ">0";
@@ -4693,7 +4693,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + ">0";
@@ -4705,7 +4705,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + ">0";
@@ -4717,7 +4717,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + ">0";
@@ -4729,7 +4729,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + ">0";
@@ -4741,7 +4741,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = ">0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + ">0";
@@ -4753,7 +4753,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPP[MN],
+                                                Command = Mnemonic.opSPP[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -4764,7 +4764,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = "<0"
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4775,7 +4775,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = "<0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "<0";
@@ -4787,7 +4787,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = "<0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "<0";
@@ -4799,7 +4799,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = "<0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "<0";
@@ -4811,7 +4811,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = "<0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "<0";
@@ -4823,7 +4823,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = "<0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "<0";
@@ -4835,7 +4835,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPM[MN],
+                                                Command = Mnemonic.opSPM[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -4846,8 +4846,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
                                             pos += 2;
@@ -4857,8 +4857,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adUO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4869,8 +4869,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adUO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4881,8 +4881,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adUO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4893,8 +4893,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adUO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4905,8 +4905,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adUO[MN]
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adUO[MN]
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adUO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -4917,7 +4917,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPU[MN],
+                                                Command = Mnemonic.opSPU[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -4928,7 +4928,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + "<>0";
@@ -4940,7 +4940,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "<>0";
@@ -4952,7 +4952,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "<>0";
@@ -4964,7 +4964,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "<>0";
@@ -4976,7 +4976,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "<>0";
@@ -4988,7 +4988,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = "<>0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "<>0";
@@ -5000,7 +5000,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPN[MN],
+                                                Command = Mnemonic.opSPN[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPN[MN] + "(Springe " +
@@ -5013,7 +5013,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPBIN[MN],
+                                                Command = Mnemonic.opSPBIN[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPBIN[MN] + "(Springe " +
@@ -5026,7 +5026,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + "==0";
@@ -5038,7 +5038,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "==0";
@@ -5050,7 +5050,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "==0";
@@ -5062,7 +5062,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "==0";
@@ -5074,7 +5074,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "==0";
@@ -5086,7 +5086,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = "==0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "==0";
@@ -5098,7 +5098,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPZ[MN],
+                                                Command = Mnemonic.opSPZ[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPZ[MN] + "(Springe " +
@@ -5111,7 +5111,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPBNB[MN],
+                                                Command = Mnemonic.opSPBNB[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPBNB[MN] + "(Springe " +
@@ -5124,7 +5124,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + ">=0";
@@ -5136,7 +5136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + ">=0";
@@ -5148,7 +5148,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + ">=0";
@@ -5160,7 +5160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + ">=0";
@@ -5172,7 +5172,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + ">=0";
@@ -5184,7 +5184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = ">=0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + ">=0";
@@ -5196,7 +5196,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPPZ[MN],
+                                                Command = Mnemonic.opSPPZ[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPPZ[MN] + "(Springe " +
@@ -5209,7 +5209,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPBN[MN],
+                                                Command = Mnemonic.opSPBN[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             //Result = Result + Memnoic.opSPBN[MN] + "(Springe " +
@@ -5222,7 +5222,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
+                                                Command = Mnemonic.opU[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opU[MN] + "<=0";
@@ -5234,7 +5234,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
+                                                Command = Mnemonic.opUN[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + "<=0";
@@ -5246,7 +5246,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
+                                                Command = Mnemonic.opO[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opO[MN] + "<=0";
@@ -5258,7 +5258,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
+                                                Command = Mnemonic.opON[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opON[MN] + "<=0";
@@ -5270,7 +5270,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
+                                                Command = Mnemonic.opX[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opX[MN] + "<=0";
@@ -5282,7 +5282,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
+                                                Command = Mnemonic.opXN[MN],
                                                 Parameter = "<=0"
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + "<=0";
@@ -5294,7 +5294,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPMZ[MN],
+                                                Command = Mnemonic.opSPMZ[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -5305,7 +5305,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPBB[MN],
+                                                Command = Mnemonic.opSPBB[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -5316,8 +5316,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opU[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opU[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opU[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5328,8 +5328,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUN[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opUN[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opUN[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5340,8 +5340,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opO[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opO[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opO[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5352,8 +5352,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opON[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opON[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opON[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5364,8 +5364,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opX[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opX[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opX[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5376,8 +5376,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXN[MN],
-                                                Parameter = Memnoic.adBIE[MN]
+                                                Command = Mnemonic.opXN[MN],
+                                                Parameter = Mnemonic.adBIE[MN]
                                             });
                                             //Result = Result + Memnoic.opXN[MN] + Memnoic.adBIE[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5388,7 +5388,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPBI[MN],
+                                                Command = Mnemonic.opSPBI[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -5399,7 +5399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opSPB[MN],
+                                                Command = Mnemonic.opSPB[MN],
                                                 JumpWidth = libnodave.getS16from(BD, pos + 2)
                                             });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
@@ -5410,7 +5410,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opUNO[MN],
+                                                Command = Mnemonic.opUNO[MN],
                                             });
                                             //Result = Result + Memnoic.opUNO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5421,7 +5421,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opONO[MN],
+                                                Command = Mnemonic.opONO[MN],
                                             });
                                             //Result = Result + Memnoic.opONO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5432,7 +5432,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXO[MN],
+                                                Command = Mnemonic.opXO[MN],
                                             });
                                             //Result = Result + Memnoic.opXO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5443,7 +5443,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opXNO[MN],
+                                                Command = Mnemonic.opXNO[MN],
                                             });
                                             //Result = Result + Memnoic.opXNO[MN];
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1] };
@@ -5454,7 +5454,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
-                                                Command = Memnoic.opNOP[MN],
+                                                Command = Mnemonic.opNOP[MN],
                                                 Parameter = "1"
                                             });
                                             //Result = Result + Memnoic.opNOP[MN] + "1";
@@ -5544,7 +5544,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     int jmpBytePos = 0;
                     
-                    if (tmp.Command==Memnoic.opSPL[MN])
+                    if (tmp.Command==Mnemonic.opSPL[MN])
                         jmpBytePos = akBytePos + ((tmp.JumpWidth+1)*4);
                     else
                         jmpBytePos = akBytePos + (tmp.JumpWidth*2);
