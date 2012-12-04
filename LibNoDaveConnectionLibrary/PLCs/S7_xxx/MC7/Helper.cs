@@ -83,7 +83,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DINT)
                 return Int32.Parse(Value.Replace("L#", ""));
             else if (DataType == S7DataRowType.REAL) 
-                return double.Parse(Value);
+                return double.Parse(Value.Replace('.',','));
             else if (DataType == S7DataRowType.S5TIME)
                 return Helper.GetTimespanFromS5TimeorTime(Value);
             else if (DataType == S7DataRowType.TIME)
