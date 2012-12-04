@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmdConnect = new System.Windows.Forms.Button();
@@ -44,6 +45,8 @@
             this.cmdSend = new System.Windows.Forms.Button();
             this.blLen = new System.Windows.Forms.Label();
             this.cmdSave = new System.Windows.Forms.Button();
+            this.contextMenuTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuAddSpecialChar = new System.Windows.Forms.ToolStripMenuItem();
             this.chkShowDate = new System.Windows.Forms.CheckBox();
             this.chkShowRecievedLen = new System.Windows.Forms.CheckBox();
             this.chkActive = new System.Windows.Forms.CheckBox();
@@ -58,6 +61,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.contextMenuTextBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -204,7 +208,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.26119F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.73881F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 126F));
             this.tableLayoutPanel2.Controls.Add(this.txtTelegramm, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmdSend, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.blLen, 1, 0);
@@ -219,10 +223,11 @@
             // txtTelegramm
             // 
             this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTelegramm.ContextMenuStrip = this.contextMenuTextBox;
             this.txtTelegramm.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
             this.txtTelegramm.Name = "txtTelegramm";
-            this.txtTelegramm.Size = new System.Drawing.Size(447, 20);
+            this.txtTelegramm.Size = new System.Drawing.Size(445, 20);
             this.txtTelegramm.TabIndex = 9;
             this.txtTelegramm.TextChanged += new System.EventHandler(this.txtTelegramm_TextChanged);
             // 
@@ -230,9 +235,9 @@
             // 
             this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdSend.Location = new System.Drawing.Point(534, 3);
+            this.cmdSend.Location = new System.Drawing.Point(532, 3);
             this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(119, 24);
+            this.cmdSend.Size = new System.Drawing.Size(121, 24);
             this.cmdSend.TabIndex = 8;
             this.cmdSend.Text = "Send";
             this.cmdSend.UseVisualStyleBackColor = false;
@@ -243,7 +248,7 @@
             this.blLen.AutoSize = true;
             this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.blLen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.blLen.Location = new System.Drawing.Point(456, 0);
+            this.blLen.Location = new System.Drawing.Point(454, 0);
             this.blLen.Name = "blLen";
             this.blLen.Size = new System.Drawing.Size(72, 30);
             this.blLen.TabIndex = 10;
@@ -253,13 +258,27 @@
             // 
             this.cmdSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cmdSave.Location = new System.Drawing.Point(594, 6);
+            this.cmdSave.Location = new System.Drawing.Point(598, 6);
             this.cmdSave.Name = "cmdSave";
             this.cmdSave.Size = new System.Drawing.Size(90, 33);
             this.cmdSave.TabIndex = 7;
             this.cmdSave.Text = "Save";
             this.cmdSave.UseVisualStyleBackColor = false;
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // contextMenuTextBox
+            // 
+            this.contextMenuTextBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAddSpecialChar});
+            this.contextMenuTextBox.Name = "contextMenuTextBox";
+            this.contextMenuTextBox.Size = new System.Drawing.Size(202, 26);
+            // 
+            // mnuAddSpecialChar
+            // 
+            this.mnuAddSpecialChar.Name = "mnuAddSpecialChar";
+            this.mnuAddSpecialChar.Size = new System.Drawing.Size(201, 22);
+            this.mnuAddSpecialChar.Text = "Sonderzeichen einfügen";
+            this.mnuAddSpecialChar.Click += new System.EventHandler(this.mnuAddSpecialChar_Click);
             // 
             // chkShowDate
             // 
@@ -334,7 +353,8 @@
             this.Controls.Add(this.txtIP);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
-            this.Text = "TCP-Test";
+            this.Text = "TCP-Test (Version 2.0)";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabMainTab.ResumeLayout(false);
             this.tabPageLogger.ResumeLayout(false);
             this.tabPageLogger.PerformLayout();
@@ -348,6 +368,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.contextMenuTextBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,6 +397,8 @@
         private System.Windows.Forms.Label blLen;
         private System.Windows.Forms.CheckBox chkShowRecievedLen;
         private System.Windows.Forms.CheckBox chkShowDate;
+        private System.Windows.Forms.ContextMenuStrip contextMenuTextBox;
+        private System.Windows.Forms.ToolStripMenuItem mnuAddSpecialChar;
     }
 }
 

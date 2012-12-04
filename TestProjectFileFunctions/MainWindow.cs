@@ -274,7 +274,7 @@ namespace JFK_VarTab
 
                 Block tmp;
                 if (blkFld is BlocksOfflineFolder)
-                    tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)lstListBox.SelectedItem, new S7ConvertingOptions(MnemonicLanguage.English) { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
+                    tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)lstListBox.SelectedItem, new S7ConvertingOptions(MnemonicLanguage.German) { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
                 else
                     tmp = blkFld.GetBlock((ProjectBlockInfo) lstListBox.SelectedItem);
 

@@ -174,6 +174,8 @@ namespace JFKCommonLibrary.Networking
 
         public void Stop()
         {
+            this._autoReConnect = false;
+
             if (tcpListener != null)
                 tcpListener.Stop();
 
