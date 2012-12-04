@@ -47,6 +47,10 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\siemensplctoolboxlib\LibNoDaveConnectionLibrary\bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="JFKCommonLibrary, Version=1.0.4721.22712, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\externalDlls\JFKCommonLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO">
       <HintPath>..\AdditionalDlls\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
@@ -151,10 +155,6 @@
     <Folder Include="Databases\OleDB\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\JFKCommonLibrary\JFKCommonLibrary.csproj">
-      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
-      <Name>JFKCommonLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>

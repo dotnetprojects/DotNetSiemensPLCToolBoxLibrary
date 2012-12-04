@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
-        <Converters:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
+        <WPF1:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
 		<Converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <Converters:ListIntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0,4" />
         <Converters:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1" />

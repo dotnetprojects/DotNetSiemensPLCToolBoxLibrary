@@ -146,7 +146,7 @@ namespace BackupRestoreBlocks
             var fileName = Path.Combine(fldname, selectedFile);
             var blockName = selectedFile.Substring(0, selectedFile.Length - 4);
 
-            var blkName = InputBox.ShowWithStringResult("Upload Block (" + blockName + ")", "New Block Name:", blockName);
+            var blkName = InputBox.Show("Upload Block (" + blockName + ")", "New Block Name:", blockName);
 
             if (string.IsNullOrEmpty(blkName))
                 return;

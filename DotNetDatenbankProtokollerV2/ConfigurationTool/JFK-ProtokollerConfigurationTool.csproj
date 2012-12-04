@@ -42,6 +42,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JFKCommonLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\externalDlls\JFKCommonLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -95,6 +99,7 @@
       <DependentUpon>EditConnections.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\HyperlinkUtility.cs" />
+    <Compile Include="WPF\StringToPLCValueBoolConverter.cs" />
     <Page Include="Windows\EditCommonSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -177,16 +182,12 @@
     <Resource Include="Images\1.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\JFKCommonLibrary\JFKCommonLibrary.csproj">
-      <Project>{B158CAB4-C341-4B87-8978-FE80D73F12C5}</Project>
-      <Name>JFKCommonLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProtokollerLibrary\JFK-ProtokollerLibrary.csproj">
-      <Project>{D5B6CB09-2B0B-4C98-B44F-EC245C291CF8}</Project>
+      <Project>{d5b6cb09-2b0b-4c98-b44f-ec245c291cf8}</Project>
       <Name>JFK-ProtokollerLibrary</Name>
     </ProjectReference>
   </ItemGroup>

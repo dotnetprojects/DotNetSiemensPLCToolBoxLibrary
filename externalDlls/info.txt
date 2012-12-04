@@ -1,9 +1,10 @@
 Used external DLLs:
 
-AvalonDock  : http://avalondock.codeplex.com/
-LibNoDave   : http://libnodave.sourceforge.net/
-SharpZipLib : http://www.icsharpcode.net/opensource/sharpziplib/
-AvalonEdit  : http://www.avalonedit.net/
+AvalonDock       : http://avalondock.codeplex.com/
+LibNoDave        : http://libnodave.sourceforge.net/
+SharpZipLib      : http://www.icsharpcode.net/opensource/sharpziplib/
+AvalonEdit       : http://www.avalonedit.net/
+JFKCommonLibrary : https://github.com/jogibear9988/JFKCommonLibrary
 
 Charting Lib from the WPF ToolKit (System.Windows.Controls.DataVisualization.Toolkit)
 Changes made to the assembly (http://wpf.codeplex.com/Thread/View.aspx?ThreadId=240272),
