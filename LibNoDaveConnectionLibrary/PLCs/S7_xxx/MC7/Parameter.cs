@@ -196,8 +196,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             int parseZustand = 0; //0=ParName, 1=AttributeName, 6=AfterAttributeName, 2=AttributeValue, 3=Type, 4=Value, 7=InnerValue (without '), 5=Comment
 
+                            var p1 = rows[n].IndexOf(" OF ");
+                            int p2 = 0, p3 = 0;
+                            if (p1 > 0)
+                            {
+                                p2 = rows[n].IndexOf(";", p1);
+                                p3 = rows[n].IndexOf("//", p1);
+                            }
 
-                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && !rows[n].Contains("\t\r")) //    !rows[n].Contains("\t")
+                            //if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && !rows[n].Contains("\t\r")) //    !rows[n].Contains("\t")
+                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && (!(p2 > p1 && (p2 < p3 || p3 < 0)) && !rows[n].Contains("\t\r")))
                             {
                                 if (rows.Length > n + 1)
                                 {
@@ -207,8 +215,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         rowTr = rowTr.Substring(0, pos) + " " + rows[n + 1].Trim() + rowTr.Substring(pos);
                                     }
                                     else if (rowTr.Contains("OF STRUCT"))
-                                    { }
-                                    else if (rowTr[rowTr.Length-1]!=';')
+                                    {
+                                    }
+                                    else if (rowTr[rowTr.Length - 1] != ';')
                                     {
                                         rowTr += " " + rows[n + 1].Trim();
                                     }
