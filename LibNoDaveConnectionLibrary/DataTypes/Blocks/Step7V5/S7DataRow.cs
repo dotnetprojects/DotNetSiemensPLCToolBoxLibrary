@@ -346,6 +346,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 {                  
                     if (_datatype == S7DataRowType.BOOL)
                     {
+                        int bytesize = 0;
+                        for (int n = ArrayStart.Count - 1; n >= 0; n--)
+                        {
+                            var start = ArrayStart[n];
+                            var end = ArrayStop[n];
+
+                            if (n == ArrayStart.Count - 1)
+                            {
+                                bytesize = ((end - start) + 8) / 8; //normal ((end - start) + 1); but that the division with 8 rounds down +7 to rund up!                                
+                            }
+                            else
+                            {
+                                bytesize = bytesize * ((end - start) + 1);
+                            }
+                        }
+
+                        if (bytesize % 2 > 0) bytesize++;
+
+                        return bytesize;
+                        
+                        /*
                         int retInt = 0;
                         retInt =(len * this.GetArrayLines()) / 8;
 
@@ -354,7 +375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                         if ((len * this.GetArrayLines()) % 8 != 0) retInt++;
                         if ((len * this.GetArrayLines()) % 2 != 0) retInt++;
-                        return retInt;
+                        return retInt;*/
                     }
                     else
                     {
@@ -425,16 +446,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     //int structlen = 0;
                     foreach (S7DataRow plcDataRow in Children)
                     {
-                        if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
+
+                        if (akAddr.BitAddress != 0 && plcDataRow._datatype == S7DataRowType.BOOL && plcDataRow.WasArray && !plcDataRow.WasFirstInArray && plcDataRow.WasNextHigherIndex)
                         {
                             akAddr.BitAddress = 0;
                             akAddr.ByteAddress++;
                         }
+                        else if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
+                        {
+                            akAddr.BitAddress = 0;
+                            akAddr.ByteAddress++;
+                        }
+
+                        
                         if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
                             if (!(this.PlcBlock is Step5.S5DataBlock))
                             {
                                 akAddr.ByteAddress++;
                             }
+                        
+                        
                         if (plcDataRow.Children != null && plcDataRow.Children.Count > 0)
                         {
                             plcDataRow._BlockAddress = new ByteBitAddress(akAddr);
@@ -543,7 +574,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public bool IsArray { get; set; }
 
+        //Array-element was the first at a higher index (bools start with zero bit address)
+        internal bool WasNextHigherIndex { get; set; }
+        //First element in a array
         internal bool WasFirstInArray { get; set; }
+        //was a elemnt in a array
         internal bool WasArray { get; set; }
 
         public List<int> ArrayStart { get; set; }
@@ -655,9 +690,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             S7DataRow retVal = (S7DataRow)this.DeepCopy();
             retVal._children = new List<S7DataRow>();
-
-            
-
+           
             if (Children != null)
             {
                 foreach (S7DataRow plcDataRow in this.Children)
@@ -686,6 +719,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     tmp.WasFirstInArray = retVal.IsArray && i == 0;
                     tmp.WasArray = retVal.IsArray;
                     tmp.IsArray = false;
+                    tmp.WasNextHigherIndex = arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
                     arrAsList.Add(tmp);
 
                     for (int n = arrAk.Length - 1; n >= 0; n--)
@@ -693,7 +727,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         arrAk[n]++;
                         if (arrAk[n] > ArrayStop[n])
                         {
-                            arrAk[n] = ArrayStart[n];
+                            arrAk[n] = ArrayStart[n];                            
                         }
                         else
                             break;

@@ -287,6 +287,8 @@ namespace JFK_VarTab
                         //expRow = myBlk.Structure;
                         //if (mnuExpandDatablockArrays.Checked)
                         //    expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
+
+                        dataBlockViewControl.ExpandDataBlockArrays = mnuExpandDatablockArrays.Checked;
                         dataBlockViewControl.DataBlock = myBlk;
                         
                         datablockView.Visible = true;
@@ -926,10 +928,13 @@ namespace JFK_VarTab
             else
                 mnuExpandDatablockArrays.Checked = true;
             unwatchToolStripMenuItem_Click(sender, e);
+
+            dataBlockViewControl.ExpandDataBlockArrays = mnuExpandDatablockArrays.Checked;
+
             //expRow = myBlk.Structure;
             //if (mnuExpandDatablockArrays.Checked)
                 //expRow = myBlk.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
-            dataBlockViewControl.DataBlock = myBlk;
+            //dataBlockViewControl.DataBlock = myBlk;
         }
 
         private void treeStep7Project_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

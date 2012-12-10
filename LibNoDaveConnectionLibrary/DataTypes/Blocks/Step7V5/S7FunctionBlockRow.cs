@@ -85,7 +85,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if (this.Parent != null && this.Parent.SymbolTable != null)
                 {
                     string para = this.Parameter.Replace(" ", "");
-                    return this.Parent.SymbolTable.GetEntryFromOperand(para);
+                    if (!string.IsNullOrEmpty(para))
+                    {
+                        return this.Parent.SymbolTable.GetEntryFromOperand(para);
+                    }
                 }
                 return null;
             }

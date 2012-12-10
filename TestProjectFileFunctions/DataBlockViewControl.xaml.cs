@@ -23,14 +23,42 @@ namespace TestProjectFileFunctions
             }
         }*/
 
+        public bool ExpandDataBlockArrays
+        {
+            get
+            {
+                return this.expandDataBlockArrays;
+            }
+            set
+            {
+                this.expandDataBlockArrays = value;
+
+                if (_DataBlock != null)
+                    if (!value)
+                    {
+                        MyTree.ItemsSource = new List<S7DataRow>() { _DataBlock.Structure };
+
+                    }
+                    else
+                    {
+                        var expRow = _DataBlock.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
+                        MyTree.ItemsSource = new List<S7DataRow>() { expRow };
+                    }
+            }
+        }
+
         private IDataBlock _DataBlock;
+
+        private bool expandDataBlockArrays;
+
         public IDataBlock DataBlock
         {
             get { return _DataBlock; }
             set
             {
                 _DataBlock = value;
-                MyTree.ItemsSource = new List<S7DataRow>() { _DataBlock.Structure };
+                if (_DataBlock != null) 
+                    MyTree.ItemsSource = new List<S7DataRow>() { _DataBlock.Structure };
 
             }
         } 
