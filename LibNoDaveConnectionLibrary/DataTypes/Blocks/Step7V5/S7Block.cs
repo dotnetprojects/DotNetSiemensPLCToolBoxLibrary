@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -34,6 +35,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     [Serializable()]
     public class S7Block : Block
     {
+        internal S7ConvertingOptions usedS7ConvertingOptions;
+
         public string BlockVersion;
 
         public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain

@@ -12,6 +12,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public MnemonicLanguage MnemonicLanguage { get; set; }
 
+        public Block Parent { get; set; }
+ 
         private string _command;
         public string Command
         {

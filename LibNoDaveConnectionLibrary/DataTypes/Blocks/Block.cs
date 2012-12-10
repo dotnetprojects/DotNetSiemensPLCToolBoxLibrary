@@ -33,6 +33,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
+        public ISymbolTable SymbolTable
+        {
+            get
+            {
+                if (ParentFolder != null)
+                {
+                    return ((IProgrammFolder)ParentFolder.Parent).SymbolTable;                    
+                }
+                return null;
+            }
+        }
+
         public string BlockName { get { return BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString(); } }
     }
 }

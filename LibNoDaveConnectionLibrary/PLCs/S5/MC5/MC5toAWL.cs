@@ -31,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             retVal.BlockNumber = blkInfo.BlockNumber;
 
             if (blkInfo.BlockType == PLCBlockType.S5_PB || blkInfo.BlockType == PLCBlockType.S5_SB || blkInfo.BlockType == PLCBlockType.S5_OB)
-                retVal.AWLCode = GetMC5Rows(block, 10, null, (Step5BlocksFolder) blkInfo.ParentFolder);
+                retVal.AWLCode = GetMC5Rows(block, 10, null, (Step5BlocksFolder) blkInfo.ParentFolder, retVal);
             else
             {
                 string fbNM = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(block, 12, 8);
@@ -42,7 +42,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                 retVal.Parameter = pars;
 
-                retVal.AWLCode = GetMC5Rows(block, /*10 + spa*2*/ 10 + ((pars.Count*3) + 5)*2, pars, (Step5BlocksFolder) blkInfo.ParentFolder);
+                retVal.AWLCode = GetMC5Rows(block, /*10 + spa*2*/ 10 + ((pars.Count*3) + 5)*2, pars, (Step5BlocksFolder) blkInfo.ParentFolder, retVal);
             }
             //Go throug retval and add Symbols...
             if (prjBlkFld != null)
@@ -244,12 +244,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             return false;
         }
 
-        private static List<FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld)
+        private static List<FunctionBlockRow> GetMC5Rows(byte[] code, int codestart, List<S5Parameter> parameters, Step5BlocksFolder blkFld, S5FunctionBlock block)
         {
             List<FunctionBlockRow> retVal=new List<FunctionBlockRow>();
             int codepos = codestart;
 
-            retVal.Add(new S5FunctionBlockRow() {Command = "BLD", Parameter = "255"}); //Command for first Network does not exist!
+            retVal.Add(new S5FunctionBlockRow() {Command = "BLD", Parameter = "255", Parent = block}); //Command for first Network does not exist!
                                                                                         //This needs to be removen when written back to S5D!
 
             while (codepos < code.Length)
@@ -262,7 +262,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                 
 
-                S5FunctionBlockRow newRow = new S5FunctionBlockRow();
+                S5FunctionBlockRow newRow = new S5FunctionBlockRow(){Parent = block};
                                 
                 if (index >= 0)
                 {

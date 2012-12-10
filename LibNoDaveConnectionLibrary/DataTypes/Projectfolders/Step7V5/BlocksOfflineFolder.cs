@@ -443,8 +443,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
         {
             //Todo: Enable this, but then myConvOpt is only used the first time!
-            //if (blkInfo._Block != null)
-            //    return blkInfo._Block;
+            if (blkInfo._Block != null && ((blkInfo._Block) as S7Block).usedS7ConvertingOptions.Equals(myConvOpt)) 
+                return blkInfo._Block;
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
@@ -481,6 +481,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retValBlock.LastCodeChange = myTmpBlk.LastCodeChange;
                     retValBlock.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
 
+                    retValBlock.ParentFolder = this;
+                    retValBlock.usedS7ConvertingOptions = myConvOpt;
+                    blkInfo._Block = retValBlock;
+
                     return retValBlock;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
@@ -501,14 +505,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.LastCodeChange = myTmpBlk.LastCodeChange;
                     retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
+
+                    retVal.ParentFolder = this;
+                    retVal.usedS7ConvertingOptions = myConvOpt;
+                    blkInfo._Block = retVal;
+
                     return retVal;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
                 {
                     List<string> ParaList = new List<string>();
 
-                    S7FunctionBlock retVal = new S7FunctionBlock();
-                    blkInfo._Block = retVal;
+                    S7FunctionBlock retVal = new S7FunctionBlock();                   
 
                     retVal.LastCodeChange = myTmpBlk.LastCodeChange;
                     retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
@@ -539,7 +547,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         if (this.Parent is S7ProgrammFolder)
                             prgFld = (S7ProgrammFolder)this.Parent;
 
-                        retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, (int)myConvOpt.Mnemonic, myTmpBlk.mc7code, Networks, ParaList, prgFld);
+                        retVal.AWLCode = MC7toAWL.GetAWL(0, myTmpBlk.mc7code.Length - 2, (int)myConvOpt.Mnemonic, myTmpBlk.mc7code, Networks, ParaList, prgFld, retVal);
 
                         retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo);
 
@@ -655,7 +663,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         //if (lastRow == null || cmt[n + 4] != 0x80)
                                         if (lastRow == null || (cmt[n + 4] != 0x80 && cmt[n + 4] != 0xc0))
                                         {
-                                            lastRow = new S7FunctionBlockRow();
+                                            lastRow = new S7FunctionBlockRow(){Parent = retVal};
                                             newAwlCode.Add(lastRow);
                                             subCnt = 0;
                                         }
@@ -687,6 +695,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Networks = NetWork.GetNetworksList(retVal);
 
                     retVal.ParentFolder = this;
+                    retVal.usedS7ConvertingOptions = myConvOpt;
+                    blkInfo._Block = retVal;
 
                     return retVal;
                 }

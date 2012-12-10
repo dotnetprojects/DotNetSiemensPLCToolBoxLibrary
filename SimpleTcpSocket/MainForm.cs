@@ -54,13 +54,22 @@ namespace SimpleTcpSocket
             cmdConnect.BackColor = Color.Red;
         }
 
-        void tcpFunc_DataRecieved(byte[] arg1, System.Net.Sockets.TcpClient arg2)
-        {
-            var wrt = Encoding.ASCII.GetString(arg1);
+        
 
+        void tcpFunc_DataRecieved(byte[] data, System.Net.Sockets.TcpClient arg2)
+        {
+            var wrt = Encoding.ASCII.GetString(data);
+
+            var len = wrt.Length;
+
+            if (chkEscSpecialChars.Checked)
             for (byte n = 0; n < 32; n++)
             {
                 wrt = wrt.Replace(Encoding.ASCII.GetString(new byte[] { n }), "{0x" + n.ToString("X").PadLeft(2, '0') + "}");
+            }
+            else
+            {
+                wrt = wrt.Replace("\0", "{0x00}");
             }
 
             string add = "";
@@ -72,7 +81,7 @@ namespace SimpleTcpSocket
             if (chkShowRecievedLen.Checked)
             {
                 if (!string.IsNullOrEmpty(add)) add += " - ";
-                add += wrt.Length.ToString().PadLeft(4, '0') + " Bytes";
+                add += len.ToString().PadLeft(4, '0') + " Bytes";
             }
             if (!string.IsNullOrEmpty(add)) add += ": ";
 
@@ -87,11 +96,20 @@ namespace SimpleTcpSocket
 
         private void cmdSend_Click(object sender, EventArgs e)
         {
-            var wrt = txtTelegramm.Text;
+            this.SendTel(txtTelegramm.Text);
+        }
+
+        private List<string> sendedTele = new List<string>();
+
+        private void SendTel(string tel)
+        {
+            sendedTele.Add(tel);
+
+            var wrt = tel;
 
             string add = "";
 
-            if (chkShowDate.Checked) 
+            if (chkShowDate.Checked)
             {
                 add += DateTime.Now.ToString();
             }
@@ -103,8 +121,8 @@ namespace SimpleTcpSocket
             if (!string.IsNullOrEmpty(add)) add += ": ";
 
             txtSended.Text = add + wrt + Environment.NewLine + txtSended.Text;
-            if (tcpFunc != null) 
-                tcpFunc.SendStringData(txtTelegramm.Text);
+            if (tcpFunc != null)
+                tcpFunc.SendStringData(tel);
         }
 
         private void txtTelegramm_TextChanged(object sender, EventArgs e)
@@ -124,5 +142,24 @@ namespace SimpleTcpSocket
         {
             this.Text = this.Text;
         }
+
+        private void txtSended_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var pos = txtSended.SelectionStart;
+            var input = txtSended.Text;
+            var lineNumber = input.Substring(0, pos).Count(c => c == '\n');
+
+            if (sendedTele.Count > lineNumber)
+            {
+                this.SendTel(sendedTele[sendedTele.Count - lineNumber - 1]);
+            }
+            /*var start = input.LastIndexOf("\r\n", pos);
+            if (start < 0) start = 0;
+            var end = input.IndexOf("\r\n", pos);
+            if (end < 0) end = input.Length;
+            var row = input.Substring(start, end - start);*/
+        }
+
+        
     }
 }

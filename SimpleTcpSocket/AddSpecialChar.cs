@@ -31,6 +31,7 @@ namespace SimpleTcpSocket
             cmbSpecialChar.Items.Add("ACK (0x06)");
             cmbSpecialChar.Items.Add("BEL (0x07)");
             cmbSpecialChar.Items.Add("BS  (0x08)");
+            cmbSpecialChar.Items.Add("TAB (0x09)");
             cmbSpecialChar.Items.Add("LF  (0x0A)");
             cmbSpecialChar.Items.Add("VT  (0x0B)");
             cmbSpecialChar.Items.Add("FF  (0x0C)");

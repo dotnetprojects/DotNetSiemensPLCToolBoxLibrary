@@ -42,11 +42,12 @@
             this.txtRecieve2 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.txtTelegramm = new System.Windows.Forms.TextBox();
+            this.contextMenuTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuAddSpecialChar = new System.Windows.Forms.ToolStripMenuItem();
             this.cmdSend = new System.Windows.Forms.Button();
             this.blLen = new System.Windows.Forms.Label();
             this.cmdSave = new System.Windows.Forms.Button();
-            this.contextMenuTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mnuAddSpecialChar = new System.Windows.Forms.ToolStripMenuItem();
+            this.chkEscSpecialChars = new System.Windows.Forms.CheckBox();
             this.chkShowDate = new System.Windows.Forms.CheckBox();
             this.chkShowRecievedLen = new System.Windows.Forms.CheckBox();
             this.chkActive = new System.Windows.Forms.CheckBox();
@@ -100,10 +101,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMainTab.Controls.Add(this.tabPageLogger);
             this.tabMainTab.Controls.Add(this.tabPageSender);
-            this.tabMainTab.Location = new System.Drawing.Point(12, 45);
+            this.tabMainTab.Location = new System.Drawing.Point(12, 60);
             this.tabMainTab.Name = "tabMainTab";
             this.tabMainTab.SelectedIndex = 0;
-            this.tabMainTab.Size = new System.Drawing.Size(676, 373);
+            this.tabMainTab.Size = new System.Drawing.Size(720, 372);
             this.tabMainTab.TabIndex = 6;
             // 
             // tabPageLogger
@@ -112,7 +113,7 @@
             this.tabPageLogger.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogger.Name = "tabPageLogger";
             this.tabPageLogger.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLogger.Size = new System.Drawing.Size(668, 347);
+            this.tabPageLogger.Size = new System.Drawing.Size(712, 346);
             this.tabPageLogger.TabIndex = 0;
             this.tabPageLogger.Text = "Logger";
             this.tabPageLogger.UseVisualStyleBackColor = true;
@@ -127,7 +128,7 @@
             this.txtRecieve.Name = "txtRecieve";
             this.txtRecieve.ReadOnly = true;
             this.txtRecieve.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtRecieve.Size = new System.Drawing.Size(662, 341);
+            this.txtRecieve.Size = new System.Drawing.Size(706, 340);
             this.txtRecieve.TabIndex = 0;
             this.txtRecieve.WordWrap = false;
             // 
@@ -137,7 +138,7 @@
             this.tabPageSender.Location = new System.Drawing.Point(4, 22);
             this.tabPageSender.Name = "tabPageSender";
             this.tabPageSender.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSender.Size = new System.Drawing.Size(668, 347);
+            this.tabPageSender.Size = new System.Drawing.Size(712, 346);
             this.tabPageSender.TabIndex = 1;
             this.tabPageSender.Text = "Sender";
             this.tabPageSender.UseVisualStyleBackColor = true;
@@ -154,13 +155,13 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.55719F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.44282F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(662, 341);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(706, 340);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 39);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 38);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -171,7 +172,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtRecieve2);
-            this.splitContainer1.Size = new System.Drawing.Size(656, 299);
+            this.splitContainer1.Size = new System.Drawing.Size(700, 299);
             this.splitContainer1.SplitterDistance = 156;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -185,9 +186,10 @@
             this.txtSended.Name = "txtSended";
             this.txtSended.ReadOnly = true;
             this.txtSended.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtSended.Size = new System.Drawing.Size(656, 156);
+            this.txtSended.Size = new System.Drawing.Size(700, 156);
             this.txtSended.TabIndex = 0;
             this.txtSended.WordWrap = false;
+            this.txtSended.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txtSended_MouseDoubleClick);
             // 
             // txtRecieve2
             // 
@@ -199,16 +201,16 @@
             this.txtRecieve2.Name = "txtRecieve2";
             this.txtRecieve2.ReadOnly = true;
             this.txtRecieve2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtRecieve2.Size = new System.Drawing.Size(656, 139);
+            this.txtRecieve2.Size = new System.Drawing.Size(700, 139);
             this.txtRecieve2.TabIndex = 1;
             this.txtRecieve2.WordWrap = false;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.26119F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.73881F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.Controls.Add(this.txtTelegramm, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmdSend, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.blLen, 1, 0);
@@ -216,8 +218,8 @@
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(656, 30);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(700, 29);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
             // txtTelegramm
@@ -225,46 +227,11 @@
             this.txtTelegramm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTelegramm.ContextMenuStrip = this.contextMenuTextBox;
             this.txtTelegramm.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelegramm.Location = new System.Drawing.Point(3, 5);
+            this.txtTelegramm.Location = new System.Drawing.Point(3, 4);
             this.txtTelegramm.Name = "txtTelegramm";
-            this.txtTelegramm.Size = new System.Drawing.Size(445, 20);
+            this.txtTelegramm.Size = new System.Drawing.Size(524, 20);
             this.txtTelegramm.TabIndex = 9;
             this.txtTelegramm.TextChanged += new System.EventHandler(this.txtTelegramm_TextChanged);
-            // 
-            // cmdSend
-            // 
-            this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdSend.Location = new System.Drawing.Point(532, 3);
-            this.cmdSend.Name = "cmdSend";
-            this.cmdSend.Size = new System.Drawing.Size(121, 24);
-            this.cmdSend.TabIndex = 8;
-            this.cmdSend.Text = "Send";
-            this.cmdSend.UseVisualStyleBackColor = false;
-            this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
-            // 
-            // blLen
-            // 
-            this.blLen.AutoSize = true;
-            this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.blLen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.blLen.Location = new System.Drawing.Point(454, 0);
-            this.blLen.Name = "blLen";
-            this.blLen.Size = new System.Drawing.Size(72, 30);
-            this.blLen.TabIndex = 10;
-            this.blLen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdSave
-            // 
-            this.cmdSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cmdSave.Location = new System.Drawing.Point(598, 6);
-            this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(90, 33);
-            this.cmdSave.TabIndex = 7;
-            this.cmdSave.Text = "Save";
-            this.cmdSave.UseVisualStyleBackColor = false;
-            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
             // contextMenuTextBox
             // 
@@ -279,6 +246,54 @@
             this.mnuAddSpecialChar.Size = new System.Drawing.Size(201, 22);
             this.mnuAddSpecialChar.Text = "Sonderzeichen einfügen";
             this.mnuAddSpecialChar.Click += new System.EventHandler(this.mnuAddSpecialChar_Click);
+            // 
+            // cmdSend
+            // 
+            this.cmdSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cmdSend.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdSend.Location = new System.Drawing.Point(603, 3);
+            this.cmdSend.Name = "cmdSend";
+            this.cmdSend.Size = new System.Drawing.Size(94, 23);
+            this.cmdSend.TabIndex = 8;
+            this.cmdSend.Text = "Send";
+            this.cmdSend.UseVisualStyleBackColor = false;
+            this.cmdSend.Click += new System.EventHandler(this.cmdSend_Click);
+            // 
+            // blLen
+            // 
+            this.blLen.AutoSize = true;
+            this.blLen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.blLen.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.blLen.Location = new System.Drawing.Point(533, 0);
+            this.blLen.Name = "blLen";
+            this.blLen.Size = new System.Drawing.Size(64, 29);
+            this.blLen.TabIndex = 10;
+            this.blLen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmdSave
+            // 
+            this.cmdSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cmdSave.Location = new System.Drawing.Point(642, 6);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(90, 33);
+            this.cmdSave.TabIndex = 7;
+            this.cmdSave.Text = "Save";
+            this.cmdSave.UseVisualStyleBackColor = false;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // chkEscSpecialChars
+            // 
+            this.chkEscSpecialChars.AutoSize = true;
+            this.chkEscSpecialChars.Checked = global::SimpleTcpSocket.Properties.Settings.Default.EscapeSpecialChars;
+            this.chkEscSpecialChars.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEscSpecialChars.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SimpleTcpSocket.Properties.Settings.Default, "EscapeSpecialChars", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkEscSpecialChars.Location = new System.Drawing.Point(448, 39);
+            this.chkEscSpecialChars.Name = "chkEscSpecialChars";
+            this.chkEscSpecialChars.Size = new System.Drawing.Size(130, 17);
+            this.chkEscSpecialChars.TabIndex = 10;
+            this.chkEscSpecialChars.Text = "Escape Special Chars";
+            this.chkEscSpecialChars.UseVisualStyleBackColor = true;
             // 
             // chkShowDate
             // 
@@ -341,7 +356,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 430);
+            this.ClientSize = new System.Drawing.Size(744, 444);
+            this.Controls.Add(this.chkEscSpecialChars);
             this.Controls.Add(this.chkShowDate);
             this.Controls.Add(this.chkShowRecievedLen);
             this.Controls.Add(this.cmdSave);
@@ -353,7 +369,7 @@
             this.Controls.Add(this.txtIP);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
-            this.Text = "TCP-Test (Version 2.0)";
+            this.Text = "TCP-Test (Version 2.2)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabMainTab.ResumeLayout(false);
             this.tabPageLogger.ResumeLayout(false);
@@ -399,6 +415,7 @@
         private System.Windows.Forms.CheckBox chkShowDate;
         private System.Windows.Forms.ContextMenuStrip contextMenuTextBox;
         private System.Windows.Forms.ToolStripMenuItem mnuAddSpecialChar;
+        private System.Windows.Forms.CheckBox chkEscSpecialChars;
     }
 }
 

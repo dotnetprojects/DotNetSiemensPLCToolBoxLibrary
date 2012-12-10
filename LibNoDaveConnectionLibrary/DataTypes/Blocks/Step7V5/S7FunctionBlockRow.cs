@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
@@ -79,11 +80,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         private SymbolTableEntry _SymbolTableEntry;
         public SymbolTableEntry SymbolTableEntry
         {
-            get { return _SymbolTableEntry; }
-            set
+            get
+            {
+                if (this.Parent != null && this.Parent.SymbolTable != null)
+                {
+                    string para = this.Parameter.Replace(" ", "");
+                    return this.Parent.SymbolTable.GetEntryFromOperand(para);
+                }
+                return null;
+            }
+            /*set
             {
                 _SymbolTableEntry = value;
-            }
+            }*/
         }
 
         private List<string> _extparameter;
@@ -570,11 +579,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public override string ToString()
         {
-            return ToString(true,false);
+            return ToString(true, false);
         }
 
-
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand)
+        {
+            return this.ToString(useSymbol, addSemicolonAfterCommand, true);
+        }
+        
+        public string ToString(bool useSymbol, bool addSemicolonAfterCommand, bool useDataBlocksSymbolic)
         {
             if (Command == "NETWORK")
                 return (MnemonicLanguage == MnemonicLanguage.English ? "Network " : "Netzwerk ") + Parameter + " : " + NetworkName
@@ -620,9 +633,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string par = "";
             if (Parameter != null)
                 par = Parameter;
-            if (_SymbolTableEntry != null && useSymbol)
-                par = SymbolTableEntry.Symbol;
 
+            if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'X' && this.Parent != null)
+            {
+                var paras = Parameter.Split(new[] { '.' });
+                var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                if (fld != null)
+                {
+                    var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBW", "").Replace("DBD", ""));
+
+                    var bitAdr = 0;
+                    if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
+
+                    var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
+                    var row = dbBlk.GetDataRowWithAddress(new ByteBitAddress(byteAdr, bitAdr));
+                    if (row != null)
+                    {
+                        var sym = this.Parent.SymbolTable.GetEntryFromOperand(paras[0]);
+                        par = "\"" + sym + "\"." + row.StructuredName;
+                    }
+                }
+            }
+            else
+            {
+                var sym = SymbolTableEntry;
+                if (sym != null && useSymbol) par = "\"" + sym.Symbol + "\"";
+            }
             if (!string.IsNullOrEmpty(cmt))
                 par = par.PadRight(14);
 

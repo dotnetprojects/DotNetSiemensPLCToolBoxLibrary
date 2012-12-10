@@ -60,9 +60,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return Structure._GetExpandedChlidren(myExpOpt)[0];
         }
 
+        public S7DataRow GetDataRowWithAddress(ByteBitAddress address)
+        {
+            var allRw = this.GetArrayExpandedStructure();
+            return S7DataRow.GetDataRowWithAddress(allRw, address);
+        }
+
+        private S7DataRow expStruct = null;
+
         public S7DataRow GetArrayExpandedStructure()
         {
-            return GetArrayExpandedStructure(new S7DataBlockExpandOptions());
+            //Todo: Vergleich der Expand Options, und beim änderen eines inneren wertes des blocks, diesen löschen (erst bei schreibsup wichtig!)
+            if (expStruct != null) 
+                return expStruct;
+            return expStruct = GetArrayExpandedStructure(new S7DataBlockExpandOptions());
         }
 
         public override string ToString()
