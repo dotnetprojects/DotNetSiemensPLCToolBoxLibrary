@@ -75,7 +75,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.BOOL)
                 return bool.Parse(Value);
             else if (DataType == S7DataRowType.DWORD)
-                return Convert.ToUInt16(Helper.GetIntFromHexString(Value));
+                return Convert.ToUInt32(Helper.GetIntFromHexString(Value));
             else if (DataType == S7DataRowType.BYTE)
                 return Convert.ToByte(Helper.GetIntFromHexString(Value));
             else if (DataType == S7DataRowType.INT)

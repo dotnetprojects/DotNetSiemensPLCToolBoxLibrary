@@ -1155,5 +1155,22 @@ namespace JFK_VarTab
                 swr.Close();
             }
         }
+
+        private void parseAllBlocksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Try to parse all Blocks");
+            foreach (var item in lstListBox.Items)
+            {
+                if (item is ProjectBlockInfo)
+                {
+                    Block tmp;
+                    if (blkFld is BlocksOfflineFolder) 
+                        tmp = ((BlocksOfflineFolder)blkFld).GetBlock((ProjectBlockInfo)item, new S7ConvertingOptions(MnemonicLanguage.German) { GenerateCallsfromUCs = convertCallsToolStripMenuItem.Checked });
+                    else 
+                        tmp = blkFld.GetBlock((ProjectBlockInfo)lstListBox.SelectedItem);
+                }
+            }
+            MessageBox.Show("Finished parse all Blocks");
+        }
     }
 }

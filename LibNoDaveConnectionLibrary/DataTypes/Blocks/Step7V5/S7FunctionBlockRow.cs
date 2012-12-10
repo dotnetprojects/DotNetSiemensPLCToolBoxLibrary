@@ -637,23 +637,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (Parameter != null)
                 par = Parameter;
 
-            if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'X' && this.Parent != null)
+            if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
             {
                 var paras = Parameter.Split(new[] { '.' });
                 var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
                 if (fld != null)
                 {
-                    var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBW", "").Replace("DBD", ""));
+                    var sym = this.Parent.SymbolTable.GetEntryFromOperand(paras[0]);
 
-                    var bitAdr = 0;
-                    if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
+                    if (sym != null) 
+                        par = "\"" + sym.Symbol + "\"";
 
-                    var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
-                    var row = dbBlk.GetDataRowWithAddress(new ByteBitAddress(byteAdr, bitAdr));
-                    if (row != null)
+                    if (paras.Length > 1)
                     {
-                        var sym = this.Parent.SymbolTable.GetEntryFromOperand(paras[0]);
-                        par = "\"" + sym + "\"." + row.StructuredName;
+                        var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBB", "").Replace("DBW", "").Replace("DBD", ""));
+
+                        var bitAdr = 0;
+                        if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
+
+                        var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
+                        var row = dbBlk.GetDataRowWithAddress(new ByteBitAddress(byteAdr, bitAdr));
+                        if (row != null)
+                        {
+                            if (sym != null) 
+                                par = "\"" + sym.Symbol + "\"." + row.StructuredName;
+                        }
                     }
                 }
             }

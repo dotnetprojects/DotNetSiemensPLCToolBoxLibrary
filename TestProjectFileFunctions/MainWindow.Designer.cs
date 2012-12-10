@@ -107,9 +107,10 @@
             this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
             this.datablockView = new System.Windows.Forms.Integration.ElementHost();
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
+            this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.hexBox = new Be.Windows.Forms.HexBox();
+            this.parseAllBlocksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -719,7 +720,8 @@
             // toolsToolStripMenuItem1
             // 
             this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createDokumentationToolStripMenuItem});
+            this.createDokumentationToolStripMenuItem,
+            this.parseAllBlocksToolStripMenuItem});
             this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
             this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem1.Text = "Tools";
@@ -864,6 +866,17 @@
             this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
             this.datablockView.Child = this.dataBlockViewControl;
             // 
+            // hexBox
+            // 
+            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.hexBox.Location = new System.Drawing.Point(0, 0);
+            this.hexBox.Name = "hexBox";
+            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.hexBox.Size = new System.Drawing.Size(770, 535);
+            this.hexBox.TabIndex = 18;
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
@@ -892,16 +905,12 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // hexBox
+            // parseAllBlocksToolStripMenuItem
             // 
-            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
-            this.hexBox.Location = new System.Drawing.Point(0, 0);
-            this.hexBox.Name = "hexBox";
-            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBox.Size = new System.Drawing.Size(770, 535);
-            this.hexBox.TabIndex = 18;
+            this.parseAllBlocksToolStripMenuItem.Name = "parseAllBlocksToolStripMenuItem";
+            this.parseAllBlocksToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.parseAllBlocksToolStripMenuItem.Text = "Parse all Blocks";
+            this.parseAllBlocksToolStripMenuItem.Click += new System.EventHandler(this.parseAllBlocksToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1027,6 +1036,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem createDokumentationToolStripMenuItem;
         private Be.Windows.Forms.HexBox hexBox;
+        private System.Windows.Forms.ToolStripMenuItem parseAllBlocksToolStripMenuItem;
 
     }
 }
