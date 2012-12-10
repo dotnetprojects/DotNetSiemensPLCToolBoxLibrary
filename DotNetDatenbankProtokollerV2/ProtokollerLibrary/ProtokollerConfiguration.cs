@@ -377,7 +377,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                 //Look if Trigger on a Dataset with TCP/IP Connection is Incoming Data, and that this trigger is not used on a Connection without TCP/IP
                 try
                 {
-                    if (!(datasetConfig.TriggerConnection is TCPIPConfig && (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)))
+                    if (!(datasetConfig.TriggerConnection is TCPIPConfig) && (datasetConfig.Trigger == DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection))
                         error += "Error: Dataset \"" + datasetConfig.Name + "\" - The selected Connection for incoming Trigger is no TCP/IP Connection !" + Environment.NewLine;
                 }
                 catch { }

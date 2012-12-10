@@ -584,7 +584,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand)
         {
-            return this.ToString(useSymbol, addSemicolonAfterCommand, true);
+            return this.ToString(useSymbol, addSemicolonAfterCommand, useSymbol);
         }
         
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand, bool useDataBlocksSymbolic)
