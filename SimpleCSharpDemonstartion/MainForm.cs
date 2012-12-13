@@ -111,10 +111,13 @@ namespace SimpleCSharpDemonstration
             myConn.Connect();
 
 
-            var tag = new PLCTag("P#M0.0 DWORD 700");
+            var tag = new PLCTag("P#M88.0 WORD 20");
+            myConn.ReadValue(tag);
+            /*tag.Controlvalue = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 88, 1, 2, 3, 4, 5, 6, 7, 8, 9, 77 };
+            myConn.WriteValue(tag);
             var db = myConn.PLCGetBlockInMC7("DB99");
             MessageBox.Show("DB:" + Encoding.ASCII.GetString(db));
-            myConn.PLCPutBlockFromMC7toPLC("DB98", db);
+            myConn.PLCPutBlockFromMC7toPLC("DB98", db);*/
         }
 
         private void button5_Click(object sender, EventArgs e)

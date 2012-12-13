@@ -8,6 +8,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
     public static class IEnumerableExtensions
     {
         #region Methoden
+
+        public static int Count(this IEnumerable list)
+        {
+            if (list is ICollection) return ((ICollection)list).Count;
+
+            int result = 0;
+
+            IEnumerator enumerator = list.GetEnumerator();
+
+            while (enumerator.MoveNext()) result++;
+
+            return result;
+        }
+
         /// <summary>
         /// Konvertiert eine allgemeine Liste in ein Array aus Objekten
         /// </summary>
