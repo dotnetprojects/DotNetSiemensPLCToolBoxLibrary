@@ -340,6 +340,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Parameters.Clear();
                             tempList = new List<FunctionBlockRow>();
                             inBld = 0;
+
+                            newRow = null;
                         }                                              
                         else
                         {

@@ -675,7 +675,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             if (lastRow.Command == "CALL")
                                                 if (subCnt == 1) lastRow.Comment = tx1;
                                                 else
-                                                    lastRow.CallParameter[subCnt - 2].Comment = tx1;
+                                                {
+                                                    if (lastRow.CallParameter.Count >= subCnt - 2)
+                                                    {
+                                                        lastRow.CallParameter[subCnt - 2].Comment = tx1;
+                                                    }
+                                                }
                                         n += kommLen + 6;
 
                                         //subCnt = 0;

@@ -110,6 +110,8 @@ namespace SimpleCSharpDemonstration
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
 
+
+            var tag = new PLCTag("P#M0.0 DWORD 700");
             var db = myConn.PLCGetBlockInMC7("DB99");
             MessageBox.Show("DB:" + Encoding.ASCII.GetString(db));
             myConn.PLCPutBlockFromMC7toPLC("DB98", db);

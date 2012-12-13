@@ -122,13 +122,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 string[] values = initalizationString.Split(',');
                 this.ValueName = values[0];
                 this.ChangeAddressFromString(values[1]);
-                if (values.Length > 2)
-                    this.ChangeDataTypeFromString(values[2]);
-                if (values.Length > 3)
-                    this.ChangeDataTypeStringFormatFromString(values[3]);
+                if (values.Length > 2) this.ChangeDataTypeFromString(values[2]);
+                if (values.Length > 3) this.ChangeDataTypeStringFormatFromString(values[3]);
             }
             else
+            {
+                var low = initalizationString.ToLower();
+                if (low.StartsWith("p#"))
+                {
+                    if (low.Contains("bool")) this.LibNoDaveDataType = TagDataType.Bool;
+                    else if (low.Contains("byte")) this.LibNoDaveDataType = TagDataType.Byte;
+                    else if (low.Contains("dword")) this.LibNoDaveDataType = TagDataType.Dword;
+                    else if (low.Contains("word")) this.LibNoDaveDataType = TagDataType.Word;
+                    else if (low.Contains("dint")) this.LibNoDaveDataType = TagDataType.Dint;
+                    else if (low.Contains("int")) this.LibNoDaveDataType = TagDataType.Int;
+                    else if (low.Contains("time_of_day")) this.LibNoDaveDataType = TagDataType.TimeOfDay;                    
+                    else if (low.Contains("date")) this.LibNoDaveDataType = TagDataType.Date;
+                    else if (low.Contains("s5time")) this.LibNoDaveDataType = TagDataType.S5Time;
+                    else if (low.Contains("real")) this.LibNoDaveDataType = TagDataType.Float; 
+                    else if (low.Contains("time")) this.LibNoDaveDataType = TagDataType.Time;                    
+                }
                 this.ChangeAddressFromString(initalizationString);
+            }
         }
 
         private int _datablockNumber = 1;
@@ -981,9 +996,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         ArraySize = Convert.ToInt32(myPlcAddress[2]);
 
+                        var tsize = 1;
+                        switch (myPlcAddress[1])
+                        {
+                            case "word":
+                            case "int":
+                            case "date":
+                            case "s5time":
+                                tsize = 2;
+                                break;
+                            case "real":
+                            case "dword":
+                            case "dint":
+                            case "time":
+                            case "time_of_day":
+                                tsize = 4;
+                                break;
+                        }
 
                         var baseS = _internalGetBaseTypeSize();
                         if (baseS > 0) ArraySize = ArraySize / baseS;
+
+                        ArraySize = ArraySize * tsize;
 
                         //if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
                         //    this.LibNoDaveDataType = TagDataType.ByteArray;
