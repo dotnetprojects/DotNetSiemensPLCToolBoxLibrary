@@ -402,6 +402,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        public string BlockAddressInDbFormat
+        {
+            get
+            {
+                if (this.DataType == S7DataRowType.BOOL) 
+                    return "DBX" + BlockAddress.ToString();
+                switch (this.ByteLength)
+                {
+                    case 1:
+                        return "DBB" + BlockAddress.ByteAddress.ToString();
+                    case 2:
+                        return "DBW" + BlockAddress.ByteAddress.ToString();
+                    case 4:
+                        return "DBD" + BlockAddress.ByteAddress.ToString();
+                }
+                return "";
+            }
+        }
+
         private ByteBitAddress _NextBlockAddress;
         public ByteBitAddress NextBlockAddress
         {

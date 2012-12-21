@@ -77,6 +77,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
+        public int DiNumber { get; set; }
+
         private SymbolTableEntry _SymbolTableEntry;
         public SymbolTableEntry SymbolTableEntry
         {
@@ -637,7 +639,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (Parameter != null)
                 par = Parameter;
 
-            if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
+            if (Command == "CALL" && DiNumber > 0)
+            {
+                string nm = "DI" + DiNumber;
+
+                if (useDataBlocksSymbolic && this.Parent != null)
+                {
+                    var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                    if (fld != null)
+                    {
+                        var sym1 = this.Parent.SymbolTable.GetEntryFromOperand(par);
+                        if (sym1 != null)
+                            par = "\"" + sym1.Symbol + "\"";
+
+                        var sym2 = this.Parent.SymbolTable.GetEntryFromOperand("DB" + DiNumber);
+                        if (sym2 != null) 
+                            nm = "\"" + sym2.Symbol + "\"";
+                    }
+                }
+                par += ", " + nm;
+            }
+            else if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
             {
                 var paras = Parameter.Split(new[] { '.' });
                 var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;

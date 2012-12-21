@@ -442,9 +442,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
         {
-            //Todo: Enable this, but then myConvOpt is only used the first time!
-            if (blkInfo._Block != null && ((blkInfo._Block) as S7Block).usedS7ConvertingOptions.Equals(myConvOpt)) 
-                return blkInfo._Block;
+            //if (blkInfo._Block != null && ((blkInfo._Block) as S7Block).usedS7ConvertingOptions.Equals(myConvOpt)) 
+            //    return blkInfo._Block;
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
