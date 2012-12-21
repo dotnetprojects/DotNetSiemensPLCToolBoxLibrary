@@ -33,7 +33,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 LoadSymboltable();
             string tmpname = operand.Replace(" ", "");
             SymbolTableEntry retval = null;
+
             operandIndexList.TryGetValue(tmpname, out retval);
+
+            if (retval != null) 
+                return retval;
+
+            if (tmpname.StartsWith("E")) 
+                operandIndexList.TryGetValue("I" + tmpname.Substring(1), out retval);
+            else if (tmpname.StartsWith("I"))
+                operandIndexList.TryGetValue("E" + tmpname.Substring(1), out retval);
+            else if (tmpname.StartsWith("A"))
+                operandIndexList.TryGetValue("Q" + tmpname.Substring(1), out retval);
+            else if (tmpname.StartsWith("Q"))
+                operandIndexList.TryGetValue("A" + tmpname.Substring(1), out retval);
+
             return retval;
         }
 

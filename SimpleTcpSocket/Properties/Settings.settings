@@ -2,23 +2,26 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SimpleTcpSocket.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="IP" Type="System.String" Scope="User">
+    <Setting Name="IP" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="Port" Type="System.String" Scope="User">
+    <Setting Name="Port" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)">2000</Value>
     </Setting>
-    <Setting Name="Active" Type="System.Boolean" Scope="User">
+    <Setting Name="Active" Provider="PortableSettingsProvider" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ShowRecievedLen" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowRecievedLen" Provider="PortableSettingsProvider" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ShowDate" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowDate" Provider="PortableSettingsProvider" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="EscapeSpecialChars" Type="System.Boolean" Scope="User">
+    <Setting Name="EscapeSpecialChars" Provider="PortableSettingsProvider" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LogFile" Provider="PortableSettingsProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

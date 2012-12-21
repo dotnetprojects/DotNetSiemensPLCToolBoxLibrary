@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -54,8 +55,6 @@ namespace SimpleTcpSocket
             cmdConnect.BackColor = Color.Red;
         }
 
-        
-
         void tcpFunc_DataRecieved(byte[] data, System.Net.Sockets.TcpClient arg2)
         {
             var wrt = Encoding.ASCII.GetString(data);
@@ -84,6 +83,13 @@ namespace SimpleTcpSocket
                 add += len.ToString().PadLeft(4, '0') + " Bytes";
             }
             if (!string.IsNullOrEmpty(add)) add += ": ";
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.LogFile))
+            {
+                StreamWriter myFile = new StreamWriter(Properties.Settings.Default.LogFile, true);
+                myFile.Write(add + wrt + Environment.NewLine);
+                myFile.Close();
+            }
 
             txtRecieve.Text = add + wrt + Environment.NewLine + txtRecieve.Text;
             txtRecieve2.Text = txtRecieve.Text;

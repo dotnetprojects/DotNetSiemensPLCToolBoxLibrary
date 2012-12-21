@@ -369,7 +369,7 @@
             this.Controls.Add(this.txtIP);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
-            this.Text = "TCP-Test (Version 2.2)";
+            this.Text = "TCP-Test (Version 2.4)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabMainTab.ResumeLayout(false);
             this.tabPageLogger.ResumeLayout(false);
