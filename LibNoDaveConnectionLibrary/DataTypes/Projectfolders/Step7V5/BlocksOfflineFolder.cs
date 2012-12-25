@@ -442,8 +442,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public Block GetBlock(ProjectBlockInfo blkInfo, S7ConvertingOptions myConvOpt)
         {
-            //if (blkInfo._Block != null && ((blkInfo._Block) as S7Block).usedS7ConvertingOptions.Equals(myConvOpt)) 
-            //    return blkInfo._Block;
+            if (blkInfo._Block != null && ((blkInfo._Block) as S7Block).usedS7ConvertingOptions.Equals(myConvOpt)) 
+                return blkInfo._Block;
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
@@ -552,9 +552,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                         LocalDataConverter.ConvertLocaldataToSymbols(retVal, myConvOpt);
 
-                        FBStaticAccessConverter.ReplaceStaticAccess(retVal, prgFld, myConvOpt);
-
                         CallConverter.ConvertUCToCall(retVal, prgFld, this, myConvOpt, null);
+
+                        FBStaticAccessConverter.ReplaceStaticAccess(retVal, prgFld, myConvOpt);                        
 
                         #region UseComments from Block
                         if (myConvOpt.UseComments)
@@ -562,7 +562,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             List<FunctionBlockRow> newAwlCode = new List<FunctionBlockRow>();
 
                             int n = 0;
-                            int j = 0;
+                            int akRowInAwlCode = 0;
                             int subCnt = 0; //Counter wich line in Command (for Calls and UCs)
 
                             if (myTmpBlk.comments != null)
@@ -586,18 +586,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         string tx2 = Project.ProjectEncoding.GetString(cmt, n + startNWKomm, lenNWKommZeile - startNWKomm - 1).Replace("\n", Environment.NewLine);
                                         n += lenNWKommZeile;
 
-                                        if (retVal.AWLCode.Count > j)
+                                        if (retVal.AWLCode.Count > akRowInAwlCode)
                                         {
-                                            while (retVal.AWLCode.Count - 1 > j && retVal.AWLCode[j].Command != "NETWORK")
+                                            while (retVal.AWLCode.Count - 1 > akRowInAwlCode && retVal.AWLCode[akRowInAwlCode].Command != "NETWORK")
                                             {
-                                                newAwlCode.Add(retVal.AWLCode[j]);
-                                                j++;
+                                                newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                akRowInAwlCode++;
                                             }
-                                            ((S7FunctionBlockRow)retVal.AWLCode[j]).NetworkName = tx1;
-                                            ((S7FunctionBlockRow)retVal.AWLCode[j]).Comment = tx2;
-                                            newAwlCode.Add(retVal.AWLCode[j]);
+                                            ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
+                                            ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).Comment = tx2;
+                                            newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
                                         }
-                                        j++;
+                                        akRowInAwlCode++;
 
                                         subCnt = 0;
                                     }
@@ -608,22 +608,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         //Anzahl der Anweisungen vor diesem Kommentar (inklusive aktueller Zeile!)
                                         for (int q = 0; q < (anzUebsprungZeilen); q++)
                                         {
-                                            if (retVal.AWLCode.Count > j)
+                                            if (retVal.AWLCode.Count > akRowInAwlCode)
                                             {
-                                                S7FunctionBlockRow akRw = (S7FunctionBlockRow) retVal.AWLCode[j];
+                                                S7FunctionBlockRow akRw = (S7FunctionBlockRow) retVal.AWLCode[akRowInAwlCode];
 
-                                                 if (cmt[n + 4] == 0xc0 && q==anzUebsprungZeilen-1)
+                                                 if (cmt[n + 4] == 0xc0 && q == anzUebsprungZeilen-1)
                                                      akRw.CombineDBAccess = false;
 
                                                 //Db Zugriff zusammenfügen...
                                                 if (akRw.CombineDBAccess)
                                                 {
-                                                    S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[j + 1];
+                                                    S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[akRowInAwlCode + 1];
                                                     nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
                                                     nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
 
                                                     akRw = nRw;
-                                                    retVal.AWLCode.RemoveAt(j + 1);
+                                                    retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
                                                 }
 
 
@@ -634,7 +634,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                     lastRow = akRw;
 
                                                     newAwlCode.Add(akRw);
-                                                    j++;
+                                                    akRowInAwlCode++;
                                                 }
                                                 else
                                                 {
@@ -646,9 +646,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                                                     if (akRw.GetNumberOfLines() - 1 == subCnt)
                                                     {
-                                                        j++;
-                                                        //subCnt = 0;
-                                                        subCnt++;
+                                                        akRowInAwlCode++;
+                                                        subCnt = 0;
+                                                        //subCnt++;    //The set to zero was wrong here, but maybe now comments on calls do not work, need to check!
                                                     }
                                                     else
                                                     {
@@ -686,10 +686,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     }
                                 }
                             }
-                            while (j < retVal.AWLCode.Count)
+                            while (akRowInAwlCode < retVal.AWLCode.Count)
                             {
-                                newAwlCode.Add(retVal.AWLCode[j]);
-                                j++;
+                                newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                akRowInAwlCode++;
                             }
                             retVal.AWLCode = newAwlCode;
                         }

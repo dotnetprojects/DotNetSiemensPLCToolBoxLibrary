@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -27,13 +29,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 string akPar = "";
                 string db = "";
                 string label = "";
+                string akku = "";
                 bool afterCall = false;
+                bool multiInstance = false;
+                int multiInstanceOffset = 0;
+
                 S7FunctionBlockRow callRow = null;
 
                 for (int n = 0; n < myFct.AWLCode.Count; n++)
                 {
                     S7FunctionBlockRow row = (S7FunctionBlockRow)myFct.AWLCode[n];
-                    if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "1" || row.Parameter == "7" || row.Parameter == "3") && inBld == 0)
+                    if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "1" || row.Parameter == "7" || row.Parameter == "3" || row.Parameter == "16") && inBld == 0)
                     {
                         retVal.AddRange(tempList);
                         tempList.Clear();
@@ -48,6 +54,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         afterCall = false;
                         callRow = null;
                         diName = "";
+                        
+                        multiInstance = false;
+                        multiInstanceOffset = 0;
+
                         tempList.Add(row);
                     }                    
                     else if (inBld == 1 || inBld == 7)
@@ -337,8 +347,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         #endregion
                     }
-                    else if (inBld == 3)
-                    {
+                    else if (inBld == 3 || inBld == 16)
+                    {                        
                         #region FB Aufruf
                         tempList.Add(row);
                         if (row.Command == "=" && n > 0 && myFct.AWLCode[n - 1].Command == Mnemonic.opBLD[(int)myOpt.Mnemonic])
@@ -357,9 +367,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             //Do nothing, but this line needs to be there!
                         }
-                        else if (row.Command == Mnemonic.opAUF[(int)myOpt.Mnemonic] && tempList.Count == 4)
+                        else if (row.Command == Mnemonic.opPAR2[(int)myOpt.Mnemonic])
+                        {
+                            
+                        }
+                        else if (row.Command == Mnemonic.opAUF[(int)myOpt.Mnemonic] && (tempList.Count == 4))
                         {
                             diName = row.Parameter;
+                        }
+                        else if (row.Command == Mnemonic.opAUF[(int)myOpt.Mnemonic] && row.Parameter.Contains("[") && (tempList.Count == 6))
+                        {
+                            multiInstance = true;
+
+                            diName = "";
                         }
                         else if (row.Command == Mnemonic.opU[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opUN[(int)myOpt.Mnemonic] ||
                                  row.Command == Mnemonic.opO[(int)myOpt.Mnemonic] || row.Command == Mnemonic.opON[(int)myOpt.Mnemonic] ||
@@ -416,11 +436,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         else if (row.Command == Mnemonic.opUC[(int)myOpt.Mnemonic])
                         {
+                            multiInstanceOffset = 0;
+                            for (int j = tempList.Count - 2; j > -1; j--)
+                            {
+                                if (tempList[j].Command == Mnemonic.opPAR2[(int)myOpt.Mnemonic])
+                                    multiInstanceOffset += (int)double.Parse((((S7FunctionBlockRow)tempList[j]).Parameter.Substring(2)), CultureInfo.InvariantCulture);
+                                break;
+                            }
+                             
                             //Commands after a Call --> Out-Para
                             callRow = row;
                             afterCall = true;
                         }
-                        else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "4"))
+                        else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "4" || row.Parameter == "17"))
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
                             S7DataRow para = myblkFld.GetInterface(callRow.Parameter);
@@ -429,7 +457,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow.Parent = callRow.Parent;
                             newRow.Command = Mnemonic.opCALL[(int)myOpt.Mnemonic];
                             newRow.Parameter = callRow.Parameter;
-                            newRow.DiNumber = int.Parse(diName.Substring(2));
+                            if (diName.Length > 2) 
+                                newRow.DiNumber = int.Parse(diName.Substring(2));
                             newRow.CallParameter = new List<S7FunctionBlockParameter>();
 
 
@@ -442,7 +471,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     newPar.Name = s7DataRow.Name;
                                     
                                     string par = null;
-                                    if (Parameters.TryGetValue(s7DataRow.BlockAddressInDbFormat.Replace("DB", "DI"), out par)) ;
+                                    if (!multiInstance) 
+                                        Parameters.TryGetValue(s7DataRow.BlockAddressInDbFormat.Replace("DB", "DI"), out par);
+                                    else
+                                    {
+                                        var addr = s7DataRow.BlockAddressInDbFormat;
+                                        var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
+                                        double bytepos = double.Parse(addr.Substring(3), CultureInfo.InvariantCulture) + multiInstanceOffset;
+                                        Parameters.TryGetValue(addrTp + "[AR2,P#" + bytepos.ToString("0.0", CultureInfo.InvariantCulture) + "]", out par);
+                                    }
+
 
                                     switch (s7DataRow.DataType)
                                     {
@@ -454,6 +492,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             break;
                                         case S7DataRowType.BLOCK_FB:
                                             newPar.Value = "FB" + par;
+                                            break;
+                                        case S7DataRowType.TIMER:
+                                            newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + par.ToString();
+                                            break;
+                                        case S7DataRowType.COUNTER:
+                                            newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + par.ToString();
+                                            break;
+                                        case S7DataRowType.TIME:
+                                            if (par!=null && par.StartsWith("L#"))
+                                            {
+                                                var arr = BitConverter.GetBytes(Convert.ToInt32(par.Substring(2)));
+                                                Array.Reverse(arr);
+                                                newPar.Value = Helper.GetDTime(arr, 0);                                               
+                                            }
+                                            else
+                                            {
+                                                newPar.Value = par;
+                                            }
                                             break;
                                         default:
                                             newPar.Value = par;

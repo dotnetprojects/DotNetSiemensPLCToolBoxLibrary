@@ -7,6 +7,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -21,6 +22,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 bool LargeAccess = false;
                 int add_adresse = 0;
+
+                var myPar = myFct.Parameter.Children.Where(itm => itm.Name != "TEMP");
 
                 foreach (var functionBlockRow in myFct.AWLCode)
                 {
@@ -38,8 +41,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         string para = ((S7FunctionBlockRow) functionBlockRow).Parameter;
                         ByteBitAddress adr = new ByteBitAddress(para.Substring(10, para.Length - 11));
-                        var parRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter, adr);
-                        if (parRow!=null)
+                        var parRow = S7DataRow.GetDataRowWithAddress(myPar, adr);
+                        if (parRow != null)
                         {
                             byte[] tmp = ((S7FunctionBlockRow) functionBlockRow).MC7;
                             ((S7FunctionBlockRow) functionBlockRow).Parameter = "#" + parRow.StructuredName.Substring(parRow.StructuredName.IndexOf('.') + 1);
@@ -61,9 +64,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             ((S7FunctionBlockRow)functionBlockRow).MC7 = tmp;
                         }
                         retVal.Add(functionBlockRow);
-                         * */
+                        */
+                        LargeAccess = false;
                     }
-                    else if (functionBlockRow.Command=="LAR2")
+                    else if (functionBlockRow.Command == "LAR2")
                     {
 
                     }

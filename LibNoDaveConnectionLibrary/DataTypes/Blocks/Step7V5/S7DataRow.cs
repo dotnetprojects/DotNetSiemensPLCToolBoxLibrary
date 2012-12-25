@@ -39,19 +39,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
         {
-                for (int n = 0; n < startRow.Children.Count;n++)
-                //foreach (var s7DataRow in startRow.Children)
+            for (int n = 0; n < startRow.Children.Count; n++)
+            {
+                var s7DataRow = startRow.Children[n];
+                if (n == startRow.Children.Count - 1 || address < startRow.Children[n + 1].BlockAddress)
                 {
-                    var s7DataRow = startRow.Children[n];
-                    if (n == startRow.Children.Count - 1 || address < startRow.Children[n + 1].BlockAddress)
-                    {
-                        if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0))
-                            return s7DataRow;
-                        var tmp = GetDataRowWithAddress(s7DataRow, address);
-                        if (tmp != null)
-                            return tmp;
-                    }
+                    if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
+                        return s7DataRow;
+                    var tmp = GetDataRowWithAddress(s7DataRow, address);
+                    if (tmp != null) 
+                        return tmp;
                 }
+            }
+            return null;
+        }
+
+        public static S7DataRow GetDataRowWithAddress(IEnumerable<S7DataRow> startRows, ByteBitAddress address)
+        {
+            foreach (var s7DataRow in startRows)
+            {
+                var row = GetDataRowWithAddress(s7DataRow, address);
+                if (row != null) 
+                    return row;
+            }
+
             return null;
         }
 
