@@ -153,7 +153,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get
             {
-                if (LibNoDaveDataSource == TagDataSource.Datablock || LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                if (LibNoDaveDataSource == MemoryArea.Datablock || LibNoDaveDataSource == MemoryArea.InstanceDatablock)
                     return _datablockNumber > 0 ? _datablockNumber : 1;
                 else
                     return 0;
@@ -163,8 +163,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private TagDataSource _LibNoDaveDataSource = TagDataSource.Datablock;
-        public TagDataSource LibNoDaveDataSource
+        private MemoryArea _LibNoDaveDataSource = MemoryArea.Datablock;
+        public MemoryArea LibNoDaveDataSource
         {
             get
             {
@@ -173,9 +173,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set
             {
                 _LibNoDaveDataSource = value;
-                if (value == TagDataSource.Timer || value == TagDataSource.Counter)
+                if (value == MemoryArea.Timer || value == MemoryArea.Counter)
                     if (LibNoDaveDataType != TagDataType.Bool && LibNoDaveDataType != TagDataType.Int && LibNoDaveDataType != TagDataType.Word && LibNoDaveDataType != TagDataType.S5Time && LibNoDaveDataType != TagDataType.BCDWord)
-                        _LibNoDaveDataType = value == TagDataSource.Timer ? TagDataType.S5Time : TagDataType.Int;
+                        _LibNoDaveDataType = value == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                 NotifyPropertyChanged("LibNoDaveDataSource"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
@@ -253,10 +253,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     BitAddress = 0;
                 //else if (value == TagDataType.CharArray || value == TagDataType.ByteArray || value == TagDataType.String)
                 //    ArraySize = _internalGetSize();
-                if (_LibNoDaveDataSource == TagDataSource.Timer || _LibNoDaveDataSource == TagDataSource.Counter)
+                if (_LibNoDaveDataSource == MemoryArea.Timer || _LibNoDaveDataSource == MemoryArea.Counter)
                 {
                     if (value != TagDataType.Bool && value != TagDataType.Int && value != TagDataType.Word && value != TagDataType.S5Time && value != TagDataType.BCDWord)
-                        _LibNoDaveDataType = LibNoDaveDataSource == TagDataSource.Timer ? TagDataType.S5Time : TagDataType.Int;
+                        _LibNoDaveDataType = LibNoDaveDataSource == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                     else
                         _LibNoDaveDataType = value;
 
@@ -445,18 +445,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 int aksz = _internalGetSize();
                 StringBuilder ret = new StringBuilder();
 
-                if (aksz == 3 || (aksz > 4 && LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter))
+                if (aksz == 3 || (aksz > 4 && LibNoDaveDataSource != MemoryArea.Timer && LibNoDaveDataSource != MemoryArea.Counter))
                     ret.Append("P#");
 
-                if (LibNoDaveDataSource == TagDataSource.Datablock || LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                if (LibNoDaveDataSource == MemoryArea.Datablock || LibNoDaveDataSource == MemoryArea.InstanceDatablock)
                 {
-                    if (LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                    if (LibNoDaveDataSource == MemoryArea.InstanceDatablock)
                         ret.Append("DI");
                     else
                         ret.Append("DB");
                     ret.Append(DatablockNumber);
                     ret.Append(".");
-                    if (LibNoDaveDataSource == TagDataSource.InstanceDatablock)
+                    if (LibNoDaveDataSource == MemoryArea.InstanceDatablock)
                         ret.Append("DI");
                     else
                         ret.Append("DB");
@@ -466,25 +466,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 switch (LibNoDaveDataSource)
                 {
-                    case TagDataSource.Inputs:
+                    case MemoryArea.Inputs:
                         ret.Append("E");
                         break;
-                    case TagDataSource.Outputs:
+                    case MemoryArea.Outputs:
                         ret.Append("A");
                         break;
-                    case TagDataSource.Flags:
+                    case MemoryArea.Flags:
                         ret.Append("M");
                         break;
-                    case TagDataSource.Timer:
+                    case MemoryArea.Timer:
                         ret.Append("T");
                         break;
-                    case TagDataSource.Counter:
+                    case MemoryArea.Counter:
                         ret.Append("Z");
                         break;
-                    case TagDataSource.LocalData:
+                    case MemoryArea.LocalData:
                         ret.Append("L");
                         break;
-                    case TagDataSource.PreviousLocalData:
+                    case MemoryArea.PreviousLocalData:
                         ret.Append("V");
                         break;
                 }
@@ -492,13 +492,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (LibNoDaveDataType == TagDataType.Bool && ArraySize < 2)
                 {
                     ret.Append(ByteAddress);
-                    if (LibNoDaveDataSource != TagDataSource.Timer && LibNoDaveDataSource != TagDataSource.Counter)
+                    if (LibNoDaveDataSource != MemoryArea.Timer && LibNoDaveDataSource != MemoryArea.Counter)
                     {
                         ret.Append(".");
                         ret.Append(BitAddress);
                     }
                 }
-                else if (LibNoDaveDataSource != TagDataSource.Counter && LibNoDaveDataSource != TagDataSource.Timer)
+                else if (LibNoDaveDataSource != MemoryArea.Counter && LibNoDaveDataSource != MemoryArea.Timer)
                 {
 
                     if (aksz == 3 || aksz > 4)
@@ -975,24 +975,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             DatablockNumber = 0;
                             var tmp = myPlcAddress[0].Split('.')[0];
                             if (tmp.Contains("e"))
-                                this.LibNoDaveDataSource = TagDataSource.Inputs;
+                                this.LibNoDaveDataSource = MemoryArea.Inputs;
                             else if (tmp.Contains("a"))
-                                this.LibNoDaveDataSource = TagDataSource.Outputs;
+                                this.LibNoDaveDataSource = MemoryArea.Outputs;
                             else if (tmp.Contains("l"))
-                                this.LibNoDaveDataSource = TagDataSource.LocalData;
+                                this.LibNoDaveDataSource = MemoryArea.LocalData;
                             else if (tmp.Contains("v"))
-                                this.LibNoDaveDataSource = TagDataSource.PreviousLocalData;
+                                this.LibNoDaveDataSource = MemoryArea.PreviousLocalData;
                             else if (tmp.Contains("m"))
-                                this.LibNoDaveDataSource = TagDataSource.Flags;
+                                this.LibNoDaveDataSource = MemoryArea.Flags;
                             else if (tmp.Contains("t"))
-                                this.LibNoDaveDataSource = TagDataSource.Timer;
+                                this.LibNoDaveDataSource = MemoryArea.Timer;
                             else if (tmp.Contains("z"))
-                                this.LibNoDaveDataSource = TagDataSource.Counter;
+                                this.LibNoDaveDataSource = MemoryArea.Counter;
                             ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
                         }
                         else
                         {
-                            LibNoDaveDataSource = TagDataSource.Datablock;
+                            LibNoDaveDataSource = MemoryArea.Datablock;
                             DatablockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
                             ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
@@ -1034,7 +1034,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
                         if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
                         {
-                            this.LibNoDaveDataSource = TagDataSource.Datablock;
+                            this.LibNoDaveDataSource = MemoryArea.Datablock;
                             this.DatablockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
                             if (myPlcAddress[1].Contains("DBW"))
                             {
@@ -1074,15 +1074,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else
                         {
                             if (myPlcAddress[0].Contains("E"))
-                                this.LibNoDaveDataSource = TagDataSource.Inputs;
+                                this.LibNoDaveDataSource = MemoryArea.Inputs;
                             else if (myPlcAddress[0].Contains("A"))
-                                this.LibNoDaveDataSource = TagDataSource.Outputs;
+                                this.LibNoDaveDataSource = MemoryArea.Outputs;
                             else if (myPlcAddress[0].Contains("M"))
-                                this.LibNoDaveDataSource = TagDataSource.Flags;
+                                this.LibNoDaveDataSource = MemoryArea.Flags;
                             else if (myPlcAddress[0].Contains("T"))
-                                this.LibNoDaveDataSource = TagDataSource.Timer;
+                                this.LibNoDaveDataSource = MemoryArea.Timer;
                             else if (myPlcAddress[0].Contains("Z"))
-                                this.LibNoDaveDataSource = TagDataSource.Counter;
+                                this.LibNoDaveDataSource = MemoryArea.Counter;
 
                             if (myPlcAddress[0].Contains("W"))
                             {

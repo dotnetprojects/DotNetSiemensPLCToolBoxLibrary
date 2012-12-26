@@ -81,6 +81,7 @@
     <Compile Include="DataTypes\Blocks\Network.cs" />
     <Compile Include="DataTypes\Blocks\ProjectPlcBlockInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlockAdressType.cs" />
+    <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIACPUFolder.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="DataTypes\Projectfolders\IProgrammFolder.cs" />
     <Compile Include="DataTypes\Step7Attribute.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\CPFolder.cs" />
-    <Compile Include="DataTypes\TagDataSource.cs" />
+    <Compile Include="DataTypes\MemoryArea.cs" />
     <Compile Include="DataTypes\PLCType.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\CommunicationProcessorFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V5\CPUFolder.cs" />

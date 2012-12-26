@@ -39,6 +39,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     public static class Helper
     {
 
+        public static string MemoryAreaToPointer(MemoryArea area, MnemonicLanguage language)
+        {
+            switch (area)
+            {
+                case MemoryArea.Inputs:
+                    return Mnemonic.adE[(int)language];
+                case MemoryArea.Outputs:
+                    return Mnemonic.adA[(int)language];
+                case MemoryArea.Timer:
+                    return Mnemonic.adT[(int)language];
+                case MemoryArea.Flags:
+                    return Mnemonic.adM[(int)language];
+                case MemoryArea.Counter:
+                    return Mnemonic.adZ[(int)language];
+                case MemoryArea.Datablock:
+                    return Mnemonic.adDBX[(int)language];
+                case MemoryArea.InstanceDatablock:
+                    return Mnemonic.adDIX[(int)language];
+            }
+            return "";
+        }
+
         public static ByteBitAddress GetNextBitAddress(ByteBitAddress tmp)
         {
             if (tmp.BitAddress > 7)

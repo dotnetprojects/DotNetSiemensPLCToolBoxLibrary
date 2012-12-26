@@ -17,7 +17,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 ByteAddress = Convert.ToInt32(address.Split('.')[0]);
                 BitAddress = Convert.ToInt32(address.Split('.')[1]);
             }
-            else if (address.Contains("."))
+            else
             {
                 ByteAddress = Convert.ToInt32(address);
                 BitAddress = 0;

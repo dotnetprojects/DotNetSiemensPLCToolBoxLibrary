@@ -35,7 +35,7 @@ namespace TestProjectFileFunctions
             {
                 PLCConnection myConn = new PLCConnection(lstConnections.SelectedItem.ToString());
                 myConn.Connect();
-                PLCTag plcTag=new PLCTag(){LibNoDaveDataType = TagDataType.ByteArray, LibNoDaveDataSource = TagDataSource.Datablock, DatablockNumber = Convert.ToInt32(txtDB.Text), ByteAddress = Convert.ToInt32(txtStartByte.Text), ArraySize = Convert.ToInt32(txtBytes.Text)};
+                PLCTag plcTag=new PLCTag(){LibNoDaveDataType = TagDataType.ByteArray, LibNoDaveDataSource = MemoryArea.Datablock, DatablockNumber = Convert.ToInt32(txtDB.Text), ByteAddress = Convert.ToInt32(txtStartByte.Text), ArraySize = Convert.ToInt32(txtBytes.Text)};
                 myConn.ReadValue(plcTag);
                 readBytes = (byte[]) plcTag.Value;
                 myConn.Disconnect();
@@ -61,7 +61,7 @@ namespace TestProjectFileFunctions
 
                 for (int n = 0; n < anz; n++)
                 {
-                    PLCTag plcTag = new PLCTag() {LibNoDaveDataType = TagDataType.ByteArray, LibNoDaveDataSource = TagDataSource.Datablock, DatablockNumber = Convert.ToInt32(txtDB.Text), ByteAddress = Convert.ToInt32(txtStartByte.Text) + n*Convert.ToInt32(txtNewSize.Text), ArraySize = Convert.ToInt32(txtSize.Text)};
+                    PLCTag plcTag = new PLCTag() {LibNoDaveDataType = TagDataType.ByteArray, LibNoDaveDataSource = MemoryArea.Datablock, DatablockNumber = Convert.ToInt32(txtDB.Text), ByteAddress = Convert.ToInt32(txtStartByte.Text) + n*Convert.ToInt32(txtNewSize.Text), ArraySize = Convert.ToInt32(txtSize.Text)};
 
                     byte[] ctrlV = new byte[len];
                     Array.Copy(readBytes, olen*n, ctrlV, 0, olen);

@@ -42,27 +42,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     {
                         case 0x32:
                             var = "E";
-                            tmp.LibNoDaveDataSource = TagDataSource.Inputs;
+                            tmp.LibNoDaveDataSource = MemoryArea.Inputs;
                             break;
                         case 0x33:
                             var = "A";
-                            tmp.LibNoDaveDataSource = TagDataSource.Outputs;
+                            tmp.LibNoDaveDataSource = MemoryArea.Outputs;
                             break;
                         case 0x34:
-                            tmp.LibNoDaveDataSource = TagDataSource.Flags;
+                            tmp.LibNoDaveDataSource = MemoryArea.Flags;
                             var = "M";
                             break;
                         case 0x35:
-                            tmp.LibNoDaveDataSource = TagDataSource.Datablock;
+                            tmp.LibNoDaveDataSource = MemoryArea.Datablock;
                             var = "DB";
                             db = "DB";
                             break;
                         case 0x38:
-                            tmp.LibNoDaveDataSource = TagDataSource.Timer;
+                            tmp.LibNoDaveDataSource = MemoryArea.Timer;
                             var = "T";
                             break;
                         case 0x39:
-                            tmp.LibNoDaveDataSource = TagDataSource.Counter;
+                            tmp.LibNoDaveDataSource = MemoryArea.Counter;
                             var = "Z";
                             break;
                         default:

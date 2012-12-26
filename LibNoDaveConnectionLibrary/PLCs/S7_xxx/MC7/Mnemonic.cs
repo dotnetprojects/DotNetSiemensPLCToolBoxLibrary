@@ -208,16 +208,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         public static string[] opXOW = new string[] { "XOW", "XOW" };
         public static string[] opZR = new string[] { "ZR", "CD" };
         public static string[] opZV = new string[] { "ZV", "CU" };
-        public static string[] opZUW = new string[] { "=", "=" };
-
-
-
-        public enum Languages
-        {
-            Europe = 0,
-            American = 1
-        }
+        public static string[] opZUW = new string[] { "=", "=" };        
     }
-
-    
 }

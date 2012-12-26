@@ -77,7 +77,7 @@ namespace JFK_VarTab
         private void Form1_Load(object sender, EventArgs e)
         {            
             //cmbSource.AddEnumToList(typeof (LibNoDaveDataSource));
-            EnumListBoxExtensions.AddEnumToList(cmbSource, typeof(TagDataSource));
+            EnumListBoxExtensions.AddEnumToList(cmbSource, typeof(MemoryArea));
             //cmbType.AddEnumToList(typeof (LibNoDaveDataType));
             EnumListBoxExtensions.AddEnumToList(cmbType, typeof(TagDataType));
             EnumListBoxExtensions.AddEnumToList(cmbDataType, typeof(TagDataType));
@@ -94,7 +94,7 @@ namespace JFK_VarTab
             
             myValues.Add(new PLCTag
                                    {
-                                       LibNoDaveDataSource = (TagDataSource)((EnumListItem)cmbSource.SelectedItem).Value,
+                                       LibNoDaveDataSource = (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value,
                                        ByteAddress = Convert.ToInt32(txtByte.Text) ,
                                        BitAddress = Convert.ToInt32(txtBit.Text),
                                        DatablockNumber = Convert.ToInt32(txtDB.Text),

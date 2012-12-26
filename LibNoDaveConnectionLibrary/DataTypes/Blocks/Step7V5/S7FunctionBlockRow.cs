@@ -77,7 +77,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        public int DiNumber { get; set; }
+        public string DiName { get; set; }
 
         private SymbolTableEntry _SymbolTableEntry;
         public SymbolTableEntry SymbolTableEntry
@@ -623,7 +623,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     len = cpar.Name.Length > len ? cpar.Name.Length : len;
                 foreach (var cpar in CallParameter)
                 {
-                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + ":=" + cpar.Value;
+                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + ":=" + cpar.GetValue(useSymbol);
                     if (!string.IsNullOrEmpty(cpar.Comment))
                         ext += "  //" + cpar.Comment;
                 }
@@ -639,22 +639,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (Parameter != null)
                 par = Parameter;
 
-            if (Command == "CALL" && DiNumber > 0)
+            if (Command == "CALL" && !String.IsNullOrEmpty(DiName))
             {
-                string nm = "DI" + DiNumber;
-
+                var nm = DiName;
                 if (useDataBlocksSymbolic && this.Parent != null)
                 {
-                    var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
-                    if (fld != null)
+                    if ((this.Parent).SymbolTable != null)
                     {
                         var sym1 = this.Parent.SymbolTable.GetEntryFromOperand(par);
                         if (sym1 != null)
                             par = "\"" + sym1.Symbol + "\"";
 
-                        var sym2 = this.Parent.SymbolTable.GetEntryFromOperand("DB" + DiNumber);
-                        if (sym2 != null) 
-                            nm = "\"" + sym2.Symbol + "\"";
+                        if (!DiName.StartsWith("#"))
+                        {
+                            var sym2 = this.Parent.SymbolTable.GetEntryFromOperand(nm.Replace("DI", "DB"));
+                            if (sym2 != null) 
+                                nm = "\"" + sym2.Symbol + "\"";
+                        }
                     }
                 }
                 par += ", " + nm;

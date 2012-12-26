@@ -29,6 +29,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public SymbolTableEntry GetEntryFromOperand(string operand)
         {
+            if (operand == null) return null;
+
             if (_step7SymbolTableEntrys == null)
                 LoadSymboltable();
             string tmpname = operand.Replace(" ", "");

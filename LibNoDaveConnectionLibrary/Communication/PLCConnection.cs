@@ -1457,26 +1457,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 switch (plcTag.LibNoDaveDataSource)
                 {
-                    case TagDataSource.Flags:
+                    case MemoryArea.Flags:
                         dtaTyp = 0;
                         break;
-                    case TagDataSource.Inputs:
+                    case MemoryArea.Inputs:
                         dtaTyp = 1;
                         break;
-                    case TagDataSource.Outputs:
+                    case MemoryArea.Outputs:
                         dtaTyp = 2;
                         break;
-                    case TagDataSource.Datablock:
+                    case MemoryArea.Datablock:
                         dtaTyp = 0x07;
                         dbNo = plcTag.DatablockNumber;
                         break;
-                    case TagDataSource.Timer:
+                    case MemoryArea.Timer:
                         dtaTyp = 5;
                         break;
-                    case TagDataSource.Counter:
+                    case MemoryArea.Counter:
                         dtaTyp = 6;
                         break;
-                    case TagDataSource.LocalData:
+                    case MemoryArea.LocalData:
                         dtaTyp = 0x0c;
                         break;
                 }
@@ -1493,7 +1493,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         dtaSize = 3;
                         break;
                     default:
-                        if (plcTag.LibNoDaveDataSource == TagDataSource.Timer || plcTag.LibNoDaveDataSource == TagDataSource.Counter)
+                        if (plcTag.LibNoDaveDataSource == MemoryArea.Timer || plcTag.LibNoDaveDataSource == MemoryArea.Counter)
                         {
                             dtaSize = 4;
                             dbNo = 1;
@@ -1571,26 +1571,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 switch (plcTag.LibNoDaveDataSource)
                 {
-                    case TagDataSource.Flags:
+                    case MemoryArea.Flags:
                         dtaTyp = 0;
                         break;
-                    case TagDataSource.Inputs:
+                    case MemoryArea.Inputs:
                         dtaTyp = 1;
                         break;
-                    case TagDataSource.Outputs:
+                    case MemoryArea.Outputs:
                         dtaTyp = 2;
                         break;
-                    case TagDataSource.Datablock:
+                    case MemoryArea.Datablock:
                         dtaTyp = 0x07;
                         dbNo = plcTag.DatablockNumber;
                         break;
-                    case TagDataSource.Timer:
+                    case MemoryArea.Timer:
                         dtaTyp = 5;
                         break;
-                    case TagDataSource.Counter:
+                    case MemoryArea.Counter:
                         dtaTyp = 6;
                         break;
-                    case TagDataSource.LocalData:
+                    case MemoryArea.LocalData:
                         dtaTyp = 0x0c;
                         break;
                 }
@@ -1607,7 +1607,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         dtaSize = 3;
                         break;
                     default:
-                        if (plcTag.LibNoDaveDataSource == TagDataSource.Timer || plcTag.LibNoDaveDataSource == TagDataSource.Counter)
+                        if (plcTag.LibNoDaveDataSource == MemoryArea.Timer || plcTag.LibNoDaveDataSource == MemoryArea.Counter)
                         {
                             dtaSize = 4;
                             dbNo = 1;
@@ -1682,7 +1682,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             public int Compare(PLCTag pt1, PLCTag pt2)
             {
                //Beides DBs, vergleiche DBs
-                if (pt1.LibNoDaveDataSource==TagDataSource.Datablock && pt2.LibNoDaveDataSource==TagDataSource.Datablock)
+                if (pt1.LibNoDaveDataSource==MemoryArea.Datablock && pt2.LibNoDaveDataSource==MemoryArea.Datablock)
                 {
                     if (pt1.DatablockNumber == pt2.DatablockNumber)
                         if (pt1.ByteAddress > pt2.ByteAddress)
@@ -1754,7 +1754,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     List<PLCTag> readTagList=new List<PLCTag>(); 
 
                     //Go through the List of PLC Tags and Combine the ones, where the Byte Addres does not differ more than 4 Bytes...
-                    TagDataSource oldDataSource = 0;
+                    MemoryArea oldDataSource = 0;
                     int oldDB=0, oldByteAddress=0, oldLen=0;
                     int cntCombinedTags = 0;
                     PLCTag lastTag = null;
@@ -1772,7 +1772,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         else
                         {
-                            if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
+                            if (oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
                             {
                                 //todo: test if this is correct
                                 if (cntCombinedTags == 1)
@@ -1853,7 +1853,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //Save the Byte Address in anthoer Variable, because if we split the Read Request, we need not the real Start Address
                         akByteAddress = libNoDaveValue.ByteAddress;
 
-                        if (libNoDaveValue.LibNoDaveDataSource != TagDataSource.Datablock && libNoDaveValue.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
+                        if (libNoDaveValue.LibNoDaveDataSource != MemoryArea.Datablock && libNoDaveValue.LibNoDaveDataSource != MemoryArea.InstanceDatablock)
                             libNoDaveValue.DatablockNumber = 0;
 
                         int readSize = libNoDaveValue._internalGetSize();
@@ -2010,7 +2010,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int readSize = value._internalGetSize();
                     byte[] myBuff = new byte[readSize];
 
-                    if (value.LibNoDaveDataSource != TagDataSource.Datablock && value.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
+                    if (value.LibNoDaveDataSource != MemoryArea.Datablock && value.LibNoDaveDataSource != MemoryArea.InstanceDatablock)
                         value.DatablockNumber = 0;
                     
                 
@@ -2084,7 +2084,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     value._putControlValueIntoBuffer(myBuff, 0);
 
-                    if (value.LibNoDaveDataSource != TagDataSource.Datablock && value.LibNoDaveDataSource != TagDataSource.InstanceDatablock)
+                    if (value.LibNoDaveDataSource != MemoryArea.Datablock && value.LibNoDaveDataSource != MemoryArea.InstanceDatablock)
                         value.DatablockNumber = 0;
 
                     int res;
@@ -2158,7 +2158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         List<PLCTag> writeTagList = new List<PLCTag>();
 
                         //Go through the List of PLC Tags and Combine the ones, where the Byte Address does not differ...
-                        TagDataSource oldDataSource = 0;
+                        MemoryArea oldDataSource = 0;
                         int oldDB = 0, oldByteAddress = 0, oldLen = 0;
                         int cntCombinedTags = 0;
                         PLCTag lastTag = null;
@@ -2176,7 +2176,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                             else
                             {
-                                if (plcTag.LibNoDaveDataType != TagDataType.Bool && oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != TagDataSource.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen)
+                                if (plcTag.LibNoDaveDataType != TagDataType.Bool && oldDataSource == plcTag.LibNoDaveDataSource && (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DatablockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen)
                                 {
                                     //todo: test if this is correct
                                     if (cntCombinedTags == 1)

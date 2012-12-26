@@ -3610,6 +3610,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             pos += 4;
                                         }
                                         break;
+                                    case 0xCA:
                                     case 0xCB:
                                         {
                                             string cmd = "", par = "";
@@ -3654,6 +3655,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0xD8:
+                                    case 0xD9:
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opAUF[MN];
@@ -3665,7 +3667,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
                                         }
-                                        break;
+                                        break;                                    
                                     case 0xE0:
                                         {
                                             retVal.Add(new S7FunctionBlockRow()
