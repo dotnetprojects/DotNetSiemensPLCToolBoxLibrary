@@ -234,13 +234,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             int commentsRow = 12;
             int akLine = -1;
-            while (commentsRow<comments.Length)
+            while (commentsRow < comments.Length)
             {
                 int akLen = comments[commentsRow] + comments[commentsRow + 1]*0x100;
                 int akLinePlus = comments[commentsRow + 2] + comments[commentsRow + 3]*0x100;
                 akLine += akLinePlus;
 
-                VATRows[akLine].Comment = projEncoding.GetString(comments, commentsRow + 6, akLen);
+                if (commentsRow + 6 + akLen > comments.Length) 
+                    akLen = comments.Length - commentsRow - 6;
+
+                if (akLine < VATRows.Count)
+                    VATRows[akLine].Comment = projEncoding.GetString(comments, commentsRow + 6, akLen);
 
                 commentsRow += 6 + akLen;
                 akLine++;
