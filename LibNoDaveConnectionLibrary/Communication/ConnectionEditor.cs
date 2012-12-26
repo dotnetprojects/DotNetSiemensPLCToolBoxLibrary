@@ -287,24 +287,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                     case 20:
                         cmdTest.Enabled = true;
-                        //lblLIBNODAVEEntryPoint.Enabled = true;
-                        //lstListEntryPoints.Enabled = true;
-                        //lblLIBNODAVECPURack.Enabled = true;
-                        //txtLIBNODAVECPURack.Enabled = true;
-                        //lblLIBNODAVECPUSlot.Enabled = true;
-                        //txtLIBNODAVECPUSlot.Enabled = true;
-                        //lblLIBNODAVECPUMPI.Enabled = true;
-                        //txtLIBNODAVECPUMPI.Enabled = true;
-                        //lblLIBNODAVELokalMPI.Enabled = true;
-                        //txtLIBNODAVELokalMPI.Enabled = true;
                         lblLIBNODAVELokalCOMPort.Enabled = true;
                         lstLIBNODAVELokalCOMPort.Enabled = true;
-                        //lblLIBNODAVEBusSpeed.Enabled = true;
-                        //lstLIBNODAVEBusSpeed.Enabled = true;
-                        //lblLIBNODAVELokalComSpeed.Enabled = true;
-                        //lstLIBNODAVELokalComSpeed.Enabled = true;
-                        //lblLIBNODAVELokalComParity.Enabled = true;
-                        //lstLIBNODAVELokalComParity.Enabled = true;
+                        lblLIBNODAVELokalComSpeed.Enabled = true;
+                        lstLIBNODAVELokalComSpeed.Enabled = true;
+                        lblLIBNODAVELokalComParity.Enabled = true;
+                        lstLIBNODAVELokalComParity.Enabled = true;
                         break;
                     case 50:
                         cmdTest.Enabled = true;

@@ -103,6 +103,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             //look what we need to do here!!!
                         }
+                        else if (row.Command == Mnemonic.opLAR1[(int)myOpt.Mnemonic])
+                        {
+                            //look what we need to do here!!!
+                        }
                         else if ((row.Command == "=") && akPar != "")
                         {
                             if (afterCall == false)
