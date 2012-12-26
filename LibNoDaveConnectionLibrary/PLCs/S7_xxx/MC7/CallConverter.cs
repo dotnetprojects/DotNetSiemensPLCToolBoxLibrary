@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -33,6 +34,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 bool afterCall = false;
                 bool multiInstance = false;
                 int multiInstanceOffset = 0;
+                ByteBitAddress ar2Addr = new ByteBitAddress(0,0);
 
                 S7FunctionBlockRow callRow = null;
 
@@ -57,6 +59,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         
                         multiInstance = false;
                         multiInstanceOffset = 0;
+                        ar2Addr = new ByteBitAddress(0, 0);
 
                         tempList.Add(row);
                     }                    
@@ -361,15 +364,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         else if (row.Command == Mnemonic.opTAR2[(int)myOpt.Mnemonic])
                         {
-                            //Do nothing, but this line needs to be there!
+                            akPar = "P#DIX " + ar2Addr.ToString();
                         }
                         else if (row.Command == Mnemonic.opLAR2[(int)myOpt.Mnemonic])
                         {
-                            //Do nothing, but this line needs to be there!
+                            if (row.Parameter.StartsWith("P#"))
+                            {
+                                ar2Addr = new ByteBitAddress(row.Parameter.Substring(2));
+                            }
+                            else
+                            {
+                                ar2Addr.ByteAddress = 0;
+                                ar2Addr.BitAddress = 0;
+                            }
                         }
                         else if (row.Command == Mnemonic.opPAR2[(int)myOpt.Mnemonic])
                         {
-                            
+                            ar2Addr += new ByteBitAddress(row.Parameter);
                         }
                         else if (row.Command == Mnemonic.opAUF[(int)myOpt.Mnemonic] && (tempList.Count == 4))
                         {
@@ -411,9 +422,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             }
                             else
                             {
-                                string key = akPar.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
-                                if (!Parameters.ContainsKey(key))
-                                    Parameters.Add("P#V " + key, row.Parameter);
+                                if (!Parameters.ContainsKey(akPar))
+                                    Parameters.Add(akPar, row.Parameter);
                             }
                             akPar = "";
                             db = "";
@@ -427,10 +437,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             }
                             else
                             {
-                                string key = akPar.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
-                                if (!Parameters.ContainsKey(key))
-                                    Parameters.Add("P#V " + key, row.Parameter);
+                                if (!Parameters.ContainsKey(akPar))
+                                    Parameters.Add(akPar, row.Parameter);
                             }
+                            akPar = "";
+                            db = "";
+                        }
+                        else if (row.Command == Mnemonic.opT[(int)myOpt.Mnemonic])
+                        {
+                            if (afterCall == false)
+                            {
+                                if (!Parameters.ContainsKey(row.Parameter))
+                                    Parameters.Add(row.Parameter, "");
+                            }                            
                             akPar = "";
                             db = "";
                         }
@@ -462,239 +481,89 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow.CallParameter = new List<S7FunctionBlockParameter>();
 
 
-                            var allPar = para.Children.Where(itm => itm.Name == "IN" || itm.Name == "INOUT" || itm.Name == "OUT");
-                            foreach (var s7DataRowMain in allPar)
-                            {
-                                foreach (var s7DataRow in s7DataRowMain.Children)
+                            if (para != null)
+                            { 
+                            var allPar = para.Children.Where(itm => itm.Name == "IN" || itm.Name == "IN_OUT" || itm.Name == "OUT");
+                                foreach (var s7DataRowMain in allPar)
                                 {
-                                    S7FunctionBlockParameter newPar = new S7FunctionBlockParameter();
-                                    newPar.Name = s7DataRow.Name;
-                                    
-                                    string par = null;
-                                    if (!multiInstance) 
-                                        Parameters.TryGetValue(s7DataRow.BlockAddressInDbFormat.Replace("DB", "DI"), out par);
-                                    else
+                                    foreach (var s7DataRow in s7DataRowMain.Children)
                                     {
-                                        var addr = s7DataRow.BlockAddressInDbFormat;
-                                        var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
-                                        double bytepos = double.Parse(addr.Substring(3), CultureInfo.InvariantCulture) + multiInstanceOffset;
-                                        Parameters.TryGetValue(addrTp + "[AR2,P#" + bytepos.ToString("0.0", CultureInfo.InvariantCulture) + "]", out par);
-                                    }
+                                        S7FunctionBlockParameter newPar = new S7FunctionBlockParameter();
+                                        newPar.Name = s7DataRow.Name;
 
+                                        string par = null;
+                                        if (!multiInstance) Parameters.TryGetValue(s7DataRow.BlockAddressInDbFormat.Replace("DB", "DI"), out par);
+                                        else if (s7DataRow.DataType == S7DataRowType.ANY)
+                                        {
+                                            var anySizeAddr = s7DataRow.BlockAddress.ByteAddress + multiInstanceOffset + 2;
+                                            var anyPosAddr = s7DataRow.BlockAddress.ByteAddress + multiInstanceOffset + 6;
 
-                                    switch (s7DataRow.DataType)
-                                    {
-                                        case S7DataRowType.BLOCK_DB:
-                                            newPar.Value = "DB" + par;
-                                            break;
-                                        case S7DataRowType.BLOCK_FC:
-                                            newPar.Value = "FC" + par;
-                                            break;
-                                        case S7DataRowType.BLOCK_FB:
-                                            newPar.Value = "FB" + par;
-                                            break;
-                                        case S7DataRowType.TIMER:
-                                            newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + par.ToString();
-                                            break;
-                                        case S7DataRowType.COUNTER:
-                                            newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + par.ToString();
-                                            break;
-                                        case S7DataRowType.TIME:
-                                            if (par!=null && par.StartsWith("L#"))
-                                            {
-                                                var arr = BitConverter.GetBytes(Convert.ToInt32(par.Substring(2)));
-                                                Array.Reverse(arr);
-                                                newPar.Value = Helper.GetDTime(arr, 0);                                               
-                                            }
-                                            else
-                                            {
-                                                newPar.Value = par;
-                                            }
-                                            break;
-                                        default:
+                                            string anySize = "";
+                                            string anyPos = "";
+                                            Parameters.TryGetValue("DIW[AR2,P#" + anySizeAddr + ".0]", out anySize);
+                                            Parameters.TryGetValue("DID[AR2,P#" + anyPosAddr + ".0]", out anyPos);
+                                            par = anyPos + " BYTE " + anySize;
+                                        }
+                                        else
+                                        {
+                                            var addr = s7DataRow.BlockAddressInDbFormat;
+                                            var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
+                                            double bytepos = double.Parse(addr.Substring(3), CultureInfo.InvariantCulture) + multiInstanceOffset;
+                                            Parameters.TryGetValue(addrTp + "[AR2,P#" + bytepos.ToString("0.0", CultureInfo.InvariantCulture) + "]", out par);
+                                        }
+
+                                        if (par != null && par.Contains("[AR2"))
+                                        {
                                             newPar.Value = par;
-                                            break;
-                                    }
+                                            var addr = par.Substring(10);
+                                            addr = addr.Substring(0, addr.Length - 1);
+                                            var pRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter.Children.Where(itm => itm.Name != "TEMP"), new ByteBitAddress(addr));
+                                            if (pRow != null) newPar.Value = pRow.StructuredName.Substring(pRow.StructuredName.IndexOf('.') + 1);
 
-                                    newRow.CallParameter.Add(newPar);
+                                        }
+                                        else
+                                        {
+                                            switch (s7DataRow.DataType)
+                                            {
+                                                case S7DataRowType.BLOCK_DB:
+                                                    newPar.Value = "DB" + par;
+                                                    break;
+                                                case S7DataRowType.BLOCK_FC:
+                                                    newPar.Value = "FC" + par;
+                                                    break;
+                                                case S7DataRowType.BLOCK_FB:
+                                                    newPar.Value = "FB" + par;
+                                                    break;
+                                                case S7DataRowType.TIMER:
+                                                    newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + par.ToString();
+                                                    break;
+                                                case S7DataRowType.COUNTER:
+                                                    newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + par.ToString();
+                                                    break;
+                                                case S7DataRowType.TIME:
+                                                    if (par != null && par.StartsWith("L#"))
+                                                    {
+                                                        var arr = BitConverter.GetBytes(Convert.ToInt32(par.Substring(2)));
+                                                        Array.Reverse(arr);
+                                                        newPar.Value = Helper.GetDTime(arr, 0);
+                                                    }
+                                                    else
+                                                    {
+                                                        newPar.Value = par;
+                                                    }
+                                                    break;
+                                                default:
+                                                    newPar.Value = par;
+                                                    break;
+                                            }
+                                        }
+
+                                        newRow.CallParameter.Add(newPar);
+                                    }
                                 }
                             }
 
-                            /*for (int i = 0; i < callRow.ExtParameter.Count; i++)
-                            {
-                                string s = callRow.ExtParameter[i];
-
-                                string parnm = "";
-                                S7DataRow akRow = Parameter.GetFunctionParameterFromNumber(para, i);
-                                if (akRow != null)
-                                    parnm = akRow.Name + "";
-                                else
-                                    parnm = "$$undef";
-
-
-                                S7FunctionBlockParameter newPar = new S7FunctionBlockParameter();
-                                newPar.Name = parnm;
-                                if (akRow != null)
-                                {
-                                    newPar.ParameterDataType = akRow.DataType;
-                                    if (akRow.Parent.Name == "OUT")
-                                        newPar.ParameterType = S7FunctionBlockParameterDirection.OUT;
-                                    else if (akRow.Parent.Name == "IN_OUT")
-                                        newPar.ParameterType = S7FunctionBlockParameterDirection.IN_OUT;
-                                    else
-                                        newPar.ParameterType = S7FunctionBlockParameterDirection.IN;
-                                }
-
-                                if (akRow != null)
-                                {
-                                    int posL = s.IndexOf(' ');
-                                    int ak_address = 0;
-                                    if (posL >= 0)
-                                        ak_address = Convert.ToInt32(s.Substring(posL + 1).Split('.')[0]);
-                                    else
-                                    {
-                                        ak_address = Convert.ToInt32(s.Substring(2).Split('.')[0]) * 8 +
-                                                     Convert.ToInt32(s.Substring(2).Split('.')[1]);
-                                    }
-
-                                    int lokaldata_address = -1;
-                                    if (s.Substring(0, 3) == "P#V")
-                                        lokaldata_address = Convert.ToInt32(s.Substring(4).Split('.')[0]);
-
-                                    if (akRow.DataType == S7DataRowType.STRING || akRow.DataType == S7DataRowType.DATE_AND_TIME ||
-                                        akRow.DataType == S7DataRowType.STRUCT || akRow.DataType == S7DataRowType.UDT ||
-                                        akRow.DataType == S7DataRowType.POINTER || akRow.IsArray)
-                                    {
-                                        string p1 = Parameters["P#V " + (lokaldata_address + 0).ToString() + ".0"];
-                                        string p2 = Parameters["P#V " + (lokaldata_address + 2).ToString() + ".0"];
-
-
-                                        string tmp = "";
-                                        if (p1 != "" && p1 != "0")
-                                            tmp += "P#DB" + p1 + "." + p2.Substring(2);
-                                        else
-                                            tmp += p2;
-                                        newPar.Value = tmp;
-                                        newRow.CallParameter.Add(newPar);
-                                    }
-                                    else if (akRow.DataType == S7DataRowType.ANY)
-                                    {
-                                        string tmp = s;
-                                        if (Parameters.ContainsKey("P#V " + (lokaldata_address + 0).ToString() + ".0") &&
-                                            Parameters.ContainsKey("P#V " + (lokaldata_address + 2).ToString() + ".0") &&
-                                            Parameters.ContainsKey("P#V " + (lokaldata_address + 4).ToString() + ".0") &&
-                                            Parameters.ContainsKey("P#V " + (lokaldata_address + 6).ToString() + ".0"))
-                                        {
-                                            string p1 = Parameters["P#V " + (lokaldata_address + 0).ToString() + ".0"];
-                                            string p2 = Parameters["P#V " + (lokaldata_address + 2).ToString() + ".0"];
-                                            string p3 = Parameters["P#V " + (lokaldata_address + 4).ToString() + ".0"];
-                                            string p4 = Parameters["P#V " + (lokaldata_address + 6).ToString() + ".0"];
-
-                                            tmp = "P#";
-                                            if (p3 != "0")
-                                                tmp += "DB" + p3 + ".";
-                                            tmp += p4.Substring(2);
-                                            tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
-                                            tmp += p2;
-                                        }
-                                        newPar.Value = tmp;
-                                        newRow.CallParameter.Add(newPar);
-                                    }
-                                    else
-                                    {
-                                        if (Parameters.ContainsKey(s))
-                                        {
-                                            string par = Parameters[s];
-                                            if (akRow.DataType == S7DataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
-                                            {
-                                                newPar.Value = Helper.GetS5Time(
-                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[1],
-                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[0]);
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.TIME && par[0] >= '0' && par[0] <= '9')
-                                            {
-                                                newPar.Value = Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)), 0);
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
-                                            {
-                                                newPar.Value =
-                                                    (char)
-                                                    Int32.Parse(par.Substring(5),
-                                                                System.Globalization.NumberStyles.AllowHexSpecifier) +
-                                                    "'";
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else
-                                            {
-                                                newPar.Value = Parameters[s];
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (akRow.DataType == S7DataRowType.BOOL)
-                                            {
-                                                newPar.Value = s.Substring(2).Replace('V', 'L');
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.BLOCK_DB)
-                                            {
-                                                newPar.Value = "DB" + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.BLOCK_FB)
-                                            {
-                                                newPar.Value = "FB" + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.BLOCK_FC)
-                                            {
-                                                newPar.Value = "FC" + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.BLOCK_SDB)
-                                            {
-                                                newPar.Value = "SDB" + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.TIMER)
-                                            {
-                                                newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.COUNTER)
-                                            {
-                                                newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-                                            else
-                                            {
-                                                string ber = "";
-                                                if (s.Substring(0, 5) == "P#DBX")
-                                                    ber = "DB";
-                                                else if (s.Substring(0, 5) == "P#DIX")
-                                                    ber = "DI";
-                                                else
-                                                    ber = s.Substring(2, 1);
-
-                                                if (akRow.ByteLength == 1)
-                                                    ber += "B";
-                                                else if (akRow.ByteLength == 2)
-                                                    ber += "W";
-                                                else if (akRow.ByteLength == 4)
-                                                    ber += "D";
-
-                                                newPar.Value = ber.Replace('V', 'L') + ak_address.ToString();
-                                                newRow.CallParameter.Add(newPar);
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }*/
-
+                            
                             newRow.CombinedCommands = tempList;
                             newRow.Label = label;
 

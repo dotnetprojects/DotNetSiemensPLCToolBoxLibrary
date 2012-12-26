@@ -11,6 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 
         public ByteBitAddress(string address)
         {
+            if (address.StartsWith("P#")) address = address.Substring(2);
             if (address.Contains("."))
             {
                 ByteAddress = Convert.ToInt32(address.Split('.')[0]);
@@ -55,6 +56,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
             if (b1.ByteAddress * 8 + b1.BitAddress > b2.ByteAddress * 8 + b2.BitAddress)
                 return true;
             return false;
+        }
+
+        public static ByteBitAddress operator +(ByteBitAddress b1, ByteBitAddress b2)
+        {
+            ByteBitAddress retVal = new ByteBitAddress(0, 0);
+            retVal.BitAddress = b1.BitAddress + b2.BitAddress;
+            retVal.ByteAddress = b1.ByteAddress + b2.ByteAddress;
+            if (retVal.BitAddress > 7)
+            {
+                retVal.BitAddress -= 8;
+                retVal.ByteAddress++;
+            }
+
+            return retVal;
         }
 
         public override string ToString()

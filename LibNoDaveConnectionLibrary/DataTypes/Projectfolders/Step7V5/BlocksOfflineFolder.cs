@@ -563,7 +563,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                             int n = 0;
                             int akRowInAwlCode = 0;
-                            int subCnt = 0; //Counter wich line in Command (for Calls and UCs)
+                            int lineNumberInCall = 0; //Counter wich line in Command (for Calls and UCs)
 
                             if (myTmpBlk.comments != null)
                             {
@@ -590,7 +590,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         {
                                             while (retVal.AWLCode.Count - 1 > akRowInAwlCode && retVal.AWLCode[akRowInAwlCode].Command != "NETWORK")
                                             {
-                                                newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                if (!newAwlCode.Contains(retVal.AWLCode[akRowInAwlCode]))
+                                                    newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
                                                 akRowInAwlCode++;
                                             }
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
@@ -599,7 +600,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         }
                                         akRowInAwlCode++;
 
-                                        subCnt = 0;
+                                        lineNumberInCall = 0;
                                     }
                                     else
                                     {
@@ -625,34 +626,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                     akRw = nRw;
                                                     retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
                                                 }
+                                                
+                                                if (!newAwlCode.Contains(akRw))
+                                                    newAwlCode.Add(akRw);
 
 
                                                 if (akRw.GetNumberOfLines() == 1)
                                                 {
-                                                    subCnt = 0;
+                                                    lineNumberInCall = 0;
 
                                                     lastRow = akRw;
 
-                                                    newAwlCode.Add(akRw);
+                                                    //if (!newAwlCode.Contains(akRw))
+                                                    //    newAwlCode.Add(akRw);
+
                                                     akRowInAwlCode++;
                                                 }
                                                 else
                                                 {
                                                     lastRow = akRw;
-                                                    if (subCnt == 0)
+                                                    if (lineNumberInCall == 0 && !(cmt[n + 4] != 0x80 && cmt[n + 4] != 0xc0))
                                                     {
-                                                        newAwlCode.Add(akRw);
+                                                        //if (!newAwlCode.Contains(akRw))
+                                                        //    newAwlCode.Add(akRw);                                                        
                                                     }
 
-                                                    if (akRw.GetNumberOfLines() - 1 == subCnt)
+                                                    if (akRw.GetNumberOfLines() - 1 == lineNumberInCall)
                                                     {
                                                         akRowInAwlCode++;
-                                                        subCnt = 0;
+                                                        lineNumberInCall = 0;
                                                         //subCnt++;    //The set to zero was wrong here, but maybe now comments on calls do not work, need to check!
                                                     }
                                                     else
                                                     {
-                                                        subCnt++;
+                                                        lineNumberInCall++;
                                                     }
                                                 }
                                             }
@@ -662,22 +669,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         //if (lastRow == null || cmt[n + 4] != 0x80)
                                         if (lastRow == null || (cmt[n + 4] != 0x80 && cmt[n + 4] != 0xc0))
                                         {
-                                            lastRow = new S7FunctionBlockRow(){Parent = retVal};
+                                            lastRow = new S7FunctionBlockRow(){ Parent = retVal };
                                             newAwlCode.Add(lastRow);
-                                            subCnt = 0;
+                                            lineNumberInCall = 0;
                                         }
 
                                         string tx1 = Project.ProjectEncoding.GetString(cmt, n + 6, kommLen);
-                                        if (subCnt == 0)
+                                        if (lineNumberInCall == 0)
                                             lastRow.Comment = tx1;
                                         else
                                             if (lastRow.Command == "CALL")
-                                                if (subCnt == 1) lastRow.Comment = tx1;
+                                                if (lineNumberInCall == 1) lastRow.Comment = tx1;
                                                 else
                                                 {
-                                                    if (lastRow.CallParameter.Count >= subCnt - 2)
+                                                    if (lastRow.CallParameter.Count >= lineNumberInCall - 2)
                                                     {
-                                                        lastRow.CallParameter[subCnt - 2].Comment = tx1;
+                                                        lastRow.CallParameter[lineNumberInCall - 2].Comment = tx1;
                                                     }
                                                 }
                                         n += kommLen + 6;
