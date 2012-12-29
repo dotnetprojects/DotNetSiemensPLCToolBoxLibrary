@@ -858,33 +858,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             retVal.showDeleted = showDeleted;
             if (tmpId2 != 0)
                 retVal.Folder = ProjectFolder + "YDBs" + _DirSeperator + tmpId2.ToString() + _DirSeperator;
-            //Look in Sym-List
-            /*
-            if (tmpId2 != 0)
-            {
-                try
-                {
-                    var dbfTbl = DBF.ParseDBF.ReadDBF(_projectfolder + "YDBs" + _DirSeperator + tmpId2.ToString() + _DirSeperator + "SYMLIST.DBF", _zipfile);
-                    foreach (DataRow row in dbfTbl.Rows)
-                    {
-                        if (!(bool)row["DELETED_FLAG"] || showDeleted)
-                        {
-                            SymbolTableEntry sym = new SymbolTableEntry();
-                            sym.Symbol = (string)row["_SKZ"];
-                            sym.Operand = (string)row["_OPHIST"];
-                            sym.OperandIEC = (string)row["_OPIEC"];
-                            sym.DataType = (string)row["_DATATYP"];
-                            sym.Comment = (string)row["_COMMENT"];
-                            if ((bool)row["DELETED_FLAG"]) sym.Comment = "(deleted) " + sym.Comment;
-                            retVal.Step7SymbolTableEntrys.Add(sym);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                }
-            }
-            */
+            
             return retVal;
         }
     }

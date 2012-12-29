@@ -240,8 +240,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if ((!(_configuration.ConnectionType == 50) && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
             {
                 _NeedDispose = false;
-                throw new Exception(
-                    "Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
+                throw new Exception("Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
             }
 
             //daveOSserialType Struktur befüllen
@@ -265,7 +264,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //Dave Interface initialisieren
             int ret = _di.initAdapter();
             if (ret != 0)
-                throw new Exception("Error: " + libnodave.daveStrerror(ret));
+                throw new Exception("Error: (Interface) (Code: " + ret.ToString() + ") " + libnodave.daveStrerror(ret));
             
             //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
 
@@ -290,16 +289,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //Get S7OnlineType - To detect if is a IPConnection
 #endif
 
+            //AS511
+            if (_configuration.ConnectionType == 20)
+            {
+                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, 0, 0);
+            }                
+            else
+            {
+                //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
+                //if (_configuration.Routing || IPConnection)
+                //Immer die extended Connection benutzen!
 
-            //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
-            //if (_configuration.Routing || IPConnection)
-            //Immer die extended Connection benutzen!
-                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
-                                                   _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
-                                                   _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
-                                                   _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
-                                                   _configuration.RoutingDestination, _configuration.PLCConnectionType, _configuration.RoutingPLCConnectionType);
-            
+                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection, _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing, _configuration.RoutingSubnet1, _configuration.RoutingSubnet2, _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot, _configuration.RoutingDestination, _configuration.PLCConnectionType, _configuration.RoutingPLCConnectionType);
+            }
+
             //else
             //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
 
@@ -318,8 +321,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _dc = null;
                 throw new Exception("Error: CPU not available! Maybe wrong IP or MPI Address or Rack/Slot or ...");
             }
-            if (ret != 0)
-                throw new Exception("Error: " + libnodave.daveStrerror(ret));
+            if (ret != 0) 
+                throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " + libnodave.daveStrerror(ret));
 
             //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
 
