@@ -9,17 +9,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public static class SelectProjectPart
     {
-        public static Step7ProjectFolder SelectBlocksOfflineFolder()
+        public static BlocksOfflineFolder SelectBlocksOfflineFolder()
         {
             return SelectBlocksOfflineFolder("");
         }
 
-        public static Step7ProjectFolder SelectBlocksOfflineFolder(string FileAndProjectInternalFolder)
+        public static BlocksOfflineFolder SelectBlocksOfflineFolder(string FileAndProjectInternalFolder)
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.BlocksOfflineFolder;
             myFrm.ShowDialog();
-            return (Step7ProjectFolder)myFrm.retVal;
+            return (BlocksOfflineFolder)myFrm.retVal;
         }
 
         public static S7ProgrammFolder SelectS7ProgrammFolder()

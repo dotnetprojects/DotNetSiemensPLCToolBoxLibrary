@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
@@ -163,6 +164,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             catch (Exception)
             { }
 
+            //TcpClient sock = new TcpClient(ip, _configuration.Port);
+            //_fds.rfd = sock.Client.Handle;
+
             if (ip != null)
                 _fds.rfd = libnodave.openSocket(_configuration.Port, ip);
             else
@@ -177,7 +181,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _NeedDispose = true;
             //Debugging for LibNoDave
             libnodave.daveSetDebug(0x0);
-            libnodave.daveSetDebug(0x1ffff);
+            //libnodave.daveSetDebug(0x1ffff);
 
             //_configuration.ReloadConfiguration();
 

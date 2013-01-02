@@ -1,0 +1,362 @@
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="Custom Highlighting" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" foreground="Green" />
+	<Color name="String" foreground="Blue" />
+	
+	<!-- This is the main ruleset. -->
+	<RuleSet>
+		<Span color="Comment" begin="//" />
+		<!--<Span color="Comment" multiline="true" begin="/\*" end="\*/" /> -->
+		
+		<Span color="String">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<!-- nested span for escape sequences -->
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+
+    <Keywords fontWeight="bold" foreground="Blue">
+
+      <Word>CALL </Word>
+      <Word>NOP0 </Word>
+      <Word>KEW </Word>
+      <Word>L </Word>
+      <Word>TNB </Word>
+      <Word>FT </Word>
+      <Word>BEB </Word>
+      <Word>FR </Word>
+      <Word>U </Word>
+      <Word>AS </Word>
+      <Word>AF </Word>
+      <Word>KEW </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>LC </Word>
+      <Word>SPO= </Word>
+      <Word>LC </Word>
+      <Word>O </Word>
+      <Word>BLD </Word>
+      <Word>I </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>SA </Word>
+      <Word>SPP= </Word>
+      <Word>SAR= </Word>
+      <Word>S </Word>
+      <Word>B </Word>
+      <Word>D </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>SV </Word>
+      <Word>SPB </Word>
+      <Word>SVZ= </Word>
+      <Word>= </Word>
+      <Word>A </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>SE </Word>
+      <Word>SPM= </Word>
+      <Word>SE </Word>
+      <Word>UN </Word>
+      <Word>L </Word>
+      <Word>SLD </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>SS </Word>
+      <Word>SPA= </Word>
+      <Word>SSV </Word>
+      <Word>ON </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>SI </Word>
+      <Word>SPN= </Word>
+      <Word>SI </Word>
+      <Word>RB </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>R </Word>
+      <Word>SPA </Word>
+      <Word>RD </Word>
+      <Word>LW </Word>
+      <Word>LIR </Word>
+      <Word>UW </Word>
+      <Word>L </Word>
+      <Word>TNW </Word>
+      <Word>FR </Word>
+      <Word>SPZ= </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>TIR </Word>
+      <Word>OW </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>T </Word>
+      <Word>LC </Word>
+      <Word>SPB </Word>
+      <Word>B </Word>
+      <Word>L </Word>
+      <Word>ADD </Word>
+      <Word>XOW </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>T </Word>
+      <Word>ZR </Word>
+      <Word>SPB </Word>
+      <Word>LD </Word>
+      <Word>L </Word>
+      <Word>ADD </Word>
+      <Word>-F </Word>
+      <Word>L </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>T </Word>
+      <Word>S </Word>
+      <Word>SPB </Word>
+      <Word>L </Word>
+      <Word>:F </Word>
+      <Word>:G </Word>
+      <Word>xF </Word>
+      <Word>ADD </Word>
+      <Word>xG </Word>
+      <Word>ENT </Word>
+      <Word>-D </Word>
+      <Word>-G </Word>
+      <Word>SPZ= </Word>
+      <Word>+D </Word>
+      <Word>+G </Word>
+      <Word>SLW </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>RLD </Word>
+      <Word>BE </Word>
+      <Word>BEA </Word>
+      <Word>T </Word>
+      <Word>T </Word>
+      <Word>LRW </Word>
+      <Word>SVW </Word>
+      <Word>GFD </Word>
+      <Word>TRW </Word>
+      <Word>LRD </Word>
+      <Word>TRD </Word>
+      <Word>FDG </Word>
+      <Word>KZD </Word>
+      <Word>DUF </Word>
+      <Word>DUD </Word>
+      <Word>LDI </Word>
+      <Word>DEF </Word>
+      <Word>DED </Word>
+      <Word>TDI </Word>
+      <Word>MAS </Word>
+      <Word>MAB </Word>
+      <Word>LDI </Word>
+      <Word>TDI </Word>
+      <Word>MSA </Word>
+      <Word>LDI </Word>
+      <Word>TDI </Word>
+      <Word>MSB </Word>
+      <Word>MBA </Word>
+      <Word>MBS </Word>
+      <Word>LDI </Word>
+      <Word>TDI </Word>
+      <Word>LDI </Word>
+      <Word>TDI </Word>
+      <Word>SRW </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>ZV </Word>
+      <Word>SPA </Word>
+      <Word>B </Word>
+      <Word>T </Word>
+      <Word>STS </Word>
+      <Word>TAK </Word>
+      <Word>STP </Word>
+      <Word>STW </Word>
+      <Word>SPR </Word>
+      <Word>LIM </Word>
+      <Word>SIM </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>TXW </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>TXB </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>RU </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>P </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>RU </Word>
+      <Word>SU </Word>
+      <Word>PN </Word>
+      <Word>P </Word>
+      <Word>SVD </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>RRD </Word>
+      <Word>SPA </Word>
+      <Word>B </Word>
+      <Word>T </Word>
+      <Word>AFS </Word>
+      <Word>BA </Word>
+      <Word>BAB </Word>
+      <Word>AX </Word>
+      <Word>EX </Word>
+      <Word>E </Word>
+      <Word>SES </Word>
+      <Word>SEF </Word>
+      <Word>MBR </Word>
+      <Word>ABR </Word>
+      <Word>U </Word>
+      <Word>LBCB </Word>
+      <Word>LBGB </Word>
+      <Word>AFF </Word>
+      <Word>O </Word>
+      <Word>LBCW </Word>
+      <Word>LBGW </Word>
+      <Word>S </Word>
+      <Word>LBCD </Word>
+      <Word>LBGD </Word>
+      <Word>= </Word>
+      <Word>ACR </Word>
+      <Word>U </Word>
+      <Word>O </Word>
+      <Word>UN </Word>
+      <Word>ON </Word>
+      <Word>S </Word>
+      <Word>R </Word>
+      <Word>= </Word>
+      <Word>UN </Word>
+      <Word>ON </Word>
+      <Word>LWCW </Word>
+      <Word>LWGW </Word>
+      <Word>R </Word>
+      <Word>LWCD </Word>
+      <Word>LWGD </Word>
+      <Word>TBCB </Word>
+      <Word>TBGB </Word>
+      <Word>TBCW </Word>
+      <Word>TBGW </Word>
+      <Word>L </Word>
+      <Word>TBCD </Word>
+      <Word>TBGD </Word>
+      <Word>T </Word>
+      <Word>L </Word>
+      <Word>TSC </Word>
+      <Word>TSG </Word>
+      <Word>T </Word>
+      <Word>TWCW </Word>
+      <Word>TWGW </Word>
+      <Word>L </Word>
+      <Word>TWCD </Word>
+      <Word>TWGD </Word>
+      <Word>T </Word>
+      <Word>+F </Word>
+      <Word>L </Word>
+      <Word>T </Word>
+      <Word>R </Word>
+      <Word>SPA </Word>
+      <Word>BI </Word>
+      <Word>T </Word>
+      <Word>U </Word>
+      <Word>O </Word>
+      <Word>S </Word>
+      <Word>= </Word>
+      <Word>UN </Word>
+      <Word>ON </Word>
+      <Word>R </Word>
+      <Word>U </Word>
+      <Word>0 </Word>
+      <Word>U( </Word>
+      <Word>O( </Word>
+      <Word>UN </Word>
+      <Word>0N </Word>
+      <Word>BAS </Word>
+      <Word>) </Word>
+      <Word>U </Word>
+      <Word>U </Word>
+      <Word>O </Word>
+      <Word>O </Word>
+      <Word>S </Word>
+      <Word>S </Word>
+      <Word>= </Word>
+      <Word>= </Word>
+      <Word>UN </Word>
+      <Word>UN </Word>
+      <Word>ON </Word>
+      <Word>ON </Word>
+      <Word>R </Word>
+      <Word>R </Word>
+      <Word>U </Word>
+      <Word>O </Word>
+      <Word>SPB= </Word>
+      <Word>O </Word>
+      <Word>UN </Word>
+      <Word>ON </Word>
+      <Word>BAF </Word>
+      <Word>NOP1 </Word>
+    </Keywords>
+		
+		<!--<Keywords fontWeight="bold" fontStyle="italic" foreground="Red">
+			<Word>AvalonEdit</Word>
+		</Keywords>-->
+		
+		<!-- Digits -->
+    <Keywords foreground="DarkBlue">
+      <Word>DL</Word>
+      <Word>T</Word>
+      <Word>PAR</Word>
+      <Word>KB</Word>
+      <Word>DR</Word>
+      <Word>KZ</Word>
+      <Word>KT</Word>
+      <Word>KF</Word>
+      <Word>KY</Word>
+      <Word>KH</Word>
+      <Word>KM</Word>
+    </Keywords>
+
+    <Rule foreground="DarkBlue">
+            \b0[xX][0-9a-fA-F]+  # hex number
+        |    \b
+            (    \d+(\.[0-9]+)?   #number with optional floating point
+            |    \.[0-9]+         #or just starting with floating point
+            )
+            ([eE][+-]?[0-9]+)? # optional exponent
+        </Rule>
+	</RuleSet>
+</SyntaxDefinition>

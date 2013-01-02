@@ -15,6 +15,9 @@ using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Rendering;
+
+using JFKCommonLibrary.Diff;
+
 using WPFToolboxForSiemensPLCs.AvalonEdit;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows
@@ -275,84 +278,102 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             e.Effects = DragDropEffects.Copy;
         }
 
-        public class DiffColorizer : ColorizingTransformer
-        {
-            private List<DiffColor> diffColors;
-            public DiffColorizer(List<DiffColor> DiffColors)
-            {
-                this.diffColors = DiffColors;
-            }
-
-            DocumentLine currentDocumentLine;
-            int firstLineStart;
-            int currentDocumentLineStartOffset, currentDocumentLineEndOffset;
-
-            /// <summary>
-            /// Gets the current ITextRunConstructionContext.
-            /// </summary>
-            protected ITextRunConstructionContext CurrentContext { get; private set; }
-                
-            TextArea textArea;
-			
-            protected override void Colorize(ITextRunConstructionContext context)
-            {                  
-                int lineStartOffset = context.VisualLine.FirstDocumentLine.Offset;
-                int lineEndOffset = context.VisualLine.LastDocumentLine.Offset + context.VisualLine.LastDocumentLine.TotalLength;
-
-                foreach (var diffcol in diffColors)
-                {
-                    int segmentStart = diffcol.StartOffset;
-                    int segmentEnd = diffcol.EndOffset;
-                    if (segmentEnd <= lineStartOffset)
-                        continue;
-                    if (segmentStart >= lineEndOffset)
-                        continue;
-                    int startColumn;
-                    if (segmentStart < lineStartOffset)
-                        startColumn = 0;
-                    else
-                        startColumn = context.VisualLine.GetVisualColumn(lineStartOffset + diffcol.StartOffset); // ValidateVisualColumn(diffcol.StartOffset, diffcol.StartVisualColumn, textArea.Selection.EnableVirtualSpace);
-
-                    int endColumn;
-                    if (segmentEnd > lineEndOffset)
-                        endColumn = int.MaxValue ; //: context.VisualLine.VisualLengthWithEndOfLineMarker;
-                    else
-                        endColumn = context.VisualLine.GetVisualColumn(lineStartOffset + diffcol.EndOffset); // ValidateVisualColumn(diffcol.StartOffset, diffcol.StartVisualColumn, textArea.Selection.EnableVirtualSpace);
-                        //endColumn = context.VisualLine.ValidateVisualColumn(diffcol.EndOffset, diffcol.EndVisualColumn, textArea.Selection.EnableVirtualSpace);
-
-                    var col = diffcol;
-
-                    ChangeVisualElements(
-                        startColumn, endColumn,
-                        element => element.TextRunProperties.SetBackgroundBrush(col.Color));
-                }
-            }            
-        }
-
-        public class DiffColor
-        {
-            public Brush Color { get; set; }
-            public int StartOffset { get; set; }
-            public int EndOffset { get; set; }
-        }
         private void cmdCompare_Click(object sender, RoutedEventArgs e)
         {
-            List<DiffColor> diffColors=new List<DiffColor>();
-            
+            txtResult.TextArea.TextView.LineTransformers.Clear();
+
+            var txt = "";
             diff_match_patch comparer=new diff_match_patch();
             var result = comparer.diff_main(textEditorA.Text, textEditorB.Text);
-            
+
             txtResult.Document.Text = "";
             foreach (var diff in result)
             {
                 if (diff.operation == Operation.INSERT)
-                    diffColors.Add(new DiffColor() { Color = Brushes.Green, StartOffset = txtResult.Document.Text.Length, EndOffset = txtResult.Document.Text.Length + diff.text.Length });
+                {
+                    var st = txt.Length;
+                    txt += diff.text;
+                    var stp = txt.Length;
+
+                    txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Green));
+                }
                 else if (diff.operation == Operation.DELETE)
-                    diffColors.Add(new DiffColor() { Color = Brushes.Red, StartOffset = txtResult.Document.Text.Length, EndOffset = txtResult.Document.Text.Length + diff.text.Length });
-                txtResult.Document.Text += diff.text;
+                {
+                    var st = txt.Length;
+                    txt += diff.text;
+                    var stp = txt.Length;
+
+                    txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Red));
+                }
+                else
+                {
+                    txt += diff.text;
+                }
+
             }
-            //txtResult.TextArea.TextView.LineTransformers.Clear();
-            txtResult.TextArea.TextView.LineTransformers.Add(new DiffColorizer(diffColors));
+            txtResult.Document.Text = txt;
+
+        }
+        
+        private void cmdCompare2_Click(object sender, RoutedEventArgs e)
+        {
+            txtResult.TextArea.TextView.LineTransformers.Clear();
+
+
+            var cp1 = new DiffList_String(textEditorA.Text);
+            var cp2 = new DiffList_String(textEditorB.Text);
+            var df = new DiffEngine();
+            df.ProcessDiff(cp1, cp2, DiffEngineLevel.SlowPerfect);
+            var result = df.DiffReport();
+
+            var txt = "";
+            //diff_match_patch comparer=new diff_match_patch();
+            //var result = comparer.diff_main(textEditorA.Text, textEditorB.Text);
+            
+            txtResult.Document.Text = "";
+            foreach (var diff in result)
+            {
+                if (diff.Status == DiffResultSpanStatus.AddDestination)
+                {
+                    var st = txt.Length;
+                    for (int i = diff.DestIndex; i < diff.DestIndex + diff.Length; i++)
+                    {
+                        txt += ((TextLine)cp2.GetByIndex(i)).Line + Environment.NewLine; ;
+                    }
+                    var stp = txt.Length;
+
+                    txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Green));
+                }
+                else if (diff.Status == DiffResultSpanStatus.DeleteSource)
+                {
+                    var st = txt.Length;
+                    for (int i = diff.SourceIndex; i < diff.SourceIndex + diff.Length; i++)
+                    {
+                        txt += ((TextLine)cp1.GetByIndex(i)).Line + Environment.NewLine; ;
+                    }
+                    var stp = txt.Length;
+                    txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Red));
+                }
+                else if (diff.Status == DiffResultSpanStatus.Replace)
+                {
+                    var st = txt.Length;
+                    for (int i = diff.DestIndex; i < diff.DestIndex + diff.Length; i++)
+                    {
+                        txt += ((TextLine)cp2.GetByIndex(i)).Line + Environment.NewLine;
+                    }
+                    var stp = txt.Length;
+                    txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Orange));
+                }
+                else
+                {
+                    for (int i = diff.SourceIndex; i < diff.Length; i++)
+                    {
+                        txt += ((TextLine)cp1.GetByIndex(i)).Line + Environment.NewLine; ;
+                    }  
+                }
+                
+            }
+            txtResult.Document.Text = txt;
 
         }
 

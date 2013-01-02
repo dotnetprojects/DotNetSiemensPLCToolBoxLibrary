@@ -679,11 +679,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
 
                         var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
-                        var row = dbBlk.GetDataRowWithAddress(new ByteBitAddress(byteAdr, bitAdr));
-                        if (row != null)
+                        if (dbBlk != null)
                         {
-                            if (sym != null) 
-                                par = "\"" + sym.Symbol + "\"." + row.StructuredName;
+                            var row = dbBlk.GetDataRowWithAddress(new ByteBitAddress(byteAdr, bitAdr));
+                            if (row != null)
+                            {
+                                if (sym != null) par = "\"" + sym.Symbol + "\"." + row.StructuredName;
+                            }
                         }
                     }
                 }

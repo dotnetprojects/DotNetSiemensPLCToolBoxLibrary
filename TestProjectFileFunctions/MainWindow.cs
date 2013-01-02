@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -1171,6 +1172,32 @@ namespace JFK_VarTab
                 }
             }
             MessageBox.Show("Finished parse all Blocks");
+        }
+
+        private void createAWLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fld=new FolderBrowserDialog();
+
+
+            if (fld.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var item in lstListBox.Items)
+                {
+                    if (item is S7ProjectBlockInfo)
+                    {
+                        var nm = ((S7ProjectBlockInfo)item).BlockName;
+                        if ((((S7ProjectBlockInfo)item).SymbolTabelEntry != null)) 
+                            nm = ((S7ProjectBlockInfo)item).SymbolTabelEntry.Symbol;
+
+                        nm = nm.Replace("\\", "_").Replace("/", "_").Replace(" ", "_").Replace("-", "_").Replace(":", "_");
+                        nm += ".awl";
+
+                        StreamWriter wrt = new StreamWriter(fld.SelectedPath + "\\" + nm, false, Encoding.GetEncoding("ISO-8859-1"));
+                        wrt.Write(((S7ProjectBlockInfo)item).GetSourceBlock());
+                        wrt.Close();
+                    }
+                }
+            }
         }
     }
 }

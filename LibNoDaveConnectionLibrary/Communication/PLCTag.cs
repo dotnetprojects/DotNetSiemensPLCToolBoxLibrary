@@ -549,18 +549,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.S5Time:
                 case TagDataType.Time:
                     if (myValueStrip.Contains("t#") || myValueStrip.Contains("s5t#"))
+                    {
                         Controlvalue = Helper.GetTimespanFromS5TimeorTime(myValue);
+                    }
                     else
-                        try { Controlvalue = TimeSpan.Parse(myValue); } catch (Exception) {}
+                    {
+                        TimeSpan ret;
+                        TimeSpan.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }                        
                     break;
                 case TagDataType.BCDWord:                
                 case TagDataType.Int:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                    {
                         Controlvalue = Convert.ToInt16(Helper.GetIntFromHexString(myValue));
+                    }
                     else if (myValue.StartsWith("2#"))
+                    {
                         Controlvalue = Convert.ToInt16(Helper.GetIntFromBinString(myValue));
+                    }
                     else
-                        try { Controlvalue = Int16.Parse(myValue); } catch (Exception) {}
+                    {
+                        Int16 ret;
+                        Int16.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
                     break;
                 case TagDataType.BCDDWord:
                 case TagDataType.Dint:
@@ -569,40 +583,76 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (myValue.StartsWith("2#"))
                         Controlvalue = Convert.ToInt32(Helper.GetIntFromBinString(myValue));
                     else
-                        try { Controlvalue = Int32.Parse(myValue); } catch (Exception) {}
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(myValue))
+                                Controlvalue = Int32.Parse(myValue);
+                        } catch (Exception) {}
                     break;                
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                    {
                         Controlvalue = Convert.ToByte(Helper.GetIntFromHexString(myValue));
+                    }
                     else if (myValue.StartsWith("2#"))
+                    {
                         Controlvalue = Convert.ToByte(Helper.GetIntFromBinString(myValue));
+                    }
                     else
-                        try { Controlvalue = Byte.Parse(myValue); } catch (Exception) {}
+                    {
+                        Byte ret;
+                        Byte.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
                     break;
                 case TagDataType.BCDByte:
                 case TagDataType.SByte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                    {
                         Controlvalue = Convert.ToSByte(Helper.GetIntFromHexString(myValue));
+                    }
                     else if (myValue.StartsWith("2#"))
+                    {
                         Controlvalue = Convert.ToSByte(Helper.GetIntFromBinString(myValue));
+                    }
                     else
-                        try { Controlvalue = SByte.Parse(myValue); } catch (Exception) {}
+                    {
+                        SByte ret;
+                        SByte.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
                     break;                               
                 case TagDataType.Word:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                    {
                         Controlvalue = Convert.ToUInt16(Helper.GetIntFromHexString(myValue));
+                    }
                     else if (myValue.StartsWith("2#"))
+                    {
                         Controlvalue = Convert.ToUInt16(Helper.GetIntFromBinString(myValue));
+                    }
                     else
-                        try { Controlvalue = UInt16.Parse(myValue); } catch (Exception) {}
+                    {
+                        UInt16 ret;
+                        UInt16.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
                     break;                              
                 case TagDataType.Dword:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                    {
                         Controlvalue = Convert.ToUInt32(Helper.GetIntFromHexString(myValue));
+                    }
                     else if (myValue.StartsWith("2#"))
+                    {
                         Controlvalue = Convert.ToUInt32(Helper.GetIntFromBinString(myValue));
+                    }
                     else
-                        try { Controlvalue = UInt32.Parse(myValue); } catch (Exception) { }
+                    {
+                        UInt32 ret;
+                        UInt32.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
                     break;
                 case TagDataType.Bool:
                     if (myValue=="1")
@@ -632,7 +682,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (!string.IsNullOrEmpty(myValue))
                         try
                         {
-                            Controlvalue = DateTime.Parse(myValue);
+                            if (!string.IsNullOrEmpty(myValue))
+                                Controlvalue = DateTime.Parse(myValue);
                         }
                         catch (Exception) { }
                     break;

@@ -12,6 +12,10 @@
                     mc:Ignorable="d">
 
     <Grid Grid.IsSharedSizeScope="False">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="col1" />
             <ColumnDefinition SharedSizeGroup="col2" />
@@ -110,7 +114,6 @@
                           ResizeDirection="Rows" />
             <avalonEdit:TextEditor Name="textEditorA"
                                    Grid.Row="2"
-                                   Height="63"
                                    VerticalAlignment="Top"
                                    AllowDrop="True"
                                    DragOver="textEditorA_DragOver"
@@ -118,22 +121,7 @@
                                    FontFamily="Consolas"
                                    FontSize="10pt"
                                    ShowLineNumbers="True"
-                                   Visibility="Visible" />
-            <Button Name="cmdCompare"
-                    Grid.Row="2"
-                    Width="79"
-                    Margin="0,69,0,0"
-                    HorizontalAlignment="Left"
-                    Click="cmdCompare_Click"
-                    Content="Compare" />
-
-            <avalonedit:TextEditor Grid.Row="2" FontFamily="Consolas"
-                                   FontSize="10pt"
-                                   ShowLineNumbers="True"
-                          Grid.ColumnSpan="2"
-                          Margin="85,69,-352,0" Name="txtResult">                    
-                </avalonedit:TextEditor>
-            
+                                   Visibility="Visible" />            
         </Grid>
 
         <Grid Name="mainGridB" Grid.Column="1">
@@ -229,7 +217,6 @@
                           ResizeDirection="Rows" />
             <avalonEdit:TextEditor Name="textEditorB"
                                    Grid.Row="2"
-                                   Height="63"
                                    VerticalAlignment="Top"
                                    AllowDrop="True"
                                    DragOver="textEditorB_DragOver"
@@ -238,6 +225,34 @@
                                    FontSize="10pt"
                                    ShowLineNumbers="True"
                                    Visibility="Visible" />
+        </Grid>
+
+
+        <GridSplitter Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Width="Auto"
+                          Height="5"
+                          Margin="0"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Top"
+                          ResizeDirection="Rows" />
+        
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            
+            <Button Name="cmdCompare"
+                    Grid.Row="2"
+                    Width="79"
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Left"
+                    Click="cmdCompare_Click"
+                    Content="Compare" />
+
+            <avalonedit:TextEditor Grid.Row="2" FontFamily="Consolas"
+                                   FontSize="10pt"
+                                   ShowLineNumbers="True"                          
+                          Margin="85,5,0,0" Name="txtResult">
+            </avalonedit:TextEditor>
         </Grid>
 
     </Grid>

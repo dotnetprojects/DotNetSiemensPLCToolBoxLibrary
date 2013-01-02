@@ -99,6 +99,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\BraceFoldingStrategy.cs" />
+    <Compile Include="AvalonEdit\TextColorizer.cs" />
     <Compile Include="Controls\AWLOnlineStatusView.xaml.cs">
       <DependentUpon>AWLOnlineStatusView.xaml</DependentUpon>
     </Compile>
