@@ -442,7 +442,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         par = "L#" + Convert.ToString(libnodave.getS32from(BD, pos + 2));
                                         break;
                                     case 0x04:
-                                        par = Helper.GetPointer(BD, pos + 2);
+                                        par = Helper.GetPointer(BD, pos + 2, MN);
                                         break;
                                     case 0x05:
                                         par = Helper.GetS7String(pos + 2, 4, BD);
@@ -4092,7 +4092,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             retVal.Add(new S7FunctionBlockRow()
                                                            {
                                                                Command = Mnemonic.opLAR1[MN],
-                                                               Parameter = Helper.GetPointer(BD, pos + 2)
+                                                               Parameter = Helper.GetPointer(BD, pos + 2, MN)
                                                            });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5] };
                                             pos += 6;
@@ -4172,7 +4172,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             retVal.Add(new S7FunctionBlockRow()
                                             {
                                                 Command = Mnemonic.opLAR2[MN],
-                                                Parameter = Helper.GetPointer(BD, pos + 2)
+                                                Parameter = Helper.GetPointer(BD, pos + 2, MN)
                                             });
                                             //Result = Result + Memnoic.opLAR2[MN] +
                                             //         Helper.GetPointer(BD[pos + 2], BD[pos + 3], BD[pos + 4],

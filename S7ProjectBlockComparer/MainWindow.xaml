@@ -6,14 +6,12 @@
         Title="MainWindow" Height="509.25" Width="637">
 
     <xctk:BusyIndicator x:Name="busy">
-        <xctk:BusyIndicator.BusyContentTemplate>
-            <DataTemplate>
-                <StackPanel>
+        <xctk:BusyIndicator.BusyContent>
+           <StackPanel>
                     <TextBlock Text="Processing Block: " />
-                    <TextBlock Text="{Binding CurrentBlock}" />
-                </StackPanel>
-            </DataTemplate>
-        </xctk:BusyIndicator.BusyContentTemplate>
+                    <TextBlock Name="akBlock" Text="" />
+                </StackPanel>           
+        </xctk:BusyIndicator.BusyContent>
         
         <Grid>
         <Border Height="25" Margin="10,10,74,0" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1">

@@ -507,16 +507,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             switch (tmp.Substring(0,2))
             {
                 case "PEW":
+                case "PIW":
                 case "PAW":
-                    nr = Convert.ToInt32(tmp.Replace("PEW", "").Replace("PAW", ""));
+                case "POW":
+                    nr = Convert.ToInt32(tmp.Replace("PEW", "").Replace("PAW", "").Replace("PIW", "").Replace("POW", ""));
                     nr2 = 0;
                     break;
                 case "EW":
-                    nr = Convert.ToInt32(tmp.Replace("EW", ""));
+                case "IW":
+                    nr = Convert.ToInt32(tmp.Replace("EW", "").Replace("IW", ""));
                     nr2 = 10;
                     break;
                 case "AW":
-                    nr = Convert.ToInt32(tmp.Replace("AW", ""));
+                case "OW":
+                    nr = Convert.ToInt32(tmp.Replace("AW", "").Replace("OW", ""));
                     nr2 = 20;
                     break;
                 case "MW":
@@ -1068,7 +1072,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return Result;
         }*/
 
-        public static string GetPointer(byte[] BD, int pos)
+        public static string GetPointer(byte[] BD, int pos, int language)
         //public static string GetPointer(byte b1, byte b2, byte b3, byte b4)
         {
             double tmp;
@@ -1089,22 +1093,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = Result + "P ";
                         break;
                     case 0x81:
-                        Result = Result + "E ";
+                        Result = Result + Mnemonic.adE[language] + " ";
                         break;
                     case 0x82:
-                        Result = Result + "A ";
+                        Result = Result + Mnemonic.adA[language] + " ";
                         break;
                     case 0x83:
-                        Result = Result + "M ";
+                        Result = Result + Mnemonic.adM[language] + " ";
                         break;
                     case 0x84:
-                        Result = Result + "DBX ";
+                        Result = Result + Mnemonic.adDBX[language] + " ";
                         break;
                     case 0x85:
-                        Result = Result + "DIX ";
+                        Result = Result + Mnemonic.adDIX[language] + " ";
                         break;
                     case 0x86:
-                        Result = Result + "L ";
+                        Result = Result + Mnemonic.adL[language] + " ";
                         break;
                     case 0x87:
                         Result = Result + "V ";

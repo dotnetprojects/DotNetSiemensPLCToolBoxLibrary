@@ -245,7 +245,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public SelectedStatusValues _GetCommandStatusAskValues(SelectedStatusValues mySel, byte DiagDataTeletype)
         {
-            int MN = 0;
+            int MN = (int)this.MnemonicLanguage;
 
             SelectedStatusValues retVal;
 

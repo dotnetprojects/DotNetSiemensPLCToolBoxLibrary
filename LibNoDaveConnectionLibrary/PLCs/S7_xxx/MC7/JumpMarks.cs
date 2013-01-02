@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
@@ -31,7 +33,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
-        public static List<FunctionBlockRow> AddJumpmarks(List<FunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos )
+        public static List<FunctionBlockRow> AddJumpmarks(List<FunctionBlockRow> myBlk, byte[] JumpMarks, byte[] JumpPosAndNWInfos, S7ConvertingOptions options)
         {
             int NetworkCount = 0;
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
@@ -65,7 +67,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (JumpMarks[n + 2] != 0)
                             {
                                 aknm += ((char)JumpMarks[n + 2]);
-                                if (JumpMarks[n + 3] != 0) aknm += ((char)JumpMarks[n + 3]);
+                                if (JumpMarks[n + 3] != 0) 
+                                    aknm += ((char)JumpMarks[n + 3]);
                             }
                         }
                     }
@@ -81,7 +84,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
 
-                if (Helper.IsJump(plcFunctionBlockRow, 0))
+                if (Helper.IsJump(plcFunctionBlockRow, (int)options.Mnemonic))
                 {
                     int arrPos = Array.IndexOf<int>(jpAddr, pos/2);
                     if (arrPos != -1)

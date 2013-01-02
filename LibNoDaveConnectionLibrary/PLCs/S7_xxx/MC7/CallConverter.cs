@@ -416,7 +416,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             akPar = db + row.Parameter;
                             db = "";
                         }
-                        else if (row.Command == "AUF")
+                        else if (row.Command == Mnemonic.opAUF[(int)myOpt.Mnemonic])
                         {
                             db = row.Parameter + ".";
                         }

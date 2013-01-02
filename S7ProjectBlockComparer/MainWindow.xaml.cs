@@ -46,9 +46,10 @@ namespace S7ProjectBlockComparer
         
         public MainWindow()
         {
-            InitializeComponent();
 
             this.DataContext = this;
+
+            InitializeComponent();
 
             string highlighterFile = "";
             highlighterFile = "S7ProjectBlockComparer.AvalonEdit.AWL_Step5_Highlighting.xshd";
@@ -65,6 +66,8 @@ namespace S7ProjectBlockComparer
             }
             HighlightingManager.Instance.RegisterHighlighting("Custom Highlighting", new string[] { ".cool" }, customHighlighting);
             txtResult.SyntaxHighlighting = customHighlighting;
+
+            txtResult.TextArea.Options.EnableImeSupport = false;
         }
 
         private void cmdPrj1_Click(object sender, RoutedEventArgs e)
@@ -82,8 +85,6 @@ namespace S7ProjectBlockComparer
 
         private void cmdComp_Click(object sender, RoutedEventArgs e)
         {
-            busy.DataContext = null;
-
             lstBlocks.Items.Clear();
 
             if (fld1 != null && fld2 != null)
@@ -98,7 +99,7 @@ namespace S7ProjectBlockComparer
                             {
                                 var blk1 = fld1.GetBlock(projectBlockInfo);
 
-                                Dispatcher.Invoke(new Action(() => this.CurrentBlock = blk1.BlockName));
+                                Dispatcher.Invoke(new Action(() => this.akBlock.Text = blk1.BlockName));
 
                                 var blk2 = fld2.GetBlock(blk1.BlockName);
 
