@@ -69,14 +69,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             bool showDeleted = ((Step7ProjectV5)this.Project)._showDeleted;
 
             List<ProjectBlockInfo> tmpBlocks = new List<ProjectBlockInfo>();
-            if (bausteinDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "BAUSTEIN.DBF"))
-            {
-                var dbfTbl = bausteinDBF; //DBF.ParseDBF.ReadDBF(Folder + "BAUSTEIN.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
 
-                //if (Parent is S7ProgrammFolder && ((S7ProgrammFolder)Parent).SymbolTable != null)
-                //{
-                //    SymbolTable symtab = (SymbolTable)((S7ProgrammFolder)Parent).SymbolTable;
-                //}
+            if (bausteinDBF != null) 
+            {
+                var dbfTbl = bausteinDBF; 
+
                 foreach (DataRow row in dbfTbl.Rows)
                 {
                     if (!(bool)row["DELETED_FLAG"] || showDeleted)
@@ -96,24 +93,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         else
                             tmp.BlockType = (PLCBlockType)blocktype;
 
-                        /*
-                        if (symtab != null)
-                        {
-                            SymbolTableEntry sym = symtab.GetEntryFromOperand(tmp.ToString());
-                            if (sym != null)
-                                tmp.Symbol = sym.Symbol;
-                        }
-                        */
-
                         if (tmp.BlockType == PLCBlockType.SFB || tmp.BlockType == PLCBlockType.SFC || tmp.BlockType == PLCBlockType.SDB || tmp.BlockType == PLCBlockType.DB || tmp.BlockType == PLCBlockType.VAT || tmp.BlockType == PLCBlockType.FB || tmp.BlockType == PLCBlockType.FC || tmp.BlockType == PLCBlockType.OB || tmp.BlockType == PLCBlockType.UDT)
                             tmpBlocks.Add(tmp);
                     }
                 }
             }
 
-            if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF != null) 
             {
-                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = subblkDBF; 
 
                 foreach (S7ProjectBlockInfo step7ProjectBlockInfo in tmpBlocks)
                 {
@@ -188,9 +176,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         {
             tmpBlock myTmpBlk = new tmpBlock();
 
-            if (subblkDBF != null)// ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
+            if (subblkDBF != null)
             {
-                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5)Project)._DirSeperator);
+                var dbfTbl = subblkDBF; 
                 foreach (DataRow row in dbfTbl.Rows)
                 {
 
@@ -263,12 +251,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 if (bstRows != null && bstRows.Length > 0 && !(bstRows[0]["UDA"] is DBNull))
                     myTmpBlk.uda = (byte[]) bstRows[0]["UDA"];
 
-                var dbfTbl = subblkDBF; // DBF.ParseDBF.ReadDBF(Folder + "SUBBLK.DBF", ((Step7ProjectV5)Project)._zipfile, ((Step7ProjectV5) Project)._DirSeperator);
+                var dbfTbl = subblkDBF; 
 
                 DataRow[] rows = dbfTbl.Select("OBJECTID = " + blkInfo.id);
-                //bausteinDBF
-
-                foreach (DataRow row in rows)// dbfTbl.Rows)
+                
+                foreach (DataRow row in rows)
                 {
 
                     int subblktype = Convert.ToInt32(row["SUBBLKTYP"]);
@@ -385,11 +372,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.blkinterfaceInMC5 = ssbpart;
 
                             if (ssbpart != null && ssbpartlen > 2 && (ssbpart[0] == 0x0a || ssbpart[0] == 0x0b))
+                            {
                                 // if ssbpart[0] == 5 this DB is normal
                                 // if ssbpart[0] == 10 this DB is instance for FB, 
                                 // I do not know what value for SFB
-                            myTmpBlk.IsInstanceDB = true;
-                            myTmpBlk.FBNumber = (int)ssbpart[1] + 256 * (int)ssbpart[2];
+                                myTmpBlk.IsInstanceDB = true;
+                                myTmpBlk.FBNumber = (int)ssbpart[1] + 256 * (int)ssbpart[2];
+                            }
                         }
                         else if (subblktype == 0x14) //DB
                         {

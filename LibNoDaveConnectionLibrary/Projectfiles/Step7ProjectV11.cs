@@ -29,29 +29,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
-            var xmlRead = XmlReader.Create(new FileStream(projectfile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite));
-            
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(new FileStream(projectfile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite));
+
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+            nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");
+
+            var nd = xmlDoc.SelectSingleNode("x:Data",nsmgr);
+            this.ProjectName = nd.Attributes["Name"].Value;
+
+
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;            
             LoadProject();
 
-            currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;
-
-            //Needed Assemblys....
-            //assemblyref://Siemens.Automation.ObjectFrame.FileStorage&assemblyref://Siemens.Automation.ObjectFrame.FileStorage.Base&assemblyref://Siemens.Automation.ObjectFrame.Kernel
+            currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }
         
         Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string tiaPath = "C:\\Program Files (x86)\\Siemens\\Automation\\Portal V11\\Bin";
+            var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            string tiaPath = prg + "\\Siemens\\Automation\\Portal V11\\Bin";
             var dll = args.Name.Split(',')[0];
             var load = Path.Combine(tiaPath, dll + ".dll");
             return Assembly.LoadFrom(load);
         }
 
+        private object tiaExport;
+        private Type tiaExportType;
+
         internal override void LoadProject()
         {
-           /* _projectLoaded = true;
+            _projectLoaded = true;
             ProjectStructure = new TIAProjectFolder(this);
 
 
@@ -61,17 +71,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("root");
-            
-            var exp = Export.CreateInstance(DataFile, true);
 
-            try { MemoryManager.Initialize(104857600); }
-            catch (Exception)
-            { }
-            
-            typeof(Export).InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, (Export)exp, new object[] { xmlWriter });
-            exp.GetType().InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, exp, new object[] { xmlWriter });
-            typeof(Export).InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, (Export)exp, new object[] { xmlWriter });
-            typeof(Export).InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, exp, new object[] { xmlWriter });
+            if (tiaExport == null)
+            {
+                tiaExportType = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Conversion.Export, Siemens.Automation.ObjectFrame.FileStorage");
+                tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
+                //var exp = Export.CreateInstance(DataFile, true);
+
+                var memMgrType = Type.GetType("Siemens.Automation.ObjectFrame.Kernel.MemoryManager, Siemens.Automation.ObjectFrame.Kernel");
+                try
+                {
+                    memMgrType.InvokeMember("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { 104857600 });
+                    //try { MemoryManager.Initialize(104857600); }
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
+            tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            tiaExportType.InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
             
             xmlWriter.Flush();
             xmlWriter.Close();
@@ -80,7 +102,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             var rd = new StreamReader(stream);
             var prj = rd.ReadToEnd();
 
-            ParseProjectString(prj);     */       
+            ParseProjectString(prj);            
         }
 
         private void ParseProjectString(string data)
