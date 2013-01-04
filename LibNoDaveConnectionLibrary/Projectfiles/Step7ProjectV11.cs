@@ -29,15 +29,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.Load(new FileStream(projectfile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite));
+            try
+            {
+                var xmlDoc = new XmlDocument();
+                xmlDoc.Load(new FileStream(projectfile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite));
 
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");
 
-            var nd = xmlDoc.SelectSingleNode("x:Data",nsmgr);
-            this.ProjectName = nd.Attributes["Name"].Value;
-
+                var nd = xmlDoc.SelectSingleNode("x:Data", nsmgr);
+                this.ProjectName = nd.Attributes["Name"].Value;
+            }
+            catch (Exception) 
+            { }
 
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;            
@@ -117,21 +121,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
 
             var coreAttributesId = xmlDoc.SelectSingleNode("root/asId2Name/typeInfo[@name='Siemens.Automation.ObjectFrame.ICoreAttributes']").Attributes["id"].Value;
-            
 
-            var s7 = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData']");
-            var s7ConfId = s7.Attributes["id"].Value;
 
+            var s7ControllerTargetDataType = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData']");
+            var s7ControllerTargetDataTypeId = s7ControllerTargetDataType.Attributes["id"].Value;
+
+
+            var folderDataType = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Automation.DomainModel.FolderData']");
+            var folderDataTypeId = folderDataType.Attributes["id"].Value;
             
             //var s7s = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + prjObjId + "']][@id='" + s7ConfId + "']");
-            var s7s = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + s7ConfId + "']");
+            var plcs = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + s7ControllerTargetDataTypeId + "']");
 
-            if (s7s != null)
-                foreach (XmlNode mys7 in s7s)
+            if (plcs != null)
+                foreach (XmlNode myPlc in plcs)
                 {
-                    var akS7 = mys7.SelectSingleNode("attribSet[@id='" + coreAttributesId + "']/attrib[@name='Name']");
-                    ProjectStructure.SubItems.Add(new TIACPUFolder(this){ Name = akS7.InnerText });
-                }            
+                    var akPlc = myPlc.SelectSingleNode("attribSet[@id='" + coreAttributesId + "']/attrib[@name='Name']");
+                    ProjectStructure.SubItems.Add(new TIACPUFolder(this){ Name = akPlc.InnerText });
+                }
+
+
+            //var folders = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + folderDataTypeId + "']");
         }
 
 
