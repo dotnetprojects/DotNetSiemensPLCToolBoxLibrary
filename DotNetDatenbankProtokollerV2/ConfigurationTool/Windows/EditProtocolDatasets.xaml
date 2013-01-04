@@ -19,6 +19,7 @@
         <Converters:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1" />
         <Converters:IntToVisibilityConverter x:Key="VisConv2Visible" VisibleValue="2" />
         <Converters:IntToVisibilityConverter x:Key="VisConv3Visible" VisibleValue="3" />
+        <Converters:IntToVisibilityConverter x:Key="VisConv5Visible" VisibleValue="5" />
 
         <Converters:IntToHiddenConverter x:Key="VisConv2Hidden" HiddenValue="2" />
 
@@ -494,6 +495,94 @@
             </Grid>
         </GroupBox>
 
+        <GroupBox Width="443"
+                  Height="73"
+                  Margin="184,105,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Header="Tags-Handshake-Trigger"
+                  IsEnabled="{Binding ElementName=grdDatasets,
+                                      Path=SelectedItem,
+                                      Converter={StaticResource myNullToFalseConverter}}"
+                  Visibility="{Binding ElementName=cmbTriggerType,
+                                       Path=SelectedItem,
+                                       Converter={StaticResource VisConv5Visible}}">
+            <Grid>
+                <Label Width="50"
+                       Height="19"
+                       Margin="1,3,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Padding="1">
+                    Read Bit:
+                </Label>
+                <TextBox Width="141"
+                         Height="19"
+                         Margin="57,3,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         VerticalContentAlignment="Center"
+                         BorderBrush="Black"
+                         BorderThickness="1"
+                         Padding="0"
+                         Text="{Binding ElementName=grdDatasets,
+                                        Path=SelectedItem.TriggerReadBit,
+                                        Converter={StaticResource myStringToPLCValueBoolConverter}}" />
+                <Button Name="cmdEditReadBit2"
+                        Width="28"
+                        Height="19"
+                        Margin="202,3,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="cmdEditReadBit_Click"
+                        Content="..." />
+                <Button Name="cmdSelectReadBitFromProject2"
+                        Width="28"
+                        Height="19"
+                        Margin="236,3,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="cmdSelectReadBitFromProject_Click"
+                        Content="P" />
+
+               
+                <Rectangle Width="0"
+                           Height="270"
+                           Margin="-6,-112,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Stroke="Black" />
+                <Label Width="114"
+                       Height="19"
+                       Margin="283,3,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Content="Trigger Connection:"
+                       Padding="1" />
+
+                <ComboBox Name="cmbTriggerConnection2"
+                          Width="114"
+                          Height="23"
+                          Margin="311,20,0,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          VerticalContentAlignment="Center"
+                          IsEnabled="{Binding ElementName=grdDatasets,
+                                              Path=SelectedItem,
+                                              Converter={StaticResource myNullToFalseConverter}}"
+                          ItemsSource="{Binding Connections,
+                                                Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}"
+                          SelectedItem="{Binding ElementName=grdDatasets,
+                                                 Path=SelectedItem.TriggerConnection}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+        
         <GroupBox Width="285"
                   Height="73"
                   Margin="184,105,0,0"

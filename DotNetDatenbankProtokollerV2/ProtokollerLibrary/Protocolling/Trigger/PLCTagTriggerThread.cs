@@ -36,7 +36,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
 
         private Thread myThread = null;
 
-        public PLCTagTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService)
+        private bool onlyUseOneTag = false;
+
+        public PLCTagTriggerThread(IDBInterface dbInterface, DatasetConfig datasetConfig, Dictionary<ConnectionConfig, Object> activConnections, bool StartedAsService, bool onlyUseOneTag)
         {
             this.StartedAsService = StartedAsService;
             this.dbInterface = dbInterface;
@@ -48,6 +50,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             this.quittBit = datasetConfig.TriggerQuittBit;
 
             ak_interval = NoDataInterval;
+
+            this.onlyUseOneTag = onlyUseOneTag;
         }
 
         public void StartTrigger()
@@ -87,7 +91,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             ak_interval = NoDataInterval;
                         }
 
-                        if ((bool) readBit.Value & !alreadyWritten)
+                        if (((bool)readBit.Value & !alreadyWritten) || ((bool)readBit.Value) && onlyUseOneTag)
                         {
                             alreadyWritten = true;
                             cycle_counter = NoDataCycles;
@@ -98,21 +102,27 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             {
                                 dbInterface.Write(values);
 
-                                quittBit.Value = true;
-                                try
+                                if (!onlyUseOneTag)
                                 {
-                                    triggerConn.WriteValue(quittBit);
+                                    quittBit.Value = true;
+                                    try
+                                    {
+                                        triggerConn.WriteValue(quittBit);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        if (StartedAsService) Logging.LogText("Error: Exception during WriteValue, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                        else throw;
+                                    }
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    if (StartedAsService)
-                                        Logging.LogText("Error: Exception during WriteValue, maybe Connection interupted?", ex, Logging.LogLevel.Error);
-                                    else
-                                        throw;
+                                    readBit.Value = false;
+                                    triggerConn.WriteValue(readBit);
                                 }
                             }
                         }
-                        else if (!(bool) readBit.Value)
+                        else if (!(bool)readBit.Value && !onlyUseOneTag)
                         {
                             if (alreadyWritten)
                             {

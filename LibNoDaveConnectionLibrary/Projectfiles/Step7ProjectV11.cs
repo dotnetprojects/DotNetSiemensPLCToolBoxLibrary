@@ -49,6 +49,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }
+
+        private XmlDocument xmlDoc;
         
         Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -111,7 +113,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private void ParseProjectString(string data)
         {
-            var xmlDoc = new XmlDocument();
+            xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(data);
             var nd = xmlDoc.SelectSingleNode("root/rootObjects/entry[@name='Project']");
             var prjObjId = nd.Attributes["objectId"].Value; 

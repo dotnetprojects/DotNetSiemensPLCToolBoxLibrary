@@ -283,9 +283,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     akDBInterface.Initiate(datasetConfig);
                     
                     if (CreateTriggers)
-                        if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger)
+                        if (datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger || datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger_only_one_Tag)
                         {
-                            PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService);
+                            PLCTagTriggerThread tmpTrigger = new PLCTagTriggerThread(akDBInterface, datasetConfig, ConnectionList, StartedAsService, datasetConfig.Trigger == DatasetTriggerType.Tags_Handshake_Trigger_only_one_Tag);
                             tmpTrigger.StartTrigger();
                             tmpTrigger.ThreadExceptionOccured += tmpTrigger_ThreadExceptionOccured;
                             myDisposables.Add(tmpTrigger);
