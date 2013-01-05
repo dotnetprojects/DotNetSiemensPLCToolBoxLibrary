@@ -196,7 +196,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
         private void PropertyGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (grdConfig.SelectedProperty.Value is PLCConnectionConfiguration)
+            if (grdConfig.SelectedPropertyItem.Value is PLCConnectionConfiguration)
             {
                 var myConfig = (PLCConfig) grdStorages.SelectedItem;
                 myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);
