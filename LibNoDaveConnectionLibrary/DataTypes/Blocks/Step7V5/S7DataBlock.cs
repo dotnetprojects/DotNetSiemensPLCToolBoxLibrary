@@ -24,12 +24,28 @@
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
     public class S7DataBlock : S7Block, IDataBlock
     {
+        public override IEnumerable<String> Dependencies
+        {
+            get
+            {
+                var retVal = new List<String>();
+
+                retVal.AddRange(Structure.Dependencies);
+
+                return retVal.Distinct().OrderBy(itm => itm);
+            }
+        }
+
         public int FBNumber { get; set;}  //If it is a Instance DB
         public bool IsInstanceDB { get; set; }
 
