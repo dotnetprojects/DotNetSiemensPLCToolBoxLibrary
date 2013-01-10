@@ -38,25 +38,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public class S7DataRow : INotifyPropertyChanged
     {
-        public IEnumerable<Block> Dependencies
+        public IEnumerable<String> Dependencies
         {
             get
             {
                 if (this.DataType == S7DataRowType.FB || this.DataType == S7DataRowType.UDT)
                 {
-                    var fld = (this.PlcBlock).ParentFolder as BlocksOfflineFolder;
-                    return new List<Block>() { fld.GetBlock(this.DataTypeAsString) };
+                    //var fld = (this.PlcBlock).ParentFolder as BlocksOfflineFolder;
+                    //var blk = fld.GetBlock(this.DataTypeAsString);
+                    return new List<String>() { this.DataTypeAsString };
                 }
                 else if (this.DataType == S7DataRowType.STRUCT)
                 {
-                    var retVal = new List<Block>();
+                    var retVal = new List<String>();
                     foreach (var s7DataRow in Children)
                     {
                         retVal.AddRange(s7DataRow.Dependencies);
                     }
                     return retVal;
                 }
-                return new List<Block>();
+                return new List<String>();
             }
         }
 

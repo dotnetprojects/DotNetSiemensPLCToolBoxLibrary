@@ -20,11 +20,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public ProjectFolder ParentFolder { get; set; }
 
-        public virtual IEnumerable<Block> Dependencies
+        public virtual IEnumerable<String> Dependencies
         {
             get
             {
-                return new List<Block>();
+                return new List<String>();
             }
         }
 

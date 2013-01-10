@@ -592,7 +592,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return this.ToString(useSymbol, addSemicolonAfterCommand, useSymbol);
         }
 
-        public IEnumerable<Block> Dependencies
+        public IEnumerable<String> Dependencies
         {
             get
             {
@@ -601,9 +601,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
                     if (fld != null && !Parameter.StartsWith("#"))
                     {
-                        var blk = fld.GetBlock(Parameter);
+                        //var blk = fld.GetBlock(Parameter);
 
-                        return new List<Block>() { blk };
+                        return new List<String>() { Parameter };
                     }
                 }
                 else if (Command == Mnemonic.opCALL[(int)MnemonicLanguage])
@@ -624,9 +624,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
                         if (fld != null && !Parameter.StartsWith("#"))
                         {
-                            var blk = fld.GetBlock(Parameter);
+                            //var blk = fld.GetBlock(Parameter);
 
-                            return new List<Block>() { blk };
+                            return new List<String>() { Parameter };
                         }
                     }
                 }
@@ -643,13 +643,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             var bitAdr = 0;
                             if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
 
-                            var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
+                            //var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
 
-                            return new List<Block>() { dbBlk };
+                            return new List<String>() { paras[0] };
                         }
                     }
                 }
-                return new List<Block>();
+                return new List<String>();
             }
         }
 

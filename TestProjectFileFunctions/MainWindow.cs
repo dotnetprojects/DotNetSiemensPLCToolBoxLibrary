@@ -1208,7 +1208,7 @@ namespace JFK_VarTab
                 var dep = info.GetBlock().Dependencies;
                 foreach (var block in dep)
                 {
-                    MessageBox.Show(block.BlockName);    
+                    MessageBox.Show(block);    
                 }                
             }
         }

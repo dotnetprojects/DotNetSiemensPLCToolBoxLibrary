@@ -13,11 +13,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     [Serializable()]
     public class S7FunctionBlock : S7Block, IFunctionBlock, INotifyPropertyChanged
     {
-        public override IEnumerable<Block> Dependencies
+        public override IEnumerable<String> Dependencies
         {
             get
             {
-                var retVal = new List<Block>();
+                var retVal = new List<String>();
 
                 foreach (var row in AWLCode)
                 {
@@ -26,7 +26,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                 retVal.AddRange(Parameter.Dependencies);
 
-                return retVal.Distinct();
+                return retVal.Distinct().OrderBy(itm => itm);
             }
         }
 
