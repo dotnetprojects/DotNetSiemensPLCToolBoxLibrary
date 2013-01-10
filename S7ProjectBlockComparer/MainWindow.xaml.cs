@@ -67,7 +67,7 @@ namespace S7ProjectBlockComparer
             HighlightingManager.Instance.RegisterHighlighting("Custom Highlighting", new string[] { ".cool" }, customHighlighting);
             txtResult.SyntaxHighlighting = customHighlighting;
 
-            txtResult.TextArea.Options.EnableImeSupport = false;
+            //txtResult.TextArea.Options.EnableImeSupport = false;
         }
 
         private void cmdPrj1_Click(object sender, RoutedEventArgs e)

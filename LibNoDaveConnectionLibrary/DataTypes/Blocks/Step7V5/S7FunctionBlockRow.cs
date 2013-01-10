@@ -591,7 +591,68 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             return this.ToString(useSymbol, addSemicolonAfterCommand, useSymbol);
         }
-        
+
+        public IEnumerable<Block> Dependencies
+        {
+            get
+            {
+                if (Command == Mnemonic.opUC[(int)MnemonicLanguage] || Command == Mnemonic.opCC[(int)MnemonicLanguage])
+                {
+                    var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                    if (fld != null && !Parameter.StartsWith("#"))
+                    {
+                        var blk = fld.GetBlock(Parameter);
+
+                        return new List<Block>() { blk };
+                    }
+                }
+                else if (Command == Mnemonic.opCALL[(int)MnemonicLanguage])
+                {
+                    if (!String.IsNullOrEmpty(DiName))
+                    {
+                        /*Block blk1, blk2;
+                        var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                        if (fld != null && !Parameter.StartsWith("#"))
+                        {
+                            var blk1 = fld.GetBlock(Parameter);                           
+                        }
+
+                        return new List<Block>() { blk1, blk2 };*/
+                    }
+                    else
+                    {
+                        var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                        if (fld != null && !Parameter.StartsWith("#"))
+                        {
+                            var blk = fld.GetBlock(Parameter);
+
+                            return new List<Block>() { blk };
+                        }
+                    }
+                }
+                else if (Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
+                {
+                    var paras = Parameter.Split(new[] { '.' });
+                    var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+                    if (fld != null)
+                    {
+                        if (paras.Length > 1)
+                        {
+                            var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBB", "").Replace("DBW", "").Replace("DBD", ""));
+
+                            var bitAdr = 0;
+                            if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
+
+                            var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
+
+                            return new List<Block>() { dbBlk };
+                        }
+                    }
+                }
+                return new List<Block>();
+            }
+        }
+
         public string ToString(bool useSymbol, bool addSemicolonAfterCommand, bool useDataBlocksSymbolic)
         {
             if (Command == "NETWORK")
@@ -610,13 +671,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             string ext = "";
 
-            if (ExtParameter != null && ExtParameter.Count > 0 && (Command == "UC" || Command == "CC"))
+            if (ExtParameter != null && ExtParameter.Count > 0 && (Command == Mnemonic.opUC[(int)MnemonicLanguage] || Command == Mnemonic.opCC[(int)MnemonicLanguage]))
             {
                 foreach (string myStr in ExtParameter)
                     ext += "\r\n" + " ".PadLeft(12) + myStr;
             }
 
-            if (CallParameter != null && CallParameter.Count > 0 && (Command == "CALL"))
+            if (CallParameter != null && CallParameter.Count > 0 && (Command == Mnemonic.opCALL[(int)MnemonicLanguage]))
             {
                 int len = 0;
                 foreach (var cpar in CallParameter)

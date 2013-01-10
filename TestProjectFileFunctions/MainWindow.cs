@@ -1199,5 +1199,18 @@ namespace JFK_VarTab
                 }
             }
         }
+
+        private void dependenciesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var info = lstListBox.SelectedItem as S7ProjectBlockInfo;
+            if (info != null)
+            {
+                var dep = info.GetBlock().Dependencies;
+                foreach (var block in dep)
+                {
+                    MessageBox.Show(block.BlockName);    
+                }                
+            }
+        }
     }
 }

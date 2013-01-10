@@ -4,12 +4,32 @@ using System.ComponentModel;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+
+using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [Serializable()]
     public class S7FunctionBlock : S7Block, IFunctionBlock, INotifyPropertyChanged
     {
+        public override IEnumerable<Block> Dependencies
+        {
+            get
+            {
+                var retVal = new List<Block>();
+
+                foreach (var row in AWLCode)
+                {
+                    retVal.AddRange(((S7FunctionBlockRow) row).Dependencies);
+                }
+
+                retVal.AddRange(Parameter.Dependencies);
+
+                return retVal.Distinct();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(String info)

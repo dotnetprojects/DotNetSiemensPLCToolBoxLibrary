@@ -29,14 +29,37 @@ using System.ComponentModel;
 using System.Globalization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using DotNetSiemensPLCToolBoxLibrary.General;
+
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    using DotNetSiemensPLCToolBoxLibrary.General;
-
     public class S7DataRow : INotifyPropertyChanged
     {
+        public IEnumerable<Block> Dependencies
+        {
+            get
+            {
+                if (this.DataType == S7DataRowType.FB || this.DataType == S7DataRowType.UDT)
+                {
+                    var fld = (this.PlcBlock).ParentFolder as BlocksOfflineFolder;
+                    return new List<Block>() { fld.GetBlock(this.DataTypeAsString) };
+                }
+                else if (this.DataType == S7DataRowType.STRUCT)
+                {
+                    var retVal = new List<Block>();
+                    foreach (var s7DataRow in Children)
+                    {
+                        retVal.AddRange(s7DataRow.Dependencies);
+                    }
+                    return retVal;
+                }
+                return new List<Block>();
+            }
+        }
+
         public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
         {
             for (int n = 0; n < startRow.Children.Count; n++)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
@@ -18,6 +20,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public ProjectFolder ParentFolder { get; set; }
 
+        public virtual IEnumerable<Block> Dependencies
+        {
+            get
+            {
+                return new List<Block>();
+            }
+        }
 
         public SymbolTableEntry SymbolTableEntry
         {

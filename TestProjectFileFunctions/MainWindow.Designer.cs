@@ -97,6 +97,7 @@
             this.toolsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.createDokumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parseAllBlocksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createAWLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -111,7 +112,7 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.createAWLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dependenciesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -723,7 +724,8 @@
             this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createDokumentationToolStripMenuItem,
             this.parseAllBlocksToolStripMenuItem,
-            this.createAWLToolStripMenuItem});
+            this.createAWLToolStripMenuItem,
+            this.dependenciesToolStripMenuItem});
             this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
             this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem1.Text = "Tools";
@@ -741,6 +743,13 @@
             this.parseAllBlocksToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.parseAllBlocksToolStripMenuItem.Text = "Parse all Blocks";
             this.parseAllBlocksToolStripMenuItem.Click += new System.EventHandler(this.parseAllBlocksToolStripMenuItem_Click);
+            // 
+            // createAWLToolStripMenuItem
+            // 
+            this.createAWLToolStripMenuItem.Name = "createAWLToolStripMenuItem";
+            this.createAWLToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.createAWLToolStripMenuItem.Text = "Create AWL";
+            this.createAWLToolStripMenuItem.Click += new System.EventHandler(this.createAWLToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -914,12 +923,12 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // createAWLToolStripMenuItem
+            // dependenciesToolStripMenuItem
             // 
-            this.createAWLToolStripMenuItem.Name = "createAWLToolStripMenuItem";
-            this.createAWLToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.createAWLToolStripMenuItem.Text = "Create AWL";
-            this.createAWLToolStripMenuItem.Click += new System.EventHandler(this.createAWLToolStripMenuItem_Click);
+            this.dependenciesToolStripMenuItem.Name = "dependenciesToolStripMenuItem";
+            this.dependenciesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.dependenciesToolStripMenuItem.Text = "Dependencies";
+            this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1047,6 +1056,7 @@
         private Be.Windows.Forms.HexBox hexBox;
         private System.Windows.Forms.ToolStripMenuItem parseAllBlocksToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createAWLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dependenciesToolStripMenuItem;
 
     }
 }

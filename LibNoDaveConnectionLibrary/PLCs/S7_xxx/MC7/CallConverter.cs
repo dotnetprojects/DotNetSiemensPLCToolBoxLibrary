@@ -524,9 +524,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         else
                                         {
                                             var addr = s7DataRow.BlockAddressInDbFormat;
-                                            var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
-                                            double bytepos = double.Parse(addr.Substring(3), CultureInfo.InvariantCulture) + multiInstanceOffset;
-                                            Parameters.TryGetValue(addrTp + "[AR2,P#" + bytepos.ToString("0.0", CultureInfo.InvariantCulture) + "]", out par);
+                                            if (!string.IsNullOrEmpty(addr))
+                                            {
+                                                var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
+                                                double bytepos = double.Parse(addr.Substring(3), CultureInfo.InvariantCulture) + multiInstanceOffset;
+                                                Parameters.TryGetValue(addrTp + "[AR2,P#" + bytepos.ToString("0.0", CultureInfo.InvariantCulture) + "]", out par);
+                                            }
                                         }
 
                                         if (par != null && par.Contains("[AR2"))
