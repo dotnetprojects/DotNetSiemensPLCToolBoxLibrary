@@ -1732,6 +1732,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="valueList"></param>        
         public void ReadValues(IEnumerable<PLCTag> valueList)
         {
+            if (Configuration.ConnectionType == 20) //AS511
+            {
+                foreach (var plcTag in valueList)
+                {
+                    this.ReadValue(plcTag);
+                }
+                return;
+            }
 
             //Got through the list of values
             //Order them at first with the DB, then the byte address
@@ -1739,8 +1747,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //Then Look if Some Values lay in othe values or if the byte adress difference is <= 4
             //if it is so, create a replacement value wich reads the bytes and stores at wich tags are in this value and at wich adress
             //read the tags!
-            //Look, that the byte count gets not bigger than a pdu!
-
+            //Look, that the byte count gets not bigger than a pdu!            
 
             if (AutoConnect && !Connected)
                 Connect();
@@ -2392,6 +2399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case 3:
                     case 4:
                     case 10:
+                    case 20:
                         libnodave.closePort(_fds.rfd);
                         break;
                     case 50:
