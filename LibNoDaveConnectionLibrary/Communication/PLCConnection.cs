@@ -141,7 +141,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            socketTimer.Stop();
             socketThread.Abort();            
         }
 
@@ -161,7 +160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             { }
 
             //TcpClient sock = new TcpClient(ip, _configuration.Port);
@@ -221,17 +220,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 224:
                 case 230:
                     socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
-                    socketTimer.Elapsed += new ElapsedEventHandler(socketTimer_Elapsed);
+                    socketTimer.AutoReset = true;
+                    socketTimer.Elapsed += socketTimer_Elapsed;
                     socketTimer.Start();
-                    socketThread = new Thread(new ThreadStart(this.socket_Thread));
+                    socketThread = new Thread(this.socket_Thread);
                     socketThread.Start();
-                    while (socketThread.ThreadState==ThreadState.Running)
-                    { }
+                    while (socketThread.ThreadState != ThreadState.AbortRequested && socketThread.ThreadState != ThreadState.Aborted && socketThread.ThreadState != ThreadState.Stopped)
+                    { Thread.Sleep(50); }
                     socketTimer.Stop();
                     socketThread.Abort();
                     socketTimer = null;
-                    socketThread = null;
-                    //_fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP););
+                    socketThread = null;                    
                     break;
             }
 

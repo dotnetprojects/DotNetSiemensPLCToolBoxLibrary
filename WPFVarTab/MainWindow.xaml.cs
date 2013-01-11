@@ -187,11 +187,11 @@ namespace WPFVarTab
 
                     var conns = from rw in varTabRows group rw by rw.ConnectionName;
 
-                    /*foreach (var conn in conns)
+                    foreach (var conn in conns)
                     {
                         if (!string.IsNullOrEmpty(conn.Key))
                             _connectionDictionary.Add(conn.Key, new PLCConnection(conn.Key));
-                    }*/
+                    }
 
                     if (!string.IsNullOrEmpty(DefaultConnection) &&
                         !_connectionDictionary.ContainsKey(DefaultConnection))
