@@ -26,6 +26,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 List<FunctionBlockRow> retVal = new List<FunctionBlockRow>();
                 List<FunctionBlockRow> tempList = new List<FunctionBlockRow>();
 
+
+                string registerDi = "DI";
+                string registerDb = "";
+                string registerAkku1 = "";
+                string registerAkku2 = "";
+                string registerAR1 = "";
+                string registerAR2 = "";
+
+
+
                 string diName = "";
                 string akPar = "";
                 string db = "";

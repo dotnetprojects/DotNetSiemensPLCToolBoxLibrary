@@ -28,6 +28,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
+        public virtual IEnumerable<String> CalledBlocks
+        {
+            get
+            {
+                return new List<String>();
+            }
+        }
+
         public SymbolTableEntry SymbolTableEntry
         {
             get

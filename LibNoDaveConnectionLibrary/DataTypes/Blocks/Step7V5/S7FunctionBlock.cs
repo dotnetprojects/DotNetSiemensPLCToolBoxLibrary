@@ -19,14 +19,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 var retVal = new List<String>();
 
-                foreach (var row in AWLCode)
-                {
-                    retVal.AddRange(((S7FunctionBlockRow) row).Dependencies);
-                }
+                if (AWLCode != null)
+                    foreach (var row in AWLCode)
+                    {
+                        retVal.AddRange(((S7FunctionBlockRow) row).Dependencies);
+                    }
 
                 retVal.AddRange(Parameter.Dependencies);
 
                 return retVal.Distinct().OrderBy(itm => itm);
+            }
+        }
+
+        public override IEnumerable<String> CalledBlocks
+        {
+            get
+            {
+                var retVal = new List<String>();
+
+                if (AWLCode!=null)
+                    foreach (var row in AWLCode)
+                    {
+                        if (((S7FunctionBlockRow)row).CalledBlock != null) 
+                            retVal.Add(((S7FunctionBlockRow)row).CalledBlock);
+                    }
+
+                return retVal;
             }
         }
 

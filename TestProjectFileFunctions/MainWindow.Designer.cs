@@ -98,6 +98,7 @@
             this.createDokumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parseAllBlocksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAWLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dependenciesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -112,7 +113,7 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dependenciesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.callHirachyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -725,7 +726,8 @@
             this.createDokumentationToolStripMenuItem,
             this.parseAllBlocksToolStripMenuItem,
             this.createAWLToolStripMenuItem,
-            this.dependenciesToolStripMenuItem});
+            this.dependenciesToolStripMenuItem,
+            this.callHirachyToolStripMenuItem});
             this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
             this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem1.Text = "Tools";
@@ -750,6 +752,13 @@
             this.createAWLToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.createAWLToolStripMenuItem.Text = "Create AWL";
             this.createAWLToolStripMenuItem.Click += new System.EventHandler(this.createAWLToolStripMenuItem_Click);
+            // 
+            // dependenciesToolStripMenuItem
+            // 
+            this.dependenciesToolStripMenuItem.Name = "dependenciesToolStripMenuItem";
+            this.dependenciesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.dependenciesToolStripMenuItem.Text = "Dependencies";
+            this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -923,12 +932,12 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // dependenciesToolStripMenuItem
+            // callHirachyToolStripMenuItem
             // 
-            this.dependenciesToolStripMenuItem.Name = "dependenciesToolStripMenuItem";
-            this.dependenciesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.dependenciesToolStripMenuItem.Text = "Dependencies";
-            this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
+            this.callHirachyToolStripMenuItem.Name = "callHirachyToolStripMenuItem";
+            this.callHirachyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.callHirachyToolStripMenuItem.Text = "Call-Hierarchy";
+            this.callHirachyToolStripMenuItem.Click += new System.EventHandler(this.callHirachyToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1057,6 +1066,7 @@
         private System.Windows.Forms.ToolStripMenuItem parseAllBlocksToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createAWLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dependenciesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem callHirachyToolStripMenuItem;
 
     }
 }

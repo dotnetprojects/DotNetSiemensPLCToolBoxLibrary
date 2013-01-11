@@ -592,6 +592,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return this.ToString(useSymbol, addSemicolonAfterCommand, useSymbol);
         }
 
+        public String CalledBlock
+        {
+            get
+            {
+                if (Command == Mnemonic.opUC[(int)MnemonicLanguage] || Command == Mnemonic.opCC[(int)MnemonicLanguage] || Command == Mnemonic.opCALL[(int)MnemonicLanguage])
+                {
+                    return Parameter;
+                }
+
+                return null;
+            }
+        }
+
         public IEnumerable<String> Dependencies
         {
             get

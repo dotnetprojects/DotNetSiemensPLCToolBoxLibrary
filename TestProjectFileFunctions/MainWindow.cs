@@ -1212,5 +1212,35 @@ namespace JFK_VarTab
                 }                
             }
         }
+
+        private string CreateHirachy(string prefix,S7FunctionBlock block)
+        {
+            string retVal = "";
+            retVal += prefix + block.BlockName + Environment.NewLine;
+            //foreach (var calledBlock in block.CalledBlocks)
+            foreach (var calledBlock in block.CalledBlocks.Distinct())
+            {
+                var fld = block.ParentFolder as BlocksOfflineFolder;
+                var blk = fld.GetBlock(calledBlock) as S7FunctionBlock;
+                if (blk != null) 
+                    retVal += CreateHirachy(prefix + "  |---", blk);
+            }
+
+            return retVal;
+        }
+
+        private void callHirachyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var info = lstListBox.SelectedItem as S7ProjectBlockInfo;
+            if (info != null)
+            {
+                var txt = CreateHirachy("",(S7FunctionBlock)info.GetBlock());
+
+                viewBlockList.Visible = false;
+                txtTextBox.Text = txt;
+                txtTextBox.Visible = true;
+                
+            }
+        }
     }
 }
