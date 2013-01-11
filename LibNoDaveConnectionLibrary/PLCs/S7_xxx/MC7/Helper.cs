@@ -93,13 +93,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         public static object StringValueToObject(string Value, S7DataRowType DataType)
         {
             if (DataType == S7DataRowType.WORD)
-                return Convert.ToUInt16(Helper.GetIntFromHexString(Value));
+                return Convert.ToUInt16(Helper.GetUIntFromHexString(Value));
             else if (DataType == S7DataRowType.BOOL)
                 return bool.Parse(Value);
             else if (DataType == S7DataRowType.DWORD)
-                return Convert.ToUInt32(Helper.GetIntFromHexString(Value));
+                return Convert.ToUInt32(Helper.GetUIntFromHexString(Value));
             else if (DataType == S7DataRowType.BYTE)
-                return Convert.ToByte(Helper.GetIntFromHexString(Value));
+                return Convert.ToByte(Helper.GetUIntFromHexString(Value));
             else if (DataType == S7DataRowType.INT)
                 return Int16.Parse(Value);
             else if (DataType == S7DataRowType.DINT)
@@ -372,6 +372,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         static public int GetIntFromHexString(string myString)
         {
+            return Convert.ToInt32(GetUIntFromHexString(myString));
+            /*
             int val = 0;
             foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", "").Replace("\t",""))
             {
@@ -399,6 +401,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         val += tmp - 'a' + 10;
                         break;
                 }                
+            }
+            return val;*/
+        }
+
+        static public uint GetUIntFromHexString(string myString)
+        {
+            uint val = 0;
+            foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", "").Replace("\t", ""))
+            {
+                val *= 16;
+                switch (tmp)
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                        val += (uint)(tmp - '0');
+                        break;
+                    case 'a':
+                    case 'b':
+                    case 'c':
+                    case 'd':
+                    case 'e':
+                    case 'f':
+                        val += (uint)(tmp - 'a' + 10);
+                        break;
+                }
             }
             return val;
         }

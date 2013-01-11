@@ -592,7 +592,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
-                        Controlvalue = Convert.ToByte(Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToByte(Helper.GetUIntFromHexString(myValue));
                     }
                     else if (myValue.StartsWith("2#"))
                     {
@@ -625,7 +625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Word:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
-                        Controlvalue = Convert.ToUInt16(Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToUInt16(Helper.GetUIntFromHexString(myValue));
                     }
                     else if (myValue.StartsWith("2#"))
                     {
@@ -641,7 +641,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Dword:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
-                        Controlvalue = Convert.ToUInt32(Helper.GetIntFromHexString(myValue));
+                        Controlvalue = Convert.ToUInt32(Helper.GetUIntFromHexString(myValue));
                     }
                     else if (myValue.StartsWith("2#"))
                     {

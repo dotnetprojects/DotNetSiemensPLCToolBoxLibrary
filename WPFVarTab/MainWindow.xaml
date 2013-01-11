@@ -9,7 +9,8 @@
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
                         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                        xmlns:Properties="clr-namespace:WPFVarTab.Properties" Name="ThisWindow"
+                        xmlns:Properties="clr-namespace:WPFVarTab.Properties"
+                        xmlns:wpf="clr-namespace:JFKCommonLibrary.WPF;assembly=JFKCommonLibrary" Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -482,7 +483,7 @@
                                       WPFVarTab:ComboBoxExtension.IsNullable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger>
-                                        <behavior:ResolveElementName PropertyName="ItemsSource" />
+                                        <wpf:ResolveElementName PropertyName="ItemsSource" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
