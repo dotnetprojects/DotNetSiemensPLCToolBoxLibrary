@@ -169,6 +169,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             set { _trigger = value; NotifyPropertyChanged("Trigger"); }
         }
 
+        private bool _useDbUpdateNoInsert;
+        public bool UseDbUpdateNoInsert
+        {
+            get { return _useDbUpdateNoInsert; }
+            set { _useDbUpdateNoInsert = value; NotifyPropertyChanged("UseDbUpdateNoInsert"); }
+        }
         
+        private string _updateWhereClause="WHERE 1=1";
+        public string UpdateWhereClause
+        {
+            get { return _updateWhereClause; }
+            set { _updateWhereClause = value; NotifyPropertyChanged("UpdateWhereClause"); }
+        }
     }
 }

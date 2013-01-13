@@ -1142,8 +1142,8 @@
                 IsEnabled="{Binding ElementName=grdDatasets,
                                     Path=SelectedItem,
                                     Converter={StaticResource myNullToFalseConverter}}" />
-        <CheckBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use for all PLC-Tags the following connection:" Height="16" HorizontalAlignment="Left" Margin="671,118,0,0" Name="chkUseSameConnection" VerticalAlignment="Top" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"/>
-        <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="119" Margin="671,143,0,0" Name="cmb_UseSameConnection"
+        <CheckBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use for all PLC-Tags the following connection:" Height="16" HorizontalAlignment="Left" Margin="671,140,0,0" Name="chkUseSameConnection" VerticalAlignment="Top" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"/>
+        <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="119" Margin="671,165,0,0" Name="cmb_UseSameConnection"
                   IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
                   ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
                   <!--SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Connections}">-->
@@ -1153,20 +1153,20 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Go" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="797,143,0,0" Name="btn_UseSameConnection" VerticalAlignment="Top" Width="53" Click="btn_UseSameConnection_Click" />
-        <CheckBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use the following Databasetype for PLC-Datatype" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="671,177,0,0" Name="chkConvertTypes" VerticalAlignment="Top" />
+        <Button Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Go" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="797,165,0,0" Name="btn_UseSameConnection" VerticalAlignment="Top" Width="53" Click="btn_UseSameConnection_Click" />
+        <CheckBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use the following Databasetype for PLC-Datatype" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="671,199,0,0" Name="chkConvertTypes" VerticalAlignment="Top" />
         <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
                   ItemsSource="{Binding Source={StaticResource tagdatatype}}"
                     Padding="0"
                     SelectedItem="{Binding PLCTag.LibNoDaveDataType}"
-                    Margin="671,199,0,0" Name="cmb_PLCType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65">
+                    Margin="671,221,0,0" Name="cmb_PLCType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="867,199,0,0" Name="cmb_DBType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65"
+        <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Margin="867,221,0,0" Name="cmb_DBType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65"
                   ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=GetGrdDatsetsObject.SelectedItem.Storage.DatabaseFieldTypes}" SelectedItem="{Binding DatabaseFieldType}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -1174,7 +1174,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="PLC-Type -&gt; Database" Height="23" HorizontalAlignment="Left" Margin="742,199,0,0" Name="btn_ConvertTypes" VerticalAlignment="Top" Width="119" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Click="button1_Click" />
+        <Button Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="PLC-Type -&gt; Database" Height="23" HorizontalAlignment="Left" Margin="742,221,0,0" Name="btn_ConvertTypes" VerticalAlignment="Top" Width="119" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" Click="button1_Click" />
 
         <CheckBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use float instead of converting to Text if Multiplier is used" Height="16" Margin="0,269,68,0" Name="cb_Multiplier" VerticalAlignment="Top"
                   IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
@@ -1182,5 +1182,14 @@
         <CheckBox Content="Expert Mode" Height="16" Margin="186,269,0,0" x:Name="cb_ExpertMode" VerticalAlignment="Top"
         	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
         	HorizontalAlignment="Left" Width="114"/>
+        <CheckBox IsChecked="{Binding SelectedItem.UseDbUpdateNoInsert, ElementName=grdDatasets}" Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use Insert instead of Update (on databases)" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}" Margin="671,70,0,0" x:Name="chkConvertTypes_Copy" VerticalAlignment="Top" />
+        <TextBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Width="179"
+        	Height="26"
+        	Margin="671,91,0,0"
+        	HorizontalAlignment="Left"
+        	VerticalAlignment="Top"
+        	BorderBrush="Black"
+        	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
+        	Text="{Binding SelectedItem.UpdateWhereClause, ElementName=grdDatasets}" ToolTip="Where Clause for Update" />
     </Grid>
 </UserControl>

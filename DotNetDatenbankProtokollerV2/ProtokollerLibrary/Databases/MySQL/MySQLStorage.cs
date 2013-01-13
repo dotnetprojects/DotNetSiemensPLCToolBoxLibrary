@@ -24,6 +24,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
         private string insertCommand = "";
+        private string updateCommand = "";
 
         private DbConnection myDBConn;
         private DbCommand myCmd = new MySqlCommand();
@@ -184,19 +185,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 
 
             //Create Insert Command
-            string wertliste = "", felderliste = "";
+            string wertliste = "", felderliste = "", updateliste = "";
             foreach (DatasetConfigRow myFeld in fieldList)
             {
                 if (wertliste != "")
                 {
                     wertliste += ",";
                     felderliste += ",";
+
+                    updateliste += ",";
                 }
 
                 felderliste += myFeld.DatabaseField;
                 wertliste += "?" + myFeld.DatabaseField;
+
+                updateliste += myFeld.DatabaseField + "= ?" + myFeld.DatabaseField;
             }
             insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+
+            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
         }
 
         protected override bool _internal_Write()
@@ -224,7 +231,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 
             //Add the Fields to the Database
             myCmd.Connection = myDBConn;
-            myCmd.CommandText = insertCommand;                                
+
+            if (datasetConfig.UseDbUpdateNoInsert) 
+                myCmd.CommandText = updateCommand + " " + (datasetConfig.UpdateWhereClause ?? "");
+            else
+                myCmd.CommandText = insertCommand;                                
 
             
             for (int n = 0; n < _maxAdd; n++)
