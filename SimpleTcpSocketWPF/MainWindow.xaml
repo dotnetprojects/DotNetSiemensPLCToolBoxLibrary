@@ -1,0 +1,72 @@
+﻿<Window x:Class="SimpleTcpSocketWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+        xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
+        Title="TCP-Socket (Version 3.0)" Height="350" Width="746">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
+    </Window.Resources>
+    <Grid Background="#FFE4E4E4" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
+        <TextBox HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
+        <Label Content="IP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="26"/>
+
+        <TabControl Margin="10,54,10,10">
+            <TabItem Header="Logger">
+                <Border BorderBrush="Black" BorderThickness="1"><avalonedit:TextEditor x:Name="txtRecieve"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                  
+                                   FontFamily="Courier New"
+                                   FontSize="13"
+                                   IsReadOnly="True"                                   
+                                   ShowLineNumbers="True"                                   
+                                   Visibility="Visible" />
+                </Border>
+            </TabItem>
+            <TabItem Header="Sender">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border BorderBrush="Black" Grid.Row="1" BorderThickness="1">
+                        <avalonedit:TextEditor Margin="0,0,0,5"  x:Name="txtSended"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   BorderBrush="DarkGray"
+                                   BorderThickness="1"
+                                   FontFamily="Courier New"
+                                   FontSize="13"
+                                   IsReadOnly="True"                                   
+                                   ShowLineNumbers="True"                                   
+                                   Visibility="Visible" Grid.ColumnSpan="2" /></Border>
+                    <Border BorderBrush="Black" Grid.Row="2" BorderThickness="1"><avalonedit:TextEditor  x:Name="txtRecieve2"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   BorderBrush="DarkGray"
+                                   BorderThickness="1"
+                                   FontFamily="Courier New"
+                                   FontSize="13"
+                                   IsReadOnly="True"                                   
+                                   ShowLineNumbers="True"                                   
+                                   Visibility="Visible" Grid.ColumnSpan="2" /></Border>
+                    <GridSplitter Grid.Row="1" Background="#FFE4E4E4" Opacity="0.8" VerticalAlignment="Bottom" Height="5" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" />
+                    <TextBox x:Name="txtTelegramm" Grid.Row="0" Margin="0,5,170,5" TextWrapping="Wrap" RenderTransformOrigin="0.288,0.501" TextChanged="txtTelegramm_TextChanged" MouseDoubleClick="txtTelegramm_MouseDoubleClick" MouseUp="txtTelegramm_MouseUp"/>
+                    <Button x:Name="cmdSend" Grid.Row="0" Margin="0,5" Content="Send" Click="cmdSend_Click" HorizontalAlignment="Right" Width="91" />
+                    <Label x:Name="blLen" BorderBrush="Black" BorderThickness="1" Margin="0,5,96,5" HorizontalAlignment="Right" Width="69"  />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <TextBox HorizontalAlignment="Left" Margin="218,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding Port}"/>
+        <Label Content="Port:" HorizontalAlignment="Left" Margin="171,10,0,0" VerticalAlignment="Top" Width="42"/>
+        <CheckBox Content="Active" HorizontalAlignment="Left" Margin="302,15,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
+        <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="367,12,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
+        <CheckBox Content="Show Date" HorizontalAlignment="Left" Margin="496,6,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowDate}"/>
+        <CheckBox Content="Show Length" HorizontalAlignment="Left" Margin="496,27,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowRecievedLen}"/>
+        <CheckBox Content="Escape Special Chars" HorizontalAlignment="Left" Margin="496,48,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
+        <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
+
+    </Grid>
+</Window>
