@@ -30,9 +30,16 @@ namespace SimpleTcpSocketWPF
 
         private List<string> sendedTele = new List<string>();
 
+        private string recieveText = "";
+
         public MainWindow()
         {
             InitializeComponent();
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.LogFile))
+            {
+                lblLogFile.Text = this.GetTextFilename();
+            }
         }
 
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
@@ -46,7 +53,15 @@ namespace SimpleTcpSocketWPF
             }
             else
             {
-                tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, IPAddress.Parse(Properties.Settings.Default.IP), Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
+                if (Properties.Settings.Default.RecieveFixedLength > 0)
+                {
+                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, IPAddress.Parse(Properties.Settings.Default.IP), Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active, Properties.Settings.Default.RecieveFixedLength);
+                }
+                else
+                {
+                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, IPAddress.Parse(Properties.Settings.Default.IP), Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
+                }
+
                 tcpFunc.DataRecieved += tcpFunc_DataRecieved;
                 tcpFunc.ConnectionEstablished += tcpFunc_ConnectionEstablished;
                 tcpFunc.ConnectionClosed += tcpFunc_ConnectionClosed;
@@ -88,16 +103,28 @@ namespace SimpleTcpSocketWPF
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.LogFile))
             {
-                StreamWriter myFile = new StreamWriter(GetTextFilname(), true);
-                myFile.Write("Rec : " + add + wrt + Environment.NewLine);
-                myFile.Close();
+                try
+                {
+                    lblLogFile.Text = this.GetTextFilename();
+                    StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
+                    myFile.Write("Rec : " + add + wrt + Environment.NewLine);
+                    myFile.Close();
+                }
+                catch (Exception ex)
+                {
+                    lblException.Text = ex.Message;
+                }
             }
 
-            txtRecieve.Text = add + wrt + Environment.NewLine + txtRecieve.Text;
-            txtRecieve2.Text = txtRecieve.Text;
+            recieveText = add + wrt + Environment.NewLine + recieveText;
+
+            if (chkLoggerRefresh.IsChecked.Value)
+                txtRecieve.Text = recieveText;
+            
+            txtRecieve2.Text = recieveText;
         }
 
-        public string GetTextFilname()
+        public string GetTextFilename()
         {
             var dt = DateTime.Now;
             var retVal = Properties.Settings.Default.LogFile;
@@ -109,6 +136,9 @@ namespace SimpleTcpSocketWPF
             retVal = retVal.Replace("{hh}", dt.ToString("hh"));
             retVal = retVal.Replace("{mm}", dt.ToString("mm"));
             retVal = retVal.Replace("{ss}", dt.ToString("ss"));
+
+            string path = System.IO.Path.Combine(Environment.CurrentDirectory, retVal);
+            retVal = System.IO.Path.GetFullPath(path);
 
             return retVal;
         }
@@ -158,9 +188,17 @@ namespace SimpleTcpSocketWPF
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.LogFile))
             {
-                StreamWriter myFile = new StreamWriter(GetTextFilname(), true);
-                myFile.Write("Send: " + add + wrt + Environment.NewLine);
-                myFile.Close();
+                try
+                {
+                    lblLogFile.Text = this.GetTextFilename();
+                    StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
+                    myFile.Write("Send: " + add + wrt + Environment.NewLine);
+                    myFile.Close();
+                }
+                catch (Exception ex)
+                {
+                    lblException.Text = ex.Message;
+                }
             }
         }
 
@@ -217,6 +255,19 @@ namespace SimpleTcpSocketWPF
                 addSpecialChar.Show();
 
             }
+        }
+
+        private void txtTelegramm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.cmdSend_Click(sender, null);
+            }
+        }
+
+        private void chkLoggerRefresh_Checked(object sender, RoutedEventArgs e)
+        {
+            txtRecieve.Text = recieveText;            
         }
 
     }

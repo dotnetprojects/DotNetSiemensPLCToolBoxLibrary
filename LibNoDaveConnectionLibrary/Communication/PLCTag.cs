@@ -250,7 +250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //if (value == TagDataType.DateTime)
                 //    ArraySize = 1;
                 else if (value != TagDataType.Bool)
-                    BitAddress = 0;
+                    _bitAddress = 0;
                 //else if (value == TagDataType.CharArray || value == TagDataType.ByteArray || value == TagDataType.String)
                 //    ArraySize = _internalGetSize();
                 if (_LibNoDaveDataSource == MemoryArea.Timer || _LibNoDaveDataSource == MemoryArea.Counter)

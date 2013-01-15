@@ -134,5 +134,19 @@ namespace SimpleTcpSocketWPF.Properties {
                 this["DateTimeFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public int RecieveFixedLength {
+            get {
+                return ((int)(this["RecieveFixedLength"]));
+            }
+            set {
+                this["RecieveFixedLength"] = value;
+            }
+        }
     }
 }

@@ -50,8 +50,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             txtByte.Text = _libnodavevalue.ByteAddress.ToString();
             txtBit.Text = _libnodavevalue.BitAddress.ToString();
             txtLen.Text = _libnodavevalue.ArraySize.ToString();
-            cmbSource.SelectedIndex = cmbSource.FindString(_libnodavevalue.LibNoDaveDataSource.ToString());
-            cmbType.SelectedIndex = cmbType.FindString(_libnodavevalue.LibNoDaveDataType.ToString());
+            cmbSource.SelectedIndex = cmbSource.FindStringExact(_libnodavevalue.LibNoDaveDataSource.ToString());
+            cmbType.SelectedIndex = cmbType.FindStringExact(_libnodavevalue.LibNoDaveDataType.ToString());
 
         }
 

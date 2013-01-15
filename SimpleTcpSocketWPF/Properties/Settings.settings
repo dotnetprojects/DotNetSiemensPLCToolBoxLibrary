@@ -26,5 +26,8 @@
     <Setting Name="DateTimeFormat" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">yyyy.MM.dd HH:mm:ss.fff</Value>
     </Setting>
+    <Setting Name="RecieveFixedLength" Provider="PortableSettingsProvider" Roaming="true" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

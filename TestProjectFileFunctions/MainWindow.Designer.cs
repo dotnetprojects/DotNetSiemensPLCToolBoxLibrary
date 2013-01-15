@@ -99,6 +99,7 @@
             this.parseAllBlocksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAWLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dependenciesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.callHirachyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -113,7 +114,7 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.callHirachyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdWebfactoryTags = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -314,6 +315,7 @@
             // 
             // grpVisu
             // 
+            this.grpVisu.Controls.Add(this.cmdWebfactoryTags);
             this.grpVisu.Controls.Add(this.chkCombineStructComments);
             this.grpVisu.Controls.Add(this.cmdCreateWinCCFlexibleTags);
             this.grpVisu.Controls.Add(this.chkExpandArrays);
@@ -351,9 +353,9 @@
             // 
             // cmdCreateWinCCFlexibleTags
             // 
-            this.cmdCreateWinCCFlexibleTags.Location = new System.Drawing.Point(20, 412);
+            this.cmdCreateWinCCFlexibleTags.Location = new System.Drawing.Point(20, 406);
             this.cmdCreateWinCCFlexibleTags.Name = "cmdCreateWinCCFlexibleTags";
-            this.cmdCreateWinCCFlexibleTags.Size = new System.Drawing.Size(212, 37);
+            this.cmdCreateWinCCFlexibleTags.Size = new System.Drawing.Size(212, 27);
             this.cmdCreateWinCCFlexibleTags.TabIndex = 5;
             this.cmdCreateWinCCFlexibleTags.Text = "Create WinCC-Flexible Tags";
             this.cmdCreateWinCCFlexibleTags.UseVisualStyleBackColor = true;
@@ -459,7 +461,7 @@
             // 
             this.cmdCreateWinCCTags.Location = new System.Drawing.Point(20, 376);
             this.cmdCreateWinCCTags.Name = "cmdCreateWinCCTags";
-            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(212, 36);
+            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(212, 30);
             this.cmdCreateWinCCTags.TabIndex = 0;
             this.cmdCreateWinCCTags.Text = "Create WinCC Tags";
             this.cmdCreateWinCCTags.UseVisualStyleBackColor = true;
@@ -760,6 +762,13 @@
             this.dependenciesToolStripMenuItem.Text = "Dependencies";
             this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
             // 
+            // callHirachyToolStripMenuItem
+            // 
+            this.callHirachyToolStripMenuItem.Name = "callHirachyToolStripMenuItem";
+            this.callHirachyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.callHirachyToolStripMenuItem.Text = "Call-Hierarchy";
+            this.callHirachyToolStripMenuItem.Click += new System.EventHandler(this.callHirachyToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -787,11 +796,11 @@
             // 
             // mainSplitContainer.Panel2
             // 
-            this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
-            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
             this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
             this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
             this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
+            this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
             this.mainSplitContainer.Size = new System.Drawing.Size(1171, 535);
             this.mainSplitContainer.SplitterDistance = 397;
             this.mainSplitContainer.TabIndex = 26;
@@ -932,12 +941,15 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // callHirachyToolStripMenuItem
+            // cmdWebfactoryTags
             // 
-            this.callHirachyToolStripMenuItem.Name = "callHirachyToolStripMenuItem";
-            this.callHirachyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.callHirachyToolStripMenuItem.Text = "Call-Hierarchy";
-            this.callHirachyToolStripMenuItem.Click += new System.EventHandler(this.callHirachyToolStripMenuItem_Click);
+            this.cmdWebfactoryTags.Location = new System.Drawing.Point(20, 430);
+            this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
+            this.cmdWebfactoryTags.Size = new System.Drawing.Size(212, 27);
+            this.cmdWebfactoryTags.TabIndex = 7;
+            this.cmdWebfactoryTags.Text = "Create Webfactory Tags";
+            this.cmdWebfactoryTags.UseVisualStyleBackColor = true;
+            this.cmdWebfactoryTags.Click += new System.EventHandler(this.cmdCreateWEBfactoryTags_Click);
             // 
             // Form1
             // 
@@ -1067,6 +1079,7 @@
         private System.Windows.Forms.ToolStripMenuItem createAWLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dependenciesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem callHirachyToolStripMenuItem;
+        private System.Windows.Forms.Button cmdWebfactoryTags;
 
     }
 }
