@@ -40,6 +40,39 @@ namespace SimpleTcpSocketWPF
             {
                 lblLogFile.Text = this.GetTextFilename();
             }
+
+            cbEncoding.Items.Add("DOS-437");
+            cbEncoding.Items.Add("Windows-1252");
+            cbEncoding.Items.Add("ASCII (keine Umlaute!)");
+            cbEncoding.Items.Add("ISO-8859-1");
+            cbEncoding.Items.Add("UTF7");
+            cbEncoding.Items.Add("UTF8");
+            cbEncoding.Items.Add("UTF32");
+
+            cbEncoding.SelectedIndex = 0;
+        }
+
+        private Encoding getEncoding()
+        {
+            switch (cbEncoding.SelectedIndex)
+            {
+                case 0:
+                    return Encoding.GetEncoding(437);
+                case 1:
+                    return Encoding.GetEncoding(1252);
+                case 2:
+                    return Encoding.ASCII;
+                case 3:
+                    return Encoding.GetEncoding("ISO-8859-1");
+                case 4:
+                    return Encoding.UTF7;
+                case 5:
+                    return Encoding.UTF8;
+                case 6:
+                    return Encoding.UTF32;
+            }
+            
+            return Encoding.ASCII;
         }
 
         private void cmdConnect_Click(object sender, RoutedEventArgs e)
@@ -53,13 +86,18 @@ namespace SimpleTcpSocketWPF
             }
             else
             {
+                var ip = IPAddress.Parse(Properties.Settings.Default.IP);
+
+                if (!Properties.Settings.Default.Active) 
+                    ip = IPAddress.Any;
+
                 if (Properties.Settings.Default.RecieveFixedLength > 0)
                 {
-                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, IPAddress.Parse(Properties.Settings.Default.IP), Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active, Properties.Settings.Default.RecieveFixedLength);
+                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active, Properties.Settings.Default.RecieveFixedLength);
                 }
                 else
                 {
-                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, IPAddress.Parse(Properties.Settings.Default.IP), Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
+                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
                 }
 
                 tcpFunc.DataRecieved += tcpFunc_DataRecieved;
@@ -82,11 +120,28 @@ namespace SimpleTcpSocketWPF
             cmdConnect.Background = Brushes.Red;
         }
 
+        private string bytesToHexString(byte[] data)
+        {
+            string retVal = "";
+            foreach (var b in data)
+            {
+                if (retVal != "") retVal += " ";
+                retVal += b.ToString("X").PadLeft(2, '0');
+            }
+
+            return retVal;
+        }
+
         void tcpFunc_DataRecieved(byte[] data, System.Net.Sockets.TcpClient arg2)
         {
-            var wrt = Encoding.ASCII.GetString(data);
+            var tel = getEncoding().GetString(data);
 
-            var len = wrt.Length;
+            var wrt = tel;
+
+            if (Properties.Settings.Default.LogDataAsHexBytes) 
+                wrt = bytesToHexString(data);
+
+            var len = data.Length;
 
             string add = "";
 
@@ -107,7 +162,15 @@ namespace SimpleTcpSocketWPF
                 {
                     lblLogFile.Text = this.GetTextFilename();
                     StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
-                    myFile.Write("Rec : " + add + wrt + Environment.NewLine);
+                    if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
+                    {
+                        myFile.Write("Rec  : " + add + tel + Environment.NewLine);
+                        myFile.Write("Bytes: " + add + wrt + Environment.NewLine);
+                    }
+                    else
+                    {
+                        myFile.Write("Rec  : " + add + wrt + Environment.NewLine);
+                    }                    
                     myFile.Close();
                 }
                 catch (Exception ex)
@@ -116,7 +179,15 @@ namespace SimpleTcpSocketWPF
                 }
             }
 
-            recieveText = add + wrt + Environment.NewLine + recieveText;
+            if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
+            {
+                recieveText = add + wrt + Environment.NewLine + Environment.NewLine + recieveText;
+                recieveText = add + tel + Environment.NewLine + recieveText;
+            }
+            else
+            {
+                recieveText = add + wrt + Environment.NewLine + recieveText;
+            }   
 
             if (chkLoggerRefresh.IsChecked.Value)
                 txtRecieve.Text = recieveText;
@@ -134,6 +205,7 @@ namespace SimpleTcpSocketWPF
             retVal = retVal.Replace("{yyyy}", dt.ToString("yyyy"));
             retVal = retVal.Replace("{yy}", dt.ToString("yy"));
             retVal = retVal.Replace("{hh}", dt.ToString("hh"));
+            retVal = retVal.Replace("{HH}", dt.ToString("HH"));
             retVal = retVal.Replace("{mm}", dt.ToString("mm"));
             retVal = retVal.Replace("{ss}", dt.ToString("ss"));
 
@@ -169,6 +241,11 @@ namespace SimpleTcpSocketWPF
 
             var wrt = tel;
 
+            var sendbytes = getEncoding().GetBytes(tel);
+
+            if (Properties.Settings.Default.LogDataAsHexBytes)
+                wrt = bytesToHexString(sendbytes);
+
             string add = "";
 
             if (Properties.Settings.Default.ShowDate)
@@ -178,13 +255,23 @@ namespace SimpleTcpSocketWPF
             if (Properties.Settings.Default.ShowRecievedLen)
             {
                 if (!string.IsNullOrEmpty(add)) add += " - ";
-                add += wrt.Length.ToString().PadLeft(4, '0') + " Bytes";
+                add += sendbytes.Length.ToString().PadLeft(4, '0') + " Bytes";
             }
             if (!string.IsNullOrEmpty(add)) add += ": ";
 
-            txtSended.Text = add + wrt + Environment.NewLine + txtSended.Text;
+
+            if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
+            {
+                txtSended.Text = add + wrt + Environment.NewLine + Environment.NewLine + txtSended.Text;
+                txtSended.Text = add + tel + Environment.NewLine + txtSended.Text;                
+            }
+            else
+            {
+                txtSended.Text = add + wrt + Environment.NewLine + txtSended.Text;
+            }   
+            
             if (tcpFunc != null)
-                tcpFunc.SendStringData(tel);
+                tcpFunc.SendData(sendbytes);
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.LogFile))
             {
@@ -192,7 +279,15 @@ namespace SimpleTcpSocketWPF
                 {
                     lblLogFile.Text = this.GetTextFilename();
                     StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
-                    myFile.Write("Send: " + add + wrt + Environment.NewLine);
+                    if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
+                    {
+                        myFile.Write("Send : " + add + tel + Environment.NewLine);
+                        myFile.Write("Bytes: " + add + wrt + Environment.NewLine);
+                    }
+                    else
+                    {
+                        myFile.Write("Send : " + add + wrt + Environment.NewLine);
+                    }
                     myFile.Close();
                 }
                 catch (Exception ex)

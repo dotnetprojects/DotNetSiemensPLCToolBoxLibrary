@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
-        Title="TCP-Socket (Version 3.3)" Height="379" Width="768">
+        xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+        Title="TCP-Socket (Version 3.6)" Height="399" Width="792">
     <Window.Resources>
         <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
     </Window.Resources>
     <Grid Background="#FFE4E4E4" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
-        <TextBox HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
+        <TextBox Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter}}" HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
         <Label Content="IP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="26"/>
 
         <TabControl Margin="10,54,10,28">
@@ -65,11 +66,11 @@
         </TabControl>
         <TextBox HorizontalAlignment="Left" Margin="218,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding Port}"/>
         <Label Content="Port:" HorizontalAlignment="Left" Margin="171,10,0,0" VerticalAlignment="Top" Width="42"/>
-        <CheckBox Content="Active" HorizontalAlignment="Left" Margin="302,15,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
+        <CheckBox x:Name="___No_Name_" Content="Active" HorizontalAlignment="Left" Margin="302,15,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
         <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="367,12,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
-        <CheckBox Content="Show Date" HorizontalAlignment="Left" Margin="496,6,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowDate}"/>
-        <CheckBox Content="Show Length" HorizontalAlignment="Left" Margin="496,27,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowRecievedLen}"/>
-        <CheckBox Content="Escape Special Chars" HorizontalAlignment="Left" Margin="496,48,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
+        <CheckBox Content="Show Date" HorizontalAlignment="Left" Margin="496,3,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowDate}"/>
+        <CheckBox Content="Show Length" HorizontalAlignment="Left" Margin="496,20,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowRecievedLen}"/>
+        <CheckBox Content="Escape Special Chars" HorizontalAlignment="Left" Margin="496,37,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
         <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
         <StatusBar HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
@@ -79,6 +80,11 @@
                 <TextBlock Name="lblException" />
             </StatusBarItem>
         </StatusBar>
+        <Label Content="all" BorderBrush="Black" BorderThickness="1" HorizontalContentAlignment="Center"  Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter FalseValue=Visible, TrueValue=Hidden}}" VerticalContentAlignment="Center" Padding="0"  HorizontalAlignment="Left" Margin="41,14,0,0" VerticalAlignment="Top" Width="125" Height="22"/>
+        <ComboBox x:Name="cbEncoding" HorizontalAlignment="Left" Height="24" Margin="302,41,0,0" VerticalAlignment="Top" Width="159"/>
+        <Label Content="Encoding:" HorizontalAlignment="Left" Margin="229,41,0,0" VerticalAlignment="Top" Width="68" RenderTransformOrigin="2.714,1.808"/>
+        <CheckBox Content="Log Data as Hex-Bytes" HorizontalAlignment="Left" Margin="496,54,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
+        <CheckBox Visibility="{Binding LogDataAsHexBytes, Converter={converters:BoolToVisibilityConverter}}" Content="Hex &amp; Ascii" HorizontalAlignment="Left" Margin="637,54,-13,0" VerticalAlignment="Top" IsChecked="{Binding LogHexAndAscii}"/>
 
     </Grid>
 </Window>

@@ -148,5 +148,29 @@ namespace SimpleTcpSocketWPF.Properties {
                 this["RecieveFixedLength"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogDataAsHexBytes {
+            get {
+                return ((bool)(this["LogDataAsHexBytes"]));
+            }
+            set {
+                this["LogDataAsHexBytes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LogHexAndAscii {
+            get {
+                return ((bool)(this["LogHexAndAscii"]));
+            }
+            set {
+                this["LogHexAndAscii"] = value;
+            }
+        }
     }
 }
