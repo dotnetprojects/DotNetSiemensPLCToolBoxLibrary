@@ -487,6 +487,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     S7DataBlock retVal = new S7DataBlock();
                     retVal.IsInstanceDB = myTmpBlk.IsInstanceDB; 
                     retVal.FBNumber = myTmpBlk.FBNumber;
+
+                    retVal.CodeSize = myTmpBlk.mc7code.Length;
+
                     retVal.StructureFromString = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal, myTmpBlk.mc7code);
                     if (myTmpBlk.blkinterfaceInMC5 != null)
                     {
@@ -525,7 +528,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Version = myTmpBlk.version;
 
                     retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal);
-
+                
                     if (myTmpBlk.blockdescription != null)
                     {
                         retVal.Title = Project.ProjectEncoding.GetString(myTmpBlk.blockdescription, 3, myTmpBlk.blockdescription[1] - 4);
@@ -534,6 +537,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB)
                     {
+                        retVal.CodeSize = myTmpBlk.mc7code.Length;
+
                         int[] Networks;
                         Networks = NetWork.GetNetworks(0, myTmpBlk.nwinfo);
 
