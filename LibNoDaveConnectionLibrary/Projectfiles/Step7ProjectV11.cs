@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 /*using Siemens.Automation.ObjectFrame.FileStorage.Base.IO;
@@ -121,29 +123,78 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             var hw = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Simatic.HwConfiguration.Model.DeviceData']");
             var hwConfId = hw.Attributes["id"].Value;
 
-
+            var s7ControllerTargetDataTypeId = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData']").Attributes["id"].Value;
+            var symbolTableTargetDataTypeId = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Automation.DomainModel.EAMTZTagTableData']").Attributes["id"].Value;
+            var symbolTableEntryDataTypeId = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Automation.DomainModel.EAMTZTagData']").Attributes["id"].Value;
+            
             var coreAttributesId = xmlDoc.SelectSingleNode("root/asId2Name/typeInfo[@name='Siemens.Automation.ObjectFrame.ICoreAttributes']").Attributes["id"].Value;
+            var symAddressAttributesId = xmlDoc.SelectSingleNode("root/asId2Name/typeInfo[@name='Siemens.Automation.DomainModel.ITagAddress']").Attributes["id"].Value;
+            var structItemAttributesId = xmlDoc.SelectSingleNode("root/asId2Name/typeInfo[@name='Siemens.Automation.DomainServices.CommonTypeSystem.IStructureItem']").Attributes["id"].Value;
+            
 
-
-            var s7ControllerTargetDataType = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData']");
-            var s7ControllerTargetDataTypeId = s7ControllerTargetDataType.Attributes["id"].Value;
-
+            var coreObjectTargetId = xmlDoc.SelectSingleNode("root/relationId2Name/typeInfo[@name='Siemens.Automation.ObjectFrame.CoreObject.Target']").Attributes["id"].Value;
+            var tagTableContentDataTagTableId = xmlDoc.SelectSingleNode("root/relationId2Name/typeInfo[@name='Siemens.Automation.DomainModel.TagTableContentData.TagTable']").Attributes["id"].Value;
+            
+            
 
             var folderDataType = xmlDoc.SelectSingleNode("root/importTypes/typeInfo[@name='Siemens.Automation.DomainModel.FolderData']");
             var folderDataTypeId = folderDataType.Attributes["id"].Value;
             
             //var s7s = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + prjObjId + "']][@id='" + s7ConfId + "']");
-            var plcs = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + s7ControllerTargetDataTypeId + "']");
 
+
+            List<TIACPUFolder> cpus = new List<TIACPUFolder>();
+
+            var plcs = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + s7ControllerTargetDataTypeId + "']");
             if (plcs != null)
                 foreach (XmlNode myPlc in plcs)
                 {
                     var akPlc = myPlc.SelectSingleNode("attribSet[@id='" + coreAttributesId + "']/attrib[@name='Name']");
-                    ProjectStructure.SubItems.Add(new TIACPUFolder(this){ Name = akPlc.InnerText });
+                    var cpuFld = new TIACPUFolder(this) { Name = akPlc.InnerText, ID = myPlc.Attributes["id"].Value, InstID = myPlc.Attributes["instId"].Value };
+                    cpus.Add(cpuFld);
+                    ProjectStructure.SubItems.Add(cpuFld);
                 }
 
+            List<TIASymTabFolder> symTabs = new List<TIASymTabFolder>();
 
-            //var folders = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + folderDataTypeId + "']");
+            var symboltables = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + symbolTableTargetDataTypeId + "']");
+            if (symboltables != null)
+                foreach (XmlNode mySymTable in symboltables)
+                {
+                    var akSymTableInfo = mySymTable.SelectSingleNode("attribSet[@id='" + coreAttributesId + "']/attrib[@name='Name']");
+                    var symTabFld = new TIASymTabFolder(this) { Name = akSymTableInfo.InnerText, ID = mySymTable.Attributes["id"].Value, InstID = mySymTable.Attributes["instId"].Value };
+
+                    symTabs.Add(symTabFld);
+                    
+                    var coreObjectTargetInfo = mySymTable.SelectSingleNode("relation[@id='" + coreObjectTargetId + "']/link").InnerText.Split('-');
+                    if (coreObjectTargetInfo[0] == s7ControllerTargetDataTypeId)
+                    {
+                        var akCpu = cpus.FirstOrDefault(itm => itm.InstID == coreObjectTargetInfo[1]);
+                        if (akCpu != null) 
+                            akCpu.SubItems.Add(symTabFld);
+                    }                    
+                }
+
+            
+
+            var symboltableEntrys = xmlDoc.SelectNodes("root/objects/StorageObject[@id='" + symbolTableEntryDataTypeId + "']");
+            if (symboltableEntrys != null)
+                foreach (XmlNode mySymTableEntry in symboltableEntrys)
+                {
+                    var akSymName = mySymTableEntry.SelectSingleNode("attribSet[@id='" + coreAttributesId + "']/attrib[@name='Name']").InnerText;
+                    var akSymAddress = mySymTableEntry.SelectSingleNode("attribSet[@id='" + symAddressAttributesId + "']/attrib[@name='LogicalAddress']").InnerText;
+                    var akSymType = mySymTableEntry.SelectSingleNode("attribSet[@id='" + structItemAttributesId + "']/attrib[@name='DisplayTypeName']").InnerText;
+
+                    var entry = new SymbolTableEntry() { Symbol = akSymName, OperandIEC = akSymAddress, DataType = akSymType };
+                    var tagTableContentDataTagTableInfo = mySymTableEntry.SelectSingleNode("parentlink[@relId='" + tagTableContentDataTagTableId + "']").Attributes["link"].Value.Split('-');
+                    if (tagTableContentDataTagTableInfo[0] == symbolTableTargetDataTypeId)
+                    {
+                        var akSymTab = symTabs.FirstOrDefault(itm => itm.InstID == tagTableContentDataTagTableInfo[1]);
+                        if (akSymTab != null)
+                            akSymTab.SymbolTableEntrys.Add(entry);
+                    }
+                }
+
         }
 
 

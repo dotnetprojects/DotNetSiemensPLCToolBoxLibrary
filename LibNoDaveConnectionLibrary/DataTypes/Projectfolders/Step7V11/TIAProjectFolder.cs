@@ -7,6 +7,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     /// </summary>
     public class TIAProjectFolder : ProjectFolder
     {
+        public string ID { get; set; }
+        public string InstID { get; set; }
+
         public TIAProjectFolder(Step7ProjectV11 Project)
         {
             this.Project = Project;

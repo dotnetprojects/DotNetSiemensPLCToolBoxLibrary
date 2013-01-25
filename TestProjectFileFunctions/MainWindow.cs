@@ -182,9 +182,9 @@ namespace JFK_VarTab
                 var tmp = (myTreeNode)treeStep7Project.SelectedNode;
                 if (tmp.myObject is IBlocksFolder) blkFld = (IBlocksFolder)tmp.myObject;
 
-                if (tmp.myObject.GetType() == typeof(SymbolTable))
+                if (tmp.myObject is ISymbolTable)
                 {
-                    var tmp2 = (SymbolTable)tmp.myObject;
+                    var tmp2 = (ISymbolTable)tmp.myObject;
 
                     if (oldNode != treeStep7Project.SelectedNode)
                     {
@@ -192,12 +192,24 @@ namespace JFK_VarTab
                         dtaSymbolTable.Rows.Clear();
                         foreach (var step7SymbolTableEntry in tmp2.SymbolTableEntrys)
                         {
-                            dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.Comment });
+                            dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment });
 
                         }
                     }
                     dtaSymbolTable.Visible = true;
                     lblToolStripFileSystemFolder.Text = tmp2.Folder;
+                }
+                else if (tmp.myObject is TIAProjectFolder)
+                {
+                    var afld = tmp.myObject as TIAProjectFolder;
+                    if (oldNode != treeStep7Project.SelectedNode)
+                    {
+                        lstListBox.Items.Clear();
+                        lstListBox.Items.Add("ID: " + afld.ID);
+                        lstListBox.Items.Add("InstID: " + afld.InstID);
+
+                    }
+                    viewBlockList.Visible = true;
                 }
                 else if (blkFld != null)
                 {
