@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -19,6 +20,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private XmlDocument tiaProject;
 
+        internal ZipHelper _ziphelper = new ZipHelper(null);
+
         public Step7ProjectV11(string projectfile)
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -26,10 +29,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
+            if (ProjectFile.ToLower().EndsWith("zip"))
+            {
+                ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
+
+                if (string.IsNullOrEmpty(projectfile))
+                    throw new Exception("Zip-File contains no valid TIA Project !");
+                this._ziphelper = new ZipHelper(projectfile);
+            }
+
+           
             try
             {
                 var xmlDoc = new XmlDocument();
-                xmlDoc.Load(new FileStream(projectfile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite));
+                xmlDoc.Load(_ziphelper.GetReadStream(projectfile));
 
                 XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
                 nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");

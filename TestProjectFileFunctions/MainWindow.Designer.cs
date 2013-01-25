@@ -38,6 +38,7 @@
             this.symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.datatype = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.operand = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operandiec = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lstListBox = new System.Windows.Forms.ListBox();
             this.txtTextBox = new System.Windows.Forms.TextBox();
@@ -191,6 +192,7 @@
             this.symbol,
             this.datatype,
             this.operand,
+            this.operandiec,
             this.comment});
             this.dtaSymbolTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSymbolTable.Location = new System.Drawing.Point(0, 0);
@@ -213,6 +215,11 @@
             // 
             this.operand.HeaderText = "operand";
             this.operand.Name = "operand";
+            // 
+            // operandiec
+            // 
+            this.operandiec.HeaderText = "operandiec";
+            this.operandiec.Name = "operandiec";
             // 
             // comment
             // 
@@ -1002,6 +1009,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn symbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn datatype;
         private System.Windows.Forms.DataGridViewTextBoxColumn operand;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operandiec;
         private System.Windows.Forms.DataGridViewTextBoxColumn comment;
         private System.Windows.Forms.ListBox lstListBox;
         private System.Windows.Forms.TextBox txtTextBox;
