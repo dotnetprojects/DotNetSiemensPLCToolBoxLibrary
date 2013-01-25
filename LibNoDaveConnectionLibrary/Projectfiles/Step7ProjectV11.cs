@@ -11,11 +11,6 @@ using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
-/*using Siemens.Automation.ObjectFrame.FileStorage.Base.IO;
-using Siemens.Automation.ObjectFrame.FileStorage.Client;
-using Siemens.Automation.ObjectFrame.FileStorage.Conversion;
-using Siemens.Automation.ObjectFrame.Kernel;*/
-
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step7ProjectV11 : Project
@@ -84,13 +79,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 tiaExportType = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Conversion.Export, Siemens.Automation.ObjectFrame.FileStorage");
                 tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
-                //var exp = Export.CreateInstance(DataFile, true);
-
+                
                 var memMgrType = Type.GetType("Siemens.Automation.ObjectFrame.Kernel.MemoryManager, Siemens.Automation.ObjectFrame.Kernel");
                 try
                 {
-                    memMgrType.InvokeMember("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { 104857600 });
-                    //try { MemoryManager.Initialize(104857600); }
+                    memMgrType.InvokeMember("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { 104857600 });                    
                 }
                 catch (Exception)
                 {
