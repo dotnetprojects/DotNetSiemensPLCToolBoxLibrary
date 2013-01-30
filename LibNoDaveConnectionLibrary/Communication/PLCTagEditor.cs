@@ -46,12 +46,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         void _libnodavevalue_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             txtValueInS7.Text = _libnodavevalue.S7FormatAddress;
-            txtDB.Text = _libnodavevalue.DatablockNumber.ToString();
+            txtDB.Text = _libnodavevalue.DataBlockNumber.ToString();
             txtByte.Text = _libnodavevalue.ByteAddress.ToString();
             txtBit.Text = _libnodavevalue.BitAddress.ToString();
             txtLen.Text = _libnodavevalue.ArraySize.ToString();
-            cmbSource.SelectedIndex = cmbSource.FindStringExact(_libnodavevalue.LibNoDaveDataSource.ToString());
-            cmbType.SelectedIndex = cmbType.FindStringExact(_libnodavevalue.LibNoDaveDataType.ToString());
+            cmbSource.SelectedIndex = cmbSource.FindStringExact(_libnodavevalue.TagDataSource.ToString());
+            cmbType.SelectedIndex = cmbType.FindStringExact(_libnodavevalue.TagDataType.ToString());
 
         }
 
@@ -61,9 +61,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _libnodavevalue = new PLCTag();
 
             if ((MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value == MemoryArea.Datablock || (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value == MemoryArea.InstanceDatablock)
-                _libnodavevalue.DatablockNumber = int.Parse(txtDB.Text);
+                _libnodavevalue.DataBlockNumber = int.Parse(txtDB.Text);
             else
-                _libnodavevalue.DatablockNumber = 0;
+                _libnodavevalue.DataBlockNumber = 0;
 
             _libnodavevalue.ByteAddress = int.Parse(txtByte.Text);
 
@@ -78,8 +78,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             else
                 _libnodavevalue.ArraySize = 0;
 
-            _libnodavevalue.LibNoDaveDataSource = (MemoryArea) ((EnumListItem) cmbSource.SelectedItem).Value;
-            _libnodavevalue.LibNoDaveDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value;
+            _libnodavevalue.TagDataSource = (MemoryArea) ((EnumListItem) cmbSource.SelectedItem).Value;
+            _libnodavevalue.TagDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value;
 
             this.Close();
 
@@ -100,7 +100,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //lblDB.Visible = false;
                 lblPT1.Visible = true;
             }
-            _libnodavevalue.LibNoDaveDataSource = (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value;
+            _libnodavevalue.TagDataSource = (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value;
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -128,7 +128,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 txtLen.Visible = false;
                 lblLen.Visible = false;
             }
-            _libnodavevalue.LibNoDaveDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value;
+            _libnodavevalue.TagDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private void txtDB_TextChanged(object sender, EventArgs e)
         {
-            _libnodavevalue.DatablockNumber = Int32.Parse(txtDB.Text);
+            _libnodavevalue.DataBlockNumber = Int32.Parse(txtDB.Text);
         }
 
         private void txtByte_TextChanged(object sender, EventArgs e)

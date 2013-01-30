@@ -411,7 +411,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                     //Look if DatabaseFieldType was selected
                     if (datasetConfigRow.DatabaseFieldType == "") error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - DatabaseFieldType not Set!" + Environment.NewLine;
                     ////Look if PLC-ValueType was selected
-                    if (datasetConfigRow.PLCTag.LibNoDaveDataType == null)
+                    if (datasetConfigRow.PLCTag.TagDataType == null)
                         error += "Error: Dataset \"" + datasetConfig.Name + "\" Row \"" + datasetConfigRow.DatabaseField + "\" - PLC-ValueType not Set!" + Environment.NewLine;
 
                     if (TestConnections && datasetConfig.Trigger != DatasetTriggerType.Triggered_By_Incoming_Data_On_A_TCPIP_Connection)

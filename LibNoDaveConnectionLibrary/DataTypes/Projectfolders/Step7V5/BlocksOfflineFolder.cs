@@ -805,7 +805,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 if (dtaBlk.Structure.Children != null && !dtaBlk.IsInstanceDB)
                 {
                     retVal.Append("  STRUCT" + Environment.NewLine);
-                    retVal.Append(GetSubParas(dtaBlk.Structure, "    "));
+                    retVal.Append(GetSubParas(((S7DataRow)dtaBlk.Structure), "    "));
                     retVal.Append("  END_STRUCT ;" + Environment.NewLine);
 
                 }

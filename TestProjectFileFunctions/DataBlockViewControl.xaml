@@ -5,6 +5,8 @@
              xmlns:local="clr-namespace:TestProjectFileFunctions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Step7V51="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;assembly=DotNetSiemensPLCToolBoxLibrary"
+             xmlns:Step7V11="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;assembly=DotNetSiemensPLCToolBoxLibrary"
+             xmlns:step7V11="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;assembly=DotNetSiemensPLCToolBoxLibrary"
              d:DesignHeight="300"
              d:DesignWidth="500"
              mc:Ignorable="d">
@@ -89,20 +91,77 @@
                   Margin="0,30,0,0"
                   Padding="0">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type Step7V51:S7DataRow}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type step7V11:TIADataRow}" ItemsSource="{Binding Children}">
                     <Grid Margin="0">
-                        <!--
-                            <Thumb x:Name="PART_Thumb" HorizontalAlignment="Left" Width="5" Margin="7 0 0 0" Cursor="SizeWE">
-                            <Thumb.RenderTransform>
-                            <TranslateTransform X="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TreeviewDepthWidthConverter}}}" />
-                            </Thumb.RenderTransform>
-                            <Thumb.Template>
-                            <ControlTemplate>
-                            <Border Background="Transparent" />
-                            </ControlTemplate>
-                            </Thumb.Template>
-                            </Thumb>
-                        -->
+                        <StackPanel Margin="0" Orientation="Horizontal">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Width="45"
+                                           Margin="0"
+                                           Text="{Binding BlockAddress}"
+                                           TextAlignment="Right" />
+                            </Border>
+                            <Border Width="{Binding Converter={StaticResource lengthConverter}}" Margin="0" />
+                            <Border Width="{Binding Converter={StaticResource length2Converter}}"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding Name}"
+                                           ToolTip="{Binding StructuredName}" />
+                            </Border>
+                            <Border Width="300"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding SymbolicVisuAccessKey}"
+                                           ToolTip="{Binding SymbolicVisuAccessKey}" />
+                            </Border>
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding DataTypeAsString}"
+                                           ToolTip="{Binding DataTypeAsString}" />
+                            </Border>
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding StartValueAsString}"
+                                           ToolTip="{Binding StartValueAsString}" />
+                            </Border>
+                            <Border Width="180"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding ValueAsString}"
+                                           ToolTip="{Binding ValueAsString}" />
+                            </Border>
+                            <Border Width="300"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0"
+                                           Text="{Binding Comment}"
+                                           ToolTip="{Binding Comment}" />
+                            </Border>
+                            <Border Width="300"
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    Padding="2">
+                                <TextBlock Margin="0" Text="{Binding Path=LibNoDaveValue.Value}" />
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type Step7V51:S7DataRow}" ItemsSource="{Binding Children}">
+                    <Grid Margin="0">                        
                         <StackPanel Margin="0" Orientation="Horizontal">
                             <Border BorderBrush="Black"
                                     BorderThickness="1,1,1,1"

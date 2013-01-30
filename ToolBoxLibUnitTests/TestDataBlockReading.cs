@@ -31,10 +31,10 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(test.Children[1].Name, "aa");
             Assert.AreEqual(test.Children[2].Name, "bb");
             Assert.AreEqual(test.Children[3].Name, "aa1");
-            Assert.AreEqual(test.Children[0].BlockAddress.ByteAddress, 0);
-            Assert.AreEqual(test.Children[1].BlockAddress.ByteAddress, 2);
-            Assert.AreEqual(test.Children[2].BlockAddress.ByteAddress, 10);
-            Assert.AreEqual(test.Children[3].BlockAddress.ByteAddress, 12);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).BlockAddress.ByteAddress, 0);
+            Assert.AreEqual(((S7DataRow)test.Children[1]).BlockAddress.ByteAddress, 2);
+            Assert.AreEqual(((S7DataRow)test.Children[2]).BlockAddress.ByteAddress, 10);
+            Assert.AreEqual(((S7DataRow)test.Children[3]).BlockAddress.ByteAddress, 12);
         }
 
         [TestMethod]
@@ -52,11 +52,11 @@ namespace ToolBoxLibUnitTests
                                                                                                                 false,
                                                                                                                 fld, blk);
             Assert.AreEqual(test.Children[0].Name, "Fachkoordinate");
-            Assert.AreEqual(test.Children[0].ArrayStart[0], 0);
-            Assert.AreEqual(test.Children[0].ArrayStart[1], 1);
-            Assert.AreEqual(test.Children[0].ArrayStop[0], 67);
-            Assert.AreEqual(test.Children[0].ArrayStop[1], 2);
-            Assert.AreEqual(test.Children[0].ByteLength, 544);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 1);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 2);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 544);
         }
 
         [TestMethod]
@@ -74,13 +74,13 @@ namespace ToolBoxLibUnitTests
                                                                                                                 false,
                                                                                                                 fld, blk);
             Assert.AreEqual(test.Children[0].Name, "X_KOORDINATE");
-            Assert.AreEqual(test.Children[0].ArrayStart[0], 0);
-            Assert.AreEqual(test.Children[0].ArrayStart[1], 0);
-            Assert.AreEqual(test.Children[0].ArrayStart[2], 1);
-            Assert.AreEqual(test.Children[0].ArrayStop[0], 67);
-            Assert.AreEqual(test.Children[0].ArrayStop[1], 16);
-            Assert.AreEqual(test.Children[0].ArrayStop[2], 2);
-            Assert.AreEqual(test.Children[0].ByteLength, 4624);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 0);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[2], 1);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 16);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[2], 2);
+            Assert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 4624);
         }
     }
 }

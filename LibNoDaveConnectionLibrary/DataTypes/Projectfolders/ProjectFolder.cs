@@ -11,7 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     /// </summary>
     public class ProjectFolder:IProjectFolder
     {
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
 #if !IPHONE	
         public string FolderClosedImageName

@@ -34,7 +34,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 
         public void ReadValue(PLCTag tag)
         {
-            var telHead = new byte[] { (byte)'S', (byte)'5', 16, 1, 3, 5, 3, 8, PLCConnectionID, (byte)tag.DatablockNumber, 0, 0, 0, 0, 0xff, 2 };
+            var telHead = new byte[] { (byte)'S', (byte)'5', 16, 1, 3, 5, 3, 8, PLCConnectionID, (byte)tag.DataBlockNumber, 0, 0, 0, 0, 0xff, 2 };
             LibNoDave.libnodave.putBCD16at(telHead, 10, tag.ByteAddress);
             LibNoDave.libnodave.putBCD16at(telHead, 10, tag.ReadByteSize);
 
@@ -44,7 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
         public void WriteValue(PLCTag tag)
         {
 
-            var telHead = new byte[] { (byte)'S', (byte)'5', 16, 1, 3, 3, 3, 8, PLCConnectionID, (byte)tag.DatablockNumber, 0, 0, 0, 0, 0xff, 2 };
+            var telHead = new byte[] { (byte)'S', (byte)'5', 16, 1, 3, 3, 3, 8, PLCConnectionID, (byte)tag.DataBlockNumber, 0, 0, 0, 0, 0xff, 2 };
             LibNoDave.libnodave.putBCD16at(telHead, 10, tag.ByteAddress);
             LibNoDave.libnodave.putBCD16at(telHead, 10, tag.ReadByteSize);
 

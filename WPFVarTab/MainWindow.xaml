@@ -447,10 +447,10 @@
                 <DataGridTextColumn Binding="{Binding Symbol}"
                                     Header="Symbol"
                                     IsReadOnly="True" />
-                <!--  <DataGridTextColumn Binding="{Binding LibNoDaveValue.LibNoDaveDataType}" Header="DataType"></DataGridTextColumn>  -->
+                <!--  <DataGridTextColumn Binding="{Binding LibNoDaveValue.TagDataType}" Header="DataType"></DataGridTextColumn>  -->
                 <DataGridComboBoxColumn Header="DataType"
                                         ItemsSource="{Binding Source={StaticResource resTagDataTypes}}"
-                                        SelectedItemBinding="{Binding LibNoDaveDataType,
+                                        SelectedItemBinding="{Binding TagDataType,
                                                                       Mode=TwoWay}" />
                 <!--  <DataGridTextColumn Binding="{Binding LibNoDaveValue.DataTypeStringFormat}" Header="DisplayFormat"></DataGridTextColumn>  -->
                 <DataGridComboBoxColumn Header="DisplayFormat"

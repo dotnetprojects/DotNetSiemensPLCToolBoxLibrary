@@ -19,7 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (plcDataRow.Name == "TEMP")
                         {
-                            S7DataRow tmpRw = plcDataRow._GetExpandedChlidren(new S7DataBlockExpandOptions() {ExpandCharArrays = true})[0];
+                            S7DataRow tmpRw = ((S7DataRow)plcDataRow)._GetExpandedChlidren(new S7DataBlockExpandOptions() {ExpandCharArrays = true})[0];
                             rows = S7DataRow.GetChildrowsAsList(tmpRw);
                             break;
                         }

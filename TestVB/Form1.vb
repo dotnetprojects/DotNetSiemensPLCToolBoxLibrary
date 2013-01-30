@@ -40,9 +40,9 @@ Public Class Form1
         Dim val2 As New Communication.PLCTag("AW100")
         Dim val3 As New Communication.PLCTag("EW100")
         Dim val4 As New Communication.PLCTag("DB3.DBW4")
-        val4.LibNoDaveDataType = TagDataType.DateTime
+        val4.TagDataType = TagDataType.DateTime
         Dim val5 As New Communication.PLCTag("DB5.DBD6")
-        val5.LibNoDaveDataType = TagDataType.CharArray
+        val5.TagDataType = TagDataType.CharArray
         val5.ArraySize = 20
 
         lst.Add(val1)

@@ -1,13 +1,15 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl
 {
     public class TreeviewDepthWidthConverter : IValueConverter
     {
-        public static int GetDepth(S7DataRow item)
+        public static int GetDepth(IDataRow item)
         {
             int cnt = 0;
             while (item.Parent != null)
@@ -23,7 +25,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows.DataBlockViewControl
 
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var item = value as S7DataRow;
+                var item = value as IDataRow;
                 if (item == null)
                     return 0; // new Thickness(0);
 

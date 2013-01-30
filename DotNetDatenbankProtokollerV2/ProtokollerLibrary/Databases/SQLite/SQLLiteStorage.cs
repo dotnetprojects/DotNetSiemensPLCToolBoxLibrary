@@ -267,7 +267,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                                         DatasetConfigRow field = e1.Current;
                                         Object value = e2.Current; //values[fnr++];
 
-                                        switch (field.PLCTag.LibNoDaveDataType)
+                                        switch (field.PLCTag.TagDataType)
                                         {
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Int:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dint:

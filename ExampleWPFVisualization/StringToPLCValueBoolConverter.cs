@@ -19,7 +19,7 @@ namespace JFKCommonLibrary.WPF.Converters
             if (value == null)
                 return null;
             else
-                return new PLCTag(value.ToString()){LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool};
+                return new PLCTag(value.ToString()){TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool};
            
         }
     }

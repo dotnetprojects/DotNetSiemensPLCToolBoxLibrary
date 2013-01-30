@@ -36,7 +36,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
-    public class S7DataRow : INotifyPropertyChanged
+    public class S7DataRow : DataBlockRow
     {
         public IEnumerable<String> Dependencies
         {
@@ -53,7 +53,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     var retVal = new List<String>();
                     foreach (var s7DataRow in Children)
                     {
-                        retVal.AddRange(s7DataRow.Dependencies);
+                        retVal.AddRange(((S7DataRow) s7DataRow).Dependencies);
                     }
                     return retVal;
                 }
@@ -66,11 +66,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             for (int n = 0; n < startRow.Children.Count; n++)
             {
                 var s7DataRow = startRow.Children[n];
-                if (n == startRow.Children.Count - 1 || address < startRow.Children[n + 1].BlockAddress)
+                if (n == startRow.Children.Count - 1 || address < ((S7DataRow)startRow.Children[n + 1]).BlockAddress)
                 {
-                    if (s7DataRow.BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
-                        return s7DataRow;
-                    var tmp = GetDataRowWithAddress(s7DataRow, address);
+                    if (((S7DataRow)s7DataRow).BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
+                        return ((S7DataRow)s7DataRow);
+                    var tmp = GetDataRowWithAddress(((S7DataRow)s7DataRow), address);
                     if (tmp != null) 
                         return tmp;
                 }
@@ -134,23 +134,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return obj;
              * */            
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(String info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-        public string Name { get; set; }
-
+        
         public bool isRootBlock { get; set; }
 
         Block PlcBlock { get; set; }
 
         private S7DataRowType _datatype;
-        public S7DataRowType DataType
+        public override S7DataRowType DataType
         {
             get { return _datatype; }
             set
@@ -159,7 +149,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     return;
                 _datatype = value;
                 ClearBlockAddress();
-                NotifyPropertyChanged("DataType");
+                this.OnPropertyChanged("DataType");
             }
         }
 
@@ -168,7 +158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             get
             {
                 if (this.Parent != null)
-                    return Parent.BaseBlockNumber;
+                    return ((S7DataRow)Parent).BaseBlockNumber;
                 return PlcBlock.BlockNumber;
             }
         }
@@ -185,49 +175,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 {
 
                     case S7DataRowType.BOOL:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Bool;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Bool;
                         _plctag.BitAddress = BlockAddress.BitAddress;
                         break;
                     case S7DataRowType.WORD:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Word;                        
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Word;                        
                         break;
                     case S7DataRowType.DWORD:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Dword;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Dword;
                         break;
                     case S7DataRowType.INT:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Int;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Int;
                         break;
                     case S7DataRowType.DINT:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Dint;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Dint;
                         break;
                     case S7DataRowType.REAL:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.Float;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.Float;
                         break;
                     case S7DataRowType.DATE_AND_TIME:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.DateTime;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.DateTime;
                         break;
                     case S7DataRowType.CHAR:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.CharArray;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.CharArray;
                         _plctag.ArraySize = this.GetArrayLines();
                         break;
                     case S7DataRowType.STRING:
-                        _plctag = new PLCTag() { DatablockNumber = BaseBlockNumber, LibNoDaveDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
-                        _plctag.LibNoDaveDataType = TagDataType.String;
+                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
+                        _plctag.TagDataType = TagDataType.String;
                         _plctag.ArraySize = this.StringSize;
                         break;
                     default:
                         return null;
                 }
                 //_LibNoDaveValue.PropertyChanged += new PropertyChangedEventHandler(_LibNoDaveValue_PropertyChanged);
-                NotifyPropertyChanged("LibNoDaveValue");
+                OnPropertyChanged("LibNoDaveValue");
                 return _plctag;
             }           
         }
@@ -263,24 +253,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         void _LibNoDaveValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            NotifyPropertyChanged("LibNoDaveValue");
-        }
-
-        public int DataTypeBlockNumber { get; set; } //When the Type is SFB, FB or UDT, this contains the Number!
-       
-        public string StructuredName
-        {
-            get
-            {
-                if (Parent != null)
-                {
-                    if (string.IsNullOrEmpty(Parent.StructuredName))
-                        return Name;
-                    return Parent.StructuredName + "." + Name;
-                }
-                return "";
-            }
-            
+            OnPropertyChanged("LibNoDaveValue");
         }
 
         public List<Step7Attribute> Attributes { get; set; }
@@ -312,12 +285,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                          {
                              if (Children.Count > 0)
                              {
-                                 ByteBitAddress tmp = Children[Children.Count - 1].NextBlockAddress;
+                                 ByteBitAddress tmp = ((S7DataRow)Children[Children.Count - 1]).NextBlockAddress;
                                  if (tmp.BitAddress != 0)
                                      tmp.ByteAddress++;
                                  if (tmp.ByteAddress % 2 != 0)
                                      tmp.ByteAddress++;
-                                 size = tmp.ByteAddress - Children[0]._BlockAddress.ByteAddress;
+                                 size = tmp.ByteAddress - ((S7DataRow)Children[0])._BlockAddress.ByteAddress;
                                  if (IsArray)
                                  {
                                      size *= this.GetArrayLines();
@@ -424,7 +397,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
 
         private ByteBitAddress _BlockAddress;
-        public ByteBitAddress BlockAddress
+        public override ByteBitAddress BlockAddress
         {
             get
             {
@@ -484,7 +457,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             ByteBitAddress akAddr = new ByteBitAddress(startAddr);
             if (Parent != null && startAddr == null)
-                Parent.FillBlockAddresses(null);
+                ((S7DataRow)Parent).FillBlockAddresses(null);
             else
             {
                 //Create a function wich fills in the Block address for all Subitems...
@@ -579,7 +552,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         plcDataRow.ClearBlockAddress();
                     }
                 if (Parent != null)
-                    Parent.ClearBlockAddress();
+                    ((S7DataRow)Parent).ClearBlockAddress();
             }
         }
 
@@ -620,13 +593,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        public string Comment { get; set; }
-        public int StringSize { get; set; } //Only Relevant for String                  
         public object StartValue { get; set; }  //Only for FB and DB not for FC
         public object Value { get; set; } //Only used in DBs
         public bool ReadOnly { get; set; }
 
-        public bool IsArray { get; set; }
+        
 
         //Array-element was the first at a higher index (bools start with zero bit address)
         internal bool WasNextHigherIndex { get; set; }
@@ -635,26 +606,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         //was a elemnt in a array
         internal bool WasArray { get; set; }
 
-        public List<int> ArrayStart { get; set; }
-        public List<int> ArrayStop { get; set; }
-        public int GetArrayLines()
-        {
-            int arrcnt = 1;
-            if (ArrayStart!=null)
-                for (int n = 0; n < ArrayStart.Count; n++)
-                {
-                    arrcnt *= ArrayStop[n] - ArrayStart[n] + 1;
-                }
-            return arrcnt;
-        }
-
-        public S7DataRow Parent { get; set; }
+        public override IDataRow Parent { get; set; }
 
         public void Add(S7DataRow par)
         {
             if (ReadOnly) return;
             if (_children == null)
-                _children = new List<S7DataRow>();
+                _children = new List<IDataRow>();
             _children.Add(par);
             par.Parent = this;
 
@@ -665,7 +623,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             if (ReadOnly) return;
             if (_children == null)
-                _children = new List<S7DataRow>();
+                _children = new List<IDataRow>();
             _children.AddRange(par);
             foreach (S7DataRow plcDataRow in par)
             {
@@ -696,14 +654,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
 
-        internal List<S7DataRow> _children;
+        internal List<IDataRow> _children;
 
-        public List<S7DataRow> Children
+        public override List<IDataRow> Children
         {
             get
             {
                 if (_children == null)
-                    return new List<S7DataRow>();
+                    return new List<IDataRow>();
                 return _children;
             }
         }
@@ -743,7 +701,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         internal List<S7DataRow> _GetExpandedChlidren(S7DataBlockExpandOptions myExpOpt)
         {
             S7DataRow retVal = (S7DataRow)this.DeepCopy();
-            retVal._children = new List<S7DataRow>();
+            retVal._children = new List<IDataRow>();
            
             if (Children != null)
             {
@@ -807,40 +765,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (Parent == null)
                 return Name;
             else
-                return Parent.GetCallingString() + "." + Name;
+                return ((S7DataRow)Parent).GetCallingString() + "." + Name;
         }
 
         public override string ToString()
         {
             return ToString("");
-        }
+        }    
 
-        public string DataTypeAsString
-        {
-            get
-            {
-                string retVal = "";
-                if (IsArray)
-                {
-                    retVal += "ARRAY [";
-                    for (int n = 0; n < ArrayStart.Count; n++)
-                    {
-                        retVal += ArrayStart[n].ToString() + ".." + ArrayStop[n].ToString();
-                        if (n < ArrayStart.Count - 1)
-                            retVal += ",";
-                    }
-                    retVal += "] OF ";
-                }
-                retVal += DataType.ToString();
-
-                if (DataType == S7DataRowType.FB || DataType == S7DataRowType.UDT || DataType == S7DataRowType.SFB)
-                    retVal += DataTypeBlockNumber.ToString();
-                if (DataType == S7DataRowType.STRING)
-                    retVal += "[" + StringSize.ToString() + "]";
-
-                return retVal;
-            }
-        }
         public string ToString(string spacer)
         {
             string retVal = "";

@@ -41,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         string para = ((S7FunctionBlockRow) functionBlockRow).Parameter;
                         ByteBitAddress adr = new ByteBitAddress(para.Substring(10, para.Length - 11));
-                        var parRow = S7DataRow.GetDataRowWithAddress(myPar, adr);
+                        var parRow = S7DataRow.GetDataRowWithAddress(((S7DataRow)myPar), adr);
                         if (parRow != null)
                         {
                             byte[] tmp = ((S7FunctionBlockRow) functionBlockRow).MC7;

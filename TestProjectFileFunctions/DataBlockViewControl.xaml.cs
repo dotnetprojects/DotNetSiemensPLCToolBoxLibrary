@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace TestProjectFileFunctions
@@ -34,15 +35,22 @@ namespace TestProjectFileFunctions
                 this.expandDataBlockArrays = value;
 
                 if (_DataBlock != null)
-                    if (!value)
+                    if (DataBlock is TIADataBlock)
                     {
-                        MyTree.ItemsSource = new List<S7DataRow>() { _DataBlock.Structure };
-
+                        MyTree.ItemsSource = new List<IDataRow>() { ((IDataRow)_DataBlock.Structure) };
                     }
                     else
                     {
-                        var expRow = _DataBlock.GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
-                        MyTree.ItemsSource = new List<S7DataRow>() { expRow };
+                        if (!value)
+                        {
+                            MyTree.ItemsSource = new List<S7DataRow>() { ((S7DataRow)_DataBlock.Structure) };
+
+                        }
+                        else
+                        {
+                            var expRow = ((S7DataBlock)_DataBlock).GetArrayExpandedStructure(new S7DataBlockExpandOptions() { ExpandCharArrays = false });
+                            MyTree.ItemsSource = new List<S7DataRow>() { ((S7DataRow)expRow) };
+                        }
                     }
             }
         }
@@ -57,8 +65,17 @@ namespace TestProjectFileFunctions
             set
             {
                 _DataBlock = value;
-                if (_DataBlock != null) 
-                    MyTree.ItemsSource = new List<S7DataRow>() { _DataBlock.Structure };
+                if (_DataBlock != null)
+                {
+                    if (DataBlock is TIADataBlock)
+                    {
+                        MyTree.ItemsSource = new List<IDataRow>() { ((IDataRow)_DataBlock.Structure) };
+                    }
+                    else
+                    {
+                        MyTree.ItemsSource = new List<S7DataRow>() { ((S7DataRow)_DataBlock.Structure) };   
+                    }                    
+                }
 
             }
         } 

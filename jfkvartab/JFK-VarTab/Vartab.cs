@@ -67,7 +67,7 @@ namespace JFK_VarTab
                 }
 
                 dataGridViewVarTab.Rows[nr].Cells[0].Value = myValues[nr].LibNoDaveValue.S7FormatAddress;
-                dataGridViewVarTab.Rows[nr].Cells[1].Value = myValues[nr].LibNoDaveValue.LibNoDaveDataType;
+                dataGridViewVarTab.Rows[nr].Cells[1].Value = myValues[nr].LibNoDaveValue.TagDataType;
                 dataGridViewVarTab.Rows[nr].Cells[2].Value = myValues[nr].LibNoDaveValue.DataTypeStringFormat;
                 dataGridViewVarTab.Rows[nr].Cells[3].Value = myValues[nr].LibNoDaveValue.GetValueAsString();
                 dataGridViewVarTab.Rows[nr].Cells[4].Value = myValues[nr].LibNoDaveValue.GetControlValueAsString();
@@ -94,7 +94,7 @@ namespace JFK_VarTab
                 if (myValues[nr].LibNoDaveValue != null)
                 {
                     dataGridViewVarTab.Rows[nr].Cells[0].Value = myValues[nr].LibNoDaveValue.S7FormatAddress;
-                    dataGridViewVarTab.Rows[nr].Cells[1].Value = myValues[nr].LibNoDaveValue.LibNoDaveDataType;
+                    dataGridViewVarTab.Rows[nr].Cells[1].Value = myValues[nr].LibNoDaveValue.TagDataType;
                     dataGridViewVarTab.Rows[nr].Cells[2].Value = myValues[nr].LibNoDaveValue.DataTypeStringFormat;
                     dataGridViewVarTab.Rows[nr].Cells[3].Value = myValues[nr].LibNoDaveValue.GetValueAsString();
                     dataGridViewVarTab.Rows[nr].Cells[4].Value = myValues[nr].LibNoDaveValue.GetControlValueAsString();
@@ -247,7 +247,7 @@ namespace JFK_VarTab
 
                 reload();
                 //foreach (var libNoDaveValue in myValues)
-                //    dataGridViewVarTab.Rows.Add(new object[] {libNoDaveValue.GetS7FormatAddress(), libNoDaveValue.LibNoDaveDataType, libNoDaveValue.DataTypeStringFormat, libNoDaveValue.GetValueAsString(), libNoDaveValue.GetControlValueAsString()});
+                //    dataGridViewVarTab.Rows.Add(new object[] {libNoDaveValue.GetS7FormatAddress(), libNoDaveValue.TagDataType, libNoDaveValue.DataTypeStringFormat, libNoDaveValue.GetValueAsString(), libNoDaveValue.GetControlValueAsString()});
             }
         }
 
@@ -324,7 +324,7 @@ namespace JFK_VarTab
             {
                 var libNoDaveValue = akVATRow.LibNoDaveValue;
                 if (libNoDaveValue != null)
-                    dataGridViewVarTab.Rows.Add(new object[] { libNoDaveValue.S7FormatAddress, libNoDaveValue.LibNoDaveDataType, libNoDaveValue.DataTypeStringFormat, libNoDaveValue.GetValueAsString(), libNoDaveValue.GetControlValueAsString() });
+                    dataGridViewVarTab.Rows.Add(new object[] { libNoDaveValue.S7FormatAddress, libNoDaveValue.TagDataType, libNoDaveValue.DataTypeStringFormat, libNoDaveValue.GetValueAsString(), libNoDaveValue.GetControlValueAsString() });
                 else if (!string.IsNullOrEmpty(akVATRow.Comment))
                     dataGridViewVarTab.Rows.Add(new object[] { "", "", "", "", "", "", akVATRow.Comment });
                 else

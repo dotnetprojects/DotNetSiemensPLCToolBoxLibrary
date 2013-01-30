@@ -519,11 +519,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         newPar.Name = s7DataRow.Name;
 
                                         string par = null;
-                                        if (!multiInstance) Parameters.TryGetValue(s7DataRow.BlockAddressInDbFormat.Replace("DB", "DI"), out par);
-                                        else if (s7DataRow.DataType == S7DataRowType.ANY)
+                                        if (!multiInstance) Parameters.TryGetValue(((S7DataRow)s7DataRow).BlockAddressInDbFormat.Replace("DB", "DI"), out par);
+                                        else if (((S7DataRow)s7DataRow).DataType == S7DataRowType.ANY)
                                         {
-                                            var anySizeAddr = s7DataRow.BlockAddress.ByteAddress + multiInstanceOffset + 2;
-                                            var anyPosAddr = s7DataRow.BlockAddress.ByteAddress + multiInstanceOffset + 6;
+                                            var anySizeAddr = ((S7DataRow)s7DataRow).BlockAddress.ByteAddress + multiInstanceOffset + 2;
+                                            var anyPosAddr = ((S7DataRow)s7DataRow).BlockAddress.ByteAddress + multiInstanceOffset + 6;
 
                                             string anySize = "";
                                             string anyPos = "";
@@ -533,7 +533,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         else
                                         {
-                                            var addr = s7DataRow.BlockAddressInDbFormat;
+                                            var addr = ((S7DataRow)s7DataRow).BlockAddressInDbFormat;
                                             if (!string.IsNullOrEmpty(addr))
                                             {
                                                 var addrTp = addr.Substring(0, 3).Replace("DB", "DI");
@@ -547,13 +547,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             newPar.Value = par;
                                             var addr = par.Substring(10);
                                             addr = addr.Substring(0, addr.Length - 1);
-                                            var pRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter.Children.Where(itm => itm.Name != "TEMP"), new ByteBitAddress(addr));
-                                            if (pRow != null) newPar.Value = pRow.StructuredName.Substring(pRow.StructuredName.IndexOf('.') + 1);
+                                            var pRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter.Children.Where(itm => itm.Name != "TEMP").Cast<S7DataRow>(), new ByteBitAddress(addr));
+                                            if (pRow != null) newPar.Value = ((S7DataRow)pRow).StructuredName.Substring(((S7DataRow)pRow).StructuredName.IndexOf('.') + 1);
 
                                         }
                                         else
                                         {
-                                            switch (s7DataRow.DataType)
+                                            switch (((S7DataRow)s7DataRow).DataType)
                                             {
                                                 case S7DataRowType.BLOCK_DB:
                                                     newPar.Value = "DB" + par;

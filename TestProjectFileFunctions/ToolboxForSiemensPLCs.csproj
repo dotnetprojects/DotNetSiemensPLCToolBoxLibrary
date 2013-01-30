@@ -61,6 +61,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBlockValueSaver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataBlockValueSaver.Designer.cs">
+      <DependentUpon>DataBlockValueSaver.cs</DependentUpon>
+    </Compile>
     <Compile Include="DBStructresizer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
       <DependentUpon>TelegrammSimulator.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeviewDepthWidthConverter.cs" />
+    <EmbeddedResource Include="DataBlockValueSaver.resx">
+      <DependentUpon>DataBlockValueSaver.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DBStructresizer.resx">
       <DependentUpon>DBStructresizer.cs</DependentUpon>
     </EmbeddedResource>

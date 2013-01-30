@@ -49,7 +49,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 var tmp = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectTAG("");
                 if (tmp != null)
                 {
-                    tmp.LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
+                    tmp.TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
                     conf.TriggerReadBit = tmp;
                 }
             }
@@ -63,7 +63,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 var tmp = DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagEditor.ShowPLCTagEditor(conf.TriggerReadBit);
                 if (tmp != null)
                 {
-                    tmp.LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
+                    tmp.TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
                     conf.TriggerReadBit = tmp;
                 }
             }
@@ -164,7 +164,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 var tmp = DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagEditor.ShowPLCTagEditor(conf.TriggerQuittBit);
                 if (tmp != null)
                 {
-                    tmp.LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
+                    tmp.TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
                     conf.TriggerQuittBit = tmp;
                 }
             }
@@ -178,7 +178,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 var tmp = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectTAG("");
                 if (tmp != null)
                 {
-                    tmp.LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
+                    tmp.TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool;
                     conf.TriggerQuittBit = tmp;
                 }
             }
@@ -406,7 +406,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 {
                     foreach (DatasetConfigRow item in ProtokollerConfiguration.ActualConfigInstance.Datasets[grdDatasets.SelectedIndex].DatasetConfigRows)
                     {
-                        if (item.PLCTag.LibNoDaveDataType.ToString() == cmb_PLCType.SelectedValue.ToString())
+                        if (item.PLCTag.TagDataType.ToString() == cmb_PLCType.SelectedValue.ToString())
                             item.DatabaseFieldType = cmb_DBType.SelectedValue.ToString();
                     }
                 }

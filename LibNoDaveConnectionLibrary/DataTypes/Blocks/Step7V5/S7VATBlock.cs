@@ -42,27 +42,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     {
                         case 0x32:
                             var = "E";
-                            tmp.LibNoDaveDataSource = MemoryArea.Inputs;
+                            tmp.TagDataSource = MemoryArea.Inputs;
                             break;
                         case 0x33:
                             var = "A";
-                            tmp.LibNoDaveDataSource = MemoryArea.Outputs;
+                            tmp.TagDataSource = MemoryArea.Outputs;
                             break;
                         case 0x34:
-                            tmp.LibNoDaveDataSource = MemoryArea.Flags;
+                            tmp.TagDataSource = MemoryArea.Flags;
                             var = "M";
                             break;
                         case 0x35:
-                            tmp.LibNoDaveDataSource = MemoryArea.Datablock;
+                            tmp.TagDataSource = MemoryArea.Datablock;
                             var = "DB";
                             db = "DB";
                             break;
                         case 0x38:
-                            tmp.LibNoDaveDataSource = MemoryArea.Timer;
+                            tmp.TagDataSource = MemoryArea.Timer;
                             var = "T";
                             break;
                         case 0x39:
-                            tmp.LibNoDaveDataSource = MemoryArea.Counter;
+                            tmp.TagDataSource = MemoryArea.Counter;
                             var = "Z";
                             break;
                         default:
@@ -76,19 +76,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         case 0x31:
                             if (db != "")
                                 var += "X";
-                            tmp.LibNoDaveDataType = TagDataType.Bool;
+                            tmp.TagDataType = TagDataType.Bool;
                             bit = true;
                             break;
                         case 0x32:
                             var += "B";
-                            tmp.LibNoDaveDataType = TagDataType.Byte;
+                            tmp.TagDataType = TagDataType.Byte;
                             break;
                         case 0x33:
-                            tmp.LibNoDaveDataType = TagDataType.Word;
+                            tmp.TagDataType = TagDataType.Word;
                             var += "W";
                             break;
                         case 0x34:
-                            tmp.LibNoDaveDataType = TagDataType.Dword;
+                            tmp.TagDataType = TagDataType.Dword;
                             var += "D";
                             break;
                         default:
@@ -118,7 +118,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             addr += hexCode[akAddr] - 0x30;
                             akAddr++;
                         }
-                        tmp.DatablockNumber = Convert.ToInt32(addr);
+                        tmp.DataBlockNumber = Convert.ToInt32(addr);
                     }
                     akAddr++;
                     akAddr++;
@@ -147,7 +147,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             if (hexCode[akAddr - 1] == 0x31)
                             {
                                 //showtype = "ZAEHLER";
-                                tmp.LibNoDaveDataType = TagDataType.BCDWord;
+                                tmp.TagDataType = TagDataType.BCDWord;
                                 tmp.DataTypeStringFormat = TagDisplayDataType.Decimal;
                             }
                             else
@@ -174,12 +174,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             break;
                         case 0x33:
                             //showtype = "GLEITPUNKT";
-                            tmp.LibNoDaveDataType = TagDataType.Float;
+                            tmp.TagDataType = TagDataType.Float;
                             tmp.DataTypeStringFormat = TagDisplayDataType.Float;
                             break;
                         case 0x34:
                             //showtype = "ZEICHEN";
-                            tmp.LibNoDaveDataType = TagDataType.Byte;
+                            tmp.TagDataType = TagDataType.Byte;
                             tmp.DataTypeStringFormat = TagDisplayDataType.String;
                             break;
                         case 0x35:
@@ -188,21 +188,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             break;
                         case 0x36:
                             //showtype = "ZEIT";
-                            tmp.LibNoDaveDataType = TagDataType.Time;
+                            tmp.TagDataType = TagDataType.Time;
                             tmp.DataTypeStringFormat = TagDisplayDataType.Time;
                             break;
                         case 0x37:
                             //showtype = "DATUM";
-                            tmp.LibNoDaveDataType = TagDataType.Date;
+                            tmp.TagDataType = TagDataType.Date;
                             tmp.DataTypeStringFormat = TagDisplayDataType.S7Date;
                             break;
                         case 0x38:
-                            tmp.LibNoDaveDataType = TagDataType.S5Time;
+                            tmp.TagDataType = TagDataType.S5Time;
                             tmp.DataTypeStringFormat = TagDisplayDataType.S5Time;
                             //showtype = "SIMATIC_ZEIT";
                             break;
                         case 0x39:
-                            tmp.LibNoDaveDataType = TagDataType.TimeOfDay;
+                            tmp.TagDataType = TagDataType.TimeOfDay;
                             tmp.DataTypeStringFormat = TagDisplayDataType.S7TimeOfDay;
                             //showtype = "TAGESZEIT";
                             break;
@@ -259,7 +259,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 if (akRow.LibNoDaveValue != null)
                 {
-                    retVal += akRow.LibNoDaveValue.ToString() + "; " + akRow.LibNoDaveValue.LibNoDaveDataType.ToString() + "; " + akRow.LibNoDaveValue.DataTypeStringFormat.ToString();
+                    retVal += akRow.LibNoDaveValue.ToString() + "; " + akRow.LibNoDaveValue.TagDataType.ToString() + "; " + akRow.LibNoDaveValue.DataTypeStringFormat.ToString();
                     if (akRow.LibNoDaveValue.Controlvalue != null)
                         retVal += "; " + akRow.LibNoDaveValue.Controlvalue;
                 }

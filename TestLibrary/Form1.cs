@@ -76,9 +76,9 @@ namespace JFK_VarTab
        
         private void Form1_Load(object sender, EventArgs e)
         {            
-            //cmbSource.AddEnumToList(typeof (LibNoDaveDataSource));
+            //cmbSource.AddEnumToList(typeof (TagDataSource));
             EnumListBoxExtensions.AddEnumToList(cmbSource, typeof(MemoryArea));
-            //cmbType.AddEnumToList(typeof (LibNoDaveDataType));
+            //cmbType.AddEnumToList(typeof (TagDataType));
             EnumListBoxExtensions.AddEnumToList(cmbType, typeof(TagDataType));
             EnumListBoxExtensions.AddEnumToList(cmbDataType, typeof(TagDataType));
             cmbSource.SelectedIndex = 9;
@@ -94,12 +94,12 @@ namespace JFK_VarTab
             
             myValues.Add(new PLCTag
                                    {
-                                       LibNoDaveDataSource = (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value,
+                                       TagDataSource = (MemoryArea)((EnumListItem)cmbSource.SelectedItem).Value,
                                        ByteAddress = Convert.ToInt32(txtByte.Text) ,
                                        BitAddress = Convert.ToInt32(txtBit.Text),
-                                       DatablockNumber = Convert.ToInt32(txtDB.Text),
+                                       DataBlockNumber = Convert.ToInt32(txtDB.Text),
                                        ArraySize = Convert.ToInt32(txtLen.Text),
-                                       LibNoDaveDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value,
+                                       TagDataType = (TagDataType)((EnumListItem)cmbType.SelectedItem).Value,
                                        BackupValuesCount = int.Parse(textBox2.Text)
                                    });
 
@@ -332,7 +332,7 @@ namespace JFK_VarTab
             {
                 var tmp = (PLCTag) listBox1.SelectedItem;
                 txtByteAddress.Text = tmp.S7FormatAddress;
-                EnumListBoxExtensions.SelectEnumListItem(cmbDataType, (int) tmp.LibNoDaveDataType);
+                EnumListBoxExtensions.SelectEnumListItem(cmbDataType, (int) tmp.TagDataType);
             }
         }        
 
@@ -533,7 +533,7 @@ namespace JFK_VarTab
                 var tmp = (PLCTag)listBox1.SelectedItem;
                 var bb = (EnumListItem) cmbDataType.SelectedItem;
 
-                tmp.LibNoDaveDataType = (TagDataType) bb.Value;
+                tmp.TagDataType = (TagDataType) bb.Value;
 
                 int aa = listBox1.SelectedIndex;
                 listBox1.Items.Clear();

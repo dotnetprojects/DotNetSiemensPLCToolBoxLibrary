@@ -62,7 +62,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 int cnt = 0;
 
                 if (myDB.Structure != null && myDB.Structure.Children != null)
-                    cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
+                    cnt = ((S7DataRow)myDB.Structure.Children[myDB.Structure.Children.Count - 1]).NextBlockAddress.ByteAddress;
 
                 string varname = "STOERUNGEN_DB" + myDB.BlockNumber;
 
@@ -71,7 +71,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
                 int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure))
+                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)))
                 // myDB.GetRowsAsList())
                 {
                     if (plcDataRow.DataType == S7DataRowType.BOOL)
@@ -142,7 +142,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                     int cnt = 0;
 
                     if (myDB.Structure != null && myDB.Structure.Children != null)
-                        cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
+                        cnt = ((S7DataRow)myDB.Structure.Children[myDB.Structure.Children.Count - 1]).NextBlockAddress.ByteAddress;
 
                     string varname = "STOERUNGEN_DB" + myDB.BlockNumber;
 
@@ -167,7 +167,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
                     int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                    foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure))
+                    foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)))
                     // myDB.GetRowsAsList())
                     {
                         if (plcDataRow.DataType == S7DataRowType.BOOL)
@@ -249,10 +249,10 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
                 List<S7DataRow> myLst = null;
                 if (chkExpandArrays.IsChecked.Value)
                     myLst =
-                        S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions()));
+                        S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())));
                 // ) myDB.GetRowsAsArrayExpandedList(ne);
                 else
-                    myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+                    myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)); // myDB.GetRowsAsList();
 
                 int cnt = 0;
 

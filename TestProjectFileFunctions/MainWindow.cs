@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,10 +20,12 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using TestProjectFileFunctions;
 
+using ToolboxForSiemensPLCs;
 using ToolboxForSiemensPLCs.Properties;
 
 using Application = System.Windows.Forms.Application;
@@ -192,25 +195,12 @@ namespace JFK_VarTab
                         dtaSymbolTable.Rows.Clear();
                         foreach (var step7SymbolTableEntry in tmp2.SymbolTableEntrys)
                         {
-                            dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment });
-
+                            dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment });                            
                         }
                     }
                     dtaSymbolTable.Visible = true;
                     lblToolStripFileSystemFolder.Text = tmp2.Folder;
-                }
-                else if (tmp.myObject is TIAProjectFolder)
-                {
-                    var afld = tmp.myObject as TIAProjectFolder;
-                    if (oldNode != treeStep7Project.SelectedNode)
-                    {
-                        lstListBox.Items.Clear();
-                        lstListBox.Items.Add("ID: " + afld.ID);
-                        lstListBox.Items.Add("InstID: " + afld.InstID);
-
-                    }
-                    viewBlockList.Visible = true;
-                }
+                }               
                 else if (blkFld != null)
                 {
                     if (oldNode != treeStep7Project.SelectedNode)
@@ -224,6 +214,18 @@ namespace JFK_VarTab
                     viewBlockList.Visible = true;
 
                     if (tmp.myObject.GetType() == typeof(BlocksOfflineFolder)) lblToolStripFileSystemFolder.Text = ((BlocksOfflineFolder)blkFld).Folder;
+                }
+                else if (tmp.myObject is TIAProjectFolder)
+                {
+                    var afld = tmp.myObject as TIAProjectFolder;
+                    if (oldNode != treeStep7Project.SelectedNode)
+                    {
+                        lstListBox.Items.Clear();
+                        //lstListBox.Items.Add("ID: " + afld.ID);
+                        //lstListBox.Items.Add("InstID: " + afld.InstID);
+
+                    }
+                    viewBlockList.Visible = true;
                 }
                 else if (tmp.myObject.GetType() == typeof(SourceFolder))
                 {
@@ -262,6 +264,9 @@ namespace JFK_VarTab
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
+            if (lstListBox.SelectedItem == null) 
+                return;
+
             viewBlockList.Visible = false;
 
             if (lstListBox.SelectedItem is ProjectBlockInfo)
@@ -399,7 +404,7 @@ namespace JFK_VarTab
 
             int cnt = 0;
 
-            if (myDB.Structure != null && myDB.Structure.Children != null) cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
+            if (myDB.Structure != null && myDB.Structure.Children != null) cnt = ((S7DataRow)myDB.Structure.Children[myDB.Structure.Children.Count - 1]).NextBlockAddress.ByteAddress;
 
             string varname = txtConnectionName.Text + "_" + "STOERUNGEN_DB" + myDB.BlockNumber;
 
@@ -409,7 +414,7 @@ namespace JFK_VarTab
 
             int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-            foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
+            foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure))) // myDB.GetRowsAsList())
             {
                 if (plcDataRow.DataType == S7DataRowType.BOOL)
                 {
@@ -491,7 +496,7 @@ namespace JFK_VarTab
 
                 int cnt = 0;
 
-                if (myDB.Structure != null && myDB.Structure.Children != null) cnt = myDB.Structure.Children[myDB.Structure.Children.Count - 1].NextBlockAddress.ByteAddress;
+                if (myDB.Structure != null && myDB.Structure.Children != null) cnt = ((S7DataRow)myDB.Structure.Children[myDB.Structure.Children.Count - 1]).NextBlockAddress.ByteAddress;
 
                 string varname = "STOERUNGEN_DB" + myDB.BlockNumber;
 
@@ -512,7 +517,7 @@ namespace JFK_VarTab
 
                 int errNr = Convert.ToInt32(txtStartErrorNumber.Text);
 
-                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(myDB.Structure)) // myDB.GetRowsAsList())
+                foreach (S7DataRow plcDataRow in S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure))) // myDB.GetRowsAsList())
                 {
                     if (plcDataRow.DataType == S7DataRowType.BOOL && !string.IsNullOrEmpty(plcDataRow.Comment))
                     {
@@ -597,8 +602,8 @@ namespace JFK_VarTab
             S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
             List<S7DataRow> myLst = null;
-            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
-            else myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions()))); // ) myDB.GetRowsAsArrayExpandedList(ne);
+            else myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)); // myDB.GetRowsAsList();
 
             int cnt = 0;
 
@@ -978,8 +983,8 @@ namespace JFK_VarTab
             S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
             List<S7DataRow> myLst = null;
-            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
-            else myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions()))); // ) myDB.GetRowsAsArrayExpandedList(ne);
+            else myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)); // myDB.GetRowsAsList();
 
             string tags = "";
 
@@ -1202,8 +1207,8 @@ namespace JFK_VarTab
             S7DataBlock myDB = (S7DataBlock)((BlocksOfflineFolder)blkFld).GetBlock((S7ProjectBlockInfo)lstListBox.SelectedItem);
 
             List<S7DataRow> myLst = null;
-            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())); // ) myDB.GetRowsAsArrayExpandedList(ne);
-            else myLst = S7DataRow.GetChildrowsAsList(myDB.Structure); // myDB.GetRowsAsList();
+            if (chkExpandArrays.Checked) myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions()))); // ) myDB.GetRowsAsArrayExpandedList(ne);
+            else myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)); // myDB.GetRowsAsList();
 
             string tags = WEBfactoryTag.GetHeader();
 
@@ -1270,6 +1275,12 @@ namespace JFK_VarTab
                 swr.Write(tags);
                 swr.Close();
             }
+        }
+
+        private void dataBlockValueSaveRestoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var saver = new DataBlockValueSaver((string)lstConnections.SelectedItem);
+            saver.ShowDialog();
         }
     }
 

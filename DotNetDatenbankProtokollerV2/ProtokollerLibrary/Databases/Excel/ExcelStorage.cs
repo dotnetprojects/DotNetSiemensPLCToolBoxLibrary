@@ -118,10 +118,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                     if (akValue is DateTime)
                     {
 
-                        if (datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
+                        if (datasetConfig.DatasetConfigRows[spalte].PLCTag.TagDataType ==
                             DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Date)
                             akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"YYYY\-MM\-DD");
-                        else if (datasetConfig.DatasetConfigRows[spalte].PLCTag.LibNoDaveDataType ==
+                        else if (datasetConfig.DatasetConfigRows[spalte].PLCTag.TagDataType ==
                                  DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.TimeOfDay)
                             akWorksheet.Cells[zeile, spalte] = new Cell(akValue, @"hh:mm:ss");
                         else

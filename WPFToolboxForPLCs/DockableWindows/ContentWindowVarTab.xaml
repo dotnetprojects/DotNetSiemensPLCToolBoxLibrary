@@ -23,10 +23,10 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.LibNoDaveDataType">
+            <DataGridTemplateColumn Header="DataType" Width="Auto" IsReadOnly="True" SortMemberPath="LibNoDaveValue.TagDataType">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding LibNoDaveValue.LibNoDaveDataType}" />
+                        <TextBlock Text="{Binding LibNoDaveValue.TagDataType}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

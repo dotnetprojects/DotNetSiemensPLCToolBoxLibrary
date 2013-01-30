@@ -21,6 +21,11 @@
         TimeOfDay,
         ByteArray,
         CharArray,
-        Struct
+        Struct,
+
+        //TIA Types
+        LInt,
+        LWord,
+        LReal,
     }
 }

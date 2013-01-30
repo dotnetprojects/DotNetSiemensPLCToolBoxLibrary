@@ -78,6 +78,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        public string SymbolicAccessKey { get; set; } //For Tags used with Full Symbolic in TIA Portal
+
         private bool _itemDoesNotExist;
         [XmlIgnore]
         public virtual bool ItemDoesNotExist
@@ -101,13 +103,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             if (oldTag != null)
             {
-                this.LibNoDaveDataSource = oldTag.LibNoDaveDataSource;
-                this.LibNoDaveDataType = oldTag.LibNoDaveDataType;
+                this.TagDataSource = oldTag.TagDataSource;
+                this.TagDataType = oldTag.TagDataType;
                 this.ByteAddress = oldTag.ByteAddress;
                 this.BitAddress = oldTag.BitAddress;
                 this.ArraySize = oldTag.ArraySize;
                 this.DataTypeStringFormat = oldTag.DataTypeStringFormat;
-                this.DatablockNumber = oldTag.DatablockNumber;
+                this.DataBlockNumber = oldTag.DataBlockNumber;
                 this.Controlvalue = oldTag.Controlvalue;
                 this.DontSplitValue = oldTag.DontSplitValue;
             }
@@ -132,51 +134,51 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 var low = initalizationString.ToLower();
                 if (low.StartsWith("p#"))
                 {
-                    if (low.Contains("bool")) this.LibNoDaveDataType = TagDataType.Bool;
-                    else if (low.Contains("byte")) this.LibNoDaveDataType = TagDataType.Byte;
-                    else if (low.Contains("dword")) this.LibNoDaveDataType = TagDataType.Dword;
-                    else if (low.Contains("word")) this.LibNoDaveDataType = TagDataType.Word;
-                    else if (low.Contains("dint")) this.LibNoDaveDataType = TagDataType.Dint;
-                    else if (low.Contains("int")) this.LibNoDaveDataType = TagDataType.Int;
-                    else if (low.Contains("time_of_day")) this.LibNoDaveDataType = TagDataType.TimeOfDay;                    
-                    else if (low.Contains("date")) this.LibNoDaveDataType = TagDataType.Date;
-                    else if (low.Contains("s5time")) this.LibNoDaveDataType = TagDataType.S5Time;
-                    else if (low.Contains("real")) this.LibNoDaveDataType = TagDataType.Float; 
-                    else if (low.Contains("time")) this.LibNoDaveDataType = TagDataType.Time;                    
+                    if (low.Contains("bool")) this.TagDataType = TagDataType.Bool;
+                    else if (low.Contains("byte")) this.TagDataType = TagDataType.Byte;
+                    else if (low.Contains("dword")) this.TagDataType = TagDataType.Dword;
+                    else if (low.Contains("word")) this.TagDataType = TagDataType.Word;
+                    else if (low.Contains("dint")) this.TagDataType = TagDataType.Dint;
+                    else if (low.Contains("int")) this.TagDataType = TagDataType.Int;
+                    else if (low.Contains("time_of_day")) this.TagDataType = TagDataType.TimeOfDay;                    
+                    else if (low.Contains("date")) this.TagDataType = TagDataType.Date;
+                    else if (low.Contains("s5time")) this.TagDataType = TagDataType.S5Time;
+                    else if (low.Contains("real")) this.TagDataType = TagDataType.Float; 
+                    else if (low.Contains("time")) this.TagDataType = TagDataType.Time;                    
                 }
                 this.ChangeAddressFromString(initalizationString);
             }
         }
 
         private int _datablockNumber = 1;
-        public int DatablockNumber
+        public int DataBlockNumber
         {
             get
             {
-                if (LibNoDaveDataSource == MemoryArea.Datablock || LibNoDaveDataSource == MemoryArea.InstanceDatablock)
+                if (this.TagDataSource == MemoryArea.Datablock || this.TagDataSource == MemoryArea.InstanceDatablock)
                     return _datablockNumber > 0 ? _datablockNumber : 1;
                 else
                     return 0;
             }
             set { _datablockNumber = value;
-            NotifyPropertyChanged("DatablockNumber"); NotifyPropertyChanged("S7FormatAddress"); 
+            NotifyPropertyChanged("DataBlockNumber"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
-        private MemoryArea _LibNoDaveDataSource = MemoryArea.Datablock;
-        public MemoryArea LibNoDaveDataSource
+        private MemoryArea tagDataSource = MemoryArea.Datablock;
+        public MemoryArea TagDataSource
         {
             get
             {
-                return _LibNoDaveDataSource;
+                return this.tagDataSource;
             }
             set
             {
-                _LibNoDaveDataSource = value;
+                this.tagDataSource = value;
                 if (value == MemoryArea.Timer || value == MemoryArea.Counter)
-                    if (LibNoDaveDataType != TagDataType.Bool && LibNoDaveDataType != TagDataType.Int && LibNoDaveDataType != TagDataType.Word && LibNoDaveDataType != TagDataType.S5Time && LibNoDaveDataType != TagDataType.BCDWord)
-                        _LibNoDaveDataType = value == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
-                NotifyPropertyChanged("LibNoDaveDataSource"); NotifyPropertyChanged("S7FormatAddress"); 
+                    if (this.TagDataType != TagDataType.Bool && this.TagDataType != TagDataType.Int && this.TagDataType != TagDataType.Word && this.TagDataType != TagDataType.S5Time && this.TagDataType != TagDataType.BCDWord)
+                        this.tagDataType = value == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
+                NotifyPropertyChanged("TagDataSource"); NotifyPropertyChanged("S7FormatAddress"); 
             }
         }
 
@@ -186,7 +188,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get
             {
-                switch (LibNoDaveDataType)
+                switch (this.TagDataType)
                 {
                     case TagDataType.Bool:
                         if (_dataTypeStringFormat != TagDisplayDataType.Bool && _dataTypeStringFormat != TagDisplayDataType.Binary)
@@ -236,12 +238,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _dataTypeStringFormat = value; NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
         }
 
-        private TagDataType _LibNoDaveDataType;
-        public virtual TagDataType LibNoDaveDataType
+        private TagDataType tagDataType;
+        public virtual TagDataType TagDataType
         {
             get
             {
-                return _LibNoDaveDataType;
+                return this.tagDataType;
             }
             set
             {
@@ -253,17 +255,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _bitAddress = 0;
                 //else if (value == TagDataType.CharArray || value == TagDataType.ByteArray || value == TagDataType.String)
                 //    ArraySize = _internalGetSize();
-                if (_LibNoDaveDataSource == MemoryArea.Timer || _LibNoDaveDataSource == MemoryArea.Counter)
+                if (this.tagDataSource == MemoryArea.Timer || this.tagDataSource == MemoryArea.Counter)
                 {
                     if (value != TagDataType.Bool && value != TagDataType.Int && value != TagDataType.Word && value != TagDataType.S5Time && value != TagDataType.BCDWord)
-                        _LibNoDaveDataType = LibNoDaveDataSource == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
+                        this.tagDataType = this.TagDataSource == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                     else
-                        _LibNoDaveDataType = value;
+                        this.tagDataType = value;
 
                 }
                 else
-                    _LibNoDaveDataType = value;
-                NotifyPropertyChanged("LibNoDaveDataType");
+                    this.tagDataType = value;
+                NotifyPropertyChanged("TagDataType");
                 NotifyPropertyChanged("S7FormatAddress");
                 NotifyPropertyChanged("DataTypeStringFormat");
                 NotifyPropertyChanged("ReadByteSize");
@@ -319,7 +321,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             get
             {
-                //if (LibNoDaveDataType== TagDataType.String || LibNoDaveDataType==TagDataType.CharArray|| LibNoDaveDataType==TagDataType.ByteArray)
+                //if (TagDataType== TagDataType.String || TagDataType==TagDataType.CharArray|| TagDataType==TagDataType.ByteArray)
                 
                 return _arraySize; 
                 //return 1;
@@ -445,26 +447,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 int aksz = _internalGetSize();
                 StringBuilder ret = new StringBuilder();
 
-                if (aksz == 3 || (aksz > 4 && LibNoDaveDataSource != MemoryArea.Timer && LibNoDaveDataSource != MemoryArea.Counter))
+                if (aksz == 3 || (aksz > 4 && this.TagDataSource != MemoryArea.Timer && this.TagDataSource != MemoryArea.Counter))
                     ret.Append("P#");
 
-                if (LibNoDaveDataSource == MemoryArea.Datablock || LibNoDaveDataSource == MemoryArea.InstanceDatablock)
+                if (this.TagDataSource == MemoryArea.Datablock || this.TagDataSource == MemoryArea.InstanceDatablock)
                 {
-                    if (LibNoDaveDataSource == MemoryArea.InstanceDatablock)
+                    if (this.TagDataSource == MemoryArea.InstanceDatablock)
                         ret.Append("DI");
                     else
                         ret.Append("DB");
-                    ret.Append(DatablockNumber);
+                    ret.Append(this.DataBlockNumber);
                     ret.Append(".");
-                    if (LibNoDaveDataSource == MemoryArea.InstanceDatablock)
+                    if (this.TagDataSource == MemoryArea.InstanceDatablock)
                         ret.Append("DI");
                     else
                         ret.Append("DB");
-                    if (LibNoDaveDataType == TagDataType.Bool || aksz == 3 || aksz > 4)
+                    if (this.TagDataType == TagDataType.Bool || aksz == 3 || aksz > 4)
                         ret.Append("X");
                 }
 
-                switch (LibNoDaveDataSource)
+                switch (this.TagDataSource)
                 {
                     case MemoryArea.Inputs:
                         ret.Append("E");
@@ -489,16 +491,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                 }
 
-                if (LibNoDaveDataType == TagDataType.Bool && ArraySize < 2)
+                if (this.TagDataType == TagDataType.Bool && ArraySize < 2)
                 {
                     ret.Append(ByteAddress);
-                    if (LibNoDaveDataSource != MemoryArea.Timer && LibNoDaveDataSource != MemoryArea.Counter)
+                    if (this.TagDataSource != MemoryArea.Timer && this.TagDataSource != MemoryArea.Counter)
                     {
                         ret.Append(".");
                         ret.Append(BitAddress);
                     }
                 }
-                else if (LibNoDaveDataSource != MemoryArea.Counter && LibNoDaveDataSource != MemoryArea.Timer)
+                else if (this.TagDataSource != MemoryArea.Counter && this.TagDataSource != MemoryArea.Timer)
                 {
 
                     if (aksz == 3 || aksz > 4)
@@ -544,7 +546,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void ParseControlValueFromString(string myValue)
         {
             string myValueStrip = myValue.ToLower().Trim();
-            switch (LibNoDaveDataType)
+            switch (this.TagDataType)
             {
                 case TagDataType.S5Time:
                 case TagDataType.Time:
@@ -725,7 +727,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             if (myValue != null)
             {
-                switch (LibNoDaveDataType)
+                switch (this.TagDataType)
                 {
                     case TagDataType.String:
                     case TagDataType.CharArray:
@@ -793,7 +795,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             if (myValue != null)
             {
-                switch (LibNoDaveDataType)
+                switch (this.TagDataType)
                 {
                     case TagDataType.S5Time:
                         {
@@ -890,7 +892,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         switch (DataTypeStringFormat)
                         {
                             case TagDisplayDataType.String:
-                                switch (LibNoDaveDataType)
+                                switch (this.TagDataType)
                                 {
                                     case TagDataType.Int:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int16)myValue));
@@ -934,7 +936,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 return ad + val.ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(_internalGetSize() * 2, '0');
                             case TagDisplayDataType.Binary:
                                 byte[] bt = new byte[] { };
-                                switch (LibNoDaveDataType)
+                                switch (this.TagDataType)
                                 {
                                     case TagDataType.Int:
                                         bt = BitConverter.GetBytes((Int16)myValue);
@@ -1023,28 +1025,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         BitAddress = 0;
                         if (!myPlcAddress[0].Contains("db"))
                         {
-                            DatablockNumber = 0;
+                            this.DataBlockNumber = 0;
                             var tmp = myPlcAddress[0].Split('.')[0];
                             if (tmp.Contains("e"))
-                                this.LibNoDaveDataSource = MemoryArea.Inputs;
+                                this.TagDataSource = MemoryArea.Inputs;
                             else if (tmp.Contains("a"))
-                                this.LibNoDaveDataSource = MemoryArea.Outputs;
+                                this.TagDataSource = MemoryArea.Outputs;
                             else if (tmp.Contains("l"))
-                                this.LibNoDaveDataSource = MemoryArea.LocalData;
+                                this.TagDataSource = MemoryArea.LocalData;
                             else if (tmp.Contains("v"))
-                                this.LibNoDaveDataSource = MemoryArea.PreviousLocalData;
+                                this.TagDataSource = MemoryArea.PreviousLocalData;
                             else if (tmp.Contains("m"))
-                                this.LibNoDaveDataSource = MemoryArea.Flags;
+                                this.TagDataSource = MemoryArea.Flags;
                             else if (tmp.Contains("t"))
-                                this.LibNoDaveDataSource = MemoryArea.Timer;
+                                this.TagDataSource = MemoryArea.Timer;
                             else if (tmp.Contains("z"))
-                                this.LibNoDaveDataSource = MemoryArea.Counter;
+                                this.TagDataSource = MemoryArea.Counter;
                             ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
                         }
                         else
                         {
-                            LibNoDaveDataSource = MemoryArea.Datablock;
-                            DatablockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
+                            this.TagDataSource = MemoryArea.Datablock;
+                            this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
                             ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
                         ArraySize = Convert.ToInt32(myPlcAddress[2]);
@@ -1072,12 +1074,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         ArraySize = ArraySize * tsize;
 
-                        //if (this.LibNoDaveDataType != TagDataType.ByteArray && this.LibNoDaveDataType != TagDataType.CharArray && this.LibNoDaveDataType != TagDataType.String && this.LibNoDaveDataType != TagDataType.DateTime)
-                        //    this.LibNoDaveDataType = TagDataType.ByteArray;
-                        //if (ArraySize != 8 && this.LibNoDaveDataType == TagDataType.DateTime)
-                        //    this.LibNoDaveDataType = TagDataType.ByteArray;
+                        //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
+                        //    this.TagDataType = TagDataType.ByteArray;
+                        //if (ArraySize != 8 && this.TagDataType == TagDataType.DateTime)
+                        //    this.TagDataType = TagDataType.ByteArray;
 
-                        if (this.LibNoDaveDataType == TagDataType.String)
+                        if (this.TagDataType == TagDataType.String)
                             ArraySize -= 2;
                     }
                     else
@@ -1085,36 +1087,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
                         if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
                         {
-                            this.LibNoDaveDataSource = MemoryArea.Datablock;
-                            this.DatablockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
+                            this.TagDataSource = MemoryArea.Datablock;
+                            this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
                             if (myPlcAddress[1].Contains("DBW"))
                             {
-                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
                                     ArraySize = 2;
                                 else 
                                     ArraySize = 1;
                                 if (this._internalGetSize() != 2)
-                                    this.LibNoDaveDataType = TagDataType.Word;
+                                    this.TagDataType = TagDataType.Word;
                             }
                             else if (myPlcAddress[1].Contains("DBB"))
                             {
                                 ArraySize = 1;
-                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.LibNoDaveDataType = TagDataType.Byte;
+                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.TagDataType = TagDataType.Byte;
                             }
                             else if (myPlcAddress[1].Contains("DBD"))
                             {
-                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
                                     ArraySize = 4;
                                 else 
                                     ArraySize = 1;
                                 if (this._internalGetSize() != 4)
-                                    this.LibNoDaveDataType = TagDataType.Dword;
+                                    this.TagDataType = TagDataType.Dword;
                             }
                             else if (myPlcAddress[1].Contains("DBX"))
                             {
                                 ArraySize = 1;
-                                this.LibNoDaveDataType = TagDataType.Bool;
+                                this.TagDataType = TagDataType.Bool;
                                 if (myPlcAddress.Length > 2)
                                     this.BitAddress = Convert.ToInt32(myPlcAddress[2]);
                                 else
@@ -1125,50 +1127,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else
                         {
                             if (myPlcAddress[0].Contains("E"))
-                                this.LibNoDaveDataSource = MemoryArea.Inputs;
+                                this.TagDataSource = MemoryArea.Inputs;
                             else if (myPlcAddress[0].Contains("A"))
-                                this.LibNoDaveDataSource = MemoryArea.Outputs;
+                                this.TagDataSource = MemoryArea.Outputs;
                             else if (myPlcAddress[0].Contains("M"))
-                                this.LibNoDaveDataSource = MemoryArea.Flags;
+                                this.TagDataSource = MemoryArea.Flags;
                             else if (myPlcAddress[0].Contains("T"))
-                                this.LibNoDaveDataSource = MemoryArea.Timer;
+                                this.TagDataSource = MemoryArea.Timer;
                             else if (myPlcAddress[0].Contains("Z"))
-                                this.LibNoDaveDataSource = MemoryArea.Counter;
+                                this.TagDataSource = MemoryArea.Counter;
 
                             if (myPlcAddress[0].Contains("W"))
                             {
-                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
                                     ArraySize = 2;
                                 else 
                                     ArraySize = 1;
                                 if (_internalGetSize() != 2)
-                                    this.LibNoDaveDataType = TagDataType.Int;
+                                    this.TagDataType = TagDataType.Int;
                             }
                             else if (myPlcAddress[0].Contains("DBB"))
                             {
                                 ArraySize = 1;
-                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.LibNoDaveDataType = TagDataType.Byte;
+                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.TagDataType = TagDataType.Byte;
                             }
                             else if (myPlcAddress[0].Contains("D"))
                             {
-                                if (LibNoDaveDataType == TagDataType.String || LibNoDaveDataType == TagDataType.CharArray || LibNoDaveDataType == TagDataType.ByteArray)
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
                                     ArraySize = 4;
                                 else
                                     ArraySize = 1;
                                 if (_internalGetSize() != 4)
-                                    this.LibNoDaveDataType = TagDataType.Dint;
+                                    this.TagDataType = TagDataType.Dint;
                             }
                             else if (myPlcAddress[0].Contains("B"))
                             {
                                 ArraySize = 1;
-                                if (this.LibNoDaveDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.LibNoDaveDataType = TagDataType.Byte;
+                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                    this.TagDataType = TagDataType.Byte;
                             }
                             else if (!myPlcAddress[0].Contains("T") && !myPlcAddress[0].Contains("Z"))
                             {
                                 ArraySize = 1;
-                                this.LibNoDaveDataType = TagDataType.Bool;
+                                this.TagDataType = TagDataType.Bool;
                                 if (myPlcAddress.Length >= 2)
                                     this.BitAddress = Convert.ToInt32(myPlcAddress[1]);
                                 else
@@ -1177,23 +1179,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             else if (myPlcAddress[0].Contains("T"))
                             {
                                 ArraySize = 1;
-                                this.LibNoDaveDataType = TagDataType.S5Time;
+                                this.TagDataType = TagDataType.S5Time;
                             }
                             else if (myPlcAddress[0].Contains("Z"))
                             {
                                 ArraySize = 1;
-                                this.LibNoDaveDataType = TagDataType.Int;
+                                this.TagDataType = TagDataType.Int;
                             }
                             else
                             {
                                 ArraySize = 1;
                                 if (_internalGetSize() != 1)
-                                    this.LibNoDaveDataType = TagDataType.Bool;
+                                    this.TagDataType = TagDataType.Bool;
                             }
 
                             this.ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].ToLower(), "[a-z]", "").Trim());
 
-                            if (this.LibNoDaveDataType == TagDataType.String)
+                            if (this.TagDataType == TagDataType.String)
                                 ArraySize -= 2;
                         }
                     }
@@ -1204,7 +1206,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (plcAddress!=null)
                     if (plcAddress.ToLower().Contains("p#"))
                     {
-                        this.LibNoDaveDataType = TagDataType.ByteArray;
+                        this.TagDataType = TagDataType.ByteArray;
                         this.ArraySize = 10;
                     }
             }
@@ -1281,7 +1283,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         tp = TagDataType.Float;
                         break;
                 }
-                this.LibNoDaveDataType = tp;
+                this.TagDataType = tp;
             }
         }
 
@@ -1353,7 +1355,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        public static PLCTag GetLibNoDaveValueFromString(String plcAddress)
+        public static PLCTag GetPLCTagFromString(String plcAddress)
         {
             PLCTag retValue = new PLCTag();
             retValue.ChangeAddressFromString(plcAddress);
@@ -1364,7 +1366,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            if (this.ArraySize == 1 || this.LibNoDaveDataType == TagDataType.String || this.LibNoDaveDataType == TagDataType.ByteArray)
+            if (this.ArraySize == 1 || this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.ByteArray)
             {
                 _putControlValueIntoBuffer(buff, startpos, Controlvalue);
             }
@@ -1384,7 +1386,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos, object ctlValue)
         {
             if (ctlValue != null)
-                switch (LibNoDaveDataType)
+                switch (this.TagDataType)
                 {
                     case TagDataType.Word:
                         libnodave.putU16at(buff, startpos, Convert.ToUInt16(ctlValue));
@@ -1479,7 +1481,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _readValueFromBuffer(byte[] buff, int startpos)
         {
-            switch (LibNoDaveDataType)
+            switch (this.TagDataType)
             {
                 case TagDataType.String:                    
                     {
@@ -1530,7 +1532,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         if (ArraySize<2)
                         {
-                            switch (LibNoDaveDataType)
+                            switch (this.TagDataType)
                             {
                                 case TagDataType.Bool:
                                     _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
@@ -1584,7 +1586,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         else
                         {
-                            switch (LibNoDaveDataType)
+                            switch (this.TagDataType)
                             {
                                 case TagDataType.Bool:
                                     {
@@ -1753,7 +1755,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual int _internalGetSize()
         {            
-            switch (LibNoDaveDataType)
+            switch (this.TagDataType)
             {
                 case TagDataType.String:
                     return ArraySize + 2;                   
@@ -1797,7 +1799,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual int _internalGetBaseTypeSize()
         {
-            switch (LibNoDaveDataType)
+            switch (this.TagDataType)
             {
                 case TagDataType.Byte:
                 case TagDataType.SByte:

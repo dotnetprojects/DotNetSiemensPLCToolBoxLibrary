@@ -425,7 +425,7 @@ namespace Kopplungstester
 
             if (myDB != null)
             {
-                var myLst = S7DataRow.GetChildrowsAsList(myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions() {ExpandCharArrays = false}));
+                var myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions() {ExpandCharArrays = false})));
 
                 dtaSendTabelle.Rows.Clear();
                 dtaEmpfangstelegrammAufgeschluesselt.Rows.Clear();

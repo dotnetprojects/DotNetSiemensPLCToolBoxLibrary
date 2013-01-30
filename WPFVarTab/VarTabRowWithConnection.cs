@@ -21,7 +21,7 @@ namespace WPFVarTab
             {
                 if (LibNoDaveValue != null)
                 {
-                    if (LibNoDaveValue.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
+                    if (LibNoDaveValue.TagDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
                     {
                         var bind = new Binding();
                         bind.Path = new PropertyPath("LibNoDaveValue.Value");
@@ -97,7 +97,7 @@ namespace WPFVarTab
             rw.LibNoDaveValue = new PLCTag(LibNoDaveValue);
             rw.ConnectionName = ConnectionName;
             
-            if (rw.LibNoDaveValue.LibNoDaveDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
+            if (rw.LibNoDaveValue.TagDataType == DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Bool)
             {
                 if (rw.LibNoDaveValue.BitAddress < 7)
                     rw.LibNoDaveValue.BitAddress++;

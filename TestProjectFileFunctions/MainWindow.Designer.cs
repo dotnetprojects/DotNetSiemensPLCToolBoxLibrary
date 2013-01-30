@@ -50,6 +50,7 @@
             this.cmdUndeleteBlock = new System.Windows.Forms.Button();
             this.txtUndeleteName = new System.Windows.Forms.TextBox();
             this.grpVisu = new System.Windows.Forms.GroupBox();
+            this.cmdWebfactoryTags = new System.Windows.Forms.Button();
             this.chkCombineStructComments = new System.Windows.Forms.CheckBox();
             this.cmdCreateWinCCFlexibleTags = new System.Windows.Forms.Button();
             this.chkExpandArrays = new System.Windows.Forms.CheckBox();
@@ -115,7 +116,7 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cmdWebfactoryTags = new System.Windows.Forms.Button();
+            this.dataBlockValueSaveRestoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -346,6 +347,16 @@
             this.grpVisu.TabIndex = 16;
             this.grpVisu.TabStop = false;
             this.grpVisu.Text = "Visualization Toolbox";
+            // 
+            // cmdWebfactoryTags
+            // 
+            this.cmdWebfactoryTags.Location = new System.Drawing.Point(20, 430);
+            this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
+            this.cmdWebfactoryTags.Size = new System.Drawing.Size(212, 27);
+            this.cmdWebfactoryTags.TabIndex = 7;
+            this.cmdWebfactoryTags.Text = "Create Webfactory Tags";
+            this.cmdWebfactoryTags.UseVisualStyleBackColor = true;
+            this.cmdWebfactoryTags.Click += new System.EventHandler(this.cmdCreateWEBfactoryTags_Click);
             // 
             // chkCombineStructComments
             // 
@@ -629,6 +640,7 @@
             this.downloadOnlineBlockToolStripMenuItem,
             this.toolStripSeparator3,
             this.dBStructResizerToolStripMenuItem,
+            this.dataBlockValueSaveRestoreToolStripMenuItem,
             this.toolStripSeparator4,
             this.searchPasswordToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -638,7 +650,7 @@
             // configConnectionToolStripMenuItem
             // 
             this.configConnectionToolStripMenuItem.Name = "configConnectionToolStripMenuItem";
-            this.configConnectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.configConnectionToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.configConnectionToolStripMenuItem.Text = "Config Connection";
             this.configConnectionToolStripMenuItem.Click += new System.EventHandler(this.configConnectionToolStripMenuItem_Click);
             // 
@@ -652,55 +664,55 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
             // 
             // watchToolStripMenuItem
             // 
             this.watchToolStripMenuItem.Name = "watchToolStripMenuItem";
-            this.watchToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.watchToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.watchToolStripMenuItem.Text = "Watch Datablock";
             this.watchToolStripMenuItem.Click += new System.EventHandler(this.watchToolStripMenuItem_Click);
             // 
             // unwatchToolStripMenuItem
             // 
             this.unwatchToolStripMenuItem.Name = "unwatchToolStripMenuItem";
-            this.unwatchToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.unwatchToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.unwatchToolStripMenuItem.Text = "Unwatch";
             this.unwatchToolStripMenuItem.Click += new System.EventHandler(this.unwatchToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(230, 6);
             // 
             // downloadOnlineBlockToolStripMenuItem
             // 
             this.downloadOnlineBlockToolStripMenuItem.Name = "downloadOnlineBlockToolStripMenuItem";
-            this.downloadOnlineBlockToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.downloadOnlineBlockToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.downloadOnlineBlockToolStripMenuItem.Text = "Download Online Block";
             this.downloadOnlineBlockToolStripMenuItem.Click += new System.EventHandler(this.downloadOnlineBlockToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(230, 6);
             // 
             // dBStructResizerToolStripMenuItem
             // 
             this.dBStructResizerToolStripMenuItem.Name = "dBStructResizerToolStripMenuItem";
-            this.dBStructResizerToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.dBStructResizerToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.dBStructResizerToolStripMenuItem.Text = "UDT-Array-Resizer";
             this.dBStructResizerToolStripMenuItem.Click += new System.EventHandler(this.dBStructResizerToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(230, 6);
             // 
             // searchPasswordToolStripMenuItem
             // 
             this.searchPasswordToolStripMenuItem.Name = "searchPasswordToolStripMenuItem";
-            this.searchPasswordToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.searchPasswordToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.searchPasswordToolStripMenuItem.Text = "Search Password";
             this.searchPasswordToolStripMenuItem.Click += new System.EventHandler(this.searchPasswordToolStripMenuItem_Click);
             // 
@@ -948,15 +960,12 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // cmdWebfactoryTags
+            // dataBlockValueSaveRestoreToolStripMenuItem
             // 
-            this.cmdWebfactoryTags.Location = new System.Drawing.Point(20, 430);
-            this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
-            this.cmdWebfactoryTags.Size = new System.Drawing.Size(212, 27);
-            this.cmdWebfactoryTags.TabIndex = 7;
-            this.cmdWebfactoryTags.Text = "Create Webfactory Tags";
-            this.cmdWebfactoryTags.UseVisualStyleBackColor = true;
-            this.cmdWebfactoryTags.Click += new System.EventHandler(this.cmdCreateWEBfactoryTags_Click);
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Name = "dataBlockValueSaveRestoreToolStripMenuItem";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Text = "Data Block Value Save/Restore";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Click += new System.EventHandler(this.dataBlockValueSaveRestoreToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1088,6 +1097,7 @@
         private System.Windows.Forms.ToolStripMenuItem dependenciesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem callHirachyToolStripMenuItem;
         private System.Windows.Forms.Button cmdWebfactoryTags;
+        private System.Windows.Forms.ToolStripMenuItem dataBlockValueSaveRestoreToolStripMenuItem;
 
     }
 }

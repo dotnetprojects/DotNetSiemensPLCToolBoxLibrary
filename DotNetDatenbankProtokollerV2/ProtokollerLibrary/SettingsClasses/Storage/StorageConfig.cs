@@ -54,7 +54,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 
         public virtual string GetDefaultDatabaseFieldTypeForLibNoDaveTag(PLCTag tag)
         {
-            switch (tag.LibNoDaveDataType.ToString().ToLower().Trim())
+            switch (tag.TagDataType.ToString().ToLower().Trim())
             {
                 case "float":
                     return "float";

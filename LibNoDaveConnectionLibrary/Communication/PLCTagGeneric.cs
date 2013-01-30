@@ -35,23 +35,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public PLCTag()
         {
             if (typeof(T) == typeof(Int16))
-                LibNoDaveDataType = TagDataType.Int;
+                this.TagDataType = TagDataType.Int;
             else if (typeof(T) == typeof(Int32))
-                LibNoDaveDataType = TagDataType.Dint;
+                this.TagDataType = TagDataType.Dint;
             else if (typeof(T) == typeof(UInt16))
-                LibNoDaveDataType = TagDataType.Word;
+                this.TagDataType = TagDataType.Word;
             else if (typeof(T) == typeof(UInt32))
-                LibNoDaveDataType = TagDataType.Dword;
+                this.TagDataType = TagDataType.Dword;
             else if (typeof(T) == typeof(byte))
-                LibNoDaveDataType = TagDataType.Byte;
+                this.TagDataType = TagDataType.Byte;
             else if (typeof(T) == typeof(sbyte))
-                LibNoDaveDataType = TagDataType.SByte;
+                this.TagDataType = TagDataType.SByte;
             else if (typeof(T) == typeof(string))
-                LibNoDaveDataType = TagDataType.CharArray;
+                this.TagDataType = TagDataType.CharArray;
             else if (typeof(T) == typeof(byte[]))
-                LibNoDaveDataType = TagDataType.ByteArray;
+                this.TagDataType = TagDataType.ByteArray;
             else
-                this.LibNoDaveDataType = TagDataType.Struct;
+                this.TagDataType = TagDataType.Struct;
         }
 
         public T GenericValue

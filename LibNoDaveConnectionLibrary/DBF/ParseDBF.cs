@@ -251,7 +251,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
 
             //TEST MDXFile
-            MDXFile mdxFileObject = new MDXFile(dbfFile, _ziphelper, DirSeperator, true);
+            //MDXFile mdxFileObject = new MDXFile(dbfFile, _ziphelper, DirSeperator, true);
 
         }
 

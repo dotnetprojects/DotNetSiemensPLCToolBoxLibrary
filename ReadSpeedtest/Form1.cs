@@ -114,7 +114,7 @@ namespace ReadSpeedtest
 
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                int res = myConn._dc.readManyBytes(DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave.libnodave.daveDB, myTag.DatablockNumber, myTag.ByteAddress, myTag.ArraySize, ref tmp);
+                int res = myConn._dc.readManyBytes(DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave.libnodave.daveDB, myTag.DataBlockNumber, myTag.ByteAddress, myTag.ArraySize, ref tmp);
                 sw.Stop();
                 if (res != 0)
                 {

@@ -26,6 +26,8 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -51,7 +53,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             int akIdx = index;
             while (n < parameters.Children.Count)
             {
-                S7DataRow tmp = parameters.Children[n];
+                S7DataRow tmp = ((S7DataRow)parameters.Children[n]);
                 if (akIdx >= tmp.Children.Count)
                 {
                     akIdx -= tmp.Children.Count;
@@ -59,7 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 else
                 {
-                    return tmp.Children[akIdx];
+                    return ((S7DataRow)tmp.Children[akIdx]);
                 }
             }
             return null;
@@ -170,7 +172,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             break;
                         case "END_STRUCT;":
                         case "END_STRUCT ;":
-                            akDataRow = akDataRow.Parent;
+                            akDataRow = ((S7DataRow)akDataRow.Parent);
                             break;
                         case "STRUCT":
                         case "END_VAR":
@@ -346,7 +348,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
                                 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children);                                    
+                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children.Cast<S7DataRow>());                                    
                             }
                             else if (tmpType.Contains("UDT"))
                             {
@@ -364,7 +366,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
-                                    addRW.AddRange(tmpBlk.Structure.DeepCopy().Children);
+                                    addRW.AddRange(((S7DataRow)tmpBlk.Structure).DeepCopy().Children.Cast<S7DataRow>());
 
                             }
                             else if (tmpType.Contains("BLOCK_FB"))
@@ -392,7 +394,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children);
+                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children.Cast<S7DataRow>());
                             }
                             else if (tmpType.Contains("STRING"))
                             {
@@ -500,7 +502,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 bitPos = 0;
                 foreach (var child in row.Children)
                 {
-                    FillActualValuesInDataBlock(child, actualValues, ref valuePos, ref bitPos);
+                    FillActualValuesInDataBlock(((S7DataRow)child), actualValues, ref valuePos, ref bitPos);
                 }
             }
         }
@@ -777,9 +779,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             arrStop.Add(BitConverter.ToInt16(interfaceBytes, pos + 5 + (i * 4)));                         
                         }
                         GetVarTypeEN(currPar, "", interfaceBytes[pos + 3 + (dim * 4)], true, true, VarName, interfaceBytes, actualvalueBytes, ref pos, ref ParaList, ref StackNr, VarNamePrefix, ref VarCounter, ref Valpos, myBlk);
-                        currPar.Children[currPar.Children.Count - 1].ArrayStart = arrStart;
-                        currPar.Children[currPar.Children.Count - 1].ArrayStop = arrStop;
-                        currPar.Children[currPar.Children.Count - 1].IsArray = true;
+                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStart = arrStart;
+                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStop = arrStop;
+                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).IsArray = true;
                         pos += 3 + (dim * 4);
 
                     } break;

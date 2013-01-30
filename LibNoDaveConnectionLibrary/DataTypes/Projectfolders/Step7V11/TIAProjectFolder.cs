@@ -1,4 +1,6 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+﻿using System.Xml;
+
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
@@ -7,12 +9,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     /// </summary>
     public class TIAProjectFolder : ProjectFolder
     {
-        public string ID { get; set; }
-        public string InstID { get; set; }
+        internal string ID { get; private set; }
+        internal string InstID { get; private set; }
 
-        public TIAProjectFolder(Step7ProjectV11 Project)
+        internal XmlNode Node { get; private set; }
+
+        internal XmlNodeList SubNodes { get; set; }
+        
+        protected Step7ProjectV11 TiaProject;
+
+        public override string Name
+        {
+            get
+            {
+                var nameNode = Node.SelectSingleNode("attribSet[@id='" + ((Step7ProjectV11)Project).CoreAttributesId + "']/attrib[@name='Name']");
+                if (nameNode!=null)
+                    return nameNode.InnerText;
+                return "";
+            }
+            set
+            {
+                //base.Name = value;
+            }
+        }
+        public TIAProjectFolder(Step7ProjectV11 Project, XmlNode Node)
         {
             this.Project = Project;
+            this.TiaProject = Project;
+            this.Node = Node;
         }
 
     }

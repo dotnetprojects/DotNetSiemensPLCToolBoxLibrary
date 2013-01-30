@@ -240,10 +240,10 @@
                 <DataGridTemplateColumn Width="Auto"
                                         Header="PLC-Value Type"
                                         IsReadOnly="False"
-                                        SortMemberPath="PLCTag.LibNoDaveDataType">
+                                        SortMemberPath="PLCTag.TagDataType">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding PLCTag.LibNoDaveDataType}" />
+                            <TextBlock Text="{Binding PLCTag.TagDataType}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -253,7 +253,7 @@
                                       VerticalAlignment="Top"
                                       ItemsSource="{Binding Source={StaticResource tagdatatype}}"
                                       Padding="0"
-                                      SelectedItem="{Binding PLCTag.LibNoDaveDataType}">
+                                      SelectedItem="{Binding PLCTag.TagDataType}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Padding="3,0,0,0" Text="{Binding}" />
@@ -911,7 +911,7 @@
                 <DataGridTemplateColumn Width="Auto"
                                         Header="PLC-Value Type"
                                         IsReadOnly="False"
-                                        SortMemberPath="PLCTag.LibNoDaveDataType">
+                                        SortMemberPath="PLCTag.TagDataType">
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <ComboBox Margin="0"
@@ -919,7 +919,7 @@
                                       VerticalAlignment="Top"
                                       ItemsSource="{Binding Source={StaticResource tagdatatype}}"
                                       Padding="0"
-                                      SelectedItem="{Binding PLCTag.LibNoDaveDataType}">
+                                      SelectedItem="{Binding PLCTag.TagDataType}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Padding="3,0,0,0" Text="{Binding}" />
@@ -930,14 +930,14 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding PLCTag.LibNoDaveDataType}" />
+                            <TextBlock Text="{Binding PLCTag.TagDataType}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="Auto"
                                         Header="PLC-Read Byte Size"
                                         IsReadOnly="True"
-                                        SortMemberPath="PLCTag.LibNoDaveDataType">
+                                        SortMemberPath="PLCTag.TagDataType">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding PLCTag.ReadByteSize}" />
@@ -1158,7 +1158,7 @@
         <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
                   ItemsSource="{Binding Source={StaticResource tagdatatype}}"
                     Padding="0"
-                    SelectedItem="{Binding PLCTag.LibNoDaveDataType}"
+                    SelectedItem="{Binding PLCTag.TagDataType}"
                     Margin="671,221,0,0" Name="cmb_PLCType" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="65">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

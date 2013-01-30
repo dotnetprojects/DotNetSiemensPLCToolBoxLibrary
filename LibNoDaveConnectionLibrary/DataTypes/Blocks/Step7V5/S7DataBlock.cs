@@ -40,7 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 var retVal = new List<String>();
 
-                retVal.AddRange(Structure.Dependencies);
+                retVal.AddRange(((S7DataRow)Structure).Dependencies);
 
                 return retVal.Distinct().OrderBy(itm => itm);
             }
@@ -49,7 +49,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public int FBNumber { get; set;}  //If it is a Instance DB
         public bool IsInstanceDB { get; set; }
 
-        public S7DataRow Structure
+        public IDataRow Structure
         {
             get
             {
@@ -59,8 +59,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
             set
             {
-                StructureFromString = Structure;
-                StructureFromMC7 = Structure;
+                StructureFromString = (S7DataRow)Structure;
+                StructureFromMC7 = (S7DataRow)Structure;
             }
         }
 
@@ -71,25 +71,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// With this function you get the Structure with expanden Arrays!
         /// </summary>
         /// <returns></returns>
-        public S7DataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
+        public IDataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
         {
-            return Structure._GetExpandedChlidren(myExpOpt)[0];
+            return ((S7DataRow)Structure)._GetExpandedChlidren(myExpOpt)[0];
         }
 
         public S7DataRow GetDataRowWithAddress(ByteBitAddress address)
         {
             var allRw = this.GetArrayExpandedStructure();
-            return S7DataRow.GetDataRowWithAddress(allRw, address);
+            return S7DataRow.GetDataRowWithAddress((S7DataRow)allRw, address);
         }
 
         private S7DataRow expStruct = null;
 
-        public S7DataRow GetArrayExpandedStructure()
+        public IDataRow GetArrayExpandedStructure()
         {
             //Todo: Vergleich der Expand Options, und beim änderen eines inneren wertes des blocks, diesen löschen (erst bei schreibsup wichtig!)
             if (expStruct != null) 
                 return expStruct;
-            return expStruct = GetArrayExpandedStructure(new S7DataBlockExpandOptions());
+            return expStruct = (S7DataRow)GetArrayExpandedStructure(new S7DataBlockExpandOptions());
         }
 
         public override string ToString()

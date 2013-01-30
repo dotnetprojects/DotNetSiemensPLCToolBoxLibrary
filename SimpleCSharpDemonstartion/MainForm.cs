@@ -35,7 +35,7 @@ namespace SimpleCSharpDemonstration
                                              {
                                                  ByteAddress = 0,
                                                  BitAddress = 0,
-                                                 LibNoDaveDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String,
+                                                 TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.String,
                                                  ArraySize = 10
                                              };
 
@@ -88,7 +88,7 @@ namespace SimpleCSharpDemonstration
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
             //PLCTagGeneric
-            PLCTag<TestStruct> tst = new PLCTag<TestStruct>() {DatablockNumber = 97, ByteAddress = 0};
+            PLCTag<TestStruct> tst = new PLCTag<TestStruct>() {DataBlockNumber = 97, ByteAddress = 0};
             myConn.ReadValue(tst);
             TestStruct read = tst.GenericValue;
 

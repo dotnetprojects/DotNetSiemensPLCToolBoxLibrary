@@ -12,11 +12,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     {
         public DataTypes.PLCBlockType BlockType { get; set; }
         public DataTypes.PLCLanguage BlockLanguage { get; set; }
-        public int BlockNumber { get; set; }
+        public virtual int BlockNumber { get; set; }
         public MnemonicLanguage MnemonicLanguage { get; set; }
         //public DateTime LastModified { get; set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public ProjectFolder ParentFolder { get; set; }
 

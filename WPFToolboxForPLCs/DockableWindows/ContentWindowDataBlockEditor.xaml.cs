@@ -31,12 +31,12 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             if (myBlock is S7DataBlock)
             {
                 S7DataBlock blk = (S7DataBlock) myBlock;
-                dtaViewControl.DataBlockRows = blk.Structure;
+                dtaViewControl.DataBlockRows = ((S7DataRow)blk.Structure);
             }
             else if (myBlock is S5DataBlock)
             {
                 S5DataBlock blk = (S5DataBlock)myBlock;
-                dtaViewControl.DataBlockRows = blk.Structure;
+                dtaViewControl.DataBlockRows = ((S7DataRow)blk.Structure);
             }
         }
 

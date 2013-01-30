@@ -55,8 +55,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 nd.Nodes.RemoveAt(0);
                 S7DataBlock blk = (S7DataBlock) nd.PLCBlockInfo.GetBlock();
-                nd.s7datarow=blk.Structure;
-                AddDBValueSubNodes(nd, blk.Structure);
+                nd.s7datarow= (S7DataRow) blk.Structure;
+                AddDBValueSubNodes(nd, (S7DataRow)blk.Structure);
             }
         }
 
