@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -50,6 +51,51 @@ namespace SimpleTcpSocketWPF
             cbEncoding.Items.Add("UTF32");
 
             cbEncoding.SelectedIndex = 0;
+
+            DataObject.AddPastingHandler(txtTelegrammHex, OnHexPaste);
+        }
+
+        private void OnHexPaste(object sender, DataObjectPastingEventArgs e)
+        {
+            e.CancelCommand();
+
+            var isText = e.SourceDataObject.GetDataPresent(System.Windows.DataFormats.Text, true);
+            if (!isText) return;
+
+            var text = e.SourceDataObject.GetData(DataFormats.Text) as string;
+
+            string ret = "";
+            string oldT = "";
+            foreach (char c in text.Replace("\r","").Replace("\n",""))
+            {
+                if (c != ' ')
+                {
+                    oldT += c;
+                    if (oldT.Length == 2)
+                    {
+                        ret += oldT + " ";
+                        oldT = "";
+                    }
+                }
+                else
+                {
+                    if (oldT != "")
+                    {
+                        ret += oldT.PadLeft(2, '0') + " ";
+                        oldT = "";
+                    }
+                }            
+            }
+
+            if (oldT != "")
+            {
+                ret += oldT.PadLeft(2, '0') + " ";
+                oldT = "";
+            }
+
+            txtTelegrammHex.Text = ret;
+
+            e.Handled = true;
         }
 
         private Encoding getEncoding()
@@ -164,12 +210,18 @@ namespace SimpleTcpSocketWPF
                     StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
                     if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
                     {
-                        myFile.Write("Rec  : " + add + tel + Environment.NewLine);
+                        var akTel = tel;
+                        if (Properties.Settings.Default.EscapeSpecialChars)
+                            akTel = escape(akTel);
+                        myFile.Write("Rec  : " + add + akTel + Environment.NewLine);
                         myFile.Write("Bytes: " + add + wrt + Environment.NewLine);
                     }
                     else
                     {
-                        myFile.Write("Rec  : " + add + wrt + Environment.NewLine);
+                        var akTel = wrt;
+                        if (Properties.Settings.Default.EscapeSpecialChars)
+                            akTel = escape(akTel);
+                        myFile.Write("Rec  : " + add + akTel + Environment.NewLine);
                     }                    
                     myFile.Close();
                 }
@@ -181,12 +233,18 @@ namespace SimpleTcpSocketWPF
 
             if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
             {
-                recieveText = add + wrt + Environment.NewLine + Environment.NewLine + recieveText;
-                recieveText = add + tel + Environment.NewLine + recieveText;
+                var akTel = tel;
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                    akTel = escape(akTel);
+                recieveText = add + akTel + Environment.NewLine + Environment.NewLine + recieveText;
+                recieveText = add + wrt + Environment.NewLine + recieveText;
             }
             else
             {
-                recieveText = add + wrt + Environment.NewLine + recieveText;
+                var akTel = wrt;
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                    akTel = escape(akTel);
+                recieveText = add + akTel + Environment.NewLine + recieveText;
             }   
 
             if (chkLoggerRefresh.IsChecked.Value)
@@ -226,10 +284,22 @@ namespace SimpleTcpSocketWPF
         }
 
         private static Regex _regex = new Regex(@"\\u(?<Value>[a-zA-Z0-9]{4})", RegexOptions.Compiled);
+        //private static Regex _regex2 = new Regex(@"\\(?<Value>[0-9]{4})", RegexOptions.Compiled);
+
         private string unescape(string text)
         {
             text = _regex.Replace(text, m => ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString());
             return text.Replace("\\f", "\f").Replace("\\v", "\v").Replace("\\b", "\b").Replace("\\0", "\0").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\\\", "\\");           
+        }
+
+        private string escape(string text)
+        {
+            text = text.Replace("\\", "\\\\").Replace("\f", "\\f").Replace("\v", "\\v").Replace("\b", "\\b").Replace("\0", "\\0").Replace("\t", "\\t").Replace("\r", "\\r").Replace("\n", "\\n");
+            for (int n = 0; n < 20; n++)
+            {
+                text = text.Replace("" + (char)n + "", "\\u" + n.ToString("X").PadLeft(4, '0'));
+            }
+            return text;
         }
 
         private void SendTel(string tel)
@@ -262,12 +332,18 @@ namespace SimpleTcpSocketWPF
 
             if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
             {
+                var akTel = tel;
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                    akTel = escape(akTel);
                 txtSended.Text = add + wrt + Environment.NewLine + Environment.NewLine + txtSended.Text;
-                txtSended.Text = add + tel + Environment.NewLine + txtSended.Text;                
+                txtSended.Text = add + akTel + Environment.NewLine + txtSended.Text;                
             }
             else
             {
-                txtSended.Text = add + wrt + Environment.NewLine + txtSended.Text;
+                var akTel = wrt;
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                    akTel = escape(akTel);
+                txtSended.Text = add + akTel + Environment.NewLine + txtSended.Text;
             }   
             
             if (tcpFunc != null)
@@ -281,12 +357,18 @@ namespace SimpleTcpSocketWPF
                     StreamWriter myFile = new StreamWriter(lblLogFile.Text, true);
                     if (Properties.Settings.Default.LogHexAndAscii && Properties.Settings.Default.LogDataAsHexBytes)
                     {
-                        myFile.Write("Send : " + add + tel + Environment.NewLine);
+                        var akTel = tel;
+                        if (Properties.Settings.Default.EscapeSpecialChars)
+                            akTel = escape(akTel);
+                        myFile.Write("Send : " + add + akTel + Environment.NewLine);
                         myFile.Write("Bytes: " + add + wrt + Environment.NewLine);
                     }
                     else
                     {
-                        myFile.Write("Send : " + add + wrt + Environment.NewLine);
+                        var akTel = tel;
+                        if (Properties.Settings.Default.EscapeSpecialChars)
+                            akTel = escape(akTel);
+                        myFile.Write("Send : " + add + akTel + Environment.NewLine);
                     }
                     myFile.Close();
                 }
@@ -299,22 +381,39 @@ namespace SimpleTcpSocketWPF
 
         private void txtTelegramm_TextChanged(object sender, TextChangedEventArgs e)
         {
-            blLen.Content = "0";
-            if (txtTelegramm.Text != null)
+            if (e.Changes.First().AddedLength == 1)
             {
-                blLen.Content = txtTelegramm.Text.Length.ToString();
-
-                if (Properties.Settings.Default.EscapeSpecialChars)
+                blLen.Content = "0";
+                if (txtTelegramm.Text != null)
                 {
-                    try
-                    {
-                        var t2 = unescape(txtTelegramm.Text);
-                        blLen.Content = t2.Length.ToString();
-                    }
-                    catch (Exception)
-                    { }
-                }
+                    blLen.Content = txtTelegramm.Text.Length.ToString();
 
+                    string txt = "";
+
+                    foreach (byte b in getEncoding().GetBytes(txtTelegramm.Text))
+                    {
+                        txt += b.ToString("X").PadLeft(2, '0') + " ";
+                    }
+
+                    if (Properties.Settings.Default.EscapeSpecialChars)
+                    {
+                        try
+                        {
+                            var t2 = unescape(txtTelegramm.Text);
+                            blLen.Content = t2.Length.ToString();
+
+                            txt = "";
+                            foreach (byte b in getEncoding().GetBytes(t2))
+                            {
+                                txt += b.ToString("X").PadLeft(2, '0') + " ";
+                            }
+
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                    txtTelegrammHex.Text = txt;
+                }
             }
         }
 
@@ -357,7 +456,7 @@ namespace SimpleTcpSocketWPF
             if (e.Key == Key.Enter)
             {
                 this.cmdSend_Click(sender, null);
-            }
+            }           
         }
 
         private void chkLoggerRefresh_Checked(object sender, RoutedEventArgs e)
@@ -365,5 +464,90 @@ namespace SimpleTcpSocketWPF
             txtRecieve.Text = recieveText;            
         }
 
+        private void txtTelegrammHex_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!"0123456789ABCDEFabcdef".Contains(e.Text))
+            {
+                e.Handled = true;
+            }            
+        }
+
+        private void txtTelegrammHex_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                if ((txtTelegrammHex.CaretIndex + 1) % 3 != 0)
+                {
+                    e.Handled = true;
+                }                
+            }            
+        }
+
+        private void txtTelegrammHex_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var idx = txtTelegrammHex.CaretIndex;
+
+            if (keywasPressed)
+            {
+
+                List<byte> bytes = new List<byte>();
+                
+                keywasPressed = false;
+                
+                if (idx == txtTelegrammHex.Text.Length && e.Changes.First().RemovedLength == 0)
+                {
+                    if ((idx + 1) % 3 == 0)
+                    {
+                        txtTelegrammHex.Text += " ";
+                        txtTelegrammHex.CaretIndex = idx + 1;
+                    }
+                }
+
+                string txt = "";
+                string parseTl = txtTelegrammHex.Text.Replace(" ", "");
+
+                try
+                {
+                    for (int n = 0; n < parseTl.Length; n += 2)
+                    {
+                        if (parseTl.Length > n + 1)
+                        {
+                            var wrt = (int.Parse("" + parseTl[n] + parseTl[n + 1], System.Globalization.NumberStyles.HexNumber));
+                            bytes.Add((byte)wrt);
+                            //txt = txt + (char)wrt;
+                        }
+                        else if (parseTl.Length > n)
+                        {
+                            var wrt = (int.Parse("" + parseTl[n], System.Globalization.NumberStyles.HexNumber));
+                            bytes.Add((byte)wrt);
+                            //txt = txt + (char)wrt;
+                        }
+                    }
+                }
+                catch (Exception)
+                { }
+
+                txt = getEncoding().GetString(bytes.ToArray());
+
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                {
+                    txt = this.escape(txt);
+                }
+                txtTelegramm.Text = txt;
+            }
+
+            if (txtTelegrammHex.Text != txtTelegrammHex.Text.ToUpper())
+            {
+                txtTelegrammHex.Text = txtTelegrammHex.Text.ToUpper();
+                txtTelegrammHex.CaretIndex = idx;
+            }
+        }
+
+        private bool keywasPressed = false;
+
+        private void txtTelegrammHex_KeyDown(object sender, KeyEventArgs e)
+        {
+            keywasPressed = true;
+        }
     }
 }

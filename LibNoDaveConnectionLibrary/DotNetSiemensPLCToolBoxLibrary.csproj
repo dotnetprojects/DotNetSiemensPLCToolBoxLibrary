@@ -252,6 +252,7 @@
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
     <Compile Include="Projectfiles\Projects.cs" />
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
+    <Compile Include="Simulator\Simulator.cs" />
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -286,8 +287,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Communication\S7_1xxx\" />
     <Folder Include="DBF\Index\NDX\" />
-    <Folder Include="PLCs\S7_1xxx\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
