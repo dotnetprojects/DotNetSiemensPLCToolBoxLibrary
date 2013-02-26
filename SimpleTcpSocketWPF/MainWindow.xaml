@@ -4,12 +4,12 @@
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
         xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
-        Title="TCP-Socket (Version 3.10)" Height="573" Width="812">
+        Title="TCP-Socket (Version 3.11)" Height="573" Width="812">
     <Window.Resources>
         <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
     </Window.Resources>
     <Grid Background="#FFE4E4E4" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
-        <TextBox Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter}}" HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
+        <TextBox Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter}}" HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Height="22" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
         <Label Content="IP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="26"/>
 
         <TabControl Margin="10,54,10,28">
@@ -83,11 +83,11 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <TextBox HorizontalAlignment="Left" Margin="218,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding Port}"/>
-        <Label Content="Port:" HorizontalAlignment="Left" Margin="171,10,0,0" VerticalAlignment="Top" Width="42"/>
-        <CheckBox x:Name="___No_Name_" Content="Active" HorizontalAlignment="Left" Margin="302,15,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
-        <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="367,12,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
-        <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
+        <TextBox HorizontalAlignment="Left" Margin="363,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding Port}"/>
+        <Label Content="Port:" HorizontalAlignment="Left" Margin="316,11,0,0" VerticalAlignment="Top" Width="42"/>
+        <CheckBox x:Name="___No_Name_" Content="Active" HorizontalAlignment="Left" Margin="447,16,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
+        <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="512,13,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
+        <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
         <StatusBar HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
                 <TextBlock Name="lblLogFile" />

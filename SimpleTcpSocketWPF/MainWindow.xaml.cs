@@ -132,10 +132,27 @@ namespace SimpleTcpSocketWPF
             }
             else
             {
-                var ip = IPAddress.Parse(Properties.Settings.Default.IP);
+                IPAddress ip;
 
-                if (!Properties.Settings.Default.Active) 
+                if (!Properties.Settings.Default.Active)
+                {
                     ip = IPAddress.Any;
+                }
+                else
+                {
+                    if (!IPAddress.TryParse(Properties.Settings.Default.IP, out ip))
+                    {
+                        IPAddress[] addresslist = Dns.GetHostAddresses(Properties.Settings.Default.IP);
+                        foreach (var ipAddress in addresslist)
+                        {
+                            if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            {
+                                ip = ipAddress;
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 if (Properties.Settings.Default.RecieveFixedLength > 0)
                 {
