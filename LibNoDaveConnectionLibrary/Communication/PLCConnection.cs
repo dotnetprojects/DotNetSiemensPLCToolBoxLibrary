@@ -1734,12 +1734,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }           
         }
 
+        public void ReadValues(IEnumerable<PLCTag> valueList)
+        {
+            ReadValues(valueList, true);
+        }
+
         /// <summary>
         /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
         /// It tries to Optimize how the Values are Read from the PLC
         /// </summary>
         /// <param name="valueList"></param>        
-        public void ReadValues(IEnumerable<PLCTag> valueList)
+        public void ReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             if (Configuration.ConnectionType == 20) //AS511
             {
@@ -1765,80 +1770,82 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 lock (_dc)
                 {
 
-                    //IEnumerable<PLCTag> readTagList = valueList;
-
+                    IEnumerable<PLCTag> readTagList = valueList;
 
                     #region Optimize Reading List....                    
-                    List<PLCTag> orderedList = new List<PLCTag>();
-                    orderedList.AddRange(valueList);
-                    orderedList.Sort(new SorterForPLCTags());
 
-                    List<PLCTag> readTagList=new List<PLCTag>(); 
-
-                    //Go through the List of PLC Tags and Combine the ones, where the Byte Addres does not differ more than 4 Bytes...
-                    MemoryArea oldDataSource = 0;
-                    int oldDB=0, oldByteAddress=0, oldLen=0;
-                    int cntCombinedTags = 0;
-                    PLCTag lastTag = null;
-                    PLCTagReadHelper rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
-                    foreach (PLCTag plcTag in orderedList)
+                    if (useReadOptimization)
                     {
-                        if (cntCombinedTags == 0)
-                        {
-                            oldDataSource = plcTag.TagDataSource;
-                            oldDB = plcTag.DataBlockNumber;
-                            oldByteAddress = plcTag.ByteAddress;
-                            oldLen = plcTag._internalGetSize();
-                            lastTag = plcTag;
-                            cntCombinedTags++;
-                        }
-                        else
-                        {
-                            if (oldDataSource == plcTag.TagDataSource && (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DataBlockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
-                            {
-                                //todo: test if this is correct
-                                if (cntCombinedTags == 1)
-                                    rdHlp.PLCTags.Add(lastTag, 0);
-                                
-                                cntCombinedTags++;
-                                int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
-                                oldLen = oldLen < newlen ? newlen : oldLen;
-                                if (oldLen % 2 != 0) oldLen++;
-                                rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
-                                rdHlp.ByteAddress = oldByteAddress;
-                                rdHlp.ArraySize = oldLen;
-                                rdHlp.TagDataSource = oldDataSource;
-                                rdHlp.DataBlockNumber = oldDB;
-                            }
-                            else
-                            {
-                                if (cntCombinedTags > 1)
-                                {
-                                    readTagList.Add(rdHlp);
-                                    rdHlp = new PLCTagReadHelper() {TagDataType = TagDataType.ByteArray};
-                                    cntCombinedTags = 0;
-                                }
-                                else
-                                {
-                                    readTagList.Add(lastTag);                                    
-                                    cntCombinedTags = 0;
-                                }
+                        List<PLCTag> orderedList = new List<PLCTag>();
+                        orderedList.AddRange(valueList);
+                        orderedList.Sort(new SorterForPLCTags());
 
+                        List<PLCTag> intReadTagList = new List<PLCTag>();
+
+                        //Go through the List of PLC Tags and Combine the ones, where the Byte Addres does not differ more than 4 Bytes...
+                        MemoryArea oldDataSource = 0;
+                        int oldDB = 0, oldByteAddress = 0, oldLen = 0;
+                        int cntCombinedTags = 0;
+                        PLCTag lastTag = null;
+                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
+                        foreach (PLCTag plcTag in orderedList)
+                        {
+                            if (cntCombinedTags == 0)
+                            {
                                 oldDataSource = plcTag.TagDataSource;
                                 oldDB = plcTag.DataBlockNumber;
                                 oldByteAddress = plcTag.ByteAddress;
                                 oldLen = plcTag._internalGetSize();
-                                if (oldLen % 2 != 0) oldLen++;
                                 lastTag = plcTag;
                                 cntCombinedTags++;
                             }
+                            else
+                            {
+                                if (oldDataSource == plcTag.TagDataSource && (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DataBlockNumber) && plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
+                                {
+                                    //todo: test if this is correct
+                                    if (cntCombinedTags == 1) rdHlp.PLCTags.Add(lastTag, 0);
+
+                                    cntCombinedTags++;
+                                    int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
+                                    oldLen = oldLen < newlen ? newlen : oldLen;
+                                    if (oldLen % 2 != 0) oldLen++;
+                                    rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
+                                    rdHlp.ByteAddress = oldByteAddress;
+                                    rdHlp.ArraySize = oldLen;
+                                    rdHlp.TagDataSource = oldDataSource;
+                                    rdHlp.DataBlockNumber = oldDB;
+                                }
+                                else
+                                {
+                                    if (cntCombinedTags > 1)
+                                    {
+                                        intReadTagList.Add(rdHlp);
+                                        rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
+                                        cntCombinedTags = 0;
+                                    }
+                                    else
+                                    {
+                                        intReadTagList.Add(lastTag);
+                                        cntCombinedTags = 0;
+                                    }
+
+                                    oldDataSource = plcTag.TagDataSource;
+                                    oldDB = plcTag.DataBlockNumber;
+                                    oldByteAddress = plcTag.ByteAddress;
+                                    oldLen = plcTag._internalGetSize();
+                                    if (oldLen % 2 != 0) oldLen++;
+                                    lastTag = plcTag;
+                                    cntCombinedTags++;
+                                }
+                            }
+
                         }
-                        
+                        if (cntCombinedTags > 1) intReadTagList.Add(rdHlp);
+                        else if (cntCombinedTags == 1) intReadTagList.Add(lastTag);
+
+                        readTagList = intReadTagList;
                     }
-                    if (cntCombinedTags > 1)
-                        readTagList.Add(rdHlp);
-                    else if (cntCombinedTags == 1)
-                        readTagList.Add(lastTag);                    
                     #endregion
 
 
