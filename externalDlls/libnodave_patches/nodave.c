@@ -776,7 +776,7 @@ int DECL2 _daveTestResultDataMulti(PDU * p) {
 			//res = 0;
 		}	    
 	}
-	else if (p->data[0]==10)
+	else if (p->data[0]==10 || p->data[0]==5)
 	{
 		//This Section returns ok, even if nothing was read,
 		//because with the multiple read we get the error in (daveUseResult)
