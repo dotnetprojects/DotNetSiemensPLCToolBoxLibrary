@@ -45,6 +45,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 	[Serializable]
     public class PLCTag: INotifyPropertyChanged
     {
+        internal bool raiseValueChangedEvenWhenNoChangeHappened;
+
         private string _valueName;
         /// <summary>
         /// This is a Property wich addresses the values you've read with a Name
@@ -346,32 +348,41 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set
             {
                 _value = value;
-                if (!_value.Equals(_oldvalue))
-                {                    
+
+                if (_value == null)
+                {
                     NotifyPropertyChanged("Value");
                     NotifyPropertyChanged("ValueAsString");
-
-                    if (ValueChanged != null)
-                        ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
-
-                    if (MaximumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Maximum) >= 0)
-                        MaximumReached(this, new LimitReachedEventArgs(_oldvalue, Maximum));
-
-                    if (MinimumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Minimum) <= 0)
-                        MinimumReached(this, new LimitReachedEventArgs(_oldvalue, Minimum));
+                    
+                    if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
 
                     _oldvalue = _value;
-                }                
-
-                if (BackupValuesCount > 0 && _oldvalues != null)
+                }
+                else
                 {
-                    _oldvalues.Add(_value);
-                    if (_oldvalues.Count - _backupvaluescount > 0)
-                        _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
-                    NotifyPropertyChanged("OldValues");
+                    if (!_value.Equals(_oldvalue) || raiseValueChangedEvenWhenNoChangeHappened)
+                    {
+                        NotifyPropertyChanged("Value");
+                        NotifyPropertyChanged("ValueAsString");
+
+                        if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
+
+                        if (MaximumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Maximum) >= 0) MaximumReached(this, new LimitReachedEventArgs(_oldvalue, Maximum));
+
+                        if (MinimumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Minimum) <= 0) MinimumReached(this, new LimitReachedEventArgs(_oldvalue, Minimum));
+
+                        _oldvalue = _value;
+                    }
+
+                    if (BackupValuesCount > 0 && _oldvalues != null)
+                    {
+                        _oldvalues.Add(_value);
+                        if (_oldvalues.Count - _backupvaluescount > 0) _oldvalues.RemoveRange(0, _oldvalues.Count - _backupvaluescount);
+                        NotifyPropertyChanged("OldValues");
+                    }
                 }
 
-                
+
             }
         }
 

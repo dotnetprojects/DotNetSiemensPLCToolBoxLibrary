@@ -2014,6 +2014,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else
                         {
                             value.ItemDoesNotExist = true;
+                            value._setValueProp = null;
                         }
                         nr++;
                     }
@@ -2107,6 +2108,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (_dc == null)
                         throw new Exception("Error: Not Connected");
 
+                    value.raiseValueChangedEvenWhenNoChangeHappened = true;
+
                     int readSize = value._internalGetSize();
                     byte[] myBuff = new byte[readSize];
 
@@ -2175,6 +2178,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (_dc != null)
                 lock (_dc)
                 {
+
+                    foreach (PLCTag plcTag in valueList)
+                    {
+                        plcTag.raiseValueChangedEvenWhenNoChangeHappened = true;
+                    }
 
                     if (useWriteOptimation)
                     {

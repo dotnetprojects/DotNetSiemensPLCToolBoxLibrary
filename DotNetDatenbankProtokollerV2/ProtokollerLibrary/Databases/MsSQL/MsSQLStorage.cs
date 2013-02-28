@@ -88,7 +88,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
             //Look if Table exists, when not, create it!
             try
             {
-                string sql = "SELECT * FROM " + dataTable + ";";
+                string sql = "SELECT TOP 1 * FROM " + dataTable + ";";
                 myCmd.Connection = myDBConn;
                 myCmd.CommandText = sql;
                 myReader = myCmd.ExecuteReader();
