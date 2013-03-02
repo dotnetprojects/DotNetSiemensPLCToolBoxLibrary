@@ -141,7 +141,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            socketThread.Abort();            
+            if (socketThread != null)
+                socketThread.Abort();            
         }
 
         public void socket_Thread()

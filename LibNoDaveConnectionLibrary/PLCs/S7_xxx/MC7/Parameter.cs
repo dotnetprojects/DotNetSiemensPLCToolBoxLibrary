@@ -479,30 +479,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         internal static void FillActualValuesInDataBlock(S7DataRow row, byte[] actualValues, ref int valuePos, ref int bitPos)
         {
-            if (row.DataType != S7DataRowType.STRUCT && row.DataType != S7DataRowType.UDT)
+            if (valuePos >= actualValues.Length) 
+                return;
+            else
             {
-                if (row.DataType == S7DataRowType.BOOL)
+                if (row.DataType != S7DataRowType.STRUCT && row.DataType != S7DataRowType.UDT)
                 {
-                    row.Value = libnodave.getBit(actualValues[valuePos], bitPos);
-                    bitPos++;
-                    if (bitPos > 7)
+                    if (row.DataType == S7DataRowType.BOOL)
+                    {
+                        row.Value = libnodave.getBit(actualValues[valuePos], bitPos);
+                        bitPos++;
+                        if (bitPos > 7)
+                        {
+                            bitPos = 0;
+                            valuePos++;
+                        }
+                    }
+                    else
                     {
                         bitPos = 0;
-                        valuePos++;
+                        row.Value = GetVarTypeVal((byte)row.DataType, actualValues, ref valuePos);
                     }
                 }
                 else
                 {
                     bitPos = 0;
-                    row.Value = GetVarTypeVal((byte)row.DataType, actualValues, ref valuePos);
-                }
-            }
-            else
-            {
-                bitPos = 0;
-                foreach (var child in row.Children)
-                {
-                    FillActualValuesInDataBlock(((S7DataRow)child), actualValues, ref valuePos, ref bitPos);
+                    foreach (var child in row.Children)
+                    {
+                        FillActualValuesInDataBlock(((S7DataRow)child), actualValues, ref valuePos, ref bitPos);
+                    }
                 }
             }
         }
