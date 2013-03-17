@@ -24,6 +24,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
@@ -352,13 +353,32 @@ namespace WPFVarTab
 
         private void cmdImportVarTab_Click(object sender, RoutedEventArgs e)
         {
-            var s7Vat = SelectProjectPart.SelectVAT();
+            var selObj = SelectProjectPart.SelectVATorSymbolTable();
 
-            if (s7Vat!=null)
+            var s7Vat = selObj as S7VATBlock;
+            var sym = selObj as ISymbolTable;
+            if (s7Vat != null)
+            {
                 foreach (var S7VatRow in s7Vat.VATRows)
                 {
                     varTabRows.Add(new VarTabRowWithConnection(S7VatRow));
                 }
+            }
+            else if (sym != null)
+            {
+                foreach (var row in sym.SymbolTableEntrys)
+                {
+                    var tiaRow = row as TIASymbolTableEntry;
+                    if (tiaRow != null)
+                    {
+                        varTabRows.Add(new VarTabRowWithConnection(new S7VATRow() { S7FormatAddress = tiaRow.OperandIEC + " (" + tiaRow.TIATagAccessKey + ")", Comment = row.Comment }));
+                    }
+                    else
+                    {
+                        varTabRows.Add(new VarTabRowWithConnection(new S7VATRow() { S7FormatAddress = row.OperandIEC, Comment = row.Comment }));
+                    }
+                }
+            }
 
             RefreshSymbols();
         }

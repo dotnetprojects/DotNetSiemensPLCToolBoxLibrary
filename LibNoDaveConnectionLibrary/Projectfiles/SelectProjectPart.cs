@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
@@ -35,17 +36,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (S7ProgrammFolder)myFrm.retVal;
         }
 
-        public static SymbolTable SelectSymbolTable()
+        public static ISymbolTable SelectSymbolTable()
         {
             return SelectSymbolTable("");
         }
 
-        public static SymbolTable SelectSymbolTable(string FileAndProjectInternalFolder)
+        public static ISymbolTable SelectSymbolTable(string FileAndProjectInternalFolder)
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
             myFrm.SelectPart = SelectPartType.SymbolTable;
             myFrm.ShowDialog();
-            return (SymbolTable)myFrm.retVal;
+            return (ISymbolTable)myFrm.retVal;
         }
 
         public static S7DataBlock SelectDataBlock(string FileAndProjectInternalFolder)
@@ -76,6 +77,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             myFrm.SelectPart = SelectPartType.VariableTable;
             myFrm.ShowDialog();
             return (S7VATBlock)myFrm.retVal;
+        }
+
+        public static object SelectVATorSymbolTable()
+        {
+            return SelectVATorSymbolTable("");
+        }
+
+        public static object SelectVATorSymbolTable(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            myFrm.SelectPart = SelectPartType.VariableTableOrSymbolTable;
+            myFrm.ShowDialog();
+            return myFrm.retVal;
         }
 
         public static S7DataBlock SelectUDT()

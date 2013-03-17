@@ -80,7 +80,44 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        public string SymbolicAccessKey { get; set; } //For Tags used with Full Symbolic in TIA Portal
+        private bool isSymbolicAccessKeyTag;
+        public bool IsSymbolicAccessKeyTag
+        {
+            get
+            {
+                return this.isSymbolicAccessKeyTag;
+            }
+            set
+            {
+                this.isSymbolicAccessKeyTag = value;
+                if (!value) 
+                    symbolicAccessKey = null;
+
+                NotifyPropertyChanged("SymbolicAccessKey");
+                NotifyPropertyChanged("IsSymbolicAccessKeyTag");
+                NotifyPropertyChanged("S7FormatAddress"); 
+            }
+        }
+
+        private string symbolicAccessKey;
+        public string SymbolicAccessKey
+        {
+            get
+            {
+                return this.symbolicAccessKey;
+            }
+            set
+            {
+                this.symbolicAccessKey = value;
+                if (!string.IsNullOrEmpty(value)) 
+                    isSymbolicAccessKeyTag = true;
+                NotifyPropertyChanged("SymbolicAccessKey");
+                NotifyPropertyChanged("IsSymbolicAccessKeyTag");
+                NotifyPropertyChanged("S7FormatAddress"); 
+            }
+        }
+
+        //For Tags used with Full Symbolic in TIA Portal
 
         private bool _itemDoesNotExist;
         [XmlIgnore]
@@ -543,10 +580,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     ret.Append(ByteAddress);
                 }
 
+                if (isSymbolicAccessKeyTag)
+                {
+                    ret.Append(" (" + symbolicAccessKey + ")");
+                }
+
                 return ret.ToString();
             }
 
-            set { ChangeAddressFromString(value); NotifyPropertyChanged("S7FormatAddress"); NotifyPropertyChanged("ReadByteSize"); NotifyPropertyChanged("ArraySize"); }
+            set
+            {
+                ChangeAddressFromString(value);     
+                NotifyPropertyChanged("SymbolicAccessKey"); 
+                NotifyPropertyChanged("S7FormatAddress"); 
+                NotifyPropertyChanged("ReadByteSize"); 
+                NotifyPropertyChanged("ArraySize");
+            }
         }
 
         public string GetControlValueAsString()
@@ -1023,8 +1072,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return S7FormatAddress;
         }
 
-        public void ChangeAddressFromString(String plcAddress)
+        public void ChangeAddressFromString(String newPlcAddress)
         {
+            var plcAddress = newPlcAddress;
+            if (plcAddress.Contains("("))
+            {
+                var pos = newPlcAddress.IndexOf('(');
+                plcAddress = newPlcAddress.Substring(0, pos);
+                symbolicAccessKey = newPlcAddress.Substring(pos + 1, newPlcAddress.Length - pos - 2);
+                isSymbolicAccessKeyTag = true;
+            }
+
+            if (plcAddress.StartsWith("%")) 
+                plcAddress = plcAddress.Substring(1);
+            
             try
             {
                 if (!string.IsNullOrEmpty(plcAddress))

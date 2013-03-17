@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
@@ -339,7 +340,7 @@ namespace JFK_VarTab
                 conninfo.Text = new PLCConnectionConfiguration((string)lstConnections.SelectedItem).ToString();
         }
 
-        private SymbolTable mySymtable;
+        private ISymbolTable mySymtable;
 
         private void cmdLoadSymboltable_Click(object sender, EventArgs e)
         {

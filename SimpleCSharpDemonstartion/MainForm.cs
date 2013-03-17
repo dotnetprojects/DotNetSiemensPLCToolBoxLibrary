@@ -16,6 +16,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
@@ -67,7 +68,7 @@ namespace SimpleCSharpDemonstration
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5.SymbolTable symTab;
+            ISymbolTable symTab;
             symTab = DotNetSiemensPLCToolBoxLibrary.Projectfiles.SelectProjectPart.SelectSymbolTable();            
         }
 

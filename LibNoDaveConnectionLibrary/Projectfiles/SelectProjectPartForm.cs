@@ -24,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }               
 
-        Step7ProjectV5 tmpPrj;        
+        Project tmpPrj;        
 
 
         #region TreeNodes
@@ -131,7 +131,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog op=new OpenFileDialog();
-            op.Filter = "*.s7p|*.s7p";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12";
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)
             {
@@ -146,7 +146,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {               
                 treeStep7Project.Nodes.Clear();
 
-                tmpPrj = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
+                tmpPrj = Projects.LoadProject(fnm, chkShowDeleted.Checked);
+                //tmpPrj = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
 
                 //listBox1.Items.AddRange(tmp.PrgProjectFolders.ToArray());
                 lblProjectName.Text = tmpPrj.ProjectName;
@@ -262,6 +263,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         retVal = ((IBlocksFolder) tmp.ParentFolder).GetBlock(tmp);
                         ((Block) retVal).ParentFolder = tmp.ParentFolder;
                     }
+                }               
+            }
+            else if (SelectPart == SelectPartType.VariableTableOrSymbolTable)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    S7ProjectBlockInfo tmp = (S7ProjectBlockInfo)lstProjectFolder.SelectedItem;
+                    if (tmp.BlockType == PLCBlockType.VAT)
+                    {
+                        retVal = ((IBlocksFolder)tmp.ParentFolder).GetBlock(tmp);
+                        ((Block)retVal).ParentFolder = tmp.ParentFolder;
+                    }
+                }
+                else if (treeStep7Project.SelectedNode != null)
+                {
+                    var tmp = (myTreeNode)treeStep7Project.SelectedNode;
+                    if (tmp.myObject is ISymbolTable)
+                        retVal = tmp.myObject as ISymbolTable;
                 }
             }
             else if (SelectPart == SelectPartType.DataBlock)
@@ -308,8 +328,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {                    
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
-                    if (tmp.myObject.GetType() == typeof(SymbolTable))
-                        retVal = (SymbolTable)tmp.myObject;
+                    if (tmp.myObject is ISymbolTable)
+                        retVal = tmp.myObject as ISymbolTable;
                     else
                         retVal = null;                    
                 }
