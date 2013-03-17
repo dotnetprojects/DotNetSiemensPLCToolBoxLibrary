@@ -1099,9 +1099,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             this.DataBlockNumber = 0;
                             var tmp = myPlcAddress[0].Split('.')[0];
-                            if (tmp.Contains("e"))
+                            if (tmp.Contains("e") || tmp.Contains("i"))
                                 this.TagDataSource = MemoryArea.Inputs;
-                            else if (tmp.Contains("a"))
+                            else if (tmp.Contains("a") || tmp.Contains("q"))
                                 this.TagDataSource = MemoryArea.Outputs;
                             else if (tmp.Contains("l"))
                                 this.TagDataSource = MemoryArea.LocalData;
@@ -1111,7 +1111,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 this.TagDataSource = MemoryArea.Flags;
                             else if (tmp.Contains("t"))
                                 this.TagDataSource = MemoryArea.Timer;
-                            else if (tmp.Contains("z"))
+                            else if (tmp.Contains("z") || tmp.Contains("c"))
                                 this.TagDataSource = MemoryArea.Counter;
                             ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
                         }
@@ -1198,15 +1198,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         else
                         {
-                            if (myPlcAddress[0].Contains("E"))
+                            if (myPlcAddress[0].Contains("E") || myPlcAddress[0].Contains("I"))
                                 this.TagDataSource = MemoryArea.Inputs;
-                            else if (myPlcAddress[0].Contains("A"))
+                            else if (myPlcAddress[0].Contains("A") || myPlcAddress[0].Contains("Q"))
                                 this.TagDataSource = MemoryArea.Outputs;
                             else if (myPlcAddress[0].Contains("M"))
                                 this.TagDataSource = MemoryArea.Flags;
                             else if (myPlcAddress[0].Contains("T"))
                                 this.TagDataSource = MemoryArea.Timer;
-                            else if (myPlcAddress[0].Contains("Z"))
+                            else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
                                 this.TagDataSource = MemoryArea.Counter;
 
                             if (myPlcAddress[0].Contains("W"))
@@ -1253,7 +1253,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 ArraySize = 1;
                                 this.TagDataType = TagDataType.S5Time;
                             }
-                            else if (myPlcAddress[0].Contains("Z"))
+                            else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
                             {
                                 ArraySize = 1;
                                 this.TagDataType = TagDataType.Int;

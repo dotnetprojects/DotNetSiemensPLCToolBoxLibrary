@@ -366,7 +366,7 @@ namespace WPFVarTab
             }
             else if (sym != null)
             {
-                foreach (var row in sym.SymbolTableEntrys)
+                foreach (var row in sym.SymbolTableEntrys.Where(x=>!string.IsNullOrEmpty(x.OperandIEC)))
                 {
                     var tiaRow = row as TIASymbolTableEntry;
                     if (tiaRow != null)
