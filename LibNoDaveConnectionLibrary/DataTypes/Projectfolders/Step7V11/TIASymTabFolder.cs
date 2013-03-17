@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
@@ -49,12 +50,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         nd = mySymTableEntry.SelectSingleNode("attribSet[@id='" + TiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainServices.CommonTypeSystem.IStructureItem").Key + "']/attrib[@name='DisplayTypeName']");
                         if (nd != null) akSymType = nd.InnerText;
 
-                        var entry = new SymbolTableEntry() { Symbol = akSymName, OperandIEC = akSymAddress, DataType = akSymType };
+                        var entry = new TIASymbolTableEntry() { Symbol = akSymName, OperandIEC = akSymAddress, DataType = akSymType };
                         symbolTableEntrys.Add(entry);
 
-                        //var tiaCrc = Activator.CreateInstance(TiaProject.tiaCrcType);
-                        //TiaProject.tiaCrcType.InvokeMember("adds", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, new object[] { akSymName });
-                        //entry.Comment = "00000052" + ((uint)TiaProject.tiaCrcType.InvokeMember("get", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, null)).ToString("X").PadLeft(8,'0') + "4" + akLitID.ToString("X").PadLeft(7, '0');                        
+                        var tiaCrc = Activator.CreateInstance(TiaProject.tiaCrcType);
+                        TiaProject.tiaCrcType.InvokeMember("adds", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, new object[] { akSymName });
+                        entry.TIATagAccessKey = "00000052" + ((uint)TiaProject.tiaCrcType.InvokeMember("get", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, null)).ToString("X").PadLeft(8,'0') + "4" + akLitID.ToString("X").PadLeft(7, '0');                        
                     }
                 }
                 return this.symbolTableEntrys;

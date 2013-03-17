@@ -45,6 +45,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(new Step7ProjectV11(fls[0]));
 
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap12");
+                        if (fls.Length > 0)
+                            retVal.Add(new Step7ProjectV11(fls[0]));
+
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
                             retVal.Add(new Step5Project(fls[0], false));
@@ -84,6 +88,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (file.ToLower().EndsWith(".s7l"))
                 return new Step7ProjectV5(file, showDeleted);
             else if (file.ToLower().EndsWith(".ap11"))
+                return new Step7ProjectV11(file);
+            else if (file.ToLower().EndsWith(".ap12"))
                 return new Step7ProjectV11(file);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
                 return new Step5Project(file, showDeleted);

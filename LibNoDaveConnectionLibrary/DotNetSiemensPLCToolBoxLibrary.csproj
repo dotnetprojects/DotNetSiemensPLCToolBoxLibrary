@@ -91,6 +91,7 @@
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V11\TIASymbolTableEntry.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIABlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIASymTabFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIACPUFolder.cs" />

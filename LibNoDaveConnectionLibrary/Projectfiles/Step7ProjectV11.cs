@@ -32,6 +32,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (ProjectFile.ToLower().EndsWith("zip"))
             {
                 ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap12");
 
                 if (string.IsNullOrEmpty(projectfile))
                     throw new Exception("Zip-File contains no valid TIA Project !");
@@ -66,7 +68,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
-            string tiaPath = prg + "\\Siemens\\Automation\\Portal V11\\Bin";
+            string tiaPath = prg + "\\Siemens\\Automation\\Portal V12\\Bin";
+            if (!Directory.Exists(tiaPath))
+                tiaPath = prg + "\\Siemens\\Automation\\Portal V11\\Bin";
             var dll = args.Name.Split(',')[0];
             var load = Path.Combine(tiaPath, dll + ".dll");
             return Assembly.LoadFrom(load);
