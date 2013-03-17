@@ -573,6 +573,44 @@ void DECL2 daveAddToReadRequest(PDU *p, int area, int DBnum, int start, int byte
 	}	
 }    
 
+void DECL2 daveAddSymbolToReadRequest(PDU *p, void * completeSymbol, int completeSymbolLength) {
+	
+	uc pa[]= { 0x12, 0x00, 0xb2, 0xff };
+	
+#ifdef ARM_FIX
+	us tmplen;
+#endif    
+
+	pa[1]=completeSymbolLength + 4;
+	
+	
+	p->param[1]++;
+	memcpy(p->param+p->plen, pa, sizeof(pa));
+	memcpy(p->param+p->plen+4, completeSymbol, completeSymbolLength);
+	p->plen+= pa[1];
+
+#ifdef ARM_FIX    
+	tmplen=daveSwapIed_16(p->plen);
+	memcpy(&(((PDUHeader*)p->header)->plen), &tmplen, sizeof(us));
+#else
+	((PDUHeader*)p->header)->plen=daveSwapIed_16(p->plen);
+#endif    
+	p->data=p->param+p->plen;
+	p->dlen=0;
+	if (daveDebug & daveDebugPDU) {
+		_daveDumpPDU(p);
+	}	
+}  
+
+void DECL2 daveAddSymbolVarToReadRequest(PDU *p, void * completeSymbol, int completeSymbolLength) {
+#ifdef DEBUG_CALLS
+	LOG6("daveAddSymbolVarToReadRequest(PDU:%p symbol:%s)\n", p, completeSymbol);
+	FLUSH;	
+#endif	    	
+
+	daveAddSymbolToReadRequest(p, completeSymbol, completeSymbolLength);
+} 
+
 void DECL2 daveAddVarToReadRequest(PDU *p, int area, int DBnum, int start, int byteCount) {
 #ifdef DEBUG_CALLS
 	LOG6("daveAddVarToReadRequest(PDU:%p area:%s area number:%d start address:%d byte count:%d)\n",

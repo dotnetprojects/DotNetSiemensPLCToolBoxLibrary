@@ -14,6 +14,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 using DotNetSimaticDatabaseProtokollerLibrary;
@@ -111,7 +112,9 @@ namespace SimpleCSharpDemonstration
             myConn.Connect();
 
 
-            var tag = new PLCTag("P#M88.0 WORD 20");
+            var tag = new PLCTag();
+            tag.TagDataType = TagDataType.Word;
+            tag.SymbolicAccessKey = "8a0e000124134d054000000a";
             myConn.ReadValue(tag);
             /*tag.Controlvalue = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 88, 1, 2, 3, 4, 5, 6, 7, 8, 9, 77 };
             myConn.WriteValue(tag);

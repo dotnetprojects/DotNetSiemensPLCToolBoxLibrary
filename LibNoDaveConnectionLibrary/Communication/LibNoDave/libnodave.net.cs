@@ -31,6 +31,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
+using DotNetSiemensPLCToolBoxLibrary.General;
+
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 {
     using System.Text.RegularExpressions;
@@ -1442,6 +1444,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     daveAddVarToReadRequest32(pointer, area, DBnum, start, bytes);
             }
+
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddSymbolVarToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddSymbolVarToReadRequest64(IntPtr p, byte[] completeSymbol, int completeSymbolLength);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddVarToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddSymbolVarToReadRequest32(IntPtr p, byte[] completeSymbol, int completeSymbolLength);
+            public void addSymbolVarToReadRequest(string completeSymbol)
+            {
+                var bytes = completeSymbol.ToByteArray();
+                if (IntPtr.Size == 8)
+                    daveAddSymbolVarToReadRequest64(pointer, bytes, bytes.Length);
+                else
+                    daveAddSymbolVarToReadRequest32(pointer, bytes, bytes.Length);
+            }
+
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddBitVarToReadRequest")]

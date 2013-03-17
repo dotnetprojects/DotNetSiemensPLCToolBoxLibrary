@@ -1864,9 +1864,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //Get the Maximum Answer Len for One PDU
                     int maxReadSize = _dc.getMaxPDULen() - 32; //32 = Header
 
-                    int maxReadVar = maxReadSize/12; //12 Header Größe Variablenanfrage
+                    //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
 
-                    int[] readenSizes = new int[maxReadVar];
+                    List<int> readenSizes = new List<int>(38); //normaly on a 400 CPU, max 38 Tags fit into a PDU, so this List as a Start would be enough
 
                     int gesReadSize = 0;
                     int positionInCompleteData = 0;
@@ -1876,10 +1876,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     int akByteAddress = 0;
 
+                    int gesAskSize = 0;  //Size f the current ask request, that means every Tag adds 12 Bytes (symbolic tia Tags add more)
+
                     libnodave.PDU myPDU = _dc.prepareReadRequest();
 
                     foreach (var libNoDaveValue in readTagList)
-                    {                       
+                    {
+                        bool symbolicTag = false;
+                        int askSize = 12;
+                        if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
+                        {
+                            askSize = 4 + libNoDaveValue.SymbolicAccessKey.Length;
+                            symbolicTag = true;
+                        }
                         //Save the Byte Address in anthoer Variable, because if we split the Read Request, we need not the real Start Address
                         akByteAddress = libNoDaveValue.ByteAddress;
 
@@ -1897,22 +1906,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         //When there are too much bytes in the answer pdu, or you read more then the possible tags...
                         //But don't split if the bit is set (but ignore it if the tag is bigger then the pdu size!)
-                        if ((readSizeWithHeader + gesReadSize > maxReadSize || anzReadVar == maxReadVar))
+                        if ((readSizeWithHeader + gesReadSize > maxReadSize || /*anzReadVar == maxReadVar*/ gesAskSize + askSize > maxReadSize))
                         {
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
-                            if (anzReadVar < maxReadVar && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
+                            if (!symbolicTag && gesAskSize + askSize <= maxReadSize/*anzReadVar < maxReadVar*/ && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize; //Howmany Bytes can be added to this call
                                 if (restBytes > 0)
                                 {
-                                    //Only at the rest of the bytes to the next read request, and increase the start address!                                    
+                                    //Only at the rest of the bytes to the next read request, and increase the start address!   
                                     myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     readSize = readSize - restBytes;
                                     gesReadSize += restBytes;
 
                                     akByteAddress += restBytes;
 
-                                    readenSizes[anzVar] = restBytes;
+                                    readenSizes.Add(restBytes);
                                     anzVar++;
 
                                     //useresult muss noch programmiert werden.
@@ -1958,10 +1967,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         gesReadSize = gesReadSize + readSizeWithHeader;
 
-                        readenSizes[anzVar] = readSize;
+                        readenSizes.Add(readSize);
                         anzVar++;
                         anzReadVar++;                        
-                        myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
+                        if (symbolicTag)
+                            myPDU.addSymbolVarToReadRequest(libNoDaveValue.SymbolicAccessKey);
+                        else
+                            myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                     }
 
                     if (gesReadSize > 0)
@@ -2029,6 +2041,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <returns></returns>        
         public void ReadValue(PLCTag value)
         {
+            if (!string.IsNullOrEmpty(value.SymbolicAccessKey) && Configuration.ConnectionType != 20)
+            {
+                ReadValues(new[] { value });
+                return;
+            }
+
             if (AutoConnect && !Connected)
                 Connect();
             if (_dc != null)
