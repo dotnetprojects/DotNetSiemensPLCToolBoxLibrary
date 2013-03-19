@@ -1454,7 +1454,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             protected static extern void daveAddSymbolVarToReadRequest64(IntPtr p, byte[] completeSymbol, int completeSymbolLength);
 
 #if !IPHONE
-            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddVarToReadRequest")]
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddSymbolVarToReadRequest")]
 #else
             [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
 #endif
