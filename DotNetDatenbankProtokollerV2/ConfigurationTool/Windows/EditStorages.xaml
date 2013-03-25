@@ -45,5 +45,6 @@
         <Button Content="Add Firebird Storage" Height="25" HorizontalAlignment="Right" IsEnabled="False" Margin="0,260,12,0" Name="button1" VerticalAlignment="Top" Visibility="Visible" Width="147" />
         <Button Content="Add Ingres Storage" Height="25" HorizontalAlignment="Right" IsEnabled="False" Margin="0,291,12,0" Name="button2" VerticalAlignment="Top" Visibility="Visible" Width="147" />
         <Button Content="Add PLC Storage" Height="25" HorizontalAlignment="Right" IsEnabled="True" Margin="0,336,12,0" Name="cmdAddPLCStorage" VerticalAlignment="Top" Visibility="Visible" Width="147" Click="cmdAddPLCStorage_Click" />
+        <Button Content="Add Multi Storage" Height="25" HorizontalAlignment="Right" IsEnabled="True" Margin="0,365,12,0" Name="cmdAddMultiStorage" VerticalAlignment="Top" Visibility="Visible" Width="147" Click="CmdAddMultiStorage_OnClick" />
     </Grid>
 </UserControl>

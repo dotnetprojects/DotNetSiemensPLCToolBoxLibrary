@@ -273,7 +273,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 {
                     IDBInterface akDBInterface = null;
 
-                    akDBInterface = StorageHelper.GetStorage(datasetConfig, RemotingServer.ClientComms.CallNotifyEvent);
+                    akDBInterface = StorageHelper.GetStorage(akConfig, datasetConfig.Storage, RemotingServer.ClientComms.CallNotifyEvent);
                     akDBInterface.ThreadExceptionOccured += new ThreadExceptionEventHandler(tmpTrigger_ThreadExceptionOccured);
 
                     DatabaseInterfaces.Add(datasetConfig, akDBInterface);

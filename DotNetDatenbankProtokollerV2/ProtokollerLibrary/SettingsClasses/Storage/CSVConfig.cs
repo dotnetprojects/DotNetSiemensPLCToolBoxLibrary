@@ -9,18 +9,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
     public class CSVConfig : StorageConfig
     {
         private string _textfile = "c:\\data_{yyyy}_{MM}_{dd}.csv";
-        [Description("Possible PlaceHolders: {yyyy}, {yy}, {MM}, {dd}, {hh}, {mm}, {ss}")]
+        [Description("Possible PlaceHolders: {table}, {yyyy}, {yy}, {MM}, {dd}, {hh}, {mm}, {ss}")]
         public string Textfile
         {
             get { return this._textfile; }
             set { this._textfile = value; NotifyPropertyChanged("Textfile"); }
         }
 
-        public string ParseTextFilname()
+        public string ParseTextFilname(string dataTable)
         {
             var dt = DateTime.Now;
             var retVal = Textfile;
 
+            retVal = retVal.Replace("{table}", dataTable);
             retVal = retVal.Replace("{dd}", dt.ToString("dd"));
             retVal = retVal.Replace("{MM}", dt.ToString("MM"));
             retVal = retVal.Replace("{yyyy}", dt.ToString("yyyy"));

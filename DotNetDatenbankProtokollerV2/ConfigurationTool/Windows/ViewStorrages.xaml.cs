@@ -3,6 +3,8 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+
+using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.Remoting;
@@ -60,7 +62,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             grdDatasetFields.ItemsSource = null;
 
             datasetConfig = cmbStorage.SelectedItem as DatasetConfig;
-            dbIf = StorageHelper.GetStorage(datasetConfig, null);
+            dbIf = StorageHelper.GetStorage(ProtokollerConfiguration.ActualConfigInstance, datasetConfig.Storage, null);
             dbIf.Connect_To_Database(datasetConfig.Storage);
             dbView = dbIf as IDBViewable;
             dbViewSQL = dbIf as IDBViewableSQL;

@@ -55,7 +55,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
 
         #region Schreiben...
 
-        public void Write(IEnumerable<object> values)
+        public virtual void Write(IEnumerable<object> values)
         {
             lock (_intValueList)
             {

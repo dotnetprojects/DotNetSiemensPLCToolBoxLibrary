@@ -17,25 +17,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases
 {
     public static class StorageHelper        
     {
-        public static IDBInterface GetStorage(DatasetConfig cfg, Action<string> NewDataCallback)
+        public static IDBInterface GetStorage(ProtokollerConfiguration config, StorageConfig cfg, Action<string> NewDataCallback)
         {
-            if (cfg.Storage is SQLiteConfig)
+            if (cfg is SQLiteConfig)
                 return new SQLLiteStorage(NewDataCallback);
-            else if (cfg.Storage is CSVConfig)
+            else if (cfg is CSVConfig)
                 return new CSVStorage(NewDataCallback);
-            else if (cfg.Storage is ExcelConfig)
+            else if (cfg is ExcelConfig)
                 return new ExcelStorage(NewDataCallback);
-            else if (cfg.Storage is PostgreSQLConfig)
+            else if (cfg is PostgreSQLConfig)
                 return new PostgreSQLStorage(NewDataCallback);
-            else if (cfg.Storage is MySQLConfig)
+            else if (cfg is MySQLConfig)
                 return new MySQLStorage(NewDataCallback);
-            else if (cfg.Storage is Excel2007Config)
+            else if (cfg is Excel2007Config)
                 return new Excel2007Storage(NewDataCallback);
-            else if (cfg.Storage is MsSQLConfig)
+            else if (cfg is MsSQLConfig)
                 return new MsSQLStorage(NewDataCallback);
-            else if (cfg.Storage is PLCConfig)
+            else if (cfg is PLCConfig)
                 return new PLCStorage(NewDataCallback);
             return null;
-        }
+        }        
     }
 }

@@ -63,7 +63,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
             this.fieldList = datasetConfig.DatasetConfigRows;
 
 
-            writeHeader(myConfig.ParseTextFilname());
+            writeHeader(myConfig.ParseTextFilname(dataTable));
             
         }
 
@@ -104,7 +104,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
             if (string.IsNullOrEmpty(myConfig.DeletionSearchPattern) || myConfig.DeleteCSVsOlderThen.Ticks == 0)
                 return;
             
-            var dir = Path.GetDirectoryName(myConfig.ParseTextFilname());
+            var dir = Path.GetDirectoryName(myConfig.ParseTextFilname(dataTable));
 
             dir += dir.EndsWith("\\") ? "" : "\\";
 
@@ -121,7 +121,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
         protected override bool _internal_Write()
         {
-            var fnm = myConfig.ParseTextFilname();
+            var fnm = myConfig.ParseTextFilname(dataTable);
             writeHeader(fnm);
 
             string zeilen = "";
@@ -189,7 +189,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
         {
             try
             {
-                using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname()), true, myConfig.Seperator))
+                using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname(dataTable)), true, myConfig.Seperator))
                 {
                     int fieldCount = csv.FieldCount;
                     string[] headers = csv.GetFieldHeaders();
@@ -234,7 +234,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
 
         public Int64 ReadCount(DatasetConfig datasetConfig)
         {
-            using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname()), true, myConfig.Seperator))
+            using (CsvReader csv = new CsvReader(new StreamReader(myConfig.ParseTextFilname(dataTable)), true, myConfig.Seperator))
             {
                 int n = 0;
 

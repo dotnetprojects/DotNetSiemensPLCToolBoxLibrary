@@ -24,7 +24,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
         {
             var datasetConfig = ProtokollerConfiguration.ActualConfigInstance.Datasets.FirstOrDefault(s => s.Name == storageName);
 
-            IDBInterface dbInterface = StorageHelper.GetStorage(datasetConfig, null);
+            IDBInterface dbInterface = StorageHelper.GetStorage(ProtokollerConfiguration.ActualConfigInstance, datasetConfig.Storage, null);
             dbInterface.Connect_To_Database(datasetConfig.Storage);
             IDBViewable dbViewable = dbInterface as IDBViewable;
             List<ProtocolRow> list = new List<ProtocolRow>();

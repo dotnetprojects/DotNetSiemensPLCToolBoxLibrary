@@ -97,6 +97,7 @@
     <Compile Include="Common\LogErrorLevel.cs" />
     <Compile Include="Common\NetworkShare.cs" />
     <Compile Include="Connections\DatabaseConnection.cs" />
+    <Compile Include="Databases\MultiStorage\MultiStorage.cs" />
     <Compile Include="Databases\PLC\PLCStorage.cs" />
     <Compile Include="Databases\Excel2007\Excel2007Storage.cs" />
     <Compile Include="Databases\CSVFile\CSVStorage.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Databases\PostgreSQL\PostgreSQLStorage.cs" />
     <Compile Include="Databases\StorageHelper.cs" />
     <Compile Include="Databases\Interfaces\IDBInterface.cs" />
+    <Compile Include="SettingsClasses\Storage\MultiStorageConfig.cs" />
     <Compile Include="wcfService\IProtocolService.cs" />
     <Compile Include="wcfService\PolicyServer.cs" />
     <Compile Include="wcfService\ProtocolService.cs" />

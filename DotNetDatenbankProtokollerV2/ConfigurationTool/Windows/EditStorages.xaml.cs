@@ -202,5 +202,23 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);
             }
         }
+
+        private void CmdAddMultiStorage_OnClick(object sender, RoutedEventArgs e)
+        {
+            string val = "Storage_" + (grdStorages.Items.Count + 1);
+            if (DotNetSiemensPLCToolBoxLibrary.General.InputBox.Show("Storage-Name", "Name of the Storage", ref val) == DialogResult.OK)
+            {
+                foreach (var tmp in ProtokollerConfiguration.ActualConfigInstance.Storages)
+                {
+                    if (tmp.Name.ToLower().Trim() == val.ToLower().Trim())
+                    {
+                        MessageBox.Show("A Storage with this Name already Exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                MultiStorageConfig storage = new MultiStorageConfig() { Name = val };
+                ProtokollerConfiguration.ActualConfigInstance.Storages.Add(storage);
+            }
+        }
     }
 }
