@@ -35,6 +35,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases
                 return new MsSQLStorage(NewDataCallback);
             else if (cfg is PLCConfig)
                 return new PLCStorage(NewDataCallback);
+            else if (cfg is MultiStorageConfig)
+                return new MultiStorage.MultiStorage(config, NewDataCallback);
             return null;
         }        
     }
