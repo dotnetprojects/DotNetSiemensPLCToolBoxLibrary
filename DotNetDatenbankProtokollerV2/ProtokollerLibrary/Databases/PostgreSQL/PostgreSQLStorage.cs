@@ -61,7 +61,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
             }
         }
 
-        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.dataTable = dataTable;
             this.datasetConfig = datasetConfig;

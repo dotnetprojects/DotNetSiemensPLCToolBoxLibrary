@@ -21,7 +21,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         public event ThreadExceptionEventHandler ThreadExceptionOccured;
 
         private bool _initiated = false;
-        public void Initiate(DatasetConfig dsConfig)
+        public virtual void Initiate(DatasetConfig dsConfig)
         {
             datasetConfig = dsConfig;
             Initiate();
@@ -134,7 +134,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
 
         public abstract void Connect_To_Database(StorageConfig config);
 
-        protected abstract void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig);
+        public abstract void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig);
 
         public abstract void Dispose();
 

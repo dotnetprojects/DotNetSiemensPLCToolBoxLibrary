@@ -63,7 +63,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PLC
 
         private string dateFieldName;
 
-        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
             this.dataTable = dataTable;

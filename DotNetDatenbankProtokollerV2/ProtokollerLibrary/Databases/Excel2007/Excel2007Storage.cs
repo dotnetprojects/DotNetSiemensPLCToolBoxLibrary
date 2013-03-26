@@ -37,7 +37,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                 throw new Exception("Database Config is NULL");
         }
 
-        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {            
             TableName = datasetConfig.Name;
         

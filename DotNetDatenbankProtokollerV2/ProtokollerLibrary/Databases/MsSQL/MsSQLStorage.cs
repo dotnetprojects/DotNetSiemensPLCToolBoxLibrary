@@ -77,7 +77,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         }
 
        
-        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
             this.dataTable = dataTable;

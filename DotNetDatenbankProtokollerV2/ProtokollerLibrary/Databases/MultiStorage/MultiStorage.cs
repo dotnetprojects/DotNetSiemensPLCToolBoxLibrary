@@ -18,11 +18,27 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MultiStorage
     public class MultiStorage : DBBaseClass, IDBViewable
     {
         private ProtokollerConfiguration _protokollerConfiguration;
+
+        private Dictionary<DBBaseClass, StorageConfig> storrageConfigs = new Dictionary<DBBaseClass, StorageConfig>();
+
         private Action<string> _newDataCallback;
-        public MultiStorage(ProtokollerConfiguration protokollerConfiguration, Action<string> NewDataCallback)
+        public MultiStorage(ProtokollerConfiguration protokollerConfiguration, StorageConfig config, Action<string> NewDataCallback)
         {
             this._protokollerConfiguration = protokollerConfiguration;
-            this._newDataCallback = NewDataCallback;            
+            this._newDataCallback = NewDataCallback;
+
+            storages = new List<DBBaseClass>();
+            this.myConfig = config as MultiStorageConfig;
+
+            foreach (string s in myConfig.StorageList)
+            {
+                var storCfg = _protokollerConfiguration.Storages.First(x => x.Name == s);
+                var stor = (DBBaseClass)StorageHelper.GetStorage(null, storCfg, RemotingServer.ClientComms.CallNotifyEvent);
+                storages.Add(stor);
+
+                storrageConfigs.Add(stor, storCfg);
+
+            }   
         }
 
         
@@ -40,6 +56,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MultiStorage
             } 
         }
 
+        public override void Initiate(DatasetConfig dsConfig)
+        {
+            foreach (var s in storages)
+            {
+                dsConfig.Storage = storrageConfigs[s];
+                s.Initiate(dsConfig);
+            }
+
+            dsConfig.Storage = myConfig;
+        }
+
         protected override bool _internal_Write()
         {
             return true;
@@ -47,24 +74,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MultiStorage
 
         public override void Connect_To_Database(StorageConfig config)
         {
-            storages = new List<DBBaseClass>();
-            this.myConfig = config as MultiStorageConfig;
-
-            foreach (string s in myConfig.StorageList)
+            foreach (var s in storages)
             {
-                var storCfg = _protokollerConfiguration.Storages.First(x => x.Name == s);
-                var stor = (DBBaseClass)StorageHelper.GetStorage(null, storCfg, RemotingServer.ClientComms.CallNotifyEvent);
-                storages.Add(stor);
-
-                stor.Connect_To_Database(storCfg);
-            }                      
+                s.Connect_To_Database(storrageConfigs[s]);
+            }                    
         }
 
-        protected override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
+        public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             foreach (var s in storages)
             {
-                this.CreateOrModify_TablesAndFields(dataTable, datasetConfig);
+                s.CreateOrModify_TablesAndFields(dataTable, datasetConfig);
             }                        
         }
 
