@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using JFKCommonLibrary.Forms;
 using JFKCommonLibrary.Networking;
 
 namespace SimpleTcpSocketWPF
@@ -154,21 +155,28 @@ namespace SimpleTcpSocketWPF
                     }
                 }
 
-                if (Properties.Settings.Default.RecieveFixedLength > 0)
+                try
                 {
-                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active, Properties.Settings.Default.RecieveFixedLength);
-                }
-                else
-                {
-                    tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
-                }
+                    if (Properties.Settings.Default.RecieveFixedLength > 0)
+                    {
+                        tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active, Properties.Settings.Default.RecieveFixedLength);
+                    }
+                    else
+                    {
+                        tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
+                    }
 
-                tcpFunc.DataRecieved += tcpFunc_DataRecieved;
-                tcpFunc.ConnectionEstablished += tcpFunc_ConnectionEstablished;
-                tcpFunc.ConnectionClosed += tcpFunc_ConnectionClosed;
-                tcpFunc.AutoReConnect = true;
-                cmdConnect.Background = Brushes.Orange;
-                tcpFunc.Start();
+                    tcpFunc.DataRecieved += tcpFunc_DataRecieved;
+                    tcpFunc.ConnectionEstablished += tcpFunc_ConnectionEstablished;
+                    tcpFunc.ConnectionClosed += tcpFunc_ConnectionClosed;
+                    tcpFunc.AutoReConnect = true;
+                    cmdConnect.Background = Brushes.Orange;
+                    tcpFunc.Start();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Fehler Creating Connection:" + ex.Message);
+                }
             }
         }
 
@@ -565,6 +573,19 @@ namespace SimpleTcpSocketWPF
         private void txtTelegrammHex_KeyDown(object sender, KeyEventArgs e)
         {
             keywasPressed = true;
+        }
+
+        private void cmdSend_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                var cnt = InputBox.Show("Multi Send", "Anzahl der zu Sendenden Telegramme:", "100");
+                var anz = Convert.ToInt32(cnt);
+                for (int n = 0; n < anz; n++)
+                {
+                    this.cmdSend_Click(sender, null);
+                }
+            }
         }
     }
 }

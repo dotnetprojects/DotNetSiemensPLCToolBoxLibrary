@@ -4,7 +4,7 @@
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
         xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
-        Title="TCP-Socket (Version 3.11)" Height="573" Width="812">
+        Title="TCP-Socket (Version 3.12)" Height="573" Width="812">
     <Window.Resources>
         <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
     </Window.Resources>
@@ -67,7 +67,7 @@
                     <TextBox x:Name="txtTelegramm" Grid.Row="0" Margin="98,5,170,5" TextWrapping="Wrap" RenderTransformOrigin="0.288,0.501" TextChanged="txtTelegramm_TextChanged" MouseDoubleClick="txtTelegramm_MouseDoubleClick" MouseUp="txtTelegramm_MouseUp" KeyDown="txtTelegramm_KeyDown"/>
                     <TextBox x:Name="txtTelegrammHex" Grid.Row="1" Margin="98,5,0,5" TextWrapping="Wrap" RenderTransformOrigin="0.288,0.501" PreviewTextInput="txtTelegrammHex_PreviewTextInput" PreviewKeyDown="txtTelegrammHex_PreviewKeyDown" TextChanged="txtTelegrammHex_TextChanged" KeyDown="txtTelegrammHex_KeyDown" />
 
-                    <Button x:Name="cmdSend" Grid.Row="0" Margin="0,5" Content="Send" Click="cmdSend_Click" HorizontalAlignment="Right" Width="91" />
+                    <Button x:Name="cmdSend" Grid.Row="0" Margin="0,5" Content="Send" Click="cmdSend_Click" HorizontalAlignment="Right" Width="91" MouseDown="cmdSend_MouseDown" />
                     <Label x:Name="blLen" BorderBrush="Black" BorderThickness="1" Margin="0,5,96,5" HorizontalAlignment="Right" Width="69"  />
                 </Grid>
             </TabItem>

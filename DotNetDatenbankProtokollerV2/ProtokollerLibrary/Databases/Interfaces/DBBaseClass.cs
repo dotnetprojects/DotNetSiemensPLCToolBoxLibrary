@@ -15,6 +15,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
     {
         protected DatasetConfig datasetConfig;
 
+        protected StorageConfig storCfg = null;
+
         public virtual void Close()
         { }
 
@@ -24,6 +26,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         public virtual void Initiate(DatasetConfig dsConfig)
         {
             datasetConfig = dsConfig;
+            storCfg = datasetConfig.Storage;
             Initiate();
         }
 
@@ -31,7 +34,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
         {
             try
             {
-                Connect_To_Database(datasetConfig.Storage);
+                Connect_To_Database(storCfg);
                 CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
                 _initiated = true;
                 Logging.LogText(
