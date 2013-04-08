@@ -2019,7 +2019,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         {
             b[pos] = (byte)length;
             b[pos + 1] = length > value.Length ? (byte)value.Length : (byte)length;
-            Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length);
+            //Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length);
+            Array.Copy(Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage).GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length); 
         }
 
         /// <summary>
@@ -2031,7 +2032,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         /// <param name="length"></param>
         public static void putStringat(byte[] b, int pos, string value, int length)
         {
-            Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos, value.Length > length ? length : value.Length);
+            //Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos, value.Length > length ? length : value.Length);
+            Array.Copy(Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage).GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length); 
         }
 
         public static void putFloatat(byte[] b, int pos, Single value)
