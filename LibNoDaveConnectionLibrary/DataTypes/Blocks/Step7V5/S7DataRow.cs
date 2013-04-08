@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -61,12 +62,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address)
+        public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address, bool dontLookInTemp = false)
         {
-            for (int n = 0; n < startRow.Children.Count; n++)
+            IList<IDataRow> col = startRow.Children;
+            if (dontLookInTemp)
+                col = startRow.Children.Where(itm => itm.Name != "TEMP").ToList();
+
+            for (int n = 0; n < col.Count; n++)
             {
-                var s7DataRow = startRow.Children[n];
-                if (n == startRow.Children.Count - 1 || address < ((S7DataRow)startRow.Children[n + 1]).BlockAddress)
+                var s7DataRow = col[n];
+                if (n == col.Count - 1 || address < ((S7DataRow)col[n + 1]).BlockAddress)
                 {
                     if (((S7DataRow)s7DataRow).BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
                         return ((S7DataRow)s7DataRow);

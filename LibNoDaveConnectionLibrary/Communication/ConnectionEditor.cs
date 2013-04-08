@@ -186,6 +186,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             chkNetlinkReset.Checked = myConfig.NetLinkReset;
 
+            lstConnType.SelectedIndex = myConfig.PLCConnectionType;
+            lstConnTypeRouting.SelectedIndex = myConfig.RoutingPLCConnectionType;
+
             cmdUndo.Visible = false;
             cmdSave.Visible = false;
         }
@@ -239,6 +242,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             myConfig.Timeout = Convert.ToInt32(txtTimeout.Text);
             myConfig.TimeoutIPConnect = Convert.ToInt32(txtTimeoutIPConnect.Text);
+
+            myConfig.PLCConnectionType = lstConnType.SelectedIndex;
+            myConfig.RoutingPLCConnectionType = lstConnTypeRouting.SelectedIndex;
         }
 
         private void SaveSettings()
@@ -401,6 +407,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 txtRoutingSlot.Enabled = true;
                 txtRoutingSubnetFirst.Enabled = true;
                 txtRoutingSubnetSecond.Enabled = true;
+                lstConnTypeRouting.Enabled = true;
             }
             else
             {
@@ -414,6 +421,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 txtRoutingSlot.Enabled = false;
                 txtRoutingSubnetFirst.Enabled = false;
                 txtRoutingSubnetSecond.Enabled = false;
+                lstConnTypeRouting.Enabled = false;
             }
         }
 

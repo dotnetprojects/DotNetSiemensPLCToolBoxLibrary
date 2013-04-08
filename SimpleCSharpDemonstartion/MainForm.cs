@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -107,11 +108,25 @@ namespace SimpleCSharpDemonstration
         }
 
         private Connection aa, bb;
+
         private void button4_Click(object sender, EventArgs e)
         {
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
 
+
+            //var _tags = new List<PLCTag>();
+            //var j = 0;
+            //for (var i = 0; i < 96; i++)
+            //{
+            //    Console.WriteLine("DB1.DBD" + j.ToString(CultureInfo.InvariantCulture));
+            //    _tags.Add(new PLCTag("DB1.DBD" + j.ToString(CultureInfo.InvariantCulture))
+            //        {
+            //            TagDataType = TagDataType.Float
+            //        });
+            //    j += 4;
+            //}
+            //myConn.ReadValues(_tags, false);
 
             var tag = new PLCTag();
             tag.TagDataType = TagDataType.Word;

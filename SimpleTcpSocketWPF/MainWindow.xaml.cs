@@ -203,8 +203,15 @@ namespace SimpleTcpSocketWPF
             return retVal;
         }
 
+        private bool answer = true;
+
         void tcpFunc_DataRecieved(byte[] data, System.Net.Sockets.TcpClient arg2)
         {
+            if (answer)
+            {
+                    
+            }
+
             var tel = getEncoding().GetString(data);
 
             var wrt = tel;

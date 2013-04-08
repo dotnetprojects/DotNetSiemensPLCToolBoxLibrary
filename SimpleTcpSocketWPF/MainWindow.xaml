@@ -4,7 +4,7 @@
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
         xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
-        Title="TCP-Socket (Version 3.12)" Height="573" Width="812">
+        Title="TCP-Socket (Version 3.13)" Height="573" Width="812">
     <Window.Resources>
         <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
     </Window.Resources>
@@ -79,7 +79,9 @@
                     <CheckBox Content="Show Length" HorizontalAlignment="Left" Margin="11,36,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowRecievedLen}"/>
                     <CheckBox Content="Escape Special Chars" HorizontalAlignment="Left" Margin="11,53,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
                     <CheckBox Content="Log Data as Hex-Bytes" HorizontalAlignment="Left" Margin="11,70,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
-
+                    <CheckBox x:Name="chkAnswer" Content="Automaticly send an Answer Telegram" HorizontalAlignment="Left" Margin="13,206,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
+                    <CheckBox Content="Mirror Recieved Telegram" HorizontalAlignment="Left" Margin="13,226,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
+                    <TextBox Margin="13,246,535,164.6" Text="2;SR01MFC1" />
                 </Grid>
             </TabItem>
         </TabControl>

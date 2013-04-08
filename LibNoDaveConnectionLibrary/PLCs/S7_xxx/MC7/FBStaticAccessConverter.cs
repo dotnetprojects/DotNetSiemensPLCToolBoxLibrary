@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
@@ -23,8 +24,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 bool LargeAccess = false;
                 int add_adresse = 0;
 
-                var myPar = myFct.Parameter.Children.Where(itm => itm.Name != "TEMP");
-
                 foreach (var functionBlockRow in myFct.AWLCode)
                 {
                     if (functionBlockRow.Command == "TAR2")
@@ -41,7 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         string para = ((S7FunctionBlockRow) functionBlockRow).Parameter;
                         ByteBitAddress adr = new ByteBitAddress(para.Substring(10, para.Length - 11));
-                        var parRow = S7DataRow.GetDataRowWithAddress(((S7DataRow)myPar), adr);
+                        var parRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter, adr, true);
                         if (parRow != null)
                         {
                             byte[] tmp = ((S7FunctionBlockRow) functionBlockRow).MC7;

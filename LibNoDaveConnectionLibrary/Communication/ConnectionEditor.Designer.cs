@@ -87,6 +87,10 @@
             this.cmdTest = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
             this.tryConnect = new System.ComponentModel.BackgroundWorker();
+            this.lstConnType = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lstConnTypeRouting = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -410,6 +414,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lstConnTypeRouting);
             this.groupBox1.Controls.Add(this.chkRouting);
             this.groupBox1.Controls.Add(this.txtRoutingDestination);
             this.groupBox1.Controls.Add(this.txtRoutingRack);
@@ -468,11 +474,47 @@
             // 
             this.tryConnect.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tryConnect_DoWork);
             // 
+            // lstConnType
+            // 
+            this.lstConnType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstConnType, "lstConnType");
+            this.lstConnType.FormattingEnabled = true;
+            this.lstConnType.Items.AddRange(new object[] {
+            resources.GetString("lstConnType.Items"),
+            resources.GetString("lstConnType.Items1"),
+            resources.GetString("lstConnType.Items2")});
+            this.lstConnType.Name = "lstConnType";
+            this.lstConnType.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // lstConnTypeRouting
+            // 
+            this.lstConnTypeRouting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstConnTypeRouting, "lstConnTypeRouting");
+            this.lstConnTypeRouting.FormattingEnabled = true;
+            this.lstConnTypeRouting.Items.AddRange(new object[] {
+            resources.GetString("lstConnTypeRouting.Items"),
+            resources.GetString("lstConnTypeRouting.Items1"),
+            resources.GetString("lstConnTypeRouting.Items2")});
+            this.lstConnTypeRouting.Name = "lstConnTypeRouting";
+            this.lstConnTypeRouting.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
             // ConnectionEditor
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ControlBox = false;
+            this.Controls.Add(this.lstConnType);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.lblTimeoutIPConnectDescr);
             this.Controls.Add(this.lblTimeoutDescr);
@@ -588,5 +630,9 @@
         private System.Windows.Forms.Button cmdTest;
         private System.Windows.Forms.Label lblState;
         private System.ComponentModel.BackgroundWorker tryConnect;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox lstConnTypeRouting;
+        private System.Windows.Forms.ComboBox lstConnType;
+        private System.Windows.Forms.Label label3;
     }
 }
