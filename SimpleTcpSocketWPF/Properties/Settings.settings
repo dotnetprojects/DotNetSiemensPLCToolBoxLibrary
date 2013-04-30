@@ -29,11 +29,17 @@
     <Setting Name="RecieveFixedLength" Provider="PortableSettingsProvider" Roaming="true" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="LogDataAsHexBytes" Type="System.Boolean" Scope="User">
+    <Setting Name="LogDataAsHexBytes" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="LogHexAndAscii" Type="System.Boolean" Scope="User">
+    <Setting Name="LogHexAndAscii" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Name" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Color" Provider="PortableSettingsProvider" Roaming="true" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,0 +1,323 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:CustomWPFColorPicker="clr-namespace:CustomWPFColorPicker"
+    x:Class="CustomWPFColorPicker.ColorPickerControlView"
+    Height="Auto" Width="Auto" >
+    <UserControl.Resources>
+        <Style x:Key="ButtonFocusVisual1">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle SnapsToDevicePixels="true" Margin="3" Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="ButtonNormalBackgroundFill1" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+            <GradientStop Color="#FFF0F0EA" Offset="0.9"/>
+        </LinearGradientBrush>
+        <Style x:Key="ButtonFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle SnapsToDevicePixels="true" Margin="3" Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="ButtonNormalBackgroundFill" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#EDEDED" Offset="0"/>
+            <GradientStop Color="#EDEDED" Offset="0.9"/>
+        </LinearGradientBrush>
+        <Style x:Key="ColorButtonStyleFirstRow" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="buttonBorder" Width="13" Height="13"  BorderThickness="1" Margin="0" BorderBrush="#D0D0D0" Background="{TemplateBinding Background}">
+                            <Border x:Name="innerBorder" Width="12" Height="12" BorderThickness="0.5" BorderBrush="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderThickness" Value="2" TargetName="buttonBorder" />
+                                <Setter Property="BorderBrush" Value="#FEAB38" TargetName="buttonBorder" />
+                                <Setter Property="BorderBrush" Value="#FFFFFF" TargetName="innerBorder" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ColorButtonStyleSecondRow" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="buttonBorder" Width="13" Height="13"  BorderThickness="1,1,1,0" Margin="0" BorderBrush="#D0D0D0" Background="{TemplateBinding Background}"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderThickness" Value="2" TargetName="buttonBorder" />
+                                <Setter Property="BorderBrush" Value="#FEAB38" TargetName="buttonBorder" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ColorButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="buttonBorder" Width="13" Height="13"  BorderThickness="1,0,1,0" Margin="0" BorderBrush="#D0D0D0" Background="{TemplateBinding Background}"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderThickness" Value="2" TargetName="buttonBorder" />
+                                <Setter Property="BorderBrush" Value="#FEAB38" TargetName="buttonBorder" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="toggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual1}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill1}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="buttonBorder" Height="Auto" Width="Auto">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                              Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" Width="36.625"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                <Setter Property="BorderThickness" Value="1.5,1.5,0,0" TargetName="buttonBorder" />
+                                <Setter Property="BorderBrush" Value="DarkGray" TargetName="buttonBorder" />
+                                <Setter Property="Background" Value="LightGray" TargetName="buttonBorder" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="morecolorgradientbrush" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="Orange" Offset="0.1"/>
+            <GradientStop Color="White" Offset=".9"/>
+        </LinearGradientBrush>
+        <Style x:Key="moreColorsLabel" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource morecolorgradientbrush}"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Green"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    	<LinearGradientBrush x:Key="ButtonNormalBackgroundFill2" EndPoint="0.5,1" StartPoint="0.5,0">
+    		<GradientStop Color="#FFFFFFFF" Offset="0"/>
+    		<GradientStop Color="#FFF0F0EA" Offset="0.9"/>
+    	</LinearGradientBrush>
+    	<SolidColorBrush x:Key="ButtonBorder" Color="#FF003C74"/>
+    	<Style x:Key="BorderLessButtonStyle" TargetType="{x:Type Button}">
+    		<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+    		<Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+    		<Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
+    		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+    		<Setter Property="VerticalContentAlignment" Value="Center"/>
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="{x:Type Button}">
+					<Border Width="196" Height="24" Background="#DDE7EE"  BorderThickness="0,0,0,0" BorderBrush="#BFBFBF">
+                            
+					<DockPanel Width="196" >
+                                    <Label SnapsToDevicePixels="True" FontFamily="Arial" Foreground="DarkBlue" FontSize="11" FontWeight="Bold" VerticalContentAlignment="Center" 
+                                                VerticalAlignment="Center" Style="{StaticResource moreColorsLabel}" >
+                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                                    </Label>
+                                </DockPanel>
+    						</Border>
+    					<ControlTemplate.Triggers>
+    						<Trigger Property="IsEnabled" Value="false">
+    							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+    						</Trigger>
+    					</ControlTemplate.Triggers>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    </UserControl.Resources>    
+    <Grid>
+        <ToggleButton 
+            x:Name="ColorButton" 
+            Background="Transparent" 
+            Style="{StaticResource toggleButtonStyle}"
+            BorderThickness="0.5,0.5,0.5,0.5" 
+            BorderBrush="#FF000000" 
+            Width="15" Height="15" Padding="0" 
+            HorizontalAlignment="Left" VerticalAlignment="Top" 
+            Margin="2,0,0,0">
+            <Border 
+                x:Name="ColorBorder" 
+                Focusable="False" 
+                Background="{Binding Path=CurrentBrush}"
+                Height="15" BorderThickness="1,1,1,1" BorderBrush="#b4b4b5" Width="15">
+                <Border Width="7" Height="7" BorderThickness="0,0,0,0" BorderBrush="{x:Null}" Background="#FFFFFFFF" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Path Width="4.5" Height="3.839" Fill="#FF000000" Stretch="Fill" Stroke="#FF000000" Data="M-0.024898728,-0.48261954 L3.4753354,-0.47870237 1.7095923,2.3573258 z"/>
+                </Border>
+            </Border>
+        </ToggleButton>
+        <Popup x:Name="popup" 
+               StaysOpen="False" 
+               Placement="Bottom" 
+               AllowsTransparency="True" 
+               Focusable="True"
+               PopupAnimation="Fade" 
+               SnapsToDevicePixels="True"  
+               PlacementTarget="{Binding ElementName=ColorButton}"  
+               IsOpen="{Binding Path=IsChecked, ElementName=ColorButton}">
+            <Border BorderThickness="0" BorderBrush="DarkGray">
+                <Grid Background="#FFFFFFFF">
+                    <Border BorderThickness="1" BorderBrush="#999999" Background="White">
+                        <StackPanel Orientation="Vertical" Background="#FFFFFFFF">
+                            <Border Width="196" Height="23" Background="#DDE7EE"  BorderThickness="0,0,0,2" BorderBrush="#BFBFBF">
+                                <DockPanel Width="196" >
+                                    <Label SnapsToDevicePixels="True" FontFamily="Arial" Foreground="DarkBlue" FontSize="11" FontWeight="Bold" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Theme Colors"/>
+                                </DockPanel>
+                            </Border>
+                            <StackPanel SnapsToDevicePixels="True" x:Name="FirstRow" Margin="2,0,0,0" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#FFFFFF" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#FFFFFF" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#000000" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#000000" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#EEECE1" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#EEECE1" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#1f497d" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#1f497d" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#4f81bd" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#4f81bd" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#c0504d" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#c0504d" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#9bbb59" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#9bbb59" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#8064a2" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#8064a2" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#4bacc6" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#4bacc6" Margin="3,4,3,4" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#f79646" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#f79646" Margin="3,4,3,4" />
+                            </StackPanel>
+                            <StackPanel SnapsToDevicePixels="True" x:Name="SecondRow" Margin="2,2,0,0" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#f2f2f2" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#f2f2f2" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#7f7f7f" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#7f7f7f" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#ddd9c3" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ddd9c3" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#c6d9f0" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#c6d9f0" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#dbe5f1" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#dbe5f1" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#f2dcdb" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#f2dcdb" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#ebf1dd" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ebf1dd" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#e5e0ec" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#e5e0ec" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#dbeef3" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#dbeef3" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleSecondRow}" Background="#fdeada" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#fdeada" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <StackPanel SnapsToDevicePixels="True" Margin="2,0,0,0" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#d8d8d8" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#d8d8d8" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#595959" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#595959" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#c4bd97" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#c4bd97" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#8db3e2" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#8db3e2" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#b8cce4" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#b8cce4" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#e5b9b7" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#e5b9b7" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#d7e3bc" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#d7e3bc" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#ccc1d9" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ccc1d9" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#b7dde8" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#b7dde8" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#fbd5b5" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#fbd5b5" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <StackPanel SnapsToDevicePixels="True" Margin="2,0,0,0" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#bfbfbf" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#bfbfbf" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#3f3f3f" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#3f3f3f" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#938953" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#938953" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#548dd4" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#548dd4" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#95b3d7" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#95b3d7" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#d99694" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#d99694" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#c3d69b" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#c3d69b" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#b2a2c7" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#b2a2c7" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#92cddc" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#92cddc" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#fac08f" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#fac08f" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <StackPanel SnapsToDevicePixels="True" Margin="2,0,0,0" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#a5a5a5" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#a5a5a5" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#262626" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#262626" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#494429" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#494429" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#17365d" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#17365d" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#366092" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#366092" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#953734" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#953734" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#76923c" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#76923c" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#5f497a" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#5f497a" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#31859b" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#31859b" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#e36c09" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#e36c09" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <StackPanel SnapsToDevicePixels="True" x:Name="ThirdRow" Margin="2,0,0,3" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#7f7f7f" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#7f7f7f" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#0c0c0c" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#0c0c0c" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#1d1b10" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#1d1b10" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#0f243e" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#0f243e" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#244061" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#244061" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#632423" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#632423" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#4f6128" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#4f6128" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#3f3151" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#3f3151" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#205867" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#205867" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyle}" Background="#974806" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#974806" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <Border Width="196" Height="23" Background="#DDE7EE"  BorderThickness="0,0,0,2" BorderBrush="#BFBFBF">
+                                <DockPanel Width="196" >
+                                    <Label SnapsToDevicePixels="True" FontFamily="Arial" Foreground="DarkBlue" FontSize="11" FontWeight="Bold" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="Standard Colors"/>
+                                </DockPanel>
+                            </Border>
+                            <StackPanel SnapsToDevicePixels="True" x:Name="LastRow" Margin="2,1,0,2" Orientation="Horizontal">
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#c00000" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#c00000" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#ff0000" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ff0000" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#ffc000" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ffc000" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#ffff00" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#ffff00" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#92d050" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#92d050" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#00b050" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#00b050" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#00b0f0" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#00b0f0" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#0070c0" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#0070c0" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#002060" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#002060" Margin="3,0,3,0" />
+                                <Button Click="Button_Click"  Style="{StaticResource ColorButtonStyleFirstRow}" Background="#7030a0" Command="{x:Static CustomWPFColorPicker:ColorPickerControlView.SelectColorCommand}" CommandParameter="#7030a0" Margin="3,0,3,0" />
+                            </StackPanel>
+                            <Button Click="MoreColorsClicked" Content="More Colors..." Style="{DynamicResource BorderLessButtonStyle}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

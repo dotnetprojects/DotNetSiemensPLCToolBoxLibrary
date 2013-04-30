@@ -411,6 +411,36 @@ namespace Kopplungstester
 
         private void dtaSendTabelle_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            var col = dtaSendTabelle.Columns[e.ColumnIndex];
+            if (col.Name == "Wert_hex")
+            {
+                string txthex = "";
+                string txt = "";
+                var wrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
+                for (int i = 0; i < wrt.Length-1; i += 2)
+                {
+                    txthex += wrt[i] + wrt[i + 1] + " ";
+                    var nr =
+                        Convert.ToByte(int.Parse("" + wrt[i] + wrt[i + 1],
+                            System.Globalization.NumberStyles.HexNumber));
+                    txt += Encoding.GetEncoding(437).GetString(new byte[] {nr});
+                }
+                dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = txthex;
+                dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex - 1].Value = txt;
+            }
+            else if (col.Name == "Wert")
+            {
+                string txthex = "";
+                string txt = "";
+                var wrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
+                for (int i = 0; i < wrt.Length; i++)
+                {
+                    var bt = Encoding.GetEncoding(437).GetBytes(wrt[i].ToString());
+                    txthex += bt[0].ToString("X").PadLeft(2,'0') + " ";                    
+                }
+                dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = txthex;
+            }
+
             CountBytes();
         }
 
@@ -468,7 +498,7 @@ namespace Kopplungstester
             quittConf.LengthSequenceNumber = Convert.ToInt32(Settings.Default.SequenceNumberLength);
             quittConf.AutomaticQuitt = Settings.Default.AutomaticQuitt;
 
-            myTCP_send = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.SendConnectionActive ? IPAddress.Parse(Settings.Default.IPAddress) : null, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive);
+            myTCP_send = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.SendConnectionActive ? IPAddress.Parse(Settings.Default.IpAddress) : null, Convert.ToInt32(Settings.Default.SendPort), Settings.Default.SendConnectionActive);
             myTCP_send.DataRecieved += myTCP_TelegrammRecievedSend;
             myTCP_send.ConnectionEstablished += (c) => myTCP_ConnectionEstablished(1);
             myTCP_send.ConnectionClosed += (c) => myTCP_ConnectionClosed(1);
@@ -477,7 +507,7 @@ namespace Kopplungstester
 
             if (!Settings.Default.UseOnlyOneConnection)
             {
-                myTCP_rec = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.RecieveConnectionActive ? IPAddress.Parse(Settings.Default.IPAddress) : null, Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive);
+                myTCP_rec = new TCPFunctionsAsync(SynchronizationContext.Current, Settings.Default.RecieveConnectionActive ? IPAddress.Parse(Settings.Default.IpAddress) : null, Convert.ToInt32(Settings.Default.RecievePort), Settings.Default.RecieveConnectionActive);
                 myTCP_rec.DataRecieved += myTCP_TelegrammRecievedRecieve;
                 myTCP_rec.ConnectionEstablished += (c) => myTCP_ConnectionEstablished(2);
                 myTCP_rec.ConnectionClosed += (c) => myTCP_ConnectionClosed(2);

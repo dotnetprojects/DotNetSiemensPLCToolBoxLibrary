@@ -252,7 +252,7 @@ namespace SimpleTcpSocketWPF
                     {
                         var akTel = wrt;
                         if (Properties.Settings.Default.EscapeSpecialChars)
-                            akTel = escape(akTel);
+                            akTel = escape(akTel, true);
                         myFile.Write("Rec  : " + add + akTel + Environment.NewLine);
                     }                    
                     myFile.Close();
@@ -267,7 +267,7 @@ namespace SimpleTcpSocketWPF
             {
                 var akTel = tel;
                 if (Properties.Settings.Default.EscapeSpecialChars)
-                    akTel = escape(akTel);
+                    akTel = escape(akTel, true);
                 recieveText = add + akTel + Environment.NewLine + Environment.NewLine + recieveText;
                 recieveText = add + wrt + Environment.NewLine + recieveText;
             }
@@ -275,7 +275,7 @@ namespace SimpleTcpSocketWPF
             {
                 var akTel = wrt;
                 if (Properties.Settings.Default.EscapeSpecialChars)
-                    akTel = escape(akTel);
+                    akTel = escape(akTel, true);
                 recieveText = add + akTel + Environment.NewLine + recieveText;
             }   
 
@@ -324,12 +324,25 @@ namespace SimpleTcpSocketWPF
             return text.Replace("\\f", "\f").Replace("\\v", "\v").Replace("\\b", "\b").Replace("\\0", "\0").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\\\", "\\");           
         }
 
-        private string escape(string text)
+        private string escape(string text, bool forAvalonEdit =false)
         {
-            text = text.Replace("\\", "\\\\").Replace("\f", "\\f").Replace("\v", "\\v").Replace("\b", "\\b").Replace("\0", "\\0").Replace("\t", "\\t").Replace("\r", "\\r").Replace("\n", "\\n");
-            for (int n = 0; n < 20; n++)
+            text = text.Replace("\\", "\\\\");
+            text = text.Replace("\r", "\\r").Replace("\n", "\\n");
+            text = text.Replace("\u00ff", "\\u00ff");
+            if (!forAvalonEdit)
             {
-                text = text.Replace("" + (char)n + "", "\\u" + n.ToString("X").PadLeft(4, '0'));
+                text =
+                    text
+                        .Replace("\f", "\\f")
+                        .Replace("\v", "\\v")
+                        .Replace("\b", "\\b")
+                        .Replace("\0", "\\0")
+                        .Replace("\t", "\\t");
+                for (int n = 0; n < 20; n++)
+                {
+                    text = text.Replace("" + (char) n + "", "\\u" + n.ToString("X").PadLeft(4, '0'));
+                }
+                text = text.Replace("\u007f", "\\u007f");                
             }
             return text;
         }
@@ -374,7 +387,7 @@ namespace SimpleTcpSocketWPF
             {
                 var akTel = wrt;
                 if (Properties.Settings.Default.EscapeSpecialChars)
-                    akTel = escape(akTel);
+                    akTel = escape(akTel, true);
                 txtSended.Text = add + akTel + Environment.NewLine + txtSended.Text;
             }   
             
@@ -523,12 +536,12 @@ namespace SimpleTcpSocketWPF
             {
 
                 List<byte> bytes = new List<byte>();
-                
+
                 keywasPressed = false;
-                
+
                 if (idx == txtTelegrammHex.Text.Length && e.Changes.First().RemovedLength == 0)
                 {
-                    if ((idx + 1) % 3 == 0)
+                    if ((idx + 1)%3 == 0)
                     {
                         txtTelegrammHex.Text += " ";
                         txtTelegrammHex.CaretIndex = idx + 1;
@@ -544,20 +557,22 @@ namespace SimpleTcpSocketWPF
                     {
                         if (parseTl.Length > n + 1)
                         {
-                            var wrt = (int.Parse("" + parseTl[n] + parseTl[n + 1], System.Globalization.NumberStyles.HexNumber));
-                            bytes.Add((byte)wrt);
+                            var wrt =
+                                (int.Parse("" + parseTl[n] + parseTl[n + 1], System.Globalization.NumberStyles.HexNumber));
+                            bytes.Add((byte) wrt);
                             //txt = txt + (char)wrt;
                         }
                         else if (parseTl.Length > n)
                         {
                             var wrt = (int.Parse("" + parseTl[n], System.Globalization.NumberStyles.HexNumber));
-                            bytes.Add((byte)wrt);
+                            bytes.Add((byte) wrt);
                             //txt = txt + (char)wrt;
                         }
                     }
                 }
                 catch (Exception)
-                { }
+                {
+                }
 
                 txt = getEncoding().GetString(bytes.ToArray());
 
@@ -566,8 +581,21 @@ namespace SimpleTcpSocketWPF
                     txt = this.escape(txt);
                 }
                 txtTelegramm.Text = txt;
-            }
 
+                blLen.Content = txtTelegramm.Text.Length.ToString();
+
+                if (Properties.Settings.Default.EscapeSpecialChars)
+                {
+                    try
+                    {
+                        var t2 = unescape(txtTelegramm.Text);
+                        blLen.Content = t2.Length.ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }
             if (txtTelegrammHex.Text != txtTelegrammHex.Text.ToUpper())
             {
                 txtTelegrammHex.Text = txtTelegrammHex.Text.ToUpper();
@@ -593,6 +621,15 @@ namespace SimpleTcpSocketWPF
                     this.cmdSend_Click(sender, null);
                 }
             }
+        }
+
+        private void cmdClear_Click(object sender, RoutedEventArgs e)
+        {
+            txtRecieve.Text = "";
+            txtRecieve2.Text = "";
+            txtSended.Text = "";
+            recieveText = "";
+            sendedTele.Clear();
         }
     }
 }

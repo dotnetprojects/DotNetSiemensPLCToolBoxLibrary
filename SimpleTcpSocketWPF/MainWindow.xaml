@@ -4,11 +4,12 @@
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
         xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
         xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
-        Title="TCP-Socket (Version 3.13)" Height="573" Width="812">
+        xmlns:customWpfColorPicker="clr-namespace:CustomWPFColorPicker"
+        Title="TCP-Socket (Version 3.16)" Height="573" Width="812">
     <Window.Resources>
         <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
     </Window.Resources>
-    <Grid Background="#FFE4E4E4" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
+    <Grid Background="{Binding ElementName=colSel, Path=CurrentBrush}" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
         <TextBox Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter}}" HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Height="22" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
         <Label Content="IP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="26"/>
 
@@ -81,7 +82,11 @@
                     <CheckBox Content="Log Data as Hex-Bytes" HorizontalAlignment="Left" Margin="11,70,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
                     <CheckBox x:Name="chkAnswer" Content="Automaticly send an Answer Telegram" HorizontalAlignment="Left" Margin="13,206,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
                     <CheckBox Content="Mirror Recieved Telegram" HorizontalAlignment="Left" Margin="13,226,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
-                    <TextBox Margin="13,246,535,164.6" Text="2;SR01MFC1" />
+                    <TextBox Margin="13,246,0,0" Height="20" Text="2;SR01MFC1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="232" />
+                    <Label Content="Color:" HorizontalAlignment="Left" Margin="13,298,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="2.714,1.808"/>
+                    <customWpfColorPicker:ColorPickerControlView x:Name="colSel" Height="20" Margin="68,303,0,0" CurrentColor="{Binding Color}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32" />
+                    <Label Content="Name:" HorizontalAlignment="Left" Margin="13,328,0,0" VerticalAlignment="Top" Width="55" RenderTransformOrigin="2.714,1.808"/>
+                    <TextBox Name="txtName" Margin="68,332,0,0" Height="20" Text="{Binding Name}" HorizontalAlignment="Left" Width="232" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
         </TabControl>
@@ -91,6 +96,9 @@
         <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="512,13,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
         <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
         <StatusBar HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom">
+            <StatusBarItem DockPanel.Dock="Left">
+                <TextBlock Text="{Binding Text, ElementName=txtName}" />
+            </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Right">
                 <TextBlock Name="lblLogFile" />
             </StatusBarItem>
@@ -100,6 +108,7 @@
         </StatusBar>
         <Label Content="all" BorderBrush="Black" BorderThickness="1" HorizontalContentAlignment="Center"  Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter FalseValue=Visible, TrueValue=Hidden}}" VerticalContentAlignment="Center" Padding="0"  HorizontalAlignment="Left" Margin="41,14,0,0" VerticalAlignment="Top" Width="125" Height="22"/>
         <CheckBox Visibility="{Binding LogDataAsHexBytes, Converter={converters:BoolToVisibilityConverter}}" Content="Hex &amp; Ascii" HorizontalAlignment="Left" Margin="637,54,-13,0" VerticalAlignment="Top" IsChecked="{Binding LogHexAndAscii}"/>
+        <Button x:Name="cmdClear" Content="Clear" HorizontalAlignment="Left" Margin="718,49,0,0" VerticalAlignment="Top" Width="78" Height="24" Click="cmdClear_Click" />
 
     </Grid>
 </Window>

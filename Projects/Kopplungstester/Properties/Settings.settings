@@ -2,49 +2,49 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Kopplungstester.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SequenceNumberPosition" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
+    <Setting Name="SequenceNumberPosition" Provider="PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
-    <Setting Name="SequenceNumberLength" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
+    <Setting Name="SequenceNumberLength" Provider="PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
-    <Setting Name="SendPort" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
+    <Setting Name="SendPort" Provider="PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">2001</Value>
     </Setting>
-    <Setting Name="RecievePort" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
+    <Setting Name="RecievePort" Provider="PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">2002</Value>
     </Setting>
-    <Setting Name="SendConnectionActive" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="SendConnectionActive" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="RecieveConnectionActive" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="RecieveConnectionActive" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="UseOnlyOneConnection" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="UseOnlyOneConnection" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Setting" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="Setting" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="QuittData" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;TCPFunctions.QuittConfig.QuittText&gt;" Scope="User">
+    <Setting Name="QuittData" Provider="PortableSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;TCPFunctions.QuittConfig.QuittText&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SendeTelegramm" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="SendeTelegramm" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RecieveTelegramm" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="RecieveTelegramm" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="IPAddress" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="IpAddress" Provider="PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.1.100</Value>
     </Setting>
-    <Setting Name="AutomaticQuitt" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="AutomaticQuitt" Provider="PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Laufnummer" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
+    <Setting Name="Laufnummer" Provider="PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="SendDataList" Provider="Kopplungstester.CustomSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;Kopplungstester.MainForm.storeSendData&gt;" Scope="User">
+    <Setting Name="SendDataList" Provider="PortableSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;Kopplungstester.MainForm.storeSendData&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
