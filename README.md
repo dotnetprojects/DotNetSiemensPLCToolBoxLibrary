@@ -29,3 +29,13 @@ Credits
 Thanks go to Human (SPS-Forum) for his work on MC7toAWL and Thomas_V2 (SPS-Forum) for Infos about linkhrs.lnk
 
 And to Brian Duke for his DBF parsing Code: http://www.codeproject.com/KB/bugs/LoadDBF.aspx
+
+
+
+
+
+
+
+
+
+Step 5, Step 7, S7-300, S7-400 are Trademarks of Siemens
