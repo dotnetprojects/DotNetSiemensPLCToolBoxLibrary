@@ -60,6 +60,7 @@ namespace Kopplungstester
             this.Bezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Laenge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Wert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wert_hex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.dtaSendSendTable = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,6 +78,8 @@ namespace Kopplungstester
             this.colEmpfWert = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.faTabStripItemSettings = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.cmdDelTele = new System.Windows.Forms.Button();
             this.cmdEditQuittFields = new System.Windows.Forms.Button();
@@ -113,7 +116,6 @@ namespace Kopplungstester
             this.picConnection2 = new System.Windows.Forms.PictureBox();
             this.cmdDisconnect = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.Wert_hex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.faTabStrip1.SuspendLayout();
             this.faTabStripItemInfo.SuspendLayout();
             this.faTabStripItemSend.SuspendLayout();
@@ -149,6 +151,7 @@ namespace Kopplungstester
             ((System.ComponentModel.ISupportInitialize)(this.dtaEmpfangstelegrammAufgeschluesselt)).BeginInit();
             this.faTabStripItemSettings.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSequenceNumberLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSequenceNumberPosition)).BeginInit();
@@ -172,7 +175,7 @@ namespace Kopplungstester
             this.faTabStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.faTabStrip1.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.faTabStrip1.Location = new System.Drawing.Point(4, 66);
-            this.faTabStrip1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.faTabStrip1.Margin = new System.Windows.Forms.Padding(4);
             this.faTabStrip1.Name = "faTabStrip1";
             this.faTabStrip1.SelectedIndex = 0;
             this.faTabStrip1.Size = new System.Drawing.Size(1195, 700);
@@ -184,7 +187,7 @@ namespace Kopplungstester
             this.faTabStripItemInfo.Controls.Add(this.label10);
             this.faTabStripItemInfo.Controls.Add(this.label9);
             this.faTabStripItemInfo.Location = new System.Drawing.Point(4, 26);
-            this.faTabStripItemInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.faTabStripItemInfo.Margin = new System.Windows.Forms.Padding(4);
             this.faTabStripItemInfo.Name = "faTabStripItemInfo";
             this.faTabStripItemInfo.Size = new System.Drawing.Size(1187, 670);
             this.faTabStripItemInfo.TabIndex = 3;
@@ -214,7 +217,7 @@ namespace Kopplungstester
             // 
             this.faTabStripItemSend.Controls.Add(this.tableLayoutPanel1);
             this.faTabStripItemSend.Location = new System.Drawing.Point(4, 26);
-            this.faTabStripItemSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.faTabStripItemSend.Margin = new System.Windows.Forms.Padding(4);
             this.faTabStripItemSend.Name = "faTabStripItemSend";
             this.faTabStripItemSend.Size = new System.Drawing.Size(1187, 670);
             this.faTabStripItemSend.TabIndex = 0;
@@ -230,7 +233,7 @@ namespace Kopplungstester
             this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -244,7 +247,7 @@ namespace Kopplungstester
             this.cmdClearSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdClearSend.Location = new System.Drawing.Point(991, 635);
-            this.cmdClearSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdClearSend.Margin = new System.Windows.Forms.Padding(4);
             this.cmdClearSend.Name = "cmdClearSend";
             this.cmdClearSend.Size = new System.Drawing.Size(192, 31);
             this.cmdClearSend.TabIndex = 5;
@@ -263,7 +266,7 @@ namespace Kopplungstester
             this.tableLayoutPanel3.Controls.Add(this.panel4, 0, 4);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(991, 4);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 5;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
@@ -288,7 +291,7 @@ namespace Kopplungstester
             // cmdSend
             // 
             this.cmdSend.Location = new System.Drawing.Point(4, 4);
-            this.cmdSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSend.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSend.Name = "cmdSend";
             this.cmdSend.Size = new System.Drawing.Size(184, 29);
             this.cmdSend.TabIndex = 6;
@@ -312,7 +315,7 @@ namespace Kopplungstester
             this.panel2.Controls.Add(this.numericUpDown1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(4, 41);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(184, 66);
             this.panel2.TabIndex = 10;
@@ -331,7 +334,7 @@ namespace Kopplungstester
             // 
             this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "Laufnummer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numericUpDown1.Location = new System.Drawing.Point(24, 30);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(136, 24);
             this.numericUpDown1.TabIndex = 0;
@@ -342,7 +345,7 @@ namespace Kopplungstester
             this.panel4.Controls.Add(this.label8);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(4, 316);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(184, 303);
             this.panel4.TabIndex = 11;
@@ -371,7 +374,7 @@ namespace Kopplungstester
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(4, 4);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -392,7 +395,7 @@ namespace Kopplungstester
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -417,7 +420,7 @@ namespace Kopplungstester
             this.tableLayoutPanel5.Controls.Add(this.panel3, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -430,7 +433,7 @@ namespace Kopplungstester
             this.lstStoredSenddata.FormattingEnabled = true;
             this.lstStoredSenddata.ItemHeight = 17;
             this.lstStoredSenddata.Location = new System.Drawing.Point(4, 4);
-            this.lstStoredSenddata.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstStoredSenddata.Margin = new System.Windows.Forms.Padding(4);
             this.lstStoredSenddata.Name = "lstStoredSenddata";
             this.lstStoredSenddata.Size = new System.Drawing.Size(838, 85);
             this.lstStoredSenddata.TabIndex = 0;
@@ -441,7 +444,7 @@ namespace Kopplungstester
             this.panel3.Controls.Add(this.cmdRemoveSendeTele);
             this.panel3.Controls.Add(this.cmdAddSendeTele);
             this.panel3.Location = new System.Drawing.Point(850, 4);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(125, 85);
             this.panel3.TabIndex = 1;
@@ -449,7 +452,7 @@ namespace Kopplungstester
             // cmdRemoveSendeTele
             // 
             this.cmdRemoveSendeTele.Location = new System.Drawing.Point(11, 50);
-            this.cmdRemoveSendeTele.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdRemoveSendeTele.Margin = new System.Windows.Forms.Padding(4);
             this.cmdRemoveSendeTele.Name = "cmdRemoveSendeTele";
             this.cmdRemoveSendeTele.Size = new System.Drawing.Size(101, 27);
             this.cmdRemoveSendeTele.TabIndex = 0;
@@ -460,7 +463,7 @@ namespace Kopplungstester
             // cmdAddSendeTele
             // 
             this.cmdAddSendeTele.Location = new System.Drawing.Point(11, 16);
-            this.cmdAddSendeTele.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdAddSendeTele.Margin = new System.Windows.Forms.Padding(4);
             this.cmdAddSendeTele.Name = "cmdAddSendeTele";
             this.cmdAddSendeTele.Size = new System.Drawing.Size(101, 27);
             this.cmdAddSendeTele.TabIndex = 0;
@@ -479,7 +482,7 @@ namespace Kopplungstester
             this.Wert_hex});
             this.dtaSendTabelle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSendTabelle.Location = new System.Drawing.Point(0, 0);
-            this.dtaSendTabelle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtaSendTabelle.Margin = new System.Windows.Forms.Padding(4);
             this.dtaSendTabelle.Name = "dtaSendTabelle";
             this.dtaSendTabelle.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtaSendTabelle.Size = new System.Drawing.Size(979, 277);
@@ -502,11 +505,16 @@ namespace Kopplungstester
             this.Wert.HeaderText = "Wert";
             this.Wert.Name = "Wert";
             // 
+            // Wert_hex
+            // 
+            this.Wert_hex.HeaderText = "Wert (HEX)";
+            this.Wert_hex.Name = "Wert_hex";
+            // 
             // splitContainer4
             // 
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer4.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -531,7 +539,7 @@ namespace Kopplungstester
             this.dataGridViewTextBoxColumn1});
             this.dtaSendSendTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSendSendTable.Location = new System.Drawing.Point(0, 0);
-            this.dtaSendSendTable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtaSendSendTable.Margin = new System.Windows.Forms.Padding(4);
             this.dtaSendSendTable.Name = "dtaSendSendTable";
             this.dtaSendSendTable.ReadOnly = true;
             this.dtaSendSendTable.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -554,7 +562,7 @@ namespace Kopplungstester
             this.colSendQuittText});
             this.dtaSendQuittTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSendQuittTable.Location = new System.Drawing.Point(0, 0);
-            this.dtaSendQuittTable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtaSendQuittTable.Margin = new System.Windows.Forms.Padding(4);
             this.dtaSendQuittTable.Name = "dtaSendQuittTable";
             this.dtaSendQuittTable.ReadOnly = true;
             this.dtaSendQuittTable.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -571,7 +579,7 @@ namespace Kopplungstester
             // 
             this.faTabStripItemRecieve.Controls.Add(this.tableLayoutPanel2);
             this.faTabStripItemRecieve.Location = new System.Drawing.Point(4, 26);
-            this.faTabStripItemRecieve.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.faTabStripItemRecieve.Margin = new System.Windows.Forms.Padding(4);
             this.faTabStripItemRecieve.Name = "faTabStripItemRecieve";
             this.faTabStripItemRecieve.Size = new System.Drawing.Size(1187, 670);
             this.faTabStripItemRecieve.TabIndex = 1;
@@ -586,7 +594,7 @@ namespace Kopplungstester
             this.tableLayoutPanel2.Controls.Add(this.splitContainer1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -598,7 +606,7 @@ namespace Kopplungstester
             this.kryptonButton2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.kryptonButton2.Location = new System.Drawing.Point(991, 4);
-            this.kryptonButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.kryptonButton2.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonButton2.Name = "kryptonButton2";
             this.kryptonButton2.Size = new System.Drawing.Size(192, 49);
             this.kryptonButton2.TabIndex = 4;
@@ -610,7 +618,7 @@ namespace Kopplungstester
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(4, 4);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -635,7 +643,7 @@ namespace Kopplungstester
             this.colEmpf});
             this.grdEmpfang.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grdEmpfang.Location = new System.Drawing.Point(0, 0);
-            this.grdEmpfang.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grdEmpfang.Margin = new System.Windows.Forms.Padding(4);
             this.grdEmpfang.Name = "grdEmpfang";
             this.grdEmpfang.ReadOnly = true;
             this.grdEmpfang.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -660,7 +668,7 @@ namespace Kopplungstester
             this.colEmpfWert});
             this.dtaEmpfangstelegrammAufgeschluesselt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaEmpfangstelegrammAufgeschluesselt.Location = new System.Drawing.Point(0, 0);
-            this.dtaEmpfangstelegrammAufgeschluesselt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtaEmpfangstelegrammAufgeschluesselt.Margin = new System.Windows.Forms.Padding(4);
             this.dtaEmpfangstelegrammAufgeschluesselt.Name = "dtaEmpfangstelegrammAufgeschluesselt";
             this.dtaEmpfangstelegrammAufgeschluesselt.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtaEmpfangstelegrammAufgeschluesselt.Size = new System.Drawing.Size(979, 396);
@@ -688,7 +696,7 @@ namespace Kopplungstester
             this.faTabStripItemSettings.Controls.Add(this.groupBox2);
             this.faTabStripItemSettings.Controls.Add(this.groupBox1);
             this.faTabStripItemSettings.Location = new System.Drawing.Point(4, 26);
-            this.faTabStripItemSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.faTabStripItemSettings.Margin = new System.Windows.Forms.Padding(4);
             this.faTabStripItemSettings.Name = "faTabStripItemSettings";
             this.faTabStripItemSettings.Size = new System.Drawing.Size(1187, 670);
             this.faTabStripItemSettings.TabIndex = 2;
@@ -696,19 +704,44 @@ namespace Kopplungstester
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.numericUpDown2);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.cmdDelTele);
             this.groupBox4.Controls.Add(this.cmdEditQuittFields);
             this.groupBox4.Controls.Add(this.lstQuitt);
             this.groupBox4.Controls.Add(this.chkAutoQuitt);
             this.groupBox4.Location = new System.Drawing.Point(545, 22);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox4.Size = new System.Drawing.Size(235, 286);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox4.Size = new System.Drawing.Size(235, 329);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Quittungs Parameter";
+            // 
+            // label11
+            // 
+            this.label11.Location = new System.Drawing.Point(8, 268);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(219, 25);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "Max Länge:";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "MaxLengthQuitt", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.numericUpDown2.Location = new System.Drawing.Point(37, 297);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(188, 24);
+            this.numericUpDown2.TabIndex = 17;
             // 
             // label5
             // 
@@ -723,7 +756,7 @@ namespace Kopplungstester
             // cmdDelTele
             // 
             this.cmdDelTele.Location = new System.Drawing.Point(8, 171);
-            this.cmdDelTele.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdDelTele.Margin = new System.Windows.Forms.Padding(4);
             this.cmdDelTele.Name = "cmdDelTele";
             this.cmdDelTele.Size = new System.Drawing.Size(77, 27);
             this.cmdDelTele.TabIndex = 12;
@@ -734,7 +767,7 @@ namespace Kopplungstester
             // cmdEditQuittFields
             // 
             this.cmdEditQuittFields.Location = new System.Drawing.Point(149, 171);
-            this.cmdEditQuittFields.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdEditQuittFields.Margin = new System.Windows.Forms.Padding(4);
             this.cmdEditQuittFields.Name = "cmdEditQuittFields";
             this.cmdEditQuittFields.Size = new System.Drawing.Size(77, 27);
             this.cmdEditQuittFields.TabIndex = 12;
@@ -747,7 +780,7 @@ namespace Kopplungstester
             this.lstQuitt.FormattingEnabled = true;
             this.lstQuitt.ItemHeight = 17;
             this.lstQuitt.Location = new System.Drawing.Point(8, 47);
-            this.lstQuitt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstQuitt.Margin = new System.Windows.Forms.Padding(4);
             this.lstQuitt.Name = "lstQuitt";
             this.lstQuitt.Size = new System.Drawing.Size(217, 106);
             this.lstQuitt.TabIndex = 12;
@@ -759,7 +792,7 @@ namespace Kopplungstester
             this.chkAutoQuitt.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAutoQuitt.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Kopplungstester.Properties.Settings.Default, "AutomaticQuitt", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkAutoQuitt.Location = new System.Drawing.Point(8, 25);
-            this.chkAutoQuitt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAutoQuitt.Margin = new System.Windows.Forms.Padding(4);
             this.chkAutoQuitt.Name = "chkAutoQuitt";
             this.chkAutoQuitt.Size = new System.Drawing.Size(169, 21);
             this.chkAutoQuitt.TabIndex = 15;
@@ -773,9 +806,9 @@ namespace Kopplungstester
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Location = new System.Drawing.Point(15, 127);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(235, 132);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
@@ -785,7 +818,7 @@ namespace Kopplungstester
             // 
             this.numSequenceNumberLength.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "SequenceNumberLength", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numSequenceNumberLength.Location = new System.Drawing.Point(16, 92);
-            this.numSequenceNumberLength.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numSequenceNumberLength.Margin = new System.Windows.Forms.Padding(4);
             this.numSequenceNumberLength.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -799,7 +832,7 @@ namespace Kopplungstester
             // 
             this.numSequenceNumberPosition.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "SequenceNumberPosition", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numSequenceNumberPosition.Location = new System.Drawing.Point(16, 42);
-            this.numSequenceNumberPosition.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numSequenceNumberPosition.Margin = new System.Windows.Forms.Padding(4);
             this.numSequenceNumberPosition.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -842,9 +875,9 @@ namespace Kopplungstester
             this.groupBox2.Controls.Add(this.optTwoChannel);
             this.groupBox2.Controls.Add(this.optOneChannel);
             this.groupBox2.Location = new System.Drawing.Point(288, 22);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(249, 286);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
@@ -858,7 +891,7 @@ namespace Kopplungstester
             this.chkChanel2active.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Kopplungstester.Properties.Settings.Default, "RecieveConnectionActive", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkChanel2active.Enabled = false;
             this.chkChanel2active.Location = new System.Drawing.Point(161, 210);
-            this.chkChanel2active.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkChanel2active.Margin = new System.Windows.Forms.Padding(4);
             this.chkChanel2active.Name = "chkChanel2active";
             this.chkChanel2active.Size = new System.Drawing.Size(59, 21);
             this.chkChanel2active.TabIndex = 15;
@@ -870,7 +903,7 @@ namespace Kopplungstester
             this.numPort2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "RecievePort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numPort2.Enabled = false;
             this.numPort2.Location = new System.Drawing.Point(36, 231);
-            this.numPort2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numPort2.Margin = new System.Windows.Forms.Padding(4);
             this.numPort2.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -884,7 +917,7 @@ namespace Kopplungstester
             // 
             this.numPort1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "SendPort", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numPort1.Location = new System.Drawing.Point(36, 148);
-            this.numPort1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numPort1.Margin = new System.Windows.Forms.Padding(4);
             this.numPort1.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -912,7 +945,7 @@ namespace Kopplungstester
             this.chkChanel1active.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkChanel1active.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Kopplungstester.Properties.Settings.Default, "SendConnectionActive", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkChanel1active.Location = new System.Drawing.Point(161, 127);
-            this.chkChanel1active.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkChanel1active.Margin = new System.Windows.Forms.Padding(4);
             this.chkChanel1active.Name = "chkChanel1active";
             this.chkChanel1active.Size = new System.Drawing.Size(59, 21);
             this.chkChanel1active.TabIndex = 15;
@@ -955,7 +988,7 @@ namespace Kopplungstester
             this.optTwoChannel.AutoSize = true;
             this.optTwoChannel.Checked = true;
             this.optTwoChannel.Location = new System.Drawing.Point(8, 53);
-            this.optTwoChannel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.optTwoChannel.Margin = new System.Windows.Forms.Padding(4);
             this.optTwoChannel.Name = "optTwoChannel";
             this.optTwoChannel.Size = new System.Drawing.Size(74, 21);
             this.optTwoChannel.TabIndex = 14;
@@ -969,7 +1002,7 @@ namespace Kopplungstester
             this.optOneChannel.AutoSize = true;
             this.optOneChannel.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Kopplungstester.Properties.Settings.Default, "UseOnlyOneConnection", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.optOneChannel.Location = new System.Drawing.Point(8, 25);
-            this.optOneChannel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.optOneChannel.Margin = new System.Windows.Forms.Padding(4);
             this.optOneChannel.Name = "optOneChannel";
             this.optOneChannel.Size = new System.Drawing.Size(74, 21);
             this.optOneChannel.TabIndex = 14;
@@ -981,9 +1014,9 @@ namespace Kopplungstester
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.ipAddressControl);
             this.groupBox1.Location = new System.Drawing.Point(15, 22);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(235, 97);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
@@ -1008,7 +1041,7 @@ namespace Kopplungstester
             this.ipAddressControl.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.ipAddressControl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Kopplungstester.Properties.Settings.Default, "IPAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.ipAddressControl.Location = new System.Drawing.Point(16, 64);
-            this.ipAddressControl.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.ipAddressControl.Margin = new System.Windows.Forms.Padding(5);
             this.ipAddressControl.MinimumSize = new System.Drawing.Size(114, 24);
             this.ipAddressControl.Name = "ipAddressControl";
             this.ipAddressControl.ReadOnly = false;
@@ -1019,7 +1052,7 @@ namespace Kopplungstester
             // cmdSelectStep7UDT
             // 
             this.cmdSelectStep7UDT.Location = new System.Drawing.Point(376, 4);
-            this.cmdSelectStep7UDT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSelectStep7UDT.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSelectStep7UDT.Name = "cmdSelectStep7UDT";
             this.cmdSelectStep7UDT.Size = new System.Drawing.Size(181, 49);
             this.cmdSelectStep7UDT.TabIndex = 6;
@@ -1030,7 +1063,7 @@ namespace Kopplungstester
             // cmdConnect
             // 
             this.cmdConnect.Location = new System.Drawing.Point(4, 4);
-            this.cmdConnect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdConnect.Margin = new System.Windows.Forms.Padding(4);
             this.cmdConnect.Name = "cmdConnect";
             this.cmdConnect.Size = new System.Drawing.Size(143, 49);
             this.cmdConnect.TabIndex = 11;
@@ -1046,7 +1079,7 @@ namespace Kopplungstester
             this.tableLayoutPanel4.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
@@ -1062,7 +1095,7 @@ namespace Kopplungstester
             this.panel1.Controls.Add(this.flowLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(4, 4);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1195, 54);
             this.panel1.TabIndex = 3;
@@ -1071,7 +1104,7 @@ namespace Kopplungstester
             // 
             this.cmdSettExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdSettExport.Location = new System.Drawing.Point(848, 1);
-            this.cmdSettExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSettExport.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSettExport.Name = "cmdSettExport";
             this.cmdSettExport.Size = new System.Drawing.Size(92, 49);
             this.cmdSettExport.TabIndex = 12;
@@ -1083,7 +1116,7 @@ namespace Kopplungstester
             // 
             this.cmdSettImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdSettImport.Location = new System.Drawing.Point(948, 1);
-            this.cmdSettImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSettImport.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSettImport.Name = "cmdSettImport";
             this.cmdSettImport.Size = new System.Drawing.Size(92, 49);
             this.cmdSettImport.TabIndex = 12;
@@ -1095,7 +1128,7 @@ namespace Kopplungstester
             // 
             this.cmdSettingsSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdSettingsSave.Location = new System.Drawing.Point(1048, 1);
-            this.cmdSettingsSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdSettingsSave.Margin = new System.Windows.Forms.Padding(4);
             this.cmdSettingsSave.Name = "cmdSettingsSave";
             this.cmdSettingsSave.Size = new System.Drawing.Size(143, 49);
             this.cmdSettingsSave.TabIndex = 12;
@@ -1111,7 +1144,7 @@ namespace Kopplungstester
             this.flowLayoutPanel1.Controls.Add(this.cmdDisconnect);
             this.flowLayoutPanel1.Controls.Add(this.cmdSelectStep7UDT);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, -4);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(733, 54);
             this.flowLayoutPanel1.TabIndex = 3;
@@ -1120,7 +1153,7 @@ namespace Kopplungstester
             // 
             this.picConnection1.BackColor = System.Drawing.Color.Red;
             this.picConnection1.Location = new System.Drawing.Point(155, 4);
-            this.picConnection1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picConnection1.Margin = new System.Windows.Forms.Padding(4);
             this.picConnection1.Name = "picConnection1";
             this.picConnection1.Size = new System.Drawing.Size(27, 50);
             this.picConnection1.TabIndex = 12;
@@ -1131,7 +1164,7 @@ namespace Kopplungstester
             // 
             this.picConnection2.BackColor = System.Drawing.Color.Red;
             this.picConnection2.Location = new System.Drawing.Point(190, 4);
-            this.picConnection2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picConnection2.Margin = new System.Windows.Forms.Padding(4);
             this.picConnection2.Name = "picConnection2";
             this.picConnection2.Size = new System.Drawing.Size(27, 50);
             this.picConnection2.TabIndex = 12;
@@ -1141,7 +1174,7 @@ namespace Kopplungstester
             // cmdDisconnect
             // 
             this.cmdDisconnect.Location = new System.Drawing.Point(225, 4);
-            this.cmdDisconnect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmdDisconnect.Margin = new System.Windows.Forms.Padding(4);
             this.cmdDisconnect.Name = "cmdDisconnect";
             this.cmdDisconnect.Size = new System.Drawing.Size(143, 49);
             this.cmdDisconnect.TabIndex = 11;
@@ -1149,18 +1182,13 @@ namespace Kopplungstester
             this.cmdDisconnect.UseVisualStyleBackColor = true;
             this.cmdDisconnect.Click += new System.EventHandler(this.cmdDisconnect_Click);
             // 
-            // Wert_hex
-            // 
-            this.Wert_hex.HeaderText = "Wert (HEX)";
-            this.Wert_hex.Name = "Wert_hex";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1203, 769);
             this.Controls.Add(this.tableLayoutPanel4);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Kopplungstester";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -1203,6 +1231,7 @@ namespace Kopplungstester
             this.faTabStripItemSettings.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSequenceNumberLength)).EndInit();
@@ -1306,5 +1335,7 @@ namespace Kopplungstester
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.Button cmdClearSend;
         private System.Windows.Forms.DataGridViewTextBoxColumn Wert_hex;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }

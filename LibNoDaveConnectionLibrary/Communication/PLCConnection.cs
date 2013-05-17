@@ -2034,6 +2034,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
         }
 
+        public object ReadValue(string address, TagDataType type)
+        {
+            var tag = new PLCTag(address, type);
+            this.ReadValue(tag);
+            return tag.Value;
+        }
+
+        public object ReadValue<T>(string address, TagDataType type)
+        {
+            var wrt = ReadValue(address, type);
+            return (T) wrt;
+        }
+
+        public object ReadValue(string address)
+        {
+            var tag = new PLCTag(address);
+            this.ReadValue(tag);
+            return tag.Value;
+        }
+
+        public object ReadValue<T>(string address)
+        {
+            var wrt = ReadValue(address);
+            return (T)wrt;
+        }
+
         /// <summary>
         /// This Function Reads One LibNoDave Value from the PLC
         /// </summary>

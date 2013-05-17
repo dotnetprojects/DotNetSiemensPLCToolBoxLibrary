@@ -25,6 +25,11 @@ namespace Kopplungstester
         private TCPFunctionsAsync myTCP_send;
         private TCPFunctionsAsync myTCP_rec;
 
+        public Encoding getEncoding()
+        {
+            return Encoding.GetEncoding(1252);
+        }
+
         public MainForm()
         {
             InitializeComponent();
@@ -126,7 +131,7 @@ namespace Kopplungstester
             if (Settings.Default.Laufnummer > Convert.ToInt32("".PadLeft(anz, '9')))
                 Settings.Default.Laufnummer = 1;
 
-            return Encoding.ASCII.GetBytes(Settings.Default.Laufnummer.ToString().PadLeft(anz, '0'));
+            return getEncoding().GetBytes(Settings.Default.Laufnummer.ToString().PadLeft(anz, '0'));
         }
 
         private void myTCP_ConnectionEstablished(int Number)
@@ -139,14 +144,51 @@ namespace Kopplungstester
 
         private void myTCP_TelegrammRecievedSend(byte[] telegramm, TcpClient clnt)
         {
-            dtaSendQuittTable.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
+            dtaSendQuittTable.Rows.Insert(0, new object[] { getEncoding().GetString(telegramm) });
+            if (quittConf != null && quittConf.AutomaticQuitt && Properties.Settings.Default.UseOnlyOneConnection)
+            {
+                if (quittConf.QuittReplacmentBytes.Count > 0)
+                {
+                    bool okQuittTel = false;
+                    foreach (TCPFunctions.QuittConfig.QuittText quittReplacmentByte in quittConf.QuittReplacmentBytes)
+                    {
+                        if (
+                            getEncoding().GetString(telegramm, quittReplacmentByte.Position,
+                                quittReplacmentByte.Value.Length) != quittReplacmentByte.Value)
+                        {
+                            okQuittTel = true;
+                        }
+                    }
+
+                    if (okQuittTel)
+                    {
+                        byte[] quittTel = new byte[telegramm.Length];
+                        Array.Copy(telegramm, quittTel, telegramm.Length);
+
+                        foreach (var quittReplacmentByte in quittConf.QuittReplacmentBytes)
+                        {
+                            Array.Copy(getEncoding().GetBytes(quittReplacmentByte.Value), 0, quittTel,
+                                quittReplacmentByte.Position, quittReplacmentByte.Value.Length);
+                        }
+
+                        if (Properties.Settings.Default.MaxLengthQuitt > 0)
+                        {
+                            byte[] quittTel2 = new byte[Properties.Settings.Default.MaxLengthQuitt];
+                            Array.Copy(quittTel, quittTel2, quittTel2.Length);
+                            quittTel = quittTel2;
+                        }
+
+                        myTCP_send.SendData(quittTel);
+                    }
+                }
+            }
         }
 
         private byte[] oldSequenceNumber;
 
         private void myTCP_TelegrammRecievedRecieve(byte[] telegramm, TcpClient clnt)
         {
-            if (quittConf == null || !quittConf.AutomaticQuitt)
+            if (quittConf != null && quittConf.AutomaticQuitt)
             {
                 //Automaticly send a quitt Telegramm
                 byte[] quittTel = new byte[telegramm.Length];
@@ -154,8 +196,16 @@ namespace Kopplungstester
 
                 foreach (var quittReplacmentByte in quittConf.QuittReplacmentBytes)
                 {
-                    Array.Copy(Encoding.ASCII.GetBytes(quittReplacmentByte.Value), 0, quittTel, quittReplacmentByte.Position, quittReplacmentByte.Value.Length);
+                    Array.Copy(getEncoding().GetBytes(quittReplacmentByte.Value), 0, quittTel, quittReplacmentByte.Position, quittReplacmentByte.Value.Length);
                 }
+
+                if (Properties.Settings.Default.MaxLengthQuitt > 0)
+                {
+                    byte[] quittTel2 = new byte[Properties.Settings.Default.MaxLengthQuitt];
+                    Array.Copy(quittTel, quittTel2, quittTel2.Length);
+                    quittTel = quittTel2;
+                }
+
                 myTCP_rec.SendData(quittTel);
 
 
@@ -164,11 +214,11 @@ namespace Kopplungstester
                 //Array.Copy(telegramm, quittConf.SequenceNumberPosition, sequNr, 0, quittConf.LengthSequenceNumber);
 
                 //if (oldSequenceNumber == null || !sequNr.ByteArrayCompare(oldSequenceNumber))
-                grdEmpfang.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
+                grdEmpfang.Rows.Insert(0, new object[] { getEncoding().GetString(telegramm) });
                 //oldSequenceNumber = sequNr;
             }
             else
-                grdEmpfang.Rows.Add(new object[] {Encoding.ASCII.GetString(telegramm)});
+                grdEmpfang.Rows.Insert(0, new object[] { getEncoding().GetString(telegramm) });
         }
 
         private void Disconnect()
@@ -337,7 +387,7 @@ namespace Kopplungstester
 
             string SendeString = SendeStringZusammenbauen();
 
-            byte[] bytes = Encoding.ASCII.GetBytes(SendeString);
+            byte[] bytes = getEncoding().GetBytes(SendeString);
 
             byte[] lnr = LaufnummerErzeugen();
 
@@ -357,7 +407,7 @@ namespace Kopplungstester
                 if (myTCP_send != null)
                 {
                     myTCP_send.SendData(bytes);
-                    dtaSendSendTable.Rows.Add(new object[] { Encoding.ASCII.GetString(bytes) });
+                    dtaSendSendTable.Rows.Insert(0, new object[] { getEncoding().GetString(bytes) });
                 }
                 else
                     lblStatus.Text = "Senden nicht erfolgt, da nicht verbunden!";
@@ -369,7 +419,7 @@ namespace Kopplungstester
 
             Settings.Default.Laufnummer++;
 
-            var value = Encoding.ASCII.GetString(bytes);
+            var value = getEncoding().GetString(bytes);
             if (value != null)
             {
                 string sValue = (string) value;
@@ -419,11 +469,11 @@ namespace Kopplungstester
                 var wrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
                 for (int i = 0; i < wrt.Length-1; i += 2)
                 {
-                    txthex += wrt[i] + wrt[i + 1] + " ";
+                    txthex += wrt[i].ToString() + wrt[i + 1].ToString() + " ";
                     var nr =
                         Convert.ToByte(int.Parse("" + wrt[i] + wrt[i + 1],
                             System.Globalization.NumberStyles.HexNumber));
-                    txt += Encoding.GetEncoding(437).GetString(new byte[] {nr});
+                    txt += getEncoding().GetString(new byte[] {nr});
                 }
                 dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = txthex;
                 dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex - 1].Value = txt;
@@ -435,7 +485,7 @@ namespace Kopplungstester
                 var wrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
                 for (int i = 0; i < wrt.Length; i++)
                 {
-                    var bt = Encoding.GetEncoding(437).GetBytes(wrt[i].ToString());
+                    var bt = getEncoding().GetBytes(wrt[i].ToString());
                     txthex += bt[0].ToString("X").PadLeft(2,'0') + " ";                    
                 }
                 dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = txthex;
@@ -515,7 +565,7 @@ namespace Kopplungstester
             }
             else
             {
-                myTCP_send.DataRecieved += myTCP_TelegrammRecievedRecieve;
+                //myTCP_send.DataRecieved += myTCP_TelegrammRecievedRecieve;
             }
         }
 

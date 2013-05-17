@@ -47,5 +47,8 @@
     <Setting Name="SendDataList" Provider="PortableSettingsProvider" Roaming="true" Type="System.Collections.Generic.List&lt;Kopplungstester.MainForm.storeSendData&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="MaxLengthQuitt" Provider="PortableSettingsProvider" Roaming="true" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

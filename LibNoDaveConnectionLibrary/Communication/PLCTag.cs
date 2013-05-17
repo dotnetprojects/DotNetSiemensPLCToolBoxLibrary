@@ -154,6 +154,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        public PLCTag(string address, TagDataType type)
+        {
+            this.ChangeAddressFromString(address);
+            this.TagDataType = type;
+        }
+
+
         /// <summary>
         /// The initalizationString can be a PLC Address like: "DB100.DBW2" or a init String like: "User,DB100.DBW2,Word,Decimal"
         /// </summary>
