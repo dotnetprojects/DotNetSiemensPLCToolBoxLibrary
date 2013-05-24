@@ -1932,6 +1932,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (res != 0)
                                 throw new Exception("Error: " + libnodave.daveStrerror(res));
 
+                            positionInCompleteData = 0;
+
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)                    
                             for (akVar = 0; akVar < anzVar; akVar++)
                             {
