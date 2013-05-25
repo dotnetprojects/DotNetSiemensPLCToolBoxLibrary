@@ -226,8 +226,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     socketTimer.Start();
                     socketThread = new Thread(this.socket_Thread);
                     socketThread.Start();
-                    while (socketThread.ThreadState != ThreadState.AbortRequested && socketThread.ThreadState != ThreadState.Aborted && socketThread.ThreadState != ThreadState.Stopped)
-                    { Thread.Sleep(50); }
+                    try
+                    {
+                        while (socketThread.ThreadState != ThreadState.AbortRequested && socketThread.ThreadState != ThreadState.Aborted && socketThread.ThreadState != ThreadState.Stopped)
+                        { Thread.Sleep(50); }
+                    }
+                    catch (Exception ex)
+                    { }
                     socketTimer.Stop();
                     socketThread.Abort();
                     socketTimer = null;
@@ -1932,8 +1937,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (res != 0)
                                 throw new Exception("Error: " + libnodave.daveStrerror(res));
 
-                            positionInCompleteData = 0;
-
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)                    
                             for (akVar = 0; akVar < anzVar; akVar++)
                             {
@@ -1962,7 +1965,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
                             anzReadVar = 0;
-
+                            readenSizes.Clear();
                             //I need to do the whole splitting in anothe way, so that the goto disapears! But for the moment ir works!
                             goto tryAgain; //It tries again the Size test, this is necessary, when the Tag is bigger then one PDU
                         }
@@ -1991,7 +1994,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else if (res != 0 && res != 10)
                             throw new Exception("Error: " + libnodave.daveStrerror(res));
 
+                        //positionInCompleteData = 0;
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
+                        
                         for (akVar = 0; akVar < anzVar; akVar++)
                         {
                             byte[] myBuff = new byte[ /* gesReadSize */ readenSizes[akVar]+1];
