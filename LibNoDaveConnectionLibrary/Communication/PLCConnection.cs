@@ -2053,6 +2053,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             //rs = null;
                             //myPDU = null;
                             anzVar = 0;
+                            gesAskSize = 0;
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
                             anzReadVar = 0;
@@ -2063,7 +2064,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
 
                         gesReadSize = gesReadSize + readSizeWithHeader;
-
+                        gesAskSize += askSize;
                         readenSizes.Add(readSize);
                         anzVar++;
                         anzReadVar++;
