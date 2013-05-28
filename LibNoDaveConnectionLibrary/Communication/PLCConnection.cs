@@ -2025,7 +2025,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                             var rs = new libnodave.resultSet();
                             int res = _dc.execReadRequest(myPDU, rs);
-                            if (res != 0)
+                            if (res == -1025)
+                            {
+                                this.Disconnect();
+                                return;
+                            }
+                            else if (res != 0)
                                 throw new Exception("Error: " + libnodave.daveStrerror(res));
 
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)                    
