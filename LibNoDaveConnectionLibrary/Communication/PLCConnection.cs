@@ -180,164 +180,187 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         public void Connect()
         {
-            _NeedDispose = true;
-            //Debugging for LibNoDave
-            libnodave.daveSetDebug(0x0);
-            //libnodave.daveSetDebug(0x1ffff);
-
-            //_configuration.ReloadConfiguration();
-
-            //if (hwnd == 0 && _configuration.ConnectionType == 50)
-            //    throw new Exception("Error: You can only use the S7Online Connection when you specify the HWND Parameter on the Connect Function");
-
-            //This Jump mark is used when the Netlink Reset is activated!
-        NLAgain:
-            
-            //LibNodave Verbindung aufbauen
-            switch (_configuration.ConnectionType)
+            lock (lockObj)
             {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 10:
-                    _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
-                    break;
-                case 20:   //AS511            
-                    _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
-                    break;
+                _NeedDispose = true;
+                //Debugging for LibNoDave
+                libnodave.daveSetDebug(0x0);
+                //libnodave.daveSetDebug(0x1ffff);
+
+                //_configuration.ReloadConfiguration();
+
+                //if (hwnd == 0 && _configuration.ConnectionType == 50)
+                //    throw new Exception("Error: You can only use the S7Online Connection when you specify the HWND Parameter on the Connect Function");
+
+                //This Jump mark is used when the Netlink Reset is activated!
+                NLAgain:
+
+                //LibNodave Verbindung aufbauen
+                switch (_configuration.ConnectionType)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 10:
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed,
+                            _configuration.ComPortParity);
+                        break;
+                    case 20: //AS511            
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed,
+                            _configuration.ComPortParity);
+                        break;
 #if !IPHONE
-                case 50:
-                    _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
-                    if (_fds.rfd.ToInt32() == -1)
-                    {
-                        _NeedDispose = false;
-                        throw new Exception("Error: " + libnodave.daveStrS7onlineError());
-                    }
-                    break;
+                    case 50:
+                        _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
+                        if (_fds.rfd.ToInt32() == -1)
+                        {
+                            _NeedDispose = false;
+                            throw new Exception("Error: " + libnodave.daveStrS7onlineError());
+                        }
+                        break;
 #endif
-                case 122:
-                case 123:
-                case 124:
-                case 223:
-                case 224:
-                case 230:
-                    socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
-                    socketTimer.AutoReset = true;
-                    socketTimer.Elapsed += socketTimer_Elapsed;
-                    socketTimer.Start();
-                    socketThread = new Thread(this.socket_Thread);
-                    socketThread.Start();
-                    try
-                    {
-                        while (socketThread.ThreadState != ThreadState.AbortRequested && socketThread.ThreadState != ThreadState.Aborted && socketThread.ThreadState != ThreadState.Stopped)
-                        { Thread.Sleep(50); }
-                    }
-                    catch (Exception ex)
-                    { }
-                    socketTimer.Stop();
-                    socketThread.Abort();
-                    socketTimer = null;
-                    socketThread = null;                    
-                    break;
-            }
-
-            if (_fds.rfd.ToInt32() == -999)
-            {
-                _NeedDispose = false;
-                throw new Exception("Error: Timeout Connecting the IP");
-            }
-
-            if ((!(_configuration.ConnectionType == 50) && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
-            {
-                _NeedDispose = false;
-                throw new Exception("Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
-            }
-
-            //daveOSserialType Struktur befüllen
-            _fds.wfd = _fds.rfd;
-
-            //System.Windows.Forms.MessageBox.Show("Socket:" + _fds.rfd.ToString());
-
-            if (_configuration.ConnectionName == null) _configuration.ConnectionName = Guid.NewGuid().ToString();
-
-            //Dave Interface Erzeugen
-            _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
-
-            //System.Windows.Forms.MessageBox.Show("DI:" + _di.ToString());
-
-            //Timeout setzen...
-            _di.setTimeout(_configuration.Timeout);
-
-            //System.Windows.Forms.MessageBox.Show("Timeout gesetzt" + _di.ToString());
-
-            //_di.setTimeout(500000);
-            //Dave Interface initialisieren
-            int ret = _di.initAdapter();
-            if (ret != 0)
-                throw new Exception("Error: (Interface) (Code: " + ret.ToString() + ") " + libnodave.daveStrerror(ret));
-            
-            //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
-
-            //Get S7OnlineType - To detect if is a IPConnection 
-            bool IPConnection = false;
-#if !IPHONE
-            if (_configuration.ConnectionType == 50)
-            {
-                RegistryKey myConnectionKey =
-                    Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + _configuration.EntryPoint);
-                string tmpDevice = (string)myConnectionKey.GetValue("LogDevice");
-                string retVal = "";
-                if (tmpDevice != "")
-                {   
-                    myConnectionKey =
-                        Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
-                    retVal = (string)myConnectionKey.GetValue("L4_PROTOCOL");
+                    case 122:
+                    case 123:
+                    case 124:
+                    case 223:
+                    case 224:
+                    case 230:
+                        socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
+                        socketTimer.AutoReset = true;
+                        socketTimer.Elapsed += socketTimer_Elapsed;
+                        socketTimer.Start();
+                        socketThread = new Thread(this.socket_Thread);
+                        socketThread.Start();
+                        try
+                        {
+                            while (socketThread.ThreadState != ThreadState.AbortRequested &&
+                                   socketThread.ThreadState != ThreadState.Aborted &&
+                                   socketThread.ThreadState != ThreadState.Stopped)
+                            {
+                                Thread.Sleep(50);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                        if (socketTimer != null)
+                            socketTimer.Stop();
+                        if (socketThread != null)
+                            socketThread.Abort();
+                        socketTimer = null;
+                        socketThread = null;
+                        break;
                 }
-                if (retVal == "TCPIP" || retVal == "ISO")
-                    IPConnection = true;
-            }
-            //Get S7OnlineType - To detect if is a IPConnection
+
+                if (_fds.rfd.ToInt32() == -999)
+                {
+                    _NeedDispose = false;
+                    throw new Exception("Error: Timeout Connecting the IP");
+                }
+
+                if ((!(_configuration.ConnectionType == 50) && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
+                {
+                    _NeedDispose = false;
+                    throw new Exception(
+                        "Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
+                }
+
+                //daveOSserialType Struktur befüllen
+                _fds.wfd = _fds.rfd;
+
+                //System.Windows.Forms.MessageBox.Show("Socket:" + _fds.rfd.ToString());
+
+                if (_configuration.ConnectionName == null) _configuration.ConnectionName = Guid.NewGuid().ToString();
+
+                //Dave Interface Erzeugen
+                _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi,
+                    _configuration.ConnectionType, _configuration.BusSpeed);
+
+                //System.Windows.Forms.MessageBox.Show("DI:" + _di.ToString());
+
+                //Timeout setzen...
+                _di.setTimeout(_configuration.Timeout);
+
+                //System.Windows.Forms.MessageBox.Show("Timeout gesetzt" + _di.ToString());
+
+                //_di.setTimeout(500000);
+                //Dave Interface initialisieren
+                int ret = _di.initAdapter();
+                if (ret != 0)
+                    throw new Exception("Error: (Interface) (Code: " + ret.ToString() + ") " +
+                                        libnodave.daveStrerror(ret));
+
+                //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
+
+                //Get S7OnlineType - To detect if is a IPConnection 
+                bool IPConnection = false;
+#if !IPHONE
+                if (_configuration.ConnectionType == 50)
+                {
+                    RegistryKey myConnectionKey =
+                        Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" +
+                                                           _configuration.EntryPoint);
+                    string tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
+                    string retVal = "";
+                    if (tmpDevice != "")
+                    {
+                        myConnectionKey =
+                            Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
+                        retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
+                    }
+                    if (retVal == "TCPIP" || retVal == "ISO")
+                        IPConnection = true;
+                }
+                //Get S7OnlineType - To detect if is a IPConnection
 #endif
 
-            //AS511
-            if (_configuration.ConnectionType == 20)
-            {
-                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, 0, 0);
-            }                
-            else
-            {
-                //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
-                //if (_configuration.Routing || IPConnection)
-                //Immer die extended Connection benutzen!
+                //AS511
+                if (_configuration.ConnectionType == 20)
+                {
+                    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, 0, 0);
+                }
+                else
+                {
+                    //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
+                    //if (_configuration.Routing || IPConnection)
+                    //Immer die extended Connection benutzen!
 
-                _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection, _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing, _configuration.RoutingSubnet1, _configuration.RoutingSubnet2, _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot, _configuration.RoutingDestination, _configuration.PLCConnectionType, _configuration.RoutingPLCConnectionType);
+                    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
+                        _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
+                        _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
+                        _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
+                        _configuration.RoutingDestination, _configuration.PLCConnectionType,
+                        _configuration.RoutingPLCConnectionType);
+                }
+
+                //else
+                //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
+
+                if (_configuration.NetLinkReset && !_netlinkReseted &&
+                    (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
+                {
+                    _dc.resetIBH();
+                    _netlinkReseted = true;
+                    System.Threading.Thread.Sleep(1000);
+                    goto NLAgain;
+                }
+
+                ret = _dc.connectPLC();
+
+                if (ret == -1)
+                {
+                    _dc = null;
+                    throw new Exception("Error: CPU not available! Maybe wrong IP or MPI Address or Rack/Slot or ...");
+                }
+                if (ret != 0)
+                    throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " +
+                                        libnodave.daveStrerror(ret));
+
+                //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
+
+                Connected = true;
             }
-
-            //else
-            //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
-
-            if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
-            {
-                _dc.resetIBH();
-                _netlinkReseted = true;
-                System.Threading.Thread.Sleep(1000);
-                goto NLAgain;
-            }
-
-            ret = _dc.connectPLC();
-
-            if (ret == -1)
-            {
-                _dc = null;
-                throw new Exception("Error: CPU not available! Maybe wrong IP or MPI Address or Rack/Slot or ...");
-            }
-            if (ret != 0) 
-                throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " + libnodave.daveStrerror(ret));
-
-            //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
-
-            Connected = true;
         }
 
 		/*
