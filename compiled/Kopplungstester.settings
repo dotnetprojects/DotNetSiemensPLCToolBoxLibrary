@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <QuittData>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfQuittText xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;QuittText xml:space="preserve"&gt;
+    &lt;Position&gt;0&lt;/Position&gt;
+    &lt;Value&gt;AK&lt;/Value&gt;
+  &lt;/QuittText&gt;
+&lt;/ArrayOfQuittText&gt;</QuittData>
+  <SequenceNumberLength>2</SequenceNumberLength>
+  <IpAddress>127.0.0.1</IpAddress>
+  <SendDataList>
+  </SendDataList>
+  <Setting>
+  </Setting>
+  <UseOnlyOneConnection>True</UseOnlyOneConnection>
+  <RecieveTelegramm>&lt;NewDataSet&gt;
+  &lt;Main /&gt;
+&lt;/NewDataSet&gt;</RecieveTelegramm>
+  <Laufnummer>0</Laufnummer>
+  <RecievePort>2002</RecievePort>
+  <SendeTelegramm>&lt;NewDataSet&gt;
+  &lt;Main /&gt;
+&lt;/NewDataSet&gt;</SendeTelegramm>
+  <MaxLengthQuitt>0</MaxLengthQuitt>
+  <RecieveConnectionActive>True</RecieveConnectionActive>
+  <SequenceNumberPosition>12</SequenceNumberPosition>
+  <AutomaticQuitt>True</AutomaticQuitt>
+  <SendPort>2001</SendPort>
+  <SendConnectionActive>True</SendConnectionActive>
+</Settings>

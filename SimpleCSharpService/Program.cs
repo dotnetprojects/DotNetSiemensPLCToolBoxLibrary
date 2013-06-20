@@ -13,12 +13,21 @@ namespace SimpleCSharpService
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-            { 
-                new Service() 
-            };
-            ServiceBase.Run(ServicesToRun);
+            if (!Environment.UserInteractive)
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[]
+                {
+                    new Service()
+                };
+                ServiceBase.Run(ServicesToRun);
+            }
+            else
+            {
+                var s = new Service();
+                s.Test(Environment.GetCommandLineArgs());
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace SimpleCSharpService
 {
@@ -17,6 +18,11 @@ namespace SimpleCSharpService
     //C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil /i SimpleCSharpService.exe
     public partial class Service : ServiceBase
     {
+
+        private string triggerBit = "M0.0";
+        private int writeDB = 20;
+        private int writeCharArraySize = 100;
+        private string csvFile = "c:\\aa.csv";
 
         public Service()
         {
@@ -30,6 +36,11 @@ namespace SimpleCSharpService
         private volatile bool threadShouldRun;
 
         private PLCConnection myConn;
+
+        public void Test(string[] args)
+        {
+            OnStart(args);
+        }
 
         protected override void OnStart(string[] args)
         {
@@ -46,34 +57,41 @@ namespace SimpleCSharpService
             threadShouldRun = true;
 
             myThread = new Thread(new ThreadStart(this.ThreadProc));
-            myThread.Start();
-            
-                    
+            myThread.Start();                                
         }
 
         private void ThreadProc()
         {
-            PLCTag tag = new PLCTag("MD0");
-            object oldValue = null;
+            PLCTag tag = new PLCTag(triggerBit);
 
             while (threadShouldRun)
             {
                 myConn.ReadValue(tag);
 
-                if (oldValue != tag.Value)
+                if ((bool)tag.Value == true)
                 {
-                    //Hier Code was bei SPS Wertänderung passieren soll!
+                    PLCTag writeData = new PLCTag();
+                    writeData.TagDataType = TagDataType.CharArray;
+                    writeData.DataBlockNumber = writeDB;
+                    writeData.ArraySize = writeCharArraySize;
 
-                    StreamWriter myFile = new StreamWriter("c:\\test.txt", true);
-                    myFile.Write(tag.Value + Environment.NewLine);
-                    myFile.Close();
+                    string writeDataString = "";
+                    using (StreamReader sr = new StreamReader(csvFile))
+                    {
+                        writeDataString = sr.ReadToEnd();                        
+                    }
+                    writeData.Controlvalue = writeDataString;
 
+                    //Reset the Bit
+                    tag.Controlvalue = false;
+
+                    myConn.WriteValues(new[] { writeData, tag });
                 }
 
-                oldValue = tag.Value;
-                Thread.Sleep(100);
-            }            
+                Thread.Sleep(20);
+            }
         }
+
 
         protected override void OnStop()
         {
