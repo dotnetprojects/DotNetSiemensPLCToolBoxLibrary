@@ -295,7 +295,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            if (_ziphelper.FileExists(_projectfilename.ToLower().Replace("st.s5d", "z0.seq")))
+            if (_projectfilename.ToLower().Contains("st.s5d") && _ziphelper.FileExists(_projectfilename.ToLower().Replace("st.s5d", "z0.seq")))
             {
                 Stream symTabStream = _ziphelper.GetReadStream(_projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
 
