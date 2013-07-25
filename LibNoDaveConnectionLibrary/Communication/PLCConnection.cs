@@ -2606,29 +2606,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _di.disconnectAdapter();
                 _di = null;
 
-                switch (_configuration.ConnectionType)
-                {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 10:
-                    case 20:
-                        libnodave.closePort(_fds.rfd);
-                        break;
-                    case 50:
-                        libnodave.closeS7online(_fds.rfd);
-                        break;
-                    case 122:
-                    case 123:
-                    case 124:
-                    case 223:
-                    case 224:
-                    case 230:
-                    case 231:
-                        libnodave.closeSocket(_fds.rfd);
-                        break;
-                }
+                if (_configuration!=null)
+                    switch (_configuration.ConnectionType)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 10:
+                        case 20:
+                            libnodave.closePort(_fds.rfd);
+                            break;
+                        case 50:
+                            libnodave.closeS7online(_fds.rfd);
+                            break;
+                        case 122:
+                        case 123:
+                        case 124:
+                        case 223:
+                        case 224:
+                        case 230:
+                        case 231:
+                            libnodave.closeSocket(_fds.rfd);
+                            break;
+                    }
             }
         }
     }
