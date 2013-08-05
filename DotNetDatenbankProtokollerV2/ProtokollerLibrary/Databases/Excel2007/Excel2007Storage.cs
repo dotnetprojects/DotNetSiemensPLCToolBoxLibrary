@@ -110,6 +110,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Excel
                     }
                     catch (Exception ex)
                     {
+                        Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                         break;
                     }
                 }

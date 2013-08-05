@@ -228,6 +228,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.CSVFile
             }
             catch (Exception ex)
             {
+                Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
             }
             return null;
         }
