@@ -12,6 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         DataType = 1012,
         FunctionBlock = 1021,
         DataBlock = 1022,
+        DataBlocks = 1023,
         VariableTableOrSymbolTable = 1030,
         
         Tag = 2001,
