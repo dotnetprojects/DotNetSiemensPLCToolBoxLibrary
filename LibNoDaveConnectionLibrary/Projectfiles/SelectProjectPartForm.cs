@@ -21,7 +21,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 cmdOpenProject.Visible = false;
                 loadPrj();
-            }
+            }            
         }               
 
         Project tmpPrj;        
@@ -189,7 +189,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT && SelectPart == SelectPartType.VariableTable)
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
-                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && SelectPart == SelectPartType.DataBlock)
+                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && (SelectPart == SelectPartType.DataBlock || SelectPart == SelectPartType.DataBlocks))
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
                             if (step7ProjectBlockInfo.BlockType == PLCBlockType.UDT && SelectPart == SelectPartType.DataType)
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
@@ -297,6 +297,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
+            else if (SelectPart == SelectPartType.DataBlocks)
+            {
+                if (lstProjectFolder.SelectedItems.Count > 0)
+                {
+                    this.Hide();
+
+                    var blocks = new List<S7DataBlock>();
+
+                    foreach (S7ProjectBlockInfo s7ProjectBlockInfo in lstProjectFolder.SelectedItems)
+                    {
+                        if (s7ProjectBlockInfo.BlockType == PLCBlockType.DB)
+                        {
+                            var block = ((IBlocksFolder)s7ProjectBlockInfo.ParentFolder).GetBlock(s7ProjectBlockInfo);
+                            block.ParentFolder = s7ProjectBlockInfo.ParentFolder;
+
+                            blocks.Add((S7DataBlock)block);
+                        }                        
+                    }
+
+                    retVal = blocks.Count > 0 ? blocks : null;
+                }
+            }
             else if (SelectPart == SelectPartType.FunctionBlock)
             {
                 if (lstProjectFolder.SelectedItem != null)
@@ -378,7 +400,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         public SelectPartType SelectPart
         {
             get { return _selectPart; }
-            set { _selectPart = value; }
+            set
+            {
+                _selectPart = value;
+
+                if (_selectPart == SelectPartType.DataBlocks)
+                    lstProjectFolder.SelectionMode = SelectionMode.MultiExtended;
+                else
+                    lstProjectFolder.SelectionMode = SelectionMode.One;
+            }
         }
 
         private void treeStep7Project_BeforeExpand(object sender, TreeViewCancelEventArgs e)

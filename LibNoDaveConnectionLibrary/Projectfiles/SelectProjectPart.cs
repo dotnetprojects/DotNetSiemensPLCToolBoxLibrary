@@ -57,6 +57,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (S7DataBlock)myFrm.retVal;
         }
 
+        public static List<S7DataBlock> SelectDataBlocks(string FileAndProjectInternalFolder)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            myFrm.SelectPart = SelectPartType.DataBlocks;
+            myFrm.ShowDialog();
+            return (List<S7DataBlock>)myFrm.retVal;
+        }
+
         public static S7FunctionBlock SelectFunctionBlock(string FileAndProjectInternalFolder)
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
@@ -64,7 +72,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             myFrm.ShowDialog();
             return (S7FunctionBlock)myFrm.retVal;
         }
-
 
         public static S7VATBlock SelectVAT()
         {
