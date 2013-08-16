@@ -777,6 +777,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             y.Parent = x;
                             x.SubItems.Add(y);
+                            x.SourceFolder = y;
                         }
                     }
 

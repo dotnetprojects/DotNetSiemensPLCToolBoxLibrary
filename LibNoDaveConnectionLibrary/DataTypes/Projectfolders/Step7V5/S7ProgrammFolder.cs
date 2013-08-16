@@ -6,6 +6,7 @@
         public ISymbolTable SymbolTable { get; set; }
         public BlocksOfflineFolder BlocksOfflineFolder { get; set; }
         public OnlineBlocksFolder OnlineBlocksFolder { get; set; }
+        public SourceFolder SourceFolder { get; set; }
 
         public IBlocksFolder BlocksFolder
         {
