@@ -2280,7 +2280,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (_dc == null)
                         throw new Exception("Error: Not Connected");
 
-                    value.raiseValueChangedEvenWhenNoChangeHappened = true;
+                    value.RaiseValueChangedEvenWhenNoChangeHappened = true;
 
                     int readSize = value._internalGetSize();
                     byte[] myBuff = new byte[readSize];
@@ -2358,7 +2358,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     foreach (PLCTag plcTag in valueList)
                     {
-                        plcTag.raiseValueChangedEvenWhenNoChangeHappened = true;
+                        plcTag.RaiseValueChangedEvenWhenNoChangeHappened = true;
                     }
 
                     if (useWriteOptimation)

@@ -45,7 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 	[Serializable]
     public class PLCTag: INotifyPropertyChanged
     {
-        internal bool raiseValueChangedEvenWhenNoChangeHappened;
+        public bool RaiseValueChangedEvenWhenNoChangeHappened { get; set; }
 
         private string _valueName;
         /// <summary>
@@ -404,7 +404,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else
                 {
-                    if (!_value.Equals(_oldvalue) || raiseValueChangedEvenWhenNoChangeHappened)
+                    if (!_value.Equals(_oldvalue) || RaiseValueChangedEvenWhenNoChangeHappened)
                     {
                         NotifyPropertyChanged("Value");
                         NotifyPropertyChanged("ValueAsString");
