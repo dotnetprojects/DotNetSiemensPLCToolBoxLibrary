@@ -2356,10 +2356,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_dc != null)
                 {
 
-                    foreach (PLCTag plcTag in valueList)
+                    /*foreach (PLCTag plcTag in valueList)
                     {
                         plcTag.RaiseValueChangedEvenWhenNoChangeHappened = true;
-                    }
+                    }*/
 
                     if (useWriteOptimation)
                     {
