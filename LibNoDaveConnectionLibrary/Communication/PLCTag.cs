@@ -1445,7 +1445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            if (this.ArraySize == 1 || this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.ByteArray)
+            if (this.ArraySize == 1 || this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
             {
                 _putControlValueIntoBuffer(buff, startpos, Controlvalue);
             }

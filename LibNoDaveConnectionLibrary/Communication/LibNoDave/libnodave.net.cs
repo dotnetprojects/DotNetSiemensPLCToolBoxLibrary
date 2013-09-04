@@ -2033,7 +2033,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static void putStringat(byte[] b, int pos, string value, int length)
         {
             //Array.Copy(Encoding.ASCII.GetBytes(value), 0, b, pos, value.Length > length ? length : value.Length);
-            Array.Copy(Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage).GetBytes(value), 0, b, pos + 2, value.Length > length ? length : value.Length); 
+            Array.Copy(Encoding.GetEncoding(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ANSICodePage).GetBytes(value), 0, b, pos, value.Length > length ? length : value.Length); 
         }
 
         public static void putFloatat(byte[] b, int pos, Single value)
