@@ -91,6 +91,7 @@
             this.downloadOnlineBlockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.dBStructResizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataBlockValueSaveRestoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.searchPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,7 +117,11 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dataBlockValueSaveRestoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dtaPnPbList = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.exportMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.export = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -133,6 +138,8 @@
             this.tableLayoutPanelVisu.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).BeginInit();
+            this.exportMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProjectInfo
@@ -704,6 +711,13 @@
             this.dBStructResizerToolStripMenuItem.Text = "UDT-Array-Resizer";
             this.dBStructResizerToolStripMenuItem.Click += new System.EventHandler(this.dBStructResizerToolStripMenuItem_Click);
             // 
+            // dataBlockValueSaveRestoreToolStripMenuItem
+            // 
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Name = "dataBlockValueSaveRestoreToolStripMenuItem";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Text = "Data Block Value Save/Restore";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Click += new System.EventHandler(this.dataBlockValueSaveRestoreToolStripMenuItem_Click);
+            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
@@ -815,11 +829,12 @@
             // 
             // mainSplitContainer.Panel2
             // 
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaPnPbList);
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
             this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
             this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
             this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
             this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
-            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
             this.mainSplitContainer.Size = new System.Drawing.Size(1171, 535);
             this.mainSplitContainer.SplitterDistance = 397;
             this.mainSplitContainer.TabIndex = 26;
@@ -899,8 +914,8 @@
             this.tableLayoutPanelVisu.ColumnCount = 2;
             this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
-            this.tableLayoutPanelVisu.Controls.Add(this.lstListBox, 0, 0);
             this.tableLayoutPanelVisu.Controls.Add(this.grpVisu, 1, 0);
+            this.tableLayoutPanelVisu.Controls.Add(this.lstListBox, 0, 0);
             this.tableLayoutPanelVisu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelVisu.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanelVisu.Name = "tableLayoutPanelVisu";
@@ -960,12 +975,46 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // dataBlockValueSaveRestoreToolStripMenuItem
+            // dtaPnPbList
             // 
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Name = "dataBlockValueSaveRestoreToolStripMenuItem";
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Text = "Data Block Value Save/Restore";
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Click += new System.EventHandler(this.dataBlockValueSaveRestoreToolStripMenuItem_Click);
+            this.dtaPnPbList.AllowUserToAddRows = false;
+            this.dtaPnPbList.AllowUserToDeleteRows = false;
+            this.dtaPnPbList.AllowUserToResizeRows = false;
+            this.dtaPnPbList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtaPnPbList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
+            this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
+            this.dtaPnPbList.Name = "dtaPnPbList";
+            this.dtaPnPbList.Size = new System.Drawing.Size(770, 535);
+            this.dtaPnPbList.TabIndex = 19;
+            this.dtaPnPbList.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "name";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // exportMenu
+            // 
+            this.exportMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.export});
+            this.exportMenu.Name = "exportMenu";
+            this.exportMenu.Size = new System.Drawing.Size(108, 26);
+            // 
+            // export
+            // 
+            this.export.Name = "export";
+            this.export.Size = new System.Drawing.Size(152, 22);
+            this.export.Text = "Export";
+            this.export.Click += new System.EventHandler(this.export_Click);
             // 
             // Form1
             // 
@@ -1004,6 +1053,8 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).EndInit();
+            this.exportMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1098,6 +1149,11 @@
         private System.Windows.Forms.ToolStripMenuItem callHirachyToolStripMenuItem;
         private System.Windows.Forms.Button cmdWebfactoryTags;
         private System.Windows.Forms.ToolStripMenuItem dataBlockValueSaveRestoreToolStripMenuItem;
+        private System.Windows.Forms.DataGridView dtaPnPbList;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.ContextMenuStrip exportMenu;
+        private System.Windows.Forms.ToolStripMenuItem export;
 
     }
 }

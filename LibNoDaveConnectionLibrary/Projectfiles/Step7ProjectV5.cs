@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.IO;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 
@@ -182,6 +184,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectStructure.Name = this.ToString();
 
+            var stations = new List<StationConfigurationFolder>();
+
             //Get The Project Stations...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HOBJECT1.DBF"))
             {
@@ -197,6 +201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             if ((bool) row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
                             x.ID = (int) row["ID"];
                             x.UnitID = (int)row["UNITID"];
+                            x.ObjTyp = (int)row["OBJTYP"];
                             switch ((int)row["OBJTYP"])
                             {
                                 case 1314969:
@@ -211,6 +216,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             }
                             x.Parent = ProjectStructure;
                             ProjectStructure.SubItems.Add(x);
+                            stations.Add(x);
                         }
                     }
                 }
@@ -730,6 +736,171 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
+            var pbMasterSystems = new List<ProfibusMasterSystem>();
+
+            //Get all Profibus Master Systems
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "S7HDPSSX" + _DirSeperator + "HOBJECT1.DBF"))
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "S7HDPSSX" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {        
+                        if ((int)row["OBJTYP"] == 1314971)
+                        {
+                            pbMasterSystems.Add(new ProfibusMasterSystem() {Project = this , Name = row["NAME"].ToString().Replace("\0",""), Id = (int)row["ID"]});                        
+                        }
+                    }
+                }
+            }
+
+            //Link all PbMasterSystems to the Stations             
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "S7HDPSSX" + _DirSeperator + "HRELATI1.DBF"))
+            {
+                var lnkLst = new List<LinkHelp>();
+
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "S7HDPSSX" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        lnkLst.Add(new LinkHelp() { SOBJID = (int)row["SOBJID"], SOBJTYP = (int)row["SOBJTYP"], RELID = (int)row["RELID"], TOBJID = (int)row["TOBJID"], TOBJTYP = (int)row["TOBJTYP"], TUNITID = (int)row["TUNITID"], TUNITTYP = (int)row["TUNITTYP"] });                        
+                    }
+                }
+
+                foreach (StationConfigurationFolder station in stations)
+                {
+                    var lnks = lnkLst.Where(x => x.TOBJTYP == station.ObjTyp && x.TOBJID == station.ID);
+                    foreach (LinkHelp linkHelp in lnks)
+                    {
+                        var ms=pbMasterSystems.FirstOrDefault(x => x.Id == linkHelp.SOBJID);
+                        if (ms != null)
+                        {
+                            station.MasterSystems.Add(ms);
+                            station.SubItems.Add(ms);
+                        }
+                    }
+                }
+            }
+
+            //Get all Profibus Parts            
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hslntx" + _DirSeperator + "HOBJECT1.DBF"))
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hslntx" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        if ((int) row["OBJTYP"] == 1314988)
+                        {
+                            var node = new ProfibusNode() { Name = row["NAME"].ToString().Replace("\0", ""), NodeId = (int)row["SUBSTATN"], GsdFile = row["CEXTTYPE"].ToString() };
+
+                            var ma = pbMasterSystems.FirstOrDefault(x => x.Id == (int) row["UNITID"]);
+                            if (ma != null)
+                                ma.Children.Add(node);
+                        }                            
+                    }
+                }                
+            }
+
+
+
+
+
+            var pnMasterSystems = new List<ProfinetMasterSystem>();
+
+            //Get all Profibus Master Systems
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hssiox" + _DirSeperator + "HOBJECT1.DBF"))
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hssiox" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        if ((int)row["OBJTYP"] == 1316787)
+                        {
+                            pnMasterSystems.Add(new ProfinetMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] });
+                        }
+                    }
+                }
+            }
+
+            //Link all PnMasterSystems to the Stations             
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hssiox" + _DirSeperator + "HRELATI1.DBF"))
+            {
+                var lnkLst = new List<LinkHelp>();
+
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hssiox" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        lnkLst.Add(new LinkHelp() { SOBJID = (int)row["SOBJID"], SOBJTYP = (int)row["SOBJTYP"], RELID = (int)row["RELID"], TOBJID = (int)row["TOBJID"], TOBJTYP = (int)row["TOBJTYP"], TUNITID = (int)row["TUNITID"], TUNITTYP = (int)row["TUNITTYP"] });
+                    }
+                }
+
+                foreach (StationConfigurationFolder station in stations)
+                {
+                    var lnks = lnkLst.Where(x => x.TOBJTYP == station.ObjTyp && x.TOBJID == station.ID);
+                    foreach (LinkHelp linkHelp in lnks)
+                    {
+                        var ms = pnMasterSystems.FirstOrDefault(x => x.Id == linkHelp.SOBJID);
+                        if (ms != null)
+                        {
+                            station.MasterSystems.Add(ms);
+                            station.SubItems.Add(ms);
+                        }
+                    }
+                }
+            }
+
+            //Get all Profinet Parts ...     
+            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hdevnx" + _DirSeperator + "HOBJECT1.DBF"))
+            {
+                var attLst = new List<AttrMeHelp>();
+
+                //Read real name from hattrme.dbf          
+                if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hdevnx" + _DirSeperator + "HATTRME1.DBF"))
+                {
+                    var dbfTbl2 = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hdevnx" + _DirSeperator + "HATTRME1.DBF", _ziphelper, _DirSeperator);
+
+                    foreach (DataRow row in dbfTbl2.Rows)
+                    {
+                        if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                        {
+                            attLst.Add(new AttrMeHelp() { IDM = (int)row["IDM"], ATTRIIDM = (int)row["ATTRIIDM"], ATTFORMATM = (int)row["ATTFORMATM"], MEMOARRAYM = (byte[])row["MEMOARRAYM"] });
+                        }
+                    }                    
+                }
+
+                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hdevnx" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
+
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        if ((int)row["OBJTYP"] == 1316803)
+                        {
+                            var node = new ProfibusNode() { Name = row["NAME"].ToString().Replace("\0", ""), NodeId = (int)row["SUBSTATN"], GsdFile = row["CEXTTYPE"].ToString() };
+
+                            var inf = attLst.FirstOrDefault(x => x.IDM == (int) row["ID"] && x.ATTRIIDM == 111386);
+                         
+                            if (inf != null)
+                                node.Name = ProjectEncoding.GetString(inf.MEMOARRAYM).Replace("\0","");
+
+                            var ma = pnMasterSystems.FirstOrDefault(x => x.Id == (int)row["UNITID"]);
+                            if (ma != null)
+                                ma.Children.Add(node);
+                        }
+                    }
+                }
+            }
+
 
             //Infos about Link file hrs\linkhrs.lnk
             //Size of a Structure in the Link File: 512 bytes
@@ -862,5 +1033,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             
             return retVal;
         }
-    }
+
+
+        private class LinkHelp
+        {
+            public int SOBJID { get; set; }
+            public int SOBJTYP { get; set; }
+            public int RELID { get; set; }
+            public int TOBJID { get; set; }
+            public int TOBJTYP { get; set; }
+            public int TUNITID { get; set; }
+            public int TUNITTYP { get; set; }
+        }
+
+        private class AttrMeHelp
+        {
+            public int IDM { get; set; }
+            public int ATTRIIDM { get; set; }
+            public int ATTFORMATM { get; set; }
+            public byte[] MEMOARRAYM { get; set; }          
+        }
+    }    
 }

@@ -18,6 +18,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
@@ -169,6 +170,7 @@ namespace JFK_VarTab
             tableLayoutPanelVisu.ColumnStyles[1].Width = 0;
 
             datablockView.Visible = false;
+            dtaPnPbList.Visible = false;   
 
             lblToolStripFileSystemFolder.Text = "";
 
@@ -200,7 +202,22 @@ namespace JFK_VarTab
                     }
                     dtaSymbolTable.Visible = true;
                     lblToolStripFileSystemFolder.Text = tmp2.Folder;
-                }               
+                }
+                else if (tmp.myObject is MasterSystem)
+                {
+                    var tmp2 = (MasterSystem)tmp.myObject;
+
+                    if (oldNode != treeStep7Project.SelectedNode)
+                    {
+
+                        dtaPnPbList.Rows.Clear();
+                        foreach (var s in tmp2.Children)
+                        {
+                            dtaPnPbList.Rows.Add(new object[] { s.NodeId, s.Name, });
+                        }
+                    }
+                    dtaPnPbList.Visible = true;                    
+                } 
                 else if (blkFld != null)
                 {
                     if (oldNode != treeStep7Project.SelectedNode)
@@ -910,7 +927,7 @@ namespace JFK_VarTab
             if (e.Button == MouseButtons.Right)
             {
                 treeStep7Project.SelectedNode = e.Node;
-                treeView1_AfterSelect(sender, null);
+                treeView1_AfterSelect(sender, null);                
             }
         }
 
@@ -1281,6 +1298,24 @@ namespace JFK_VarTab
         {
             var saver = new DataBlockValueSaver((string)lstConnections.SelectedItem);
             saver.ShowDialog();
+        }
+
+        private void export_Click(object sender, EventArgs e)
+        {
+            var dlg = new SaveFileDialog ();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string tx = "";
+                foreach (DataGridViewRow dataRow in dtaPnPbList.Rows)
+                {
+                    tx += dataRow.Cells[0].Value + ";\"" + dataRow.Cells[1].Value + "\"" + Environment.NewLine;
+                }
+                using (StreamWriter outfile = new StreamWriter(dlg.FileName))
+                {
+
+                    outfile.Write(tx);
+                }
+            }
         }
     }
 

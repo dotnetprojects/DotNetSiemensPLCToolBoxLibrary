@@ -88,6 +88,14 @@
     <Compile Include="DataTypes\Blocks\Step7V11\TIADataBlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V11\TIADataRow.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\PLCFunctionBlockAdressType.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\MasterSystem.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\Network.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\Node.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\ProfinetNode.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\ProfinetMasterSystem.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\ProfibusMasterSystem.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNetwork.cs" />
+    <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNode.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
