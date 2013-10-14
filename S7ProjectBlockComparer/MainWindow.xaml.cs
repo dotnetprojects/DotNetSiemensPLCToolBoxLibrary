@@ -16,7 +16,8 @@ using System.Windows.Shapes;
 using System.Xml;
 
 using DiffMatchPatch;
-
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
@@ -33,6 +34,8 @@ namespace S7ProjectBlockComparer
     {
         private BlocksOfflineFolder fld1;
         private BlocksOfflineFolder fld2;
+
+        private S7ConvertingOptions convOpt;
         
         public string CurrentBlock
         {
@@ -46,6 +49,8 @@ namespace S7ProjectBlockComparer
         
         public MainWindow()
         {
+
+            convOpt = new S7ConvertingOptions(MnemonicLanguage.German) {GenerateCallsfromUCs = true, };
 
             this.DataContext = this;
 
@@ -97,11 +102,11 @@ namespace S7ProjectBlockComparer
                         {
                             if (projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.FB || projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.FC || projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.OB)
                             {
-                                var blk1 = fld1.GetBlock(projectBlockInfo);
+                                var blk1 = fld1.GetBlock(projectBlockInfo, convOpt);
 
                                 Dispatcher.Invoke(new Action(() => this.akBlock.Text = blk1.BlockName));
 
-                                var blk2 = fld2.GetBlock(blk1.BlockName);
+                                var blk2 = fld2.GetBlock(blk1.BlockName, convOpt);
 
                                 if (blk2 != null)
                                 {
@@ -113,6 +118,21 @@ namespace S7ProjectBlockComparer
                                         Dispatcher.Invoke(new Action(() => lstBlocks.Items.Add(blk1.BlockName)));
                                     }
                                 }
+                                else
+                                {
+                                    Dispatcher.Invoke(new Action(() => lstBlocks.Items.Add("-" + blk1.BlockName)));
+                                }
+                            }
+                        }
+
+                        foreach (var projectBlockInfo in fld2.BlockInfos)
+                        {
+                            if (projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.FB || projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.FC || projectBlockInfo.BlockType == DotNetSiemensPLCToolBoxLibrary.DataTypes.PLCBlockType.OB)
+                            {
+                                if (!fld1.BlockInfos.Any(x => x.Name == projectBlockInfo.Name))
+                                {
+                                    Dispatcher.Invoke(new Action(() => lstBlocks.Items.Add("+" + projectBlockInfo.Name)));
+                                }                                
                             }
                         }
 
@@ -125,41 +145,56 @@ namespace S7ProjectBlockComparer
         {
             if (lstBlocks.SelectedItem != null)
             {
-                var blk1 = ((S7FunctionBlock)fld1.GetBlock(lstBlocks.SelectedItem.ToString())).ToString(false);
-                var blk2 = ((S7FunctionBlock)fld2.GetBlock(lstBlocks.SelectedItem.ToString())).ToString(false);
-
-                txtResult.TextArea.TextView.LineTransformers.Clear();
-
-                var txt = "";
-                diff_match_patch comparer = new diff_match_patch();
-                var result = comparer.diff_main(blk1, blk2);
-
-                txtResult.Document.Text = "";
-                foreach (var diff in result)
+                if (lstBlocks.SelectedItem.ToString().StartsWith("+"))
                 {
-                    if (diff.operation == Operation.INSERT)
-                    {
-                        var st = txt.Length;
-                        txt += diff.text;
-                        var stp = txt.Length;
-
-                        txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Green));
-                    }
-                    else if (diff.operation == Operation.DELETE)
-                    {
-                        var st = txt.Length;
-                        txt += diff.text;
-                        var stp = txt.Length;
-
-                        txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Red));
-                    }
-                    else
-                    {
-                        txt += diff.text;
-                    }
-
+                    var bk=((S7FunctionBlock)fld2.GetBlock(lstBlocks.SelectedItem.ToString().Substring(1), convOpt)).ToString(false);
+                    txtResult.Document.Text = bk;
                 }
-                txtResult.Document.Text = txt;
+                else if (lstBlocks.SelectedItem.ToString().StartsWith("-"))
+                {
+                    var bk = ((S7FunctionBlock)fld1.GetBlock(lstBlocks.SelectedItem.ToString().Substring(1), convOpt)).ToString(false);
+                    txtResult.Document.Text = bk;
+                }
+                else
+                {
+                    var blk1 =
+                        ((S7FunctionBlock) fld1.GetBlock(lstBlocks.SelectedItem.ToString(), convOpt)).ToString(false);
+                    var blk2 =
+                        ((S7FunctionBlock) fld2.GetBlock(lstBlocks.SelectedItem.ToString(), convOpt)).ToString(false);
+
+                    txtResult.TextArea.TextView.LineTransformers.Clear();
+
+                    var txt = "";
+                    diff_match_patch comparer = new diff_match_patch();
+                    var result = comparer.diff_main(blk1, blk2);
+
+                    txtResult.Document.Text = "";
+                    foreach (var diff in result)
+                    {
+                        if (diff.operation == Operation.INSERT)
+                        {
+                            var st = txt.Length;
+                            txt += diff.text;
+                            var stp = txt.Length;
+
+                            txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Green));
+                        }
+                        else if (diff.operation == Operation.DELETE)
+                        {
+                            var st = txt.Length;
+                            txt += diff.text;
+                            var stp = txt.Length;
+
+                            txtResult.TextArea.TextView.LineTransformers.Add(new TextColorizer(st, stp, Brushes.Red));
+                        }
+                        else
+                        {
+                            txt += diff.text;
+                        }
+
+                    }
+                    txtResult.Document.Text = txt;
+                }
 
             }
         }
