@@ -110,6 +110,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             newRow.ArrayStart = this.ArrayStart;
             newRow.ArrayStop = this.ArrayStop;
             newRow.IsArray = this.IsArray;
+            newRow.WasFirstInArray = this.WasFirstInArray;
+            newRow.WasArray = this.WasArray;
             newRow.Attributes = this.Attributes;
             newRow.Comment = this.Comment;
             newRow.DataTypeBlockNumber = this.DataTypeBlockNumber;
