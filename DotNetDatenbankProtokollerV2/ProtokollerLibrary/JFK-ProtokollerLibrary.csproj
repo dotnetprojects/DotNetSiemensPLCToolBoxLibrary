@@ -35,6 +35,9 @@
     <Reference Include="C5">
       <HintPath>..\AdditionalDlls\C5.dll</HintPath>
     </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\AdditionalDlls\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\AdditionalDlls\EPPlus.dll</HintPath>
     </Reference>

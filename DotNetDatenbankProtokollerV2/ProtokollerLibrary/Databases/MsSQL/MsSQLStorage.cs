@@ -241,6 +241,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                                     Object value = e2.Current;
                                     if (field.DatabaseFieldType == "text" || field.DatabaseFieldType == "varchar" || field.DatabaseFieldType == "ntext" || field.DatabaseFieldType == "nvarchar" || field.DatabaseFieldType == "char" || field.DatabaseFieldType == "nchar")
                                         cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = value.ToString() });
+                                    else if (field.DatabaseFieldType == "smallint")
+                                        cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = Convert.ToInt16(value) });
+                                    else if (field.DatabaseFieldType == "int")
+                                        cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = Convert.ToInt32(value) });
+                                    else if (field.DatabaseFieldType == "bigint")
+                                        cmd.Parameters.Add(new SqlParameter() { ParameterName = "@" + field.DatabaseField, Value = Convert.ToInt64(value) });
                                     else
                                     {
                                         if (value is System.Single && field.DatabaseFieldType == "float")
