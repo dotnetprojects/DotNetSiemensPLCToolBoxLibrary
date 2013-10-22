@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -112,6 +113,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             newRow.IsArray = this.IsArray;
             newRow.WasFirstInArray = this.WasFirstInArray;
             newRow.WasArray = this.WasArray;
+            newRow.WasNextHigherIndex = this.WasNextHigherIndex;
             newRow.Attributes = this.Attributes;
             newRow.Comment = this.Comment;
             newRow.DataTypeBlockNumber = this.DataTypeBlockNumber;
@@ -723,6 +725,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 List<S7DataRow> arrAsList = new List<S7DataRow>();
 
+                var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
+
                 int[] arrAk = ArrayStart.ToArray();
                 for (int i = 0; i < this.GetArrayLines(); i++)
                 {
@@ -733,12 +737,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         nm += arrAk[n];                        
                     }
 
+                    var frst = (i % lastCnt) == 0;  //Erstes Elment des letzten Index eines Arrays 
+                    
+
                     S7DataRow tmp = (S7DataRow)retVal.DeepCopy();
                     tmp.Name = tmp.Name + "[" + nm + "]";
                     tmp.WasFirstInArray = retVal.IsArray && i == 0;
                     tmp.WasArray = retVal.IsArray;
                     tmp.IsArray = false;
-                    tmp.WasNextHigherIndex = arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
+                    tmp.WasNextHigherIndex = frst; // arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
                     arrAsList.Add(tmp);
 
                     for (int n = arrAk.Length - 1; n >= 0; n--)
