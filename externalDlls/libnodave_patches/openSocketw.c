@@ -141,6 +141,7 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
 	}    
 //	socketClose(fd);
 	closesocket(fd);
+	WSACleanup();
 	fd = 0;
     } else {
 	if (daveDebug & daveDebugOpen) {
@@ -173,6 +174,7 @@ __declspec (dllexport) HANDLE __stdcall openSocket(const int port, const char * 
 
 __declspec (dllexport) int __stdcall closeSocket(SOCKET h) {
     return closesocket(h);
+    WSACleanup();
 }
 
 #endif

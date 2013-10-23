@@ -1185,6 +1185,7 @@ int DECL2 daveListBlocksOfType(daveConnection * dc,uc type,daveBlockEntry * buf)
 		len+=p2.udlen;
 		printf("more data\n");
 		res=daveBuildAndSendPDU(dc, &p2,pam, sizeof(pam), NULL, 1);
+		if (res!=daveResOK) return res; 	// bugfix from Natalie Kather
 	}
 
 
@@ -1217,7 +1218,8 @@ int DECL2 daveGetOrderCode(daveConnection * dc,char * buf) {
 	LOG3("daveGetOrderCode(dc:%p buf:%p)\n", dc, buf);
 	FLUSH;
 #endif	    	
-	daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da));
+	res=daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da));
+	if (res!=daveResOK) return res; 	// bugfix from Natalie Kather
 	if (buf) {
 		memcpy(buf, p2.udata+10, daveOrderCodeSize);
 		buf[daveOrderCodeSize]=0;
@@ -1245,6 +1247,7 @@ int DECL2 daveReadSZL(daveConnection * dc, int ID, int index, void * buffer, int
 	da[2]=index / 0x100;
 	da[3]=index % 0x100;
 	res=daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da));
+	if (res!=daveResOK) return res; 	// bugfix from Natalie Kather
 
 	len=0;
 	pa7=p2.param[7];
@@ -1261,6 +1264,7 @@ int DECL2 daveReadSZL(daveConnection * dc, int ID, int index, void * buffer, int
 		pam[7]=pa7;
 		//		res=daveBuildAndSendPDU(dc, &p2,pam, sizeof(pam), NULL, sizeof(dam));
 		res=daveBuildAndSendPDU(dc, &p2,pam, sizeof(pam), NULL, 1);
+		if (res!=daveResOK) return res; 	// bugfix from Natalie Kather
 	}
 
 
@@ -1287,7 +1291,8 @@ int DECL2 daveGetBlockInfo(daveConnection * dc, daveBlockInfo *dbi, uc type, int
 	sprintf((char*)(da+2),"%05d",number);
 	da[1]=type;
 	da[7]='A';
-	res=daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da));    
+	res=daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da)); 
+	if (res!=daveResOK) return res; 	// bugfix from Natalie Kather	
 	if ((dbi!=NULL) && (p2.udlen==sizeof(daveBlockInfo))) {
 		memcpy(dbi, p2.udata, p2.udlen);
 		dbi->number=daveSwapIed_16(dbi->number);
@@ -1301,7 +1306,8 @@ int DECL2 daveListBlocks(daveConnection * dc,daveBlockTypeEntry * buf) {
 	int res,i;
 	PDU p2;
 	uc pa[]={0,1,18,4,17,67,1,0};
-	daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), NULL, 1/*da, sizeof(da)*/);
+	res=daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), NULL, 1/*da, sizeof(da)*/);
+	if (res!=daveResOK) return res; 	// bugfix from Natalie Kather
 	res=p2.udlen/sizeof(daveBlockTypeEntry);
 	if (buf) {
 		memcpy(buf, p2.udata, p2.udlen);
