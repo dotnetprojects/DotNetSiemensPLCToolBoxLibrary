@@ -98,7 +98,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public S7DataRow(string name, S7DataRowType datatype, Block plcblock)
         {
-            this.PlcBlock = plcblock;
+            this.CurrentBlock = plcblock;
             this.Name = name;
             this.DataType = datatype;
 

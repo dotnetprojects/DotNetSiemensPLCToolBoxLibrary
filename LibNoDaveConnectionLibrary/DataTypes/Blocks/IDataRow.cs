@@ -51,6 +51,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         ByteBitAddress BlockAddress { get; }
 
+        Block PlcBlock { get; }
+
         string StructuredName { get; }
     }
 }
