@@ -144,9 +144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
              * */            
         }
         
-        public bool isRootBlock { get; set; }
-
-        Block PlcBlock { get; set; }
+        public bool isRootBlock { get; set; }        
 
         private S7DataRowType _datatype;
         public override S7DataRowType DataType
