@@ -487,6 +487,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     if (row.DataType == S7DataRowType.BOOL)
                     {
+                        //Todo Array support here...
                         row.Value = libnodave.getBit(actualValues[valuePos], bitPos);
                         bitPos++;
                         if (bitPos > 7)
@@ -497,12 +498,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                     else
                     {
+                        if (bitPos != 0)
+                            valuePos++;
+                        if (valuePos % 2 != 0 && row.DataType != S7DataRowType.BYTE)
+                            valuePos++;
                         bitPos = 0;
                         row.Value = GetVarTypeVal((byte)row.DataType, actualValues, ref valuePos);
                     }
                 }
                 else
                 {
+                    if (bitPos != 0)
+                        valuePos++;
+                    if (valuePos % 2 != 0 && row.DataType != S7DataRowType.BYTE)
+                        valuePos++;
                     bitPos = 0;
                     foreach (var child in row.Children)
                     {
@@ -988,7 +997,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case 0x13:
                     { // 'STRING';
                         Result = Helper.GetS7String(Valpos, -1, BD);
-                        Valpos = Valpos + BD[Valpos + 1] + 2;
+                        Valpos = Valpos + BD[Valpos] + 2;
                     } break;
                 case 0x21:
                     { // 'SFB??';
