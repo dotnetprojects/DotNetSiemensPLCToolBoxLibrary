@@ -1469,6 +1469,10 @@ int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 				len=q[2]*0x100+q[3];
 				if (q[1]==4) {
 					len>>=3;	/* len is in bits, adjust */
+				} else if (q[1]==5) {			/* Fehlenden Size-Type INTEGER ergänzt */
+		    		len>>=3;	/* len is in bits, adjust */
+				} else if (q[1]==7) {			/* Fehlenden Size-Type REAL ergänzt */
+					 /* len is already in bytes, ok */
 				} else if (q[1]==9) {
 					/* len is already in bytes, ok */
 				} else if (q[1]==3) {
