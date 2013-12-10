@@ -1079,6 +1079,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return S7FormatAddress;
         }
 
+        private int getNumberFromString(string txt)
+        {
+            int val = 0;
+            for (int i = 0; i < txt.Length; i++)
+            {
+                if (Char.IsDigit(txt[i]))
+                {
+                    val *= 10;
+                    val += txt[i]-'0';
+                }
+            }
+
+            return val;
+        }
+
         public void ChangeAddressFromString(String newPlcAddress)
         {
             var plcAddress = newPlcAddress;
@@ -1120,7 +1135,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 this.TagDataSource = MemoryArea.Timer;
                             else if (tmp.Contains("z") || tmp.Contains("c"))
                                 this.TagDataSource = MemoryArea.Counter;
-                            ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].Split('.')[0], "[a-z]", ""));
+                            ByteAddress = getNumberFromString(myPlcAddress[0].Split('.')[0]);
                         }
                         else
                         {
@@ -1272,7 +1287,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     this.TagDataType = TagDataType.Bool;
                             }
 
-                            this.ByteAddress = Convert.ToInt32(Regex.Replace(myPlcAddress[0].ToLower(), "[a-z]", "").Trim());
+                            this.ByteAddress = getNumberFromString(myPlcAddress[0]);
 
                             if (this.TagDataType == TagDataType.String)
                                 ArraySize -= 2;

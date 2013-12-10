@@ -471,7 +471,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             if (actualValues != null)
             {
                 int vPos = 0, bPos = 0;
-                FillActualValuesInDataBlock(parameterRoot, actualValues, ref vPos, ref bPos);
+                //FillActualValuesInDataBlock(parameterRoot, actualValues, ref vPos, ref bPos);
             }
 
             return parameterRoot;

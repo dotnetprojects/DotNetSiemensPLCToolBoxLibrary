@@ -389,18 +389,20 @@ namespace Kopplungstester
 
             byte[] bytes = getEncoding().GetBytes(SendeString);
 
-            byte[] lnr = LaufnummerErzeugen();
-
-            try
+            if (Settings.Default.SequenceNumberLength > 0)
             {
-                Array.Copy(lnr, 0, bytes, Convert.ToInt32(Settings.Default.SequenceNumberPosition), lnr.Length);
-            }
-            catch (Exception)
-            {
+                byte[] lnr = LaufnummerErzeugen();
+
+                try
+                {
+                    Array.Copy(lnr, 0, bytes, Convert.ToInt32(Settings.Default.SequenceNumberPosition), lnr.Length);
+                }
+                catch (Exception)
+                {
+                }
             }
 
 
-            
 
             try
             {
@@ -483,12 +485,67 @@ namespace Kopplungstester
                 string txthex = "";
                 string txt = "";
                 var wrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
+
                 for (int i = 0; i < wrt.Length; i++)
                 {
                     var bt = getEncoding().GetBytes(wrt[i].ToString());
-                    txthex += bt[0].ToString("X").PadLeft(2,'0') + " ";                    
+                    txthex += bt[0].ToString("X").PadLeft(2, '0') + " ";
                 }
-                dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = txthex;
+                dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value = txthex;                
+            }
+
+            else if (col.Name == "Input")
+            {
+                var awrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
+
+                var frmt = dtaSendTabelle.Rows[e.RowIndex].Cells["cmdFormat"].Value.ToString();
+
+                string wrt = "";
+                switch (frmt)
+                {
+                    case "Int":
+
+                        Int16 a = 0;
+                        Int16.TryParse(awrt, out a);
+                        wrt = a.ToString("X").PadLeft(4, '0');
+                        break;
+
+                    case "DInt":
+
+                        Int32 b = 0;
+                        Int32.TryParse(awrt, out b);
+                        wrt = b.ToString("X").PadLeft(8, '0');                        
+                        break;
+                    case "Hex":
+                        wrt = awrt;
+                        break;
+
+                    case "Ascii":
+                    default:
+                        for (int i = 0; i < awrt.Length; i++)
+                        {
+                            var bt = getEncoding().GetBytes(awrt[i].ToString());
+                            wrt += bt[0].ToString("X").PadLeft(2, '0');
+                        }
+
+                        break;                    
+                }
+
+
+                string txthex = "";
+                string txt = "";
+                wrt = wrt.Replace(" ", "");
+                for (int i = 0; i < wrt.Length - 1; i += 2)
+                {
+                    txthex += wrt[i].ToString() + wrt[i + 1].ToString() + " ";
+                    var nr =
+                        Convert.ToByte(int.Parse("" + wrt[i] + wrt[i + 1],
+                            System.Globalization.NumberStyles.HexNumber));
+                    txt += getEncoding().GetString(new byte[] {nr});
+                }
+                dtaSendTabelle.Rows[e.RowIndex].Cells["Wert_hex"].Value = txthex;
+                dtaSendTabelle.Rows[e.RowIndex].Cells["Wert"].Value = txt;
+
             }
 
             CountBytes();
