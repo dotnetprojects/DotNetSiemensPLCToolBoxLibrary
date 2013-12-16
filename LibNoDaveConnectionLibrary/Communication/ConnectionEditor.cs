@@ -186,6 +186,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             chkNetlinkReset.Checked = myConfig.NetLinkReset;
 
+            chkUseShortRequest.Checked = myConfig.UseShortDataBlockRequest;
+
             lstConnType.SelectedIndex = myConfig.PLCConnectionType;
             lstConnTypeRouting.SelectedIndex = myConfig.RoutingPLCConnectionType;
 
@@ -232,6 +234,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             myConfig.BusSpeed = lstLIBNODAVEBusSpeed.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEBusSpeed.SelectedItem).Value : 0;
 
             myConfig.NetLinkReset = chkNetlinkReset.Checked;
+
+            myConfig.UseShortDataBlockRequest = chkUseShortRequest.Checked;
 
             myConfig.RoutingDestination = txtRoutingDestination.Text;
             myConfig.RoutingDestinationRack = Convert.ToInt32(txtRoutingRack.Text);

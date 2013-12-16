@@ -71,6 +71,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _entryPoint = value; NotifyPropertyChanged("EntryPoint"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
+        //Only possible on 400er CPUs
+        private bool _useShortDataBlockRequest = false;
+        public bool UseShortDataBlockRequest
+        {
+            get { return _useShortDataBlockRequest; }
+            set { _useShortDataBlockRequest = value; NotifyPropertyChanged("UseShortDataBlockRequest"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
         private int _cpuRack = 0;
         public int CpuRack
         {
@@ -387,6 +395,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         this.RoutingSubnet2 = akConf.RoutingSubnet2;
                         this.RoutingDestination = akConf.RoutingDestination;
                         this.Port = akConf.Port;
+                        this.UseShortDataBlockRequest = akConf.UseShortDataBlockRequest;
 
                         this.PLCConnectionType = akConf.PLCConnectionType;
                         this.RoutingPLCConnectionType = akConf.RoutingPLCConnectionType;

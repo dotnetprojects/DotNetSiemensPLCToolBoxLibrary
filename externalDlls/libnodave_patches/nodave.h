@@ -876,6 +876,10 @@ EXPORTSPEC void DECL2 davePrepareReadRequest(daveConnection * dc, PDU *p);
 EXPORTSPEC void DECL2 daveAddVarToReadRequest(PDU *p, int area, int DBnum, int start, int bytes);
 /* Adds a new symbol variable to a prepared request: */
 EXPORTSPEC void DECL2 daveAddSymbolVarToReadRequest(PDU *p, void * completeSymbol, int completeSymbolLength);
+/* Adds a fill byte to the last request */
+EXPORTSPEC void DECL2 daveAddFillByteToReadRequest(PDU *p);
+/* Adds a new symbol variable to a prepared request: */
+EXPORTSPEC void DECL2 daveAddDbRead400ToReadRequest(PDU *p, int DBnum, int offset, int byteCount);
 /* Executes the complete request. */
 EXPORTSPEC int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet * rl);
 /* Lets the functions daveGet<data type> work on the n-th result: */

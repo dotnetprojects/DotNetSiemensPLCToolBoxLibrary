@@ -1467,7 +1467,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     daveAddSymbolVarToReadRequest32(pointer, bytes, bytes.Length);
             }
+            
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddFillByteToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddFillByteToReadRequest")]
+#endif
+            protected static extern void daveAddFillByteToReadRequest64(IntPtr p);
 
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddFillByteToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddFillByteToReadRequest")]
+#endif
+            protected static extern void daveAddFillByteToReadRequest32(IntPtr p);
+            public void daveAddFillByteToReadRequest()
+            {
+                if (IntPtr.Size == 8)
+                    daveAddFillByteToReadRequest64(pointer);
+                else
+                    daveAddFillByteToReadRequest32(pointer);
+            }
+            
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddDbRead400ToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddDbRead400ToReadRequest")]
+#endif
+            protected static extern void daveAddDbRead400ToReadRequest64(IntPtr p, int DBnum, int offset, int byteCount);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddDbRead400ToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddDbRead400ToReadRequest")]
+#endif
+            protected static extern void daveAddDbRead400ToReadRequest32(IntPtr p, int DBnum, int offset, int byteCount);
+            public void addDbRead400ToReadRequest(int DBnum, int offset, int byteCount)
+            {
+                if (IntPtr.Size == 8)
+                    daveAddDbRead400ToReadRequest64(pointer, DBnum, offset, byteCount);
+                else
+                    daveAddDbRead400ToReadRequest32(pointer, DBnum, offset, byteCount);
+            }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddBitVarToReadRequest")]

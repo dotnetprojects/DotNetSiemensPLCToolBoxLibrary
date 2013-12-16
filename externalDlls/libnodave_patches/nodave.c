@@ -573,6 +573,59 @@ void DECL2 daveAddToReadRequest(PDU *p, int area, int DBnum, int start, int byte
 	}	
 }    
 
+void DECL2 daveAddFillByteToReadRequest(PDU *p) {
+	uc pa[]=	{
+		0			/* fill byte */
+	};
+	
+	memcpy(p->param+p->plen, pa, 1);
+	p->plen+=1;
+}
+
+void DECL2 daveAddDbRead400ToReadRequest(PDU *p, int DBnum, int offset, int byteCount) {
+	uc pa[]=	{
+		0x12, 0x07, 0xb0,
+		0x01,		/*  */
+		0,			/* length in bytes */
+		0,0,		/* DB number */
+		0,0,		/* start address in bits */
+	};
+	
+	int paSize = 0;
+	
+#ifdef ARM_FIX
+	us tmplen;
+#endif    
+
+#ifdef DEBUG_CALLS
+	LOG6("daveAddDbRead400ToReadRequest(PDU:%p db:%p offset:%p byteCount:%p)\n", p, DBnum, offset, byteCount);
+	FLUSH;	
+#endif	
+
+	pa[4]=byteCount;		
+	pa[5]=DBnum / 256;		
+	pa[6]=DBnum & 0xff;		
+	pa[7]=offset / 256;
+	pa[8]=offset & 0xff;
+	
+	p->param[1]++;
+	
+	memcpy(p->param+p->plen, pa, sizeof(pa));
+	p->plen+=sizeof(pa);
+
+#ifdef ARM_FIX    
+	tmplen=daveSwapIed_16(p->plen);
+	memcpy(&(((PDUHeader*)p->header)->plen), &tmplen, sizeof(us));
+#else
+	((PDUHeader*)p->header)->plen=daveSwapIed_16(p->plen);
+#endif    
+	p->data=p->param+p->plen;
+	p->dlen=0;
+	if (daveDebug & daveDebugPDU) {
+		_daveDumpPDU(p);
+	}	
+}    
+
 void DECL2 daveAddSymbolToReadRequest(PDU *p, void * completeSymbol, int completeSymbolLength) {
 	
 	uc pa[]= { 0x12, 0x00, 0xb2, 0xff };

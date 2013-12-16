@@ -79,6 +79,8 @@
             this.txtRoutingSlot = new System.Windows.Forms.TextBox();
             this.lblRoutingSlot = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lstConnTypeRouting = new System.Windows.Forms.ComboBox();
             this.lblS7OnlineDevice = new System.Windows.Forms.Label();
             this.txtLIBNODAVECPUPort = new System.Windows.Forms.TextBox();
             this.lblLIBNODAVECPUPort = new System.Windows.Forms.Label();
@@ -89,8 +91,7 @@
             this.tryConnect = new System.ComponentModel.BackgroundWorker();
             this.lstConnType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.lstConnTypeRouting = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.chkUseShortRequest = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -431,6 +432,23 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // lstConnTypeRouting
+            // 
+            this.lstConnTypeRouting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.lstConnTypeRouting, "lstConnTypeRouting");
+            this.lstConnTypeRouting.FormattingEnabled = true;
+            this.lstConnTypeRouting.Items.AddRange(new object[] {
+            resources.GetString("lstConnTypeRouting.Items"),
+            resources.GetString("lstConnTypeRouting.Items1"),
+            resources.GetString("lstConnTypeRouting.Items2")});
+            this.lstConnTypeRouting.Name = "lstConnTypeRouting";
+            this.lstConnTypeRouting.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
+            // 
             // lblS7OnlineDevice
             // 
             resources.ApplyResources(this.lblS7OnlineDevice, "lblS7OnlineDevice");
@@ -491,28 +509,19 @@
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
-            // lstConnTypeRouting
+            // chkUseShortRequest
             // 
-            this.lstConnTypeRouting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.lstConnTypeRouting, "lstConnTypeRouting");
-            this.lstConnTypeRouting.FormattingEnabled = true;
-            this.lstConnTypeRouting.Items.AddRange(new object[] {
-            resources.GetString("lstConnTypeRouting.Items"),
-            resources.GetString("lstConnTypeRouting.Items1"),
-            resources.GetString("lstConnTypeRouting.Items2")});
-            this.lstConnTypeRouting.Name = "lstConnTypeRouting";
-            this.lstConnTypeRouting.SelectedIndexChanged += new System.EventHandler(this.ValueChanged);
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
+            resources.ApplyResources(this.chkUseShortRequest, "chkUseShortRequest");
+            this.chkUseShortRequest.Name = "chkUseShortRequest";
+            this.chkUseShortRequest.UseVisualStyleBackColor = true;
+            this.chkUseShortRequest.CheckedChanged += new System.EventHandler(this.ValueChanged);
             // 
             // ConnectionEditor
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ControlBox = false;
+            this.Controls.Add(this.chkUseShortRequest);
             this.Controls.Add(this.lstConnType);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblState);
@@ -634,5 +643,6 @@
         private System.Windows.Forms.ComboBox lstConnTypeRouting;
         private System.Windows.Forms.ComboBox lstConnType;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox chkUseShortRequest;
     }
 }
