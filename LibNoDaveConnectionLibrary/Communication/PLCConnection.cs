@@ -2097,10 +2097,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     throw new Exception("Error: " + libnodave.daveStrerror(res));
                                 else
                                 {
-                                    NotExistedValue.Add(false);
-
-                                    Array.Copy(myBuff, 0, completeData, positionInCompleteData, readenSizes[akVar]);
-                                    positionInCompleteData += readenSizes[akVar];
+                                    int myBuffStart = 0;
+                                    if (usedShortRequest[akVar])
+                                        myBuffStart = 1;
+                                    if (usedShortRequest[akVar] && (myBuff[0] == 10 || myBuff[0] == 5))
+                                    {
+                                        NotExistedValue.Add(true);
+                                    }
+                                    else
+                                    {
+                                        NotExistedValue.Add(false);
+                                        Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
+                                        positionInCompleteData += readenSizes[akVar];
+                                    }
                                     //for (int n = 0; n < readenSizes[akVar]; n++)
                                     //{
                                     //    completeData[positionInCompleteData++] = myBuff[n]; //Convert.ToByte(_dc.getU8());
@@ -2178,15 +2187,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 throw new Exception("Error: " + libnodave.daveStrerror(res));
                             else
                             {
-                                NotExistedValue.Add(false);
-
                                 int myBuffStart = 0;
                                 if (usedShortRequest[akVar])
                                     myBuffStart = 1;
 
-                                Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
-                                positionInCompleteData += readenSizes[akVar];
-                                
+                                if (usedShortRequest[akVar] && (myBuff[0] == 10 || myBuff[0] == 5))
+                                {
+                                    NotExistedValue.Add(true);
+                                }
+                                else
+                                {
+                                    NotExistedValue.Add(false);
+                                    Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
+                                    positionInCompleteData += readenSizes[akVar];
+                                }
                                 //for (int n = 0; n < readenSizes[akVar]; n++)
                                 //{
                                 //    completeData[positionInCompleteData++] = myBuff[n]; // Convert.ToByte(_dc.getU8());
