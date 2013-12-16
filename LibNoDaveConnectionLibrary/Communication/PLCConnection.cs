@@ -2024,7 +2024,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         int readSize = libNoDaveValue._internalGetSize();
 
-                        const int HeaderTagSize = 4;
+                        const int HeaderTagSize = 4; //Todo: If I use the Short Request, the Header in the answer is 5 Bytes, not 4! Look how to do this...
 
                         tryAgain:
                         int readSizeWithHeader = readSize + HeaderTagSize; //HeaderTagSize Bytes Header for each Tag
