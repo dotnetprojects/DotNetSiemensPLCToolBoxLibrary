@@ -35,11 +35,6 @@
             this.treeStep7Project = new System.Windows.Forms.TreeView();
             this.imglstIconsForTreeview = new System.Windows.Forms.ImageList(this.components);
             this.dtaSymbolTable = new System.Windows.Forms.DataGridView();
-            this.symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.datatype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operand = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operandiec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lstListBox = new System.Windows.Forms.ListBox();
             this.txtTextBox = new System.Windows.Forms.TextBox();
             this.chkShowDeleted = new System.Windows.Forms.CheckBox();
@@ -108,6 +103,11 @@
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.dtaPnPbList = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.exportMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.export = new System.Windows.Forms.ToolStripMenuItem();
             this.viewBlockList = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -117,11 +117,12 @@
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dtaPnPbList = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.exportMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.export = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.datatype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operand = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operandiec = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tia_key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -132,14 +133,14 @@
             this.mainSplitContainer.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).BeginInit();
+            this.exportMenu.SuspendLayout();
             this.viewBlockList.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanelVisu.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).BeginInit();
-            this.exportMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProjectInfo
@@ -201,38 +202,14 @@
             this.datatype,
             this.operand,
             this.operandiec,
-            this.comment});
+            this.comment,
+            this.tia_key});
             this.dtaSymbolTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSymbolTable.Location = new System.Drawing.Point(0, 0);
             this.dtaSymbolTable.Name = "dtaSymbolTable";
             this.dtaSymbolTable.Size = new System.Drawing.Size(770, 535);
             this.dtaSymbolTable.TabIndex = 5;
             this.dtaSymbolTable.Visible = false;
-            // 
-            // symbol
-            // 
-            this.symbol.HeaderText = "symbol";
-            this.symbol.Name = "symbol";
-            // 
-            // datatype
-            // 
-            this.datatype.HeaderText = "datatype";
-            this.datatype.Name = "datatype";
-            // 
-            // operand
-            // 
-            this.operand.HeaderText = "operand";
-            this.operand.Name = "operand";
-            // 
-            // operandiec
-            // 
-            this.operandiec.HeaderText = "operandiec";
-            this.operandiec.Name = "operandiec";
-            // 
-            // comment
-            // 
-            this.comment.HeaderText = "comment";
-            this.comment.Name = "comment";
             // 
             // lstListBox
             // 
@@ -829,12 +806,12 @@
             // 
             // mainSplitContainer.Panel2
             // 
-            this.mainSplitContainer.Panel2.Controls.Add(this.dtaPnPbList);
             this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
             this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
             this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
             this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
             this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaPnPbList);
             this.mainSplitContainer.Size = new System.Drawing.Size(1171, 535);
             this.mainSplitContainer.SplitterDistance = 397;
             this.mainSplitContainer.TabIndex = 26;
@@ -870,6 +847,47 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(391, 124);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // dtaPnPbList
+            // 
+            this.dtaPnPbList.AllowUserToAddRows = false;
+            this.dtaPnPbList.AllowUserToDeleteRows = false;
+            this.dtaPnPbList.AllowUserToResizeRows = false;
+            this.dtaPnPbList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtaPnPbList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
+            this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
+            this.dtaPnPbList.Name = "dtaPnPbList";
+            this.dtaPnPbList.Size = new System.Drawing.Size(770, 535);
+            this.dtaPnPbList.TabIndex = 19;
+            this.dtaPnPbList.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "name";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // exportMenu
+            // 
+            this.exportMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.export});
+            this.exportMenu.Name = "exportMenu";
+            this.exportMenu.Size = new System.Drawing.Size(108, 26);
+            // 
+            // export
+            // 
+            this.export.Name = "export";
+            this.export.Size = new System.Drawing.Size(107, 22);
+            this.export.Text = "Export";
+            this.export.Click += new System.EventHandler(this.export_Click);
             // 
             // viewBlockList
             // 
@@ -975,46 +993,35 @@
             this.panel1.Size = new System.Drawing.Size(1171, 74);
             this.panel1.TabIndex = 0;
             // 
-            // dtaPnPbList
+            // symbol
             // 
-            this.dtaPnPbList.AllowUserToAddRows = false;
-            this.dtaPnPbList.AllowUserToDeleteRows = false;
-            this.dtaPnPbList.AllowUserToResizeRows = false;
-            this.dtaPnPbList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtaPnPbList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
-            this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
-            this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
-            this.dtaPnPbList.Name = "dtaPnPbList";
-            this.dtaPnPbList.Size = new System.Drawing.Size(770, 535);
-            this.dtaPnPbList.TabIndex = 19;
-            this.dtaPnPbList.Visible = false;
+            this.symbol.HeaderText = "symbol";
+            this.symbol.Name = "symbol";
             // 
-            // dataGridViewTextBoxColumn1
+            // datatype
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "id";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.datatype.HeaderText = "datatype";
+            this.datatype.Name = "datatype";
             // 
-            // dataGridViewTextBoxColumn2
+            // operand
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "name";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.operand.HeaderText = "operand";
+            this.operand.Name = "operand";
             // 
-            // exportMenu
+            // operandiec
             // 
-            this.exportMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.export});
-            this.exportMenu.Name = "exportMenu";
-            this.exportMenu.Size = new System.Drawing.Size(108, 26);
+            this.operandiec.HeaderText = "operandiec";
+            this.operandiec.Name = "operandiec";
             // 
-            // export
+            // comment
             // 
-            this.export.Name = "export";
-            this.export.Size = new System.Drawing.Size(152, 22);
-            this.export.Text = "Export";
-            this.export.Click += new System.EventHandler(this.export_Click);
+            this.comment.HeaderText = "comment";
+            this.comment.Name = "comment";
+            // 
+            // tia_key
+            // 
+            this.tia_key.HeaderText = "tia_key";
+            this.tia_key.Name = "tia_key";
             // 
             // Form1
             // 
@@ -1045,6 +1052,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).EndInit();
+            this.exportMenu.ResumeLayout(false);
             this.viewBlockList.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -1053,8 +1062,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).EndInit();
-            this.exportMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1066,11 +1073,6 @@
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.TreeView treeStep7Project;
         private System.Windows.Forms.DataGridView dtaSymbolTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn symbol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn datatype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operand;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operandiec;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comment;
         private System.Windows.Forms.ListBox lstListBox;
         private System.Windows.Forms.TextBox txtTextBox;
         private System.Windows.Forms.CheckBox chkShowDeleted;
@@ -1154,6 +1156,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.ContextMenuStrip exportMenu;
         private System.Windows.Forms.ToolStripMenuItem export;
+        private System.Windows.Forms.DataGridViewTextBoxColumn symbol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn datatype;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operand;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operandiec;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tia_key;
 
     }
 }

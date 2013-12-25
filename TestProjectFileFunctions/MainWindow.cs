@@ -20,6 +20,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
@@ -197,7 +198,15 @@ namespace JFK_VarTab
                         dtaSymbolTable.Rows.Clear();
                         foreach (var step7SymbolTableEntry in tmp2.SymbolTableEntrys)
                         {
-                            dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment });                            
+                            var tiaRow = step7SymbolTableEntry as TIASymbolTableEntry;
+                            if (tiaRow != null)
+                            {
+                                dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment, tiaRow.TIATagAccessKey});                            
+                            }
+                            else
+                            {
+                                dtaSymbolTable.Rows.Add(new object[] { step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType, step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC, step7SymbolTableEntry.Comment });                               
+                            }                            
                         }
                     }
                     dtaSymbolTable.Visible = true;

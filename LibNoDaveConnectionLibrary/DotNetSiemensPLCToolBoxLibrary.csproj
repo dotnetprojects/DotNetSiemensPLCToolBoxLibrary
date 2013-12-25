@@ -192,6 +192,7 @@
     <Compile Include="General\SingleExtensions.cs" />
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
+    <Compile Include="General\TiaCrcHelper.cs" />
     <Compile Include="General\ZipHelper.cs" />
     <Compile Include="General\InputBox.cs" />
     <Compile Include="Communication\PLCTagUITypeEditor.cs" />

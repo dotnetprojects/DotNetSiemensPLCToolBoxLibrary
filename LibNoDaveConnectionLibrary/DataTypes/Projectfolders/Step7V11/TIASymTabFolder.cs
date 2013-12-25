@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
@@ -53,9 +55,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         var entry = new TIASymbolTableEntry() { Symbol = akSymName, OperandIEC = akSymAddress, DataType = akSymType };
                         symbolTableEntrys.Add(entry);
 
-                        var tiaCrc = Activator.CreateInstance(TiaProject.tiaCrcType);
-                        TiaProject.tiaCrcType.InvokeMember("adds", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, new object[] { akSymName });
-                        entry.TIATagAccessKey = "00000052" + ((uint)TiaProject.tiaCrcType.InvokeMember("get", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, null)).ToString("X").PadLeft(8,'0') + "4" + akLitID.ToString("X").PadLeft(7, '0');                        
+                        var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(akSymName));
+                        var key = "00000052" + crc.ToString("X").PadLeft(8, '0') + "4" + akLitID.ToString("X").PadLeft(7, '0');
+                        entry.TIATagAccessKey = key;                        
                     }
                 }
                 return this.symbolTableEntrys;

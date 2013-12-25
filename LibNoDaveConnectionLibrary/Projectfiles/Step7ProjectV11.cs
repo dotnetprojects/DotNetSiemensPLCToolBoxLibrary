@@ -78,7 +78,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private object tiaExport;
         private Type tiaExportType;
-        internal Type tiaCrcType;
+        //internal Type tiaCrcType;
         
         internal override void LoadProject()
         {
@@ -112,7 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
             tiaExportType.InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
 
-            tiaCrcType = Type.GetType("Siemens.Automation.DomainServices.TagService.CRC32, Siemens.Automation.DomainServices");
+            //tiaCrcType = Type.GetType("Siemens.Automation.DomainServices.TagService.CRC32, Siemens.Automation.DomainServices");
             
             xmlWriter.Flush();
             xmlWriter.Close();
