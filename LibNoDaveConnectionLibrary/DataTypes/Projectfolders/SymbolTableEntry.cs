@@ -7,7 +7,7 @@
         public string Operand { get; set; }
         public string OperandIEC { get; set; }
         public string DataType { get; set; }
-
+        public MemoryArea DataSource { get; set; }
         public override string ToString()
         {
             return Symbol + " (" + Operand + ")";

@@ -55,9 +55,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         var entry = new TIASymbolTableEntry() { Symbol = akSymName, OperandIEC = akSymAddress, DataType = akSymType };
                         symbolTableEntrys.Add(entry);
 
-                        var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(akSymName));
-                        var key = "00000052" + crc.ToString("X").PadLeft(8, '0') + "4" + akLitID.ToString("X").PadLeft(7, '0');
-                        entry.TIATagAccessKey = key;                        
+                        if (!string.IsNullOrEmpty(akSymAddress))
+                        {
+                            var k = "";
+
+                            if (akSymAddress.StartsWith("%I"))
+                                entry.DataSource = MemoryArea.Inputs;                                
+                            else if (akSymAddress.StartsWith("%Q"))
+                                entry.DataSource = MemoryArea.Outputs;
+                            else if (akSymAddress.StartsWith("%M"))
+                                entry.DataSource = MemoryArea.Flags;
+
+                            var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(akSymName));
+
+                            var key = "000000" + (((int) entry.DataSource) - 0x31).ToString("X") + crc.ToString("X").PadLeft(8, '0') + "4" + akLitID.ToString("X").PadLeft(7, '0');
+                            entry.TIATagAccessKey = key;                        
+                        }                        
                     }
                 }
                 return this.symbolTableEntrys;
