@@ -28,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             return retVal;
         }
 
-        private static UInt32 getcrc(byte[] data)
+        public static UInt32 getcrc(byte[] data)
         {
             UInt32 CRC32MASK = 0xF4ACFB13; //Start of CRC found via Try and Error...
 

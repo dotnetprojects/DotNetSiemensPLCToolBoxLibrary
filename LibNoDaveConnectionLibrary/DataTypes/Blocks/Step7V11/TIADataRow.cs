@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
@@ -109,7 +110,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
         }
 
 
-        public string Name
+        public override string Name
         {
             get
             {
@@ -126,10 +127,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
         {
             get
             {
-                //var tiaCrc = Activator.CreateInstance(tiaProject.tiaCrcType);
-                //tiaProject.tiaCrcType.InvokeMember("adds", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, new object[] { Name });
-                //return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + ((uint)tiaProject.tiaCrcType.InvokeMember("get", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance, null, tiaCrc, null)).ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');
-                return "";
+                var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(Name));
+                return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + crc.ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');                
             }
         }       
     }

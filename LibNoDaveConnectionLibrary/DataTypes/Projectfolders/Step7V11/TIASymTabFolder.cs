@@ -56,9 +56,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         symbolTableEntrys.Add(entry);
 
                         if (!string.IsNullOrEmpty(akSymAddress))
-                        {
-                            var k = "";
-
+                        {                            
                             if (akSymAddress.StartsWith("%I"))
                                 entry.DataSource = MemoryArea.Inputs;                                
                             else if (akSymAddress.StartsWith("%Q"))
