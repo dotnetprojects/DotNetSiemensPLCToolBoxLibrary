@@ -65,10 +65,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                 entry.DataSource = MemoryArea.Outputs;
                             else if (akSymAddress.StartsWith("%M"))
                                 entry.DataSource = MemoryArea.Flags;
+                            else if (akSymAddress.StartsWith("%T"))
+                                entry.DataSource = MemoryArea.Timer;
+                            else if (akSymAddress.StartsWith("%C"))
+                                entry.DataSource = MemoryArea.Counter;
 
-                            var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(akSymName));
-
-                            var key = "000000" + (((int) entry.DataSource) - 0x31).ToString("X") + crc.ToString("X").PadLeft(8, '0') + "4" + akLitID.ToString("X").PadLeft(7, '0');
+                            var key = TiaCrcHelper.GetAccesKeyForSymbolTabelEntry(entry.DataSource, akSymName, akLitID);
                             entry.TIATagAccessKey = key;                        
                         }                        
                     }
