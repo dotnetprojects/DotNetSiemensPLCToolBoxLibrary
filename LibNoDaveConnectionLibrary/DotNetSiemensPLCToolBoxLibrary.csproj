@@ -248,6 +248,24 @@
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
+    <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaObjectStates.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaFileProtocol.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaFixedRootObjectInstanceIds.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaTypeIds.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaFileType.cs" />
+    <Compile Include="Projectfiles\TIA\Structs\TiaFileHeader.cs" />
+    <Compile Include="Projectfiles\TIA\Structs\TiaMarker.cs" />
+    <Compile Include="Projectfiles\TIA\Structs\TiaObjectHeaderLegacy.cs" />
+    <Compile Include="Projectfiles\TIA\Enums\TiaAttribSets.cs" />
+    <Compile Include="Projectfiles\TIA\TiaCompression.cs" />
+    <Compile Include="Projectfiles\TIA\Structs\TiaObjectHeader.cs" />
+    <Compile Include="Projectfiles\TIA\TiaHelper.cs" />
+    <Compile Include="Projectfiles\TIA\TiaFileObject.cs" />
+    <Compile Include="Projectfiles\TIA\TiaObjectId.cs" />
+    <Compile Include="Projectfiles\TIA\TiaRootObjectEntry.cs" />
+    <Compile Include="Projectfiles\TIA\TiaRootObjectList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\PLCTag.cs" />
     <Compile Include="Projectfiles\SelectPartType.cs" />

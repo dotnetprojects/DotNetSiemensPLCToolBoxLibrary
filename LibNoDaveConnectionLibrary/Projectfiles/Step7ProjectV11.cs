@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -11,6 +14,10 @@ using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
+//using CompressionMode = ZLibNet.CompressionMode;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -56,11 +63,59 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             { }
 
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
-            ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;            
+            ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
+
+            var tiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
+            using (FileStream sourceStream = File.OpenRead(DataFile))
+            {
+                var buffer = new byte[Marshal.SizeOf(typeof(TiaFileHeader))];
+                sourceStream.Read(buffer, 0, buffer.Length);
+
+                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                TiaFileHeader header = (TiaFileHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(TiaFileHeader));
+                handle.Free();
+                
+                while (sourceStream.Position<sourceStream.Length)
+                {
+                    if (TiaHelper.IsMarker(sourceStream))
+                    {
+                        var buffer2 = new byte[Marshal.SizeOf(typeof (TiaMarker))];
+                        sourceStream.Read(buffer2, 0, buffer2.Length);
+                        GCHandle handle2 = GCHandle.Alloc(buffer2, GCHandleType.Pinned);
+                        TiaMarker marker =
+                            (TiaMarker) Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof (TiaMarker));
+                        handle2.Free();
+                    }
+                    else
+                    {
+                        var buffer3 = new byte[Marshal.SizeOf(typeof (TiaObjectHeader))];
+                        sourceStream.Read(buffer3, 0, buffer3.Length);
+                        GCHandle handle3 = GCHandle.Alloc(buffer3, GCHandleType.Pinned);
+                        TiaObjectHeader hd = (TiaObjectHeader) Marshal.PtrToStructure(handle3.AddrOfPinnedObject(), typeof (TiaObjectHeader));
+                        handle3.Free();
+
+                        var bytes = new byte[hd.Size - buffer3.Length];
+                        sourceStream.Read(bytes, 0, bytes.Length);
+                        var id = hd.GetTiaObjectId();
+                        if (!tiaObjects.ContainsKey(id))
+                            tiaObjects.Add(id, new TiaFileObject(hd, bytes));
+                        else
+                        {
+                            Console.WriteLine("double Id:" + id.ToString());
+                        }                        
+                    }
+                }
+                
+                var rootId = new TiaObjectId(TiaFixedRootObjectInstanceIds.RootObjectCollectionId);
+                var rootObjects = new TiaRootObjectList(tiaObjects[rootId]);
+                var projectid = rootObjects.TiaRootObjectEntrys.First(x=>x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
+                var projectobj = tiaObjects[projectid];
+            }
+
             LoadProject();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
-        }
+        }        
 
         internal XmlDocument xmlDoc;
         
@@ -194,7 +249,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(data);
-                       
+
+            //xmlDoc.Save("C:\\Temp\\tia-export.xml");
+
             importTypeInfos = new Dictionary<string, string>();
             foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/importTypes/typeInfo"))
             {
