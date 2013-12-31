@@ -56,10 +56,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         symbolTableEntrys.Add(entry);
 
                         if (!string.IsNullOrEmpty(akSymAddress))
-                        {                            
-                            if (akSymAddress.StartsWith("%I"))
-                                entry.DataSource = MemoryArea.Inputs;                                
-                            else if (akSymAddress.StartsWith("%Q"))
+                        {
+                            if (akSymAddress.StartsWith("%I") || akSymAddress.StartsWith("%E"))
+                                entry.DataSource = MemoryArea.Inputs;
+                            else if (akSymAddress.StartsWith("%Q") || akSymAddress.StartsWith("%A"))
                                 entry.DataSource = MemoryArea.Outputs;
                             else if (akSymAddress.StartsWith("%M"))
                                 entry.DataSource = MemoryArea.Flags;

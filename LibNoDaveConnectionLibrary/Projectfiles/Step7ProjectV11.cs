@@ -65,52 +65,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
 
-            var tiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
-            using (FileStream sourceStream = File.OpenRead(DataFile))
-            {
-                var buffer = new byte[Marshal.SizeOf(typeof(TiaFileHeader))];
-                sourceStream.Read(buffer, 0, buffer.Length);
-
-                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                TiaFileHeader header = (TiaFileHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(TiaFileHeader));
-                handle.Free();
-                
-                while (sourceStream.Position<sourceStream.Length)
-                {
-                    if (TiaHelper.IsMarker(sourceStream))
-                    {
-                        var buffer2 = new byte[Marshal.SizeOf(typeof (TiaMarker))];
-                        sourceStream.Read(buffer2, 0, buffer2.Length);
-                        GCHandle handle2 = GCHandle.Alloc(buffer2, GCHandleType.Pinned);
-                        TiaMarker marker =
-                            (TiaMarker) Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof (TiaMarker));
-                        handle2.Free();
-                    }
-                    else
-                    {
-                        var buffer3 = new byte[Marshal.SizeOf(typeof (TiaObjectHeader))];
-                        sourceStream.Read(buffer3, 0, buffer3.Length);
-                        GCHandle handle3 = GCHandle.Alloc(buffer3, GCHandleType.Pinned);
-                        TiaObjectHeader hd = (TiaObjectHeader) Marshal.PtrToStructure(handle3.AddrOfPinnedObject(), typeof (TiaObjectHeader));
-                        handle3.Free();
-
-                        var bytes = new byte[hd.Size - buffer3.Length];
-                        sourceStream.Read(bytes, 0, bytes.Length);
-                        var id = hd.GetTiaObjectId();
-                        if (!tiaObjects.ContainsKey(id))
-                            tiaObjects.Add(id, new TiaFileObject(hd, bytes));
-                        else
-                        {
-                            Console.WriteLine("double Id:" + id.ToString());
-                        }                        
-                    }
-                }
-                
-                var rootId = new TiaObjectId(TiaFixedRootObjectInstanceIds.RootObjectCollectionId);
-                var rootObjects = new TiaRootObjectList(tiaObjects[rootId]);
-                var projectid = rootObjects.TiaRootObjectEntrys.First(x=>x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
-                var projectobj = tiaObjects[projectid];
-            }
+            BinaryParseTIAFile();
 
             LoadProject();
 
@@ -134,7 +89,61 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private object tiaExport;
         private Type tiaExportType;
         //internal Type tiaCrcType;
-        
+
+
+        internal Dictionary<TiaObjectId, TiaFileObject> TiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
+
+        internal void BinaryParseTIAFile()
+        {
+            //using (FileStream sourceStream = File.OpenRead(DataFile))
+            using (var sourceStream = new FileStream(DataFile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite))
+            {
+                var buffer = new byte[Marshal.SizeOf(typeof(TiaFileHeader))];
+                sourceStream.Read(buffer, 0, buffer.Length);
+
+                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                TiaFileHeader header = (TiaFileHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(TiaFileHeader));
+                handle.Free();
+
+                while (sourceStream.Position < sourceStream.Length)
+                {
+                    if (TiaHelper.IsMarker(sourceStream))
+                    {
+                        var buffer2 = new byte[Marshal.SizeOf(typeof(TiaMarker))];
+                        sourceStream.Read(buffer2, 0, buffer2.Length);
+                        GCHandle handle2 = GCHandle.Alloc(buffer2, GCHandleType.Pinned);
+                        TiaMarker marker =
+                            (TiaMarker)Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof(TiaMarker));
+                        handle2.Free();
+                    }
+                    else
+                    {
+                        var buffer3 = new byte[Marshal.SizeOf(typeof(TiaObjectHeader))];
+                        sourceStream.Read(buffer3, 0, buffer3.Length);
+                        GCHandle handle3 = GCHandle.Alloc(buffer3, GCHandleType.Pinned);
+                        TiaObjectHeader hd = (TiaObjectHeader)Marshal.PtrToStructure(handle3.AddrOfPinnedObject(), typeof(TiaObjectHeader));
+                        handle3.Free();
+
+                        var bytes = new byte[hd.Size - buffer3.Length];
+                        sourceStream.Read(bytes, 0, bytes.Length);
+                        var id = hd.GetTiaObjectId();
+                        if (!TiaObjects.ContainsKey(id))
+                            TiaObjects.Add(id, new TiaFileObject(hd, bytes));
+                        else
+                        {
+                            //Todo: look why this happens, and how TIA Handles this!!
+                            Console.WriteLine("double Id:" + id.ToString());
+                        }
+                    }
+                }
+
+                var rootId = new TiaObjectId(TiaFixedRootObjectInstanceIds.RootObjectCollectionId);
+                var rootObjects = new TiaRootObjectList(TiaObjects[rootId]);
+                var projectid = rootObjects.TiaRootObjectEntrys.First(x => x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
+                var projectobj = TiaObjects[projectid];
+            }
+        }
+
         internal override void LoadProject()
         {
             _projectLoaded = true;
