@@ -8,6 +8,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -932,6 +933,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     int pos2 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x04, 0x20, 0x11 }));
                     int wrt2 = tmpLink[pos2 + 3] * 0x100 + tmpLink[pos2 + 4];
 
+                    BlocksOfflineFolder fld = null;
                     foreach (var y in tmpBlocksOfflineFolders)
                     {
                         if (y.ID == wrt1)
@@ -939,8 +941,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             y.Parent = x;
                             x.SubItems.Add(y);
                             x.BlocksOfflineFolder = y;
+                            fld = y;
+                            break;
                         }
                     }
+
+                    if (fld != null)
+                        tmpBlocksOfflineFolders.Remove(fld);
 
                     foreach (var y in Step7ProjectTypeStep7Sources)
                     {
@@ -967,6 +974,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     y.Parent = ProjectStructure;
                     ProjectStructure.SubItems.Add(y);
+                }
+            }
+
+            if (_showDeleted)
+            {
+                foreach (var y in tmpBlocksOfflineFolders)
+                {
+                    var x = new S7ProgrammFolder() {Name = "$$tmpProgram_for_deleted"};
+                    x.Project = this;
+                    x.Parent = ProjectStructure;
+                    y.Parent = x;
+                    x.SubItems.Add(y);
+                    x.BlocksOfflineFolder = y;
+                    ProjectStructure.SubItems.Add(x);                    
                 }
             }
 
