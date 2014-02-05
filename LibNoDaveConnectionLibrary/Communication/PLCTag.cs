@@ -294,7 +294,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set
             {
                 if (value == TagDataType.Struct)
+                {
+                    tagDataType = value;
                     return;
+                }
                 //if (value == TagDataType.DateTime)
                 //    ArraySize = 1;
                 else if (value != TagDataType.Bool)
