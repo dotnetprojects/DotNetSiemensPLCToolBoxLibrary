@@ -1013,7 +1013,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     List<string> myRet = new List<string>();
 
-                    byte[] blocks = new byte[2048*4];
+                    byte[] blocks = new byte[2048*16];
 
                     //_configuration.ConnectionTyp
 
