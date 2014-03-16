@@ -14,14 +14,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //Todo support for string and array datatypes
         internal override void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            byte[] tmp = ToBytes(_controlvalue);
-            Array.Copy(tmp, 0, buff, startpos, tmp.Length);
+            var type = typeof (T);
+            bool isStruct = type.IsValueType && !type.IsEnum && !type.IsPrimitive && type != typeof (decimal);
+            if (isStruct)
+            {
+                byte[] tmp = ToBytes(_controlvalue);
+                Array.Copy(tmp, 0, buff, startpos, tmp.Length);
+            }
+            else
+            {
+                base._putControlValueIntoBuffer(buff, startpos);
+            }
         }
 
         internal override void _readValueFromBuffer(byte[] buff, int startpos)
         {
-            _value = (T) FromBytes(typeof (T), buff, startpos);
-
+            var type = typeof(T);
+            bool isStruct = type.IsValueType && !type.IsEnum && !type.IsPrimitive && type != typeof(decimal);
+            if (isStruct)
+            {
+                _value = (T)FromBytes(typeof(T), buff, startpos);
+            }
+            else
+            {
+                base._readValueFromBuffer(buff, startpos);
+            }
         }
 
         protected internal override object _setValueProp
