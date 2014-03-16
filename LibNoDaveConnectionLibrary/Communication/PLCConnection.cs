@@ -1078,10 +1078,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
                     string block = "";
                     int nr = 0;
-                    if (tmp.Length > 3 && tmp.Substring(0, 3) == "SDB")
+                    if (tmp.Length > 3)
                     {
-                        block = tmp.Substring(0, 3);
-                        nr = Int32.Parse(tmp.Substring(3));
+                        if (tmp.Substring(0, 3) == "SDB")
+                        {
+                            block = tmp.Substring(0, 3);
+                            nr = Int32.Parse(tmp.Substring(3));
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                     else
                     {

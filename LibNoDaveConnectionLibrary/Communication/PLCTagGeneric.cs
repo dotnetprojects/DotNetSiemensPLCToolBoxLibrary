@@ -266,7 +266,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         */
                 }
             }
-            return (int)numBytes;
+            return (int)Math.Ceiling(numBytes);
         }
 
 
