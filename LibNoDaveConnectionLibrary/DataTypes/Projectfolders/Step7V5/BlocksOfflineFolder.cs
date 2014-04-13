@@ -552,7 +552,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         retVal.AWLCode = JumpMarks.AddJumpmarks(retVal.AWLCode, myTmpBlk.jumpmarks, myTmpBlk.nwinfo, myConvOpt);
 
                         LocalDataConverter.ConvertLocaldataToSymbols(retVal, myConvOpt);
-
+                        
                         CallConverter.ConvertUCToCall(retVal, prgFld, this, myConvOpt, null);
 
                         FBStaticAccessConverter.ReplaceStaticAccess(retVal, prgFld, myConvOpt);                        

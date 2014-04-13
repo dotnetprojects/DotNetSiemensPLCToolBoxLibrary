@@ -121,6 +121,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             newRow.StartValue = this.StartValue;
             newRow.StringSize = this.StringSize;
             newRow.TimeStampConflict = this.TimeStampConflict;
+            newRow.isInOut = this.isInOut;
+            newRow.isRootBlock = this.isRootBlock;
             
 
             if (Children!=null)
@@ -144,7 +146,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
              * */            
         }
         
-        public bool isRootBlock { get; set; }        
+        public bool isRootBlock { get; set; }
+        public bool isInOut { get; set; }    
 
         private S7DataRowType _datatype;
         public override S7DataRowType DataType
@@ -287,6 +290,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     case S7DataRowType.SFB:   
                     case S7DataRowType.STRUCT:
                     case S7DataRowType.UDT:
+                        if (this.Parent != null && ((S7DataRow) this.Parent).isInOut)
+                            return 6;   //On InOut -> It's handeled as Pointer
                          int size =0;
                          if (Children != null)
                          {
@@ -504,7 +509,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         {
                             plcDataRow._BlockAddress = new ByteBitAddress(akAddr);
 
-                            plcDataRow.FillBlockAddresses(akAddr);
+                            var useAddr = akAddr;
+                            if (plcDataRow.Parent != null && ((S7DataRow) plcDataRow.Parent).isInOut)
+                                useAddr = new ByteBitAddress(0, 0);
+                            plcDataRow.FillBlockAddresses(useAddr);
+
+                            //Struct or UDT are Handeled as Pointer in IN_OUT so only Increase about 6 Byte
+                            //if (plcDataRow.Parent != null && ((S7DataRow) plcDataRow.Parent).isInOut)
                             akAddr.ByteAddress += plcDataRow.ByteLength;
                             //if (!plcDataRow.IsArray)
                             //    akAddr = plcDataRow.FillBlockAddresses(akAddr);
@@ -516,7 +527,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                                 akAddr.ByteAddress++;
                             }
                             if (akAddr.ByteAddress%2 != 0)
-                                akAddr.ByteAddress++;                          
+                                akAddr.ByteAddress++;
 
                             plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
                         }
@@ -532,6 +543,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             }
                             plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
                         }
+
                         //structlen += plcDataRow.ByteLength;
 
                         lastRowWasArrayOrStruct = plcDataRow.WasArray;
@@ -712,11 +724,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
            
             if (Children != null)
             {
-                foreach (S7DataRow plcDataRow in this.Children)
-                {
-                    List<S7DataRow> tmp = plcDataRow._GetExpandedChlidren(myExpOpt);
-                    retVal.AddRange(tmp);                   
-                }                        
+                if (this.Parent==null || ((S7DataRow)this.Parent).isInOut==false || myExpOpt.ExpandSubChildInINOUT)
+                    foreach (S7DataRow plcDataRow in this.Children)
+                    {
+                        List<S7DataRow> tmp = plcDataRow._GetExpandedChlidren(myExpOpt);
+                        retVal.AddRange(tmp);
+                    }
             }
 
             if (this.IsArray && (this.DataType!=S7DataRowType.CHAR || myExpOpt.ExpandCharArrays))

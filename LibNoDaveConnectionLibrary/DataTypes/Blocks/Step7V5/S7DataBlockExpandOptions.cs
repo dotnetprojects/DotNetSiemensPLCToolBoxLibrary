@@ -6,6 +6,7 @@
         //public bool ExpandFBs { get; set; }
         //public bool ExpandArrays { get; set; }
         public bool ExpandCharArrays { get; set; }
+        public bool ExpandSubChildInINOUT { get; set; }
 
         public S7DataBlockExpandOptions()
         {
@@ -13,6 +14,7 @@
             //ExpandFBs = true;
             //ExpandArrays = true;
             ExpandCharArrays = true;
+            ExpandSubChildInINOUT = true;
         }
     }
 }

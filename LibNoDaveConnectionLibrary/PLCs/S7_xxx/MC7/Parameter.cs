@@ -86,6 +86,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             S7DataRow akDataRow = parameterRoot;
 
+            parameterIN.isRootBlock = true;
+            parameterOUT.isRootBlock = true;
+            parameterINOUT.isRootBlock = true;
+            parameterINOUT.isInOut = true;
+            parameterSTAT.isRootBlock = true;
             parameterTEMP.isRootBlock = true;
 
             bool tempAdded = false;
