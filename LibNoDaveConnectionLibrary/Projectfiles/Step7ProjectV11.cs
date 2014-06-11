@@ -31,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             V13 = 13,
         }
 
-        public TiaVersionTypes TiaVersion { get; set; }
+        public static TiaVersionTypes TiaVersion { get; private set; }
 
         private string DataFile = null;
 
