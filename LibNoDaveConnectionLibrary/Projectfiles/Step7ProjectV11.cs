@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -23,6 +24,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public class Step7ProjectV11 : Project
     {
+        public enum TiaVersionTypes
+        {
+            V11 = 11,
+            V12 = 12,
+            V13 = 13,
+        }
+
+        public TiaVersionTypes TiaVersion { get; set; }
+
         private string DataFile = null;
 
         private XmlDocument tiaProject;
@@ -39,8 +49,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (ProjectFile.ToLower().EndsWith("zip"))
             {
                 ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
-                if (string.IsNullOrEmpty(ProjectFile))
+                if (string.IsNullOrEmpty(ProjectFile))               
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap12");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap13");
 
                 if (string.IsNullOrEmpty(projectfile))
                     throw new Exception("Zip-File contains no valid TIA Project !");
@@ -78,9 +90,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
-            string tiaPath = prg + "\\Siemens\\Automation\\Portal V12\\Bin";
+            TiaVersion = TiaVersionTypes.V13;
+
+            string tiaPath = prg + "\\Siemens\\Automation\\Portal V13\\Bin";
             if (!Directory.Exists(tiaPath))
+            {
+                tiaPath = prg + "\\Siemens\\Automation\\Portal V12\\Bin";
+                TiaVersion = TiaVersionTypes.V12;
+            }
+            if (!Directory.Exists(tiaPath))
+            {
                 tiaPath = prg + "\\Siemens\\Automation\\Portal V11\\Bin";
+                TiaVersion = TiaVersionTypes.V11;
+            }
             var dll = args.Name.Split(',')[0];
             var load = Path.Combine(tiaPath, dll + ".dll");
             return Assembly.LoadFrom(load);
@@ -158,8 +180,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (tiaExport == null)
             {
                 tiaExportType = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Conversion.Export, Siemens.Automation.ObjectFrame.FileStorage");
-                tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
-                
+                if (TiaVersion < TiaVersionTypes.V13)
+                {
+                    tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
+                }
+                else
+                {
+                    //V13
+                    var helper = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Base.Client.DataStoreClientHelper, Siemens.Automation.ObjectFrame.FileStorage.Base");
+                    var metaManagerMth = helper.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).FirstOrDefault(x => x.Name == "GetMetaManager");
+                    var metaManager = metaManagerMth.Invoke(null, null);
+                    var crInst = tiaExportType.GetMethods().FirstOrDefault(x => x.Name == "CreateInstance");
+                    tiaExport = crInst.Invoke(null, new object[] { DataFile, null, true, metaManager });                
+                }
+
                 var memMgrType = Type.GetType("Siemens.Automation.ObjectFrame.Kernel.MemoryManager, Siemens.Automation.ObjectFrame.Kernel");
                 try
                 {
@@ -174,8 +208,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
             tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
             tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-            tiaExportType.InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
 
+            if (TiaVersion >= TiaVersionTypes.V13)
+            {
+                var bgWorker = tiaExportType.GetField("m_BgWorker", BindingFlags.Instance | BindingFlags.NonPublic);
+                bgWorker.SetValue(tiaExport, new BackgroundWorker() {WorkerReportsProgress = true, WorkerSupportsCancellation = true});
+            }
+
+            var serializeObjects = tiaExportType.GetMethod("SerializeObjects",
+                BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null,
+                new Type[] {typeof (XmlWriter)}, null);
+
+            serializeObjects.Invoke(tiaExport, new object[] {xmlWriter});
+            //tiaExportType.InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+
+            
             //tiaCrcType = Type.GetType("Siemens.Automation.DomainServices.TagService.CRC32, Siemens.Automation.DomainServices");
             
             xmlWriter.Flush();

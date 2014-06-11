@@ -90,6 +90,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (file.ToLower().EndsWith(".ap11"))
                 return new Step7ProjectV11(file);
             else if (file.ToLower().EndsWith(".ap12"))
+                return new Step7ProjectV11(file);                
+            else if (file.ToLower().EndsWith(".ap13"))
                 return new Step7ProjectV11(file);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
                 return new Step5Project(file, showDeleted);
