@@ -37,6 +37,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             DataRow row;
             int fieldIndex;
 
+            if (_ziphelper == null)
+            {
+                _ziphelper = new ZipHelper(dbfFile);
+            }
+
             // If there isn't even a file, just return an empty DataTable
             if ((false == _ziphelper.FileExists(dbfFile)))
             {
