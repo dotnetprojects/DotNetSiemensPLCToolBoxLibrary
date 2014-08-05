@@ -27,6 +27,7 @@ x64/
 *_p.c
 *.ilk
 *.meta
+*.ide
 *.obj
 *.pch
 *.pdb
