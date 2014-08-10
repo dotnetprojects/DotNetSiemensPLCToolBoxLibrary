@@ -48,7 +48,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="cmdSaveToFile_Click"
-                Content="Save to File" />
+                Content="Export to File" />
         <Button Name="cmdLoadFromFile"
                 Width="147"
                 Height="25"
@@ -56,7 +56,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="cmdLoadFromFile_Click"
-                Content="Load from File" />
+                Content="Import from File" />
         <Label Name="label1"
                Width="76"
                Height="19"

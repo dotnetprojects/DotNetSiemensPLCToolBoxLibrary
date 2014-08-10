@@ -197,7 +197,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                 }
             }
 
-            string conf = SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
+            string conf = JsonNetSerialize(ProtokollerConfiguration.ActualConfigInstance);  //SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
 
             /*
             RegistryKey regKey = Registry.LocalMachine;
@@ -221,18 +221,49 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), StaticServiceConfig.MyServiceName + "\\XMLConfig.config");
         }
 
+
+        private static Newtonsoft.Json.JsonSerializerSettings jsonNetSettings = new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto };
+        public static string JsonNetSerialize<T>(T obj, bool beautifyOutput = true)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj, typeof(T), beautifyOutput ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None, jsonNetSettings);
+        }
+        public static T JsonNetDeSerialize<T>(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return default(T);
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(text, jsonNetSettings);
+        }
+
+
         public static void SaveToFile(string filename)
         {
             StreamWriter fstrm = new StreamWriter(filename, false);
-           
-            string conf = SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
+
+            string conf = JsonNetSerialize(ProtokollerConfiguration.ActualConfigInstance); // SerializeToString<ProtokollerConfiguration>.Serialize(ProtokollerConfiguration.ActualConfigInstance);
             fstrm.Write(conf);
             fstrm.Close();
         }
 
         private static ProtokollerConfiguration DeSerialize(string txt)
         {
-            ProtokollerConfiguration retVal = SerializeToString<ProtokollerConfiguration>.DeSerialize(txt);
+            ProtokollerConfiguration retVal = null;
+            try
+            {
+                retVal = JsonNetDeSerialize<ProtokollerConfiguration>(txt);
+            }
+            catch (Exception)
+            { }
+
+            if (retVal == null)
+            {
+                try
+                {
+                    retVal = SerializeToString<ProtokollerConfiguration>.DeSerialize(txt);
+                }
+                catch (Exception)
+                { }
+            }
 
             ReReferenceProtokollerConfiguration(retVal);
 
