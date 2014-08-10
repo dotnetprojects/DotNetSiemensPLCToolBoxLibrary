@@ -50,10 +50,10 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
                 e = e.InnerException;
             }
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\error.txt"))
-            {
-                file.WriteLine(txt);
-            }
+            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\error.txt"))
+            //{
+            //    file.WriteLine(txt);
+            //}
         }
 
         private UserControl subWindow = null;
