@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using DotNetSimaticDatabaseProtokollerLibrary;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 {
@@ -12,7 +14,46 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
     {
         public MainWindow()
         {
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
             InitializeComponent();
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            exceptionWriter(e.Exception);
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            exceptionWriter(e.ExceptionObject as Exception);
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            exceptionWriter(e.Exception);
+        }
+
+        private void exceptionWriter(Exception ex)
+        {
+            string txt = "";
+            var e = ex;
+
+            while (e != null)
+            {
+                txt += e.Message;
+
+                e = e.InnerException;
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\error.txt"))
+            {
+                file.WriteLine(txt);
+            }
         }
 
         private UserControl subWindow = null;
