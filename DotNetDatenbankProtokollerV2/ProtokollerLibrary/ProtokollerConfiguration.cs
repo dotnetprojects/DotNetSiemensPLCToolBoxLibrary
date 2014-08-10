@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Windows;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
@@ -13,6 +14,9 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary
 {
@@ -222,7 +226,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         }
 
 
-        private static Newtonsoft.Json.JsonSerializerSettings jsonNetSettings = new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto, PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All, };
+        private static Newtonsoft.Json.JsonSerializerSettings jsonNetSettings = new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new MyJsonContractResolver(), TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto, PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All, };
         public static string JsonNetSerialize<T>(T obj, bool beautifyOutput = true)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj, typeof(T), beautifyOutput ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None, jsonNetSettings);
@@ -233,6 +237,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
                 return default(T);
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(text, jsonNetSettings);
+        }
+
+        public class MyJsonContractResolver : DefaultContractResolver
+        {
+            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+            {
+                JsonProperty property = base.CreateProperty(member, memberSerialization);
+                if (Attribute.IsDefined(member, typeof(XmlIgnoreAttribute), true))
+                {
+                    property.Ignored = true;
+                }
+                return property;
+            }
         }
 
 
