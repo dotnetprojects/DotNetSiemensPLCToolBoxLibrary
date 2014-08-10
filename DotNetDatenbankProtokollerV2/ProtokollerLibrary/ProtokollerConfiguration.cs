@@ -222,7 +222,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary
         }
 
 
-        private static Newtonsoft.Json.JsonSerializerSettings jsonNetSettings = new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto };
+        private static Newtonsoft.Json.JsonSerializerSettings jsonNetSettings = new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto, PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All, };
         public static string JsonNetSerialize<T>(T obj, bool beautifyOutput = true)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(obj, typeof(T), beautifyOutput ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None, jsonNetSettings);

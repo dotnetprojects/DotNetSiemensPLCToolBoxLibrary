@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -27,6 +28,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
         }
 
         [Browsable(false)]
+        [JsonIgnore]
         public string ObjectAsString
         {
             get { return ToString(); }

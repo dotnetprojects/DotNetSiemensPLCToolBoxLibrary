@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
+using Newtonsoft.Json;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 {
@@ -33,6 +34,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
         }
         
         [Browsable(false)]
+        [JsonIgnore]
         public string ObjectAsString
         {
             get { return ToString();  }
@@ -48,6 +50,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage
 
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public virtual List<string> DatabaseFieldTypes
         {
             get { return new List<string>() {"Test"}; }
