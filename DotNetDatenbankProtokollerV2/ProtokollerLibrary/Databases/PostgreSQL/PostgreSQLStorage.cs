@@ -243,7 +243,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));                        
+                        myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));
+
+                        Logging.LogText(string.Format("KeyValue Key:{0} Value:{1}", field.DatabaseField, value ?? "null"), Logging.LogLevel.Information);                   
                     }
                 }
                
