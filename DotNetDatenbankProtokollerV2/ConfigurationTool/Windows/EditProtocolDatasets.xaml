@@ -1182,7 +1182,7 @@
         <CheckBox Content="Expert Mode" Height="16" Margin="186,269,0,0" x:Name="cb_ExpertMode" VerticalAlignment="Top"
         	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
         	HorizontalAlignment="Left" Width="114"/>
-        <CheckBox IsChecked="{Binding SelectedItem.UseDbUpdateNoInsert, ElementName=grdDatasets}" Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use Insert instead of Update (on databases)" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}" Margin="671,70,0,0" x:Name="chkConvertTypes_Copy" VerticalAlignment="Top" />
+        <CheckBox IsChecked="{Binding SelectedItem.UseDbUpdateNoInsert, ElementName=grdDatasets}" Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use Update no insert (on databases)" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}" Margin="671,70,0,0" x:Name="chkConvertTypes_Copy" VerticalAlignment="Top" />
         <TextBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Width="179"
         	Height="26"
         	Margin="671,91,0,0"

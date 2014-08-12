@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using DotNetSimaticDatabaseProtokollerLibrary;
 using System.Threading.Tasks;
 using System.IO;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
 
 namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 {
@@ -19,6 +20,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
 
             InitializeComponent();
         }
@@ -41,15 +43,16 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
         private void exceptionWriter(Exception ex)
         {
             string txt = "";
-            var e = ex;
+            //var e = ex;
 
-            while (e != null)
-            {
-                txt += e.Message;
+            //while (e != null)
+            //{
+            //    txt += e.Message;
 
-                e = e.InnerException;
-            }
+            //    e = e.InnerException;
+            //}
 
+            Logging.LogText("Unhandeled exception", ex, Logging.LogLevel.Error);
             //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\error.txt"))
             //{
             //    file.WriteLine(txt);

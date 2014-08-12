@@ -36,17 +36,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
         public static string LogText(string Message, Exception ex, Logging.LogLevel MessageLogLevel)
         {
             Message += "\r\n";
-            Message += "Message: " + ex.Message + "\r\n";
-            Message += "Stacktrace: " + ex.StackTrace + "\r\n";
-
+            Message += "Exception: " + ex.ToString() + "\r\n";
+           
             Exception inner = ex.InnerException;
             int i = 0;
             while (inner != null)
             {
                 i++;
                 Message += "Inner Exception (" + i.ToString() + ") :";
-                Message += "Message:" + inner.Message + "\r\n";
-                Message += "Stacktrace: " + ex.StackTrace + "\r\n";
+                Message += "Exception:" + inner.ToString() + "\r\n";
                 inner = inner.InnerException;
             }
 
