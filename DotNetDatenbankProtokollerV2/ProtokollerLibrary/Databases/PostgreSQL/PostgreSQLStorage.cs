@@ -245,7 +245,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
                         myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));
 
-                        Logging.LogText(string.Format("KeyValue Key:{0} Value:{1}", field.DatabaseField, value ?? "null"), Logging.LogLevel.Information);                   
+                        //Logging.LogText(string.Format("KeyValue Key:{0} Value:{1}", field.DatabaseField, value ?? "null"), Logging.LogLevel.Information);                   
                     }
                 }
                
