@@ -1167,7 +1167,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
 
                         var baseS = _internalGetBaseTypeSize();
-                        if (baseS > 0) ArraySize = ArraySize / baseS;
+                        if (baseS > 0)
+                            ArraySize = ArraySize / baseS;
+                        else
+                            ArraySize *= 8;
 
                         ArraySize = ArraySize * tsize;
 

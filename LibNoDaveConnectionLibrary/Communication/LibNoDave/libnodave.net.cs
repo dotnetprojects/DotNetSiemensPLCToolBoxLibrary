@@ -1905,8 +1905,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             tmp = mydatetime.Millisecond;
             b[pos + 6] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
 
+            tmp = mydatetime.Millisecond;
+            tmp = tmp / 10;
+            var rem = mydatetime.Millisecond % 10;
+            b[pos + 6] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
+
             tmp = (int)mydatetime.DayOfWeek;
-            b[pos + 7] = Convert.ToByte((tmp / 10) << 4 | tmp % 10);
+            b[pos + 7] = Convert.ToByte((rem) << 4 | tmp % 10);
         }
 
         public static void putS5Timeat(byte[] b, int pos, TimeSpan value)
