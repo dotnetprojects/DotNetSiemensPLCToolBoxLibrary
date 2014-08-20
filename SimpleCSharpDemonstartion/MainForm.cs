@@ -114,6 +114,11 @@ namespace SimpleCSharpDemonstration
             myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
             myConn.Connect();
 
+            List<PLCTag> listTag = new List<PLCTag>();
+
+            for (int ii = 0; ii < 300; ii++)
+                listTag.Add(new PLCTag() { DataBlockNumber = 100, ByteAddress = ii * 2, TagDataType = TagDataType.Word });
+            myConn.ReadValues(listTag);
 
             //var _tags = new List<PLCTag>();
             //var j = 0;
@@ -128,10 +133,10 @@ namespace SimpleCSharpDemonstration
             //}
             //myConn.ReadValues(_tags, false);
 
-            var tag = new PLCTag();
-            tag.TagDataType = TagDataType.Word;
-            tag.SymbolicAccessKey = "8a0e000124134d054000000a";
-            myConn.ReadValue(tag);
+            //var tag = new PLCTag();
+            //tag.TagDataType = TagDataType.Word;
+            //tag.SymbolicAccessKey = "8a0e000124134d054000000a";
+            //myConn.ReadValue(tag);
             /*tag.Controlvalue = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 88, 1, 2, 3, 4, 5, 6, 7, 8, 9, 77 };
             myConn.WriteValue(tag);
             var db = myConn.PLCGetBlockInMC7("DB99");
