@@ -32,6 +32,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 //using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
 //using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
@@ -1060,6 +1061,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             var akdb = this.PLCGetBlockInMC7(BlockName);
             var blk = MC7Converter.GetAWLBlockBasicInfo(akdb, 0);
 
+            if (blk == null)
+                return 0;
             return blk.CodeSize;
         }
 
@@ -1853,6 +1856,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public void ReadValues(IEnumerable<PLCTag> valueList)
         {
             ReadValues(valueList, true);
+        }
+
+        public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList)
+        {
+            var tags = valueList.ToList();
+
+            var dbList = tags.Where(x => x.TagDataSource == MemoryArea.Datablock || x.TagDataSource == MemoryArea.InstanceDatablock).Select(x => x.DataBlockNumber).Distinct();
+
+            var sizes = new Dictionary<int, int>();
+            foreach (var db in dbList)
+            {
+                var size = this.PLCGetDataBlockSize("DB" + db);
+                sizes.Add(db, size);
+            }
+
+            var readList = new List<PLCTag>(tags.Count());
+
+            foreach (var tag in tags)
+            {
+                if ((tag.TagDataSource == MemoryArea.Datablock || tag.TagDataSource == MemoryArea.InstanceDatablock) && sizes[tag.DataBlockNumber]< tag.ByteAddress + tag.ReadByteSize)
+                {
+                    tag.ItemDoesNotExist = true;
+                }
+                else
+                {
+                    readList.Add(tag);
+                }
+            }
+
+            ReadValues(readList, true);
         }
 
         /// <summary>

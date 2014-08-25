@@ -300,7 +300,7 @@ namespace WPFVarTab
                                                                         }
 
                                                                         if (ReadTagsConfig == 0)
-                                                                            conn.ReadValues(values);
+                                                                            conn.ReadValuesWithCheck(values);
                                                                         else
                                                                         {
                                                                             if (rq != null)
