@@ -1987,8 +1987,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     List<int> readenSizes = new List<int>(50);
                     List<bool> usedShortRequest = new List<bool>(50);
-                        //normaly on a 400 CPU, max 38 Tags fit into a PDU, so this List as a Start would be enough
-                        //With Short Request this could be a little more so we use 50
+                    List<bool> tagWasSplitted = new List<bool>(50);
+                    //normaly on a 400 CPU, max 38 Tags fit into a PDU, so this List as a Start would be enough
+                    //With Short Request this could be a little more so we use 50
 
                     int gesReadSize = 0;
                     int positionInCompleteData = 0;
@@ -2049,7 +2050,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
-                                    //Howmany Bytes can be added to this call
+                                //Howmany Bytes can be added to this call
                                 if (restBytes > 0)
                                 {
                                     if (lastRequestWasAUnevenRequest)
@@ -2072,13 +2073,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     }
                                         
                                     readSize = readSize - restBytes;
+
+                                    //Tag was splitted to more than one read request
+                                    if (readSize > 0)
+                                        tagWasSplitted.Add(true);
+                                    else
+                                        tagWasSplitted.Add(false);
+
                                     gesReadSize += restBytes;
 
                                     akByteAddress += restBytes;
 
                                     readenSizes.Add(restBytes);
                                     anzVar++;
-
+                                    
                                     //useresult muss noch programmiert werden.
                                 }
                             }
@@ -2099,7 +2107,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                 res = _dc.useResult(rs, akVar, myBuff);
                                 if (res == 10 || res == 5)
-                                    NotExistedValue.Add(true);
+                                {
+                                    if (!tagWasSplitted[akVar])
+                                        NotExistedValue.Add(true);
+                                }
                                 else if (res != 0)
                                     throw new Exception("Error: " + libnodave.daveStrerror(res));
                                 else
@@ -2109,11 +2120,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         myBuffStart = 1;
                                     if (usedShortRequest[akVar] && (myBuff[0] == 10 || myBuff[0] == 5))
                                     {
-                                        NotExistedValue.Add(true);
+                                        if (!tagWasSplitted[akVar])
+                                            NotExistedValue.Add(true);
                                     }
                                     else
                                     {
-                                        NotExistedValue.Add(false);
+                                        if (!tagWasSplitted[akVar])
+                                            NotExistedValue.Add(false);
                                         Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                         positionInCompleteData += readenSizes[akVar];
                                     }
@@ -2123,6 +2136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     //}
                                 }
                             }
+
                             //rs = null;
                             //myPDU = null;
                             anzVar = 0;
@@ -2131,6 +2145,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             gesReadSize = 0;
                             anzReadVar = 0;
                             readenSizes.Clear();
+                            tagWasSplitted.Clear();
+                            usedShortRequest.Clear();
                             //I need to do the whole splitting in anothe way, so that the goto disapears! But for the moment ir works!
                             goto tryAgain;
                                 //It tries again the Size test, this is necessary, when the Tag is bigger then one PDU
@@ -2189,7 +2205,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                             res = _dc.useResult(rs, akVar, myBuff);
                             if (res == 10 || res == 5)
+                            {
                                 NotExistedValue.Add(true);
+                            }
                             else if (res != 0)
                                 throw new Exception("Error: " + libnodave.daveStrerror(res));
                             else
@@ -2213,7 +2231,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 //    completeData[positionInCompleteData++] = myBuff[n]; // Convert.ToByte(_dc.getU8());
                                 //}
                             }
-                        }
+                            }
                     }
 
                     int buffPos = 0;
