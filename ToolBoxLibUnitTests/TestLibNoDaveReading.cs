@@ -62,6 +62,31 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             string req4 = string.Join(Environment.NewLine, pdus4);
             string t4 = "READ  Area:132, DBnum:1, Start:0, Bytes:14\r\nREAD  Area:132, DBnum:1, Start:30, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:50, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:80, Bytes:4";
             Assert.AreEqual(req4, t4);
+
+            var wrapper5 = new ConnectionWrapper(240);
+            var conn5 = new PLCConnection(new PLCConnectionConfiguration(), wrapper5);
+            var listTag5 = new List<PLCTag>();
+            listTag5.Add(new PLCTag("P#DB1.DBX0 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX8 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX10 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX30 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX50 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX80 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX90 BYTE 30") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX100 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX140 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX160 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX180 BYTE 44") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX230 BYTE 20") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX240 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX250 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX260 BYTE 4") { DontSplitValue = false });
+            listTag5.Add(new PLCTag("P#DB1.DBX270 BYTE 4") { DontSplitValue = false });
+            conn5.ReadValues(listTag5, true);
+            var pdus5 = wrapper5.PDUs;
+            string req5 = string.Join(Environment.NewLine, pdus5);
+            string t5 = "READ  Area:132, DBnum:1, Start:0, Bytes:14\r\nREAD  Area:132, DBnum:1, Start:30, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:50, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:80, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:90, Bytes:30\r\nREAD  Area:132, DBnum:1, Start:140, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:160, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:180, Bytes:44\r\nREAD  Area:132, DBnum:1, Start:230, Bytes:24\r\nREAD  Area:132, DBnum:1, Start:260, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:270, Bytes:4";
+            Assert.AreEqual(req5, t5);
         }
     }
 }
