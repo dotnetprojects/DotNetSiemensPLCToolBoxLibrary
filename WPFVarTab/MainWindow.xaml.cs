@@ -38,7 +38,7 @@ namespace WPFVarTab
     /// </summary>
     public partial class MainWindow : CustomChromeWindow, INotifyPropertyChanged
     {
-        private int _readTagsConfig;
+        private int _readTagsConfig = 4;
         private int _writeTagsConfig;
         private ObservableCollection<string> _connections;
         private static ObservableDictionary<string, PLCConnection> _connectionDictionary = new ObservableDictionary<string, PLCConnection>();
@@ -282,25 +282,23 @@ namespace WPFVarTab
 
                                                                     while (true)
                                                                     {
-                                                                        if (readFresh && ReadTagsConfig != 0 &&
-                                                                            rq != null)
+                                                                        if (readFresh && (ReadTagsConfig != 0 && ReadTagsConfig != 4) && rq != null)
                                                                         {
                                                                             readFresh = false;
                                                                             rq.Dispose();
                                                                             rq = null;
                                                                         }
 
-                                                                        if (rq == null && ReadTagsConfig != 0)
+                                                                        if (rq == null && (ReadTagsConfig != 0 && ReadTagsConfig != 4))
                                                                         {
                                                                             rq =
-                                                                                conn.ReadValuesWithVarTabFunctions(
-                                                                                    values,
-                                                                                    (PLCTriggerVarTab)
-                                                                                    ReadTagsConfig + 1);
+                                                                                conn.ReadValuesWithVarTabFunctions(values, (PLCTriggerVarTab)ReadTagsConfig + 1);
                                                                         }
 
                                                                         if (ReadTagsConfig == 0)
-                                                                            conn.ReadValuesWithCheck(values);
+                                                                            conn.ReadValues(values, false);
+                                                                        else if (ReadTagsConfig == 4)
+                                                                            conn.ReadValuesWithCheck(values, true);
                                                                         else
                                                                         {
                                                                             if (rq != null)

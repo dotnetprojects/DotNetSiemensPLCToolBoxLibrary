@@ -5,23 +5,25 @@
                        
                         xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
                         Style="{DynamicResource GlassStyle}"
-        Title="ConfigVarTab" Height="274" Width="213" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="ConfigVarTab" Height="300" Width="213" ShowInTaskbar="False" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <ccl:CustomChromeWindow.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool0" Value="0"/>
         <Converters:IntToBoolConverter x:Key="intToBool1" Value="1"/>
         <Converters:IntToBoolConverter x:Key="intToBool2" Value="2"/>
         <Converters:IntToBoolConverter x:Key="intToBool3" Value="3"/>
+        <Converters:IntToBoolConverter x:Key="intToBool4" Value="4"/>
     </ccl:CustomChromeWindow.Resources>
     <Grid>
-        <GroupBox Header="Read Config" Height="116" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">
+        <GroupBox Header="Read Config" Height="136" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">
             <Grid>
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool0}, Mode=TwoWay}" Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool1}, Mode=TwoWay}" Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool2}, Mode=TwoWay}" Content="Trigger End of Cycle" HorizontalAlignment="Left" Margin="6,52,0,0" VerticalAlignment="Top" />
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool3}, Mode=TwoWay}" Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool4}, Mode=TwoWay}" Content="Use Visu Read F. (with S. Check)" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool0}, Mode=TwoWay}" Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool1}, Mode=TwoWay}" Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,52,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool2}, Mode=TwoWay}" Content="Trigger End of Cycle" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool3}, Mode=TwoWay}" Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,98,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="Write Config" Height="116" HorizontalAlignment="Left" Margin="7,127,0,0" Name="groupBox2" VerticalAlignment="Top" Width="193">
+        <GroupBox Header="Write Config" Height="116" HorizontalAlignment="Left" Margin="7,146,0,0" Name="groupBox2" VerticalAlignment="Top" Width="193">
             <Grid>
                 <RadioButton IsChecked="{Binding MainWindow.WriteTagsConfig, Converter={StaticResource intToBool0}, Mode=TwoWay}" Content="Use Visu Write Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
                 <RadioButton IsChecked="{Binding MainWindow.WriteTagsConfig, Converter={StaticResource intToBool1}, Mode=TwoWay}" Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />

@@ -2194,24 +2194,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             ReadValues(valueList, true);
         }
 
-        public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList)
+        Dictionary<int, int> _dbSizes = null;
+        public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList, bool cacheDbSizes = false)
         {
             var tags = valueList.ToList();
 
-            var dbList = tags.Where(x => x.TagDataSource == MemoryArea.Datablock || x.TagDataSource == MemoryArea.InstanceDatablock).Select(x => x.DataBlockNumber).Distinct();
-
-            var sizes = new Dictionary<int, int>();
-            foreach (var db in dbList)
+            if (!cacheDbSizes || _dbSizes == null)
             {
-                var size = this.PLCGetDataBlockSize("DB" + db);
-                sizes.Add(db, size);
+                var dbList = tags.Where(x => x.TagDataSource == MemoryArea.Datablock || x.TagDataSource == MemoryArea.InstanceDatablock).Select(x => x.DataBlockNumber).Distinct();
+
+                _dbSizes = new Dictionary<int, int>();
+                foreach (var db in dbList)
+                {
+                    var size = this.PLCGetDataBlockSize("DB" + db);
+                    _dbSizes.Add(db, size);
+                }
             }
 
             var readList = new List<PLCTag>(tags.Count());
 
             foreach (var tag in tags)
             {
-                if ((tag.TagDataSource == MemoryArea.Datablock || tag.TagDataSource == MemoryArea.InstanceDatablock) && sizes[tag.DataBlockNumber]< tag.ByteAddress + tag.ReadByteSize)
+                if ((tag.TagDataSource == MemoryArea.Datablock || tag.TagDataSource == MemoryArea.InstanceDatablock) && _dbSizes[tag.DataBlockNumber]< tag.ByteAddress + tag.ReadByteSize)
                 {
                     tag.ItemDoesNotExist = true;
                 }
@@ -2222,6 +2226,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
 
             ReadValues(readList, true);
+
+            if (!cacheDbSizes)
+                _dbSizes = null;
         }
 
         /// <summary>
@@ -3094,6 +3101,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             break;
                     }
             }
+
+            _dbSizes = null;
         }
     }
 }
