@@ -18,10 +18,13 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace SimpleCSharpDemonstration
 {
@@ -142,6 +145,12 @@ namespace SimpleCSharpDemonstration
             var db = myConn.PLCGetBlockInMC7("DB99");
             MessageBox.Show("DB:" + Encoding.ASCII.GetString(db));
             myConn.PLCPutBlockFromMC7toPLC("DB98", db);*/
+
+
+            var prj = new Step7ProjectV11("c:\\...");
+            var fld = prj.ProjectStructure as TIAProjectFolder;
+            var allFolders = fld.SubItems.Flatten(x => x.SubItems).Cast<TIAProjectFolder>();
+            var blockFolders = allFolders.Where(x => x is TIABlocksFolder);
         }
 
         private void button5_Click(object sender, EventArgs e)
