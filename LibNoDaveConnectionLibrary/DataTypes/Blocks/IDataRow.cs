@@ -44,8 +44,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         S7DataRowType DataType { get; set; }
 
         string Name { get; set; }
+        string FullName { get; }
 
         string Comment { get; set; }
+        string FullComment { get; }
 
         IDataRow Parent { get; set; }
 
