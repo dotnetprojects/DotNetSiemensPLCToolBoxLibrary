@@ -192,7 +192,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DWORD) return "DW#16#" + ((UInt32)Value).ToString("X", NumberFormatInfo.CurrentInfo);
             else if (DataType == S7DataRowType.INT) return ((Int16)Value).ToString();
             else if (DataType == S7DataRowType.DINT) return "L#" + ((Int32)Value).ToString();
-            else if (DataType == S7DataRowType.REAL) return ((DateTime)Value).ToString();
+            else if (DataType == S7DataRowType.REAL) return ((Double)Value).ToString("0.000000e+000", CultureInfo.InvariantCulture);
             else if (DataType == S7DataRowType.S5TIME)
             {
                 var bt = new byte[2];
