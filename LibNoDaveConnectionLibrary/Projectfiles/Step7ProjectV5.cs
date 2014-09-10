@@ -43,8 +43,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             _projectfilename = projectfile;
 
-            ProjectEncoding = (prEn ?? Encoding.GetEncoding("ISO-8859-1")) ;
-
             if (projectfile.ToLower().EndsWith("zip"))
             {
                 _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7p");
@@ -57,14 +55,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 this._ziphelper = new ZipHelper(projectfile);
 
             }
+
+            ProjectFile = projectfile;
+            ProjectFolder = _projectfilename.Substring(0, _projectfilename.LastIndexOf(_DirSeperator)) + _DirSeperator;
+
+            ProjectEncoding = (prEn ?? Encoding.GetEncoding("ISO-8859-1"));
+            var lngFile = _ziphelper.GetReadStream(ProjectFolder + "Global" + _DirSeperator + "Language");
+            if (prEn == null && lngFile != null)
+            {
+                var rd = new StreamReader(lngFile);
+                string line;
+                while ((line = rd.ReadLine()) != null)
+                {
+                    if (line != "0")
+                    {
+                        int code;
+                        if (int.TryParse(line, out code))
+                        {
+                            var enc = Encoding.GetEncodings().FirstOrDefault(x => x.CodePage == code);
+                            if (enc != null)
+                            {
+                                ProjectEncoding = enc.GetEncoding();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             LoadProjectHeader(projectfile, showDeleted);
         }
 
         private void LoadProjectHeader(string projectfile, bool showDeleted)
         {
-            ProjectFile = projectfile;
-            ProjectFolder = _projectfilename.Substring(0, _projectfilename.LastIndexOf(_DirSeperator)) + _DirSeperator;
-
             _showDeleted = showDeleted;
 
             //Projekt Infos auslesen
