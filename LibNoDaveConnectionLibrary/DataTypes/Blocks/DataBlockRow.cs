@@ -44,8 +44,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public virtual S7DataRowType DataType { get; set; }
 
         public virtual string Name { get; set; }
+        public virtual string FullName { get { return Parent == null ? string.Empty : (Parent.FullName + '.' + Name).Trim('.'); } }
 
         public virtual string Comment { get; set; }
+        public virtual string FullComment { get { return Parent == null ? string.Empty : (Parent.FullComment + '.' + Comment).Trim('.'); } }
 
         public virtual IDataRow Parent { get; set; }
 
