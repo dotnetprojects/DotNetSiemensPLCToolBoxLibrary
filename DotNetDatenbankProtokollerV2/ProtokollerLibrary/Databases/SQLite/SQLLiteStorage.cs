@@ -150,7 +150,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                     existDBFelderliste.Add(myReader.GetName(n));
                 }
                 myReader.Close();
-
+                myReader.Dispose();
+                myCmd.Dispose();
 
                 //Wenn Date Time Feld gesetzt...
                 dateFieldName = datasetConfig.DateTimeDatabaseField;
@@ -175,9 +176,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
                     try
                     {
+                        myCmd = new SQLiteCommand();
                         myCmd.Connection = myDBConn;
                         myCmd.CommandText = sql;
                         myCmd.ExecuteNonQuery();
+                        myCmd.Dispose();
 
                     }
                     catch (SQLiteException ex)
@@ -212,6 +215,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         {
             lock (FileNameLockObjects[myConfig.DatabaseFile])
             {
+                myCmd = new SQLiteCommand();
+
                 //Look if the Connection is still open..
                 try
                 {
@@ -328,6 +333,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
                 if (_newDataCallback != null)
                     _newDataCallback(datasetConfig.Name);
+
+                myCmd.Dispose();
 
                 return true;
             }

@@ -16,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
         public int ClusterId;
         public int BackRefOffset;
         public sbyte OffsetCount;
-        public TiaObjectStates StateFlags;
+        public TiaObjectStatesLegacy StateFlags;
         public sbyte MetaInfo;
     }
 }
