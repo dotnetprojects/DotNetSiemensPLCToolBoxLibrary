@@ -155,13 +155,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         var bytes = new byte[hd.Size - buffer3.Length];
                         sourceStream.Read(bytes, 0, bytes.Length);
                         var id = hd.GetTiaObjectId();
-                        //if (!TiaObjects.ContainsKey(id))
-                            TiaObjects[id] = new TiaFileObject(hd, bytes);
-                        //else
-                        //{
+                        if (!TiaObjects.ContainsKey(id))
+                        {
+                            TiaObjects.Add(id, new TiaFileObject(hd, bytes));
+
+                            var size = Marshal.SizeOf(typeof (TiaObjectHeader))+4+BitConverter.ToInt32(bytes, 0)+1;
+                            if (hd.Size != size || bytes[bytes.Length - 1] != 0xff)
+                            {
+                                //Fehler ??? 
+                            }
+
+
+                            var strm = new MemoryStream(bytes);
+                            var dec = TiaCompression.DecompressStream(strm);
+                            var rd = new StreamReader(dec);
+                            var wr = rd.ReadToEnd();
+                        }
+                        else
+                        {
                             //Todo: look why this happens, and how TIA Handles this!!
                             //Console.WriteLine("double Id:" + id.ToString());
-                        //}
+                        }
                     }
                 }
 

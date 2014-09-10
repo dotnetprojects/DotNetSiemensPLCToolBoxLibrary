@@ -10,12 +10,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums
     {
         Created = 1,
         Deleted = 4,
-        LinksModified = 0x10,
         Modified = 2,
         None = 0,
-        Reserved_0x20 = 0x20,
-        Destroyed = 8,
-        Reserved_0x80 = 0x80,
-        Transient = 0x40
+        Destroyed = 8,                   //Reserved on Legacy
+        Transient = 0x10,                //LinksModified on Legacy
+        TRef = 0x20,                     //Reserved_0x20 on Legacy
+        TRefCreatedViaDelete = 0x80,     //Reserved_0x80 on Legacy
+        TRefIdRef = 0x40                 //Transient on Legacy
     }
 }
