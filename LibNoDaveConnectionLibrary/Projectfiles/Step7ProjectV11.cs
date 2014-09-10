@@ -53,6 +53,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap12");
                 if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap13");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al11");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al12");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al13");
 
                 if (string.IsNullOrEmpty(projectfile))
                     throw new Exception("Zip-File contains no valid TIA Project !");
@@ -79,7 +85,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             BinaryParseTIAFile();
 
-            LoadProject();
+            //LoadProject();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }        
@@ -110,14 +116,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private object tiaExport;
         private Type tiaExportType;
-        //internal Type tiaCrcType;
-
+        
 
         internal Dictionary<TiaObjectId, TiaFileObject> TiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
 
         internal void BinaryParseTIAFile()
         {
-            //using (FileStream sourceStream = File.OpenRead(DataFile))
             using (var sourceStream = new FileStream(DataFile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite))
             {
                 var buffer = new byte[Marshal.SizeOf(typeof(TiaFileHeader))];
@@ -126,6 +130,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                 TiaFileHeader header = (TiaFileHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(TiaFileHeader));
                 handle.Free();
+                TiaMarker? lastMarker = null;
 
                 while (sourceStream.Position < sourceStream.Length)
                 {
@@ -134,9 +139,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         var buffer2 = new byte[Marshal.SizeOf(typeof(TiaMarker))];
                         sourceStream.Read(buffer2, 0, buffer2.Length);
                         GCHandle handle2 = GCHandle.Alloc(buffer2, GCHandleType.Pinned);
-                        TiaMarker marker =
-                            (TiaMarker)Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof(TiaMarker));
+                        TiaMarker marker = (TiaMarker)Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof(TiaMarker));
                         handle2.Free();
+
+                        lastMarker = marker;
                     }
                     else
                     {
@@ -149,19 +155,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         var bytes = new byte[hd.Size - buffer3.Length];
                         sourceStream.Read(bytes, 0, bytes.Length);
                         var id = hd.GetTiaObjectId();
-                        if (!TiaObjects.ContainsKey(id))
-                            TiaObjects.Add(id, new TiaFileObject(hd, bytes));
-                        else
-                        {
+                        //if (!TiaObjects.ContainsKey(id))
+                            TiaObjects[id] = new TiaFileObject(hd, bytes);
+                        //else
+                        //{
                             //Todo: look why this happens, and how TIA Handles this!!
-                            Console.WriteLine("double Id:" + id.ToString());
-                        }
+                            //Console.WriteLine("double Id:" + id.ToString());
+                        //}
                     }
                 }
 
                 var rootId = new TiaObjectId(TiaFixedRootObjectInstanceIds.RootObjectCollectionId);
                 var rootObjects = new TiaRootObjectList(TiaObjects[rootId]);
-                var projectid = rootObjects.TiaRootObjectEntrys.First(x => x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
+                var projectid = rootObjects.TiaRootObjectEntrys.FirstOrDefault(x => x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
                 var projectobj = TiaObjects[projectid];
             }
         }
@@ -220,10 +226,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 new Type[] {typeof (XmlWriter)}, null);
 
             serializeObjects.Invoke(tiaExport, new object[] {xmlWriter});
-            //tiaExportType.InvokeMember("SerializeObjects", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-
-            
-            //tiaCrcType = Type.GetType("Siemens.Automation.DomainServices.TagService.CRC32, Siemens.Automation.DomainServices");
             
             xmlWriter.Flush();
             xmlWriter.Close();
