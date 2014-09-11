@@ -64,7 +64,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
             get
             {
                 //return myConfig.DatabaseFile;
-                return string.Format("Data Source={0};Pooling=true;FailIfMissing=false", myConfig.DatabaseFile);
+                return string.Format("Data Source={0};Pooling=true;FailIfMissing=false;journal_mode=WAL;synchronous=0;", myConfig.DatabaseFile);
             }
         }
 
@@ -240,6 +240,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 //Add the Fields to the Database
                 myCmd.Connection = myDBConn;
                 myCmd.CommandText = insertCommand;
+                myCmd.Dispose();
 
                 int tryCounter = 0;
                 nomol:
@@ -309,7 +310,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                             }
                         }
 
-                        dbTrans.Commit();
+                        dbTrans.Commit();                        
                     }
                 }
                 catch (SQLiteException ex)
@@ -332,9 +333,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 }
 
                 if (_newDataCallback != null)
-                    _newDataCallback(datasetConfig.Name);
-
-                myCmd.Dispose();
+                    _newDataCallback(datasetConfig.Name);               
 
                 return true;
             }

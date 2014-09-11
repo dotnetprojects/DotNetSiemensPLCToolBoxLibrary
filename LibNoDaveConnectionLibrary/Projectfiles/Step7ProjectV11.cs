@@ -83,9 +83,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
 
-            BinaryParseTIAFile();
+            //BinaryParseTIAFile();
 
-            //LoadProject();
+            LoadProject();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }        

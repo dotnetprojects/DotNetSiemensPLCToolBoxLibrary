@@ -114,14 +114,14 @@ namespace SimpleCSharpDemonstration
 
         private void button4_Click(object sender, EventArgs e)
         {
-            myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
-            myConn.Connect();
+            //myConn = new PLCConnection("SimpleCSharpDemonstrationConnection");
+            //myConn.Connect();
 
-            List<PLCTag> listTag = new List<PLCTag>();
+            //List<PLCTag> listTag = new List<PLCTag>();
 
-            for (int ii = 0; ii < 300; ii++)
-                listTag.Add(new PLCTag() { DataBlockNumber = 100, ByteAddress = ii * 2, TagDataType = TagDataType.Word });
-            myConn.ReadValues(listTag);
+            //for (int ii = 0; ii < 300; ii++)
+            //    listTag.Add(new PLCTag() { DataBlockNumber = 100, ByteAddress = ii * 2, TagDataType = TagDataType.Word });
+            //myConn.ReadValues(listTag);
 
             //var _tags = new List<PLCTag>();
             //var j = 0;
@@ -147,14 +147,14 @@ namespace SimpleCSharpDemonstration
             myConn.PLCPutBlockFromMC7toPLC("DB98", db);*/
 
 
-            //var prj = new Step7ProjectV11("c:\\...");
-            //var fld = prj.ProjectStructure as TIAProjectFolder;
-            //var allFolders = fld.SubItems.Flatten(x => x.SubItems).Cast<TIAProjectFolder>();
-            //var blockFolders = allFolders.Where(x => x is TIABlocksFolder).Cast< TIABlocksFolder>();
-            //foreach (var ffld in blockFolders)
-            //{
-            //    var blocks = ffld.readPlcBlocksList();
-            //}
+            var prj = new Step7ProjectV11("C:\\Users\\jkuehner\\Documents\\Automatisierung\\Projekt2\\Projekt2.ap13");
+            var fld = prj.ProjectStructure as TIAProjectFolder;
+            var allFolders = fld.SubItems.Flatten(x => x.SubItems).Cast<TIAProjectFolder>();
+            var blockFolders = allFolders.Where(x => x is TIABlocksFolder).Cast<TIABlocksFolder>();
+            foreach (var ffld in blockFolders)
+            {
+                var blocks = ffld.readPlcBlocksList();
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
