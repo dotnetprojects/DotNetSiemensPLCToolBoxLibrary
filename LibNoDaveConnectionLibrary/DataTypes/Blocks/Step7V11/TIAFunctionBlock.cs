@@ -35,24 +35,15 @@ using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 {
     [Serializable()]
-    public class TIAFunctionBlock : TIABlock
+    public class TIAFunctionBlock : TIAProgrammBlock
     {
 
 
         public TIAFunctionBlock(Step7ProjectV11 TIAProject, XmlNode Node)
             : base(TIAProject, Node)
-        {            
-        }
+        { }
 
-        public override int BlockNumber
-        {
-            get
-            {
-                var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.IGeneralBlockData").Key + "']/attrib[@name='Number']");
-                if (lidNode != null) return Convert.ToInt32(lidNode.InnerText);
-                return 0;
-            }
-        }
+       
         
         public IDataRow Structure
         {
@@ -64,6 +55,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
             {
 
             }
-        }             
+        }
+
+        public override string ToString()
+        {
+            var ret = "Block:" + this.Name + " (" + this.BlockName + ")" + Environment.NewLine;
+            ret += "Titel:" + (this.Title ?? "") + Environment.NewLine;
+            ret += "Comment:" + (this.Comment ?? "") + Environment.NewLine;
+            return ret;
+        }
     }
 }

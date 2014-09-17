@@ -90,6 +90,7 @@
     <Compile Include="DataTypes\Blocks\ProjectPlcBlockInfo.cs" />
     <Compile Include="DataTypes\Blocks\IDataRow.cs" />
     <Compile Include="DataTypes\Blocks\Step7V11\TIAFunctionBlock.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V11\TIAProgrammBlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V11\TIAProjectBlockInfo.cs" />
     <Compile Include="DataTypes\Blocks\Step7V11\TIABlock.cs" />
     <Compile Include="DataTypes\Blocks\Step7V11\TIADataBlock.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusMasterSystem.cs" />
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNetwork.cs" />
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNode.cs" />
+    <Compile Include="DataTypes\MultiLanguangeString.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
