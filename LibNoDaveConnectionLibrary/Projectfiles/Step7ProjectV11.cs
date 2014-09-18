@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -39,8 +40,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         internal ZipHelper _ziphelper = new ZipHelper(null);
 
-        public Step7ProjectV11(string projectfile)
+        public CultureInfo Culture { get; set; }
+
+        public Step7ProjectV11(string projectfile, CultureInfo culture = null)
         {
+            if (culture == null)
+                Culture = CultureInfo.CurrentCulture;
+            else
+                Culture = culture;
+
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
 
@@ -85,7 +93,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             BinaryParseTIAFile();
 
-            //LoadProject();
+            LoadProject();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }        
@@ -166,10 +174,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             }
 
 
-                            var strm = new MemoryStream(bytes);
-                            var dec = TiaCompression.DecompressStream(strm);
-                            var rd = new StreamReader(dec);
-                            var wr = rd.ReadToEnd();
+                            //var strm = new MemoryStream(bytes);
+                            //var dec = TiaCompression.DecompressStream(strm);
+                            //var rd = new StreamReader(dec);
+                            //var wr = rd.ReadToEnd();
                         }
                         else
                         {
