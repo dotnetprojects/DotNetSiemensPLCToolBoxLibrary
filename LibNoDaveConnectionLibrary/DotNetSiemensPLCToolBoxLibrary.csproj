@@ -224,6 +224,7 @@
     <Compile Include="PLCs\S5\MC5\MC5LIB_SYMTAB.cs" />
     <Compile Include="PLCs\S5\MC5\MC5toAWL.cs" />
     <Compile Include="PLCs\S5\MC5\MC5toDB.cs" />
+    <Compile Include="PLCs\S7_1xyy\VariableLengthQuantityHelper.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\AWLCodeOptimizer.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\AWLtoMC7.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\CallConverter.cs" />
