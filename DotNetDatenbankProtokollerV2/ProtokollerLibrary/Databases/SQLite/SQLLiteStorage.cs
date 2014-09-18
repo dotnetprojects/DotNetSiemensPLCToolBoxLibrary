@@ -275,6 +275,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
 
                                         switch (field.PLCTag.TagDataType)
                                         {
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.LInt:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.LWord:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Int:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Dint:
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Word:
@@ -286,6 +288,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                                                 cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString()});
                                                 break;
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Float:
+                                            case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.LReal:
                                                 cmd.Parameters.Add(new SQLiteParameter("@" + field.DatabaseField, System.Data.DbType.String) {Value = value.ToString().Replace(',', '.')});
                                                 break;
                                             case DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.DateTime:

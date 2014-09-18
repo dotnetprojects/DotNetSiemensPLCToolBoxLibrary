@@ -1840,6 +1840,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return BitConverter.ToInt32(b, pos);
         }
 
+        public static Int64 getS64from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[8];
+                b1[7] = b[pos];
+                b1[6] = b[pos + 1];
+                b1[5] = b[pos + 2];
+                b1[4] = b[pos + 3];
+                b1[3] = b[pos + 4];
+                b1[2] = b[pos + 5];
+                b1[1] = b[pos + 6];
+                b1[0] = b[pos + 7];
+                return BitConverter.ToInt64(b1, 0);
+            }
+            else
+                return BitConverter.ToInt64(b, pos);
+        }
+
         public static void putS32at(byte[] b, int pos, int value)
         {
             byte[] bytes = BitConverter.GetBytes((value));
@@ -1852,6 +1871,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
             else
                 Array.Copy(bytes, 0, b, pos, 4);
+        }
+
+        public static void putS64at(byte[] b, int pos, Int64 value)
+        {
+            byte[] bytes = BitConverter.GetBytes((value));
+            if (BitConverter.IsLittleEndian)
+            {
+                b[pos + 7] = bytes[0];
+                b[pos + 6] = bytes[1];
+                b[pos + 5] = bytes[2];
+                b[pos + 4] = bytes[3];
+                b[pos + 3] = bytes[4];
+                b[pos + 2] = bytes[5];
+                b[pos + 1] = bytes[6];
+                b[pos] = bytes[7];
+            }
+            else
+                Array.Copy(bytes, 0, b, pos, 8);
         }
 
         public static uint getU32from(byte[] b, int pos)
@@ -1869,6 +1906,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return BitConverter.ToUInt32(b, pos);
         }
 
+        public static UInt64 getU64from(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[8];
+                b1[7] = b[pos];
+                b1[6] = b[pos + 1];
+                b1[5] = b[pos + 2];
+                b1[4] = b[pos + 3];
+                b1[3] = b[pos + 4];
+                b1[2] = b[pos + 5];
+                b1[1] = b[pos + 6];
+                b1[0] = b[pos + 7];
+                return BitConverter.ToUInt64(b1, 0);
+            }
+            else
+                return BitConverter.ToUInt64(b, pos);
+        }
+
         public static void putU32at(byte[] b, int pos, uint value)
         {
             byte[] bytes = BitConverter.GetBytes((value));
@@ -1881,6 +1937,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
             else
                 Array.Copy(bytes, 0, b, pos, 4);
+        }
+
+        public static void putU64at(byte[] b, int pos, UInt64 value)
+        {
+            byte[] bytes = BitConverter.GetBytes((value));
+            if (BitConverter.IsLittleEndian)
+            {
+                b[pos + 7] = bytes[0];
+                b[pos + 6] = bytes[1];
+                b[pos + 5] = bytes[2];
+                b[pos + 4] = bytes[3];
+                b[pos + 3] = bytes[4];
+                b[pos + 2] = bytes[5];
+                b[pos + 1] = bytes[6];
+                b[pos] = bytes[7];
+            }
+            else
+                Array.Copy(bytes, 0, b, pos, 8);
         }
 
         public static void putDateTimeat(byte[] b, int pos, DateTime mydatetime)
@@ -2059,6 +2133,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return BitConverter.ToSingle(b, pos);
         }
 
+        public static double getDoublefrom(byte[] b, int pos)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                byte[] b1 = new byte[8];
+                b1[7] = b[pos];
+                b1[6] = b[pos + 1];
+                b1[5] = b[pos + 2];
+                b1[4] = b[pos + 3];
+                b1[3] = b[pos + 4];
+                b1[2] = b[pos + 5];
+                b1[1] = b[pos + 6];
+                b1[0] = b[pos + 7];
+                return BitConverter.ToDouble(b1, 0);
+            }
+            else
+                return BitConverter.ToDouble(b, pos);
+        }
+
         /// <summary>
         /// This put's a String as a S7 String to the PLC
         /// </summary>
@@ -2099,6 +2192,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
             else
                 Array.Copy(bytes, 0, b, pos, 4);
+        }
+
+        public static void putDoubleat(byte[] b, int pos, Double value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            if (BitConverter.IsLittleEndian)
+            {
+                b[pos + 7] = bytes[0];
+                b[pos + 6] = bytes[1];
+                b[pos + 5] = bytes[2];
+                b[pos + 4] = bytes[3];
+                b[pos + 3] = bytes[4];
+                b[pos + 2] = bytes[5];
+                b[pos + 1] = bytes[6];
+                b[pos] = bytes[7];
+            }
+            else
+                Array.Copy(bytes, 0, b, pos, 8);
         }
 
         public static int getBCD8from(byte[] b, int pos)
