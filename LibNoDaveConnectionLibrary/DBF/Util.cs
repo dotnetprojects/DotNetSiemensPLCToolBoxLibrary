@@ -157,19 +157,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             return new byte[0];
         }
 
+
+
+#if !IPHONE
+        private static Encoding _defaultEncoding = System.Text.Encoding.GetEncoding("Windows-1252");
+#else
+        private static Encoding _defaultEncoding = System.Text.Encoding.Default; 
+#endif
         /// <summary>
         /// Converts a character byte array('C') to a string value
         /// </summary>
         /// <param name="dBaseCharacterBytes">The character byte array from dBase</param>
         /// <returns>A string value</returns>
-        public static string C_ToString(byte[] dBaseCharacterBytes)
+        public static string C_ToString(byte[] dBaseCharacterBytes, Encoding encoding = null)
         {
-#if !IPHONE
-            return System.Text.Encoding.GetEncoding("Windows-1252").GetString(dBaseCharacterBytes).TrimEnd(new char[] {' '});
-#else
-            return System.Text.Encoding.Default.GetString(dBaseCharacterBytes).TrimEnd(new char[] { ' ' }); 
-#endif
+            if (encoding == null)
+                encoding = _defaultEncoding;
 
+            return encoding.GetString(dBaseCharacterBytes).TrimEnd(new char[] {' '});
         }
 
         /// <summary>

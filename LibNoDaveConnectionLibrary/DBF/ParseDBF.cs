@@ -29,7 +29,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             return ReadDBF(dbfFile, null, '/');
         }
 
-        public static DataTable ReadDBF(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
+        public static DataTable ReadDBF(string dbfFile, ZipHelper _ziphelper, char DirSeperator, Encoding encoding = null)
         {
             long start = DateTime.Now.Ticks;
             DataTable dt = new DataTable();
@@ -174,7 +174,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                                 break;
 
                             case dBaseType.C: // String
-							    row[fieldIndex + 1] = dBaseConverter.C_ToString( recReader.ReadBytes(field.fieldLen));
+							    row[fieldIndex + 1] = dBaseConverter.C_ToString( recReader.ReadBytes(field.fieldLen), encoding);
 								break;
 
                             case dBaseType.M: // Memo
