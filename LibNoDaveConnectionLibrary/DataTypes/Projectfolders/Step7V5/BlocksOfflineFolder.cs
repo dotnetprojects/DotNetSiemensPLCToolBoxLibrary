@@ -741,8 +741,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     }
                     arr += "] OF ";
                 }
-                if (s7DataRow.StartValue != null)
+                if (s7DataRow.DataType == S7DataRowType.STRING)
+                {
+                    if (s7DataRow.StartValue != null && s7DataRow.StartValue.ToString() != "")
+                    {
+                        val += " := '" + s7DataRow.StartValue.ToString() + "'";
+                    }
+                }
+                else if (s7DataRow.StartValue != null)
+                {
                     val += " := " + s7DataRow.StartValue.ToString();
+                }
+
                 if (!string.IsNullOrEmpty(s7DataRow.Comment))
                     cmt += "    //" + s7DataRow.Comment;
                 if (s7DataRow.DataType == S7DataRowType.STRUCT)
