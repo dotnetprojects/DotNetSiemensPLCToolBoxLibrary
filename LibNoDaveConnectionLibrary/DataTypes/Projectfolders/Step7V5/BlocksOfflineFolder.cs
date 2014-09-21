@@ -753,7 +753,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 }
                 else
                 {
-                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + (s7DataRow.DataTypeBlockNumber != 0 ? s7DataRow.DataTypeBlockNumber.ToString() : "") + " " + val + ";" + cmt + Environment.NewLine;
+                    retval += leerz + s7DataRow.Name + " : " + arr;
+                    retval += s7DataRow.DataType;
+                    if (s7DataRow.DataType == S7DataRowType.STRING)
+                    {
+                        retval += " [" + s7DataRow.StringSize + "]";
+                    }
+                    retval += (s7DataRow.DataTypeBlockNumber != 0 ? s7DataRow.DataTypeBlockNumber.ToString() : "") + " " + val + ";" + cmt + Environment.NewLine;
                 }
             }
             return retval;
