@@ -35,6 +35,12 @@
             this.treeStep7Project = new System.Windows.Forms.TreeView();
             this.imglstIconsForTreeview = new System.Windows.Forms.ImageList(this.components);
             this.dtaSymbolTable = new System.Windows.Forms.DataGridView();
+            this.symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.datatype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operand = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operandiec = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tia_key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lstListBox = new System.Windows.Forms.ListBox();
             this.txtTextBox = new System.Windows.Forms.TextBox();
             this.chkShowDeleted = new System.Windows.Forms.CheckBox();
@@ -103,26 +109,20 @@
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.viewBlockList = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
             this.dtaPnPbList = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.exportMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.export = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewBlockList = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.datablockView = new System.Windows.Forms.Integration.ElementHost();
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.hexBox = new Be.Windows.Forms.HexBox();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.datatype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operand = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operandiec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tia_key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -133,29 +133,31 @@
             this.mainSplitContainer.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).BeginInit();
-            this.exportMenu.SuspendLayout();
             this.viewBlockList.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanelVisu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).BeginInit();
+            this.exportMenu.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProjectInfo
             // 
-            this.lblProjectInfo.Location = new System.Drawing.Point(107, 49);
+            this.lblProjectInfo.Location = new System.Drawing.Point(250, 103);
+            this.lblProjectInfo.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.lblProjectInfo.Name = "lblProjectInfo";
-            this.lblProjectInfo.Size = new System.Drawing.Size(739, 15);
+            this.lblProjectInfo.Size = new System.Drawing.Size(1724, 32);
             this.lblProjectInfo.TabIndex = 3;
             this.lblProjectInfo.Click += new System.EventHandler(this.label2_Click);
             // 
             // lblProjectName
             // 
-            this.lblProjectName.Location = new System.Drawing.Point(107, 33);
+            this.lblProjectName.Location = new System.Drawing.Point(250, 70);
+            this.lblProjectName.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.lblProjectName.Name = "lblProjectName";
-            this.lblProjectName.Size = new System.Drawing.Size(689, 16);
+            this.lblProjectName.Size = new System.Drawing.Size(1608, 33);
             this.lblProjectName.TabIndex = 3;
             // 
             // treeStep7Project
@@ -163,10 +165,11 @@
             this.treeStep7Project.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeStep7Project.ImageIndex = 0;
             this.treeStep7Project.ImageList = this.imglstIconsForTreeview;
-            this.treeStep7Project.Location = new System.Drawing.Point(3, 3);
+            this.treeStep7Project.Location = new System.Drawing.Point(7, 7);
+            this.treeStep7Project.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.treeStep7Project.Name = "treeStep7Project";
             this.treeStep7Project.SelectedImageIndex = 0;
-            this.treeStep7Project.Size = new System.Drawing.Size(391, 374);
+            this.treeStep7Project.Size = new System.Drawing.Size(912, 736);
             this.treeStep7Project.TabIndex = 4;
             this.treeStep7Project.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeStep7Project_BeforeCollapse);
             this.treeStep7Project.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeStep7Project_BeforeExpand);
@@ -206,792 +209,11 @@
             this.tia_key});
             this.dtaSymbolTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSymbolTable.Location = new System.Drawing.Point(0, 0);
+            this.dtaSymbolTable.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.dtaSymbolTable.Name = "dtaSymbolTable";
-            this.dtaSymbolTable.Size = new System.Drawing.Size(770, 535);
+            this.dtaSymbolTable.Size = new System.Drawing.Size(1797, 1078);
             this.dtaSymbolTable.TabIndex = 5;
             this.dtaSymbolTable.Visible = false;
-            // 
-            // lstListBox
-            // 
-            this.lstListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstListBox.FormattingEnabled = true;
-            this.lstListBox.ItemHeight = 15;
-            this.lstListBox.Location = new System.Drawing.Point(3, 3);
-            this.lstListBox.Name = "lstListBox";
-            this.lstListBox.Size = new System.Drawing.Size(497, 463);
-            this.lstListBox.TabIndex = 6;
-            this.lstListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            this.lstListBox.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
-            this.lstListBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstListBox_KeyPress);
-            // 
-            // txtTextBox
-            // 
-            this.txtTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTextBox.Location = new System.Drawing.Point(0, 0);
-            this.txtTextBox.Multiline = true;
-            this.txtTextBox.Name = "txtTextBox";
-            this.txtTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtTextBox.Size = new System.Drawing.Size(770, 535);
-            this.txtTextBox.TabIndex = 7;
-            this.txtTextBox.Visible = false;
-            this.txtTextBox.WordWrap = false;
-            // 
-            // chkShowDeleted
-            // 
-            this.chkShowDeleted.AutoSize = true;
-            this.chkShowDeleted.Location = new System.Drawing.Point(3, 513);
-            this.chkShowDeleted.Name = "chkShowDeleted";
-            this.chkShowDeleted.Size = new System.Drawing.Size(110, 19);
-            this.chkShowDeleted.TabIndex = 8;
-            this.chkShowDeleted.Text = "Show deleted";
-            this.chkShowDeleted.UseVisualStyleBackColor = true;
-            this.chkShowDeleted.CheckedChanged += new System.EventHandler(this.chkShowDeleted_CheckedChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 33);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 15);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Project Name:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 49);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Project Info:";
-            // 
-            // cmdSetKnowHow
-            // 
-            this.cmdSetKnowHow.Location = new System.Drawing.Point(3, 3);
-            this.cmdSetKnowHow.Name = "cmdSetKnowHow";
-            this.cmdSetKnowHow.Size = new System.Drawing.Size(178, 28);
-            this.cmdSetKnowHow.TabIndex = 10;
-            this.cmdSetKnowHow.Text = "Set Know How Protection";
-            this.cmdSetKnowHow.UseVisualStyleBackColor = true;
-            this.cmdSetKnowHow.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // cmdRemoveKnowHow
-            // 
-            this.cmdRemoveKnowHow.Location = new System.Drawing.Point(187, 3);
-            this.cmdRemoveKnowHow.Name = "cmdRemoveKnowHow";
-            this.cmdRemoveKnowHow.Size = new System.Drawing.Size(197, 28);
-            this.cmdRemoveKnowHow.TabIndex = 11;
-            this.cmdRemoveKnowHow.Text = "Remove Know How Protection";
-            this.cmdRemoveKnowHow.UseVisualStyleBackColor = true;
-            this.cmdRemoveKnowHow.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // cmdUndeleteBlock
-            // 
-            this.cmdUndeleteBlock.Location = new System.Drawing.Point(390, 3);
-            this.cmdUndeleteBlock.Name = "cmdUndeleteBlock";
-            this.cmdUndeleteBlock.Size = new System.Drawing.Size(176, 28);
-            this.cmdUndeleteBlock.TabIndex = 12;
-            this.cmdUndeleteBlock.Text = "Undelete Block";
-            this.cmdUndeleteBlock.UseVisualStyleBackColor = true;
-            this.cmdUndeleteBlock.Visible = false;
-            this.cmdUndeleteBlock.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // txtUndeleteName
-            // 
-            this.txtUndeleteName.Location = new System.Drawing.Point(572, 3);
-            this.txtUndeleteName.Name = "txtUndeleteName";
-            this.txtUndeleteName.Size = new System.Drawing.Size(72, 21);
-            this.txtUndeleteName.TabIndex = 13;
-            this.txtUndeleteName.Text = "9999";
-            this.txtUndeleteName.Visible = false;
-            // 
-            // grpVisu
-            // 
-            this.grpVisu.Controls.Add(this.cmdWebfactoryTags);
-            this.grpVisu.Controls.Add(this.chkCombineStructComments);
-            this.grpVisu.Controls.Add(this.cmdCreateWinCCFlexibleTags);
-            this.grpVisu.Controls.Add(this.chkExpandArrays);
-            this.grpVisu.Controls.Add(this.chkUseErrPrefix);
-            this.grpVisu.Controls.Add(this.chkFixedErrorNumber);
-            this.grpVisu.Controls.Add(this.label10);
-            this.grpVisu.Controls.Add(this.label2);
-            this.grpVisu.Controls.Add(this.label1);
-            this.grpVisu.Controls.Add(this.txtTagsPrefix);
-            this.grpVisu.Controls.Add(this.txtErrPrefix);
-            this.grpVisu.Controls.Add(this.txtStartErrorNumber);
-            this.grpVisu.Controls.Add(this.label9);
-            this.grpVisu.Controls.Add(this.txtConnectionName);
-            this.grpVisu.Controls.Add(this.cmdCreateWinCCTags);
-            this.grpVisu.Controls.Add(this.cmdCreateWinCCErrorMessages);
-            this.grpVisu.Controls.Add(this.cmdCreateFlexibleErrorMessages);
-            this.grpVisu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpVisu.Location = new System.Drawing.Point(506, 3);
-            this.grpVisu.Name = "grpVisu";
-            this.grpVisu.Size = new System.Drawing.Size(249, 463);
-            this.grpVisu.TabIndex = 16;
-            this.grpVisu.TabStop = false;
-            this.grpVisu.Text = "Visualization Toolbox";
-            // 
-            // cmdWebfactoryTags
-            // 
-            this.cmdWebfactoryTags.Location = new System.Drawing.Point(20, 430);
-            this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
-            this.cmdWebfactoryTags.Size = new System.Drawing.Size(212, 27);
-            this.cmdWebfactoryTags.TabIndex = 7;
-            this.cmdWebfactoryTags.Text = "Create Webfactory Tags";
-            this.cmdWebfactoryTags.UseVisualStyleBackColor = true;
-            this.cmdWebfactoryTags.Click += new System.EventHandler(this.cmdCreateWEBfactoryTags_Click);
-            // 
-            // chkCombineStructComments
-            // 
-            this.chkCombineStructComments.Checked = true;
-            this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCombineStructComments.Location = new System.Drawing.Point(20, 107);
-            this.chkCombineStructComments.Name = "chkCombineStructComments";
-            this.chkCombineStructComments.Size = new System.Drawing.Size(223, 19);
-            this.chkCombineStructComments.TabIndex = 6;
-            this.chkCombineStructComments.Text = "Combine Struct/UDT Comments";
-            this.chkCombineStructComments.UseVisualStyleBackColor = true;
-            // 
-            // cmdCreateWinCCFlexibleTags
-            // 
-            this.cmdCreateWinCCFlexibleTags.Location = new System.Drawing.Point(20, 406);
-            this.cmdCreateWinCCFlexibleTags.Name = "cmdCreateWinCCFlexibleTags";
-            this.cmdCreateWinCCFlexibleTags.Size = new System.Drawing.Size(212, 27);
-            this.cmdCreateWinCCFlexibleTags.TabIndex = 5;
-            this.cmdCreateWinCCFlexibleTags.Text = "Create WinCC-Flexible Tags";
-            this.cmdCreateWinCCFlexibleTags.UseVisualStyleBackColor = true;
-            this.cmdCreateWinCCFlexibleTags.Click += new System.EventHandler(this.cmdCreateWinCCFlexibleTags_Click);
-            // 
-            // chkExpandArrays
-            // 
-            this.chkExpandArrays.AutoSize = true;
-            this.chkExpandArrays.Location = new System.Drawing.Point(25, 330);
-            this.chkExpandArrays.Name = "chkExpandArrays";
-            this.chkExpandArrays.Size = new System.Drawing.Size(117, 19);
-            this.chkExpandArrays.TabIndex = 4;
-            this.chkExpandArrays.Text = "Expand Arrays";
-            this.chkExpandArrays.UseVisualStyleBackColor = true;
-            // 
-            // chkUseErrPrefix
-            // 
-            this.chkUseErrPrefix.Location = new System.Drawing.Point(20, 126);
-            this.chkUseErrPrefix.Name = "chkUseErrPrefix";
-            this.chkUseErrPrefix.Size = new System.Drawing.Size(165, 19);
-            this.chkUseErrPrefix.TabIndex = 4;
-            this.chkUseErrPrefix.Text = "Errors Start with: ";
-            this.chkUseErrPrefix.UseVisualStyleBackColor = true;
-            // 
-            // chkFixedErrorNumber
-            // 
-            this.chkFixedErrorNumber.AutoSize = true;
-            this.chkFixedErrorNumber.Location = new System.Drawing.Point(20, 89);
-            this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
-            this.chkFixedErrorNumber.Size = new System.Drawing.Size(152, 19);
-            this.chkFixedErrorNumber.TabIndex = 4;
-            this.chkFixedErrorNumber.Text = "Fixed Error Number";
-            this.chkFixedErrorNumber.UseVisualStyleBackColor = true;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(22, 263);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(210, 60);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Style of comments\r\nin error message DB:\r\n\r\n[Error Place];[Error Message]";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 354);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 15);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Tags Prefix";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 70);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Start Error Number";
-            // 
-            // txtTagsPrefix
-            // 
-            this.txtTagsPrefix.Location = new System.Drawing.Point(107, 351);
-            this.txtTagsPrefix.Name = "txtTagsPrefix";
-            this.txtTagsPrefix.Size = new System.Drawing.Size(121, 21);
-            this.txtTagsPrefix.TabIndex = 1;
-            // 
-            // txtErrPrefix
-            // 
-            this.txtErrPrefix.Location = new System.Drawing.Point(185, 124);
-            this.txtErrPrefix.Name = "txtErrPrefix";
-            this.txtErrPrefix.Size = new System.Drawing.Size(43, 21);
-            this.txtErrPrefix.TabIndex = 1;
-            this.txtErrPrefix.Text = "$";
-            // 
-            // txtStartErrorNumber
-            // 
-            this.txtStartErrorNumber.Location = new System.Drawing.Point(156, 67);
-            this.txtStartErrorNumber.Name = "txtStartErrorNumber";
-            this.txtStartErrorNumber.Size = new System.Drawing.Size(72, 21);
-            this.txtStartErrorNumber.TabIndex = 1;
-            this.txtStartErrorNumber.Text = "1";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 25);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(119, 15);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Connection Name:";
-            // 
-            // txtConnectionName
-            // 
-            this.txtConnectionName.Location = new System.Drawing.Point(16, 43);
-            this.txtConnectionName.Name = "txtConnectionName";
-            this.txtConnectionName.Size = new System.Drawing.Size(212, 21);
-            this.txtConnectionName.TabIndex = 1;
-            this.txtConnectionName.Text = "Verbindung_1";
-            // 
-            // cmdCreateWinCCTags
-            // 
-            this.cmdCreateWinCCTags.Location = new System.Drawing.Point(20, 376);
-            this.cmdCreateWinCCTags.Name = "cmdCreateWinCCTags";
-            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(212, 30);
-            this.cmdCreateWinCCTags.TabIndex = 0;
-            this.cmdCreateWinCCTags.Text = "Create WinCC Tags";
-            this.cmdCreateWinCCTags.UseVisualStyleBackColor = true;
-            this.cmdCreateWinCCTags.Click += new System.EventHandler(this.cmdCreateWinCCTags_Click);
-            // 
-            // cmdCreateWinCCErrorMessages
-            // 
-            this.cmdCreateWinCCErrorMessages.Location = new System.Drawing.Point(20, 202);
-            this.cmdCreateWinCCErrorMessages.Name = "cmdCreateWinCCErrorMessages";
-            this.cmdCreateWinCCErrorMessages.Size = new System.Drawing.Size(212, 52);
-            this.cmdCreateWinCCErrorMessages.TabIndex = 0;
-            this.cmdCreateWinCCErrorMessages.Text = "Create WinCC Error Messages && Tags";
-            this.cmdCreateWinCCErrorMessages.UseVisualStyleBackColor = true;
-            this.cmdCreateWinCCErrorMessages.Click += new System.EventHandler(this.cmdCreateWinCCErrorMessages_Click);
-            // 
-            // cmdCreateFlexibleErrorMessages
-            // 
-            this.cmdCreateFlexibleErrorMessages.Location = new System.Drawing.Point(20, 151);
-            this.cmdCreateFlexibleErrorMessages.Name = "cmdCreateFlexibleErrorMessages";
-            this.cmdCreateFlexibleErrorMessages.Size = new System.Drawing.Size(212, 52);
-            this.cmdCreateFlexibleErrorMessages.TabIndex = 0;
-            this.cmdCreateFlexibleErrorMessages.Text = "Create WinCC-Flexible Error Messages && Tags";
-            this.cmdCreateFlexibleErrorMessages.UseVisualStyleBackColor = true;
-            this.cmdCreateFlexibleErrorMessages.Click += new System.EventHandler(this.cmdCreateFlexibleErrorMessages_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(455, 15);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Step7, Simatic, WinCC && WinCC Flexible are trademarks of SIEMENS";
-            // 
-            // fetchPLCData
-            // 
-            this.fetchPLCData.Interval = 300;
-            this.fetchPLCData.Tick += new System.EventHandler(this.fetchPLCData_Tick);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblToolStripFileSystemFolder,
-            this.lblStatus,
-            this.lblConnInfo,
-            this.toolStripStatusLabel1,
-            this.lblConnected});
-            this.statusStrip.Location = new System.Drawing.Point(0, 645);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1177, 22);
-            this.statusStrip.SizingGrip = false;
-            this.statusStrip.TabIndex = 22;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // lblToolStripFileSystemFolder
-            // 
-            this.lblToolStripFileSystemFolder.AutoSize = false;
-            this.lblToolStripFileSystemFolder.Name = "lblToolStripFileSystemFolder";
-            this.lblToolStripFileSystemFolder.Size = new System.Drawing.Size(600, 17);
-            this.lblToolStripFileSystemFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(300, 17);
-            this.lblStatus.Spring = true;
-            this.lblStatus.Text = "i.o.";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblConnInfo
-            // 
-            this.lblConnInfo.AutoSize = false;
-            this.lblConnInfo.Name = "lblConnInfo";
-            this.lblConnInfo.Size = new System.Drawing.Size(230, 17);
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabel1.Text = "  ";
-            // 
-            // lblConnected
-            // 
-            this.lblConnected.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblConnected.Name = "lblConnected";
-            this.lblConnected.Size = new System.Drawing.Size(19, 17);
-            this.lblConnected.Text = "    ";
-            // 
-            // lstProjects
-            // 
-            this.lstProjects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstProjects.FormattingEnabled = true;
-            this.lstProjects.ItemHeight = 15;
-            this.lstProjects.Location = new System.Drawing.Point(3, 3);
-            this.lstProjects.Name = "lstProjects";
-            this.lstProjects.Size = new System.Drawing.Size(295, 118);
-            this.lstProjects.TabIndex = 24;
-            this.lstProjects.DoubleClick += new System.EventHandler(this.lstProjects_DoubleClick);
-            // 
-            // cmdProjectsBrowser
-            // 
-            this.cmdProjectsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmdProjectsBrowser.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdProjectsBrowser.Location = new System.Drawing.Point(304, 3);
-            this.cmdProjectsBrowser.Name = "cmdProjectsBrowser";
-            this.cmdProjectsBrowser.Size = new System.Drawing.Size(84, 118);
-            this.cmdProjectsBrowser.TabIndex = 25;
-            this.cmdProjectsBrowser.Text = "Projects\r\nBrowser";
-            this.cmdProjectsBrowser.UseVisualStyleBackColor = true;
-            this.cmdProjectsBrowser.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.optionsToolStripMenuItem,
-            this.toolsToolStripMenuItem1,
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1177, 24);
-            this.menuStrip1.TabIndex = 26;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configConnectionToolStripMenuItem,
-            this.lstConnections,
-            this.toolStripSeparator1,
-            this.watchToolStripMenuItem,
-            this.unwatchToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.downloadOnlineBlockToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.dBStructResizerToolStripMenuItem,
-            this.dataBlockValueSaveRestoreToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.searchPasswordToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.toolsToolStripMenuItem.Text = "Online";
-            // 
-            // configConnectionToolStripMenuItem
-            // 
-            this.configConnectionToolStripMenuItem.Name = "configConnectionToolStripMenuItem";
-            this.configConnectionToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.configConnectionToolStripMenuItem.Text = "Config Connection";
-            this.configConnectionToolStripMenuItem.Click += new System.EventHandler(this.configConnectionToolStripMenuItem_Click);
-            // 
-            // lstConnections
-            // 
-            this.lstConnections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.lstConnections.Name = "lstConnections";
-            this.lstConnections.Size = new System.Drawing.Size(121, 23);
-            this.lstConnections.SelectedIndexChanged += new System.EventHandler(this.lstConnections_SelectedIndexChanged_1);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(230, 6);
-            // 
-            // watchToolStripMenuItem
-            // 
-            this.watchToolStripMenuItem.Name = "watchToolStripMenuItem";
-            this.watchToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.watchToolStripMenuItem.Text = "Watch Datablock";
-            this.watchToolStripMenuItem.Click += new System.EventHandler(this.watchToolStripMenuItem_Click);
-            // 
-            // unwatchToolStripMenuItem
-            // 
-            this.unwatchToolStripMenuItem.Name = "unwatchToolStripMenuItem";
-            this.unwatchToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.unwatchToolStripMenuItem.Text = "Unwatch";
-            this.unwatchToolStripMenuItem.Click += new System.EventHandler(this.unwatchToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(230, 6);
-            // 
-            // downloadOnlineBlockToolStripMenuItem
-            // 
-            this.downloadOnlineBlockToolStripMenuItem.Name = "downloadOnlineBlockToolStripMenuItem";
-            this.downloadOnlineBlockToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.downloadOnlineBlockToolStripMenuItem.Text = "Download Online Block";
-            this.downloadOnlineBlockToolStripMenuItem.Click += new System.EventHandler(this.downloadOnlineBlockToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(230, 6);
-            // 
-            // dBStructResizerToolStripMenuItem
-            // 
-            this.dBStructResizerToolStripMenuItem.Name = "dBStructResizerToolStripMenuItem";
-            this.dBStructResizerToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.dBStructResizerToolStripMenuItem.Text = "UDT-Array-Resizer";
-            this.dBStructResizerToolStripMenuItem.Click += new System.EventHandler(this.dBStructResizerToolStripMenuItem_Click);
-            // 
-            // dataBlockValueSaveRestoreToolStripMenuItem
-            // 
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Name = "dataBlockValueSaveRestoreToolStripMenuItem";
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Text = "Data Block Value Save/Restore";
-            this.dataBlockValueSaveRestoreToolStripMenuItem.Click += new System.EventHandler(this.dataBlockValueSaveRestoreToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(230, 6);
-            // 
-            // searchPasswordToolStripMenuItem
-            // 
-            this.searchPasswordToolStripMenuItem.Name = "searchPasswordToolStripMenuItem";
-            this.searchPasswordToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.searchPasswordToolStripMenuItem.Text = "Search Password";
-            this.searchPasswordToolStripMenuItem.Click += new System.EventHandler(this.searchPasswordToolStripMenuItem_Click);
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertCallsToolStripMenuItem,
-            this.mnuExpandDatablockArrays});
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // convertCallsToolStripMenuItem
-            // 
-            this.convertCallsToolStripMenuItem.Checked = true;
-            this.convertCallsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.convertCallsToolStripMenuItem.Name = "convertCallsToolStripMenuItem";
-            this.convertCallsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.convertCallsToolStripMenuItem.Text = "Convert UCs to Calls";
-            this.convertCallsToolStripMenuItem.Click += new System.EventHandler(this.convertCallsToolStripMenuItem_Click);
-            // 
-            // mnuExpandDatablockArrays
-            // 
-            this.mnuExpandDatablockArrays.Name = "mnuExpandDatablockArrays";
-            this.mnuExpandDatablockArrays.Size = new System.Drawing.Size(204, 22);
-            this.mnuExpandDatablockArrays.Text = "Expand Datablock Arrays";
-            this.mnuExpandDatablockArrays.Click += new System.EventHandler(this.mnuExpandDatablockArrays_Click);
-            // 
-            // toolsToolStripMenuItem1
-            // 
-            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createDokumentationToolStripMenuItem,
-            this.parseAllBlocksToolStripMenuItem,
-            this.createAWLToolStripMenuItem,
-            this.dependenciesToolStripMenuItem,
-            this.callHirachyToolStripMenuItem});
-            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
-            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem1.Text = "Tools";
-            // 
-            // createDokumentationToolStripMenuItem
-            // 
-            this.createDokumentationToolStripMenuItem.Name = "createDokumentationToolStripMenuItem";
-            this.createDokumentationToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.createDokumentationToolStripMenuItem.Text = "Create Dokumentation";
-            this.createDokumentationToolStripMenuItem.Click += new System.EventHandler(this.createDokumentationToolStripMenuItem_Click);
-            // 
-            // parseAllBlocksToolStripMenuItem
-            // 
-            this.parseAllBlocksToolStripMenuItem.Name = "parseAllBlocksToolStripMenuItem";
-            this.parseAllBlocksToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.parseAllBlocksToolStripMenuItem.Text = "Parse all Blocks";
-            this.parseAllBlocksToolStripMenuItem.Click += new System.EventHandler(this.parseAllBlocksToolStripMenuItem_Click);
-            // 
-            // createAWLToolStripMenuItem
-            // 
-            this.createAWLToolStripMenuItem.Name = "createAWLToolStripMenuItem";
-            this.createAWLToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.createAWLToolStripMenuItem.Text = "Create AWL";
-            this.createAWLToolStripMenuItem.Click += new System.EventHandler(this.createAWLToolStripMenuItem_Click);
-            // 
-            // dependenciesToolStripMenuItem
-            // 
-            this.dependenciesToolStripMenuItem.Name = "dependenciesToolStripMenuItem";
-            this.dependenciesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.dependenciesToolStripMenuItem.Text = "Dependencies";
-            this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
-            // 
-            // callHirachyToolStripMenuItem
-            // 
-            this.callHirachyToolStripMenuItem.Name = "callHirachyToolStripMenuItem";
-            this.callHirachyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.callHirachyToolStripMenuItem.Text = "Call-Hierarchy";
-            this.callHirachyToolStripMenuItem.Click += new System.EventHandler(this.callHirachyToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.featuresToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // featuresToolStripMenuItem
-            // 
-            this.featuresToolStripMenuItem.Name = "featuresToolStripMenuItem";
-            this.featuresToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
-            this.featuresToolStripMenuItem.Text = "Features";
-            this.featuresToolStripMenuItem.Click += new System.EventHandler(this.featuresToolStripMenuItem_Click);
-            // 
-            // mainSplitContainer
-            // 
-            this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainSplitContainer.Location = new System.Drawing.Point(3, 83);
-            this.mainSplitContainer.Name = "mainSplitContainer";
-            // 
-            // mainSplitContainer.Panel1
-            // 
-            this.mainSplitContainer.Panel1.Controls.Add(this.tableLayoutPanel1);
-            // 
-            // mainSplitContainer.Panel2
-            // 
-            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
-            this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
-            this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
-            this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
-            this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
-            this.mainSplitContainer.Panel2.Controls.Add(this.dtaPnPbList);
-            this.mainSplitContainer.Size = new System.Drawing.Size(1171, 535);
-            this.mainSplitContainer.SplitterDistance = 397;
-            this.mainSplitContainer.TabIndex = 26;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.treeStep7Project, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.chkShowDeleted, 0, 2);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(397, 535);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel2.Controls.Add(this.lstProjects, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmdProjectsBrowser, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 383);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(391, 124);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // dtaPnPbList
-            // 
-            this.dtaPnPbList.AllowUserToAddRows = false;
-            this.dtaPnPbList.AllowUserToDeleteRows = false;
-            this.dtaPnPbList.AllowUserToResizeRows = false;
-            this.dtaPnPbList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtaPnPbList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
-            this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
-            this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
-            this.dtaPnPbList.Name = "dtaPnPbList";
-            this.dtaPnPbList.Size = new System.Drawing.Size(770, 535);
-            this.dtaPnPbList.TabIndex = 19;
-            this.dtaPnPbList.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "id";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "name";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // exportMenu
-            // 
-            this.exportMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.export});
-            this.exportMenu.Name = "exportMenu";
-            this.exportMenu.Size = new System.Drawing.Size(108, 26);
-            // 
-            // export
-            // 
-            this.export.Name = "export";
-            this.export.Size = new System.Drawing.Size(107, 22);
-            this.export.Text = "Export";
-            this.export.Click += new System.EventHandler(this.export_Click);
-            // 
-            // viewBlockList
-            // 
-            this.viewBlockList.Controls.Add(this.tableLayoutPanel3);
-            this.viewBlockList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewBlockList.Location = new System.Drawing.Point(0, 0);
-            this.viewBlockList.Name = "viewBlockList";
-            this.viewBlockList.Size = new System.Drawing.Size(770, 535);
-            this.viewBlockList.TabIndex = 0;
-            this.viewBlockList.TabStop = false;
-            this.viewBlockList.Visible = false;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.flowLayoutPanel1, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanelVisu, 0, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 17);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(764, 515);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.cmdSetKnowHow);
-            this.flowLayoutPanel1.Controls.Add(this.cmdRemoveKnowHow);
-            this.flowLayoutPanel1.Controls.Add(this.cmdUndeleteBlock);
-            this.flowLayoutPanel1.Controls.Add(this.txtUndeleteName);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 478);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(758, 34);
-            this.flowLayoutPanel1.TabIndex = 11;
-            // 
-            // tableLayoutPanelVisu
-            // 
-            this.tableLayoutPanelVisu.ColumnCount = 2;
-            this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
-            this.tableLayoutPanelVisu.Controls.Add(this.grpVisu, 1, 0);
-            this.tableLayoutPanelVisu.Controls.Add(this.lstListBox, 0, 0);
-            this.tableLayoutPanelVisu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelVisu.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanelVisu.Name = "tableLayoutPanelVisu";
-            this.tableLayoutPanelVisu.RowCount = 1;
-            this.tableLayoutPanelVisu.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelVisu.Size = new System.Drawing.Size(758, 469);
-            this.tableLayoutPanelVisu.TabIndex = 12;
-            // 
-            // datablockView
-            // 
-            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datablockView.Location = new System.Drawing.Point(0, 0);
-            this.datablockView.Name = "datablockView";
-            this.datablockView.Size = new System.Drawing.Size(770, 535);
-            this.datablockView.TabIndex = 17;
-            this.datablockView.Text = "wpfElementHost";
-            this.datablockView.Visible = false;
-            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.datablockView.Child = this.dataBlockViewControl;
-            // 
-            // hexBox
-            // 
-            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
-            this.hexBox.Location = new System.Drawing.Point(0, 0);
-            this.hexBox.Name = "hexBox";
-            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBox.Size = new System.Drawing.Size(770, 535);
-            this.hexBox.TabIndex = 18;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.mainSplitContainer, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 24);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1177, 621);
-            this.tableLayoutPanel5.TabIndex = 28;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.lblProjectName);
-            this.panel1.Controls.Add(this.lblProjectInfo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1171, 74);
-            this.panel1.TabIndex = 0;
             // 
             // symbol
             // 
@@ -1023,17 +245,850 @@
             this.tia_key.HeaderText = "tia_key";
             this.tia_key.Name = "tia_key";
             // 
+            // lstListBox
+            // 
+            this.lstListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstListBox.FormattingEnabled = true;
+            this.lstListBox.ItemHeight = 36;
+            this.lstListBox.Location = new System.Drawing.Point(7, 7);
+            this.lstListBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.lstListBox.Name = "lstListBox";
+            this.lstListBox.Size = new System.Drawing.Size(1160, 913);
+            this.lstListBox.TabIndex = 6;
+            this.lstListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.lstListBox.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.lstListBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstListBox_KeyPress);
+            // 
+            // txtTextBox
+            // 
+            this.txtTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtTextBox.Location = new System.Drawing.Point(0, 0);
+            this.txtTextBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtTextBox.Multiline = true;
+            this.txtTextBox.Name = "txtTextBox";
+            this.txtTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtTextBox.Size = new System.Drawing.Size(1797, 1078);
+            this.txtTextBox.TabIndex = 7;
+            this.txtTextBox.Visible = false;
+            this.txtTextBox.WordWrap = false;
+            // 
+            // chkShowDeleted
+            // 
+            this.chkShowDeleted.AutoSize = true;
+            this.chkShowDeleted.Location = new System.Drawing.Point(7, 1032);
+            this.chkShowDeleted.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkShowDeleted.Name = "chkShowDeleted";
+            this.chkShowDeleted.Size = new System.Drawing.Size(295, 39);
+            this.chkShowDeleted.TabIndex = 8;
+            this.chkShowDeleted.Text = "Show deleted";
+            this.chkShowDeleted.UseVisualStyleBackColor = true;
+            this.chkShowDeleted.CheckedChanged += new System.EventHandler(this.chkShowDeleted_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 70);
+            this.label3.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(277, 37);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Project Name:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 103);
+            this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(277, 37);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Project Info:";
+            // 
+            // cmdSetKnowHow
+            // 
+            this.cmdSetKnowHow.Location = new System.Drawing.Point(7, 7);
+            this.cmdSetKnowHow.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdSetKnowHow.Name = "cmdSetKnowHow";
+            this.cmdSetKnowHow.Size = new System.Drawing.Size(415, 60);
+            this.cmdSetKnowHow.TabIndex = 10;
+            this.cmdSetKnowHow.Text = "Set Know How Protection";
+            this.cmdSetKnowHow.UseVisualStyleBackColor = true;
+            this.cmdSetKnowHow.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // cmdRemoveKnowHow
+            // 
+            this.cmdRemoveKnowHow.Location = new System.Drawing.Point(436, 7);
+            this.cmdRemoveKnowHow.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdRemoveKnowHow.Name = "cmdRemoveKnowHow";
+            this.cmdRemoveKnowHow.Size = new System.Drawing.Size(460, 60);
+            this.cmdRemoveKnowHow.TabIndex = 11;
+            this.cmdRemoveKnowHow.Text = "Remove Know How Protection";
+            this.cmdRemoveKnowHow.UseVisualStyleBackColor = true;
+            this.cmdRemoveKnowHow.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // cmdUndeleteBlock
+            // 
+            this.cmdUndeleteBlock.Location = new System.Drawing.Point(910, 7);
+            this.cmdUndeleteBlock.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdUndeleteBlock.Name = "cmdUndeleteBlock";
+            this.cmdUndeleteBlock.Size = new System.Drawing.Size(411, 60);
+            this.cmdUndeleteBlock.TabIndex = 12;
+            this.cmdUndeleteBlock.Text = "Undelete Block";
+            this.cmdUndeleteBlock.UseVisualStyleBackColor = true;
+            this.cmdUndeleteBlock.Visible = false;
+            this.cmdUndeleteBlock.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // txtUndeleteName
+            // 
+            this.txtUndeleteName.Location = new System.Drawing.Point(1335, 7);
+            this.txtUndeleteName.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtUndeleteName.Name = "txtUndeleteName";
+            this.txtUndeleteName.Size = new System.Drawing.Size(163, 45);
+            this.txtUndeleteName.TabIndex = 13;
+            this.txtUndeleteName.Text = "9999";
+            this.txtUndeleteName.Visible = false;
+            // 
+            // grpVisu
+            // 
+            this.grpVisu.Controls.Add(this.cmdWebfactoryTags);
+            this.grpVisu.Controls.Add(this.chkCombineStructComments);
+            this.grpVisu.Controls.Add(this.cmdCreateWinCCFlexibleTags);
+            this.grpVisu.Controls.Add(this.chkExpandArrays);
+            this.grpVisu.Controls.Add(this.chkUseErrPrefix);
+            this.grpVisu.Controls.Add(this.chkFixedErrorNumber);
+            this.grpVisu.Controls.Add(this.label10);
+            this.grpVisu.Controls.Add(this.label2);
+            this.grpVisu.Controls.Add(this.label1);
+            this.grpVisu.Controls.Add(this.txtTagsPrefix);
+            this.grpVisu.Controls.Add(this.txtErrPrefix);
+            this.grpVisu.Controls.Add(this.txtStartErrorNumber);
+            this.grpVisu.Controls.Add(this.label9);
+            this.grpVisu.Controls.Add(this.txtConnectionName);
+            this.grpVisu.Controls.Add(this.cmdCreateWinCCTags);
+            this.grpVisu.Controls.Add(this.cmdCreateWinCCErrorMessages);
+            this.grpVisu.Controls.Add(this.cmdCreateFlexibleErrorMessages);
+            this.grpVisu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpVisu.Location = new System.Drawing.Point(1181, 7);
+            this.grpVisu.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.grpVisu.Name = "grpVisu";
+            this.grpVisu.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.grpVisu.Size = new System.Drawing.Size(581, 913);
+            this.grpVisu.TabIndex = 16;
+            this.grpVisu.TabStop = false;
+            this.grpVisu.Text = "Visualization Toolbox";
+            // 
+            // cmdWebfactoryTags
+            // 
+            this.cmdWebfactoryTags.Location = new System.Drawing.Point(47, 912);
+            this.cmdWebfactoryTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
+            this.cmdWebfactoryTags.Size = new System.Drawing.Size(495, 57);
+            this.cmdWebfactoryTags.TabIndex = 7;
+            this.cmdWebfactoryTags.Text = "Create Webfactory Tags";
+            this.cmdWebfactoryTags.UseVisualStyleBackColor = true;
+            this.cmdWebfactoryTags.Click += new System.EventHandler(this.cmdCreateWEBfactoryTags_Click);
+            // 
+            // chkCombineStructComments
+            // 
+            this.chkCombineStructComments.Checked = true;
+            this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCombineStructComments.Location = new System.Drawing.Point(47, 227);
+            this.chkCombineStructComments.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkCombineStructComments.Name = "chkCombineStructComments";
+            this.chkCombineStructComments.Size = new System.Drawing.Size(520, 40);
+            this.chkCombineStructComments.TabIndex = 6;
+            this.chkCombineStructComments.Text = "Combine Struct/UDT Comments";
+            this.chkCombineStructComments.UseVisualStyleBackColor = true;
+            // 
+            // cmdCreateWinCCFlexibleTags
+            // 
+            this.cmdCreateWinCCFlexibleTags.Location = new System.Drawing.Point(47, 862);
+            this.cmdCreateWinCCFlexibleTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCFlexibleTags.Name = "cmdCreateWinCCFlexibleTags";
+            this.cmdCreateWinCCFlexibleTags.Size = new System.Drawing.Size(495, 57);
+            this.cmdCreateWinCCFlexibleTags.TabIndex = 5;
+            this.cmdCreateWinCCFlexibleTags.Text = "Create WinCC-Flexible Tags";
+            this.cmdCreateWinCCFlexibleTags.UseVisualStyleBackColor = true;
+            this.cmdCreateWinCCFlexibleTags.Click += new System.EventHandler(this.cmdCreateWinCCFlexibleTags_Click);
+            // 
+            // chkExpandArrays
+            // 
+            this.chkExpandArrays.AutoSize = true;
+            this.chkExpandArrays.Location = new System.Drawing.Point(58, 700);
+            this.chkExpandArrays.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkExpandArrays.Name = "chkExpandArrays";
+            this.chkExpandArrays.Size = new System.Drawing.Size(315, 41);
+            this.chkExpandArrays.TabIndex = 4;
+            this.chkExpandArrays.Text = "Expand Arrays";
+            this.chkExpandArrays.UseVisualStyleBackColor = true;
+            // 
+            // chkUseErrPrefix
+            // 
+            this.chkUseErrPrefix.Location = new System.Drawing.Point(47, 267);
+            this.chkUseErrPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkUseErrPrefix.Name = "chkUseErrPrefix";
+            this.chkUseErrPrefix.Size = new System.Drawing.Size(385, 40);
+            this.chkUseErrPrefix.TabIndex = 4;
+            this.chkUseErrPrefix.Text = "Errors Start with: ";
+            this.chkUseErrPrefix.UseVisualStyleBackColor = true;
+            // 
+            // chkFixedErrorNumber
+            // 
+            this.chkFixedErrorNumber.AutoSize = true;
+            this.chkFixedErrorNumber.Location = new System.Drawing.Point(47, 188);
+            this.chkFixedErrorNumber.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
+            this.chkFixedErrorNumber.Size = new System.Drawing.Size(415, 41);
+            this.chkFixedErrorNumber.TabIndex = 4;
+            this.chkFixedErrorNumber.Text = "Fixed Error Number";
+            this.chkFixedErrorNumber.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(51, 558);
+            this.label10.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(597, 148);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Style of comments\r\nin error message DB:\r\n\r\n[Error Place];[Error Message]";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(40, 752);
+            this.label2.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(237, 37);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Tags Prefix";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(40, 148);
+            this.label1.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(377, 37);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Start Error Number";
+            // 
+            // txtTagsPrefix
+            // 
+            this.txtTagsPrefix.Location = new System.Drawing.Point(250, 745);
+            this.txtTagsPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtTagsPrefix.Name = "txtTagsPrefix";
+            this.txtTagsPrefix.Size = new System.Drawing.Size(277, 45);
+            this.txtTagsPrefix.TabIndex = 1;
+            // 
+            // txtErrPrefix
+            // 
+            this.txtErrPrefix.Location = new System.Drawing.Point(432, 263);
+            this.txtErrPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtErrPrefix.Name = "txtErrPrefix";
+            this.txtErrPrefix.Size = new System.Drawing.Size(95, 45);
+            this.txtErrPrefix.TabIndex = 1;
+            this.txtErrPrefix.Text = "$";
+            // 
+            // txtStartErrorNumber
+            // 
+            this.txtStartErrorNumber.Location = new System.Drawing.Point(364, 142);
+            this.txtStartErrorNumber.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtStartErrorNumber.Name = "txtStartErrorNumber";
+            this.txtStartErrorNumber.Size = new System.Drawing.Size(163, 45);
+            this.txtStartErrorNumber.TabIndex = 1;
+            this.txtStartErrorNumber.Text = "1";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(14, 53);
+            this.label9.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(337, 37);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Connection Name:";
+            // 
+            // txtConnectionName
+            // 
+            this.txtConnectionName.Location = new System.Drawing.Point(37, 92);
+            this.txtConnectionName.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtConnectionName.Name = "txtConnectionName";
+            this.txtConnectionName.Size = new System.Drawing.Size(489, 45);
+            this.txtConnectionName.TabIndex = 1;
+            this.txtConnectionName.Text = "Verbindung_1";
+            // 
+            // cmdCreateWinCCTags
+            // 
+            this.cmdCreateWinCCTags.Location = new System.Drawing.Point(47, 798);
+            this.cmdCreateWinCCTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCTags.Name = "cmdCreateWinCCTags";
+            this.cmdCreateWinCCTags.Size = new System.Drawing.Size(495, 63);
+            this.cmdCreateWinCCTags.TabIndex = 0;
+            this.cmdCreateWinCCTags.Text = "Create WinCC Tags";
+            this.cmdCreateWinCCTags.UseVisualStyleBackColor = true;
+            this.cmdCreateWinCCTags.Click += new System.EventHandler(this.cmdCreateWinCCTags_Click);
+            // 
+            // cmdCreateWinCCErrorMessages
+            // 
+            this.cmdCreateWinCCErrorMessages.Location = new System.Drawing.Point(47, 428);
+            this.cmdCreateWinCCErrorMessages.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCErrorMessages.Name = "cmdCreateWinCCErrorMessages";
+            this.cmdCreateWinCCErrorMessages.Size = new System.Drawing.Size(495, 110);
+            this.cmdCreateWinCCErrorMessages.TabIndex = 0;
+            this.cmdCreateWinCCErrorMessages.Text = "Create WinCC Error Messages && Tags";
+            this.cmdCreateWinCCErrorMessages.UseVisualStyleBackColor = true;
+            this.cmdCreateWinCCErrorMessages.Click += new System.EventHandler(this.cmdCreateWinCCErrorMessages_Click);
+            // 
+            // cmdCreateFlexibleErrorMessages
+            // 
+            this.cmdCreateFlexibleErrorMessages.Location = new System.Drawing.Point(47, 320);
+            this.cmdCreateFlexibleErrorMessages.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateFlexibleErrorMessages.Name = "cmdCreateFlexibleErrorMessages";
+            this.cmdCreateFlexibleErrorMessages.Size = new System.Drawing.Size(495, 110);
+            this.cmdCreateFlexibleErrorMessages.TabIndex = 0;
+            this.cmdCreateFlexibleErrorMessages.Text = "Create WinCC-Flexible Error Messages && Tags";
+            this.cmdCreateFlexibleErrorMessages.UseVisualStyleBackColor = true;
+            this.cmdCreateFlexibleErrorMessages.Click += new System.EventHandler(this.cmdCreateFlexibleErrorMessages_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 0);
+            this.label5.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(1297, 37);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Step7, Simatic, WinCC && WinCC Flexible are trademarks of SIEMENS";
+            // 
+            // fetchPLCData
+            // 
+            this.fetchPLCData.Interval = 300;
+            this.fetchPLCData.Tick += new System.EventHandler(this.fetchPLCData_Tick);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblToolStripFileSystemFolder,
+            this.lblStatus,
+            this.lblConnInfo,
+            this.toolStripStatusLabel1,
+            this.lblConnected});
+            this.statusStrip.Location = new System.Drawing.Point(0, 1317);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 33, 0);
+            this.statusStrip.Size = new System.Drawing.Size(2746, 98);
+            this.statusStrip.SizingGrip = false;
+            this.statusStrip.TabIndex = 22;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // lblToolStripFileSystemFolder
+            // 
+            this.lblToolStripFileSystemFolder.AutoSize = false;
+            this.lblToolStripFileSystemFolder.Name = "lblToolStripFileSystemFolder";
+            this.lblToolStripFileSystemFolder.Size = new System.Drawing.Size(600, 93);
+            this.lblToolStripFileSystemFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(1797, 93);
+            this.lblStatus.Spring = true;
+            this.lblStatus.Text = "i.o.";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblConnInfo
+            // 
+            this.lblConnInfo.AutoSize = false;
+            this.lblConnInfo.Name = "lblConnInfo";
+            this.lblConnInfo.Size = new System.Drawing.Size(230, 93);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(34, 93);
+            this.toolStripStatusLabel1.Text = "  ";
+            // 
+            // lblConnected
+            // 
+            this.lblConnected.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblConnected.Name = "lblConnected";
+            this.lblConnected.Size = new System.Drawing.Size(50, 93);
+            this.lblConnected.Text = "    ";
+            // 
+            // lstProjects
+            // 
+            this.lstProjects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstProjects.FormattingEnabled = true;
+            this.lstProjects.ItemHeight = 36;
+            this.lstProjects.Location = new System.Drawing.Point(7, 7);
+            this.lstProjects.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.lstProjects.Name = "lstProjects";
+            this.lstProjects.Size = new System.Drawing.Size(688, 247);
+            this.lstProjects.TabIndex = 24;
+            this.lstProjects.DoubleClick += new System.EventHandler(this.lstProjects_DoubleClick);
+            // 
+            // cmdProjectsBrowser
+            // 
+            this.cmdProjectsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmdProjectsBrowser.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdProjectsBrowser.Location = new System.Drawing.Point(709, 7);
+            this.cmdProjectsBrowser.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdProjectsBrowser.Name = "cmdProjectsBrowser";
+            this.cmdProjectsBrowser.Size = new System.Drawing.Size(196, 247);
+            this.cmdProjectsBrowser.TabIndex = 25;
+            this.cmdProjectsBrowser.Text = "Projects\r\nBrowser";
+            this.cmdProjectsBrowser.UseVisualStyleBackColor = true;
+            this.cmdProjectsBrowser.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem,
+            this.optionsToolStripMenuItem,
+            this.toolsToolStripMenuItem1,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(14, 5, 0, 5);
+            this.menuStrip1.Size = new System.Drawing.Size(2746, 55);
+            this.menuStrip1.TabIndex = 26;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(75, 45);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(170, 46);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 46);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configConnectionToolStripMenuItem,
+            this.lstConnections,
+            this.toolStripSeparator1,
+            this.watchToolStripMenuItem,
+            this.unwatchToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.downloadOnlineBlockToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.dBStructResizerToolStripMenuItem,
+            this.dataBlockValueSaveRestoreToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.searchPasswordToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(117, 45);
+            this.toolsToolStripMenuItem.Text = "Online";
+            // 
+            // configConnectionToolStripMenuItem
+            // 
+            this.configConnectionToolStripMenuItem.Name = "configConnectionToolStripMenuItem";
+            this.configConnectionToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.configConnectionToolStripMenuItem.Text = "Config Connection";
+            this.configConnectionToolStripMenuItem.Click += new System.EventHandler(this.configConnectionToolStripMenuItem_Click);
+            // 
+            // lstConnections
+            // 
+            this.lstConnections.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.lstConnections.Name = "lstConnections";
+            this.lstConnections.Size = new System.Drawing.Size(121, 49);
+            this.lstConnections.SelectedIndexChanged += new System.EventHandler(this.lstConnections_SelectedIndexChanged_1);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(497, 6);
+            // 
+            // watchToolStripMenuItem
+            // 
+            this.watchToolStripMenuItem.Name = "watchToolStripMenuItem";
+            this.watchToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.watchToolStripMenuItem.Text = "Watch Datablock";
+            this.watchToolStripMenuItem.Click += new System.EventHandler(this.watchToolStripMenuItem_Click);
+            // 
+            // unwatchToolStripMenuItem
+            // 
+            this.unwatchToolStripMenuItem.Name = "unwatchToolStripMenuItem";
+            this.unwatchToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.unwatchToolStripMenuItem.Text = "Unwatch";
+            this.unwatchToolStripMenuItem.Click += new System.EventHandler(this.unwatchToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(497, 6);
+            // 
+            // downloadOnlineBlockToolStripMenuItem
+            // 
+            this.downloadOnlineBlockToolStripMenuItem.Name = "downloadOnlineBlockToolStripMenuItem";
+            this.downloadOnlineBlockToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.downloadOnlineBlockToolStripMenuItem.Text = "Download Online Block";
+            this.downloadOnlineBlockToolStripMenuItem.Click += new System.EventHandler(this.downloadOnlineBlockToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(497, 6);
+            // 
+            // dBStructResizerToolStripMenuItem
+            // 
+            this.dBStructResizerToolStripMenuItem.Name = "dBStructResizerToolStripMenuItem";
+            this.dBStructResizerToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.dBStructResizerToolStripMenuItem.Text = "UDT-Array-Resizer";
+            this.dBStructResizerToolStripMenuItem.Click += new System.EventHandler(this.dBStructResizerToolStripMenuItem_Click);
+            // 
+            // dataBlockValueSaveRestoreToolStripMenuItem
+            // 
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Name = "dataBlockValueSaveRestoreToolStripMenuItem";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Text = "Data Block Value Save/Restore";
+            this.dataBlockValueSaveRestoreToolStripMenuItem.Click += new System.EventHandler(this.dataBlockValueSaveRestoreToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(497, 6);
+            // 
+            // searchPasswordToolStripMenuItem
+            // 
+            this.searchPasswordToolStripMenuItem.Name = "searchPasswordToolStripMenuItem";
+            this.searchPasswordToolStripMenuItem.Size = new System.Drawing.Size(500, 46);
+            this.searchPasswordToolStripMenuItem.Text = "Search Password";
+            this.searchPasswordToolStripMenuItem.Click += new System.EventHandler(this.searchPasswordToolStripMenuItem_Click);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.convertCallsToolStripMenuItem,
+            this.mnuExpandDatablockArrays});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(136, 45);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // convertCallsToolStripMenuItem
+            // 
+            this.convertCallsToolStripMenuItem.Checked = true;
+            this.convertCallsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.convertCallsToolStripMenuItem.Name = "convertCallsToolStripMenuItem";
+            this.convertCallsToolStripMenuItem.Size = new System.Drawing.Size(424, 46);
+            this.convertCallsToolStripMenuItem.Text = "Convert UCs to Calls";
+            this.convertCallsToolStripMenuItem.Click += new System.EventHandler(this.convertCallsToolStripMenuItem_Click);
+            // 
+            // mnuExpandDatablockArrays
+            // 
+            this.mnuExpandDatablockArrays.Name = "mnuExpandDatablockArrays";
+            this.mnuExpandDatablockArrays.Size = new System.Drawing.Size(424, 46);
+            this.mnuExpandDatablockArrays.Text = "Expand Datablock Arrays";
+            this.mnuExpandDatablockArrays.Click += new System.EventHandler(this.mnuExpandDatablockArrays_Click);
+            // 
+            // toolsToolStripMenuItem1
+            // 
+            this.toolsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createDokumentationToolStripMenuItem,
+            this.parseAllBlocksToolStripMenuItem,
+            this.createAWLToolStripMenuItem,
+            this.dependenciesToolStripMenuItem,
+            this.callHirachyToolStripMenuItem});
+            this.toolsToolStripMenuItem1.Name = "toolsToolStripMenuItem1";
+            this.toolsToolStripMenuItem1.Size = new System.Drawing.Size(102, 45);
+            this.toolsToolStripMenuItem1.Text = "Tools";
+            // 
+            // createDokumentationToolStripMenuItem
+            // 
+            this.createDokumentationToolStripMenuItem.Name = "createDokumentationToolStripMenuItem";
+            this.createDokumentationToolStripMenuItem.Size = new System.Drawing.Size(397, 46);
+            this.createDokumentationToolStripMenuItem.Text = "Create Dokumentation";
+            this.createDokumentationToolStripMenuItem.Click += new System.EventHandler(this.createDokumentationToolStripMenuItem_Click);
+            // 
+            // parseAllBlocksToolStripMenuItem
+            // 
+            this.parseAllBlocksToolStripMenuItem.Name = "parseAllBlocksToolStripMenuItem";
+            this.parseAllBlocksToolStripMenuItem.Size = new System.Drawing.Size(397, 46);
+            this.parseAllBlocksToolStripMenuItem.Text = "Parse all Blocks";
+            this.parseAllBlocksToolStripMenuItem.Click += new System.EventHandler(this.parseAllBlocksToolStripMenuItem_Click);
+            // 
+            // createAWLToolStripMenuItem
+            // 
+            this.createAWLToolStripMenuItem.Name = "createAWLToolStripMenuItem";
+            this.createAWLToolStripMenuItem.Size = new System.Drawing.Size(397, 46);
+            this.createAWLToolStripMenuItem.Text = "Create AWL";
+            this.createAWLToolStripMenuItem.Click += new System.EventHandler(this.createAWLToolStripMenuItem_Click);
+            // 
+            // dependenciesToolStripMenuItem
+            // 
+            this.dependenciesToolStripMenuItem.Name = "dependenciesToolStripMenuItem";
+            this.dependenciesToolStripMenuItem.Size = new System.Drawing.Size(397, 46);
+            this.dependenciesToolStripMenuItem.Text = "Dependencies";
+            this.dependenciesToolStripMenuItem.Click += new System.EventHandler(this.dependenciesToolStripMenuItem_Click);
+            // 
+            // callHirachyToolStripMenuItem
+            // 
+            this.callHirachyToolStripMenuItem.Name = "callHirachyToolStripMenuItem";
+            this.callHirachyToolStripMenuItem.Size = new System.Drawing.Size(397, 46);
+            this.callHirachyToolStripMenuItem.Text = "Call-Hierarchy";
+            this.callHirachyToolStripMenuItem.Click += new System.EventHandler(this.callHirachyToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.featuresToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(92, 45);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // featuresToolStripMenuItem
+            // 
+            this.featuresToolStripMenuItem.Name = "featuresToolStripMenuItem";
+            this.featuresToolStripMenuItem.Size = new System.Drawing.Size(208, 46);
+            this.featuresToolStripMenuItem.Text = "Features";
+            this.featuresToolStripMenuItem.Click += new System.EventHandler(this.featuresToolStripMenuItem_Click);
+            // 
+            // mainSplitContainer
+            // 
+            this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainSplitContainer.Location = new System.Drawing.Point(7, 177);
+            this.mainSplitContainer.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.mainSplitContainer.Name = "mainSplitContainer";
+            // 
+            // mainSplitContainer.Panel1
+            // 
+            this.mainSplitContainer.Panel1.Controls.Add(this.tableLayoutPanel1);
+            // 
+            // mainSplitContainer.Panel2
+            // 
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaSymbolTable);
+            this.mainSplitContainer.Panel2.Controls.Add(this.viewBlockList);
+            this.mainSplitContainer.Panel2.Controls.Add(this.datablockView);
+            this.mainSplitContainer.Panel2.Controls.Add(this.hexBox);
+            this.mainSplitContainer.Panel2.Controls.Add(this.txtTextBox);
+            this.mainSplitContainer.Panel2.Controls.Add(this.dtaPnPbList);
+            this.mainSplitContainer.Size = new System.Drawing.Size(2732, 1078);
+            this.mainSplitContainer.SplitterDistance = 926;
+            this.mainSplitContainer.SplitterWidth = 9;
+            this.mainSplitContainer.TabIndex = 26;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.treeStep7Project, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.chkShowDeleted, 0, 2);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 275F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(926, 1078);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tableLayoutPanel2.Controls.Add(this.lstProjects, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmdProjectsBrowser, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(7, 757);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(912, 261);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // viewBlockList
+            // 
+            this.viewBlockList.Controls.Add(this.tableLayoutPanel3);
+            this.viewBlockList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewBlockList.Location = new System.Drawing.Point(0, 0);
+            this.viewBlockList.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.viewBlockList.Name = "viewBlockList";
+            this.viewBlockList.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.viewBlockList.Size = new System.Drawing.Size(1797, 1078);
+            this.viewBlockList.TabIndex = 0;
+            this.viewBlockList.TabStop = false;
+            this.viewBlockList.Visible = false;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanelVisu, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(7, 45);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1783, 1026);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.cmdSetKnowHow);
+            this.flowLayoutPanel1.Controls.Add(this.cmdRemoveKnowHow);
+            this.flowLayoutPanel1.Controls.Add(this.cmdUndeleteBlock);
+            this.flowLayoutPanel1.Controls.Add(this.txtUndeleteName);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 948);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1769, 71);
+            this.flowLayoutPanel1.TabIndex = 11;
+            // 
+            // tableLayoutPanelVisu
+            // 
+            this.tableLayoutPanelVisu.ColumnCount = 2;
+            this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelVisu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 595F));
+            this.tableLayoutPanelVisu.Controls.Add(this.grpVisu, 1, 0);
+            this.tableLayoutPanelVisu.Controls.Add(this.lstListBox, 0, 0);
+            this.tableLayoutPanelVisu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelVisu.Location = new System.Drawing.Point(7, 7);
+            this.tableLayoutPanelVisu.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanelVisu.Name = "tableLayoutPanelVisu";
+            this.tableLayoutPanelVisu.RowCount = 1;
+            this.tableLayoutPanelVisu.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelVisu.Size = new System.Drawing.Size(1769, 927);
+            this.tableLayoutPanelVisu.TabIndex = 12;
+            // 
+            // dtaPnPbList
+            // 
+            this.dtaPnPbList.AllowUserToAddRows = false;
+            this.dtaPnPbList.AllowUserToDeleteRows = false;
+            this.dtaPnPbList.AllowUserToResizeRows = false;
+            this.dtaPnPbList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtaPnPbList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
+            this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
+            this.dtaPnPbList.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.dtaPnPbList.Name = "dtaPnPbList";
+            this.dtaPnPbList.Size = new System.Drawing.Size(1797, 1078);
+            this.dtaPnPbList.TabIndex = 19;
+            this.dtaPnPbList.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "name";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            // 
+            // exportMenu
+            // 
+            this.exportMenu.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.exportMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.export});
+            this.exportMenu.Name = "exportMenu";
+            this.exportMenu.Size = new System.Drawing.Size(182, 50);
+            // 
+            // export
+            // 
+            this.export.Name = "export";
+            this.export.Size = new System.Drawing.Size(181, 46);
+            this.export.Text = "Export";
+            this.export.Click += new System.EventHandler(this.export_Click);
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.mainSplitContainer, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 55);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(2746, 1262);
+            this.tableLayoutPanel5.TabIndex = 28;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lblProjectName);
+            this.panel1.Controls.Add(this.lblProjectInfo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(7, 7);
+            this.panel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(2732, 156);
+            this.panel1.TabIndex = 0;
+            // 
+            // datablockView
+            // 
+            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.datablockView.Location = new System.Drawing.Point(0, 0);
+            this.datablockView.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.datablockView.Name = "datablockView";
+            this.datablockView.Size = new System.Drawing.Size(1797, 1078);
+            this.datablockView.TabIndex = 17;
+            this.datablockView.Text = "wpfElementHost";
+            this.datablockView.Visible = false;
+            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
+            this.datablockView.Child = this.dataBlockViewControl;
+            // 
+            // hexBox
+            // 
+            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.hexBox.Location = new System.Drawing.Point(0, 0);
+            this.hexBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.hexBox.Name = "hexBox";
+            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.hexBox.Size = new System.Drawing.Size(1797, 1078);
+            this.hexBox.TabIndex = 18;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1177, 667);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(240F, 240F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(2746, 1415);
             this.Controls.Add(this.tableLayoutPanel5);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Courier New", 9.900001F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.Name = "Form1";
             this.Text = "Toolbox for Siemens PLCs (c) 2010/2011 Jochen Kühner";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1052,13 +1107,13 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).EndInit();
-            this.exportMenu.ResumeLayout(false);
             this.viewBlockList.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tableLayoutPanelVisu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtaPnPbList)).EndInit();
+            this.exportMenu.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

@@ -1357,13 +1357,16 @@ namespace JFK_VarTab
         private string CreateHirachy(string prefix, S7FunctionBlock block)
         {
             string retVal = "";
-            retVal += prefix + block.BlockName + Environment.NewLine;
+            if (prefix != "")
+                retVal += prefix.Substring(0, prefix.Length - 3) + "---" + block.BlockName + Environment.NewLine;
+            else
+                retVal += block.BlockName + Environment.NewLine;
             //foreach (var calledBlock in block.CalledBlocks)
             foreach (var calledBlock in block.CalledBlocks.Distinct())
             {
                 var fld = block.ParentFolder as BlocksOfflineFolder;
                 var blk = fld.GetBlock(calledBlock) as S7FunctionBlock;
-                if (blk != null) retVal += CreateHirachy(prefix + "  |---", blk);
+                if (blk != null) retVal += CreateHirachy(prefix + "  |   ", blk);
             }
 
             return retVal;

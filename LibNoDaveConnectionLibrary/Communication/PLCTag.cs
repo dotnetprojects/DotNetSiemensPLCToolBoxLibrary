@@ -262,10 +262,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return TagDisplayDataType.String;                        
                     case TagDataType.Int:
                     case TagDataType.Dint:
+                    case TagDataType.LInt:
                     case TagDataType.Byte:
                     case TagDataType.SByte:
                     case TagDataType.Word:
                     case TagDataType.Dword:
+                    case TagDataType.LWord:
                     case TagDataType.BCDByte:
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
@@ -273,6 +275,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return TagDisplayDataType.Decimal;
                         return _dataTypeStringFormat;
                     case TagDataType.Float:
+                    case TagDataType.LReal:
                         if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary)
                             return TagDisplayDataType.Float;
                         return _dataTypeStringFormat;
@@ -726,6 +729,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+                case TagDataType.LInt:
+                    {
+                        Int64 ret;
+                        Int64.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
+                    break;
+                case TagDataType.LWord:
+                    {
+                        UInt64 ret;
+                        UInt64.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
+                    break;
+                case TagDataType.LReal:
+                    {
+                        double ret;
+                        double.TryParse(myValue, out ret);
+                        Controlvalue = ret;
+                    }
+                    break;
                 case TagDataType.Bool:
                     if (myValue=="1")
                         Controlvalue = true;
@@ -823,6 +847,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.TimeOfDay:
                     case TagDataType.Int:
                     case TagDataType.Dint:
+                    case TagDataType.LInt:
+                    case TagDataType.LWord:
+                    case TagDataType.LReal:
                     case TagDataType.Byte:
                     case TagDataType.SByte:
                     case TagDataType.Word:
@@ -950,6 +977,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     
                     case TagDataType.Int:
                     case TagDataType.Dint:
+                    case TagDataType.LWord:
+                    case TagDataType.LInt:
+                    case TagDataType.LReal:
                     case TagDataType.Byte:
                     case TagDataType.SByte:
                     case TagDataType.Word:
@@ -968,6 +998,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int16)myValue));
                                     case TagDataType.Dint:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int32)myValue));
+                                    case TagDataType.LInt:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Int64)myValue));
                                     case TagDataType.Byte:
                                         return Encoding.ASCII.GetString(new []{(Byte)myValue});
                                     case TagDataType.SByte:
@@ -976,8 +1008,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt16)myValue));
                                     case TagDataType.Dword:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));
+                                    case TagDataType.LWord:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt64)myValue));
                                     case TagDataType.Float:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Single)myValue));
+                                    case TagDataType.LReal:
+                                        return Encoding.ASCII.GetString(BitConverter.GetBytes((Double)myValue));
                                     case TagDataType.BCDByte:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Byte)myValue));
                                     case TagDataType.BCDWord:
@@ -1014,6 +1050,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case TagDataType.Dint:
                                         bt = BitConverter.GetBytes((Int32)myValue);
                                         break;
+                                    case TagDataType.LInt:
+                                        bt = BitConverter.GetBytes((Int64)myValue);
+                                        break;
                                     case TagDataType.Byte:
                                         bt = new byte[] { (byte)myValue };
                                         break;
@@ -1026,8 +1065,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case TagDataType.Dword:
                                         bt = BitConverter.GetBytes((UInt32)myValue);
                                         break;
+                                    case TagDataType.LWord:
+                                        bt = BitConverter.GetBytes((UInt64)myValue);
+                                        break;
                                     case TagDataType.Float:
                                         bt = BitConverter.GetBytes((float)myValue);
+                                        break;
+                                    case TagDataType.LReal:
+                                        bt = BitConverter.GetBytes((double)myValue);
                                         break;
                                     case TagDataType.BCDByte:
                                         bt = BitConverter.GetBytes((byte)myValue);
@@ -1326,6 +1371,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "word":
                         tp = TagDataType.Word;
                         break;
+                    case "lword":
+                    case "word64":
+                        tp = TagDataType.LWord;
+                        break;
+                    case "lint":
+                    case "int64":
+                        tp = TagDataType.LInt;
+                        break;
+                    case "lreal":
+                    case "double":
+                        tp = TagDataType.LReal;
+                        break;
                     case "int":
                     case "integer":
                         tp = TagDataType.Int;
@@ -1550,8 +1607,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.Dword:
                         libnodave.putU32at(buff, startpos, Convert.ToUInt32(ctlValue));
                         break;
+                    case TagDataType.LInt:
+                        libnodave.putS64at(buff, startpos, Convert.ToInt64(ctlValue));
+                        break;
+                    case TagDataType.LWord:
+                        libnodave.putU64at(buff, startpos, Convert.ToUInt64(ctlValue));
+                        break;
                     case TagDataType.Float:
                         libnodave.putFloatat(buff, startpos, Convert.ToSingle(ctlValue));
+                        break;
+                    case TagDataType.LReal:
+                        libnodave.putDoubleat(buff, startpos, Convert.ToDouble(ctlValue));
                         break;
                     case TagDataType.DateTime:
                         //if (Controlvalue.GetType() == typeof(DateTime))
@@ -1628,6 +1694,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Dint:
                 case TagDataType.Dword:
                 case TagDataType.Float:
+                case TagDataType.LInt:
+                case TagDataType.LWord:
+                case TagDataType.LReal:
                 case TagDataType.DateTime:
                     {
                         if (ArraySize<2)
@@ -1676,8 +1745,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 case TagDataType.Dword:
                                     _setValueProp = libnodave.getU32from(buff, startpos);
                                     break;
+                                case TagDataType.LWord:
+                                    _setValueProp = libnodave.getU64from(buff, startpos);
+                                    break;
+                                case TagDataType.LInt:
+                                    _setValueProp = libnodave.getS64from(buff, startpos);
+                                    break;
                                 case TagDataType.Float:
                                     _setValueProp = libnodave.getFloatfrom(buff, startpos);
+                                    break;
+                                case TagDataType.LReal:
+                                    _setValueProp = libnodave.getDoublefrom(buff, startpos);
                                     break;
                                 case TagDataType.DateTime:
                                     _setValueProp = libnodave.getDateTimefrom(buff, startpos);
@@ -1832,7 +1910,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                             values.Add(libnodave.getFloatfrom(buff, startpos + n * mSize));
                                         _setValueProp = values.ToArray();
                                         break;
-                                    } 
+                                    }
+                                case TagDataType.LInt:
+                                    {
+                                        var values = new List<Int64>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getS64from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }
+                                case TagDataType.LWord:
+                                    {
+                                        var values = new List<UInt64>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getU64from(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }
+                                case TagDataType.LReal:
+                                    {
+                                        var values = new List<double>();
+                                        var mSize = _internalGetBaseTypeSize();
+                                        for (int n = 0; n < ArraySize; n++)
+                                            values.Add(libnodave.getDoublefrom(buff, startpos + n * mSize));
+                                        _setValueProp = values.ToArray();
+                                        break;
+                                    }
                                 case TagDataType.DateTime:
                                     {
                                         var values = new List<DateTime>();
@@ -1871,6 +1976,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.S5Time:
                 case TagDataType.Date:                                          
                 case TagDataType.Dint:
+                case TagDataType.LInt:
+                case TagDataType.LReal:
+                case TagDataType.LWord:
                 case TagDataType.Dword:
                 case TagDataType.Time:                
                 case TagDataType.TimeOfDay:
@@ -1918,6 +2026,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Float:
                 case TagDataType.BCDDWord:
                     return 4;
+                case TagDataType.LInt:
+                case TagDataType.LWord:
+                case TagDataType.LReal:
                 case TagDataType.DateTime:
                     return 8;
             }

@@ -55,14 +55,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.TagDataType = TagDataType.Int;
             else if (typeof(T) == typeof(Int32))
                 this.TagDataType = TagDataType.Dint;
+            else if (typeof(T) == typeof(Int64))
+                this.TagDataType = TagDataType.LInt;
             else if (typeof(T) == typeof(UInt16))
                 this.TagDataType = TagDataType.Word;
             else if (typeof(T) == typeof(UInt32))
                 this.TagDataType = TagDataType.Dword;
+            else if (typeof(T) == typeof(UInt64))
+                this.TagDataType = TagDataType.LWord;
             else if (typeof(T) == typeof(byte))
                 this.TagDataType = TagDataType.Byte;
             else if (typeof(T) == typeof(sbyte))
                 this.TagDataType = TagDataType.SByte;
+            else if (typeof(T) == typeof(Single))
+                this.TagDataType = TagDataType.Float;
+            else if (typeof(T) == typeof(Double))
+                this.TagDataType = TagDataType.LReal;
             else if (typeof(T) == typeof(string))
                 this.TagDataType = TagDataType.CharArray;
             else if (typeof(T) == typeof(byte[]))

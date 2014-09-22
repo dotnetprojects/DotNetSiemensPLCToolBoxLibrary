@@ -129,6 +129,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return ToString(true);
         }
 
+        public override string GetSourceBlock(bool useSymbols = false)
+        {
+            StringBuilder retVal = new StringBuilder();
+            
+            if (this.BlockType == PLCBlockType.FC)
+                retVal.Append("FUNCTION " + this.BlockName + " : VOID" + Environment.NewLine);
+            else
+                retVal.Append("FUNCTION_BLOCK " + this.BlockName + Environment.NewLine);
+
+            retVal.Append("TITLE =" + this.Title + Environment.NewLine);
+
+            if (!String.IsNullOrEmpty(this.Description))
+                retVal.Append("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//") +
+                              Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Author))
+                retVal.Append("AUTHOR : " + this.Author + Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Name))
+                retVal.Append("NAME : " + this.Name + Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Version))
+                retVal.Append("VERSION : " + this.Version + Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+
+
+            if (this.Parameter.Children != null)
+            {
+                foreach (S7DataRow s7DataRow in this.Parameter.Children)
+                {
+                    string parnm = s7DataRow.Name;
+                    string ber = "VAR_" + parnm;
+                    if (parnm == "IN")
+                        ber = "VAR_INPUT";
+                    else if (parnm == "OUT")
+                        ber = "VAR_OUTPUT";
+                    else if (parnm == "STATIC")
+                        ber = "VAR";
+                    retVal.Append(ber + Environment.NewLine);
+                    retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
+                    retVal.Append("END_VAR" + Environment.NewLine);
+                }
+
+            }
+            retVal.Append("BEGIN" + Environment.NewLine);
+            foreach (Network network in this.Networks)
+            {
+                retVal.Append("NETWORK" + Environment.NewLine);
+                retVal.Append("TITLE = " + network.Name + Environment.NewLine);
+                if (!String.IsNullOrEmpty(network.Comment))
+                    retVal.Append("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") +
+                                  Environment.NewLine);
+                else
+                    retVal.Append(Environment.NewLine);
+                foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
+                {
+                    string awlCode = functionBlockRow.ToString(useSymbols, true);
+                    if (awlCode == "" || awlCode == ";")
+                        retVal.Append(Environment.NewLine);
+                    else
+                    {
+                        retVal.Append(awlCode + Environment.NewLine);
+                    }
+                }
+            }
+            retVal.Append("END_FUNCTION");
+
+            return retVal.ToString();
+        }
+
         public string ToString(bool WithParameter)
         {
             int bytecnt = 0;

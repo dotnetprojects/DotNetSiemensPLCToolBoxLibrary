@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -90,6 +90,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (expStruct != null) 
                 return expStruct;
             return expStruct = (S7DataRow)GetArrayExpandedStructure(new S7DataBlockExpandOptions());
+        }
+
+        public override string GetSourceBlock(bool useSymbols = false)
+        {
+            StringBuilder retVal = new StringBuilder();
+
+            retVal.Append("DATA_BLOCK " + this.BlockName + Environment.NewLine);
+            retVal.Append("TITLE =" + this.Title + Environment.NewLine);
+
+            if (!string.IsNullOrEmpty(this.Author))
+                retVal.Append("AUTHOR : " + this.Author + Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Name))
+                retVal.Append("NAME : " + this.Name + Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Version))
+                retVal.Append("VERSION : " + this.Version + Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+            retVal.Append(Environment.NewLine);
+
+
+            if (this.Structure.Children != null && !this.IsInstanceDB)
+            {
+                retVal.Append("  STRUCT" + Environment.NewLine);
+                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow) this.Structure), "    "));
+                retVal.Append("  END_STRUCT ;" + Environment.NewLine);
+
+            }
+            else if (this.IsInstanceDB)
+                retVal.Append(" FB " + this.FBNumber + Environment.NewLine);
+            retVal.Append("BEGIN" + Environment.NewLine);
+            retVal.Append("END_DATA_BLOCK" + Environment.NewLine);
+            
+            return retVal.ToString();
         }
 
         public override string ToString()

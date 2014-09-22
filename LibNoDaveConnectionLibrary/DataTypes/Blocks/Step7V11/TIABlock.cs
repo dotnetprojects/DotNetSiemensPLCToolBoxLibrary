@@ -46,7 +46,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
         }
 
 
-
+        public override string Name
+        {
+            get
+            {
+                return node.SelectSingleNode("attribSet[@id='" + tiaProject.CoreAttributesId + "']/attrib[@name='Name']").InnerText;
+            }
+        }
 
 
         internal S7ConvertingOptions usedS7ConvertingOptions;
@@ -59,8 +65,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 
         public double Length;
 
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
 
+        public virtual string Comment { get; set; }
+      
         public string Author { get; set; }
 
         public string Family { get; set; }
@@ -69,7 +77,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 
         public DateTime LastCodeChange { get; set; }
 
-        public DateTime LastInterfaceChange { get; set; }       
+        public DateTime LastInterfaceChange { get; set; }
+
+        public virtual MultiLanguangeString Comments { get; set; }
+
+        public virtual MultiLanguangeString Titels { get; set; }
+
     }        
 }
 
