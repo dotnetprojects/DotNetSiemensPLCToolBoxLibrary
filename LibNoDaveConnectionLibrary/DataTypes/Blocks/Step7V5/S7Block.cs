@@ -67,6 +67,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         public bool KnowHowProtection { get; set; }
 
+        public virtual string GetSourceBlock(bool useSymbols = false)
+        {
+            return null;
+        }
+
         private byte[] _password;
 
         public byte[] Password
