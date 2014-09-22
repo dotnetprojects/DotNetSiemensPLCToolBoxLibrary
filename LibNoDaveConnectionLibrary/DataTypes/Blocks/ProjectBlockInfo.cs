@@ -23,10 +23,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
            return blkFld.GetBlock(this);
        }
 
-        public string GetSourceBlock()
+        public string GetSourceBlock(bool useSymbols = false)
         {
             BlocksOfflineFolder blkFld = (BlocksOfflineFolder)ParentFolder;
-            return blkFld.GetSourceBlock(this);
+            return blkFld.GetSourceBlock(this,useSymbols);
         }
 
 

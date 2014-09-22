@@ -764,7 +764,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// </summary>
         /// <param name="blkInfo">The BlockInfo from the Block you wish to get the Source of!</param>
         /// <returns></returns>
-        public string GetSourceBlock(ProjectBlockInfo blkInfo)
+        public string GetSourceBlock(ProjectBlockInfo blkInfo,bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
             Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
@@ -845,11 +845,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         retVal.Append(Environment.NewLine);
                     foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                     {
-                        if (functionBlockRow.ToString(false, false) == "")
+                        string awlCode = functionBlockRow.ToString(useSymbols, true);
+                        if (awlCode == "" || awlCode == ";")
                             retVal.Append(Environment.NewLine);
                         else
                         {
-                            retVal.Append(functionBlockRow.ToString(false, true) + Environment.NewLine);
+                            retVal.Append(awlCode + Environment.NewLine);
                         }
                     }
                 }
