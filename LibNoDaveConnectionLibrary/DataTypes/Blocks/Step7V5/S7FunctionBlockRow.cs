@@ -673,13 +673,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                        + ( string.IsNullOrEmpty(Comment) ? string.Empty : "\r\n\t Comment : " + Comment.Replace("\n", "\r\n\t           ") );
 
             string retVal = "";
-            if (Label == null || Label == "")
+            if (string.IsNullOrEmpty(Label))
                 retVal += new string(' ', 6);
             else
                 retVal += Label.PadRight(4) + ": ";
 
             string cmt = "";
-            if (Comment != null && Comment != "")
+            if (!string.IsNullOrEmpty(Comment))
                 cmt = "//" + Comment;
 
             string ext = "";

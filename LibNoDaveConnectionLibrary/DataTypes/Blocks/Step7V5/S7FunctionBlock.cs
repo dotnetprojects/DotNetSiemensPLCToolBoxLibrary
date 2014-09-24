@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 using System.Linq;
@@ -132,23 +134,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override string GetSourceBlock(bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
-            
+            string name = this.BlockName;
+            if (useSymbols && SymbolTableEntry != null)
+            {
+                name = SymbolTableEntry.Symbol;
+            }
             if (this.BlockType == PLCBlockType.FC)
-                retVal.Append("FUNCTION " + this.BlockName + " : VOID" + Environment.NewLine);
+                retVal.AppendLine("FUNCTION " + name + " : VOID");
             else
-                retVal.Append("FUNCTION_BLOCK " + this.BlockName + Environment.NewLine);
+                retVal.AppendLine("FUNCTION_BLOCK " + this.BlockName);
 
-            retVal.Append("TITLE =" + this.Title + Environment.NewLine);
+            retVal.AppendLine("TITLE =" + this.Title);
 
-            if (!String.IsNullOrEmpty(this.Description))
-                retVal.Append("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//") +
-                              Environment.NewLine);
+            if (!string.IsNullOrEmpty(this.Description))
+                retVal.AppendLine("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//"));
             if (!string.IsNullOrEmpty(this.Author))
-                retVal.Append("AUTHOR : " + this.Author + Environment.NewLine);
+                retVal.AppendLine("AUTHOR : " + this.Author);
             if (!string.IsNullOrEmpty(this.Name))
-                retVal.Append("NAME : " + this.Name + Environment.NewLine);
+                retVal.AppendLine("NAME : " + this.Name);
             if (!string.IsNullOrEmpty(this.Version))
-                retVal.Append("VERSION : " + this.Version + Environment.NewLine);
+                retVal.AppendLine("VERSION : " + this.Version);
             retVal.Append(Environment.NewLine);
             retVal.Append(Environment.NewLine);
 
@@ -165,32 +170,85 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         ber = "VAR_OUTPUT";
                     else if (parnm == "STATIC")
                         ber = "VAR";
-                    retVal.Append(ber + Environment.NewLine);
-                    retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
-                    retVal.Append("END_VAR" + Environment.NewLine);
+                    retVal.AppendLine(ber);
+                    string structSource = AWLToSource.DataRowToSource(s7DataRow, "  ");
+                    if (useSymbols)
+                    {
+                        Regex regex = new Regex(@"UDT[\s?]*(\d*)");
+                        foreach (Match match in regex.Matches(structSource))
+                        {
+                            string operand = match.Value;
+                            if (!match.Success || !structSource.Contains(operand)) continue;
+                            string symbol = operand;
+                            if (SymbolTable != null)
+                            {
+                                SymbolTableEntry symbolTableEntry = SymbolTable.GetEntryFromOperand("UDT" + match.Groups[1].Value);
+                                if (symbolTableEntry != null) symbol = symbolTableEntry.Symbol;
+                            }
+                            structSource = structSource.Replace(operand, symbol);
+                        }
+                        regex = new Regex(@"FB[\s?]*(\d*)");
+                        foreach (Match match in regex.Matches(structSource))
+                        {
+                            string operand = match.Value;
+                            if (!match.Success || !structSource.Contains(operand)) continue;
+                            string symbol = operand;
+                            if (SymbolTable != null)
+                            {
+                                SymbolTableEntry symbolTableEntry = SymbolTable.GetEntryFromOperand("FB" + match.Groups[1].Value);
+                                if (symbolTableEntry != null) symbol = symbolTableEntry.Symbol;
+                            }
+                            structSource = structSource.Replace(operand, symbol);
+                        }
+                    }
+                    retVal.Append(structSource);
+                    retVal.AppendLine("END_VAR");
                 }
 
             }
-            retVal.Append("BEGIN" + Environment.NewLine);
+            retVal.AppendLine("BEGIN");
             foreach (Network network in this.Networks)
             {
-                retVal.Append("NETWORK" + Environment.NewLine);
-                retVal.Append("TITLE = " + network.Name + Environment.NewLine);
+                retVal.AppendLine("NETWORK");
+                retVal.AppendLine("TITLE = " + network.Name);
                 if (!String.IsNullOrEmpty(network.Comment))
-                    retVal.Append("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") +
-                                  Environment.NewLine);
+                    retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") );
                 else
                     retVal.Append(Environment.NewLine);
+                StringBuilder sbAwl = new StringBuilder("");
                 foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                 {
                     string awlCode = functionBlockRow.ToString(useSymbols, true);
                     if (awlCode == "" || awlCode == ";")
-                        retVal.Append(Environment.NewLine);
+                        sbAwl.Append(Environment.NewLine);
                     else
                     {
-                        retVal.Append(awlCode + Environment.NewLine);
+                        sbAwl.AppendLine(awlCode);
                     }
                 }
+                //Fix for Db access not merged for some lines
+                string awl = sbAwl.ToString();
+                Regex regex = new Regex(@"AUF\s*(.*)[\s?]*;\s*(\S*)\s*(DB.*)[\s?]*;");
+                foreach (Match match in regex.Matches(awl))
+                {
+                    string sMatch = match.Value;
+                    if(!match.Success || !awl.Contains(sMatch)) continue;
+                    string dbName = match.Groups[1].Value.Trim();
+                    string awlCommand = match.Groups[2].Value;
+                    string dbAddress = match.Groups[3].Value.Trim();
+                    string dbAccess = dbName + "." + dbAddress;
+                    if(useSymbols)
+                    {
+                        //replace with the symbol for the db absolute address
+                        //TODO: implementation missing
+                        dbAccess = dbName + "." + dbAddress + ";   //implementation for symbolic name missing ;)       ";
+                    }
+                    string newAwl = awlCommand.PadRight(6) + dbAccess +";";
+                    awl = awl.Replace(sMatch, newAwl);
+                }
+                //Fix for Db access with anypointers
+                //TODO: implementation missing
+                retVal.AppendLine(awl);
             }
             retVal.Append("END_FUNCTION");
 
@@ -230,7 +288,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     plcFunctionBlockRow.MnemonicLanguage = MnemonicLanguage;
                     //retVal.Append(/* "0x" + */ bytecnt.ToString(/* "X" */).PadLeft(4, '0') + "  :");
                     retVal.Append(plcFunctionBlockRow.ToString());
-                    retVal.Append("\r\n");
+                    retVal.AppendLine();
                     //bytecnt += plcFunctionBlockRow.ByteSize;
                 }
             return retVal.ToString();

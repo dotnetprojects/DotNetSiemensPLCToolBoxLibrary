@@ -42,7 +42,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 else if (s7DataRow.StartValue != null)
                 {
-                    val += " := " + s7DataRow.StartValue.ToString();
+                    string valuePrefix = "";
+                    switch (s7DataRow.DataType)
+                    {
+                        case S7DataRowType.DWORD:
+                        case S7DataRowType.WORD:
+                        case S7DataRowType.BYTE:
+                            valuePrefix = "16#";
+                            break;
+                    }
+                    val += " := " + valuePrefix + s7DataRow.StartValue.ToString();
                 }
 
                 if (!string.IsNullOrEmpty(s7DataRow.Comment))
