@@ -592,7 +592,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             while (retVal.AWLCode.Count - 1 > akRowInAwlCode && retVal.AWLCode[akRowInAwlCode].Command != "NETWORK")
                                             {
                                                 if (!newAwlCode.Contains(retVal.AWLCode[akRowInAwlCode]))
-                                                    newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                {
+                                                    //newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                    S7FunctionBlockRow akRw = (S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode];
+
+                                                    if (akRw.CombineDBAccess)
+                                                    {
+                                                        S7FunctionBlockRow nRw = (S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode + 1];
+                                                        nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
+                                                        nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
+
+                                                        akRw = nRw;
+                                                        retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
+                                                    }
+
+                                                    if (!newAwlCode.Contains(akRw))
+                                                        newAwlCode.Add(akRw);
+                                                }
                                                 akRowInAwlCode++;
                                             }
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
