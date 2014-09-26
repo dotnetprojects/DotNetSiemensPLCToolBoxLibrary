@@ -96,31 +96,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             StringBuilder retVal = new StringBuilder();
 
-            retVal.Append("DATA_BLOCK " + this.BlockName + Environment.NewLine);
-            retVal.Append("TITLE =" + this.Title + Environment.NewLine);
+            string name = this.BlockName;
+            if (useSymbols && SymbolTableEntry != null)
+            {
+                name = SymbolTableEntry.Symbol;
+            }
+            retVal.AppendLine("DATA_BLOCK " + name);
+            retVal.AppendLine("TITLE =" + this.Title);
 
             if (!string.IsNullOrEmpty(this.Author))
-                retVal.Append("AUTHOR : " + this.Author + Environment.NewLine);
+                retVal.AppendLine("AUTHOR : " + this.Author);
             if (!string.IsNullOrEmpty(this.Name))
-                retVal.Append("NAME : " + this.Name + Environment.NewLine);
+                retVal.AppendLine("NAME : " + this.Name);
             if (!string.IsNullOrEmpty(this.Version))
-                retVal.Append("VERSION : " + this.Version + Environment.NewLine);
-            retVal.Append(Environment.NewLine);
-            retVal.Append(Environment.NewLine);
+                retVal.AppendLine("VERSION : " + this.Version);
+            retVal.AppendLine();
+            retVal.AppendLine();
 
 
             if (this.Structure.Children != null && !this.IsInstanceDB)
             {
-                retVal.Append("  STRUCT" + Environment.NewLine);
-                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow) this.Structure), "    "));
-                retVal.Append("  END_STRUCT ;" + Environment.NewLine);
+                retVal.AppendLine("  STRUCT");
+                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
+                retVal.AppendLine("  END_STRUCT ;");
 
             }
             else if (this.IsInstanceDB)
-                retVal.Append(" FB " + this.FBNumber + Environment.NewLine);
-            retVal.Append("BEGIN" + Environment.NewLine);
-            retVal.Append("END_DATA_BLOCK" + Environment.NewLine);
-            
+            {
+                if (useSymbols)
+                {
+                    if (SymbolTable.GetEntryFromOperand("FB" + this.FBNumber) != null)
+                        retVal.AppendLine(" " + SymbolTable.GetEntryFromOperand("FB" + this.FBNumber).Symbol);
+                    else retVal.AppendLine(" FB " + this.FBNumber);
+                }
+                else
+                    retVal.AppendLine(" FB " + this.FBNumber);
+            }
+            retVal.AppendLine("BEGIN");
+            retVal.AppendLine("END_DATA_BLOCK" );
+
             return retVal.ToString();
         }
 

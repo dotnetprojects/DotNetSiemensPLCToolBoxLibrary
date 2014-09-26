@@ -132,25 +132,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override string GetSourceBlock(bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
-            
+
+            string name = this.BlockName;
+            if (useSymbols && SymbolTableEntry != null)
+            {
+                name = SymbolTableEntry.Symbol;
+            }
+
             if (this.BlockType == PLCBlockType.FC)
-                retVal.Append("FUNCTION " + this.BlockName + " : VOID" + Environment.NewLine);
+                retVal.AppendLine("FUNCTION " + name + " : VOID");
             else
-                retVal.Append("FUNCTION_BLOCK " + this.BlockName + Environment.NewLine);
+                retVal.AppendLine("FUNCTION_BLOCK " + name);
 
             retVal.Append("TITLE =" + this.Title + Environment.NewLine);
 
             if (!String.IsNullOrEmpty(this.Description))
-                retVal.Append("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//") +
-                              Environment.NewLine);
+                retVal.AppendLine("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//"));
             if (!string.IsNullOrEmpty(this.Author))
-                retVal.Append("AUTHOR : " + this.Author + Environment.NewLine);
+                retVal.AppendLine("AUTHOR : " + this.Author);
             if (!string.IsNullOrEmpty(this.Name))
-                retVal.Append("NAME : " + this.Name + Environment.NewLine);
+                retVal.AppendLine("NAME : " + this.Name);
             if (!string.IsNullOrEmpty(this.Version))
-                retVal.Append("VERSION : " + this.Version + Environment.NewLine);
-            retVal.Append(Environment.NewLine);
-            retVal.Append(Environment.NewLine);
+                retVal.AppendLine("VERSION : " + this.Version);
+            retVal.AppendLine();
+            retVal.AppendLine();
 
 
             if (this.Parameter.Children != null)
@@ -165,30 +170,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         ber = "VAR_OUTPUT";
                     else if (parnm == "STATIC")
                         ber = "VAR";
-                    retVal.Append(ber + Environment.NewLine);
+                    retVal.AppendLine(ber);
                     retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
-                    retVal.Append("END_VAR" + Environment.NewLine);
+                    retVal.AppendLine("END_VAR");
                 }
 
             }
-            retVal.Append("BEGIN" + Environment.NewLine);
+            retVal.AppendLine("BEGIN");
             foreach (Network network in this.Networks)
             {
-                retVal.Append("NETWORK" + Environment.NewLine);
-                retVal.Append("TITLE = " + network.Name + Environment.NewLine);
+                retVal.AppendLine("NETWORK");
+                retVal.AppendLine("TITLE = " + network.Name);
                 if (!String.IsNullOrEmpty(network.Comment))
-                    retVal.Append("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") +
-                                  Environment.NewLine);
+                    retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//"));
                 else
-                    retVal.Append(Environment.NewLine);
+                    retVal.AppendLine();
                 foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                 {
                     string awlCode = functionBlockRow.ToString(useSymbols, true);
                     if (awlCode == "" || awlCode == ";")
-                        retVal.Append(Environment.NewLine);
+                        retVal.AppendLine();
                     else
                     {
-                        retVal.Append(awlCode + Environment.NewLine);
+                        retVal.AppendLine(awlCode);
                     }
                 }
             }
