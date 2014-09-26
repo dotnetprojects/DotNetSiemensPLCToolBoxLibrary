@@ -1377,7 +1377,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             if (dbRow.DataType != S7DataRowType.STRING)
                 return  dbRow.StructuredName;
             var byteOffset = blockAddress.ByteAddress - dbRow.BlockAddress.ByteAddress;
-            if (pointPosition < 0 && (byteOffset)<2) //if its not using a bit access to access the string variable
+            if (pointPosition < 0 && (byteOffset)>1) //if its not using a bit access to access the string variable
                 return dbRow.StructuredName + "[" + (byteOffset - 2) + "]";
             if (isForAnyPointer && byteOffset == 0)
                 return dbRow.StructuredName;

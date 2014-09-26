@@ -81,7 +81,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     if(stringDataRow.DataType == S7DataRowType.STRING)
                     {
                         int firstByte = stringDataRow.BlockAddress.ByteAddress;
-                        int lastByte = firstByte + stringDataRow.PlcTag.ArraySize -1;
+                        int lastByte = firstByte + stringDataRow.PlcTag.ArraySize +2;
                         //If is a string the calling logic has determine which character is bein accessed
                         if (address.ByteAddress >= (firstByte) && address.ByteAddress <= lastByte)
                             return stringDataRow;
