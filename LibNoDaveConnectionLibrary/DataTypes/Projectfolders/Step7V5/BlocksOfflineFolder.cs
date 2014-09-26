@@ -733,162 +733,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         }
 
 
-        /// <summary>
-        /// This is a Helper Function wich is used by GetSourceBlock
-        /// </summary>
-        /// <param name="datrw"></param>
-        /// <param name="leerz"></param>
-        /// <returns></returns>
-        private string GetSubParas(S7DataRow datrw, string leerz)
-        {
-            string retval = "";
-            foreach (S7DataRow s7DataRow in datrw.Children)
-            {
-                string arr = "";
-                string val = "";
-                string cmt = "";
-                if (s7DataRow.IsArray)
-                {
-                    arr += "ARRAY  [";
-                    for (int i = 0; i < s7DataRow.ArrayStart.Count; i++)
-                    {
-                        if (i > 1) arr += ", ";
-                        arr += s7DataRow.ArrayStart[i].ToString() + " .. " + s7DataRow.ArrayStop[i].ToString() + " ";
-                    }
-                    arr += "] OF ";
-                }
-                if (s7DataRow.DataType == S7DataRowType.STRING)
-                {
-                    if (s7DataRow.StartValue != null && s7DataRow.StartValue.ToString() != "")
-                    {
-                        val += " := " + s7DataRow.StartValue.ToString() + "";
-                    }
-                }
-                else if (s7DataRow.StartValue != null)
-                {
-                    val += " := " + s7DataRow.StartValue.ToString();
-                }
-
-                if (!string.IsNullOrEmpty(s7DataRow.Comment))
-                    cmt += "    //" + s7DataRow.Comment;
-                if (s7DataRow.DataType == S7DataRowType.STRUCT)
-                {
-                    retval += leerz + s7DataRow.Name + " : " + arr + s7DataRow.DataType + cmt + Environment.NewLine;
-                    retval += GetSubParas(s7DataRow, leerz + " ");
-                    retval += leerz + "END_STRUCT ;" + Environment.NewLine;
-                }
-                else
-                {
-                    retval += leerz + s7DataRow.Name + " : " + arr;
-                    retval += s7DataRow.DataType;
-                    if (s7DataRow.DataType == S7DataRowType.STRING)
-                    {
-                        retval += " [" + s7DataRow.StringSize + "]";
-                    }
-                    retval += (s7DataRow.DataTypeBlockNumber != 0 ? s7DataRow.DataTypeBlockNumber.ToString() : "") + " " + val + ";" + cmt + Environment.NewLine;
-                }
-            }
-            return retval;
-        }
+       
 
         /// <summary>
         /// With this Function you get the AWL Source of a Block, so that it can be imported into Step7
         /// </summary>
         /// <param name="blkInfo">The BlockInfo from the Block you wish to get the Source of!</param>
         /// <returns></returns>
-        public string GetSourceBlock(ProjectBlockInfo blkInfo)
+        public string GetSourceBlock(ProjectBlockInfo blkInfo, bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
             Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = false, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
 
 
             S7Block fblk = (S7Block)blk;
-            S7FunctionBlock fcblk = null;
 
-            if (blk is S7FunctionBlock)
-            {
-                fcblk = (S7FunctionBlock) blk;
-                if (fcblk.BlockType == PLCBlockType.FC)
-                    retVal.Append("FUNCTION " + blk.BlockName + " : VOID" + Environment.NewLine);
-                else
-                    retVal.Append("FUNCTION_BLOCK " + blk.BlockName + Environment.NewLine);
-            }
-            else
-                retVal.Append("DATA_BLOCK " + blk.BlockName + Environment.NewLine);
-            retVal.Append("TITLE =" + fblk.Title + Environment.NewLine);
-            if (blk is S7FunctionBlock)
-            {
-
-                if (!String.IsNullOrEmpty(fcblk.Description))
-                    retVal.Append("//" + fcblk.Description.Replace(Environment.NewLine, Environment.NewLine + "//") + Environment.NewLine);
-            }
-            if (!string.IsNullOrEmpty(fblk.Author))
-                retVal.Append("AUTHOR : " + fblk.Author + Environment.NewLine);
-            if (!string.IsNullOrEmpty(fblk.Name))
-                retVal.Append("NAME : " + fblk.Name + Environment.NewLine);
-            if (!string.IsNullOrEmpty(fblk.Version))
-                retVal.Append("VERSION : " + fblk.Version + Environment.NewLine);
-            retVal.Append(Environment.NewLine);
-            retVal.Append(Environment.NewLine);
-
-            if (blk is S7DataBlock)
-            {
-                S7DataBlock dtaBlk = (S7DataBlock)fblk;
-                if (dtaBlk.Structure.Children != null && !dtaBlk.IsInstanceDB)
-                {
-                    retVal.Append("  STRUCT" + Environment.NewLine);
-                    retVal.Append(GetSubParas(((S7DataRow)dtaBlk.Structure), "    "));
-                    retVal.Append("  END_STRUCT ;" + Environment.NewLine);
-
-                }
-                else if (dtaBlk.IsInstanceDB)
-                    retVal.Append(" FB " + dtaBlk.FBNumber + Environment.NewLine);
-                retVal.Append("BEGIN" + Environment.NewLine);
-                retVal.Append("END_DATA_BLOCK" + Environment.NewLine);
-            }
-            else if (blk is S7FunctionBlock)
-            {
-                if (fcblk.Parameter.Children != null)
-                {
-                    foreach (S7DataRow s7DataRow in fcblk.Parameter.Children)
-                    {
-                        string parnm = s7DataRow.Name;
-                        string ber = "VAR_" + parnm;
-                        if (parnm == "IN")
-                            ber = "VAR_INPUT";
-                        else if (parnm == "OUT")
-                            ber = "VAR_OUTPUT";
-                        else if (parnm == "STATIC")
-                            ber = "VAR";
-                        retVal.Append(ber + Environment.NewLine);
-                        retVal.Append(GetSubParas(s7DataRow, "  "));
-                        retVal.Append("END_VAR" + Environment.NewLine);
-                    }
-
-                }
-                retVal.Append("BEGIN" + Environment.NewLine);
-                foreach (Network network in fcblk.Networks)
-                {
-                    retVal.Append("NETWORK" + Environment.NewLine);
-                    retVal.Append("TITLE = " + network.Name + Environment.NewLine);
-                    if (!String.IsNullOrEmpty(network.Comment))
-                        retVal.Append("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") + Environment.NewLine);
-                    else
-                        retVal.Append(Environment.NewLine);
-                    foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
-                    {
-                        if (functionBlockRow.ToString(false, false) == "")
-                            retVal.Append(Environment.NewLine);
-                        else
-                        {
-                            retVal.Append(functionBlockRow.ToString(false, true) + Environment.NewLine);
-                        }
-                    }
-                }
-                retVal.Append("END_FUNCTION");
-            }
-
-            return retVal.ToString();
+            return fblk.GetSourceBlock(useSymbols);
         }
     }
 }
