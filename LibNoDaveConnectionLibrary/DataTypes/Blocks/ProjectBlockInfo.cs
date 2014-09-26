@@ -1,4 +1,5 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
@@ -25,8 +26,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public string GetSourceBlock(bool useSymbols = false)
         {
-            BlocksOfflineFolder blkFld = (BlocksOfflineFolder)ParentFolder;
-            return blkFld.GetSourceBlock(this,useSymbols);
+            if (ParentFolder is BlocksOfflineFolder)
+            {
+                BlocksOfflineFolder blkFld = (BlocksOfflineFolder) ParentFolder;
+                return blkFld.GetSourceBlock(this, useSymbols);
+            }
+            if (ParentFolder is SourceFolder)
+            {
+                SourceFolder blkFld = (SourceFolder)ParentFolder;
+                return blkFld.GetSource((S7ProjectSourceInfo)this);
+            }
+
+            return null;
         }
 
 
