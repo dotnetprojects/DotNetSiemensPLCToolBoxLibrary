@@ -27,6 +27,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public enum S7DataRowType
     {
+        NIL = 0x00, //For any pointer types
         BOOL = 0x01,
         BYTE = 0x02,
         CHAR = 0x03,

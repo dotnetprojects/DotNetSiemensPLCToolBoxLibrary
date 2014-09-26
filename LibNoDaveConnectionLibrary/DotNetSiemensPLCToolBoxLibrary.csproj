@@ -81,6 +81,7 @@
     <Compile Include="Communication\PLCTagReadHelper.cs" />
     <Compile Include="Communication\S7_xxx\SZLData.cs" />
     <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V5\S7AnyPointer.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />
     <Compile Include="DataTypes\Blocks\Block.cs" />
     <Compile Include="DataTypes\Blocks\DataBlockRow.cs" />

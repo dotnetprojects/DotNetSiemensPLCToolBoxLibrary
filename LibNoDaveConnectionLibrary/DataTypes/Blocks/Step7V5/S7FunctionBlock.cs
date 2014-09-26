@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 using System.Linq;
@@ -226,7 +227,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         sbAwl.AppendLine(awlCode);
                     }
                 }
-                //Fix for Db access not merged for some lines
+                //Fix for Db access not merged for some lines temporary solution until the issue is found
+                ByteBitAddress byteBitAddress = new ByteBitAddress(0,0);
                 string awl = sbAwl.ToString();
                 Regex regex = new Regex(@"AUF\s*(.*)[\s?]*;\s*(\S*)\s*(DB.*)[\s?]*;");
                 foreach (Match match in regex.Matches(awl))
@@ -239,13 +241,56 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     string dbAccess = dbName + "." + dbAddress;
                     if(useSymbols)
                     {
-                        //replace with the symbol for the db absolute address
-                        //TODO: implementation missing
-                        dbAccess = dbName + "." + dbAddress + ";   //implementation for symbolic name missing ;)       ";
+                        string symbolName = dbName.Replace("\"", "");
+                        string address = dbAddress.Replace(" ", "");
+                        int pointPosition = address.IndexOf('.');
+                        byteBitAddress.ByteAddress = int.Parse(pointPosition < 0 ? address.Substring(3) : address.Substring(3,pointPosition-3));
+                        byteBitAddress.BitAddress = int.Parse(pointPosition < 0 ? "0" : address.Substring(address.Length-1));
+                        //dbAccess += "+"+byteBitAddress.ToString();
+                        var dbNr = Helper.TryGetOperandFromSymbol(ParentFolder, symbolName) ?? symbolName;
+                        dbAddress = Helper.TryGetStructuredName(ParentFolder, dbNr , dbAddress);
+                        dbAccess = dbName + "." + dbAddress;
+                        //BlocksOfflineFolder folder = ParentFolder as BlocksOfflineFolder;
+                        //if (folder!=null)
+                        //{
+                        //    //dbAccess += "+folder not null+" + symbolName;
+                        //    if (SymbolTable != null)
+                        //    {
+                        //        //dbAccess += "+symboltable ok!";
+                        //        SymbolTableEntry ste = SymbolTable.GetEntryFromSymbol(symbolName);
+                        //        if (ste != null)
+                        //        {
+                        //            //dbAccess += "+" + ste;
+                        //            S7DataBlock block =
+                        //                folder.GetBlock(ste.Operand.Replace(" ",""),
+                        //                                new S7ConvertingOptions
+                        //                                    {Mnemonic = folder.Project.ProjectLanguage})
+                        //                as S7DataBlock;
+                        //            //dbAccess += "+" + block;
+                        //            if (block != null)
+                        //            {
+                        //                //dbAccess += "+block not null";
+                        //                S7DataRow dbRow = block.GetDataRowWithAddress(byteBitAddress);
+                        //                if (dbRow != null)
+                        //                {
+                        //                    if (dbRow.DataType != S7DataRowType.STRING)
+                        //                        dbAccess = dbName + "." + dbRow.StructuredName;
+                        //                    else if (pointPosition < 0) //if its not using a bit access to access the string variable
+                        //                        dbAccess = dbName + "." + 
+                        //                            dbRow.StructuredName +
+                        //                            "[" + (byteBitAddress.ByteAddress - dbRow.BlockAddress.ByteAddress - 2) + "]";
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                     string newAwl = awlCommand.PadRight(6) + dbAccess +";";
                     awl = awl.Replace(sMatch, newAwl);
                 }
+                //Fix for db variables used in parameters not transformed to symbols
+                //TODO: implementation missing
+
                 //Fix for Db access with anypointers
                 //TODO: implementation missing
                 retVal.AppendLine(awl);

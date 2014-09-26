@@ -76,6 +76,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 {
                     if (((S7DataRow)s7DataRow).BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
                         return ((S7DataRow)s7DataRow);
+                    //fix for finding the absoluteaddress of a string
+                    var stringDataRow = (S7DataRow) s7DataRow;
+                    if(stringDataRow.DataType == S7DataRowType.STRING)
+                    {
+                        int firstByte = stringDataRow.BlockAddress.ByteAddress;
+                        int lastByte = firstByte + stringDataRow.PlcTag.ArraySize -1;
+                        //If is a string the calling logic has determine which character is bein accessed
+                        if (address.ByteAddress >= (firstByte) && address.ByteAddress <= lastByte)
+                            return stringDataRow;
+                    }
                     var tmp = GetDataRowWithAddress(((S7DataRow)s7DataRow), address);
                     if (tmp != null) 
                         return tmp;
