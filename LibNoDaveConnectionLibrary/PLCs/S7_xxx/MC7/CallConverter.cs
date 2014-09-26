@@ -248,8 +248,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             if (p3 != "0")
                                                 tmp += "DB" + p3 + ".";
                                             tmp += p4.Substring(2);
-                                            tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
-                                            tmp += p2;
+                                            var wrt = (S7DataRowType) int.Parse(p1.Substring(p1.Length - 2));
+                                            tmp += " " + wrt.ToString() + " "; // " BYTE "; 
+                                            tmp += BitConverter.ToUInt16(BitConverter.GetBytes(Int16.Parse(p2)), 0).ToString();
                                         }
                                         newPar.Value = tmp;
                                         newRow.CallParameter.Add(newPar);

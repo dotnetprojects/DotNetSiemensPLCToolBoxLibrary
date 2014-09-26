@@ -66,11 +66,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         }
 
         public Stream GetReadStream(string file)
-        {            
+        {
+            if (!FileExists(file))
+                return null;
 #if SHARPZIPLIB
             if (_zipFile == null)
             {
-#endif
+#endif               
                 return new FileStream(file, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite);
 #if SHARPZIPLIB
             }
