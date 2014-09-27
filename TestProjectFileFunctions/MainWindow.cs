@@ -1354,8 +1354,11 @@ namespace JFK_VarTab
             }
         }
 
-        private string CreateHirachy(string prefix, S7FunctionBlock block)
+        private string CreateHirachy(string prefix, S7FunctionBlock block, Stack<string> parentBlocks)
         {
+            string spacer = "  |   ";
+            parentBlocks.Push(block.BlockName);
+
             string retVal = "";
             if (prefix != "")
                 retVal += prefix.Substring(0, prefix.Length - 3) + "---" + block.BlockName + Environment.NewLine;
@@ -1366,8 +1369,21 @@ namespace JFK_VarTab
             {
                 var fld = block.ParentFolder as BlocksOfflineFolder;
                 var blk = fld.GetBlock(calledBlock) as S7FunctionBlock;
-                if (blk != null) retVal += CreateHirachy(prefix + "  |   ", blk);
+
+                if (blk != null)
+                {
+                    if (!parentBlocks.Contains(blk.BlockName))
+                    {
+                        retVal += CreateHirachy(prefix + spacer, blk, parentBlocks);
+                    }
+                    else
+                    {
+                        retVal += prefix + spacer.Substring(0,3) + "---" + blk.BlockName + " (recursive)" + Environment.NewLine;
+                    }
+                }
             }
+
+            parentBlocks.Pop();
 
             return retVal;
         }
@@ -1377,7 +1393,7 @@ namespace JFK_VarTab
             var info = lstListBox.SelectedItem as S7ProjectBlockInfo;
             if (info != null)
             {
-                var txt = CreateHirachy("", (S7FunctionBlock) info.GetBlock());
+                var txt = CreateHirachy("", (S7FunctionBlock) info.GetBlock(), new Stack<string>());
 
                 viewBlockList.Visible = false;
                 txtTextBox.Text = txt;
