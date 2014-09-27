@@ -252,7 +252,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             string p2 = Parameters["P#V " + (lokaldata_address + 2).ToString() + ".0"];
                                             string p3 = Parameters["P#V " + (lokaldata_address + 4).ToString() + ".0"];
                                             string p4 = Parameters["P#V " + (lokaldata_address + 6).ToString() + ".0"];
-<<<<<<< HEAD
                                             //Fix for wrong construction of any pointers
                                             var anyPtr = new S7AnyPointer(p1, p2, p3, p4);
                                             if (myOpt.ReplaceDBAccessesWithSymbolNames)
@@ -270,16 +269,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             //tmp += p4.Substring(2);
                                             //tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
                                             //tmp += p2;
-=======
-
-                                            tmp = "P#";
-                                            if (p3 != "0")
-                                                tmp += "DB" + p3 + ".";
-                                            tmp += p4.Substring(2);
-                                            var wrt = (S7DataRowType) int.Parse(p1.Substring(p1.Length - 2));
-                                            tmp += " " + wrt.ToString() + " "; // " BYTE "; 
-                                            tmp += BitConverter.ToUInt16(BitConverter.GetBytes(Int16.Parse(p2)), 0).ToString();
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                                         }
                                         newPar.Value = tmp;
                                         newRow.CallParameter.Add(newPar);

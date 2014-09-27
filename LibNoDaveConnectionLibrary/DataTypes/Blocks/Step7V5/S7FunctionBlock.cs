@@ -135,35 +135,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override string GetSourceBlock(bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
+//>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
                 name = SymbolTableEntry.Symbol;
             }
-<<<<<<< HEAD
-            if (this.BlockType == PLCBlockType.FC)
-                retVal.AppendLine("FUNCTION " + name + " : VOID");
-            else
-                retVal.AppendLine("FUNCTION_BLOCK " + this.BlockName);
-=======
-
             if (this.BlockType == PLCBlockType.FC)
                 retVal.AppendLine("FUNCTION " + name + " : VOID");
             else
                 retVal.AppendLine("FUNCTION_BLOCK " + name);
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
-
             retVal.AppendLine("TITLE =" + this.Title);
 
-<<<<<<< HEAD
             if (!string.IsNullOrEmpty(this.Description))
-=======
-            if (!String.IsNullOrEmpty(this.Description))
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                 retVal.AppendLine("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//"));
             if (!string.IsNullOrEmpty(this.Author))
                 retVal.AppendLine("AUTHOR : " + this.Author);
@@ -171,14 +158,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("NAME : " + this.Name);
             if (!string.IsNullOrEmpty(this.Version))
                 retVal.AppendLine("VERSION : " + this.Version);
-<<<<<<< HEAD
-            retVal.Append(Environment.NewLine);
-            retVal.Append(Environment.NewLine);
-=======
             retVal.AppendLine();
             retVal.AppendLine();
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
-
 
             if (this.Parameter.Children != null)
             {
@@ -193,7 +174,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     else if (parnm == "STATIC")
                         ber = "VAR";
                     retVal.AppendLine(ber);
-<<<<<<< HEAD
                     string structSource = AWLToSource.DataRowToSource(s7DataRow, "  ");
                     if (useSymbols)
                     {
@@ -225,9 +205,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         }
                     }
                     retVal.Append(structSource);
-=======
-                    retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                     retVal.AppendLine("END_VAR");
                 }
 
@@ -238,100 +215,96 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("NETWORK");
                 retVal.AppendLine("TITLE = " + network.Name);
                 if (!String.IsNullOrEmpty(network.Comment))
-<<<<<<< HEAD
-                    retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") );
-                else
-                    retVal.Append(Environment.NewLine);
-                StringBuilder sbAwl = new StringBuilder("");
-=======
+//<<<<<<< HEAD
+//                    retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") );
+//                else
+//                    retVal.Append(Environment.NewLine);
+//                StringBuilder sbAwl = new StringBuilder("");
+//=======
                     retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//"));
                 else
                     retVal.AppendLine();
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
+//>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                 foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                 {
                     string awlCode = functionBlockRow.ToString(useSymbols, true);
                     if (awlCode == "" || awlCode == ";")
-<<<<<<< HEAD
-                        sbAwl.Append(Environment.NewLine);
-                    else
-                    {
-                        sbAwl.AppendLine(awlCode);
-=======
+//<<<<<<< HEAD
+//                        sbAwl.Append(Environment.NewLine);
+//                    else
+//                    {
+//                        sbAwl.AppendLine(awlCode);
+//=======
                         retVal.AppendLine();
                     else
                     {
                         retVal.AppendLine(awlCode);
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
+//>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                     }
                 }
-                //Fix for Db access not merged for some lines temporary solution until the issue is found
-                ByteBitAddress byteBitAddress = new ByteBitAddress(0,0);
-                string awl = sbAwl.ToString();
-                Regex regex = new Regex(@"AUF\s*(.*)[\s?]*;\s*(\S*)\s*(DB.*)[\s?]*;");
-                foreach (Match match in regex.Matches(awl))
-                {
-                    string sMatch = match.Value;
-                    if(!match.Success || !awl.Contains(sMatch)) continue;
-                    string dbName = match.Groups[1].Value.Trim();
-                    string awlCommand = match.Groups[2].Value;
-                    string dbAddress = match.Groups[3].Value.Trim();
-                    string dbAccess = dbName + "." + dbAddress;
-                    if(useSymbols)
-                    {
-                        string symbolName = dbName.Replace("\"", "");
-                        string address = dbAddress.Replace(" ", "");
-                        int pointPosition = address.IndexOf('.');
-                        byteBitAddress.ByteAddress = int.Parse(pointPosition < 0 ? address.Substring(3) : address.Substring(3,pointPosition-3));
-                        byteBitAddress.BitAddress = int.Parse(pointPosition < 0 ? "0" : address.Substring(address.Length-1));
-                        //dbAccess += "+"+byteBitAddress.ToString();
-                        var dbNr = Helper.TryGetOperandFromSymbol(ParentFolder, symbolName) ?? symbolName;
-                        dbAddress = Helper.TryGetStructuredName(ParentFolder, dbNr , dbAddress);
-                        dbAccess = dbName + "." + dbAddress;
-                        //BlocksOfflineFolder folder = ParentFolder as BlocksOfflineFolder;
-                        //if (folder!=null)
-                        //{
-                        //    //dbAccess += "+folder not null+" + symbolName;
-                        //    if (SymbolTable != null)
-                        //    {
-                        //        //dbAccess += "+symboltable ok!";
-                        //        SymbolTableEntry ste = SymbolTable.GetEntryFromSymbol(symbolName);
-                        //        if (ste != null)
-                        //        {
-                        //            //dbAccess += "+" + ste;
-                        //            S7DataBlock block =
-                        //                folder.GetBlock(ste.Operand.Replace(" ",""),
-                        //                                new S7ConvertingOptions
-                        //                                    {Mnemonic = folder.Project.ProjectLanguage})
-                        //                as S7DataBlock;
-                        //            //dbAccess += "+" + block;
-                        //            if (block != null)
-                        //            {
-                        //                //dbAccess += "+block not null";
-                        //                S7DataRow dbRow = block.GetDataRowWithAddress(byteBitAddress);
-                        //                if (dbRow != null)
-                        //                {
-                        //                    if (dbRow.DataType != S7DataRowType.STRING)
-                        //                        dbAccess = dbName + "." + dbRow.StructuredName;
-                        //                    else if (pointPosition < 0) //if its not using a bit access to access the string variable
-                        //                        dbAccess = dbName + "." + 
-                        //                            dbRow.StructuredName +
-                        //                            "[" + (byteBitAddress.ByteAddress - dbRow.BlockAddress.ByteAddress - 2) + "]";
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                    }
-                    string newAwl = awlCommand.PadRight(6) + dbAccess +";";
-                    awl = awl.Replace(sMatch, newAwl);
-                }
-                //Fix for db variables used in parameters not transformed to symbols
-                //TODO: implementation missing
-
-                //Fix for Db access with anypointers
-                //TODO: implementation missing
-                retVal.AppendLine(awl);
+                ////Fix for Db access not merged for some lines temporary solution until the issue is found
+                //ByteBitAddress byteBitAddress = new ByteBitAddress(0,0);
+                //string awl = sbAwl.ToString();
+                //Regex regex = new Regex(@"AUF\s*(.*)[\s?]*;\s*(\S*)\s*(DB.*)[\s?]*;");
+                //foreach (Match match in regex.Matches(awl))
+                //{
+                //    string sMatch = match.Value;
+                //    if(!match.Success || !awl.Contains(sMatch)) continue;
+                //    string dbName = match.Groups[1].Value.Trim();
+                //    string awlCommand = match.Groups[2].Value;
+                //    string dbAddress = match.Groups[3].Value.Trim();
+                //    string dbAccess = dbName + "." + dbAddress;
+                //    if(useSymbols)
+                //    {
+                //        string symbolName = dbName.Replace("\"", "");
+                //        string address = dbAddress.Replace(" ", "");
+                //        int pointPosition = address.IndexOf('.');
+                //        byteBitAddress.ByteAddress = int.Parse(pointPosition < 0 ? address.Substring(3) : address.Substring(3,pointPosition-3));
+                //        byteBitAddress.BitAddress = int.Parse(pointPosition < 0 ? "0" : address.Substring(address.Length-1));
+                //        //dbAccess += "+"+byteBitAddress.ToString();
+                //        var dbNr = Helper.TryGetOperandFromSymbol(ParentFolder, symbolName) ?? symbolName;
+                //        dbAddress = Helper.TryGetStructuredName(ParentFolder, dbNr , dbAddress);
+                //        dbAccess = dbName + "." + dbAddress;
+                //        //BlocksOfflineFolder folder = ParentFolder as BlocksOfflineFolder;
+                //        //if (folder!=null)
+                //        //{
+                //        //    //dbAccess += "+folder not null+" + symbolName;
+                //        //    if (SymbolTable != null)
+                //        //    {
+                //        //        //dbAccess += "+symboltable ok!";
+                //        //        SymbolTableEntry ste = SymbolTable.GetEntryFromSymbol(symbolName);
+                //        //        if (ste != null)
+                //        //        {
+                //        //            //dbAccess += "+" + ste;
+                //        //            S7DataBlock block =
+                //        //                folder.GetBlock(ste.Operand.Replace(" ",""),
+                //        //                                new S7ConvertingOptions
+                //        //                                    {Mnemonic = folder.Project.ProjectLanguage})
+                //        //                as S7DataBlock;
+                //        //            //dbAccess += "+" + block;
+                //        //            if (block != null)
+                //        //            {
+                //        //                //dbAccess += "+block not null";
+                //        //                S7DataRow dbRow = block.GetDataRowWithAddress(byteBitAddress);
+                //        //                if (dbRow != null)
+                //        //                {
+                //        //                    if (dbRow.DataType != S7DataRowType.STRING)
+                //        //                        dbAccess = dbName + "." + dbRow.StructuredName;
+                //        //                    else if (pointPosition < 0) //if its not using a bit access to access the string variable
+                //        //                        dbAccess = dbName + "." + 
+                //        //                            dbRow.StructuredName +
+                //        //                            "[" + (byteBitAddress.ByteAddress - dbRow.BlockAddress.ByteAddress - 2) + "]";
+                //        //                }
+                //        //            }
+                //        //        }
+                //        //    }
+                //        //}
+                //    }
+                //    string newAwl = awlCommand.PadRight(6) + dbAccess +";";
+                //    awl = awl.Replace(sMatch, newAwl);
+                //}
+                //
+                //retVal.AppendLine(awl);
             }
             retVal.Append("END_FUNCTION");
 

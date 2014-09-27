@@ -26,20 +26,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public string GetSourceBlock(bool useSymbols = false)
         {
-<<<<<<< HEAD
-            string src = "";
-            BlocksOfflineFolder blkFld = ParentFolder as BlocksOfflineFolder;
-            if (blkFld != null)
-            {
-                src = blkFld.GetSourceBlock(this, useSymbols);
-            }
-            else
-            {
-                IBlocksFolder iBlkFld = ParentFolder as IBlocksFolder;
-                if (iBlkFld != null) src = iBlkFld.GetBlock(this).ToString();
-            }
-            return src;
-=======
             if (ParentFolder is BlocksOfflineFolder)
             {
                 BlocksOfflineFolder blkFld = (BlocksOfflineFolder) ParentFolder;
@@ -52,7 +38,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
 
             return null;
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
         }
 
        public string BlockTypeString

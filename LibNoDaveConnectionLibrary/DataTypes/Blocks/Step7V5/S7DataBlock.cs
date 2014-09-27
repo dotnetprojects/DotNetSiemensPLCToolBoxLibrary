@@ -97,24 +97,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override string GetSourceBlock(bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
-<<<<<<< HEAD
-            string name = this.BlockName;
-            if(useSymbols && SymbolTableEntry!=null)
-=======
 
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
             {
                 name = SymbolTableEntry.Symbol;
             }
             retVal.AppendLine("DATA_BLOCK " + name);
             retVal.AppendLine("TITLE =" + this.Title);
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
             if (!string.IsNullOrEmpty(this.Author))
                 retVal.AppendLine("AUTHOR : " + this.Author);
             if (!string.IsNullOrEmpty(this.Name))
@@ -128,7 +118,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (this.Structure.Children != null && !this.IsInstanceDB)
             {
                 retVal.AppendLine("  STRUCT");
-<<<<<<< HEAD
                 //retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
                 string structSource = AWLToSource.DataRowToSource((S7DataRow)this.Structure, "    ");
                 if (useSymbols) 
@@ -148,9 +137,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     }
                 }
                 retVal.Append(structSource);
-=======
-                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                 retVal.AppendLine("  END_STRUCT ;");
 
             }
@@ -166,13 +152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     retVal.AppendLine(" FB " + this.FBNumber);
             }
             retVal.AppendLine("BEGIN");
-<<<<<<< HEAD
             retVal.AppendLine("END_DATA_BLOCK");
-            
-=======
-            retVal.AppendLine("END_DATA_BLOCK" );
-
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
             return retVal.ToString();
         }
 

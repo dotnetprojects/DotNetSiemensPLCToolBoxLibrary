@@ -743,13 +743,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public string GetSourceBlock(ProjectBlockInfo blkInfo, bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
-<<<<<<< HEAD
-            Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = true, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
-=======
             Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = useSymbols, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
->>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
-
-
             S7Block fblk = (S7Block)blk;
 
             return fblk.GetSourceBlock(useSymbols);
