@@ -135,19 +135,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override string GetSourceBlock(bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
                 name = SymbolTableEntry.Symbol;
             }
+<<<<<<< HEAD
             if (this.BlockType == PLCBlockType.FC)
                 retVal.AppendLine("FUNCTION " + name + " : VOID");
             else
                 retVal.AppendLine("FUNCTION_BLOCK " + this.BlockName);
+=======
+
+            if (this.BlockType == PLCBlockType.FC)
+                retVal.AppendLine("FUNCTION " + name + " : VOID");
+            else
+                retVal.AppendLine("FUNCTION_BLOCK " + name);
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
 
             retVal.AppendLine("TITLE =" + this.Title);
 
+<<<<<<< HEAD
             if (!string.IsNullOrEmpty(this.Description))
+=======
+            if (!String.IsNullOrEmpty(this.Description))
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                 retVal.AppendLine("//" + this.Description.Replace(Environment.NewLine, Environment.NewLine + "//"));
             if (!string.IsNullOrEmpty(this.Author))
                 retVal.AppendLine("AUTHOR : " + this.Author);
@@ -155,8 +171,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("NAME : " + this.Name);
             if (!string.IsNullOrEmpty(this.Version))
                 retVal.AppendLine("VERSION : " + this.Version);
+<<<<<<< HEAD
             retVal.Append(Environment.NewLine);
             retVal.Append(Environment.NewLine);
+=======
+            retVal.AppendLine();
+            retVal.AppendLine();
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
 
 
             if (this.Parameter.Children != null)
@@ -172,6 +193,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     else if (parnm == "STATIC")
                         ber = "VAR";
                     retVal.AppendLine(ber);
+<<<<<<< HEAD
                     string structSource = AWLToSource.DataRowToSource(s7DataRow, "  ");
                     if (useSymbols)
                     {
@@ -203,6 +225,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         }
                     }
                     retVal.Append(structSource);
+=======
+                    retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                     retVal.AppendLine("END_VAR");
                 }
 
@@ -213,18 +238,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("NETWORK");
                 retVal.AppendLine("TITLE = " + network.Name);
                 if (!String.IsNullOrEmpty(network.Comment))
+<<<<<<< HEAD
                     retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//") );
                 else
                     retVal.Append(Environment.NewLine);
                 StringBuilder sbAwl = new StringBuilder("");
+=======
+                    retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//"));
+                else
+                    retVal.AppendLine();
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                 foreach (S7FunctionBlockRow functionBlockRow in network.AWLCode)
                 {
                     string awlCode = functionBlockRow.ToString(useSymbols, true);
                     if (awlCode == "" || awlCode == ";")
+<<<<<<< HEAD
                         sbAwl.Append(Environment.NewLine);
                     else
                     {
                         sbAwl.AppendLine(awlCode);
+=======
+                        retVal.AppendLine();
+                    else
+                    {
+                        retVal.AppendLine(awlCode);
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
                     }
                 }
                 //Fix for Db access not merged for some lines temporary solution until the issue is found

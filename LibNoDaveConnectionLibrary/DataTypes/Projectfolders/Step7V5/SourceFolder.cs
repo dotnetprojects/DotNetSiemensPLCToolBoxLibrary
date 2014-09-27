@@ -71,19 +71,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
             S7SourceBlock retVal = new S7SourceBlock();
 
-            if (((Step7ProjectV5)Project)._ziphelper.FileExists(srcInfo.Filename))
-            {
-                Stream strm = ((Step7ProjectV5)Project)._ziphelper.GetReadStream(srcInfo.Filename);
-
-                retVal.Text = new System.IO.StreamReader(strm,Encoding.UTF7).ReadToEnd();
-                //ReadToEnd();
-            }
-
+            retVal.Text = GetSource(srcInfo);
+            
             retVal.Name = srcInfo.Name;
             retVal.ParentFolder = srcInfo.ParentFolder;
             retVal.Filename = srcInfo.Filename;
 
             return retVal;
+        }
+
+        public string GetSource(S7ProjectSourceInfo blkInfo)
+        {
+            if (((Step7ProjectV5)Project)._ziphelper.FileExists(blkInfo.Filename))
+            {
+                using (Stream strm = ((Step7ProjectV5) Project)._ziphelper.GetReadStream(blkInfo.Filename))
+                    return new System.IO.StreamReader(strm, Encoding.UTF7).ReadToEnd();
+            }
+
+            return null;
         }
     }
 }

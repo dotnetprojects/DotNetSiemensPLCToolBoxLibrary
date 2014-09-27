@@ -592,7 +592,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                             while (retVal.AWLCode.Count - 1 > akRowInAwlCode && retVal.AWLCode[akRowInAwlCode].Command != "NETWORK")
                                             {
                                                 if (!newAwlCode.Contains(retVal.AWLCode[akRowInAwlCode]))
-                                                    newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                {
+                                                    //newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);
+                                                    S7FunctionBlockRow akRw = (S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode];
+
+                                                    if (akRw.CombineDBAccess)
+                                                    {
+                                                        S7FunctionBlockRow nRw = (S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode + 1];
+                                                        nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
+                                                        nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
+
+                                                        akRw = nRw;
+                                                        retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
+                                                    }
+
+                                                    if (!newAwlCode.Contains(akRw))
+                                                        newAwlCode.Add(akRw);
+                                                }
                                                 akRowInAwlCode++;
                                             }
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
@@ -727,7 +743,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public string GetSourceBlock(ProjectBlockInfo blkInfo, bool useSymbols = false)
         {
             StringBuilder retVal = new StringBuilder();
+<<<<<<< HEAD
             Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = true, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
+=======
+            Block blk = GetBlock(blkInfo, new S7ConvertingOptions(Project.ProjectLanguage) { CombineDBOpenAndDBAccess = true, GenerateCallsfromUCs = true, ReplaceDBAccessesWithSymbolNames = useSymbols, ReplaceLokalDataAddressesWithSymbolNames = true, UseComments = true });
+>>>>>>> 612bc6da0c2904b9f196807d173e5f18e947c8a6
 
 
             S7Block fblk = (S7Block)blk;
