@@ -1,0 +1,22 @@
+﻿<Window x:Class="DbfReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="byteTypeTemplate">
+                <TextBlock Text="{Binding}" />
+            </DataTemplate>
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,0">
+        <DataGrid x:Name="table" Margin="0,26,0,0" AutoGeneratingColumn="table_AutoGeneratingColumn"/>
+        <Button Content="Open..." HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.452,0.476" Click="Button_Click"/>
+        <Button x:Name="search" Content="Search" HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.452,0.476" Margin="78,0,0,0" Click="search_Click"/>
+        <TextBox Height="23" Margin="156,0,0,0" TextWrapping="Wrap" Text="" IsReadOnly="True" x:Name="txtFile" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

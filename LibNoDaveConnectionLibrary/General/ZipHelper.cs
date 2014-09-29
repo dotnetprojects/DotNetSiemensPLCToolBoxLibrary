@@ -50,7 +50,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #if SHARPZIPLIB
             _zipFileName = file;
             if (!string.IsNullOrEmpty(file))
-                this._zipFile = new ZipFile(file);            
+            {
+                try
+                {
+                    this._zipFile = new ZipFile(file);
+                }
+                catch(Exception)
+                { }
+            }               
 #endif
         }
 
