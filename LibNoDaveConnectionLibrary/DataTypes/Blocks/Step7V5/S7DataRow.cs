@@ -180,50 +180,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 if (_plctag != null)
                     return _plctag;               
+                    _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
 
                 switch (DataType)
                 {
 
                     case S7DataRowType.BOOL:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Bool;
                         _plctag.BitAddress = BlockAddress.BitAddress;
                         break;
+                    case S7DataRowType.BYTE:
+                        _plctag.TagDataType = TagDataType.Byte;
+                        break;
                     case S7DataRowType.WORD:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Word;                        
                         break;
                     case S7DataRowType.DWORD:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Dword;
                         break;
                     case S7DataRowType.INT:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Int;
                         break;
                     case S7DataRowType.DINT:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Dint;
                         break;
                     case S7DataRowType.REAL:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.Float;
                         break;
+                    case S7DataRowType.TIME:
+                        _plctag.TagDataType = TagDataType.Time;
+                        break;
                     case S7DataRowType.DATE_AND_TIME:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.DateTime;
                         break;
                     case S7DataRowType.CHAR:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.CharArray;
                         _plctag.ArraySize = this.GetArrayLines();
                         break;
                     case S7DataRowType.STRING:
-                        _plctag = new PLCTag() { DataBlockNumber = BaseBlockNumber, TagDataSource = MemoryArea.Datablock, ByteAddress = BlockAddress.ByteAddress };
                         _plctag.TagDataType = TagDataType.String;
                         _plctag.ArraySize = this.StringSize;
                         break;
                     default:
+                        _plctag = null;
                         return null;
                 }
                 //_LibNoDaveValue.PropertyChanged += new PropertyChangedEventHandler(_LibNoDaveValue_PropertyChanged);
