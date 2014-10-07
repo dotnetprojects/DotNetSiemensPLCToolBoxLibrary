@@ -429,6 +429,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
                                 if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;
                                 y.ID = (int)row["ID"];
+
+                                y.Rack = (int)row["SUBSTATN"];
+                                y.Slot = (int)row["MODULN"];
                             }
                         }
                     }
@@ -452,6 +455,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
                                 if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;
                                 y.ID = (int)row["ID"];
+
+                                y.Rack = (int)row["SUBSTATN"];
+                                y.Slot = (int)row["MODULN"];
                             }
                         }
                     }
@@ -514,6 +520,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
                                 if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;
                                 y.ID = (int)row["ID"];
+
+                                y.Rack = (int)row["SUBSTATN"];
+                                y.Slot = (int)row["MODULN"];
                             }
                         }
                     }
@@ -572,6 +581,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
                                 if ((bool)row["DELETED_FLAG"]) y.Name = "$$_" + y.Name;
+
+                                y.Rack = (int)row["SUBSTATN"];
+                                y.Slot = (int)row["MODULN"];
                             }
                         }
                     }
