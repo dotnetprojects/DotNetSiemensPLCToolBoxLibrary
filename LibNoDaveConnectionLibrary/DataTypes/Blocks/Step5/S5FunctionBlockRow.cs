@@ -10,9 +10,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
              _MC5 = null;
          }
 
+        public string CalledBlock
+        {
+            get
+            {
+                if (Command == "SPA")
+                {
+                    return Parameter;
+                }
+
+                return null;
+            }
+        }
 
         //This Property has nothing to do with the Symboltable, its the S5 command
-         internal object[] MC5LIB_SYMTAB_Row { get; set; }
+        internal object[] MC5LIB_SYMTAB_Row { get; set; }
 
         //These Commands are Combined...
         //public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }

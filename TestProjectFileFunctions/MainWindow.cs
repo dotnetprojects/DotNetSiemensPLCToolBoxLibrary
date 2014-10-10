@@ -35,6 +35,8 @@ using Color = System.Drawing.Color;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
 
 namespace JFK_VarTab
 {
@@ -1388,12 +1390,57 @@ namespace JFK_VarTab
             return retVal;
         }
 
+        private string CreateHirachy(string prefix, S5FunctionBlock block, Stack<string> parentBlocks)
+        {
+            string spacer = "  |   ";
+            parentBlocks.Push(block.BlockName);
+
+            string retVal = "";
+            if (prefix != "")
+                retVal += prefix.Substring(0, prefix.Length - 3) + "---" + block.BlockName + Environment.NewLine;
+            else
+                retVal += block.BlockName + Environment.NewLine;
+            //foreach (var calledBlock in block.CalledBlocks)
+            foreach (var calledBlock in block.CalledBlocks.Distinct())
+            {
+                var fld = block.ParentFolder as Step5BlocksFolder;
+                var blk = fld.GetBlock(calledBlock) as S5FunctionBlock;
+
+                if (blk != null)
+                {
+                    if (!parentBlocks.Contains(blk.BlockName))
+                    {
+                        retVal += CreateHirachy(prefix + spacer, blk, parentBlocks);
+                    }
+                    else
+                    {
+                        retVal += prefix + spacer.Substring(0, 3) + "---" + blk.BlockName + " (recursive)" + Environment.NewLine;
+                    }
+                }
+            }
+
+            parentBlocks.Pop();
+
+            return retVal;
+        }
+
         private void callHirachyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var info = lstListBox.SelectedItem as S7ProjectBlockInfo;
             if (info != null)
             {
                 var txt = CreateHirachy("", (S7FunctionBlock) info.GetBlock(), new Stack<string>());
+
+                viewBlockList.Visible = false;
+                txtTextBox.Text = txt;
+                txtTextBox.Visible = true;
+
+            }
+
+            var s5info = lstListBox.SelectedItem as S5ProjectBlockInfo;
+            if (s5info != null)
+            {
+                var txt = CreateHirachy("", (S5FunctionBlock)s5info.GetBlock(), new Stack<string>());
 
                 viewBlockList.Visible = false;
                 txtTextBox.Text = txt;
