@@ -278,6 +278,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         }
                     }
                 }
+                int sobjid;
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool)row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        if ((int)row["RELID"] == 64)
+                        {
+                            sobjid = (int)row["SOBJID"];
+                            var cps = CPFolders.Where(x => x.ID == sobjid);
+                            if (cps.Count() > 0)
+                                cps.First().TobjIdNet = (int)row["TOBJID"];
+                        }
+                    }
+                }
             }
 
             //Get The CPU 300 Folders
@@ -1011,6 +1025,93 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     y.Parent = ProjectStructure;
                     ProjectStructure.SubItems.Add(y);
+                }
+            }
+
+            //read IP address from S7Netze\S7NONFGX.tab
+            if (_ziphelper.FileExists(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab"))
+            {
+                Stream hrsLink = _ziphelper.GetReadStream(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab");
+                BinaryReader rd = new BinaryReader(hrsLink);
+                int lengthFile = (int)_ziphelper.GetStreamLength(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab", hrsLink);
+                byte[] completeBuffer = rd.ReadBytes(lengthFile);
+                rd.Close();
+                hrsLink.Close();
+                byte[] startStructure = {0x03, 0x52, 0x14, 0x00};
+                byte[] startIP = { 0xE0, 0x0F, 0x00, 0x00, 0xE0, 0x0F, 0x00, 0x00, 0x00 };
+                byte[] startMAC = { 0xA2, 0x0F, 0x00, 0x00, 0xA2, 0x0F, 0x00, 0x00, 0x00 };
+                byte[] startMask = { 0xE5, 0x0F, 0x00, 0x00, 0xE5, 0x0F, 0x00, 0x00, 0x00 };
+                byte[] startRouter = { 0xE3, 0x0F, 0x00, 0x00, 0xE3, 0x0F, 0x00, 0x00, 0x00 };
+                int position = 0;
+                int lenStructure = 1960;
+                while ( (position = IndexOfByteArray(completeBuffer, startStructure, position + 1, lengthFile)) >= 0)
+                {
+                    int number = BitConverter.ToInt32(completeBuffer, position + 4);//or ToInt16
+                    var cps = CPFolders.Where(x => x.TobjIdNet == number);
+                    if ( cps.Count() > 0)
+                    {
+                        var cp = cps.First();
+                        int pos = IndexOfByteArray(completeBuffer, startIP, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                string strIP = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                byte[] bIP = new byte[4];
+                                bIP[0] = byte.Parse(strIP.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[1] = byte.Parse(strIP.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[2] = byte.Parse(strIP.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[3] = byte.Parse(strIP.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                cp.IP = new System.Net.IPAddress(bIP);
+                            }
+                            catch { }
+                        }
+                        pos = IndexOfByteArray(completeBuffer, startMAC, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                string strMAC = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                cp.MAC = System.Net.NetworkInformation.PhysicalAddress.Parse(strMAC);
+                            }
+                            catch { }
+                        }
+                        pos = IndexOfByteArray(completeBuffer, startMask, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                string strMask = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                byte[] bIP = new byte[4];
+                                bIP[0] = byte.Parse(strMask.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[1] = byte.Parse(strMask.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[2] = byte.Parse(strMask.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[3] = byte.Parse(strMask.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                cp.Mask = new System.Net.IPAddress(bIP);
+                            }
+                            catch { }
+                        }
+                        pos = IndexOfByteArray(completeBuffer, startRouter, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                string strRouter = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                byte[] bIP = new byte[4];
+                                bIP[0] = byte.Parse(strRouter.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[1] = byte.Parse(strRouter.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[2] = byte.Parse(strRouter.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                bIP[3] = byte.Parse(strRouter.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                var ip = new System.Net.IPAddress(bIP);
+                                if ( ip != cp.IP)
+                                {
+                                    cp.Router = ip;
+                                    cp.useRouter = true;
+                                }
+                            }
+                            catch { }
+                        }
+                    }
                 }
             }
 
