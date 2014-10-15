@@ -271,8 +271,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     x.ID = Convert.ToInt32(row["SOBJID"]);
                                     x.TobjId = Convert.ToInt32(row["TOBJID"]);
                                     x.Parent = z;
-                                    z.SubItems.Add(x);
-                                    CPFolders.Add(x);
+
+                                    if (x.TobjTyp == 1314972)
+                                    {
+                                        //if (!z.SubItems.OfType<CPFolder>().Any(j=>j.UnitID == x.UnitID && j.TobjTyp == x.TobjTyp && j.ID == x.ID && j.TobjId == x.TobjId))
+                                        {
+                                            z.SubItems.Add(x);
+                                            CPFolders.Add(x);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1040,7 +1047,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     hrsLink.Close();
 
                     char[] searchValid = { 'A', 'd', 'd', 'r', 'e', 's', 's', 'I', 's', 'V', 'a', 'l', 'i', 'd' };
-                    char[] searchName = { 'B', 'a', 'u', 'g', 'r', 'u', 'p', 'p', 'e', 'n', 'n', 'a', 'm', 'e' };
+                    byte[] searchName = { (byte)'B', (byte)'a', (byte)'u', (byte)'g', (byte)'r', (byte)'u', (byte)'p', (byte)'p', (byte)'e', (byte)'n', (byte)'n', (byte)'a', (byte)'m', (byte)'e' };
 
                     byte[] startStructure = { 0x03, 0x52, 0x14, 0x00 };
                     byte[] startIP = { 0xE0, 0x0F, 0x00, 0x00, 0xE0, 0x0F, 0x00, 0x00, 0x00 };
@@ -1057,7 +1064,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (cp != null)
                         {
                             EthernetNetworkInterface ethernet = null;
-                            int pos = indexOfByteArray(completeBuffer, startIP, position, lenStructure);
+
+                            int pos = indexOfByteArray(completeBuffer, searchName, position, lenStructure);
+                            if (pos > 0)
+                            {
+                                try
+                                {
+                                    string strName = System.Text.Encoding.Default.GetString(completeBuffer, pos + 25, (int)completeBuffer[pos + 24]);
+                                    
+                                    if (ethernet == null)
+                                        ethernet = new EthernetNetworkInterface();
+                                    ethernet.Name = strName;
+                                }
+                                catch
+                                { }
+                            }
+
+                            pos = indexOfByteArray(completeBuffer, startIP, position, lenStructure);
                             if (pos > 0)
                             {
                                 try
@@ -1121,7 +1144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     bIP[2] = byte.Parse(strRouter.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
                                     bIP[3] = byte.Parse(strRouter.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
                                     var ip = new System.Net.IPAddress(bIP);
-                                    if (ethernet == null || ip != ethernet.IpAddress)
+                                    if (ethernet == null || !ip.Equals(ethernet.IpAddress))
                                     {
                                         if (ethernet == null)
                                             ethernet = new EthernetNetworkInterface();
