@@ -298,6 +298,21 @@ namespace JFK_VarTab
 
 
                 }
+                else if (tmp.myObject is CPFolder)
+                {
+                    var cp = tmp.myObject as CPFolder;
+                    if (oldNode != treeStep7Project.SelectedNode)
+                    {
+                        lstListBox.Items.Clear();
+                        var rd = new StringReader(cp.ToString());
+                        string line = null;
+                        while ((line = rd.ReadLine()) != null)
+                        {
+                            lstListBox.Items.Add(line);
+                        }
+                    }
+                    viewBlockList.Visible = true;
+                }
             }
             oldNode = treeStep7Project.SelectedNode;
         }

@@ -9,6 +9,8 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Network;
+using System.Diagnostics;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -200,9 +202,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             _projectLoaded = true;
 
-            ProjectStructure = new Step7ProjectFolder() {Project = this};
+            ProjectStructure = new Step7ProjectFolder() { Project = this };
             CPUFolders = new List<CPUFolder>();
-            CPFolders=new List<CPFolder>();
+            CPFolders = new List<CPFolder>();
             S7ProgrammFolders = new List<S7ProgrammFolder>();
             BlocksOfflineFolders = new List<BlocksOfflineFolder>();
 
@@ -220,10 +222,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if ((int)row["OBJTYP"] == 1314969 || (int)row["OBJTYP"] == 1314970 || (int)row["OBJTYP"] == 1315650)
                         {
-                            var x = new StationConfigurationFolder() { Project = this, Parent = ProjectStructure};
+                            var x = new StationConfigurationFolder() { Project = this, Parent = ProjectStructure };
                             x.Name = ((string)row["Name"]).Replace("\0", "");
-                            if ((bool) row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
-                            x.ID = (int) row["ID"];
+                            if ((bool)row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
+                            x.ID = (int)row["ID"];
                             x.UnitID = (int)row["UNITID"];
                             x.ObjTyp = (int)row["OBJTYP"];
                             switch ((int)row["OBJTYP"])
@@ -263,14 +265,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 if ((int)row["TUNITID"] == z.ID &&
                                     ((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314970 || (int)row["TUNITTYP"] == 1315650))//as in "Get The Project Stations"
                                 {
-                                    var x = new CPFolder() {Project = this};
+                                    var x = new CPFolder() { Project = this };
                                     x.UnitID = Convert.ToInt32(row["TUNITID"]);
                                     x.TobjTyp = Convert.ToInt32(row["TOBJTYP"]);
                                     x.ID = Convert.ToInt32(row["SOBJID"]);
+                                    x.TobjId = Convert.ToInt32(row["TOBJID"]);
                                     x.Parent = z;
                                     z.SubItems.Add(x);
                                     CPFolders.Add(x);
-
                                 }
                             }
                         }
@@ -292,9 +294,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                             {
                                 if ((int)row["TUNITID"] == z.ID && (int)row["TOBJTYP"] == 1314972)
-                                   //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
+                                //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
                                 {
-                                    var x = new CPUFolder() {Project = this};
+                                    var x = new CPUFolder() { Project = this };
                                     x.UnitID = Convert.ToInt32(row["TUNITID"]);
                                     x.TobjTyp = Convert.ToInt32(row["TOBJTYP"]);
                                     x.CpuType = z.StationType;
@@ -355,7 +357,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                             {
                                 if ((int)row["TUNITID"] == z.ID && ((int)row["TOBJTYP"] == 1314972 || (int)row["TOBJTYP"] == 1315656 /* BackupCPU bei H Sys */))
-                                   //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
+                                //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
                                 {
                                     var x = new CPUFolder() { Project = this };
                                     x.UnitID = Convert.ToInt32(row["TUNITID"]);
@@ -485,13 +487,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 byte[] mempass = new byte[8];
                                 for (int i = 0; i < 8; i++)
                                 {
-                                    if (i < 2) mempass[i] = (byte) (memoarray[i + 4] ^ 0xAA);
-                                    else mempass[i] = (byte) (memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
+                                    if (i < 2) mempass[i] = (byte)(memoarray[i + 4] ^ 0xAA);
+                                    else mempass[i] = (byte)(memoarray[i + 2] ^ memoarray[i + 4] ^ 0xAA);
                                 }
                                 string res = ProjectEncoding.GetString(mempass);
                                 foreach (var y in CPUFolders)
                                 {
-                                    if ((int) row["IDM"] == y.ID)
+                                    if ((int)row["IDM"] == y.ID)
                                     {
                                         y.PasswdHard = res.Trim();
                                     }
@@ -601,10 +603,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                     {
                         var x = new S7ProgrammFolder() { Project = this };
-                        x.Name = ((string)row["Name"]).Replace("\0","");
-                        if ((bool) row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
-                        x.ID = (int) row["ID"];
-                        x._linkfileoffset = (int) row["RSRVD4_L"];
+                        x.Name = ((string)row["Name"]).Replace("\0", "");
+                        if ((bool)row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
+                        x.ID = (int)row["ID"];
+                        x._linkfileoffset = (int)row["RSRVD4_L"];
                         S7ProgrammFolders.Add(x);
                         tmpS7ProgrammFolders.Add(x);
                     }
@@ -744,7 +746,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         var x = new BlocksOfflineFolder() { Project = this };
                         x.Name = ((string)row["Name"]).Replace("\0", "");
                         if ((bool)row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
-                        x.ID = (int) row["ID"];
+                        x.ID = (int)row["ID"];
                         x.Folder = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + x.ID.ToString("X").PadLeft(8, '0') + _DirSeperator;
                         tmpBlocksOfflineFolders.Add(x);
                         _blocksOfflineFolders.Add(x);
@@ -763,7 +765,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                     {
                         var x = new SourceFolder() { Project = this };
-                        x.Name = ((string)row["Name"]).Replace("\0","");
+                        x.Name = ((string)row["Name"]).Replace("\0", "");
                         if ((bool)row["DELETED_FLAG"]) x.Name = "$$_" + x.Name;
                         x.ID = (int)row["ID"];
                         x.Folder = ProjectFolder + "s7asrcom" + _DirSeperator + x.ID.ToString("X").PadLeft(8, '0') + _DirSeperator;
@@ -782,10 +784,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 foreach (DataRow row in dbfTbl.Rows)
                 {
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
-                    {        
+                    {
                         if ((int)row["OBJTYP"] == 1314971)
                         {
-                            pbMasterSystems.Add(new ProfibusMasterSystem() {Project = this , Name = row["NAME"].ToString().Replace("\0",""), Id = (int)row["ID"]});                        
+                            pbMasterSystems.Add(new ProfibusMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] });
                         }
                     }
                 }
@@ -802,7 +804,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                     {
-                        lnkLst.Add(new LinkHelp() { SOBJID = (int)row["SOBJID"], SOBJTYP = (int)row["SOBJTYP"], RELID = (int)row["RELID"], TOBJID = (int)row["TOBJID"], TOBJTYP = (int)row["TOBJTYP"], TUNITID = (int)row["TUNITID"], TUNITTYP = (int)row["TUNITTYP"] });                        
+                        lnkLst.Add(new LinkHelp() { SOBJID = (int)row["SOBJID"], SOBJTYP = (int)row["SOBJTYP"], RELID = (int)row["RELID"], TOBJID = (int)row["TOBJID"], TOBJTYP = (int)row["TOBJTYP"], TUNITID = (int)row["TUNITID"], TUNITTYP = (int)row["TUNITTYP"] });
                     }
                 }
 
@@ -811,7 +813,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     var lnks = lnkLst.Where(x => x.TOBJTYP == station.ObjTyp && x.TOBJID == station.ID);
                     foreach (LinkHelp linkHelp in lnks)
                     {
-                        var ms=pbMasterSystems.FirstOrDefault(x => x.Id == linkHelp.SOBJID);
+                        var ms = pbMasterSystems.FirstOrDefault(x => x.Id == linkHelp.SOBJID);
                         if (ms != null)
                         {
                             station.MasterSystems.Add(ms);
@@ -830,16 +832,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                     {
-                        if ((int) row["OBJTYP"] == 1314988)
+                        if ((int)row["OBJTYP"] == 1314988)
                         {
                             var node = new ProfibusNode() { Name = row["NAME"].ToString().Replace("\0", ""), NodeId = (int)row["SUBSTATN"], GsdFile = row["CEXTTYPE"].ToString() };
 
-                            var ma = pbMasterSystems.FirstOrDefault(x => x.Id == (int) row["UNITID"]);
+                            var ma = pbMasterSystems.FirstOrDefault(x => x.Id == (int)row["UNITID"]);
                             if (ma != null)
                                 ma.Children.Add(node);
-                        }                            
+                        }
                     }
-                }                
+                }
             }
 
 
@@ -911,7 +913,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             attLst.Add(new AttrMeHelp() { IDM = (int)row["IDM"], ATTRIIDM = (int)row["ATTRIIDM"], ATTFORMATM = (int)row["ATTFORMATM"], MEMOARRAYM = (byte[])row["MEMOARRAYM"] });
                         }
-                    }                    
+                    }
                 }
 
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hdevnx" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
@@ -924,10 +926,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             var node = new ProfibusNode() { Name = row["NAME"].ToString().Replace("\0", ""), NodeId = (int)row["SUBSTATN"], GsdFile = row["CEXTTYPE"].ToString() };
 
-                            var inf = attLst.FirstOrDefault(x => x.IDM == (int) row["ID"] && x.ATTRIIDM == 111386);
-                         
+                            var inf = attLst.FirstOrDefault(x => x.IDM == (int)row["ID"] && x.ATTRIIDM == 111386);
+
                             if (inf != null)
-                                node.Name = ProjectEncoding.GetString(inf.MEMOARRAYM).Replace("\0","");
+                                node.Name = ProjectEncoding.GetString(inf.MEMOARRAYM).Replace("\0", "");
 
                             var ma = pnMasterSystems.FirstOrDefault(x => x.Id == (int)row["UNITID"]);
                             if (ma != null)
@@ -1016,16 +1018,154 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 foreach (var y in tmpBlocksOfflineFolders)
                 {
-                    var x = new S7ProgrammFolder() {Name = "$$tmpProgram_for_deleted"};
+                    var x = new S7ProgrammFolder() { Name = "$$tmpProgram_for_deleted" };
                     x.Project = this;
                     x.Parent = ProjectStructure;
                     y.Parent = x;
                     x.SubItems.Add(y);
                     x.BlocksOfflineFolder = y;
-                    ProjectStructure.SubItems.Add(x);                    
+                    ProjectStructure.SubItems.Add(x);
                 }
             }
 
+            try {
+                //read IP address from S7Netze\S7NONFGX.tab
+                if (_ziphelper.FileExists(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab"))
+                {
+                    Stream hrsLink = _ziphelper.GetReadStream(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab");
+                    BinaryReader rd = new BinaryReader(hrsLink);
+                    int lengthFile = (int)_ziphelper.GetStreamLength(ProjectFolder + "S7Netze" + _DirSeperator + "S7NONFGX.tab", hrsLink);
+                    byte[] completeBuffer = rd.ReadBytes(lengthFile);
+                    rd.Close();
+                    hrsLink.Close();
+
+                    char[] searchValid = { 'A', 'd', 'd', 'r', 'e', 's', 's', 'I', 's', 'V', 'a', 'l', 'i', 'd' };
+                    char[] searchName = { 'B', 'a', 'u', 'g', 'r', 'u', 'p', 'p', 'e', 'n', 'n', 'a', 'm', 'e' };
+
+                    byte[] startStructure = { 0x03, 0x52, 0x14, 0x00 };
+                    byte[] startIP = { 0xE0, 0x0F, 0x00, 0x00, 0xE0, 0x0F, 0x00, 0x00, 0x00 };
+                    byte[] startMAC = { 0xA2, 0x0F, 0x00, 0x00, 0xA2, 0x0F, 0x00, 0x00, 0x00 };
+                    byte[] startMask = { 0xE5, 0x0F, 0x00, 0x00, 0xE5, 0x0F, 0x00, 0x00, 0x00 };
+                    byte[] startRouter = { 0xE3, 0x0F, 0x00, 0x00, 0xE3, 0x0F, 0x00, 0x00, 0x00 };
+                    int position = 0;
+                    int lenStructure = 1960;  //I don't think this len is correct... (look)
+                    while ((position = indexOfByteArray(completeBuffer, startStructure, position + 1, lengthFile)) >= 0)
+                    {
+                        int number = BitConverter.ToInt32(completeBuffer, position + 4);//or ToInt16
+                        //Debug.Print(number.ToString());
+                        var cp = CPFolders.FirstOrDefault(x => x.TobjId == number);
+                        if (cp != null)
+                        {
+                            EthernetNetworkInterface ethernet = null;
+                            int pos = indexOfByteArray(completeBuffer, startIP, position, lenStructure);
+                            if (pos > 0)
+                            {
+                                try
+                                {
+                                    string strIP = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                    byte[] bIP = new byte[4];
+                                    bIP[0] = byte.Parse(strIP.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[1] = byte.Parse(strIP.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[2] = byte.Parse(strIP.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[3] = byte.Parse(strIP.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    
+                                    if (ethernet == null)
+                                        ethernet = new EthernetNetworkInterface();
+                                    ethernet.IpAddress = new System.Net.IPAddress(bIP);
+                                }
+                                catch
+                                { }
+                            }
+                            pos = indexOfByteArray(completeBuffer, startMAC, position, lenStructure);
+                            if (pos > 0)
+                            {
+                                try
+                                {
+                                    string strMAC = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                    
+                                    if (ethernet == null)
+                                        ethernet = new EthernetNetworkInterface();
+                                    ethernet.Mac = System.Net.NetworkInformation.PhysicalAddress.Parse(strMAC);
+                                }
+                                catch
+                                { }
+                            }
+                            pos = indexOfByteArray(completeBuffer, startMask, position, lenStructure);
+                            if (pos > 0)
+                            {
+                                try
+                                {
+                                    string strMask = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                    byte[] bIP = new byte[4];
+                                    bIP[0] = byte.Parse(strMask.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[1] = byte.Parse(strMask.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[2] = byte.Parse(strMask.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[3] = byte.Parse(strMask.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    
+                                    if (ethernet == null)
+                                        ethernet = new EthernetNetworkInterface();
+                                    ethernet.SubnetMask = new System.Net.IPAddress(bIP);
+                                }
+                                catch
+                                { }
+                            }
+                            pos = indexOfByteArray(completeBuffer, startRouter, position, lenStructure);
+                            if (pos > 0)
+                            {
+                                try
+                                {
+                                    string strRouter = System.Text.Encoding.Default.GetString(completeBuffer, pos + 20, (int)completeBuffer[pos + 19]);
+                                    byte[] bIP = new byte[4];
+                                    bIP[0] = byte.Parse(strRouter.Substring(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[1] = byte.Parse(strRouter.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[2] = byte.Parse(strRouter.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    bIP[3] = byte.Parse(strRouter.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+                                    var ip = new System.Net.IPAddress(bIP);
+                                    if (ethernet == null || ip != ethernet.IpAddress)
+                                    {
+                                        if (ethernet == null)
+                                            ethernet = new EthernetNetworkInterface();
+                                        ethernet.Router = ip;
+                                        ethernet.UseRouter = true;
+                                    }
+                                }
+                                catch
+                                { }
+                            }
+
+                            if (ethernet != null)
+                            {
+                                if (cp.NetworkInterfaces == null)
+                                    cp.NetworkInterfaces = new List<NetworkInterface>();
+
+                                cp.NetworkInterfaces.Add(ethernet);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private int indexOfByteArray(byte[] array, byte[] pattern, int offset, int maxLen)
+        {
+            int success = 0;
+            int length = array.Length;
+            for (int i = offset; i < length; i++)
+            {
+                if (array[i] == pattern[success])
+                    success++;
+                else if (success > 0)
+                {
+                    i--;
+                    success = 0;
+                }
+                if (pattern.Length == success)
+                    return i - pattern.Length + 1;
+                if (--maxLen == 0) return -1;
+            }
+            return -1;
         }
 
         private SymbolTable _GetSymTabForProject(S7ProgrammFolder myBlockFolder, bool showDeleted)
