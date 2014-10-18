@@ -14,6 +14,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 
         public string Description { get; set; }
 
+        public override IEnumerable<String> CalledBlocks
+        {
+            get
+            {
+                var retVal = new List<String>();
+
+                if (AWLCode != null)
+                    foreach (var row in AWLCode)
+                    {
+                        if (((S5FunctionBlockRow)row).CalledBlock != null)
+                            retVal.Add(((S5FunctionBlockRow)row).CalledBlock);
+                    }
+
+                return retVal;
+            }
+        }
+
         public override string ToString()
         {
             int bytecnt = 0;

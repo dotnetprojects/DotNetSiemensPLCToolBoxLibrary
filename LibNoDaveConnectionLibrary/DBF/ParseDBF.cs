@@ -20,7 +20,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 namespace DotNetSiemensPLCToolBoxLibrary.DBF
 {
     // Read an entire standard DBF file into a DataTable
-    public class ParseDBF{
+    public static class ParseDBF{
 
         #region DBF-Read-Funtions
         // Read an entire standard DBF file into a DataTable
@@ -84,6 +84,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     fields.Add((FieldDescriptor)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(FieldDescriptor)));
                     handle.Free();
+
+                    if (fields.Count > Int16.MaxValue)
+                        return null;
                 }
 
                 // Read in the first row of records, we need this to help determine column types below
@@ -127,6 +130,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                             //Field Type Memo...
                             col = new DataColumn(field.fieldName, typeof(byte[]));
                             break;
+                    }
+                    int nr = 0;
+                    var name = col.ColumnName;
+                    while (dt.Columns.Contains(col.ColumnName))
+                    {
+                        nr++;
+                        col.ColumnName = name + "_" + nr;
                     }
                     dt.Columns.Add(col);
                 }

@@ -70,7 +70,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                     {
                         S5FunctionBlock blk = (S5FunctionBlock)projectBlockInfo.GetBlock();
                         int networkNR = 0;
-                        foreach (Network network in blk.Networks)
+                        foreach (Blocks.Network network in blk.Networks)
                         {
                             int rowNR = 0;
                             networkNR++;

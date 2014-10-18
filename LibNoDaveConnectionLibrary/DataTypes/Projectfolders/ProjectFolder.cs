@@ -9,10 +9,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     /// <summary>
     /// Base Abstract Class for every Project Folder.
     /// </summary>
-    public class ProjectFolder:IProjectFolder
+    public class ProjectFolder : ProjectItem, IProjectFolder
     {
-        public virtual string Name { get; set; }
-
 #if !IPHONE	
         public string FolderClosedImageName
         {

@@ -36,11 +36,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         internal S5ProjectBlockInfo GetBlockInfo(string BlockName)
         {
+            var nm = BlockName.Replace(" ", "");
+
             lock (step5BlocksinfoList)
             {
                 foreach (S5ProjectBlockInfo projectBlockInfo in new List<ProjectBlockInfo>(step5BlocksinfoList))
                 {
-                    if (BlockName == projectBlockInfo.BlockType.ToString() + projectBlockInfo.BlockNumber.ToString())
+                    if (nm == projectBlockInfo.BlockType.ToString().Substring(3) + projectBlockInfo.BlockNumber.ToString())
                         return projectBlockInfo;
                 }
             }

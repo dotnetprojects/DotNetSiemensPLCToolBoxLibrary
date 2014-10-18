@@ -108,7 +108,13 @@
     <Compile Include="DataTypes\MultiLanguangeString.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
+    <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />
+    <Compile Include="DataTypes\Projectfolders\IHardwareFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
+    <Compile Include="DataTypes\Network\Network.cs" />
+    <Compile Include="DataTypes\Network\NetworkInterface.cs" />
+    <Compile Include="DataTypes\Network\NetworkType.cs" />
+    <Compile Include="DataTypes\ProjectItem.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIASymbolTableEntry.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIABlocksFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIASymTabFolder.cs" />
@@ -337,6 +343,7 @@
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
     <Content Include="Documentation\PDUs.txt" />
+    <Content Include="Documentation\S5D-Baustein1.bmp" />
     <Content Include="Documentation\SDBs.txt" />
     <Content Include="Documentation\StatusOfPLCBlock.txt" />
     <Content Include="Documentation\Step5ProjectInfo.txt" />
@@ -344,6 +351,7 @@
     <Content Include="Documentation\Step7Projectfiles.txt" />
     <Content Include="Documentation\SZLs.txt" />
     <Content Include="Documentation\Info.txt" />
+    <Content Include="Documentation\TIA CRC.txt" />
     <EmbeddedResource Include="Projectfiles\SelectProjectPartMultiForm.resx">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </EmbeddedResource>
