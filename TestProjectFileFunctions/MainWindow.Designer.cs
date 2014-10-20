@@ -113,6 +113,9 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
+            this.datablockView = new System.Windows.Forms.Integration.ElementHost();
+            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
+            this.hexBox = new Be.Windows.Forms.HexBox();
             this.dtaPnPbList = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -120,9 +123,6 @@
             this.export = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.datablockView = new System.Windows.Forms.Integration.ElementHost();
-            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
-            this.hexBox = new Be.Windows.Forms.HexBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtaSymbolTable)).BeginInit();
             this.grpVisu.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -166,7 +166,7 @@
             this.treeStep7Project.ImageIndex = 0;
             this.treeStep7Project.ImageList = this.imglstIconsForTreeview;
             this.treeStep7Project.Location = new System.Drawing.Point(7, 7);
-            this.treeStep7Project.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.treeStep7Project.Margin = new System.Windows.Forms.Padding(7);
             this.treeStep7Project.Name = "treeStep7Project";
             this.treeStep7Project.SelectedImageIndex = 0;
             this.treeStep7Project.Size = new System.Drawing.Size(912, 736);
@@ -209,7 +209,7 @@
             this.tia_key});
             this.dtaSymbolTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaSymbolTable.Location = new System.Drawing.Point(0, 0);
-            this.dtaSymbolTable.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.dtaSymbolTable.Margin = new System.Windows.Forms.Padding(7);
             this.dtaSymbolTable.Name = "dtaSymbolTable";
             this.dtaSymbolTable.Size = new System.Drawing.Size(1797, 1078);
             this.dtaSymbolTable.TabIndex = 5;
@@ -251,7 +251,7 @@
             this.lstListBox.FormattingEnabled = true;
             this.lstListBox.ItemHeight = 36;
             this.lstListBox.Location = new System.Drawing.Point(7, 7);
-            this.lstListBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.lstListBox.Margin = new System.Windows.Forms.Padding(7);
             this.lstListBox.Name = "lstListBox";
             this.lstListBox.Size = new System.Drawing.Size(1160, 913);
             this.lstListBox.TabIndex = 6;
@@ -263,7 +263,7 @@
             // 
             this.txtTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTextBox.Location = new System.Drawing.Point(0, 0);
-            this.txtTextBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtTextBox.Margin = new System.Windows.Forms.Padding(7);
             this.txtTextBox.Multiline = true;
             this.txtTextBox.Name = "txtTextBox";
             this.txtTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -276,7 +276,7 @@
             // 
             this.chkShowDeleted.AutoSize = true;
             this.chkShowDeleted.Location = new System.Drawing.Point(7, 1032);
-            this.chkShowDeleted.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkShowDeleted.Margin = new System.Windows.Forms.Padding(7);
             this.chkShowDeleted.Name = "chkShowDeleted";
             this.chkShowDeleted.Size = new System.Drawing.Size(295, 39);
             this.chkShowDeleted.TabIndex = 8;
@@ -307,7 +307,7 @@
             // cmdSetKnowHow
             // 
             this.cmdSetKnowHow.Location = new System.Drawing.Point(7, 7);
-            this.cmdSetKnowHow.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdSetKnowHow.Margin = new System.Windows.Forms.Padding(7);
             this.cmdSetKnowHow.Name = "cmdSetKnowHow";
             this.cmdSetKnowHow.Size = new System.Drawing.Size(415, 60);
             this.cmdSetKnowHow.TabIndex = 10;
@@ -318,7 +318,7 @@
             // cmdRemoveKnowHow
             // 
             this.cmdRemoveKnowHow.Location = new System.Drawing.Point(436, 7);
-            this.cmdRemoveKnowHow.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdRemoveKnowHow.Margin = new System.Windows.Forms.Padding(7);
             this.cmdRemoveKnowHow.Name = "cmdRemoveKnowHow";
             this.cmdRemoveKnowHow.Size = new System.Drawing.Size(460, 60);
             this.cmdRemoveKnowHow.TabIndex = 11;
@@ -329,7 +329,7 @@
             // cmdUndeleteBlock
             // 
             this.cmdUndeleteBlock.Location = new System.Drawing.Point(910, 7);
-            this.cmdUndeleteBlock.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdUndeleteBlock.Margin = new System.Windows.Forms.Padding(7);
             this.cmdUndeleteBlock.Name = "cmdUndeleteBlock";
             this.cmdUndeleteBlock.Size = new System.Drawing.Size(411, 60);
             this.cmdUndeleteBlock.TabIndex = 12;
@@ -341,7 +341,7 @@
             // txtUndeleteName
             // 
             this.txtUndeleteName.Location = new System.Drawing.Point(1335, 7);
-            this.txtUndeleteName.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtUndeleteName.Margin = new System.Windows.Forms.Padding(7);
             this.txtUndeleteName.Name = "txtUndeleteName";
             this.txtUndeleteName.Size = new System.Drawing.Size(163, 45);
             this.txtUndeleteName.TabIndex = 13;
@@ -369,9 +369,9 @@
             this.grpVisu.Controls.Add(this.cmdCreateFlexibleErrorMessages);
             this.grpVisu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpVisu.Location = new System.Drawing.Point(1181, 7);
-            this.grpVisu.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.grpVisu.Margin = new System.Windows.Forms.Padding(7);
             this.grpVisu.Name = "grpVisu";
-            this.grpVisu.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.grpVisu.Padding = new System.Windows.Forms.Padding(7);
             this.grpVisu.Size = new System.Drawing.Size(581, 913);
             this.grpVisu.TabIndex = 16;
             this.grpVisu.TabStop = false;
@@ -380,7 +380,7 @@
             // cmdWebfactoryTags
             // 
             this.cmdWebfactoryTags.Location = new System.Drawing.Point(47, 912);
-            this.cmdWebfactoryTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdWebfactoryTags.Margin = new System.Windows.Forms.Padding(7);
             this.cmdWebfactoryTags.Name = "cmdWebfactoryTags";
             this.cmdWebfactoryTags.Size = new System.Drawing.Size(495, 57);
             this.cmdWebfactoryTags.TabIndex = 7;
@@ -393,7 +393,7 @@
             this.chkCombineStructComments.Checked = true;
             this.chkCombineStructComments.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCombineStructComments.Location = new System.Drawing.Point(47, 227);
-            this.chkCombineStructComments.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkCombineStructComments.Margin = new System.Windows.Forms.Padding(7);
             this.chkCombineStructComments.Name = "chkCombineStructComments";
             this.chkCombineStructComments.Size = new System.Drawing.Size(520, 40);
             this.chkCombineStructComments.TabIndex = 6;
@@ -403,7 +403,7 @@
             // cmdCreateWinCCFlexibleTags
             // 
             this.cmdCreateWinCCFlexibleTags.Location = new System.Drawing.Point(47, 862);
-            this.cmdCreateWinCCFlexibleTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCFlexibleTags.Margin = new System.Windows.Forms.Padding(7);
             this.cmdCreateWinCCFlexibleTags.Name = "cmdCreateWinCCFlexibleTags";
             this.cmdCreateWinCCFlexibleTags.Size = new System.Drawing.Size(495, 57);
             this.cmdCreateWinCCFlexibleTags.TabIndex = 5;
@@ -415,7 +415,7 @@
             // 
             this.chkExpandArrays.AutoSize = true;
             this.chkExpandArrays.Location = new System.Drawing.Point(58, 700);
-            this.chkExpandArrays.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkExpandArrays.Margin = new System.Windows.Forms.Padding(7);
             this.chkExpandArrays.Name = "chkExpandArrays";
             this.chkExpandArrays.Size = new System.Drawing.Size(315, 41);
             this.chkExpandArrays.TabIndex = 4;
@@ -425,7 +425,7 @@
             // chkUseErrPrefix
             // 
             this.chkUseErrPrefix.Location = new System.Drawing.Point(47, 267);
-            this.chkUseErrPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkUseErrPrefix.Margin = new System.Windows.Forms.Padding(7);
             this.chkUseErrPrefix.Name = "chkUseErrPrefix";
             this.chkUseErrPrefix.Size = new System.Drawing.Size(385, 40);
             this.chkUseErrPrefix.TabIndex = 4;
@@ -436,7 +436,7 @@
             // 
             this.chkFixedErrorNumber.AutoSize = true;
             this.chkFixedErrorNumber.Location = new System.Drawing.Point(47, 188);
-            this.chkFixedErrorNumber.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.chkFixedErrorNumber.Margin = new System.Windows.Forms.Padding(7);
             this.chkFixedErrorNumber.Name = "chkFixedErrorNumber";
             this.chkFixedErrorNumber.Size = new System.Drawing.Size(415, 41);
             this.chkFixedErrorNumber.TabIndex = 4;
@@ -476,7 +476,7 @@
             // txtTagsPrefix
             // 
             this.txtTagsPrefix.Location = new System.Drawing.Point(250, 745);
-            this.txtTagsPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtTagsPrefix.Margin = new System.Windows.Forms.Padding(7);
             this.txtTagsPrefix.Name = "txtTagsPrefix";
             this.txtTagsPrefix.Size = new System.Drawing.Size(277, 45);
             this.txtTagsPrefix.TabIndex = 1;
@@ -484,7 +484,7 @@
             // txtErrPrefix
             // 
             this.txtErrPrefix.Location = new System.Drawing.Point(432, 263);
-            this.txtErrPrefix.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtErrPrefix.Margin = new System.Windows.Forms.Padding(7);
             this.txtErrPrefix.Name = "txtErrPrefix";
             this.txtErrPrefix.Size = new System.Drawing.Size(95, 45);
             this.txtErrPrefix.TabIndex = 1;
@@ -493,7 +493,7 @@
             // txtStartErrorNumber
             // 
             this.txtStartErrorNumber.Location = new System.Drawing.Point(364, 142);
-            this.txtStartErrorNumber.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtStartErrorNumber.Margin = new System.Windows.Forms.Padding(7);
             this.txtStartErrorNumber.Name = "txtStartErrorNumber";
             this.txtStartErrorNumber.Size = new System.Drawing.Size(163, 45);
             this.txtStartErrorNumber.TabIndex = 1;
@@ -512,7 +512,7 @@
             // txtConnectionName
             // 
             this.txtConnectionName.Location = new System.Drawing.Point(37, 92);
-            this.txtConnectionName.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.txtConnectionName.Margin = new System.Windows.Forms.Padding(7);
             this.txtConnectionName.Name = "txtConnectionName";
             this.txtConnectionName.Size = new System.Drawing.Size(489, 45);
             this.txtConnectionName.TabIndex = 1;
@@ -521,7 +521,7 @@
             // cmdCreateWinCCTags
             // 
             this.cmdCreateWinCCTags.Location = new System.Drawing.Point(47, 798);
-            this.cmdCreateWinCCTags.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCTags.Margin = new System.Windows.Forms.Padding(7);
             this.cmdCreateWinCCTags.Name = "cmdCreateWinCCTags";
             this.cmdCreateWinCCTags.Size = new System.Drawing.Size(495, 63);
             this.cmdCreateWinCCTags.TabIndex = 0;
@@ -532,7 +532,7 @@
             // cmdCreateWinCCErrorMessages
             // 
             this.cmdCreateWinCCErrorMessages.Location = new System.Drawing.Point(47, 428);
-            this.cmdCreateWinCCErrorMessages.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateWinCCErrorMessages.Margin = new System.Windows.Forms.Padding(7);
             this.cmdCreateWinCCErrorMessages.Name = "cmdCreateWinCCErrorMessages";
             this.cmdCreateWinCCErrorMessages.Size = new System.Drawing.Size(495, 110);
             this.cmdCreateWinCCErrorMessages.TabIndex = 0;
@@ -543,7 +543,7 @@
             // cmdCreateFlexibleErrorMessages
             // 
             this.cmdCreateFlexibleErrorMessages.Location = new System.Drawing.Point(47, 320);
-            this.cmdCreateFlexibleErrorMessages.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdCreateFlexibleErrorMessages.Margin = new System.Windows.Forms.Padding(7);
             this.cmdCreateFlexibleErrorMessages.Name = "cmdCreateFlexibleErrorMessages";
             this.cmdCreateFlexibleErrorMessages.Size = new System.Drawing.Size(495, 110);
             this.cmdCreateFlexibleErrorMessages.TabIndex = 0;
@@ -623,7 +623,7 @@
             this.lstProjects.FormattingEnabled = true;
             this.lstProjects.ItemHeight = 36;
             this.lstProjects.Location = new System.Drawing.Point(7, 7);
-            this.lstProjects.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.lstProjects.Margin = new System.Windows.Forms.Padding(7);
             this.lstProjects.Name = "lstProjects";
             this.lstProjects.Size = new System.Drawing.Size(688, 247);
             this.lstProjects.TabIndex = 24;
@@ -634,7 +634,7 @@
             this.cmdProjectsBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmdProjectsBrowser.Font = new System.Drawing.Font("Courier New", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdProjectsBrowser.Location = new System.Drawing.Point(709, 7);
-            this.cmdProjectsBrowser.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.cmdProjectsBrowser.Margin = new System.Windows.Forms.Padding(7);
             this.cmdProjectsBrowser.Name = "cmdProjectsBrowser";
             this.cmdProjectsBrowser.Size = new System.Drawing.Size(196, 247);
             this.cmdProjectsBrowser.TabIndex = 25;
@@ -867,7 +867,7 @@
             // 
             this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainSplitContainer.Location = new System.Drawing.Point(7, 177);
-            this.mainSplitContainer.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.mainSplitContainer.Margin = new System.Windows.Forms.Padding(7);
             this.mainSplitContainer.Name = "mainSplitContainer";
             // 
             // mainSplitContainer.Panel1
@@ -896,7 +896,7 @@
             this.tableLayoutPanel1.Controls.Add(this.chkShowDeleted, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(7);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -914,7 +914,7 @@
             this.tableLayoutPanel2.Controls.Add(this.cmdProjectsBrowser, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(7, 757);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(7);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -926,9 +926,9 @@
             this.viewBlockList.Controls.Add(this.tableLayoutPanel3);
             this.viewBlockList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewBlockList.Location = new System.Drawing.Point(0, 0);
-            this.viewBlockList.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.viewBlockList.Margin = new System.Windows.Forms.Padding(7);
             this.viewBlockList.Name = "viewBlockList";
-            this.viewBlockList.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.viewBlockList.Padding = new System.Windows.Forms.Padding(7);
             this.viewBlockList.Size = new System.Drawing.Size(1797, 1078);
             this.viewBlockList.TabIndex = 0;
             this.viewBlockList.TabStop = false;
@@ -942,7 +942,7 @@
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanelVisu, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(7, 45);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(7);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -958,7 +958,7 @@
             this.flowLayoutPanel1.Controls.Add(this.txtUndeleteName);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 948);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(7);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1769, 71);
             this.flowLayoutPanel1.TabIndex = 11;
@@ -972,12 +972,37 @@
             this.tableLayoutPanelVisu.Controls.Add(this.lstListBox, 0, 0);
             this.tableLayoutPanelVisu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelVisu.Location = new System.Drawing.Point(7, 7);
-            this.tableLayoutPanelVisu.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanelVisu.Margin = new System.Windows.Forms.Padding(7);
             this.tableLayoutPanelVisu.Name = "tableLayoutPanelVisu";
             this.tableLayoutPanelVisu.RowCount = 1;
             this.tableLayoutPanelVisu.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelVisu.Size = new System.Drawing.Size(1769, 927);
             this.tableLayoutPanelVisu.TabIndex = 12;
+            // 
+            // datablockView
+            // 
+            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.datablockView.Location = new System.Drawing.Point(0, 0);
+            this.datablockView.Margin = new System.Windows.Forms.Padding(7);
+            this.datablockView.Name = "datablockView";
+            this.datablockView.Size = new System.Drawing.Size(1797, 1078);
+            this.datablockView.TabIndex = 17;
+            this.datablockView.Text = "wpfElementHost";
+            this.datablockView.Visible = false;
+            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
+            this.datablockView.Child = this.dataBlockViewControl;
+            // 
+            // hexBox
+            // 
+            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.hexBox.Location = new System.Drawing.Point(0, 0);
+            this.hexBox.Margin = new System.Windows.Forms.Padding(7);
+            this.hexBox.Name = "hexBox";
+            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.hexBox.Size = new System.Drawing.Size(1797, 1078);
+            this.hexBox.TabIndex = 18;
             // 
             // dtaPnPbList
             // 
@@ -991,7 +1016,7 @@
             this.dtaPnPbList.ContextMenuStrip = this.exportMenu;
             this.dtaPnPbList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtaPnPbList.Location = new System.Drawing.Point(0, 0);
-            this.dtaPnPbList.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.dtaPnPbList.Margin = new System.Windows.Forms.Padding(7);
             this.dtaPnPbList.Name = "dtaPnPbList";
             this.dtaPnPbList.Size = new System.Drawing.Size(1797, 1078);
             this.dtaPnPbList.TabIndex = 19;
@@ -1030,7 +1055,7 @@
             this.tableLayoutPanel5.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 55);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(7);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 170F));
@@ -1047,35 +1072,10 @@
             this.panel1.Controls.Add(this.lblProjectInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(7, 7);
-            this.panel1.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.panel1.Margin = new System.Windows.Forms.Padding(7);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(2732, 156);
             this.panel1.TabIndex = 0;
-            // 
-            // datablockView
-            // 
-            this.datablockView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datablockView.Location = new System.Drawing.Point(0, 0);
-            this.datablockView.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.datablockView.Name = "datablockView";
-            this.datablockView.Size = new System.Drawing.Size(1797, 1078);
-            this.datablockView.TabIndex = 17;
-            this.datablockView.Text = "wpfElementHost";
-            this.datablockView.Visible = false;
-            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.datablockView.Child = this.dataBlockViewControl;
-            // 
-            // hexBox
-            // 
-            this.hexBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
-            this.hexBox.Location = new System.Drawing.Point(0, 0);
-            this.hexBox.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.hexBox.Name = "hexBox";
-            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBox.Size = new System.Drawing.Size(1797, 1078);
-            this.hexBox.TabIndex = 18;
             // 
             // Form1
             // 
@@ -1088,7 +1088,7 @@
             this.Font = new System.Drawing.Font("Courier New", 9.900001F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.Margin = new System.Windows.Forms.Padding(7);
             this.Name = "Form1";
             this.Text = "Toolbox for Siemens PLCs (c) 2010/2011 Jochen Kühner";
             this.Load += new System.EventHandler(this.Form1_Load);
