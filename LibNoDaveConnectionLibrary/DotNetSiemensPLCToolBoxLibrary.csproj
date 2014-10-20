@@ -113,6 +113,7 @@
     <Compile Include="DataTypes\Network\Network.cs" />
     <Compile Include="DataTypes\Network\NetworkInterface.cs" />
     <Compile Include="DataTypes\Network\NetworkType.cs" />
+    <Compile Include="DataTypes\Projectfolders\Step7V5\S7AnyPointer.cs" />
     <Compile Include="DataTypes\ProjectItem.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIASymbolTableEntry.cs" />
     <Compile Include="DataTypes\Projectfolders\Step7V11\TIABlocksFolder.cs" />

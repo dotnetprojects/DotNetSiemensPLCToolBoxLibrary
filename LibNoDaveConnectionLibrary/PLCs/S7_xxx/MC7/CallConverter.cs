@@ -139,6 +139,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (afterCall == false)
                             {
                                 string key = row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
+
+                                 //Fix for replace db accesses with symbols
+                                 if(myOpt.ReplaceDBAccessesWithSymbolNames && db != "")
+                                 {
+                                     string dbnr = db.Substring(0, db.Length - 1);
+                                     string dbSymbol = Helper.TryGetSymbolFromOperand(myblkFld, dbnr);
+                                     db = (dbSymbol != null ? "\"" + dbSymbol + "\"" : dbnr) + ".";
+                                     akPar = Helper.TryGetStructuredName(myblkFld, dbnr, akPar);
+                                 }
+                                 //end fix
                                 if (!Parameters.ContainsKey(key))
                                     Parameters.Add("P#V " + key + ".0", db + akPar);
                             }
@@ -244,13 +254,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             string p3 = Parameters["P#V " + (lokaldata_address + 4).ToString() + ".0"];
                                             string p4 = Parameters["P#V " + (lokaldata_address + 6).ToString() + ".0"];
 
-                                            tmp = "P#";
-                                            if (p3 != "0")
-                                                tmp += "DB" + p3 + ".";
-                                            tmp += p4.Substring(2);
-                                            var wrt = (S7DataRowType) int.Parse(p1.Substring(p1.Length - 2));
-                                            tmp += " " + wrt.ToString() + " "; // " BYTE "; 
-                                            tmp += BitConverter.ToUInt16(BitConverter.GetBytes(Int16.Parse(p2)), 0).ToString();
+                                            //Fix for wrong construction of any pointers
+                                             var anyPtr = new S7AnyPointer(p1, p2, p3, p4);
+                                             if (myOpt.ReplaceDBAccessesWithSymbolNames)
+                                             {
+                                                 //TODO: make the any pointer symbolic.
+                                                 tmp = "" + anyPtr.ToString();
+                                             }
+                                             else
+                                                 tmp = anyPtr.ToString();
+                                             
+                                             //end fix
+                                             //tmp = "P#";
+                                             //if (p3 != "0")
+                                             //    tmp += "DB" + p3 + ".";
+                                             //tmp += p4.Substring(2);
+                                             //tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
+                                             //tmp += p2;
                                         }
                                         newPar.Value = tmp;
                                         newRow.CallParameter.Add(newPar);
@@ -326,7 +346,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 else if (akRow.ByteLength == 4)
                                                     ber += "D";
 
-                                                newPar.Value = ber.Replace('V', 'L') + ak_address.ToString();
+                                                 var access = ber.Replace('V', 'L') + ak_address;
+ 
+                                                 //fix for temporary area not replaced with symbolnames
+                                                 if(myOpt.ReplaceLokalDataAddressesWithSymbolNames)
+                                                 {
+                                                     var tempSymbol = S7DataRow.GetDataRowWithAddress(myFct.Parameter, new ByteBitAddress(ak_address, 0));
+                                                     if (tempSymbol != null) access = "#" + tempSymbol.StructuredName.Replace("TEMP.","");
+                                                 }
+                                                 newPar.Value = access;
                                                 
                                             }                                    
                                         }
