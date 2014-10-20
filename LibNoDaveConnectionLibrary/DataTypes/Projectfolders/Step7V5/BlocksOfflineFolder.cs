@@ -599,11 +599,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                     if (akRw.CombineDBAccess)
                                                     {
                                                         S7FunctionBlockRow nRw = (S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode + 1];
-                                                        nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
-                                                        nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
+                                                        if (!nRw.Parameter.Contains("["))
+                                                        {
+                                                            nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
+                                                            nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
 
-                                                        akRw = nRw;
-                                                        retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
+                                                            akRw = nRw;
+                                                            retVal.AWLCode.RemoveAt(akRowInAwlCode + 1);
+                                                        }
                                                     }
 
                                                     if (!newAwlCode.Contains(akRw))
