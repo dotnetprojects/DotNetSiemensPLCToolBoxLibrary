@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -293,6 +293,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
                                             {
                                                 newPar.Value = (char) Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'";
+                                            }
+                                            else if (akRow.DataType == S7DataRowType.REAL)
+                                            {
+                                                var bt = new byte[4];
+                                                libnodave.putS32at(bt, 0, Int32.Parse(par.Substring(2)));
+                                                var real = libnodave.getFloatfrom(bt, 0);
+                                                newPar.Value = real.ToString("e6", CultureInfo.InvariantCulture);
                                             }
                                             else
                                             {
