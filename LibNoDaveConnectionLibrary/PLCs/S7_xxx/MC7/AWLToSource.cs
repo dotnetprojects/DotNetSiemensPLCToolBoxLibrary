@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -15,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// <param name="datrw"></param>
         /// <param name="leerz"></param>
         /// <returns></returns>
-        public static string DataRowToSource(S7DataRow datrw, string leerz)
+        public static string DataRowToSource(S7DataRow datrw, string leerz, bool withoutStartValue = false)
         {
             string retval = "";
             foreach (S7DataRow s7DataRow in datrw.Children)
@@ -35,12 +36,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 if (s7DataRow.DataType == S7DataRowType.STRING)
                 {
-                    if (s7DataRow.StartValue != null && s7DataRow.StartValue.ToString() != "")
+                    if (s7DataRow.StartValue != null && s7DataRow.StartValue.ToString() != "" && !withoutStartValue)
                     {
                         val += " := " + s7DataRow.StartValue.ToString() + "";
                     }
                 }
-                else if (s7DataRow.StartValue != null)
+                else if (s7DataRow.StartValue != null && !withoutStartValue)
                 {
                     string valuePrefix = "";
                     switch (s7DataRow.DataType)
@@ -51,7 +52,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             valuePrefix = "16#";
                             break;
                     }
-                    val += " := " + valuePrefix + s7DataRow.StartValue.ToString();
+                    val += " := " + valuePrefix;
+
+                    if ((s7DataRow.DataType == S7DataRowType.REAL))
+                        val += s7DataRow.StartValueAsString;
+                    else
+                        val += s7DataRow.StartValue.ToString();
                 }
 
                 if (!string.IsNullOrEmpty(s7DataRow.Comment))

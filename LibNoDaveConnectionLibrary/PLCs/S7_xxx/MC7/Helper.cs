@@ -1341,47 +1341,47 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return Result;
         }
 
-        public static string TryGetSymbolFromOperand(IProjectFolder folder,string operand)
-        {
-            var programFolder = folder.Parent as S7ProgrammFolder;
-            if(programFolder == null) return null;
-            if (programFolder.SymbolTable == null) return null;
-            var ste = programFolder.SymbolTable.GetEntryFromOperand(operand);
-            return ste == null ? null : ste.Symbol;
-        }
-
-        public static string TryGetOperandFromSymbol(IProjectFolder folder, string symbol)
-        {
-            var programFolder = folder.Parent as S7ProgrammFolder;
-            if (programFolder == null) return null;
-            if (programFolder.SymbolTable == null) return null;
-            var o = symbol.Replace("\"", "");
-            var ste = programFolder.SymbolTable.GetEntryFromSymbol(o);
-            return ste == null ? null : ste.Operand;
-        }
-
-        private static ByteBitAddress blockAddress = new ByteBitAddress(0,0);
-        public static string TryGetStructuredName(ProjectFolder folder,string operand,string dbAddress,bool isForAnyPointer = false)
-        {
-            if (!(folder is BlocksOfflineFolder)) return dbAddress;
-            var f = folder as BlocksOfflineFolder;
-            var o = operand.Replace(" ", "");
-            var dbBlock = f.GetBlock(o, new S7ConvertingOptions {Mnemonic = folder.Project.ProjectLanguage}) as S7DataBlock;
-            if (dbBlock == null) return dbAddress;
-            var address = dbAddress.Replace(" ", "");
-            var pointPosition = address.IndexOf('.');
-            blockAddress.ByteAddress = int.Parse(pointPosition < 0 ? address.Substring(3) : address.Substring(3, pointPosition - 3));
-            blockAddress.BitAddress = int.Parse(pointPosition < 0 ? "0" : address.Substring(address.Length - 1));
-            var dbRow = dbBlock.GetDataRowWithAddress(blockAddress);
-            if (dbRow == null) return dbAddress;
-            if (dbRow.DataType != S7DataRowType.STRING)
-                return  dbRow.StructuredName;
-            var byteOffset = blockAddress.ByteAddress - dbRow.BlockAddress.ByteAddress;
-            if (pointPosition < 0 && (byteOffset)>1) //if its not using a bit access to access the string variable
-                return dbRow.StructuredName + "[" + (byteOffset - 2) + "]";
-            if (isForAnyPointer && byteOffset == 0)
-                return dbRow.StructuredName;
-            return dbAddress;
-        }
+        public static string TryGetSymbolFromOperand(IProjectFolder folder, string operand)
+         {
+             var programFolder = folder.Parent as S7ProgrammFolder;
+             if(programFolder == null) return null;
+             if (programFolder.SymbolTable == null) return null;
+             var ste = programFolder.SymbolTable.GetEntryFromOperand(operand);
+             return ste == null ? null : ste.Symbol;
+         }
+ 
+         public static string TryGetOperandFromSymbol(IProjectFolder folder, string symbol)
+         {
+             var programFolder = folder.Parent as S7ProgrammFolder;
+             if (programFolder == null) return null;
+             if (programFolder.SymbolTable == null) return null;
+             var o = symbol.Replace("\"", "");
+             var ste = programFolder.SymbolTable.GetEntryFromSymbol(o);
+             return ste == null ? null : ste.Operand;
+         }
+ 
+         private static ByteBitAddress blockAddress = new ByteBitAddress(0, 0);
+         public static string TryGetStructuredName(ProjectFolder folder, string operand, string dbAddress, bool isForAnyPointer = false)
+         {
+             if (!(folder is BlocksOfflineFolder)) return dbAddress;
+             var f = folder as BlocksOfflineFolder;
+             var o = operand.Replace(" ", "");
+             var dbBlock = f.GetBlock(o, new S7ConvertingOptions { Mnemonic = folder.Project.ProjectLanguage }) as S7DataBlock;
+             if (dbBlock == null) return dbAddress;
+             var address = dbAddress.Replace(" ", "");
+             var pointPosition = address.IndexOf('.');
+             blockAddress.ByteAddress = int.Parse(pointPosition< 0 ? address.Substring(3) : address.Substring(3, pointPosition - 3));
+             blockAddress.BitAddress = int.Parse(pointPosition< 0 ? "0" : address.Substring(address.Length - 1));
+             var dbRow = dbBlock.GetDataRowWithAddress(blockAddress);
+             if (dbRow == null) return dbAddress;
+             if (dbRow.DataType != S7DataRowType.STRING)
+                 return  dbRow.StructuredName;
+             var byteOffset = blockAddress.ByteAddress - dbRow.BlockAddress.ByteAddress;
+             if (pointPosition< 0 && (byteOffset)>1) //if its not using a bit access to access the string variable
+                 return dbRow.StructuredName + "[" + (byteOffset - 2) + "]";
+             if (isForAnyPointer && byteOffset == 0)
+                 return dbRow.StructuredName;
+             return dbAddress;
+         }
     }
 }

@@ -27,8 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
@@ -103,8 +101,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 name = SymbolTableEntry.Symbol;
             }
-            retVal.AppendLine("DATA_BLOCK " + name);
+
+            if (this.BlockType == PLCBlockType.UDT)
+                retVal.AppendLine("TYPE " + name);
+            else
+                retVal.AppendLine("DATA_BLOCK " + name);
             retVal.AppendLine("TITLE =" + this.Title);
+
             if (!string.IsNullOrEmpty(this.Author))
                 retVal.AppendLine("AUTHOR : " + this.Author);
             if (!string.IsNullOrEmpty(this.Name))
@@ -118,25 +121,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (this.Structure.Children != null && !this.IsInstanceDB)
             {
                 retVal.AppendLine("  STRUCT");
-                //retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
-                string structSource = AWLToSource.DataRowToSource((S7DataRow)this.Structure, "    ");
-                if (useSymbols) 
-                {
-                    Regex regex = new Regex(@"UDT[\s?]*(\d*)");
-                    foreach (Match match in regex.Matches(structSource))
-                    {
-                        string operand = match.Value;
-                        if (!match.Success || !structSource.Contains(operand)) continue;
-                        string symbol = operand;
-                        if (SymbolTable != null)
-                        {
-                            SymbolTableEntry symbolTableEntry = SymbolTable.GetEntryFromOperand("UDT" + match.Groups[1].Value);
-                            if (symbolTableEntry != null) symbol = symbolTableEntry.Symbol;
-                        }
-                        structSource = structSource.Replace(operand, symbol);
-                    }
-                }
-                retVal.Append(structSource);
+                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
                 retVal.AppendLine("  END_STRUCT ;");
 
             }
@@ -151,8 +136,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 else
                     retVal.AppendLine(" FB " + this.FBNumber);
             }
-            retVal.AppendLine("BEGIN");
-            retVal.AppendLine("END_DATA_BLOCK");
+            if (this.BlockType != PLCBlockType.UDT)
+            {
+                retVal.AppendLine("BEGIN");
+                //db data???
+            }
+
+            if (this.BlockType == PLCBlockType.UDT)
+                retVal.AppendLine("END_TYPE");
+            else
+                retVal.AppendLine("END_DATA_BLOCK");
+
             return retVal.ToString();
         }
 

@@ -269,10 +269,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     x.UnitID = Convert.ToInt32(row["TUNITID"]);
                                     x.TobjTyp = Convert.ToInt32(row["TOBJTYP"]);
                                     x.ID = Convert.ToInt32(row["SOBJID"]);
-                                    x.TobjId = Convert.ToInt32(row["TOBJID"]);
+                                    //x.TobjId = Convert.ToInt32(row["TOBJID"]);
                                     x.Parent = z;
 
-                                    if (x.TobjTyp == 1314972)
+                                    //if (x.TobjTyp == 1314972)
                                     {
                                         //if (!z.SubItems.OfType<CPFolder>().Any(j=>j.UnitID == x.UnitID && j.TobjTyp == x.TobjTyp && j.ID == x.ID && j.TobjId == x.TobjId))
                                         {
@@ -282,6 +282,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                int sobjid;
+                foreach (DataRow row in dbfTbl.Rows)
+                {
+                    if (!(bool) row["DELETED_FLAG"] || _showDeleted)
+                    {
+                        if ((int) row["RELID"] == 64)
+                        {
+                            sobjid = (int) row["SOBJID"];
+                            var cps = CPFolders.Where(x => x.ID == sobjid);
+                            if (cps.Count() > 0)
+                                cps.First().TobjId = (int) row["TOBJID"];
                         }
                     }
                 }

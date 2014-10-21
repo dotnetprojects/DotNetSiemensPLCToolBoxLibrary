@@ -306,6 +306,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             tmpType = tmpType.Trim().ToUpper();
 
+                            if (tmpType.EndsWith("OF"))
+                            {
+                                n++;
+                                tmpType += " " + rows[n].Replace("\t", "").Replace("\r", "");
+                            }
                             S7DataRow addRW = new S7DataRow(tmpName, S7DataRowType.UNKNOWN, myBlk);
                             lastrow = addRW;
 
