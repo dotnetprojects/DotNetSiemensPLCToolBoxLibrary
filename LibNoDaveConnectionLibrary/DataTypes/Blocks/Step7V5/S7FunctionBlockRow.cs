@@ -697,7 +697,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     len = cpar.Name.Length > len ? cpar.Name.Length : len;
                 foreach (var cpar in CallParameter)
                 {
-                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + ":=" + cpar.GetValue(useSymbol);
+                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + " := " + cpar.GetValue(useSymbol) + (!addSemicolonAfterCommand?"":",");
                     if (!string.IsNullOrEmpty(cpar.Comment))
                         ext += "  //" + cpar.Comment;
                 }
@@ -771,7 +771,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
             if (!string.IsNullOrEmpty(cmt))
                 par = par.PadRight(14);
-
+            if(Command == "CALL" && addSemicolonAfterCommand)
+            {
+                if (ext.EndsWith(",")) ext = ext.Substring(0, ext.Length - 1) + ");";
+                return retVal + Command.PadRight(6) + par + (ext.EndsWith(";")?"(":"") + cmt + ext;
+            }
             return retVal + Command.PadRight(6) + par + (addSemicolonAfterCommand == true ? ";" : "") + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }
     }

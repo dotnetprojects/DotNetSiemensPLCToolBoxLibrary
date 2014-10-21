@@ -142,7 +142,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
-                name = SymbolTableEntry.Symbol;
+                name = "\""+SymbolTableEntry.Symbol+"\"";
             }
             if (this.BlockType == PLCBlockType.FC)
                 retVal.AppendLine("FUNCTION " + name + " : VOID");
