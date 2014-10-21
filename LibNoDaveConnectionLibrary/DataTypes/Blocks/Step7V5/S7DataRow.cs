@@ -123,6 +123,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             newRow.TimeStampConflict = this.TimeStampConflict;
             newRow.isInOut = this.isInOut;
             newRow.isRootBlock = this.isRootBlock;
+            newRow.Value = this.Value;
             
 
             if (Children!=null)

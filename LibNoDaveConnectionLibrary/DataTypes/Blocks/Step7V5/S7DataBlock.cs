@@ -139,6 +139,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (this.BlockType != PLCBlockType.UDT)
             {
                 retVal.AppendLine("BEGIN");
+                retVal.Append(AWLToSource.DataRowValueToSource(((S7DataRow)this.Structure), "    "));
                 //db data???
             }
 

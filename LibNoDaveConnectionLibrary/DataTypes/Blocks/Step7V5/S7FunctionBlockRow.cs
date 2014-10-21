@@ -692,12 +692,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             if (CallParameter != null && CallParameter.Count > 0 && (Command == Mnemonic.opCALL[(int)MnemonicLanguage]))
             {
+                int i = 0;
                 int len = 0;
                 foreach (var cpar in CallParameter)
                     len = cpar.Name.Length > len ? cpar.Name.Length : len;
                 foreach (var cpar in CallParameter)
                 {
-                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + ":=" + cpar.GetValue(useSymbol);
+                    i++;
+                    ext += "\r\n" + " ".PadLeft(12) + cpar.Name.PadRight(len) + " := " + cpar.GetValue(useSymbol);
+                    if (i < CallParameter.Count)
+                        ext += ",";
+                    else
+                        ext += ")";
                     if (!string.IsNullOrEmpty(cpar.Comment))
                         ext += "  //" + cpar.Comment;
                 }
@@ -715,7 +721,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             if (Command == "CALL" && !String.IsNullOrEmpty(DiName))
             {
-                var nm = DiName;
+                var nm = DiName.Replace("DI", "DB");
                 if (useDataBlocksSymbolic && this.Parent != null)
                 {
                     if ((this.Parent).SymbolTable != null)
@@ -726,13 +732,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                         if (!DiName.StartsWith("#"))
                         {
-                            var sym2 = this.Parent.SymbolTable.GetEntryFromOperand(nm.Replace("DI", "DB"));
+                            var sym2 = this.Parent.SymbolTable.GetEntryFromOperand(nm);
                             if (sym2 != null) 
                                 nm = "\"" + sym2.Symbol + "\"";
                         }
                     }
                 }
-                par += ", " + nm;
+                par += ", " + nm;               
             }
             else if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
             {
@@ -769,10 +775,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 var sym = SymbolTableEntry;
                 if (sym != null && useSymbol) par = "\"" + sym.Symbol + "\"";
             }
+
+            if (Command == "CALL")
+            {
+                if (ext != "")
+                    par += " (";
+            }
+
             if (!string.IsNullOrEmpty(cmt))
                 par = par.PadRight(14);
 
-            return retVal + Command.PadRight(6) + par + (addSemicolonAfterCommand == true ? ";" : "") + cmt + ext; // +"Sz:" + ByteSize.ToString();
+            return retVal + Command.PadRight(6) + par + (ext == "" && addSemicolonAfterCommand == true ? ";" : "") + cmt +
+                   ext + (ext != "" && addSemicolonAfterCommand == true ? ";" : ""); // +"Sz:" + ByteSize.ToString();
         }
     }
 }
