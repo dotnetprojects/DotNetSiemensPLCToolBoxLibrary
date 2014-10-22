@@ -1078,10 +1078,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     byte[] searchName = { (byte)'B', (byte)'a', (byte)'u', (byte)'g', (byte)'r', (byte)'u', (byte)'p', (byte)'p', (byte)'e', (byte)'n', (byte)'n', (byte)'a', (byte)'m', (byte)'e' };
 
                     byte[] startStructure = { 0x03, 0x52, 0x14, 0x00 };
-                    byte[] startIP = { 0xE0, 0x0F, 0x00, 0x00, 0xE0, 0x0F, 0x00, 0x00, 0x00 };
-                    byte[] startMAC = { 0xA2, 0x0F, 0x00, 0x00, 0xA2, 0x0F, 0x00, 0x00, 0x00 };
-                    byte[] startMask = { 0xE5, 0x0F, 0x00, 0x00, 0xE5, 0x0F, 0x00, 0x00, 0x00 };
-                    byte[] startRouter = { 0xE3, 0x0F, 0x00, 0x00, 0xE3, 0x0F, 0x00, 0x00, 0x00 };
+                    byte[] startIP = { 0xE0, 0x0F, 0x00, 0x00, 0xE0, 0x0F, 0x00, 0x00 };
+                    byte[] startMAC = { 0xA2, 0x0F, 0x00, 0x00, 0xA2, 0x0F, 0x00, 0x00 };
+                    byte[] startMask = { 0xE5, 0x0F, 0x00, 0x00, 0xE5, 0x0F, 0x00, 0x00 };
+                    byte[] startRouter = { 0xE3, 0x0F, 0x00, 0x00, 0xE3, 0x0F, 0x00, 0x00 };
+                    byte[] startUseRouter = { 0xE8, 0x0F, 0x00, 0x00, 0xE8, 0x0F, 0x00, 0x00 };
+                    byte[] startUseIP = { 0xEA, 0x0F, 0x00, 0x00, 0xEA, 0x0F, 0x00, 0x00 };
+                    byte[] startUseMac = { 0xED, 0x0F, 0x00, 0x00, 0xED, 0x0F, 0x00, 0x00 };
                     int position = 0;
                     int lenStructure = 1960;  //I don't think this len is correct... (look)
                     while ((position = indexOfByteArray(completeBuffer, startStructure, position + 1, lengthFile)) >= 0)
@@ -1174,12 +1177,37 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 bIP[1] = byte.Parse(strRouter.Substring(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
                                 bIP[2] = byte.Parse(strRouter.Substring(4, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
                                 bIP[3] = byte.Parse(strRouter.Substring(6, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
-                                var ip = new System.Net.IPAddress(bIP);
-                                if (ethernet == null || !ip.Equals(ethernet.IpAddress))
-                                {
-                                    ethernet.Router = ip;
-                                    ethernet.UseRouter = true;
-                                }
+                                ethernet.Router = new System.Net.IPAddress(bIP);
+                            }
+                            catch
+                            { }
+                        }
+                        pos = indexOfByteArray(completeBuffer, startUseRouter, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                ethernet.UseRouter = Convert.ToByte(completeBuffer[pos + 19]) == 1;
+                            }
+                            catch
+                            { }
+                        }
+                        pos = indexOfByteArray(completeBuffer, startUseIP, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                ethernet.UseIp = Convert.ToByte(completeBuffer[pos + 19]) == 1;
+                            }
+                            catch
+                            { }
+                        }
+                        pos = indexOfByteArray(completeBuffer, startUseMac, position, lenStructure);
+                        if (pos > 0)
+                        {
+                            try
+                            {
+                                ethernet.UseIso = Convert.ToByte(completeBuffer[pos + 19]) == 1;
                             }
                             catch
                             { }
@@ -1190,7 +1218,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             catch (Exception ex)
             { }
         }
-
+        ////// for test //////
+        private string writeBytes(byte[] mas, int start, int end)
+        {
+            string ret = "";
+            for (int ii = start; ii < end && ii < mas.Length; ii++)
+            {
+                ret += string.Format(" {0:X2}", mas[ii]);
+            }
+            return ret;
+        }
         private int indexOfByteArray(byte[] array, byte[] pattern, int offset, int maxLen)
         {
             int success = 0;
