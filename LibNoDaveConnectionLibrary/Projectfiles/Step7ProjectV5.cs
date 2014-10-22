@@ -20,6 +20,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         const int objectType_Simatic300 = 1314969;
         const int objectType_Simatic400 = 1314970;
         const int objectType_Simatic400H = 1315650;
+        const int objectType_EternetInCPU3xx = 2364796;
+        const int objectType_EternetInCPU4xx = 2364763;
         
         private string _offlineblockdb;
 
@@ -871,7 +873,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             pnMasterSystems.Add(new ProfinetMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] });
                         }
-                        else if ( objType == 2364796 )
+                        else if (objType == objectType_EternetInCPU3xx || objType == objectType_EternetInCPU4xx)
                         {
                             var cpu = CPUFolders.FirstOrDefault(x => x.ID == Convert.ToInt32(row["UNITID"]));
                             if (cpu != null) cpu.IdTobjId = Convert.ToInt32(row["ID"]);
@@ -916,7 +918,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         lnkLst.Add(new LinkHelp() { SOBJID = (int)row["SOBJID"], SOBJTYP = (int)row["SOBJTYP"], RELID = (int)row["RELID"], TOBJID = (int)row["TOBJID"], TOBJTYP = (int)row["TOBJTYP"], TUNITID = (int)row["TUNITID"], TUNITTYP = (int)row["TUNITTYP"] });
                     }
                 }
-
                 foreach (StationConfigurationFolder station in stations)
                 {
                     var lnks = lnkLst.Where(x => x.TOBJTYP == station.ObjTyp && x.TOBJID == station.ID);
@@ -1086,7 +1087,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     byte[] startUseIP = { 0xEA, 0x0F, 0x00, 0x00, 0xEA, 0x0F, 0x00, 0x00 };
                     byte[] startUseMac = { 0xED, 0x0F, 0x00, 0x00, 0xED, 0x0F, 0x00, 0x00 };
                     int position = 0;
-                    int lenStructure = 1960;  //I don't think this len is correct... (look)
+                    int lenStructure = 1705;// 1960;  //I don't think this len is correct... (look)
                     while ((position = indexOfByteArray(completeBuffer, startStructure, position + 1, lengthFile)) >= 0)
                     {
                         int number = BitConverter.ToInt32(completeBuffer, position + 4);//or ToInt16
@@ -1187,7 +1188,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             try
                             {
-                                ethernet.UseRouter = Convert.ToByte(completeBuffer[pos + 19]) == 1;
+                                ethernet.UseRouter = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
                             { }
@@ -1197,7 +1198,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             try
                             {
-                                ethernet.UseIp = Convert.ToByte(completeBuffer[pos + 19]) == 1;
+                                ethernet.UseIp = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
                             { }
@@ -1207,7 +1208,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             try
                             {
-                                ethernet.UseIso = Convert.ToByte(completeBuffer[pos + 19]) == 1;
+                                ethernet.UseIso = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
                             { }
@@ -1215,18 +1216,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
-            catch (Exception ex)
-            { }
-        }
-        ////// for test //////
-        private string writeBytes(byte[] mas, int start, int end)
-        {
-            string ret = "";
-            for (int ii = start; ii < end && ii < mas.Length; ii++)
+            catch { }
+            //union SubModul Cp
+            bool repeat;
+            do
             {
-                ret += string.Format(" {0:X2}", mas[ii]);
-            }
-            return ret;
+                repeat = false;
+                foreach (var cp in CPFolders.Where(x => x.SubModul != null))
+                {
+                    if (cp.NetworkInterfaces == null) cp.NetworkInterfaces = new List<NetworkInterface>();
+                    cp.NetworkInterfaces.AddRange(cp.SubModul.NetworkInterfaces);
+                    CPFolders.Remove(cp.SubModul);
+                    cp.SubModul = null;
+                    repeat = true;
+                    break;
+                }
+            } while (repeat);
         }
         private int indexOfByteArray(byte[] array, byte[] pattern, int offset, int maxLen)
         {
@@ -1250,7 +1255,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private SymbolTable _GetSymTabForProject(S7ProgrammFolder myBlockFolder, bool showDeleted)
         {
-            string tmpId1 = "";
+            //string tmpId1 = "";
 
             var retVal = new SymbolTable() { Project = this };
 
