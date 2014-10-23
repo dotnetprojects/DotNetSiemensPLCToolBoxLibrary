@@ -106,6 +106,7 @@
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNetwork.cs" />
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNode.cs" />
     <Compile Include="DataTypes\MultiLanguangeString.cs" />
+    <Compile Include="DataTypes\Network\MpiProfiBusNetworkInterface.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />

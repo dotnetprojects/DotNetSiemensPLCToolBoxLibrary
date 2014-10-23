@@ -30,6 +30,8 @@ Thanks go to Human (SPS-Forum) for his work on MC7toAWL and Thomas_V2 (SPS-Forum
 
 And to Brian Duke for his DBF parsing Code: http://www.codeproject.com/KB/bugs/LoadDBF.aspx
 
+SevenMag -> For CP Read Code
+
 
 
 

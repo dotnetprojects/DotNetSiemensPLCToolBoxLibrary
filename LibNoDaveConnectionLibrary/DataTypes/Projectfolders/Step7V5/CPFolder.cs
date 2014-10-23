@@ -8,7 +8,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     {
         internal int UnitID;
         internal int TobjTyp;
-        internal int TobjId;
+        internal List<int> IdTobjId;
+        internal List<int> TobjId;
+        internal int SubModulNumber;
+        internal CPFolder SubModul;
 
         public int Rack { get; set; }
         public int Slot { get; set; }
@@ -18,11 +21,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public override string ToString()
         {
             var retVal = base.ToString();
-            retVal += "UnitID:" + UnitID + Environment.NewLine;
-            retVal += "Id:" + ID + Environment.NewLine;
-            retVal += "TobjTyp:" + TobjTyp + Environment.NewLine;
-            retVal += "TobjId:" + TobjId + Environment.NewLine;
-
+           
             if (NetworkInterfaces != null)
             {
                 retVal += Environment.NewLine;

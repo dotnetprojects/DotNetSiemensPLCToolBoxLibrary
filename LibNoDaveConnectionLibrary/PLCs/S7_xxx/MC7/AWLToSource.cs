@@ -81,5 +81,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             }
             return retval;
         }
+
+        public static string DataRowValueToSource(S7DataRow datrw, string leerz)
+        {
+            var retval = new StringBuilder();
+            foreach (S7DataRow s7DataRow in datrw.Children)
+            {
+                if (s7DataRow.DataType == S7DataRowType.STRUCT)
+                {
+                    retval.Append(DataRowValueToSource(s7DataRow, leerz + " "));
+                }
+                else
+                {
+                    retval.AppendLine(leerz + s7DataRow.Name + " := " + s7DataRow.ValueAsString + ";");
+                }
+            }
+            return retval.ToString();
+        }
     }
 }
