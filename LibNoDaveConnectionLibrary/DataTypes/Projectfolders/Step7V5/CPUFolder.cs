@@ -7,7 +7,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     public class CPUFolder : Step7ProjectFolder, IHardwareFolder
     {
         internal int UnitID;
-        internal int TobjTyp;        
+        internal int TobjTyp;
+        internal int IdTobjId;
+        internal int TobjId;
         public PLCType CpuType { get; set; }
 
         public string PasswdHard { get; set; }

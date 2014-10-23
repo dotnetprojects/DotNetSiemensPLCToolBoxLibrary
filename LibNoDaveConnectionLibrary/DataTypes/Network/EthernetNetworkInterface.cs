@@ -9,6 +9,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Network
 {
     public class EthernetNetworkInterface : NetworkInterface
     {
+        public EthernetNetworkInterface()
+        {
+            this.NetworkInterfaceType = NetworkType.Ethernet;
+        }
         public bool UseIso { get; set; }
         public PhysicalAddress Mac { get; set; }
         public bool UseIp { get; set; }
