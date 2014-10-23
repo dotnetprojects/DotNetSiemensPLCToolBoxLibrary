@@ -1186,69 +1186,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     while ((position = indexOfByteArray(completeBuffer, startStructure, position + 1, lengthFile)) >= 0)
                     {
                         int number = BitConverter.ToInt32(completeBuffer, position + 4);//or ToInt16
-                        //////////////////// parser ///////////////////////
-                        byte[] bbb = new byte[1960];
-                        Array.Copy(completeBuffer, position, bbb, 0, 1960);
-                        File.WriteAllBytes(@"d:\Programs\PLC\PLC_test\" + number + ".dat", bbb);
-                        List<byte[]> arrayRaed = new List<byte[]>();
-
-                        arrayRaed.Add(new byte[] { 0x65, 0x00 });
-                        arrayRaed.Add(new byte[] { 0xF3, 0x0F });
-                        arrayRaed.Add(new byte[] { 0x01, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x02, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x05, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x06, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x07, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x08, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x09, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x0F, 0x10 });
-                        arrayRaed.Add(new byte[] { 0x01, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0xDF, 0x0F });
-                        arrayRaed.Add(new byte[] { 0xE0, 0x0F });//ip
-                        arrayRaed.Add(new byte[] { 0xA2, 0x0F });//mac
-                        arrayRaed.Add(new byte[] { 0xE1, 0x0F });
-                        arrayRaed.Add(new byte[] { 0xE2, 0x0F });
-                        arrayRaed.Add(new byte[] { 0xE5, 0x0F });//mask
-                        arrayRaed.Add(new byte[] { 0xE6, 0x0F });
-                        arrayRaed.Add(new byte[] { 0xE3, 0x0F });//router
-                        arrayRaed.Add(new byte[] { 0xE8, 0x0F });//point + 19 = useRouter
-                        arrayRaed.Add(new byte[] { 0xE9, 0x0F });
-                        arrayRaed.Add(new byte[] { 0xEA, 0x0F });//point + 19 = useIP
-                        arrayRaed.Add(new byte[] { 0xED, 0x0F });//point + 19 = useMAC
-                        arrayRaed.Add(new byte[] { 0x02, 0xB0 });//
-                        arrayRaed.Add(new byte[] { 0x03, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x04, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x05, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x06, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x07, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x08, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x0A, 0xB0 });
-                        arrayRaed.Add(new byte[] { 0x0B, 0xB0 });
-
-                        List<int> points = new List<int>();
-                        //////
-                        byte[] poi = new byte[8];
-                        poi[2] = poi[3] = poi[6] = poi[7] = 0;
-                        int pointPos;
-                        foreach(var b2 in arrayRaed)
-                        {
-                            poi[0] = poi[4] = b2[0];
-                            poi[1] = poi[5] = b2[1];
-                            pointPos = indexOfByteArray(bbb, poi, 0, 1960);
-                            if ( pointPos >= 0)
-                                points.Add(pointPos);
-                        }
-                        points.Add(1960);
-                        points.Sort();
-                        List<string> massive = new List<string>();
-                        massive.Add("0000         " + writeBytes(bbb, 6, points[0]));
-                        for( int ii = 0; ii < points.Count - 1; ii++)
-                        {
-                            massive.Add(points[ii].ToString("D4") + string.Format(" {0:X2} {1:X2}   ", bbb[points[ii]], bbb[points[ii] + 1]) + writeBytes(bbb, points[ii] + 8, points[ii + 1]));
-                        }
-                        File.WriteAllLines(@"d:\Programs\PLC\PLC_test\" + number + "T.txt", massive);
-                        
-                        //////////////////// end parser ///////////////////////
                         //Debug.Print(number.ToString());
                         var cp = CPFolders.FirstOrDefault(x => x.TobjId != null && x.TobjId.Any(y => y == number));
                         var cpu = CPUFolders.FirstOrDefault(x => x.TobjId == number);
@@ -1478,16 +1415,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     break;
                 }
             } while (repeat);
-        }
-        ////// for test //////
-        private string writeBytes(byte[] mas, int start, int end)
-        {
-            string ret = "";
-            for (int ii = start; ii < end && ii < mas.Length; ii++)
-            {
-                ret += string.Format(" {0:X2}", mas[ii]);
-            }
-            return ret;
         }
         private int indexOfByteArray(byte[] array, byte[] pattern, int offset, int maxLen)
         {
