@@ -292,11 +292,15 @@ namespace JFK_VarTab
                         lstListBox.Items.Add("Password: " + cpu.PasswdHard);
                         lstListBox.Items.Add("CpuType: " + cpu.CpuType);
 
+                        if (cpu.NetworkInterfaces != null)
+                        {
+                            foreach (var networkInterface in cpu.NetworkInterfaces)
+                            {
+                                lstListBox.Items.Add("Network-Interface: " + networkInterface.ToString());
+                            }
+                        }
                     }
                     viewBlockList.Visible = true;
-
-
-
                 }
                 else if (tmp.myObject is CPFolder)
                 {

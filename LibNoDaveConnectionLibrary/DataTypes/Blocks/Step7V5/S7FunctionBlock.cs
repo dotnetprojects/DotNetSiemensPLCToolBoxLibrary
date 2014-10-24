@@ -162,17 +162,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 foreach (S7DataRow s7DataRow in this.Parameter.Children)
                 {
-                    string parnm = s7DataRow.Name;
-                    string ber = "VAR_" + parnm;
-                    if (parnm == "IN")
-                        ber = "VAR_INPUT";
-                    else if (parnm == "OUT")
-                        ber = "VAR_OUTPUT";
-                    else if (parnm == "STATIC")
-                        ber = "VAR";
-                    retVal.AppendLine(ber);
-                    retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  "));
-                    retVal.AppendLine("END_VAR");
+                    if (s7DataRow.Children.Count > 0)
+                    {
+                        string parnm = s7DataRow.Name;
+                        string ber = "VAR_" + parnm;
+                        if (parnm == "IN")
+                            ber = "VAR_INPUT";
+                        else if (parnm == "OUT")
+                            ber = "VAR_OUTPUT";
+                        else if (parnm == "STATIC")
+                            ber = "VAR";
+                        retVal.AppendLine(ber);
+                        retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP")));
+                        retVal.AppendLine("END_VAR");
+                    }
                 }
 
             }
@@ -196,7 +199,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     }
                 }
             }
-            retVal.Append("END_FUNCTION");
+
+            if (this.BlockType == PLCBlockType.FC)
+                retVal.Append("END_FUNCTION");
+            else
+                retVal.Append("END_FUNCTION_BLOCK");
+            //retVal.Append("END_FUNCTION");
 
             return retVal.ToString();
         }
