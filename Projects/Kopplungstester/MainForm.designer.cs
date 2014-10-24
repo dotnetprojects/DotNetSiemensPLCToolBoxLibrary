@@ -57,6 +57,12 @@ namespace Kopplungstester
             this.cmdRemoveSendeTele = new System.Windows.Forms.Button();
             this.cmdAddSendeTele = new System.Windows.Forms.Button();
             this.dtaSendTabelle = new System.Windows.Forms.DataGridView();
+            this.Bezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Laenge = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmdFormat = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Input = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wert = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wert_hex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.dtaSendSendTable = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,12 +118,6 @@ namespace Kopplungstester
             this.picConnection2 = new System.Windows.Forms.PictureBox();
             this.cmdDisconnect = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.Bezeichnung = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Laenge = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmdFormat = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Input = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wert = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wert_hex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.faTabStrip1.SuspendLayout();
             this.faTabStripItemInfo.SuspendLayout();
             this.faTabStripItemSend.SuspendLayout();
@@ -325,6 +325,7 @@ namespace Kopplungstester
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(102, 21);
             this.numericUpDown1.TabIndex = 0;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // panel4
             // 
@@ -464,6 +465,41 @@ namespace Kopplungstester
             this.dtaSendTabelle.TabIndex = 4;
             this.dtaSendTabelle.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtaSendTabelle_CellEndEdit);
             this.dtaSendTabelle.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dtaSendTabelle_RowsAdded);
+            // 
+            // Bezeichnung
+            // 
+            this.Bezeichnung.HeaderText = "Bezeichnung";
+            this.Bezeichnung.Name = "Bezeichnung";
+            // 
+            // Laenge
+            // 
+            this.Laenge.HeaderText = "Länge";
+            this.Laenge.Name = "Laenge";
+            // 
+            // cmdFormat
+            // 
+            this.cmdFormat.HeaderText = "Format";
+            this.cmdFormat.Items.AddRange(new object[] {
+            "Ascii",
+            "Hex",
+            "Int",
+            "DInt"});
+            this.cmdFormat.Name = "cmdFormat";
+            // 
+            // Input
+            // 
+            this.Input.HeaderText = "Input";
+            this.Input.Name = "Input";
+            // 
+            // Wert
+            // 
+            this.Wert.HeaderText = "Wert";
+            this.Wert.Name = "Wert";
+            // 
+            // Wert_hex
+            // 
+            this.Wert_hex.HeaderText = "Wert (HEX)";
+            this.Wert_hex.Name = "Wert_hex";
             // 
             // splitContainer4
             // 
@@ -671,7 +707,6 @@ namespace Kopplungstester
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "MaxLengthQuitt", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numericUpDown2.Location = new System.Drawing.Point(28, 241);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             65536,
@@ -1082,41 +1117,6 @@ namespace Kopplungstester
             this.cmdDisconnect.Text = "Disconnect";
             this.cmdDisconnect.UseVisualStyleBackColor = true;
             this.cmdDisconnect.Click += new System.EventHandler(this.cmdDisconnect_Click);
-            // 
-            // Bezeichnung
-            // 
-            this.Bezeichnung.HeaderText = "Bezeichnung";
-            this.Bezeichnung.Name = "Bezeichnung";
-            // 
-            // Laenge
-            // 
-            this.Laenge.HeaderText = "Länge";
-            this.Laenge.Name = "Laenge";
-            // 
-            // cmdFormat
-            // 
-            this.cmdFormat.HeaderText = "Format";
-            this.cmdFormat.Items.AddRange(new object[] {
-            "Ascii",
-            "Hex",
-            "Int",
-            "DInt"});
-            this.cmdFormat.Name = "cmdFormat";
-            // 
-            // Input
-            // 
-            this.Input.HeaderText = "Input";
-            this.Input.Name = "Input";
-            // 
-            // Wert
-            // 
-            this.Wert.HeaderText = "Wert";
-            this.Wert.Name = "Wert";
-            // 
-            // Wert_hex
-            // 
-            this.Wert_hex.HeaderText = "Wert (HEX)";
-            this.Wert_hex.Name = "Wert_hex";
             // 
             // MainForm
             // 

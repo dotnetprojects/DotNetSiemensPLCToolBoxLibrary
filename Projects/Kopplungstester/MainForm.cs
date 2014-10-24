@@ -88,7 +88,7 @@ namespace Kopplungstester
             Int32 Counter = 0;
             foreach (DataGridViewRow row in dtaSendTabelle.Rows)
             {
-                if (row.Cells["Laenge"].Value != null)
+                if (row.Cells["Laenge"].Value != null && row.Cells["Laenge"].Value != DBNull.Value)
                 {
                     Counter = Counter + Convert.ToInt32(row.Cells["Laenge"].Value.ToString());
 
@@ -117,7 +117,8 @@ namespace Kopplungstester
                         wrt = row.Cells["Wert"].Value.ToString();
                     if (wrt == null) wrt = "";
 
-                    Ausgabe += wrt.FixSize(Convert.ToInt32(row.Cells["Laenge"].Value.ToString()), ' ');
+                    if (row.Cells["Laenge"].Value != null && row.Cells["Laenge"].Value != DBNull.Value)
+                        Ausgabe += wrt.FixSize(Convert.ToInt32(row.Cells["Laenge"].Value.ToString()), ' ');
                 }
 
             }
@@ -428,15 +429,17 @@ namespace Kopplungstester
                 int pos = 0;
                 foreach (DataGridViewRow row in dtaSendTabelle.Rows)
                 {
-                    var tmp = row.Cells["Laenge"].Value;
-                    if (tmp != null)
+                    if (row.Cells["Laenge"].Value != null && row.Cells["Laenge"].Value != DBNull.Value)
                     {
-                        int len = Convert.ToInt32(tmp);
-                        if (pos + len <= sValue.Length)
-                            row.Cells["Wert"].Value = sValue.Substring(pos, len);
-                        pos += len;
+                        var tmp = row.Cells["Laenge"].Value;
+                        if (tmp != null)
+                        {
+                            int len = Convert.ToInt32(tmp);
+                            if (pos + len <= sValue.Length)
+                                row.Cells["Wert"].Value = sValue.Substring(pos, len);
+                            pos += len;
+                        }
                     }
-
                 }
             }
         }
@@ -449,7 +452,11 @@ namespace Kopplungstester
             {
                 if (row.Cells["Laenge"].Value != null)
                 {
-                    Counter = Counter + Convert.ToInt32(row.Cells["Laenge"].Value.ToString());
+                    int wr;
+                    if (Int32.TryParse(row.Cells["Laenge"].Value.ToString(), out wr))
+                    {
+                        Counter = Counter + wr;
+                    }
                 }
             }
 
@@ -689,7 +696,7 @@ namespace Kopplungstester
                     foreach (DataGridViewRow row in dtaSendTabelle.Rows)
                     {
                         var tmp = row.Cells["Laenge"].Value;
-                        if (tmp != null)
+                        if (tmp != null && tmp != DBNull.Value)
                         {
                             int len = Convert.ToInt32(tmp);
                             if (pos + len <= sValue.Length)
@@ -802,6 +809,11 @@ namespace Kopplungstester
         {
             dtaSendSendTable.Rows.Clear();
             dtaSendQuittTable.Rows.Clear();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            Settings.Default.SequenceNumberLength = numericUpDown1.Value;
         }                
     }
 }
