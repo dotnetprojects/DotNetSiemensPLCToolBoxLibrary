@@ -43,7 +43,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 else if (s7DataRow.StartValue != null && !withoutStartValue)
                 {
-                    //val += " := " + s7DataRow.StartValue.ToString();
                     string valuePrefix = "";
                     switch (s7DataRow.DataType)
                     {

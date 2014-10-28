@@ -40,8 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             return null;
         }
 
-
-        public string BlockTypeString
+       public string BlockTypeString
         {
             get
             {
