@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.IO;
 using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 {
@@ -243,7 +245,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));
+                        var par = new NpgsqlParameter("@" + field.DatabaseField, value);
+                        myCmd.Parameters.Add(par);
+                       
+                        //switch (field.DatabaseFieldType)
+                        //{
+                        //    case "int8":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Bigint;
+                        //        //par.Size = 1;
+                        //        break;
+                        //    case "timestamp":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Timestamp;
+                        //        //par.Size = 1;
+                        //        break;
+                        //    case "varchar":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Varchar;
+                        //        par.Size = value != null ? value.ToString().Length : 0;
+                        //        break;
+                        //}
+
 
                         //Logging.LogText(string.Format("KeyValue Key:{0} Value:{1}", field.DatabaseField, value ?? "null"), Logging.LogLevel.Information);                   
                     }
@@ -256,8 +276,38 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 {
                     myCmd.ExecuteNonQuery();                   
                 }
+                catch (NpgsqlException ex)
+                {
+                    //if (ex.ErrorCode == "08P01")
+                    //{
+                    //    myCmd = new NpgsqlCommand();
+                    //    myCmd.Connection = myDBConn;
+                    //    myCmd.CommandText = ex.ErrorSql;
+                    //    myCmd.Parameters.Clear();
+                    //    myCmd.ExecuteNonQuery();
+                    //}
+                    //else
+                    //{
+
+                    //    Logging.LogText(
+                    //        "Exception (ColumnName:" + (ex.ColumnName ?? "") + ", SQL:" + (ex.ErrorSql ?? "") +
+                    //        ", Detail:" +
+                    //        (ex.Detail ?? "") + ": ",
+                    //        Logging.LogLevel.Error);
+
+                    //    //using (StreamWriter outfile = new StreamWriter("c:\\error.txt", true))
+                    //    //{
+                    //    //    outfile.WriteLine("Exception (ColumnName:" + (ex.ColumnName ?? "") + ", Detail:" +
+                    //    //                      (ex.Detail ?? "") + ", SQL:" + (ex.ErrorSql ?? "") + ": ");
+                    //    //}
+
+                    //    throw ex;
+                    //}
+
+                }
                 catch (Exception ex)
                 {
+                    Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                     throw ex;
                 }
             }
