@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
@@ -254,6 +255,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             x.Parent = ProjectStructure;
                             ProjectStructure.SubItems.Add(x);
                             stations.Add(x);
+                            _allFolders.Add(x);
                         }
                         else if ( Convert.ToInt32(row["OBJTYP"])==objectType_MpiDPinCPU)
                         {
@@ -261,6 +263,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             dp.UnitID = Convert.ToInt32(row["UNITID"]);//is UNITID in CPUFolder
                             dp.ID = Convert.ToInt32(row["ID"]);
                             DPFolders.Add(dp);
+                            _allFolders.Add(dp);
                         }
                     }
                 }
@@ -352,6 +355,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         cp.Slot = Convert.ToInt32(row["MODULN"]);
                         cp.SubModulNumber = Convert.ToInt32(row["SUBMODN"]);
                         CPFolders.Add(cp);
+                        _allFolders.Add(cp);
                     }
                 }
             }
@@ -414,6 +418,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     x.Parent = z;
                                     z.SubItems.Add(x);
                                     CPUFolders.Add(x);
+                                    _allFolders.Add(x);
                                 }
                             }
                         }
@@ -446,6 +451,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     x.Parent = z;
                                     z.SubItems.Add(x);
                                     CPUFolders.Add(x);
+                                    _allFolders.Add(x);
                                 }
                             }
                         }
@@ -477,6 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     x.Parent = z;
                                     z.SubItems.Add(x);
                                     CPUFolders.Add(x);
+                                    _allFolders.Add(x);
                                 }
                             }
                         }
@@ -655,6 +662,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         x._linkfileoffset = (int)row["RSRVD4_L"];
                         S7ProgrammFolders.Add(x);
                         tmpS7ProgrammFolders.Add(x);
+                        _allFolders.Add(x);
                     }
                 }
             }
@@ -776,6 +784,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     symtab.Parent = z;
                     z.SymbolTable = symtab;
                     z.SubItems.Add(symtab);
+                    _allFolders.Add(symtab);
                 }
             }
 
@@ -796,6 +805,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         x.Folder = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + x.ID.ToString("X").PadLeft(8, '0') + _DirSeperator;
                         tmpBlocksOfflineFolders.Add(x);
                         _blocksOfflineFolders.Add(x);
+                        _allFolders.Add(x);
                     }
                 }
             }
@@ -816,6 +826,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         x.ID = (int)row["ID"];
                         x.Folder = ProjectFolder + "s7asrcom" + _DirSeperator + x.ID.ToString("X").PadLeft(8, '0') + _DirSeperator;
                         Step7ProjectTypeStep7Sources.Add(x);
+                        _allFolders.Add(x);
                     }
                 }
             }
@@ -833,7 +844,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if ((int)row["OBJTYP"] == 1314971)
                         {
-                            pbMasterSystems.Add(new ProfibusMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] });
+                            var x = new ProfibusMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] };
+                            pbMasterSystems.Add(x);
+                            _allFolders.Add(x);
                         }
                     }
                 }
@@ -908,7 +921,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         int objType = Convert.ToInt32(row["OBJTYP"]);
                         if (objType == 1316787)
                         {
-                            pnMasterSystems.Add(new ProfinetMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] });
+                            var x = new ProfinetMasterSystem() { Project = this, Name = row["NAME"].ToString().Replace("\0", ""), Id = (int)row["ID"] };
+                            pnMasterSystems.Add(x);
+                            _allFolders.Add(x);
                         }
                         else if (objType == objectType_EternetInCPU3xx || objType == objectType_EternetInCPU4xx)
                         {

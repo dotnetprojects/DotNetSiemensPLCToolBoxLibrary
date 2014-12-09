@@ -11,5 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
         Project Project { get; set; }
         ProjectFolder Parent { get; set; }
         List<ProjectFolder> SubItems { get; set; }
+
+        string ProjectAndStructuredFolderName { get; }
     }
 }

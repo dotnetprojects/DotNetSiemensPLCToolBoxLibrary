@@ -277,7 +277,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             switch (tiaType)
             {
                 case "Siemens.Automation.DomainModel.ProjectData":
-                    fld = new TIAProjectFolder(this, Node);
+                    fld = new TIAProjectFolder(this, Node);                    
                     break;
                 case "Siemens.Automation.DomainModel.FolderData":
                     {
@@ -310,6 +310,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             if (fld != null)
             {
+                _allFolders.Add(fld);
+
                 var subFolderNodes = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + id + "-" + instid + "']]");
                 
                 fld.SubNodes = subFolderNodes;

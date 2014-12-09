@@ -84,6 +84,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
             }
         }
 
+        public string ProjectAndStructuredFolderName
+        {
+            get { return this.Project.ProjectFile + "|" + StructuredFolderName; }
+        }
+
         public Project Project { get; set; }
 
         //This is the ID of the Folder in the Database (not everyone has one)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
@@ -121,6 +123,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return new Step7ProjectV5(file, showDeleted);
             return null;
 
+        }
+
+        public static ProjectFolder LoadProjectFolder(string projectAndStructuredFolderName)
+        {
+            var parts = projectAndStructuredFolderName.Split('|');
+            var project = parts[0];
+            var folder = parts[1];
+
+            var prj = LoadProject(project, false);
+
+            return prj.AllFolders.FirstOrDefault(x => x.StructuredFolderName == folder);
         }
 
     }
