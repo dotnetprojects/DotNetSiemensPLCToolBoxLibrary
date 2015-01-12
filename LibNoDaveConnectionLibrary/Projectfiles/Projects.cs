@@ -121,6 +121,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return new Step5Project(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))
                 return new Step7ProjectV5(file, showDeleted);
+            else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7l")))
+                return new Step7ProjectV5(file, showDeleted);
             return null;
 
         }

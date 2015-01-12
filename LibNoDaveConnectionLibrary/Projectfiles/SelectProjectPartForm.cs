@@ -12,14 +12,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     internal partial class SelectProjectPartForm : Form
     {
-        public SelectProjectPartForm(string projectFile)
+        public SelectProjectPartForm(string projectFile, bool hideOpenProjectButton = true)
         {
             InitializeComponent();
 
             fnm = projectFile;
             if (!string.IsNullOrEmpty(fnm))
             {
-                cmdOpenProject.Visible = false;
+                if (hideOpenProjectButton)
+                    cmdOpenProject.Visible = false;
                 loadPrj();
             }            
         }               
@@ -146,10 +147,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {               
                 treeStep7Project.Nodes.Clear();
 
-                tmpPrj = Projects.LoadProject(fnm, chkShowDeleted.Checked);
-                //tmpPrj = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
-
-                //listBox1.Items.AddRange(tmp.PrgProjectFolders.ToArray());
+                try
+                {
+                    tmpPrj = Projects.LoadProject(fnm.Split('|')[0], chkShowDeleted.Checked);
+                }
+                catch(Exception)
+                { }
+                
                 lblProjectName.Text = tmpPrj.ProjectName;
                 lblProjectInfo.Text = tmpPrj.ProjectDescription;
 

@@ -15,9 +15,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectBlocksOfflineFolder("");
         }
 
-        public static BlocksOfflineFolder SelectBlocksOfflineFolder(string FileAndProjectInternalFolder)
+        public static BlocksOfflineFolder SelectBlocksOfflineFolder(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.BlocksOfflineFolder;
             myFrm.ShowDialog();
             return (BlocksOfflineFolder)myFrm.retVal;
@@ -28,9 +28,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectS7ProgrammFolder("");
         }
 
-        public static S7ProgrammFolder SelectS7ProgrammFolder(string FileAndProjectInternalFolder)
+        public static S7ProgrammFolder SelectS7ProgrammFolder(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.S7ProgrammFolder;
             myFrm.ShowDialog();
             return (S7ProgrammFolder)myFrm.retVal;
@@ -41,33 +41,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectSymbolTable("");
         }
 
-        public static ISymbolTable SelectSymbolTable(string FileAndProjectInternalFolder)
+        public static ISymbolTable SelectSymbolTable(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.SymbolTable;
             myFrm.ShowDialog();
             return (ISymbolTable)myFrm.retVal;
         }
 
-        public static S7DataBlock SelectDataBlock(string FileAndProjectInternalFolder)
+        public static S7DataBlock SelectDataBlock(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.DataBlock;
             myFrm.ShowDialog();
             return (S7DataBlock)myFrm.retVal;
         }
 
-        public static List<S7DataBlock> SelectDataBlocks(string FileAndProjectInternalFolder)
+        public static List<S7DataBlock> SelectDataBlocks(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.DataBlocks;
             myFrm.ShowDialog();
             return (List<S7DataBlock>)myFrm.retVal;
         }
 
-        public static S7FunctionBlock SelectFunctionBlock(string FileAndProjectInternalFolder)
+        public static S7FunctionBlock SelectFunctionBlock(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.DataBlock;
             myFrm.ShowDialog();
             return (S7FunctionBlock)myFrm.retVal;
@@ -78,9 +78,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectVAT("");
         }
 
-        public static S7VATBlock SelectVAT(string FileAndProjectInternalFolder)
+        public static S7VATBlock SelectVAT(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.VariableTable;
             myFrm.ShowDialog();
             return (S7VATBlock)myFrm.retVal;
@@ -91,9 +91,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectVATorSymbolTable("");
         }
 
-        public static object SelectVATorSymbolTable(string FileAndProjectInternalFolder)
+        public static object SelectVATorSymbolTable(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.VariableTableOrSymbolTable;
             myFrm.ShowDialog();
             return myFrm.retVal;
@@ -104,9 +104,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return SelectUDT("");
         }
 
-        public static S7DataBlock SelectUDT(string FileAndProjectInternalFolder)
+        public static S7DataBlock SelectUDT(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.DataType;
             myFrm.ShowDialog();
             return (S7DataBlock)myFrm.retVal;
@@ -118,9 +118,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         }
 
         //This selects a Tag From a Step 7 Project
-        public static PLCTag SelectTAG(string FileAndProjectInternalFolder)
+        public static PLCTag SelectTAG(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
-            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder);
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.Tag;
             myFrm.ShowDialog();
             PLCTag retVal = (PLCTag) myFrm.retVal;
