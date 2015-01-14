@@ -25,6 +25,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
         private string insertCommand = "";
+        private string updateCommand = "";
 
         private DbConnection myDBConn;
         private DbCommand myCmd = new SqlCommand();
@@ -171,19 +172,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
 
             //Create Insert Command
-            string wertliste = "", felderliste = "";
+            string wertliste = "", felderliste = "", updateliste = "";
             foreach (DatasetConfigRow myFeld in createFieldList)
             {
                 if (wertliste != "")
                 {
                     wertliste += ",";
                     felderliste += ",";
+                    updateliste += ",";
                 }
 
                 felderliste += myFeld.DatabaseField;
                 wertliste += "@" + myFeld.DatabaseField;
+                updateliste += myFeld.DatabaseField + "=@" + myFeld.DatabaseField;
             }
             insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
         }
         
         protected override bool _internal_Write()
@@ -217,7 +221,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 {
                     using (DbCommand cmd = myDBConn.CreateCommand())
                     {
-                        cmd.CommandText = insertCommand;
+                        if (datasetConfig.UseDbUpdateNoInsert)
+                            cmd.CommandText = updateCommand + " " + (datasetConfig.UpdateWhereClause ?? "");
+                        else
+                            cmd.CommandText = insertCommand;
 
                         if (myConfig.CombineMultipleInsertsInATransaction)
                             cmd.Transaction = dbTrans;
