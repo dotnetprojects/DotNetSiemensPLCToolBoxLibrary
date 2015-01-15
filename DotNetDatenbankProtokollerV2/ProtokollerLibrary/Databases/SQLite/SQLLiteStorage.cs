@@ -100,7 +100,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
-            this.dataTable = dataTable;
+            if (datasetConfig.DatasetTableName != "") //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
             List<DatasetConfigRow> createFieldList;

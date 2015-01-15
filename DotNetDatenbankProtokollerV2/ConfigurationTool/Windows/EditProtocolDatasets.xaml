@@ -348,7 +348,7 @@
                                     Converter={StaticResource myNullToFalseConverter}}" />
         <Label Width="91"
                Height="26"
-               Margin="183,76,0,0"
+               Margin="183,106,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                VerticalContentAlignment="Center"
@@ -360,7 +360,7 @@
         <ComboBox Name="cmbTriggerType"
                   Width="308"
                   Height="26"
-                  Margin="266,76,0,0"
+                  Margin="266,106,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   VerticalContentAlignment="Center"
@@ -585,7 +585,7 @@
         
         <GroupBox Width="285"
                   Height="73"
-                  Margin="184,105,0,0"
+                  Margin="184,135,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Header="Time-Trigger"
@@ -673,7 +673,7 @@
             </Grid>
         </GroupBox>
 
-        <TextBox Name="txtTableName"
+        <TextBox Name="txtName"
                  Width="179"
                  Height="26"
                  Margin="266,12,0,0"
@@ -692,14 +692,39 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                VerticalContentAlignment="Center"
-               Content="Table (Name)"
+               Content="Name"
                IsEnabled="{Binding ElementName=grdDatasets,
                                    Path=SelectedItem,
                                    Converter={StaticResource myNullToFalseConverter}}"
                Padding="0" />
+        
+        <Label Width="83"
+               Height="26"
+               Margin="183,40,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Content="Table-Name"
+               IsEnabled="{Binding ElementName=grdDatasets,
+                                   Path=SelectedItem,
+                                   Converter={StaticResource myNullToFalseConverter}}"
+               Padding="0" />
+        <TextBox Name="txtTableName"
+                 Width="179"
+                 Height="26"
+                 Margin="266,40,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 BorderBrush="Black"
+                 IsEnabled="{Binding ElementName=grdDatasets,
+                                     Path=SelectedItem,
+                                     Converter={StaticResource myNullToFalseConverter}}"
+                 KeyUp="txt_Enter_ValueUpdater"
+                 Text="{Binding ElementName=grdDatasets,
+                                Path=SelectedItem.DatasetTableName}" />
         <Label Width="55"
                Height="26"
-               Margin="184,44,0,0"
+               Margin="184,74,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                VerticalContentAlignment="Center"
@@ -711,7 +736,7 @@
         <ComboBox Name="cmbStorage"
                   Width="179"
                   Height="26"
-                  Margin="266,44,0,0"
+                  Margin="266,74,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   VerticalContentAlignment="Center"

@@ -65,7 +65,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
-            this.dataTable = dataTable;
+            if (datasetConfig.DatasetTableName != "") //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
             this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
