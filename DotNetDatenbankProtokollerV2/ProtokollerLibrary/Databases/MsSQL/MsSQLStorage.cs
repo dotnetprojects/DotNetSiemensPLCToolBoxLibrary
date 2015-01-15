@@ -189,8 +189,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 wertliste += "@" + myFeld.DatabaseField;
                 updateliste += myFeld.DatabaseField + "=@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
-            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            updateCommand = "UPDATE " + this.dataTable + " SET " + updateliste;
         }
         
         protected override bool _internal_Write()

@@ -155,7 +155,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Firebird
                 felderliste += myFeld.DatabaseField;
                 wertliste += "@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
 
 

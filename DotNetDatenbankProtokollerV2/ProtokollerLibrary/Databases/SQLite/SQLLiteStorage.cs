@@ -211,7 +211,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 felderliste += myFeld.DatabaseField;
                 wertliste += "@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
 
         protected override bool _internal_Write()
