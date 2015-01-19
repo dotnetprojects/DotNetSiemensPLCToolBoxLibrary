@@ -104,6 +104,7 @@
     <Compile Include="aspx\AspxPage.cs" />
     <Compile Include="aspx\AspxRequestInfo.cs" />
     <Compile Include="aspx\AspxVirtualRoot.cs" />
+    <Compile Include="Common\IpAddressConverter.cs" />
     <Compile Include="Common\LogErrorLevel.cs" />
     <Compile Include="Common\NetworkShare.cs" />
     <Compile Include="Connections\DatabaseConnection.cs" />
