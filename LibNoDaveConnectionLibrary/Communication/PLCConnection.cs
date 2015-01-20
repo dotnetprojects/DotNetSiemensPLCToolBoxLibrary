@@ -1000,6 +1000,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] buffer = new byte[64];
                     int ret = _dc.readSZL(0x174, 4, buffer); //SZL 0x174 is for PLC LEDs
 
+                    if (ret == 54273)
+                        return DataTypes.PLCState.NotSupported;
                     if (ret < 0)
                         throw new Exception("Error: " + libnodave.daveStrerror(ret));
                     if (buffer[10] == 1 && buffer[11] == 1)
@@ -1009,7 +1011,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         return DataTypes.PLCState.Stopped;
                 }
-                return DataTypes.PLCState.Stopped;
+                return DataTypes.PLCState.Unkown;
             }
         }
 
