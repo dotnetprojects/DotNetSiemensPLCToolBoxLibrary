@@ -39,9 +39,6 @@ Special thanks
 [ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
 
 
-
-
-
-
-
+Trademarks
+==============================
 Step 5, Step 7, S7-300, S7-400 are Trademarks of Siemens
