@@ -81,7 +81,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
-            this.dataTable = dataTable;
+            if (datasetConfig.DatasetTableName != "") //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
             List<DatasetConfigRow> createFieldList;
@@ -186,8 +189,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 wertliste += "@" + myFeld.DatabaseField;
                 updateliste += myFeld.DatabaseField + "=@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
-            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            updateCommand = "UPDATE " + this.dataTable + " SET " + updateliste;
         }
         
         protected override bool _internal_Write()

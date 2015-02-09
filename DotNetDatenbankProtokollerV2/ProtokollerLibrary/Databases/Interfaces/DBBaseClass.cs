@@ -38,7 +38,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces
                 CreateOrModify_TablesAndFields(datasetConfig.Name, datasetConfig);
                 _initiated = true;
                 Logging.LogText(
-                    "Database Initialised: " + datasetConfig.Storage.Name + ", " + datasetConfig.Name,
+                    "Database Initialised: " + datasetConfig.Storage.Name + "," + datasetConfig.DatasetTableName + ", " + datasetConfig.Name,
                     Logging.LogLevel.Information);
             }
             catch (Exception ex)
