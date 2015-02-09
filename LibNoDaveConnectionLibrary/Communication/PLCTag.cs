@@ -131,6 +131,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _itemDoesNotExist = value;
                     NotifyPropertyChanged("ItemDoesNotExist");
                     NotifyPropertyChanged("ValueAsString");
+                    if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(null, null));
                 }
             }
         }
@@ -1651,19 +1652,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 case TagDataType.String:                    
                     {
-                        var sb = new StringBuilder();
-                        int size = ArraySize > buff[startpos + 1] ? buff[startpos+1] : ArraySize;
-                        for (var n = 2; n < size+2; n++)
-                            sb.Append((char) buff[n + startpos]);
-                        _setValueProp = sb.ToString();
+                        int maxsize = (int)buff[startpos];
+                        int size = (int)buff[startpos + 1];
+
+                        if (ArraySize == 1 && ArraySize != maxsize) 
+                            ArraySize = Math.Max(ArraySize,maxsize);
+                        else
+                            _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
                     }
                     break;
                 case TagDataType.CharArray:
                     {
-                        var sb = new StringBuilder();
-                        for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
-                            sb.Append((char)buff[n + startpos]);
-                        _setValueProp = sb.ToString();
+                        //var sb = new StringBuilder();
+                        //for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
+                        //    sb.Append((char)buff[n + startpos]);
+                        //_setValueProp = sb.ToString();
+                        _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize));
                     }
                     break;
                 case TagDataType.ByteArray:
