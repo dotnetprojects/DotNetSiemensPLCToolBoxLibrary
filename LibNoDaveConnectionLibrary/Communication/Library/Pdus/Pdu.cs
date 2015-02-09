@@ -70,7 +70,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
 
             byte[] bheader = EndianessMarshaler.StructToBytes<PDUHeader>(header);
 
-            Array.Copy(bheader, 0, retVal, 0, bheader.Length);
+            Array.Copy(bheader, 0, retVal, 0, pduHeaderLen);
             Array.Copy(Param.ToArray(), 0, retVal, pduHeaderLen, Param.Count);
             Array.Copy(Data.ToArray(), 0, retVal, pduHeaderLen + Param.Count, Data.Count);
 

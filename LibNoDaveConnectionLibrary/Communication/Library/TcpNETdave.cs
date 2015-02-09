@@ -730,7 +730,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 //memcpy(*buffer,p2.data+4,netLen);
                 //*buffer+=netLen;?????????????????????????????????
             }
-            len = +netLen;
+            len += netLen;
             return 0;
         }
         private int endUpload(int uploadID)
@@ -739,7 +739,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             int res;
 
             //p1.header=dc->msgOut+dc->PDUstartO;
-            //_daveConstructEndUpload(&p1,uploadID);
+            _daveConstructEndUpload(p1,uploadID);
             Pdu ret = ExchangePdu(p1);
             //res=_daveExchange(dc, &p1);
             //if(res!=daveResOK) return res;	
@@ -1304,10 +1304,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             if (tcpClient != null)
             {
-                tcpClient.Client.Shutdown(SocketShutdown.Both);
-                //tcpClient.GetStream().Close();
-                tcpClient.Client.Disconnect(false);
-                tcpClient.Close();
+                try
+                {
+                    tcpClient.Client.Shutdown(SocketShutdown.Both);
+                }
+                catch (Exception ex)
+                { }
+                try
+                {
+                    tcpClient.Client.Disconnect(false);
+                }
+                catch (Exception ex)
+                { }
+                try
+                {
+                    tcpClient.Close();
+                }
+                catch (Exception ex)
+                { }
             }
         }
         public int getAnswLen()
@@ -1321,7 +1335,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private void sprintf(byte[] bytes, int position, int len, int vol)
         {
             string sss = string.Format("{0:D" + len + "}", vol);
-            System.Buffer.BlockCopy(sss.ToCharArray(), 0, bytes, position, sss.Length);
+            System.Buffer.BlockCopy(Encoding.ASCII.GetBytes(sss), 0, bytes, position, sss.Length);
         }
         public int force200(int area, int start, int val)
         {
