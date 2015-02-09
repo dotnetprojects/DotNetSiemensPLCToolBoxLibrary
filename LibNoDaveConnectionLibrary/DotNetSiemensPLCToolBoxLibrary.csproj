@@ -58,10 +58,13 @@
     <Compile Include="Communication\LibNoDave\IDaveConnection.cs" />
     <Compile Include="Communication\LibNoDave\IPDU.cs" />
     <Compile Include="Communication\LibNoDave\IresultSet.cs" />
+    <Compile Include="Communication\LibNoDave\libnodave.net.cs" />
     <Compile Include="Communication\Library\ConnectionConfig.cs" />
     <Compile Include="Communication\Library\Interfaces\ISONetworkInterface.cs" />
     <Compile Include="Communication\Library\internal\SocketExtensions.cs" />
-    <Compile Include="Communication\Library\Pdus\Pdu_ReadRequest.cs" />
+    <Compile Include="Communication\Library\Pdus\daveConst.cs" />
+    <Compile Include="Communication\Library\Pdus\PduRequest.cs" />
+    <Compile Include="Communication\Library\TcpNETdave.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
@@ -221,7 +224,6 @@
     <Compile Include="Communication\ConnectionEditor.Designer.cs">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Communication\LibNoDave\libnodave.net.cs" />
     <Compile Include="Communication\PLCConnectionConfiguration.cs" />
     <Compile Include="Communication\PLCConnectionUITypeEditor.cs" />
     <Compile Include="Communication\PLCTagEditor.cs">
@@ -372,7 +374,6 @@
     <None Include="Documentation\System Software for S7-300 and S7-400 System and Standard Functions.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

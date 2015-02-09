@@ -76,7 +76,7 @@ namespace TestWpfC
             if (_myconn == null)
             {
                 _myconn = new PLCConnection(_connname);
-                _myconn.Connect(1);
+                _myconn.Connect();
 
                 foreach (string itm in _myconn.PLCListBlocks(PLCBlockType.AllEditableBlocks))
                     BlockList.Items.Add(itm);
@@ -277,8 +277,7 @@ namespace TestWpfC
                 try
                 {
                     if (myDiag == null)
-                        myDiag = _myconn.startRequestDiagnosticData((S7FunctionBlock) myBlock,
-                                                                    Int32.Parse(startRow.Text), tmp);
+                        myDiag = _myconn.PLCstartRequestDiagnosticData((S7FunctionBlock) myBlock, Int32.Parse(startRow.Text), tmp);
                     myDiag.RequestDiagnosticData();
                     textEditor.Text = myBlock.ToString();
                 }

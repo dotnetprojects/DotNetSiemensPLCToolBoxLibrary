@@ -926,6 +926,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return p;
             }
 
+            public IPDU createPDU()
+            {
+                return new PDU();
+            }
+
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveExecReadRequest")]
 #else
