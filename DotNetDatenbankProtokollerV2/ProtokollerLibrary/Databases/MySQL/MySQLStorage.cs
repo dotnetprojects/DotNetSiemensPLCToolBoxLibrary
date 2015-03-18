@@ -64,10 +64,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
-            this.dataTable = dataTable;
+            if (datasetConfig.DatasetTableName != "") //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
+            
             this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
-
+            
             string sql = "";
             try
             {
@@ -203,9 +207,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 
                 updateliste += QuoteField(myFeld.DatabaseField) + "= ?" + ValueName(myFeld.DatabaseField);
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
 
-            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
+            updateCommand = "UPDATE " + this.dataTable + " SET " + updateliste;
         }
 
 

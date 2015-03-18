@@ -336,6 +336,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         txtLIBNODAVECPUPort.Text = "102";
                         chkRouting.Enabled = true;
                         break;
+                    case 9122:
+                        cmdTest.Enabled = true;
+                        lblLIBNODAVECPUIP.Enabled = true;
+                        txtLIBNODAVECPUIP.Enabled = true;
+                        lblLIBNODAVECPURack.Enabled = true;
+                        txtLIBNODAVECPURack.Enabled = true;
+                        lblLIBNODAVECPUSlot.Enabled = true;
+                        txtLIBNODAVECPUSlot.Enabled = true;
+                        lblLIBNODAVECPUPort.Enabled = true;
+                        txtLIBNODAVECPUPort.Enabled = true;
+                        txtTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnectDescr.Enabled = true;
+                        txtTimeout.Enabled = true;
+                        lblTimeout.Enabled = true;
+                        lblTimeoutDescr.Enabled = true;
+                        txtLIBNODAVECPUPort.Text = "102";
+                        break;
 
                     case 223:
                     case 224:

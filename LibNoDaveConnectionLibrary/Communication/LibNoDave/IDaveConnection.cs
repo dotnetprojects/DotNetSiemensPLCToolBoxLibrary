@@ -25,6 +25,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int ListBlocksOfType(int blockType, byte[] buffer);
         IPDU prepareReadRequest();
         IPDU prepareWriteRequest();
+        IPDU createPDU();
         int putProgramBlock(int blockType, int number, byte[] buffer, ref int length);
         int readBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int readBytes(int area, int DBnumber, int start, int len, byte[] buffer);
@@ -37,7 +38,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int writeBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer);
-
         IresultSet getResultSet();
     }
 }

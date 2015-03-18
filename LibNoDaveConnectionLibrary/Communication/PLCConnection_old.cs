@@ -34,8 +34,8 @@ using System.Threading;
 using System.Timers;
 using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
+//using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
+//using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -148,7 +148,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private libnodave.daveOSserialType _fds;
         private libnodave.daveInterface _di = null; //dave Interface
         public IDaveConnection _dc = null;
-        private Func<int,string> _errorCodeConverter;
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
@@ -215,16 +214,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case 3:
                     case 4:
                     case 10:
-                        _errorCodeConverter = libnodave.daveStrerror;
-                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed,
+                            _configuration.ComPortParity);
                         break;
                     case 20: //AS511            
-                        _errorCodeConverter = libnodave.daveStrerror;
-                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed,
+                            _configuration.ComPortParity);
                         break;
 #if !IPHONE
                     case 50:
-                        _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
                         if (_fds.rfd.ToInt32() == -1)
                         {
@@ -239,7 +237,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case 223:
                     case 224:
                     case 230:
-                        _errorCodeConverter = libnodave.daveStrerror;
                         socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
                         socketTimer.AutoReset = true;
                         socketTimer.Elapsed += socketTimer_Elapsed;
@@ -265,55 +262,47 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         socketTimer = null;
                         socketThread = null;
                         break;
-                    //case 9050:
-                    //    _errorCodeConverter = Connection.daveStrerror;
-                    //    _dc = new S7onlineNETdave(_configuration);
-                    //    break;
-                    case 9122:
-                        _errorCodeConverter = Connection.daveStrerror;
-                        _dc = new TcpNETdave(_configuration);
-                        break;
                 }
 
-
-                if (_configuration.ConnectionType < 9000 && _fds.rfd.ToInt32() == -999)
+                if (_fds.rfd.ToInt32() == -999)
                 {
                     _NeedDispose = false;
                     throw new Exception("Error: Timeout Connecting the IP");
                 }
 
-                if (_configuration.ConnectionType < 9000)
+                if ((!(_configuration.ConnectionType == 50) && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
                 {
-                    if ((_configuration.ConnectionType != 50 && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
-                    {
-                        _NeedDispose = false;
-                        throw new Exception(
-                            "Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
-                    }
+                    _NeedDispose = false;
+                    throw new Exception(
+                        "Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
                 }
 
-                if (_configuration.ConnectionType < 9000)
-                {
-                    //daveOSserialType Struktur befüllen
-                    _fds.wfd = _fds.rfd;
-                }
-                
-                if (_configuration.ConnectionName == null)
-                    _configuration.ConnectionName = Guid.NewGuid().ToString();
+                //daveOSserialType Struktur befüllen
+                _fds.wfd = _fds.rfd;
 
-                if (_configuration.ConnectionType < 9000)
-                {
-                    //Dave Interface Erzeugen
-                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
-                    
-                    //Timeout setzen...
-                    _di.setTimeout(_configuration.Timeout);
+                //System.Windows.Forms.MessageBox.Show("Socket:" + _fds.rfd.ToString());
 
-                    //Dave Interface initialisieren
-                    var initret = _di.initAdapter();
-                    if (initret != 0)
-                        throw new Exception("Error: (Interface) (Code: " + initret.ToString() + ") " + _errorCodeConverter(initret));
-                }
+                if (_configuration.ConnectionName == null) _configuration.ConnectionName = Guid.NewGuid().ToString();
+
+                //Dave Interface Erzeugen
+                _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi,
+                    _configuration.ConnectionType, _configuration.BusSpeed);
+
+                //System.Windows.Forms.MessageBox.Show("DI:" + _di.ToString());
+
+                //Timeout setzen...
+                _di.setTimeout(_configuration.Timeout);
+
+                //System.Windows.Forms.MessageBox.Show("Timeout gesetzt" + _di.ToString());
+
+                //_di.setTimeout(500000);
+                //Dave Interface initialisieren
+                int ret = _di.initAdapter();
+                if (ret != 0)
+                    throw new Exception("Error: (Interface) (Code: " + ret.ToString() + ") " +
+                                        libnodave.daveStrerror(ret));
+
+                //System.Windows.Forms.MessageBox.Show("Adapter initialisiert" + _di.ToString());
 
                 //Get S7OnlineType - To detect if is a IPConnection 
                 bool IPConnection = false;
@@ -342,8 +331,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, 0, 0);
                 }
-                else if (_configuration.ConnectionType < 9000)
+                else
                 {
+                    //Connection aufbauen (Routing oder nicht...) (Bei IPConnection auch...)
+                    //if (_configuration.Routing || IPConnection)
+                    //Immer die extended Connection benutzen!
+
                     _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
                         _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
                         _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
@@ -351,12 +344,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         _configuration.RoutingDestination, _configuration.PLCConnectionType,
                         _configuration.RoutingPLCConnectionType);
                 }
-                else
-                {
-                    
-                }
-                
-                if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
+
+                //else
+                //    _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuRack, _configuration.CpuSlot);
+
+                if (_configuration.NetLinkReset && !_netlinkReseted &&
+                    (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
                 {
                     _dc.resetIBH();
                     _netlinkReseted = true;
@@ -364,7 +357,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     goto NLAgain;
                 }
 
-                var ret = _dc.connectPLC();
+                ret = _dc.connectPLC();
 
                 if (ret == -1)
                 {
@@ -372,12 +365,88 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     throw new Exception("Error: CPU not available! Maybe wrong IP or MPI Address or Rack/Slot or ...");
                 }
                 if (ret != 0)
-                    throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " + _errorCodeConverter(ret));
-                
+                    throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " +
+                                        libnodave.daveStrerror(ret));
+
+                //System.Windows.Forms.MessageBox.Show("Connected" + ret.ToString());
+
                 Connected = true;
             }
         }
-        
+
+		/*
+        private Interface myIf;
+        private Connection myConn;
+        public void ConnectTestwithNewInterface()
+        {
+            _NeedDispose = true;
+
+            ConnectionConfig connConf = new ConnectionConfig();
+
+            bool IPConnection = false;
+
+            switch (_configuration.ConnectionType)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 10:
+                    //_fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                    break;
+                case 20: //AS511            
+                    //_fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                    break;
+                case 50:
+                    RegistryKey myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" + _configuration.EntryPoint);
+                    string tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
+                    string retVal = "";
+                    if (tmpDevice != "")
+                    {
+                        myConnectionKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
+                        retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
+                    }
+                    if (retVal == "TCPIP" || retVal == "ISO")
+                        IPConnection = true;
+                    myIf = new S7OnlineInterface(_configuration.EntryPoint);
+                    break;
+                case 122:
+                case 123:
+                case 124:
+                case 223:
+                case 224:
+                    break;
+                case 230:
+                    IPConnection = true;
+                    //_fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP););
+                    break;
+            }
+
+            connConf.ConnectionToEthernet = IPConnection;
+            if (IPConnection)
+                connConf.IPAddress = IPAddress.Parse(_configuration.CpuIP);
+            else
+                connConf.MPIAddress = _configuration.CpuMpi;
+            connConf.ConnectionType = _configuration.PLCConnectionType;
+            connConf.Rack = _configuration.CpuRack;
+            connConf.Slot = _configuration.CpuSlot;
+            connConf.Routing = _configuration.Routing;
+            connConf.RoutingConnectionType = _configuration.RoutingPLCConnectionType;
+            connConf.RoutingToEthernet = _configuration.RoutingDestination.Length > 4;
+            if (connConf.RoutingToEthernet)
+                connConf.RoutingIPAddress = IPAddress.Parse(_configuration.RoutingDestination);
+            else
+                connConf.RoutingMPIAddres = int.Parse(_configuration.RoutingDestination);
+            connConf.RoutingRack = _configuration.RoutingDestinationRack;
+            connConf.RoutingSlot = _configuration.RoutingDestinationSlot;
+            connConf.RoutingSubnet1 = _configuration.RoutingSubnet1;
+            connConf.RoutingSubnet2 = _configuration.RoutingSubnet2;
+
+
+            myConn = myIf.ConnectPlc(connConf);
+        }
+        */
+
         public void PLCStop()
         {
             lock (lockObj)
@@ -458,10 +527,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     if (myConn._dc != null)
                     {
+                        libnodave.PDU myPDU = new libnodave.PDU();
+
                         byte[] para;
                         byte[] data;
 
-                        var myPDU = myConn._dc.createPDU();
+                        myPDU = new libnodave.PDU();
                         para = new byte[] {0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00};
                         data = new byte[]
                         {
@@ -557,10 +628,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             private bool Closed;
             public void Close()
             {
+                libnodave.PDU myPDU = new libnodave.PDU();
+
                 byte[] para;
                 byte[] data;
 
-                var myPDU = myConn._dc.createPDU();
+                myPDU = new libnodave.PDU();
 
                 para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00 };
                 data = new byte[] { 0x00, 0x14, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, BitConverter.GetBytes(ReqestID)[0], BitConverter.GetBytes(ReqestID)[1] };
@@ -796,7 +869,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     retDiagnosticData.ByteAdressNumerPLCFunctionBlocks = ByteAdressNumerPLCFunctionBlocks;
                     retDiagnosticData.readLineCounter = cnt;
 
-                    var myPDU = _dc.createPDU();
+                    libnodave.PDU myPDU = new libnodave.PDU();
 
                     //PDU Header
                     byte[] para;
@@ -870,7 +943,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int ret = _dc.readSZL(0x232, 4, buffer);
 
                     if (ret < 0)
-                        throw new Exception("Error: " + _errorCodeConverter(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
                     if (buffer[1] != 0x04)
                         throw new WPFToolboxForSiemensPLCsException(
                             WPFToolboxForSiemensPLCsExceptionType.ErrorReadingSZL);
@@ -892,7 +965,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 if (_dc != null)
                 {
-                    var myPDU = _dc.createPDU();
+                    libnodave.PDU myPDU = new libnodave.PDU();
 
                     //PDU Header
                     byte[] para;
@@ -927,10 +1000,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] buffer = new byte[64];
                     int ret = _dc.readSZL(0x174, 4, buffer); //SZL 0x174 is for PLC LEDs
 
-                    if (ret == 54273)
-                        return DataTypes.PLCState.NotSupported;
                     if (ret < 0)
-                        throw new Exception("Error: " + _errorCodeConverter(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
                     if (buffer[10] == 1 && buffer[11] == 1)
                         return DataTypes.PLCState.Starting;
                     else if (buffer[10] == 1)
@@ -938,7 +1009,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else
                         return DataTypes.PLCState.Stopped;
                 }
-                return DataTypes.PLCState.Unkown;
+                return DataTypes.PLCState.Stopped;
             }
         }
 
@@ -981,7 +1052,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         int ret = _dc.ListBlocksOfType(Helper.GetPLCBlockTypeForBlockList(myBlk), blocks);
                         if (ret < 0 && ret != -53763 && ret != -53774 && ret != -255)
-                            throw new Exception("Error: " + _errorCodeConverter(ret));
+                            throw new Exception("Error: " + libnodave.daveStrerror(ret));
                         if (ret > 0)
                             for (int n = 0; n < ret*4; n += 4)
                             {
@@ -1189,7 +1260,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //COUNT(WORD) 6,7
 
                     if (ret < 0)
-                        throw new Exception("Error: " + _errorCodeConverter(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
 
                     retVal.SzlId = (short) (buffer[1] + buffer[0]*256);
                     retVal.Index = (short) (buffer[3] + buffer[2]*256);
@@ -1348,7 +1419,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //COUNT(WORD) 6,7
 
                     if (ret < 0)
-                        throw new Exception("Error: " + _errorCodeConverter(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
 
                     int cnt = buffer[7] + buffer[6]*256;
 
@@ -1384,7 +1455,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int ret = _dc.readSZL(0xA0, 0, buffer);
 
                     if (ret < 0)
-                        throw new Exception("Error: " + _errorCodeConverter(ret));
+                        throw new Exception("Error: " + libnodave.daveStrerror(ret));
 
                     int cnt = buffer[7] + buffer[6] * 256;
 
@@ -1429,11 +1500,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     if (myConn._dc != null)
                     {
-                        var myPDU = myConn._dc.createPDU();
+                        libnodave.PDU myPDU = new libnodave.PDU();
 
                         byte[] para;
                         byte[] data;
 
+                        myPDU = new libnodave.PDU();
                         para = new byte[] {0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00};
                         data = new byte[]
                         {
@@ -1485,13 +1557,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             private bool Closed;
             public void Close()
             {
+                libnodave.PDU myPDU = new libnodave.PDU();
+
                 byte[] para;
                 byte[] data;
 
                 para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00 };
                 data = new byte[] { 0x00, 0x14, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, BitConverter.GetBytes(ReqestID)[0], BitConverter.GetBytes(ReqestID)[1] };
 
-                var myPDU = myConn._dc.createPDU();
+                myPDU = new libnodave.PDU();
                 myConn._dc.daveBuildAndSendPDU(myPDU, para, data);
             }
 
@@ -1582,11 +1656,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
 
             int len1 = anzZeilen*6 + 2;
-
-            var myPDU = _dc.createPDU();
+            
+            libnodave.PDU myPDU = new libnodave.PDU();
 
             byte[] para;
             byte[] data;
+
+            //myPDU = new libnodave.PDU();
             
             para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
             data = new byte[]
@@ -1700,11 +1776,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
 
             int len1 = anzZeilen*6 + 2 + controlValues.Count;
-            
+
+            libnodave.PDU myPDU = new libnodave.PDU();
+
             byte[] para;
             byte[] data;
 
-            var myPDU = _dc.createPDU();
+            myPDU = new libnodave.PDU();
 
             para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00 };
             data = new byte[]
@@ -2042,7 +2120,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 return;
                             }
                             else if (res != 0 && res != 10)
-                                throw new Exception("Error: " + _errorCodeConverter(res));
+                                throw new Exception("Error: " + libnodave.daveStrerror(res));
 
                             //positionInCompleteData = 0;
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
@@ -2052,12 +2130,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 byte[] myBuff = new byte[ /* gesReadSize */cPDU.readenSizes[akVar] + 1];
 
                                 res = _dc.useResult(rs, akVar, myBuff);
-                                if (res == 10 || res == 5)
+                                /*if (res == 10 || res == 5)
                                 {
                                     NotExistedValue.Add(true);
                                 }
-                                else if (res != 0)
-                                    throw new Exception("Error: " + _errorCodeConverter(res));
+                                else*/ if (res != 0)
+                                    throw new Exception("Error: " + libnodave.daveStrerror(res));
                                 else
                                 {
                                     int myBuffStart = 0;
@@ -2084,21 +2162,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
                     int buffPos = 0;
-                    int nr = 0;
-                    foreach (var value in readTagList)
+                    var listLength = readTagList.Select(x => x._internalGetSize()).ToList();
+                    for (int nr = 0; nr < listLength.Count; nr++)
                     {
+                        var value = readTagList.ElementAt(nr);
                         if (!NotExistedValue[nr])
                         {
                             value.ItemDoesNotExist = false;
                             value._readValueFromBuffer(completeData, buffPos);
-                            buffPos += value._internalGetSize();
+                            buffPos += listLength[nr];
                         }
                         else
                         {
                             value.ItemDoesNotExist = true;
                             value._setValueProp = null;
                         }
-                        nr++;
                     }
                 }
             }
@@ -2389,7 +2467,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 return;
                             }
                             else if (res != 0)
-                                throw new Exception("Error: " + _errorCodeConverter(res));
+                                throw new Exception("Error: " + libnodave.daveStrerror(res));
 
                             //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)                    
                             for (akVar = 0; akVar < anzVar; akVar++)
@@ -2397,13 +2475,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 byte[] myBuff = new byte[gesReadSize];
 
                                 res = _dc.useResult(rs, akVar, myBuff);
-                                if (res == 10 || res == 5)
+                                /*if (res == 10 || res == 5)
                                 {
                                     if (!tagWasSplitted[akVar])
                                         NotExistedValue.Add(true);
                                 }
-                                else if (res != 0)
-                                    throw new Exception("Error: " + _errorCodeConverter(res));
+                                else*/ if (res != 0)
+                                    throw new Exception("Error: " + libnodave.daveStrerror(res));
                                 else
                                 {
                                     int myBuffStart = 0;
@@ -2488,7 +2566,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return;
                         }
                         else if (res != 0 && res != 10)
-                            throw new Exception("Error: " + _errorCodeConverter(res));
+                            throw new Exception("Error: " + libnodave.daveStrerror(res));
 
                         //positionInCompleteData = 0;
                         //Save the Read Data to a User Byte Array (Because we use this in the libnodavevalue class!)
@@ -2498,12 +2576,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             byte[] myBuff = new byte[ /* gesReadSize */readenSizes[akVar] + 1];
 
                             res = _dc.useResult(rs, akVar, myBuff);
-                            if (res == 10 || res == 5)
+                            /*if (res == 10 || res == 5)
                             {
                                 NotExistedValue.Add(true);
                             }
-                            else if (res != 0)
-                                throw new Exception("Error: " + _errorCodeConverter(res));
+                            else*/ if (res != 0)
+                                throw new Exception("Error: " + libnodave.daveStrerror(res));
                             else
                             {
                                 int myBuffStart = 0;
@@ -2529,21 +2607,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
                     int buffPos = 0;
-                    int nr = 0;
-                    foreach (var value in readTagList)
+                    var listLength = readTagList.Select(x => x._internalGetSize()).ToList();
+                    //int nr = 0;
+                    //foreach (var value in readTagList)
+                    for (int nr = 0; nr < listLength.Count; nr++)
                     {
+                        var value = readTagList.ElementAt(nr);
                         if (!NotExistedValue[nr])
                         {
                             value.ItemDoesNotExist = false;
                             value._readValueFromBuffer(completeData, buffPos);
-                            buffPos += value._internalGetSize();
+                            buffPos += listLength[nr];
                         }
                         else
                         {
                             value.ItemDoesNotExist = true;
                             value._setValueProp = null;
                         }
-                        nr++;
+                        //nr++;
                     }
                 }
             }
@@ -2623,7 +2704,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (res == 5 || res == 10)
                         value.ItemDoesNotExist = true;
                     else
-                        throw new Exception("Error: " + _errorCodeConverter(res));
+                        throw new Exception("Error: " + libnodave.daveStrerror(res));
                 }
             }
         }
@@ -2691,7 +2772,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return;
                     }
                     else if (res != 0)
-                        throw new Exception("Error: " + _errorCodeConverter(res));
+                        throw new Exception("Error: " + libnodave.daveStrerror(res));
                 }
             }
         }

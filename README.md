@@ -33,11 +33,12 @@ And to Brian Duke for his DBF parsing Code: http://www.codeproject.com/KB/bugs/L
 SevenMag -> For CP Read Code
 
 
+Special thanks
+==============================
+![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)  
+[ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
 
 
-
-
-
-
-
+Trademarks
+==============================
 Step 5, Step 7, S7-300, S7-400 are Trademarks of Siemens

@@ -658,6 +658,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Netlink_lite = 223,
         Netlink_lite_PPI = 224,
         Netlink_Pro = 230,
+        ISO_over_TCP_Managed = 9122,
         // ReSharper restore InconsistentNaming
     }
 
