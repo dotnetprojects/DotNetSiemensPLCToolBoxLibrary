@@ -707,6 +707,7 @@ namespace Kopplungstester
             // 
             // numericUpDown2
             // 
+            this.numericUpDown2.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "MaxLengthQuitt", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numericUpDown2.Location = new System.Drawing.Point(28, 241);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             65536,
