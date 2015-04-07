@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\externalDlls\JFKCommonLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\externalDlls\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO">
       <HintPath>..\AdditionalDlls\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
