@@ -299,25 +299,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.nwinfo = addinfo;
                             //This line contains Network Information, and after it the Position of the JumpMarks
 
-                            var ts1 = (string)row["TIMESTAMP1"];
-                            if (ts1.Length == 5)
-                            {
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-                            }
-                            else
-                            {
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            }
-
-                            ts1 = (string)row["TIMESTAMP2"];
-                            if (ts1.Length == 5)
-                            {
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-                            }
-                            else
-                            {
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            }
+                            myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
+                            myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
 
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 || subblktype == 9) //FC, OB, FB, SFC, SFB
@@ -344,32 +327,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                     Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
                             myTmpBlk.addinfo = addinfo;
-
-                            var ts1 = (string)row["TIMESTAMP1"];
-                            if (ts1.Length == 5)
-                            {
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-                            }
-                            else
-                            {
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            }
-
-                            ts1 = (string)row["TIMESTAMP2"];
-                            if (ts1.Length == 5)
-                            {
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-                            }
-                            else
-                            {
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            }
                         }
                         else if (subblktype == 10) //DB
                         {
                             //Need to check wich Information is stored here
                             myTmpBlk.mc7code = mc5code;
                             myTmpBlk.blkinterfaceInMC5 = ssbpart;
+                            myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
+                            myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
 
                             if (ssbpart != null && ssbpartlen > 2 && (ssbpart[0] == 0x0a || ssbpart[0] == 0x0b))
                             {
@@ -390,18 +355,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         }
                         else if (subblktype == 27) //VAT
                         {
-                            var ts1 = (string)row["TIMESTAMP1"];
-                            if (ts1.Length > 5)
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            else 
-                                myTmpBlk.LastCodeChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-
-                            ts1 = (string)row["TIMESTAMP2"];
-                            if (ts1.Length > 5)
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)ts1[5]);
-                            else
-                                myTmpBlk.LastInterfaceChange = Helper.GetDT((byte)ts1[0], (byte)ts1[1], (byte)ts1[2], (byte)ts1[3], (byte)ts1[4], (byte)0);
-
+                            myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
+                            myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
 
                             //VAT in MC5Code (Absolut adressed)
                             myTmpBlk.mc7code = mc5code;
@@ -750,6 +705,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             S7Block fblk = (S7Block)blk;
 
             return fblk.GetSourceBlock(useSymbols);
+        }
+
+        private static DateTime GetTimeStamp(string timestamp)
+        {
+            try
+            {
+                //use Windows-1252 to get correct time because dBaseConverter uses this code page for strings
+                var bytes = Encoding.GetEncoding("Windows-1252").GetBytes(timestamp);  
+                return bytes.Length == 5
+                    ? Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)0)
+                    : Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)bytes[5]);
+            }
+            catch
+            {
+                return DateTime.MinValue;
+            }
         }
     }
 }
