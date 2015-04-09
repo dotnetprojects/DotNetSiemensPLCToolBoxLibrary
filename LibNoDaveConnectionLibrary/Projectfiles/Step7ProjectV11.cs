@@ -54,7 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
-            if (ProjectFile.ToLower().EndsWith("zip"))
+            if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap13"))
             {
                 ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
                 if (string.IsNullOrEmpty(ProjectFile))               

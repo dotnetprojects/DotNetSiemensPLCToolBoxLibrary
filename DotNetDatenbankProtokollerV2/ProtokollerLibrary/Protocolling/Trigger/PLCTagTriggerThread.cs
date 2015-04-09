@@ -80,7 +80,18 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                         catch(Exception ex)
                         {
                             if (StartedAsService)
+                            {
                                 Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                try
+                                {
+                                    triggerConn.Disconnect();
+                                    triggerConn.Connect();
+                                }
+                                catch (Exception exex)
+                                {
+                                    Logging.LogText("Error: Exception during Connect...", exex, Logging.LogLevel.Error);
+                                }
+                            }
                             else
                                 throw;
                         }
@@ -111,8 +122,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                                     }
                                     catch (Exception ex)
                                     {
-                                        if (StartedAsService) Logging.LogText("Error: Exception during WriteValue, maybe Connection interupted?", ex, Logging.LogLevel.Error);
-                                        else throw;
+                                        if (StartedAsService)
+                                        {
+                                            Logging.LogText(
+                                                "Error: Exception during WriteValue, maybe Connection interupted?", ex,
+                                                Logging.LogLevel.Error);
+                                            try
+                                            {
+                                                triggerConn.Disconnect();
+                                                triggerConn.Connect();
+                                            }
+                                            catch (Exception exex)
+                                            {
+                                                Logging.LogText("Error: Exception during Connect...", exex, Logging.LogLevel.Error);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw;
+                                        }
                                     }
                                 }
                                 else

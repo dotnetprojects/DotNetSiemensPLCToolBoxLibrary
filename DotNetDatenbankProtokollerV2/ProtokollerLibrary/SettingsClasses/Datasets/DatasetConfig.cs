@@ -45,7 +45,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             }
         }
 
-        private string _datasetTableName = "Default";
+        private string _datasetTableName = "";
         public string DatasetTableName
         {
             get { return _datasetTableName; }

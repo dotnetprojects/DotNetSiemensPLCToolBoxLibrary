@@ -65,7 +65,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
-            if (datasetConfig.DatasetTableName != "") //Add the posibility to use a specific table_name (for using the table more then ones)
+            if (!string.IsNullOrEmpty(datasetConfig.DatasetTableName)) //Add the posibility to use a specific table_name (for using the table more then ones)
                 this.dataTable = datasetConfig.DatasetTableName;
             else
                 this.dataTable = dataTable;
@@ -213,8 +213,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myCmd.ExecuteNonQuery();
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logging.LogTextToLog4Net("Exception in SQL:" + myCmd.CommandText, Logging.LogLevel.Error, ex);
+
                 myDBConn.Close(); //Verbindung schließen!
                 myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
@@ -281,6 +283,8 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 }
                 catch (NpgsqlException ex)
                 {
+                    Logging.LogTextToLog4Net("Exception in SQL:" + myCmd.CommandText, Logging.LogLevel.Error, ex);
+
                     //if (ex.ErrorCode == "08P01")
                     //{
                     //    myCmd = new NpgsqlCommand();
@@ -306,6 +310,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
                     //    throw ex;
                     //}
+                    throw;
 
                 }
                 catch (Exception ex)

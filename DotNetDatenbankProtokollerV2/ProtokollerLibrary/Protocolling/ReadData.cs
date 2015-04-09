@@ -93,6 +93,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                             if (StartedAsService)
                             {
                                 Logging.LogText("Error: Exception during ReadData, maybe Connection interupted?", ex, Logging.LogLevel.Error);
+                                try
+                                {
+                                    plcConn.Disconnect();
+                                }
+                                catch (Exception exex)
+                                {
+                                    Logging.LogText("Error: Exception during Diconnect!", ex, Logging.LogLevel.Error);
+                                }
                                 return null;
                             }
                             

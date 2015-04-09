@@ -59,7 +59,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(new Step7ProjectV11(fls[0]));
 
-                        fls = System.IO.Directory.GetFiles(subd, "*.ap12");
+                        fls = System.IO.Directory.GetFiles(subd, "*.al12");
                         if (fls.Length > 0)
                             retVal.Add(new Step7ProjectV11(fls[0]));
 
@@ -75,21 +75,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     { }
                 }
 
-                string[] zips = System.IO.Directory.GetFiles(dirname, "*.zip");
-                foreach (string zip in zips)
+                foreach (var ending in "*.zip;*.zap13".Split(';'))
                 {
-                    string entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7p");
-                    if (entr != null)
-                        retVal.Add(new Step7ProjectV5(zip, false));
+                    string[] zips = System.IO.Directory.GetFiles(dirname, ending);
+                    foreach (string zip in zips)
+                    {
+                        string entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7p");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV5(zip, false));
 
-                    entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7l");
-                    if (entr != null)
-                        retVal.Add(new Step7ProjectV5(zip, false));
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7l");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV5(zip, false));
 
-                    entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
-                    if (entr != null)
-                        retVal.Add(new Step5Project(zip, false));
-                }                                    
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap11");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap12");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap13");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al11");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al12");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al13");
+                        if (entr != null)
+                            retVal.Add(new Step7ProjectV11(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
+                        if (entr != null)
+                            retVal.Add(new Step5Project(zip, false));
+                    }
+                }
             }
             catch(Exception)
             { }
