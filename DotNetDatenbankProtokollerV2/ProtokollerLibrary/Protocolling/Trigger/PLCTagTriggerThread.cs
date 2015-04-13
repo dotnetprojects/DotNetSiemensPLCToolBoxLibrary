@@ -29,7 +29,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
         private int NewDataInterval = 5;
 
         // Anzahl der Lesezyklen ohne Daten bis auf das NoDataIntervall umgeschaltet wird.
-        private int NoDataCycles = 10;
+        private int NoDataCycles = 30;
 
         // Leseintervall von der SPS wenn NoDataCycles lang keine neuen Daten vorhanden waren.
         private int NoDataInterval = 300;
@@ -48,6 +48,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             this.triggerConn = (PLCConnection) activConnections[datasetConfig.TriggerConnection];
             this.readBit = datasetConfig.TriggerReadBit;
             this.quittBit = datasetConfig.TriggerQuittBit;
+            this.NoDataInterval = datasetConfig.NoDataInterval > 0 ? datasetConfig.NoDataInterval : 300;
 
             ak_interval = NoDataInterval;
 
@@ -77,7 +78,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                             //Read the Trigger Bit
                             triggerConn.ReadValue(readBit);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             if (StartedAsService)
                             {
@@ -98,12 +99,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                         //If the cycle counter is 0, switch to the slower interval (it means that no new data was there for a long time! ;-)
                         if (cycle_counter > 0)
                         {
+                            //Logging.LogTextToLog4Net("WaitForTrigger() => \"" + datasetConfig.TriggerConnection.Name + "\" - NoDataInterval active");
                             cycle_counter--;
-                            ak_interval = NoDataInterval;
+
+                            if (cycle_counter == 0)
+                            {
+                                ak_interval = NoDataInterval;
+                            }
+
+                            if ((!((bool) readBit.Value) && !alreadyWritten) && datasetConfig.TriggerConnection is LibNoDaveConfig && !((LibNoDaveConfig)datasetConfig.TriggerConnection).StayConnected)
+                            {
+                                ak_interval = NoDataInterval;
+                                Logging.LogTextToLog4Net("WaitForTrigger() => \"" + datasetConfig.TriggerConnection.Name + "\" Discconnect because !StayConnected");
+                                triggerConn.Disconnect();
+                            }
                         }
 
-                        if (((bool)readBit.Value & !alreadyWritten) || ((bool)readBit.Value) && onlyUseOneTag)
+                        if (((bool) readBit.Value & !alreadyWritten) || ((bool) readBit.Value) && onlyUseOneTag)
                         {
+                            //Logging.LogTextToLog4Net("WaitForTrigger() => \"" + datasetConfig.TriggerConnection.Name + "\" - NewDataInterval active");
                             alreadyWritten = true;
                             cycle_counter = NoDataCycles;
                             ak_interval = NewDataInterval;
@@ -150,7 +164,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                                 }
                             }
                         }
-                        else if (!(bool)readBit.Value && !onlyUseOneTag)
+                        else if (!(bool) readBit.Value && !onlyUseOneTag)
                         {
                             if (alreadyWritten)
                             {
@@ -169,9 +183,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
                                 }
                             }
                         }
-                    }
 
-                    Thread.Sleep(ak_interval);
+                        //Logging.LogTextToLog4Net("Sleep() => \"" + datasetConfig.TriggerConnection.Name + "\" Interval:" + ak_interval);
+                        Thread.Sleep(ak_interval);
+                    }
+                    else
+                    {
+                        Logging.LogTextToLog4Net("WaitForTrigger() => \"" + datasetConfig.TriggerConnection.Name + "\" => Connect...");
+                        cycle_counter = NoDataCycles;
+                        triggerConn.Connect();
+                    }
+                    
                 }
             }
             catch (ThreadAbortException ex)
