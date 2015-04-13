@@ -9,7 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     /// </summary>
     public class TIAProjectFolder : ProjectFolder
     {
-        internal string ID { get; private set; }
+        //internal string ID { get; private set; }
         internal string InstID { get; private set; }
 
         internal XmlNode Node { get; private set; }

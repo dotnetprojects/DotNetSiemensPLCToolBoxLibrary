@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -14,10 +15,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
     {
         public String Folder { get; set; }
 
+        private static string IXmlPartDataId = null;
+        private static string BlockInterfaceBaseDataSourceId = null;
+
         public TIABlocksFolder(Step7ProjectV11 Project, XmlNode Node)
             : base(Project, Node)
         {
-         //"Siemens.Simatic.PlcLanguages.Model.StructureItemData"   
+            if (IXmlPartDataId == null)
+                IXmlPartDataId = Project.asId2Names.FirstOrDefault(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.IXmlPartData").Key;
+
+            if (BlockInterfaceBaseDataSourceId == null)
+                BlockInterfaceBaseDataSourceId = Project.relationId2Names.FirstOrDefault(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.BlockInterfaceBaseData.Source").Key;
+
+
+            //"Siemens.Simatic.PlcLanguages.Model.StructureItemData"   
+        }
+
+        private static byte[] StringToByteArrayFastest(string hex)
+        {
+            if (hex.Length % 2 == 1)
+                throw new Exception("The binary key cannot have an odd number of digits");
+
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
+            }
+
+            return arr;
+        }
+
+        private static int GetHexVal(char hex)
+        {
+            int val = (int)hex;
+            //For uppercase A-F letters:
+            return val - (val < 58 ? 48 : 55);
+            //For lowercase a-f letters:
+            //return val - (val < 58 ? 48 : 87);
+            //Or the two combined, but a bit slower:
+            //return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
         }
 
         private List<ProjectBlockInfo> blockList = null; 
@@ -33,8 +70,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     if (tiaType == "Siemens.Simatic.PlcLanguages.Model.DataBlockData")
                     {
+                        //BlockInterfaceBaseDataSourceId+"-"+
                         var nm = subNode.SelectSingleNode("attribSet[@id='" + TiaProject.CoreAttributesId + "']/attrib[@name='Name']").InnerText;
 
+                        var link = subNode.SelectSingleNode("relation[@id='" + BlockInterfaceBaseDataSourceId + "']/link").InnerText;
+
+                        var payloadNode = ((Step7ProjectV11)this.Project).xmlDoc.SelectSingleNode("root/objects/StorageObject[@instId='" + link.Split('-')[1] + "']");
+                        var payload = payloadNode.SelectSingleNode("attribSet[@id='" + IXmlPartDataId + "']/attrib[@name='PayLoad']").InnerText;
+
+                        var bytes = StringToByteArrayFastest(payload);
+                        var txt = Encoding.ASCII.GetString(bytes);
                         var blk = new TIAProjectBlockInfo(subNode) { Name = nm, BlockType = PLCBlockType.DB };
                         blockList.Add(blk);
                     }
