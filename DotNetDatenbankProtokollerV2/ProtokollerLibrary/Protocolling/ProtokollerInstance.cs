@@ -159,11 +159,17 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         try
                         {
                             if (!tmpConn.Connected)
+                            {
+                                Logging.LogTextToLog4Net("synchronizePLCTimes() => \"" + plcConnConf.Name + "\" => Connect...");
                                 tmpConn.Connect();
+                            }
 
                             tmpConn.PLCSetTime(DateTime.Now);
                             if (!plcConnConf.StayConnected)
+                            {
+                                Logging.LogTextToLog4Net("synchronizePLCTimes() => \"" + plcConnConf.Name + "\" Discconnect because !StayConnected");
                                 tmpConn.Disconnect();
+                            }
                         }
                         catch (Exception ex)
                         { }
@@ -191,7 +197,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                     {
                         tmpConn.Connect();
                         if (!plcConnConf.StayConnected)
+                        {
+                            Logging.LogTextToLog4Net("EstablishConnections() => \"" + plcConnConf.Name + "\" Discconnect because !StayConnected");
                             tmpConn.Disconnect();
+                        }
                     }
                     catch (Exception ex)
                     {

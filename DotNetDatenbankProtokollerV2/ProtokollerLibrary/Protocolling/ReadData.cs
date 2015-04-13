@@ -78,9 +78,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                 else if (usedConnection.Connection.GetType() == typeof(LibNoDaveConfig))
                 {                   
                     PLCConnection plcConn = (PLCConnection)activConnections[usedConnection.Connection];
-                    
+
                     if (!plcConn.Connected)
+                    {
+                        Logging.LogTextToLog4Net("ReadDataFromDataSources() => \"" + usedConnection.Connection.Name + "\" => Connect...");
                         plcConn.Connect();
+                    }
 
                     if (plcConn.Connected)
                     {
@@ -116,8 +119,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling
                         }
 
                         if (usedConnection.Connection is LibNoDaveConfig)
-                            if (!((LibNoDaveConfig)usedConnection.Connection).StayConnected)
-                                plcConn.Disconnect();
+                        {
+                            if (!((LibNoDaveConfig) usedConnection.Connection).StayConnected)
+                            {
+                                if (datasetConfig.TriggerConnection != usedConnection.Connection)
+                                {
+                                    Logging.LogTextToLog4Net("ReadDataFromDataSources() => \"" + datasetConfig.TriggerConnection.Name + "\" Discconnect because !StayConnected");
+                                    plcConn.Disconnect();
+                                }
+                            }
+                        }
                     
                     }
                     else

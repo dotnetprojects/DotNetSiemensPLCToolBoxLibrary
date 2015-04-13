@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
         <WPF1:StringToPLCValueBoolConverter x:Key="myStringToPLCValueBoolConverter" />
-		<Converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <Converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <Converters:ListIntToVisibilityConverter x:Key="VisConv0Visible" VisibleValue="0,4" />
         <Converters:IntToVisibilityConverter x:Key="VisConv1Visible" VisibleValue="1" />
         <Converters:IntToVisibilityConverter x:Key="VisConv2Visible" VisibleValue="2" />
@@ -374,7 +374,7 @@
 
         <GroupBox Width="443"
                   Height="73"
-                  Margin="184,105,0,0"
+                  Margin="184,135,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Header="Tags-Handshake-Trigger"
@@ -466,16 +466,16 @@
                            Stroke="Black" />
                 <Label Width="114"
                        Height="19"
-                       Margin="283,3,0,0"
+                       Margin="271,3,0,0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Content="Trigger Connection:"
+                       Content="Conn:"
                        Padding="1" />
 
                 <ComboBox Name="cmbTriggerConnection"
                           Width="114"
                           Height="23"
-                          Margin="311,20,0,0"
+                          Margin="311,3,0,0"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           VerticalContentAlignment="Center"
@@ -492,12 +492,28 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <TextBox Width="114"
+                	Height="17"
+                	Margin="311,27,0,0"
+                	HorizontalAlignment="Left"
+                	VerticalAlignment="Top"
+                	BorderBrush="Black"
+                	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
+                	Text="{Binding ElementName=grdDatasets,
+                                                 Path=SelectedItem.NoDataInterval}" />
+                <Label Width="40"
+                	Height="19"
+                	Margin="271,26,0,0"
+                	HorizontalAlignment="Left"
+                	VerticalAlignment="Top"
+                	Content="NoDIv"
+                	Padding="1" />
             </Grid>
         </GroupBox>
 
         <GroupBox Width="443"
                   Height="73"
-                  Margin="184,105,0,0"
+                  Margin="184,135,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Header="Tags-Handshake-Trigger"
@@ -545,7 +561,7 @@
                         Click="cmdSelectReadBitFromProject_Click"
                         Content="P" />
 
-               
+
                 <Rectangle Width="0"
                            Height="270"
                            Margin="-6,-112,0,0"
@@ -582,7 +598,7 @@
                 </ComboBox>
             </Grid>
         </GroupBox>
-        
+
         <GroupBox Width="285"
                   Height="73"
                   Margin="184,135,0,0"
@@ -626,7 +642,7 @@
 
         <GroupBox Width="560"
                   Height="99"
-                  Margin="184,105,0,0"
+                  Margin="184,135,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Header="Quartz-Trigger"
@@ -697,7 +713,7 @@
                                    Path=SelectedItem,
                                    Converter={StaticResource myNullToFalseConverter}}"
                Padding="0" />
-        
+
         <Label Width="83"
                Height="26"
                Margin="183,40,0,0"
@@ -785,7 +801,7 @@
                 Content="Copy" />
         <GroupBox Width="390"
                   Height="73"
-                  Margin="184,105,0,0"
+                  Margin="184,135,0,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Header="Connection"
@@ -1171,7 +1187,7 @@
         <ComboBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="119" Margin="671,165,0,0" Name="cmb_UseSameConnection"
                   IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}" 
                   ItemsSource="{Binding Connections, Source={x:Static DotNetSimaticDatabaseProtokollerLibrary:ProtokollerConfiguration.ActualConfigInstance}}">
-                  <!--SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Connections}">-->
+            <!--SelectedItem="{Binding ElementName=grdDatasets, Path=SelectedItem.Connections}">-->
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />

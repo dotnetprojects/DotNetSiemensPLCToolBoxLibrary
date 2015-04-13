@@ -145,6 +145,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             get { return _triggerconnection; }
             set { _triggerconnection = value; NotifyPropertyChanged("TriggerConnection"); }
         }
+
+        private int _noDataInterval = 300;
+        public int NoDataInterval
+        {
+            get { return _noDataInterval; }
+            set { _noDataInterval = value; NotifyPropertyChanged("NoDataInterval"); }
+        }
+        
         #endregion
 
         #region Quartz Trigger
