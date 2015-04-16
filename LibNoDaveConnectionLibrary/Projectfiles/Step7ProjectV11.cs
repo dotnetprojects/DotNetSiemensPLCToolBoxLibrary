@@ -197,10 +197,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal override void LoadProject()
         {
             _projectLoaded = true;
-            
-            Stream stream = new MemoryStream();
+
+            Stream stream = new ChunkedMemoryStream();
             StreamWriter streamWriter = new StreamWriter(stream);
-            XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = true, CheckCharacters = false });
+            //StringBuilder builder = new StringBuilder();
+            XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = false, CheckCharacters = false });
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("root");
@@ -253,10 +254,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             xmlWriter.Close();
 
             stream.Position = 0;
-            var rd = new StreamReader(stream);
-            var prj = rd.ReadToEnd();
+            //var rd = new StreamReader(stream);
+            //var prj = rd.ReadToEnd();
 
-            ParseProjectString(prj);            
+            ParseProject(stream);            
         }
 
         internal Dictionary<string, string> importTypeInfos;
@@ -327,11 +328,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return fld;
         }
 
-        private void ParseProjectString(string data)
+        private void ParseProject(Stream data)
         {
             xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(data);
-
+            
+            xmlDoc.Load(data);
+            
             //xmlDoc.Save("C:\\Temp\\tia-export.xml");
 
             importTypeInfos = new Dictionary<string, string>();
