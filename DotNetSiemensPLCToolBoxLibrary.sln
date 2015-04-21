@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.40302.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary", "LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj", "{E3ED87E8-B550-46AC-9196-9688D30EFD29}"
 EndProject
@@ -71,6 +71,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCSharpService", "SimpleCSharpService\SimpleCSharpService.csproj", "{E08F71C6-E98F-41BB-BA6B-056FD08D0EB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbfReader", "DbfReader\DbfReader.csproj", "{A7D1B64C-7045-4B32-9AD7-7649E40512C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debug", "Debug\Debug.csproj", "{4001C748-31DF-463F-A08C-2BB65EBB38AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -448,6 +450,20 @@ Global
 		{A7D1B64C-7045-4B32-9AD7-7649E40512C7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A7D1B64C-7045-4B32-9AD7-7649E40512C7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A7D1B64C-7045-4B32-9AD7-7649E40512C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4001C748-31DF-463F-A08C-2BB65EBB38AF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

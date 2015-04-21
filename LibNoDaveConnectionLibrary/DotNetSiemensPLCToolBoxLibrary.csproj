@@ -40,6 +40,14 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Siemens.Engineering">
+      <HintPath>C:\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi">
+      <HintPath>C:\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -289,6 +297,15 @@
     <Compile Include="Projectfiles\TIA\TiaObjectId.cs" />
     <Compile Include="Projectfiles\TIA\TiaRootObjectEntry.cs" />
     <Compile Include="Projectfiles\TIA\TiaRootObjectList.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\BaseTiaAttributeSet.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\BaseTiaExpandoAttributeSet.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\CoreAttributes.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\ParentLink.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaObject.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaObjectStructure.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TypeClasses\TiaStorrageObject.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\Attributes\TiaAttributeIdAttribute.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\Attributes\TiaTypeIdAttribute.cs" />
     <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaXmlWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\PLCTag.cs" />
