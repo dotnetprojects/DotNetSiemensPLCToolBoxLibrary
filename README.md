@@ -38,6 +38,10 @@ Special thanks
 ![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)  
 [ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
 
+[Reflector](http://www.red-gate.com/products/dotnet-development/reflector/) - Best DotNet decompiler
+
+[OzCode](http://www.oz-code.com/) - Best Debugging Tool
+
 
 Trademarks
 ==============================
