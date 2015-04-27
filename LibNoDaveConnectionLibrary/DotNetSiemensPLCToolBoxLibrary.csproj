@@ -40,13 +40,13 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Siemens.Engineering">
-      <HintPath>C:\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.dll</HintPath>
     </Reference>
-    <Reference Include="Siemens.Engineering.Hmi">
-      <HintPath>C:\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.Hmi.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.Hmi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
