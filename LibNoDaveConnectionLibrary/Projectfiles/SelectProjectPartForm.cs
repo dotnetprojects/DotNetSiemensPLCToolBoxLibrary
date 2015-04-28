@@ -245,13 +245,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         retVal = null;                    
                 }
             }
-            else if (SelectPart==SelectPartType.S7ProgrammFolder)
+            else if (SelectPart == SelectPartType.S7ProgrammFolder)
             {
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
                     if (tmp.myObject.GetType() == typeof(S7ProgrammFolder))
                         retVal = (S7ProgrammFolder)tmp.myObject;
+                    else
+                        retVal = null;
+                }
+            }
+            else if (SelectPart == SelectPartType.RootProgrammFolder)
+            {
+                if (treeStep7Project.SelectedNode != null)
+                {
+                    var tmp = (myTreeNode)treeStep7Project.SelectedNode;
+                    if (tmp.myObject is IProgrammFolder)
+                        retVal = (IProgrammFolder)tmp.myObject;
                     else
                         retVal = null;
                 }

@@ -81,7 +81,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
-        public class TIAOpennessControllerFolder : TIAOpennessProjectFolder
+        public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
             public TIAOpennessControllerFolder(Step7ProjectV11 Project)
                 : base(Project)

@@ -124,6 +124,7 @@
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />
     <Compile Include="DataTypes\Projectfolders\IHardwareFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\IRootProgrammFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
     <Compile Include="DataTypes\Network\Network.cs" />
     <Compile Include="DataTypes\Network\NetworkInterface.cs" />
