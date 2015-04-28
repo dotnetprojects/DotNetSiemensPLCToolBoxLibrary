@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
@@ -23,12 +23,13 @@ using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls;
 using Microsoft.Win32;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
+using Siemens.Engineering.SW;
 
 //using CompressionMode = ZLibNet.CompressionMode;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
-    public class Step7ProjectV11 : Project, IDisposable
+    public partial class Step7ProjectV11 : Project, IDisposable
     {
         public enum TiaVersionTypes
         {
@@ -241,101 +242,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
-
-        private TiaPortal tiaPortal;
-        private Siemens.Engineering.Project tiapProject;
-
-
-        public class TIAOpennessProjectFolder : ProjectFolder
-        {
-            //internal string ID { get; private set; }
-            internal string InstID { get; private set; }
-
-            protected Step7ProjectV11 TiaProject;
-
-            public override string Name { get; set; }
-
-            public TIAOpennessProjectFolder(Step7ProjectV11 Project)
-            {
-                this.Project = Project;
-                this.TiaProject = Project;                
-            }
-
-        }
-        internal void LoadViaOpennessDlls()
-        {
-            tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
-            tiapProject = tiaPortal.Projects.Open(ProjectFile);
-
-            var main = new TIAOpennessProjectFolder(this) {Name = "Main"};
-            ProjectStructure = main;
-
-            foreach (var d in tiapProject.Devices)
-            {
-                if (d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400"))
-                {
-                    var fld = new TIAOpennessProjectFolder(this)
-                    {
-                        Name = d.Name,
-                        Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                    };
-                    main.SubItems.Add(fld);
-                    LoadSubDevicesViaOpennessDlls(fld, d);
-                }
-            }
-
-            //    switch (tiaType)
-            //{
-            //    case "Siemens.Automation.DomainModel.ProjectData":
-            //        fld = new TIAProjectFolder(this, Node);                    
-            //        break;
-            //    case "Siemens.Automation.DomainModel.FolderData":
-            //        {
-            //            var subType = Node.SelectSingleNode("attribSet[@id='" + CoreAttributesId + "']/attrib[@name='Subtype']").InnerText;
-            //            if (subType == "ProgramBlocksFolder" || subType == "ProgramBlocksFolder.Subfolder")
-            //            {
-            //                fld = new TIABlocksFolder(this, Node);
-            //            }
-            //            else
-            //            {
-            //                fld = new TIAProjectFolder(this, Node);
-            //            }
-            //            break;
-            //        }
-            //    case "Siemens.Simatic.HwConfiguration.Model.DeviceData":
-            //        fld = new TIAProjectFolder(this, Node);
-            //        break;
-            //    case "Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData":
-            //        fld = new TIACPUFolder(this, Node);
-            //        break;
-            //    case "Siemens.Automation.DomainModel.EAMTZTagTableData":
-            //        fld = new TIASymTabFolder(this, Node);
-            //        break;
-            //    //case "Siemens.Simatic.PlcLanguages.Model.DataBlockData":
-            //    //    fld = new TIAProjectFolder(this, Node);
-            //    //    break;
-            //    default:                    
-            //        break;
-            //}
-        }
-        internal void LoadSubDevicesViaOpennessDlls(TIAOpennessProjectFolder parent, IHardwareObject device)
-        {
-            foreach (var e in device.Elements)
-            {
-                var fld = new TIAOpennessProjectFolder(this)
-                {
-                    Name = device.Name,                    
-                };
-                parent.SubItems.Add(fld);
-                LoadSubDevicesViaOpennessDlls(fld, e);
-            }
-        }
         
-
-        public virtual void Dispose()
-        {
-            tiaPortal.Dispose();
-        }
+       
         
         internal override void LoadProject()
         {

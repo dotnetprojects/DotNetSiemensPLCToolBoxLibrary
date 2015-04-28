@@ -43,10 +43,12 @@
     <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\externalDlls\siemens\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\externalDlls\siemens\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -278,6 +280,7 @@
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Projectfiles\Step7ProjectV11Tia.cs" />
     <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
     <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
     <Compile Include="Projectfiles\TIA\Enums\TiaObjectStatesLegacy.cs" />
