@@ -79,7 +79,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         var payload = payloadNode.SelectSingleNode("attribSet[@id='" + IXmlPartDataId + "']/attrib[@name='PayLoad']").InnerText;
 
                         var bytes = StringToByteArrayFastest(payload);
-                        var txt = Encoding.ASCII.GetString(bytes);
+                        var txt = Encoding.UTF8.GetString(bytes);
                         var blk = new TIAProjectBlockInfo(subNode) { Name = nm, BlockType = PLCBlockType.DB };
                         blockList.Add(blk);
                     }
