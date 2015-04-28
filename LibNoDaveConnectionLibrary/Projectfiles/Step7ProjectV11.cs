@@ -12,18 +12,24 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls;
+using Microsoft.Win32;
+using Siemens.Engineering;
+using Siemens.Engineering.HW;
+using Siemens.Engineering.SW;
+
 //using CompressionMode = ZLibNet.CompressionMode;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
-    public class Step7ProjectV11 : Project
+    public partial class Step7ProjectV11 : Project, IDisposable
     {
         public enum TiaVersionTypes
         {
@@ -91,9 +97,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
 
-            BinaryParseTIAFile();
-
-            LoadProject();
+            //BinaryParseTIAFile();
+            //LoadProject();
+            LoadViaOpennessDlls();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }        
@@ -102,6 +108,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         
         Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
+            int index = args.Name.IndexOf(',');
+            if (index == -1)
+            {
+                return null;
+            }
+            var name = args.Name.Substring(0, index) + ".dll";
+
+            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
+                              Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");
+            if (filePathReg != null)
+            {
+                string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13";
+                if (Directory.Exists(filePath) == false)
+                    filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13 SP1";
+                var path = Path.Combine(filePath, name);
+                var fullPath = Path.GetFullPath(path);
+                if (File.Exists(fullPath))
+                {
+                    return Assembly.LoadFrom(fullPath);
+                }
+
+                //filePath = filePathReg.GetValue("Path").ToString() + "Bin\\PublicAPI";
+                //path = Path.Combine(filePath, name);
+                //fullPath = Path.GetFullPath(path);
+                //if (File.Exists(fullPath))
+                //{
+                //    return Assembly.LoadFrom(fullPath);
+                //}
+
+                //filePath = filePathReg.GetValue("Path").ToString() + "Bin";
+                //path = Path.Combine(filePath, name);
+                //fullPath = Path.GetFullPath(path);
+                //if (File.Exists(fullPath))
+                //{
+                //    return Assembly.LoadFrom(fullPath);
+                //}
+            }
+
+
+            return null;
+
+
             var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
             TiaVersion = TiaVersionTypes.V13;
@@ -194,16 +242,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        
+       
+        
         internal override void LoadProject()
         {
             _projectLoaded = true;
-            
-            Stream stream = new MemoryStream();
-            StreamWriter streamWriter = new StreamWriter(stream);
-            XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = true, CheckCharacters = false });
+            return;
 
-            xmlWriter.WriteStartDocument();
-            xmlWriter.WriteStartElement("root");
+            //Stream stream = new FileStream("c:\\tia.xml", FileMode.OpenOrCreate); // new ChunkedMemoryStream();
+            //StreamWriter streamWriter = new StreamWriter(stream);
+            
+            //XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = true, CheckCharacters = false });
+
+            var tiaObjectStructure = new TiaObjectStructure();
+            var xmlWriter = new TiaXmlWriter(tiaObjectStructure);
+
+            //xmlWriter.WriteStartDocument();
+            //xmlWriter.WriteStartElement("root");
 
             if (tiaExport == null)
             {
@@ -233,9 +289,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-            tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-            tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            //tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            //tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            //tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
 
             if (TiaVersion >= TiaVersionTypes.V13)
             {
@@ -252,11 +308,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             xmlWriter.Flush();
             xmlWriter.Close();
 
-            stream.Position = 0;
-            var rd = new StreamReader(stream);
-            var prj = rd.ReadToEnd();
+            //streamWriter.Close();
+            //stream.Close();
 
-            ParseProjectString(prj);            
+            //stream.Position = 0;
+            //ParseProject(stream);            
         }
 
         internal Dictionary<string, string> importTypeInfos;
@@ -327,11 +383,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return fld;
         }
 
-        private void ParseProjectString(string data)
+        private void ParseProject(Stream data)
         {
             xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(data);
-
+            
+            xmlDoc.Load(data);
+            
             //xmlDoc.Save("C:\\Temp\\tia-export.xml");
 
             importTypeInfos = new Dictionary<string, string>();

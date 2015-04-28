@@ -40,6 +40,16 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -114,6 +124,7 @@
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />
     <Compile Include="DataTypes\Projectfolders\IHardwareFolder.cs" />
+    <Compile Include="DataTypes\Projectfolders\IRootProgrammFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
     <Compile Include="DataTypes\Network\Network.cs" />
     <Compile Include="DataTypes\Network\NetworkInterface.cs" />
@@ -204,6 +215,7 @@
     <Compile Include="DBF\Structures\MDX\MDXHeader.cs" />
     <Compile Include="DBF\Structures\MDX\MDXTagHeader.cs" />
     <Compile Include="DBF\Util.cs" />
+    <Compile Include="General\ChunkedMemoryStream.cs" />
     <Compile Include="General\DictionarySerializer.cs" />
     <Compile Include="General\EndianAttribute.cs" />
     <Compile Include="General\IEnumerableExtensions.cs" />
@@ -269,6 +281,7 @@
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Projectfiles\Step7ProjectV11Tia.cs" />
     <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
     <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
     <Compile Include="Projectfiles\TIA\Enums\TiaObjectStatesLegacy.cs" />
@@ -288,6 +301,16 @@
     <Compile Include="Projectfiles\TIA\TiaObjectId.cs" />
     <Compile Include="Projectfiles\TIA\TiaRootObjectEntry.cs" />
     <Compile Include="Projectfiles\TIA\TiaRootObjectList.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\BaseTiaAttributeSet.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\BaseTiaExpandoAttributeSet.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\AttributeClasses\CoreAttributes.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\ParentLink.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaObject.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaObjectStructure.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TypeClasses\TiaStorrageObject.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\Attributes\TiaAttributeIdAttribute.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\Attributes\TiaTypeIdAttribute.cs" />
+    <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaXmlWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\PLCTag.cs" />
     <Compile Include="Projectfiles\SelectPartType.cs" />

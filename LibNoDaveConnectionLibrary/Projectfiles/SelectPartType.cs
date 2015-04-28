@@ -7,6 +7,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         SourceFolder = 3,
         SymbolTable = 4,
         S7ProgrammFolder = 5,
+        RootProgrammFolder = 6,
         BlocksOfflinePart = 1001, //Select a fb,fc,db,vat,...
         VariableTable = 1011,
         DataType = 1012,
