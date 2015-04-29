@@ -39,61 +39,62 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
     {
 
 
-        public TIADataBlock(Step7ProjectV11 TIAProject, XmlNode Node)
-            : base(TIAProject, Node)
-        {            
-        }
+        //        public TIADataBlock(Step7ProjectV11 TIAProject, XmlNode Node)
+        //            : base(TIAProject, Node)
+        //        {            
+        //        }
 
-        public override string Name
-        {
-            get
-            {
-                return base.Name;
-            }
-            set
-            {
-                
-            }
-        }
+        //        public override string Name
+        //        {
+        //            get
+        //            {
+        //                return base.Name;
+        //            }
+        //            set
+        //            {
 
-        public bool SymbolicDataBlock { get; set; }
+        //            }
+        //        }
 
-        //public override int BlockNumber
-        //{
-        //    get
-        //    {
-        //        var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.IGeneralBlockData").Key + "']/attrib[@name='Number']");
-        //        if (lidNode != null) return Convert.ToInt32(lidNode.InnerText);
-        //        return 0;
-        //    }
-        //}
-        
-        public int FBNumber { get; set;}  //If it is a Instance DB
-        public bool IsInstanceDB { get; set; }
+        //        public bool SymbolicDataBlock { get; set; }
 
-        public IDataRow Structure
-        {
-            get
-            {
-                return new TIADataRow(node, tiaProject, this);
-            }
-            set
-            {
+        //        //public override int BlockNumber
+        //        //{
+        //        //    get
+        //        //    {
+        //        //        var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.IGeneralBlockData").Key + "']/attrib[@name='Number']");
+        //        //        if (lidNode != null) return Convert.ToInt32(lidNode.InnerText);
+        //        //        return 0;
+        //        //    }
+        //        //}
 
-            }
-        }
+        //        public int FBNumber { get; set;}  //If it is a Instance DB
+        //        public bool IsInstanceDB { get; set; }
 
-        public override string ToString()
-        {
-            string retVal = "";
-            if (this.BlockType == PLCBlockType.UDT)
-                retVal += "UDT";
-            else
-                retVal += "DB";
-            retVal += this.BlockNumber.ToString() + Environment.NewLine;
-            if (this.Structure != null)
-                retVal += this.Structure.ToString();
-            return retVal;
-        }       
+        //        public IDataRow Structure
+        //        {
+        //            get
+        //            {
+        //                return new TIADataRow(node, tiaProject, this);
+        //            }
+        //            set
+        //            {
+
+        //            }
+        //        }
+
+        //        public override string ToString()
+        //        {
+        //            string retVal = "";
+        //            if (this.BlockType == PLCBlockType.UDT)
+        //                retVal += "UDT";
+        //            else
+        //                retVal += "DB";
+        //            retVal += this.BlockNumber.ToString() + Environment.NewLine;
+        //            if (this.Structure != null)
+        //                retVal += this.Structure.ToString();
+        //            return retVal;
+        //        }       
+        public IDataRow Structure { get; set; }
     }
 }

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
@@ -150,7 +152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text);
+                return ParseTiaDbUdtXml(text, ControllerFolder);
             }
         }
 
@@ -222,7 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text);
+                return ParseTiaDbUdtXml(text, ControllerFolder);
             }
         }
         internal void LoadViaOpennessDlls()
@@ -232,14 +234,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             var main = new TIAOpennessProjectFolder(this) { Name = "Main" };
             ProjectStructure = main;
-
+            
             //var frm = new sliver.Windows.Forms.StateBrowserForm();
             //frm.ObjectToBrowse = tiapProject;
             //frm.Show();
 
             foreach (var d in tiapProject.Devices)
             {
-                if (d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400"))
+                Console.WriteLine(d.Subtype);
+                if (d.Subtype.EndsWith(".Device")) //d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400") || d.Subtype.StartsWith("S71200") || d.Subtype.StartsWith("S71500"))
                 {
                     
 
@@ -372,19 +375,113 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         }
 
 
-        public static Block ParseTiaDbUdtXml(string xml)
+
+
+
+        #region Parse DB UDT XML
+        internal static Block ParseTiaDbUdtXml(string xml, TIAOpennessControllerFolder controllerFolder)
         {
             XElement xelement = XElement.Parse(xml);
             var structure = xelement.Elements().FirstOrDefault(x => x.Name.LocalName.StartsWith("SW."));
 
             var sections = structure.Element("AttributeList").Element("Interface").Elements().First();
 
+            var block = new TIADataBlock();
+            var parameterRoot = new TIADataRow("ROOTNODE", S7DataRowType.STRUCT, block);
+
+            var parameterIN = new TIADataRow("IN", S7DataRowType.STRUCT, block);
+            var parameterOUT = new TIADataRow("OUT", S7DataRowType.STRUCT, block);
+            var parameterINOUT = new TIADataRow("IN_OUT", S7DataRowType.STRUCT, block);
+            var parameterSTAT = new TIADataRow("STATIC", S7DataRowType.STRUCT, block);
+            var parameterTEMP = new TIADataRow("TEMP", S7DataRowType.STRUCT, block);
+
             foreach (var xElement in sections.Elements())
             {
-                
+                TIADataRow useRow = parameterSTAT;
+                var sectionName = xElement.Attribute("Name").Value;
+                if (sectionName == "None" || sectionName == "Static")
+                {
+                    useRow = parameterSTAT;
+                    parameterRoot.Children.Add(useRow);
+                }
+                else if (sectionName == "In")
+                {
+                    useRow = parameterIN;
+                    parameterRoot.Children.Add(useRow);
+                }
+
+                parseChildren(useRow, xElement, controllerFolder);
             }
+
+            block.BlockType = DataTypes.PLCBlockType.DB;
+            block.Structure = parameterRoot;
             
-            return null;
+            return block;
         }
+
+        internal static void parseChildren(TIADataRow parentRow, XElement parentElement, TIAOpennessControllerFolder controllerFolder)
+        {
+            foreach (var xElement in parentElement.Elements())
+            {
+                var name = xElement.Attribute("Name").Value;
+                var datatype = xElement.Attribute("Datatype").Value;
+
+                var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock)parentRow.PlcBlock);
+
+                if (datatype.Contains("Array["))
+                {
+                    List<int> arrayStart = new List<int>();
+                    List<int> arrayStop = new List<int>();
+
+                    int pos1 = datatype.IndexOf("[");
+                    int pos2 = datatype.IndexOf("]", pos1);
+                    string[] arrays = datatype.Substring(pos1 + 1, pos2 - pos1 - 1).Split(',');
+
+                    foreach (string array in arrays)
+                    {
+                        string[] akar = array.Split(new string[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
+                        arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
+                        arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
+                    }
+
+                    row.ArrayStart = arrayStart;
+                    row.ArrayStop = arrayStop;
+                    row.IsArray = true;
+                    datatype = datatype.Substring(pos2 + 5);
+                }
+
+                parentRow.Children.Add(row);
+
+                if (datatype.StartsWith("\""))
+                {
+                    var udt = controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
+                    var tiaUdt = udt as TIADataBlock;
+                    //row.Children.AddRange(tiaUdt.Structure.Children.DeepCopy());
+                }
+                else if (datatype == "Struct")
+                {
+                    parseChildren(row, xElement, controllerFolder);
+                }
+                else
+                {
+                    switch (datatype)
+                    {
+                        case "Byte":
+                            row.DataType = S7DataRowType.BYTE;
+                            break;
+                        case "Bool":
+                            row.DataType = S7DataRowType.BOOL;
+                            break;
+                        case "Int":
+                            row.DataType = S7DataRowType.INT;
+                            break;
+                        case "UInt":
+                            row.DataType = S7DataRowType.DWORD;
+                            break;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }
