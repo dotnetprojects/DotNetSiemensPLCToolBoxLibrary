@@ -73,13 +73,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// <returns></returns>
         public IDataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
         {
-            return ((S7DataRow)Structure)._GetExpandedChlidren(myExpOpt)[0];
+            return ((TiaAndSTep7DataBlockRow)Structure)._GetExpandedChlidren(myExpOpt)[0];
         }
 
-        public S7DataRow GetDataRowWithAddress(ByteBitAddress address)
+        public DataBlockRow GetDataRowWithAddress(ByteBitAddress address)
         {
             var allRw = this.GetArrayExpandedStructure();
-            return S7DataRow.GetDataRowWithAddress((S7DataRow)allRw, address);
+            return TiaAndSTep7DataBlockRow.GetDataRowWithAddress((TiaAndSTep7DataBlockRow)allRw, address);
         }
 
         private S7DataRow expStruct = null;

@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -39,6 +40,158 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
     public abstract class TiaAndSTep7DataBlockRow : DataBlockRow
     {
+        public abstract TiaAndSTep7DataBlockRow DeepCopy();
+
+        //Array-element was the first at a higher index (bools start with zero bit address)
+        internal bool WasNextHigherIndex { get; set; }
+        //First element in a array
+        internal bool WasFirstInArray { get; set; }
+        //was a elemnt in a array
+        internal bool WasArray { get; set; }
+
+        public string BlockAddressInDbFormat
+        {
+            get
+            {
+                if (this.DataType == S7DataRowType.BOOL)
+                    return "DBX" + BlockAddress.ToString();
+                switch (this.ByteLength)
+                {
+                    case 1:
+                        return "DBB" + BlockAddress.ByteAddress.ToString();
+                    case 2:
+                        return "DBW" + BlockAddress.ByteAddress.ToString();
+                    case 4:
+                        return "DBD" + BlockAddress.ByteAddress.ToString();
+                }
+
+                return "";
+            }
+        }
+
+        public string FullBlockAddressInDbFormat
+        {
+            get
+            {
+                if (this.DataType == S7DataRowType.BOOL)
+                    return "DB" + BaseBlockNumber + ".DBX" + BlockAddress.ToString();
+                switch (this.ByteLength)
+                {
+                    case 1:
+                        return "DB" + BaseBlockNumber + ".DBB" + BlockAddress.ByteAddress.ToString();
+                    case 2:
+                        return "DB" + BaseBlockNumber + ".DBW" + BlockAddress.ByteAddress.ToString();
+                    case 4:
+                        return "DB" + BaseBlockNumber + ".DBD" + BlockAddress.ByteAddress.ToString();
+                }
+
+                return "P#DB" + BaseBlockNumber + "DBX" + BlockAddress + ".0 BYTES " + this.ByteLength;
+            }
+        }
+
+        internal List<TiaAndSTep7DataBlockRow> _GetExpandedChlidren(S7DataBlockExpandOptions myExpOpt)
+        {
+            TiaAndSTep7DataBlockRow retVal = (TiaAndSTep7DataBlockRow)this.DeepCopy();
+            retVal._children = new List<IDataRow>();
+
+            if (Children != null)
+            {
+                if (this.Parent == null || ((TiaAndSTep7DataBlockRow)this.Parent).isInOut == false || myExpOpt.ExpandSubChildInINOUT)
+                    foreach (TiaAndSTep7DataBlockRow plcDataRow in this.Children)
+                    {
+                        List<TiaAndSTep7DataBlockRow> tmp = plcDataRow._GetExpandedChlidren(myExpOpt);
+                        retVal.AddRange(tmp);
+                    }
+            }
+
+            if (this.IsArray && (this.DataType != S7DataRowType.CHAR || myExpOpt.ExpandCharArrays))
+            {
+                List<TiaAndSTep7DataBlockRow> arrAsList = new List<TiaAndSTep7DataBlockRow>();
+
+                var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
+
+                int[] arrAk = ArrayStart.ToArray();
+                for (int i = 0; i < this.GetArrayLines(); i++)
+                {
+                    string nm = "";
+                    for (int n = 0; n < arrAk.Length; n++)
+                    {
+                        if (nm != "") nm += ", ";
+                        nm += arrAk[n];
+                    }
+
+                    var frst = (i % lastCnt) == 0;  //Erstes Elment des letzten Index eines Arrays 
+
+
+                    TiaAndSTep7DataBlockRow tmp = (TiaAndSTep7DataBlockRow)retVal.DeepCopy();
+                    tmp.Name = tmp.Name + "[" + nm + "]";
+                    tmp.WasFirstInArray = retVal.IsArray && i == 0;
+                    tmp.WasArray = retVal.IsArray;
+                    tmp.IsArray = false;
+                    tmp.WasNextHigherIndex = frst; // arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
+                    arrAsList.Add(tmp);
+
+                    for (int n = arrAk.Length - 1; n >= 0; n--)
+                    {
+                        arrAk[n]++;
+                        if (arrAk[n] > ArrayStop[n])
+                        {
+                            arrAk[n] = ArrayStart[n];
+                        }
+                        else
+                            break;
+                    }
+                }
+                return arrAsList;
+            }
+
+            return new List<TiaAndSTep7DataBlockRow>() { retVal };
+        }
+
+
+        public static DataBlockRow GetDataRowWithAddress(DataBlockRow startRow, ByteBitAddress address, bool dontLookInTemp = false)
+        {
+            IList<IDataRow> col = startRow.Children;
+            if (dontLookInTemp)
+                col = startRow.Children.Where(itm => itm.Name != "TEMP").ToList();
+
+            for (int n = 0; n < col.Count; n++)
+            {
+                var s7DataRow = col[n];
+                if (n == col.Count - 1 || address < ((DataBlockRow)col[n + 1]).BlockAddress)
+                {
+                    if (((DataBlockRow)s7DataRow).BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0))
+                        return ((DataBlockRow)s7DataRow);
+                    //fix for finding the absoluteaddress of a string
+                    var stringDataRow = (TiaAndSTep7DataBlockRow)s7DataRow;
+                    if (stringDataRow.DataType == S7DataRowType.STRING)
+                    {
+                        int firstByte = stringDataRow.BlockAddress.ByteAddress;
+                        int lastByte = firstByte + stringDataRow.ByteLength;
+                        //If is a string the calling logic has determine which character is bein accessed
+                        if (address.ByteAddress >= (firstByte) && address.ByteAddress <= lastByte)
+                            return stringDataRow;
+                    }
+                    var tmp = GetDataRowWithAddress(((DataBlockRow)s7DataRow), address);
+                    if (tmp != null)
+                        return tmp;
+                }
+            }
+            return null;
+        }
+
+        public static DataBlockRow GetDataRowWithAddress(IEnumerable<DataBlockRow> startRows, ByteBitAddress address)
+        {
+            foreach (var s7DataRow in startRows)
+            {
+                var row = GetDataRowWithAddress(s7DataRow, address);
+                if (row != null)
+                    return row;
+            }
+
+            return null;
+        }
+
         public object StartValue { get; set; }  //Only for FB and DB not for FC
         public object Value { get; set; } //Only used in DBs
         public bool ReadOnly { get; set; }

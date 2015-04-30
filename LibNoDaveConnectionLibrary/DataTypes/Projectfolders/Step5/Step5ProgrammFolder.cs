@@ -1,4 +1,5 @@
 ﻿using System;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
@@ -34,6 +35,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
         }
 
         public OnlineBlocksFolder OnlineBlocksFolder { get { return null; } set { } }
+
+        public Block GetBlockRecursive(string name)
+        {
+            return BlocksFolder.GetBlock(name);
+        }
 
     }
 }

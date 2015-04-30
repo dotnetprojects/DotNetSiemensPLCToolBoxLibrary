@@ -697,7 +697,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(
@@ -830,7 +830,7 @@ namespace JFK_VarTab
                     int start = (int) myScrollViewer.VerticalOffset/20;
                     if (valueList == null || start != oldPos)
                     {
-                        List<S7DataRow> tmpLst = S7DataRow.GetChildrowsAsList(expRow);
+                        List<S7DataRow> tmpLst = S7DataRow.GetChildrowsAsList(expRow).Cast<S7DataRow>().ToList();
                         List<S7DataRow> askLst = new List<S7DataRow>();
                         for (int n = 0; n < tmpLst.Count; n++)
                         {
@@ -1123,7 +1123,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(
@@ -1473,7 +1473,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(

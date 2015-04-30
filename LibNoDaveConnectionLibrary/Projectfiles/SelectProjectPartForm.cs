@@ -261,8 +261,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
-                    if (tmp.myObject is IProgrammFolder)
-                        retVal = (IProgrammFolder)tmp.myObject;
+                    if (tmp.myObject is IRootProgrammFolder)
+                        retVal = (IRootProgrammFolder)tmp.myObject;
                     else
                         retVal = null;
                 }

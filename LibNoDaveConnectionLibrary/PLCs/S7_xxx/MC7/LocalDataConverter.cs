@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
@@ -11,7 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         {          
             if (myOpt.ReplaceLokalDataAddressesWithSymbolNames)
             {
-                List<S7DataRow> rows = null;
+                List<DataBlockRow> rows = null;
                 Dictionary<String, String> parLst = new Dictionary<string, string>();
 
                 if (myFct.Parameter != null && myFct.Parameter.Children!=null)
@@ -19,8 +20,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (plcDataRow.Name == "TEMP")
                         {
-                            S7DataRow tmpRw = ((S7DataRow)plcDataRow)._GetExpandedChlidren(new S7DataBlockExpandOptions() { ExpandCharArrays = true, ExpandSubChildInINOUT = false})[0];
-                            rows = S7DataRow.GetChildrowsAsList(tmpRw);
+                            TiaAndSTep7DataBlockRow tmpRw = ((TiaAndSTep7DataBlockRow)plcDataRow)._GetExpandedChlidren(new S7DataBlockExpandOptions() { ExpandCharArrays = true, ExpandSubChildInINOUT = false })[0];
+                            rows = DataBlockRow.GetChildrowsAsList(tmpRw);
                             break;
                         }
                     }
@@ -31,7 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (plcDataRow.DataType != S7DataRowType.STRUCT && plcDataRow.DataType != S7DataRowType.UDT && plcDataRow.DataType != S7DataRowType.FB)
                             parLst.Add("P#L" + plcDataRow.BlockAddress.ToString(), "P##" + plcDataRow.StructuredName);
-                        string tmp = plcDataRow.GetSymbolicAddress();
+                        string tmp = ((S7DataRow)plcDataRow).GetSymbolicAddress();
                         if (tmp != null)
                         {
                             parLst.Add("L" + tmp.Replace("X", ""), "#" + plcDataRow.StructuredName);

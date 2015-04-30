@@ -62,50 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 return new List<String>();
             }
         }
-
-        public static S7DataRow GetDataRowWithAddress(S7DataRow startRow, ByteBitAddress address, bool dontLookInTemp = false)
-        {
-            IList<IDataRow> col = startRow.Children;
-            if (dontLookInTemp)
-                col = startRow.Children.Where(itm => itm.Name != "TEMP").ToList();
-
-            for (int n = 0; n < col.Count; n++)
-            {
-                var s7DataRow = col[n];
-                if (n == col.Count - 1 || address < ((S7DataRow)col[n + 1]).BlockAddress)
-                {
-                    if (((S7DataRow)s7DataRow).BlockAddress == address && (s7DataRow.Children == null || s7DataRow.Children.Count == 0)) 
-                        return ((S7DataRow)s7DataRow);
-                    //fix for finding the absoluteaddress of a string
-                    var stringDataRow = (S7DataRow) s7DataRow;
-                    if(stringDataRow.DataType == S7DataRowType.STRING)
-                    {
-                        int firstByte = stringDataRow.BlockAddress.ByteAddress;
-                        int lastByte = firstByte + stringDataRow.PlcTag.ArraySize +2;
-                        //If is a string the calling logic has determine which character is bein accessed
-                        if (address.ByteAddress >= (firstByte) && address.ByteAddress <= lastByte)
-                            return stringDataRow;
-                    }
-                    var tmp = GetDataRowWithAddress(((S7DataRow)s7DataRow), address);
-                    if (tmp != null) 
-                        return tmp;
-                }
-            }
-            return null;
-        }
-
-        public static S7DataRow GetDataRowWithAddress(IEnumerable<S7DataRow> startRows, ByteBitAddress address)
-        {
-            foreach (var s7DataRow in startRows)
-            {
-                var row = GetDataRowWithAddress(s7DataRow, address);
-                if (row != null) 
-                    return row;
-            }
-
-            return null;
-        }
-
+       
         public S7DataRow(string name, S7DataRowType datatype, Block plcblock)
         {
             this.CurrentBlock = plcblock;
@@ -115,7 +72,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (datatype == S7DataRowType.S5_KC || datatype == S7DataRowType.S5_C) StringSize = 2;
         }
 
-        public S7DataRow DeepCopy()
+        public override TiaAndSTep7DataBlockRow DeepCopy()
         {
             S7DataRow newRow = new S7DataRow(this.Name, this.DataType, this.PlcBlock);
             newRow.Parent = this.Parent;
@@ -140,7 +97,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (Children!=null)
                 foreach (S7DataRow plcDataRow in Children)
                 {
-                    S7DataRow copy = plcDataRow.DeepCopy();
+                    TiaAndSTep7DataBlockRow copy = plcDataRow.DeepCopy();
                     copy.Parent = newRow;
                     newRow.Add(copy);
                 }
@@ -162,17 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 this.OnPropertyChanged("DataType");
             }
         }
-
-        private int BaseBlockNumber
-        {
-            get
-            {
-                if (this.Parent != null)
-                    return ((S7DataRow)Parent).BaseBlockNumber;
-                return PlcBlock.BlockNumber;
-            }
-        }
-
+        
         private PLCTag _plctag;
         public PLCTag PlcTag
         {
@@ -283,26 +230,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 
             }
         }
-
-        public string BlockAddressInDbFormat
-        {
-            get
-            {
-                if (this.DataType == S7DataRowType.BOOL) 
-                    return "DBX" + BlockAddress.ToString();
-                switch (this.ByteLength)
-                {
-                    case 1:
-                        return "DBB" + BlockAddress.ByteAddress.ToString();
-                    case 2:
-                        return "DBW" + BlockAddress.ByteAddress.ToString();
-                    case 4:
-                        return "DBD" + BlockAddress.ByteAddress.ToString();
-                }
-                return "";
-            }
-        }
-
+        
         private ByteBitAddress _parentOldAddress;
         internal override ByteBitAddress FillBlockAddresses(ByteBitAddress startAddr)
         {
@@ -457,13 +385,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        //Array-element was the first at a higher index (bools start with zero bit address)
-        internal bool WasNextHigherIndex { get; set; }
-        //First element in a array
-        internal bool WasFirstInArray { get; set; }
-        //was a elemnt in a array
-        internal bool WasArray { get; set; }
-
+       
         public override IDataRow Parent { get; set; }
 
         public override List<IDataRow> Children
@@ -475,17 +397,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 return _children;
             }
         }
-
-        public static List<S7DataRow> GetChildrowsAsList(S7DataRow akRow)
-        {
-            List<S7DataRow> retVal = new List<S7DataRow>();
-            retVal.Add(akRow);
-            if (akRow != null && akRow.Children != null && (akRow.DataType == S7DataRowType.STRUCT ||  akRow.DataType == S7DataRowType.UDT ||  akRow.DataType == S7DataRowType.FB))
-                foreach (S7DataRow plcDataRow in akRow.Children)
-                    retVal.AddRange(GetChildrowsAsList(plcDataRow));            
-            return retVal;
-        }
-
+        
         public static List<PLCTag> GetLibnoDaveValues(List<S7DataRow> rowList)
         {
             List<PLCTag> retVal = new List<PLCTag>();
@@ -508,65 +420,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
         */
 
-        internal List<S7DataRow> _GetExpandedChlidren(S7DataBlockExpandOptions myExpOpt)
-        {
-            S7DataRow retVal = (S7DataRow)this.DeepCopy();
-            retVal._children = new List<IDataRow>();
-           
-            if (Children != null)
-            {
-                if (this.Parent==null || ((S7DataRow)this.Parent).isInOut==false || myExpOpt.ExpandSubChildInINOUT)
-                    foreach (S7DataRow plcDataRow in this.Children)
-                    {
-                        List<S7DataRow> tmp = plcDataRow._GetExpandedChlidren(myExpOpt);
-                        retVal.AddRange(tmp);
-                    }
-            }
-
-            if (this.IsArray && (this.DataType!=S7DataRowType.CHAR || myExpOpt.ExpandCharArrays))
-            {
-                List<S7DataRow> arrAsList = new List<S7DataRow>();
-
-                var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
-
-                int[] arrAk = ArrayStart.ToArray();
-                for (int i = 0; i < this.GetArrayLines(); i++)
-                {
-                    string nm = "";
-                    for (int n = 0; n < arrAk.Length; n++)
-                    {
-                        if (nm != "") nm += ", ";
-                        nm += arrAk[n];                        
-                    }
-
-                    var frst = (i % lastCnt) == 0;  //Erstes Elment des letzten Index eines Arrays 
-                    
-
-                    S7DataRow tmp = (S7DataRow)retVal.DeepCopy();
-                    tmp.Name = tmp.Name + "[" + nm + "]";
-                    tmp.WasFirstInArray = retVal.IsArray && i == 0;
-                    tmp.WasArray = retVal.IsArray;
-                    tmp.IsArray = false;
-                    tmp.WasNextHigherIndex = frst; // arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
-                    arrAsList.Add(tmp);
-
-                    for (int n = arrAk.Length - 1; n >= 0; n--)
-                    {
-                        arrAk[n]++;
-                        if (arrAk[n] > ArrayStop[n])
-                        {
-                            arrAk[n] = ArrayStart[n];                            
-                        }
-                        else
-                            break;
-                    }
-                }
-                return arrAsList;
-            }
-
-            return new List<S7DataRow>() {retVal};
-        }
-
+     
 
         //This List contains the orginal Structure, if the Block has a TimeStamp Conflict!
         public IList<S7DataRow> OrginalChildren { get; set; }

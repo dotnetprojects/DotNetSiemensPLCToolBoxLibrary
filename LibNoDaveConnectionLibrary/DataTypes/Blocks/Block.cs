@@ -8,7 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     /// <summary>
     /// Base Block for all Blocks, Subblocks are VATBlock, FunctionBlock, DataBlock, (DataBlockS5, FunctionBlockS5 maybe)
     /// </summary>
-    public abstract class Block
+    public abstract class Block : IBlock
     {
         public DataTypes.PLCBlockType BlockType { get; set; }
         public DataTypes.PLCLanguage BlockLanguage { get; set; }
@@ -17,6 +17,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         //public DateTime LastModified { get; set; }
 
         public virtual string Name { get; set; }
+
+        public virtual string SymbolOrName
+        {
+            get
+            {
+                if (SymbolTableEntry != null)
+                    return SymbolTableEntry.Symbol;
+                return Name;
+            }
+        }
 
         public ProjectFolder ParentFolder { get; set; }
 

@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -39,6 +40,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
     public class DataBlockRow : IDataRow, INotifyPropertyChanged
     {
+        public static List<DataBlockRow> GetChildrowsAsList(DataBlockRow akRow)
+        {
+            var retVal = new List<DataBlockRow>();
+            retVal.Add(akRow);
+            if (akRow != null && akRow.Children != null && (akRow.DataType == S7DataRowType.STRUCT || akRow.DataType == S7DataRowType.UDT || akRow.DataType == S7DataRowType.FB))
+                foreach (DataBlockRow plcDataRow in akRow.Children)
+                    retVal.AddRange(GetChildrowsAsList(plcDataRow));
+            return retVal;
+        }
+
         public virtual List<IDataRow> Children { get; protected set; }
 
         protected internal S7DataRowType _datatype;
@@ -74,6 +85,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     return this.Parent.PlcBlock;
 
                 return CurrentBlock;
+            }
+        }
+
+        protected int BaseBlockNumber
+        {
+            get
+            {
+                if (this.Parent != null)
+                    return ((S7DataRow)Parent).BaseBlockNumber;
+                return PlcBlock.BlockNumber;
             }
         }
 

@@ -2,8 +2,10 @@
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
-    public interface IDataBlock
+    public interface IDataBlock : IBlock
     {
-        IDataRow Structure { get; set;}       
+        IDataRow Structure { get; set;}
+
+        IDataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt);
     }
 }

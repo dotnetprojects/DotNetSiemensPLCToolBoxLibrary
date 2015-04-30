@@ -24,17 +24,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
             this.CurrentBlock = block;
         }
 
-        //Array-element was the first at a higher index (bools start with zero bit address)
-        internal bool WasNextHigherIndex { get; set; }
-        //First element in a array
-        internal bool WasFirstInArray { get; set; }
-        //was a elemnt in a array
-        internal bool WasArray { get; set; }
-
         public bool isRootBlock { get; set; }
-        public bool isInOut { get; set; }
+        
 
-        public TIADataRow DeepCopy()
+        public override TiaAndSTep7DataBlockRow DeepCopy()
         {
             var newRow = new TIADataRow(this.Name, this.DataType, this.PlcBlock);
             newRow.Parent = this.Parent;

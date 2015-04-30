@@ -38,7 +38,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public static IRootProgrammFolder SelectRootProgrammFolder()
         {
-            return SelectS7ProgrammFolder("");
+            return SelectRootProgrammFolder("");
         }
 
         public static IRootProgrammFolder SelectRootProgrammFolder(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
@@ -46,7 +46,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.RootProgrammFolder;
             myFrm.ShowDialog();
-            return (IProgrammFolder)myFrm.retVal;
+            return (IRootProgrammFolder)myFrm.retVal;
         }
 
         public static ISymbolTable SelectSymbolTable()
