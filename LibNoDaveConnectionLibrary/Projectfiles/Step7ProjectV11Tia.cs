@@ -152,7 +152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text, blkInfo.Name, ControllerFolder, ParseType.DataType);
+                return ParseTiaDbUdtXml(text, (TIAOpennessProjectBlockInfo)blkInfo, ControllerFolder, ParseType.DataType);
             }
         }
 
@@ -224,7 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text, blkInfo.Name, ControllerFolder, ParseType.Programm);
+                return ParseTiaDbUdtXml(text, (TIAOpennessProjectBlockInfo)blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
         internal void LoadViaOpennessDlls()
@@ -386,7 +386,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             DataType
         }
 
-        internal static Block ParseTiaDbUdtXml(string xml, string name, TIAOpennessControllerFolder controllerFolder, ParseType parseType)
+        internal static Block ParseTiaDbUdtXml(string xml, TIAOpennessProjectBlockInfo projectBlockInfo, TIAOpennessControllerFolder controllerFolder, ParseType parseType)
         {
             XElement xelement = XElement.Parse(xml);
             var structure = xelement.Elements().FirstOrDefault(x => x.Name.LocalName.StartsWith("SW."));
@@ -394,7 +394,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             var sections = structure.Element("AttributeList").Element("Interface").Elements().First();
 
             var block = new TIADataBlock();
-            block.Name = name;
+            block.Name = projectBlockInfo.Name;
+            block.BlockNumber = projectBlockInfo.BlockNumber;
 
             if (parseType == ParseType.DataType)
                 block.BlockType = DataTypes.PLCBlockType.UDT;
