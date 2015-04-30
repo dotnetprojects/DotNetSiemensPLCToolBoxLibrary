@@ -152,7 +152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text, ControllerFolder);
+                return ParseTiaDbUdtXml(text, blkInfo.Name, ControllerFolder, ParseType.DataType);
             }
         }
 
@@ -224,7 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
-                return ParseTiaDbUdtXml(text, ControllerFolder);
+                return ParseTiaDbUdtXml(text, blkInfo.Name, ControllerFolder, ParseType.Programm);
             }
         }
         internal void LoadViaOpennessDlls()
@@ -379,7 +379,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
 
         #region Parse DB UDT XML
-        internal static Block ParseTiaDbUdtXml(string xml, TIAOpennessControllerFolder controllerFolder)
+
+        internal enum ParseType
+        {
+            Programm,
+            DataType
+        }
+
+        internal static Block ParseTiaDbUdtXml(string xml, string name, TIAOpennessControllerFolder controllerFolder, ParseType parseType)
         {
             XElement xelement = XElement.Parse(xml);
             var structure = xelement.Elements().FirstOrDefault(x => x.Name.LocalName.StartsWith("SW."));
@@ -387,13 +394,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             var sections = structure.Element("AttributeList").Element("Interface").Elements().First();
 
             var block = new TIADataBlock();
-            var parameterRoot = new TIADataRow("ROOTNODE", S7DataRowType.STRUCT, block);
+            block.Name = name;
 
+            if (parseType == ParseType.DataType)
+                block.BlockType = DataTypes.PLCBlockType.UDT;
+            else if (parseType == ParseType.Programm)
+                block.BlockType = DataTypes.PLCBlockType.DB;
+
+            var parameterRoot = new TIADataRow("ROOTNODE", S7DataRowType.STRUCT, block);
             var parameterIN = new TIADataRow("IN", S7DataRowType.STRUCT, block);
+            parameterIN.Parent = parameterRoot;
             var parameterOUT = new TIADataRow("OUT", S7DataRowType.STRUCT, block);
+            parameterOUT.Parent = parameterRoot;
             var parameterINOUT = new TIADataRow("IN_OUT", S7DataRowType.STRUCT, block);
+            parameterINOUT.Parent = parameterRoot;
             var parameterSTAT = new TIADataRow("STATIC", S7DataRowType.STRUCT, block);
+            parameterSTAT.Parent = parameterRoot;
             var parameterTEMP = new TIADataRow("TEMP", S7DataRowType.STRUCT, block);
+            parameterTEMP.Parent = parameterRoot;
 
             foreach (var xElement in sections.Elements())
             {
@@ -402,12 +420,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (sectionName == "None" || sectionName == "Static")
                 {
                     useRow = parameterSTAT;
-                    parameterRoot.Children.Add(useRow);
+                    parameterRoot.Add(useRow);
                 }
                 else if (sectionName == "In")
                 {
                     useRow = parameterIN;
-                    parameterRoot.Children.Add(useRow);
+                    parameterRoot.Add(useRow);
                 }
 
                 parseChildren(useRow, xElement, controllerFolder);
@@ -423,62 +441,104 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             foreach (var xElement in parentElement.Elements())
             {
-                var name = xElement.Attribute("Name").Value;
-                var datatype = xElement.Attribute("Datatype").Value;
-
-                var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock)parentRow.PlcBlock);
-
-                if (datatype.Contains("Array["))
+                if (xElement.Name.LocalName == "Comment")
                 {
-                    List<int> arrayStart = new List<int>();
-                    List<int> arrayStop = new List<int>();
+                    var text = xElement.Elements().FirstOrDefault(x => x.Attribute("Lang").Value == "de-DE");
+                    if (text == null)
+                        text = xElement.Elements().FirstOrDefault();
+                    if (text != null)
+                        parentRow.Comment = text.Value;
+                }
+                else if (xElement.Name.LocalName == "StartValue")
+                {
+                    parentRow.StartValue = xElement.Value;
+                }
+                else if (xElement.Name.LocalName == "Member")
+                {
+                    var name = xElement.Attribute("Name").Value;
+                    var datatype = xElement.Attribute("Datatype").Value;
 
-                    int pos1 = datatype.IndexOf("[");
-                    int pos2 = datatype.IndexOf("]", pos1);
-                    string[] arrays = datatype.Substring(pos1 + 1, pos2 - pos1 - 1).Split(',');
+                    var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock) parentRow.PlcBlock);
+                    row.Parent = parentRow;
 
-                    foreach (string array in arrays)
+                    if (datatype.Contains("Array["))
                     {
-                        string[] akar = array.Split(new string[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
-                        arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
-                        arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
+                        List<int> arrayStart = new List<int>();
+                        List<int> arrayStop = new List<int>();
+
+                        int pos1 = datatype.IndexOf("[");
+                        int pos2 = datatype.IndexOf("]", pos1);
+                        string[] arrays = datatype.Substring(pos1 + 1, pos2 - pos1 - 1).Split(',');
+
+                        foreach (string array in arrays)
+                        {
+                            string[] akar = array.Split(new string[] {".."}, StringSplitOptions.RemoveEmptyEntries);
+                            arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
+                            arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
+                        }
+
+                        row.ArrayStart = arrayStart;
+                        row.ArrayStop = arrayStop;
+                        row.IsArray = true;
+                        datatype = datatype.Substring(pos2 + 5);
                     }
 
-                    row.ArrayStart = arrayStart;
-                    row.ArrayStop = arrayStop;
-                    row.IsArray = true;
-                    datatype = datatype.Substring(pos2 + 5);
-                }
+                    parentRow.Add(row);
 
-                parentRow.Children.Add(row);
-
-                if (datatype.StartsWith("\""))
-                {
-                    var udt = controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
-                    var tiaUdt = udt as TIADataBlock;
-                    //row.Children.AddRange(tiaUdt.Structure.Children.DeepCopy());
-                }
-                else if (datatype == "Struct")
-                {
                     parseChildren(row, xElement, controllerFolder);
+
+                    if (datatype.StartsWith("\""))
+                    {
+                        var udt = controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
+                        var tiaUdt = udt as TIADataBlock;
+                        row.AddRange(((TIADataRow) tiaUdt.Structure).DeepCopy().Children);
+                        row.DataType = S7DataRowType.UDT;
+                        row.DataTypeBlock = udt;
+                    }
+                    else if (datatype == "Struct")
+                    {
+
+                    }
+                    else if (datatype.StartsWith("String["))
+                    {
+                        row.DataType = S7DataRowType.STRING;
+                        row.StringSize = int.Parse(datatype.Substring(7, datatype.Length - 8));
+                    }
+                    else
+                    {
+                        switch (datatype)
+                        {
+                            case "Byte":
+                                row.DataType = S7DataRowType.BYTE;
+                                break;
+                            case "Bool":
+                                row.DataType = S7DataRowType.BOOL;
+                                break;
+                            case "Int":
+                                row.DataType = S7DataRowType.INT;
+                                break;
+                            case "UInt":
+                                row.DataType = S7DataRowType.DWORD;
+                                break;
+                            case "DInt":
+                                row.DataType = S7DataRowType.DINT;
+                                break;
+                            case "Word":
+                                row.DataType = S7DataRowType.WORD;
+                                break;
+                            case "Char":
+                                row.DataType = S7DataRowType.CHAR;
+                                break;
+                            default:
+                                row.DataType = S7DataRowType.UNKNOWN;
+                                Console.WriteLine("unkown Datatype");
+                                break;
+                        }
+                    }
                 }
                 else
                 {
-                    switch (datatype)
-                    {
-                        case "Byte":
-                            row.DataType = S7DataRowType.BYTE;
-                            break;
-                        case "Bool":
-                            row.DataType = S7DataRowType.BOOL;
-                            break;
-                        case "Int":
-                            row.DataType = S7DataRowType.INT;
-                            break;
-                        case "UInt":
-                            row.DataType = S7DataRowType.DWORD;
-                            break;
-                    }
+                    Console.WriteLine("unkown XML Element");
                 }
             }
         }

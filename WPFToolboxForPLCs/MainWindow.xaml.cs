@@ -60,7 +60,7 @@ namespace WPFToolboxForSiemensPLCs
         void OpenProject(bool showDeleted)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d)|*.s7p;*.zip;*.s5d|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p|Zipped Step5/Step7 Project|*.zip";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap13)|*.s7p;*.zip;*.s5d;*.ap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p|Zipped Step5/Step7 Project|*.zip";
 
             var ret = op.ShowDialog(this);
             if (ret == true)

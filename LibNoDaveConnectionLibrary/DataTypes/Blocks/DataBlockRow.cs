@@ -41,7 +41,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     {
         public virtual List<IDataRow> Children { get; protected set; }
 
-        public virtual S7DataRowType DataType { get; set; }
+        protected internal S7DataRowType _datatype;
+        public virtual S7DataRowType DataType
+        {
+            get { return _datatype; }
+            set { _datatype = value; }
+        }
+
 
         public virtual string Name { get; set; }
         public virtual string FullName { get { return Parent == null ? string.Empty : (Parent.FullName + '.' + Name).Trim('.'); } }
@@ -51,7 +57,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public virtual IDataRow Parent { get; set; }
 
-        public virtual ByteBitAddress BlockAddress { get; protected set; }
+        protected internal ByteBitAddress _BlockAddress;
+        public virtual ByteBitAddress BlockAddress
+        {
+            get { return _BlockAddress; }
+            protected set { _BlockAddress = value; }
+        }
 
         public virtual Block CurrentBlock { get; protected set; }
 
@@ -111,7 +122,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public int StringSize { get; set; } //Only Relevant for String     
 
-        public string DataTypeAsString
+        public virtual string DataTypeAsString
         {
             get
             {
