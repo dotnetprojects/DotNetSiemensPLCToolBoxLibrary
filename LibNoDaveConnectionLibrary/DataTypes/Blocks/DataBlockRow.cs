@@ -93,7 +93,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             get
             {
                 if (this.Parent != null)
-                    return ((S7DataRow)Parent).BaseBlockNumber;
+                    return ((DataBlockRow)Parent).BaseBlockNumber;
                 return PlcBlock.BlockNumber;
             }
         }

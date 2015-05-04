@@ -119,7 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
 
-                return null;
+                return block;
             }
 
             private Block GetBlockRecursive(TIAOpennessPlcDatatypeFolder folder, string name)
@@ -135,7 +135,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
 
-                return null;
+                return block;
             }
         }
 
@@ -288,8 +288,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             foreach (var d in tiapProject.Devices)
             {
-                Console.WriteLine(d.Subtype);
-                if (d.Subtype.EndsWith(".Device")) //d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400") || d.Subtype.StartsWith("S71200") || d.Subtype.StartsWith("S71500"))
+                Console.WriteLine(d.Subtype);                
+                if (d.Subtype.EndsWith(".Device") && !d.Subtype.StartsWith("GSD.") && !d.Subtype.StartsWith("ET200eco.")) //d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400") || d.Subtype.StartsWith("S71200") || d.Subtype.StartsWith("S71500"))
                 {
                     
 
@@ -465,18 +465,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             foreach (var xElement in sections.Elements())
             {
-                TIADataRow useRow = parameterSTAT;
-                var sectionName = xElement.Attribute("Name").Value;
-                if (sectionName == "None" || sectionName == "Static")
-                {
-                    useRow = parameterSTAT;
-                    parameterRoot.Add(useRow);
-                }
-                else if (sectionName == "In")
-                {
-                    useRow = parameterIN;
-                    parameterRoot.Add(useRow);
-                }
+                TIADataRow useRow = parameterRoot;
+                //var sectionName = xElement.Attribute("Name").Value;
+                //if (sectionName == "None" || sectionName == "Static")
+                //{
+                //    useRow = parameterSTAT;
+                //    parameterRoot.Add(useRow);
+                //}
+                //else if (sectionName == "In")
+                //{
+                //    useRow = parameterIN;
+                //    parameterRoot.Add(useRow);
+                //}
 
                 parseChildren(useRow, xElement, controllerFolder);
             }
