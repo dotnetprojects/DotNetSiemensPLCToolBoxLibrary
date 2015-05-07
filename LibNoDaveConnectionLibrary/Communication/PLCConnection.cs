@@ -33,6 +33,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Timers;
 using System.Linq;
+using DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
@@ -152,6 +153,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
+
+        private FetchWriteConnection _fetchWriteConnection;
         
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -264,6 +267,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             socketThread.Abort();
                         socketTimer = null;
                         socketThread = null;
+                        break;
+                    case 500:
+                        _fetchWriteConnection=new FetchWriteConnection(this.Configuration);
+                        _fetchWriteConnection.Connect();
+                        Connected = true;
+                        return;
                         break;
                     //case 9050:
                     //    _errorCodeConverter = Connection.daveStrerror;
@@ -2112,6 +2121,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Dictionary<int, int> _dbSizes = null;
         public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList, bool cacheDbSizes = false)
         {
+            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            {
+                ReadValuesFetchWrite(valueList, false);
+                return;
+            }
+
             var tags = valueList.ToList();
 
             if (!cacheDbSizes || _dbSizes == null)
@@ -2161,6 +2176,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 return;
             }
+
+            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            {
+                ReadValuesFetchWrite(valueList, useReadOptimization);
+                return;
+            }
+
 
             lock (lockObj)
             {
@@ -2549,6 +2571,103 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        internal void ReadValuesFetchWrite(IEnumerable<PLCTag> valueList, bool useReadOptimization)
+        {
+            lock (lockObj)
+            {
+                
+
+                if (_fetchWriteConnection != null)
+                {
+
+                    IEnumerable<PLCTag> readTagList = valueList;
+
+                    #region Optimize Reading List....
+
+                    if (useReadOptimization)
+                    {
+                        List<PLCTag> orderedList = new List<PLCTag>();
+                        orderedList.AddRange(valueList);
+                        orderedList.Sort(new SorterForPLCTags());
+
+                        List<PLCTag> intReadTagList = new List<PLCTag>();
+
+                        //Go through the List of PLC Tags and Combine the ones, where the Byte Addres does not differ more than 4 Bytes...
+                        MemoryArea oldDataSource = 0;
+                        int oldDB = 0, oldByteAddress = 0, oldLen = 0;
+                        int cntCombinedTags = 0;
+                        PLCTag lastTag = null;
+                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
+                        foreach (PLCTag plcTag in orderedList)
+                        {
+                            if (cntCombinedTags == 0)
+                            {
+                                oldDataSource = plcTag.TagDataSource;
+                                oldDB = plcTag.DataBlockNumber;
+                                oldByteAddress = plcTag.ByteAddress;
+                                oldLen = plcTag._internalGetSize();
+                                lastTag = plcTag;
+                                cntCombinedTags++;
+                            }
+                            else
+                            {
+                                if (oldDataSource == plcTag.TagDataSource &&
+                                    (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DataBlockNumber) &&
+                                    plcTag.ByteAddress <= oldByteAddress + oldLen + 14)
+                                {
+                                    //todo: test if this is correct
+                                    if (cntCombinedTags == 1) rdHlp.PLCTags.Add(lastTag, 0);
+
+                                    cntCombinedTags++;
+                                    int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
+                                    oldLen = oldLen < newlen ? newlen : oldLen;
+                                    if (oldLen % 2 != 0) oldLen++;
+                                    rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
+                                    rdHlp.ByteAddress = oldByteAddress;
+                                    rdHlp.ArraySize = oldLen;
+                                    rdHlp.TagDataSource = oldDataSource;
+                                    rdHlp.DataBlockNumber = oldDB;
+                                }
+                                else
+                                {
+                                    if (cntCombinedTags > 1)
+                                    {
+                                        intReadTagList.Add(rdHlp);
+                                        rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
+                                        cntCombinedTags = 0;
+                                    }
+                                    else
+                                    {
+                                        intReadTagList.Add(lastTag);
+                                        cntCombinedTags = 0;
+                                    }
+
+                                    oldDataSource = plcTag.TagDataSource;
+                                    oldDB = plcTag.DataBlockNumber;
+                                    oldByteAddress = plcTag.ByteAddress;
+                                    oldLen = plcTag._internalGetSize();
+                                    if (oldLen % 2 != 0) oldLen++;
+                                    lastTag = plcTag;
+                                    cntCombinedTags++;
+                                }
+                            }
+
+                        }
+                        if (cntCombinedTags > 1) intReadTagList.Add(rdHlp);
+                        else if (cntCombinedTags == 1) intReadTagList.Add(lastTag);
+
+                        readTagList = intReadTagList;
+                    }
+
+                    #endregion
+
+                    foreach (var libNoDaveValue in readTagList)
+                    {
+                        _fetchWriteConnection.ReadValue(libNoDaveValue);
+                    }                   
+                }
+            }
+        }
         public object ReadValue(string address, TagDataType type)
         {
             var tag = new PLCTag(address, type);
@@ -2587,6 +2706,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 ReadValues(new[] { value });
                 return;
             }
+
+            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            {
+                ReadValuesFetchWrite(new[] { value }, false);
+                return;
+            }
+
 
             lock (lockObj)
             {
@@ -2983,6 +3109,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (_NeedDispose)
             {
                 _NeedDispose = false;
+
+                if (_fetchWriteConnection != null)
+                    _fetchWriteConnection.Dispose();
+
                 if (_dc != null)
                     _dc.disconnectPLC();
                 _dc = null;

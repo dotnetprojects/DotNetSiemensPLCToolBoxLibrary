@@ -15,6 +15,8 @@
 
         InstanceDatablock = 0x85,
 
+        
+
         //Todo: Block the following two types in the Tags
         LocalData = 0x86, //This types is not possible within Tags
         PreviousLocalData = 0x87, //This types is not possible within Tags
@@ -33,6 +35,8 @@
 
         Counter200 = 30,
 
-        Timer200 = 31
+        Timer200 = 31,
+
+        S5_DX = 300,
     }
 }

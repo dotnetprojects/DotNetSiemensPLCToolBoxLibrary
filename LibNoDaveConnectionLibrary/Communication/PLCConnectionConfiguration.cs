@@ -608,6 +608,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 230:
                     retVal = "Netlink PRO" + " (IP:" + CpuIP.ToString() + ")";
                     break;
+                case 500:
+                    retVal = "Fetch/Write (Active)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ")";
+                    break;
+                case 501:
+                    retVal = "Fetch/Write (Passive)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ")";
+                    break;
             }
 
             if (Routing)
@@ -659,6 +665,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Netlink_lite_PPI = 224,
         Netlink_Pro = 230,
         ISO_over_TCP_Managed = 9122,
+        Fetch_Write_Active = 500,
+        Fetch_Write_Passive = 501,
         // ReSharper restore InconsistentNaming
     }
 

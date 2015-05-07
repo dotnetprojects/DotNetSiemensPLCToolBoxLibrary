@@ -65,6 +65,10 @@
   <ItemGroup>
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
+    <Compile Include="Communication\FetchWrite\OperationCode.cs" />
+    <Compile Include="Communication\FetchWrite\OrgTypes.cs" />
+    <Compile Include="Communication\FetchWrite\RequestHeader.cs" />
+    <Compile Include="Communication\FetchWrite\ResponseHeader.cs" />
     <Compile Include="Communication\LibNoDave\IDaveConnection.cs" />
     <Compile Include="Communication\LibNoDave\IPDU.cs" />
     <Compile Include="Communication\LibNoDave\IresultSet.cs" />

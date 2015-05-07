@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -450,7 +451,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 block.BlockType = DataTypes.PLCBlockType.UDT;
             else if (parseType == ParseType.Programm)
                 block.BlockType = DataTypes.PLCBlockType.DB;
+            
+            var parameterRoot = ParseTiaDbUdtSections(sections, block, controllerFolder);
 
+            block.BlockType = DataTypes.PLCBlockType.DB;
+            block.Structure = parameterRoot;
+            
+            return block;
+        }
+
+        internal static TIADataRow ParseTiaDbUdtSections(XElement sections, TIADataBlock block, TIAOpennessControllerFolder controllerFolder)
+        {
             var parameterRoot = new TIADataRow("ROOTNODE", S7DataRowType.STRUCT, block);
             var parameterIN = new TIADataRow("IN", S7DataRowType.STRUCT, block);
             parameterIN.Parent = parameterRoot;
@@ -481,10 +492,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 parseChildren(useRow, xElement, controllerFolder);
             }
 
-            block.BlockType = DataTypes.PLCBlockType.DB;
-            block.Structure = parameterRoot;
-            
-            return block;
+            return parameterRoot;
         }
 
         internal static void parseChildren(TIADataRow parentRow, XElement parentElement, TIAOpennessControllerFolder controllerFolder)
@@ -502,6 +510,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 else if (xElement.Name.LocalName == "StartValue")
                 {
                     parentRow.StartValue = xElement.Value;
+                }
+                else if (xElement.Name.LocalName == "Sections")
+                {
+                    var row = ParseTiaDbUdtSections(xElement, (TIADataBlock) parentRow.CurrentBlock, controllerFolder);
+                    parentRow.AddRange(row.Children);
                 }
                 else if (xElement.Name.LocalName == "Member")
                 {
@@ -539,11 +552,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                     if (datatype.StartsWith("\""))
                     {
-                        var udt = controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
-                        var tiaUdt = udt as TIADataBlock;
-                        row.AddRange(((TIADataRow) tiaUdt.Structure).DeepCopy().Children);
+                        var udt =
+                            controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
+                        if (udt != null)
+                        {
+                            var tiaUdt = udt as TIADataBlock;
+                            row.AddRange(((TIADataRow) tiaUdt.Structure).DeepCopy().Children);
+
+                            row.DataTypeBlock = udt;
+                        }
                         row.DataType = S7DataRowType.UDT;
-                        row.DataTypeBlock = udt;
                     }
                     else if (datatype == "Struct")
                     {
@@ -579,9 +597,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             case "Char":
                                 row.DataType = S7DataRowType.CHAR;
                                 break;
+                            case "Any":
+                                row.DataType = S7DataRowType.ANY;
+                                break;
                             default:
                                 row.DataType = S7DataRowType.UNKNOWN;
-                                Console.WriteLine("unkown Datatype");
+                                Console.WriteLine("unkown Datatype: " + datatype);
                                 break;
                         }
                     }

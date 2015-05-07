@@ -266,6 +266,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             LockControls();
 
+            lstConnType.Enabled = true;
+
             if (lstLIBNODAVEConnectionType.SelectedItem != null)
                 switch (((EnumListItem)lstLIBNODAVEConnectionType.SelectedItem).Value)
                 {
@@ -403,6 +405,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         lblTimeoutDescr.Enabled = true;
                         txtLIBNODAVECPUPort.Text = "7777";
                         chkRouting.Enabled = true;
+                        break;
+
+                    case 500: //Fetch/Write
+                        cmdTest.Enabled = false;
+                        lblLIBNODAVECPUIP.Enabled = true;
+                        txtLIBNODAVECPUIP.Enabled = true;
+                        lblLIBNODAVECPURack.Enabled = false;
+                        txtLIBNODAVECPURack.Enabled = false;
+                        lblLIBNODAVECPUSlot.Enabled = false;
+                        txtLIBNODAVECPUSlot.Enabled = false;
+                        lblLIBNODAVECPUPort.Enabled = true;
+                        txtLIBNODAVECPUPort.Enabled = true;
+                        txtTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnectDescr.Enabled = true;
+                        txtTimeout.Enabled = true;
+                        lblTimeout.Enabled = true;
+                        lblTimeoutDescr.Enabled = true;
+                        txtLIBNODAVECPUPort.Text = "30500";
+                        chkRouting.Enabled = false;
+                        lstConnType.Enabled = false;
+
                         break;
                 }
 
