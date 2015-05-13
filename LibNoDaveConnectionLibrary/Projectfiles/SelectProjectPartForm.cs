@@ -147,12 +147,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {               
                 treeStep7Project.Nodes.Clear();
 
-                try
-                {
-                    tmpPrj = Projects.LoadProject(fnm.Split('|')[0], chkShowDeleted.Checked);
-                }
-                catch(Exception)
-                { }
+                tmpPrj = Projects.LoadProject(fnm.Split('|')[0], chkShowDeleted.Checked);
                 
                 lblProjectName.Text = tmpPrj.ProjectName;
                 lblProjectInfo.Text = tmpPrj.ProjectDescription;

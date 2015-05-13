@@ -335,6 +335,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
                     tiapProject = tiaPortal.Projects.Open(ProjectFile);
                 }
+                catch (Siemens.Engineering.EngineeringSecurityException ex)
+                {
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (i == 9)
