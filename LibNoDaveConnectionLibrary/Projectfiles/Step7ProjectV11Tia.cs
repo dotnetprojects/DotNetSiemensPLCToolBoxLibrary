@@ -16,6 +16,11 @@ using Siemens.Engineering.SW;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
+    public interface ITiaProjectBlockInfo : IProjectBlockInfo
+    {
+        string ExportToString();
+    }
+
     public partial class Step7ProjectV11
     {
 
@@ -46,8 +51,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
 
         }
-
-        public class TIAOpennessProjectBlockInfo : ProjectBlockInfo
+        
+        public class TIAOpennessProjectBlockInfo : ProjectBlockInfo, ITiaProjectBlockInfo
         {
             public Siemens.Engineering.SW.IBlock IBlock { get; set; }
             public int BlockNumber { get; set; }
@@ -72,15 +77,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     retVal += BlockName;
                 return retVal;
             }
+
+            public virtual string ExportToString()
+            {
+                var tmp = Path.GetTempPath();
+                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
+
+                //var b = IBlock as Siemens.Engineering.SW.CodeBlock;
+                //var nm = b.GetAttributeNames(AttributeAccessMode.Read).Concat(b.GetAttributeNames(AttributeAccessMode.ReadOnly)).Concat(b.GetAttributeNames(AttributeAccessMode.ReadWrite)).Concat(b.GetAttributeNames(AttributeAccessMode.Write));
+                //var att = b.GetAttributes(nm);
+                IBlock.Export(file, ExportOptions.None);
+                var text = File.ReadAllText(file);
+                File.Delete(file);
+
+                return text;
+            }
         }
 
-        public class TIAOpennessProjectDataTypeInfo : ProjectBlockInfo
+        public class TIAOpennessProjectDataTypeInfo : ProjectBlockInfo, ITiaProjectBlockInfo
         {
             public ControllerDatatype IBlock { get; set; }
 
             public override string ToString()
             {
                 return Name;
+            }
+
+            public virtual string ExportToString()
+            {
+                var tmp = Path.GetTempPath();
+                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
+
+                IBlock.Export(file, ExportOptions.None);
+                var text = File.ReadAllText(file);
+                File.Delete(file);
+
+                return text;
             }
         }
 
@@ -155,8 +187,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             public List<ProjectBlockInfo> readPlcBlocksList()
             {
-                if (BlockInfos != null)
-                    return BlockInfos;
+                if (_blockInfos != null)
+                    return _blockInfos;
                 ControllerDatatypeAggregation blocks = null;
                 var o = this.TiaPortalItem as ControllerDatatypeUserFolder;
                 if (o != null)
@@ -165,19 +197,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (q != null)
                     blocks = q.Datatypes;
 
-                BlockInfos = new List<ProjectBlockInfo>();
+                _blockInfos = new List<ProjectBlockInfo>();
 
                 foreach (var block in blocks)
                 {
                     var info = new TIAOpennessProjectDataTypeInfo() { Name = block.Name, IBlock = block };
                     info.BlockType = DataTypes.PLCBlockType.UDT;
-                    BlockInfos.Add(info);
+                    _blockInfos.Add(info);
                 }
 
                 return BlockInfos;
             }
 
-            public List<ProjectBlockInfo> BlockInfos { get; private set; }
+            private List<ProjectBlockInfo> _blockInfos;
+            public List<ProjectBlockInfo> BlockInfos
+            {
+                get
+                {
+                    if (_blockInfos == null)
+                        readPlcBlocksList();
+                    return _blockInfos;
+                }
+                private set { _blockInfos = value; }
+            }
+
             public Block GetBlock(string BlockName)
             {
                 if (BlockInfos == null)
@@ -190,13 +233,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 if (blkInfo == null)
                     return null;
-                var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
-
-                var iv = blkInfo as TIAOpennessProjectDataTypeInfo;
-                iv.IBlock.Export(file, ExportOptions.None);
-                var text = File.ReadAllText(file);
-                File.Delete(file);
+                
+                var iv = blkInfo as ITiaProjectBlockInfo;
+                var text = iv.ExportToString();
 
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.DataType);
             }
@@ -216,8 +255,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             public List<ProjectBlockInfo> readPlcBlocksList()
             {
-                if (BlockInfos != null)
-                    return BlockInfos;
+                if (_blockInfos != null)
+                    return _blockInfos;
 
                 IBlockAggregation blocks = null;
                 var o = this.TiaPortalItem as ProgramblockUserFolder;
@@ -227,7 +266,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (q != null)
                     blocks = q.Blocks;
 
-                BlockInfos = new List<ProjectBlockInfo>();
+                _blockInfos = new List<ProjectBlockInfo>();
 
                 foreach (var block in blocks)
                 {
@@ -243,12 +282,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     else if (block.Type == BlockType.UDT)
                         info.BlockType = DataTypes.PLCBlockType.UDT;
                     info.BlockNumber = block.Number;
-                    BlockInfos.Add(info);
+                    _blockInfos.Add(info);
                 }
-                return BlockInfos;
+                return _blockInfos;
             }
 
-            public List<ProjectBlockInfo> BlockInfos { get; private set; }
+            private List<ProjectBlockInfo> _blockInfos;
+            public List<ProjectBlockInfo> BlockInfos
+            {
+                get
+                {
+                    if (_blockInfos == null)
+                        readPlcBlocksList();
+                    return _blockInfos;
+                }
+                private set { _blockInfos = value; }
+            }
+
             public Block GetBlock(string BlockName)
             {
                 if (BlockInfos == null)
@@ -264,21 +314,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 if (blkInfo == null)
                     return null;
-                var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
-                
-                var iv = blkInfo as TIAOpennessProjectBlockInfo;
-                iv.IBlock.Export(file, ExportOptions.None);
-                var text = File.ReadAllText(file);
-                File.Delete(file);
+
+                var iv = blkInfo as ITiaProjectBlockInfo;
+                var text = iv.ExportToString();
 
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
         internal void LoadViaOpennessDlls()
         {
-            tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
-            tiapProject = tiaPortal.Projects.Open(ProjectFile);
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    if (tiaPortal != null)
+                    {
+                        tiaPortal.Dispose();
+                        tiaPortal = null;
+                    }
+                    tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
+                    tiapProject = tiaPortal.Projects.Open(ProjectFile);
+                }
+                catch (Exception ex)
+                {
+                    if (i == 9)
+                        throw;
+                }
+                if (tiapProject != null)
+                    break;
+            }
+
 
             var main = new TIAOpennessProjectFolder(this) { Name = "Main" };
             ProjectStructure = main;

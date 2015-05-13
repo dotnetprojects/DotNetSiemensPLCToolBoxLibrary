@@ -6,7 +6,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
 
-    public class ProjectPlcBlockInfo:ProjectBlockInfo
+    public class ProjectPlcBlockInfo : ProjectBlockInfo
     {
 
         public int BlockNumber { get; set; }

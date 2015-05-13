@@ -7,7 +7,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     /// <summary>
     /// This can be Information about a PLC Block (DB, FC,...) or a Block in the Source Folder
     /// </summary>
-    public class ProjectBlockInfo
+    public class ProjectBlockInfo : IProjectBlockInfo
     {
        internal int id;
        internal Block _Block = null;
