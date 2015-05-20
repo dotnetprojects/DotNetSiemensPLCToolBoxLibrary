@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 {
@@ -141,11 +142,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         public void StartAsync()
         {
-            Start();
-        }
-
-        public void Start()
-        {
             if (!this.connection_active)
             {
                 this.State = Status.LISTENING;
@@ -182,6 +178,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     }
                 }
             }
+        }
+
+        public async void Start()
+        {
+           var t = new TaskCompletionSource<object>();
+            
+            Action<TcpClient> vCHandler = null;
+            vCHandler = res =>
+            {
+                ConnectionEstablished -= vCHandler;
+                ConnectionClosed -= vCHandler;
+                t.TrySetResult(res);
+            };
+            this.ConnectionEstablished += vCHandler;
+            this.ConnectionClosed += vCHandler;
+
+            StartAsync();
+
+            await t.Task;
         }
 
         public void Stop()
@@ -258,7 +273,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect) Start();
+                        if (AutoReConnect) StartAsync();
                 }
                 else
                 {
@@ -321,7 +336,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                        if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                     return;
                 }
 
@@ -366,7 +381,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                             StopInternal();
 
                             if (!AllowMultipleClients || connection_active)
-                                if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                                if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                         }
                         else
                         {
@@ -394,7 +409,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 StopInternal();
 
                 if (!AllowMultipleClients || connection_active)
-                    if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                    if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                 return;
             }
 
@@ -430,7 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                            if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                     }
                     else
                     {
@@ -468,7 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                            if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                     }
                     else
                     {
@@ -534,7 +549,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                        if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                 }
 
 
