@@ -77,6 +77,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private void LockControls()
         {
             cmdTest.Enabled = false;
+            txtWritePort.Enabled = false;
             lblLIBNODAVEEntryPoint.Enabled = false;
             lstListEntryPoints.Enabled = false;
             lblLIBNODAVECPURack.Enabled = false;
@@ -161,6 +162,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             txtLIBNODAVECPUMPI.Text = myConfig.CpuMpi.ToString();
             txtLIBNODAVECPUIP.Text = myConfig.CpuIP;
             txtLIBNODAVECPUPort.Text = myConfig.Port.ToString();
+            txtWritePort.Text = myConfig.WritePort.ToString();
             txtLIBNODAVELokalMPI.Text = myConfig.LokalMpi.ToString();
             lstLIBNODAVELokalCOMPort.SelectedItem = myConfig.ComPort;
             if (myConfig.ComPortParity == 'e')
@@ -216,6 +218,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             myConfig.CpuMpi = Convert.ToInt32(txtLIBNODAVECPUMPI.Text);
             myConfig.CpuIP = txtLIBNODAVECPUIP.Text;
             myConfig.Port = Convert.ToInt32(txtLIBNODAVECPUPort.Text);
+            myConfig.WritePort = Convert.ToInt32(txtWritePort.Text);
             myConfig.LokalMpi = Convert.ToInt32(txtLIBNODAVELokalMPI.Text);
             myConfig.ComPort = lstLIBNODAVELokalCOMPort.SelectedItem != null ? lstLIBNODAVELokalCOMPort.SelectedItem.ToString() : "";
 
@@ -409,6 +412,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     case 500: //Fetch/Write
                         cmdTest.Enabled = false;
+                        txtWritePort.Enabled = true;
                         lblLIBNODAVECPUIP.Enabled = true;
                         txtLIBNODAVECPUIP.Enabled = true;
                         lblLIBNODAVECPURack.Enabled = false;
@@ -423,7 +427,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         txtTimeout.Enabled = true;
                         lblTimeout.Enabled = true;
                         lblTimeoutDescr.Enabled = true;
-                        txtLIBNODAVECPUPort.Text = "30500";
+                        //txtLIBNODAVECPUPort.Text = "30500";
+                        //txtWritePort.Text = "30501";
                         chkRouting.Enabled = false;
                         lstConnType.Enabled = false;
 

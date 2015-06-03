@@ -2571,6 +2571,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        internal void WriteValuesFetchWrite(IEnumerable<PLCTag> valueList)
+        {
+            foreach (var libNoDaveValue in valueList)
+            {
+                _fetchWriteConnection.WriteValue(libNoDaveValue);
+            }  
+        }
+
+
         internal void ReadValuesFetchWrite(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             lock (lockObj)
@@ -2786,6 +2795,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (AutoConnect && !Connected)
                     Connect();
 
+                if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+                {
+                    WriteValuesFetchWrite(new []{value});
+                    return;
+                }
+
                 if (_dc != null)
                 {
                     if (_dc == null)
@@ -2863,6 +2878,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 if (AutoConnect && !Connected)
                     Connect();
+
+                if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+                {
+                    WriteValuesFetchWrite(valueList);
+                    return;
+                }
+
 
                 if (_dc != null)
                 {

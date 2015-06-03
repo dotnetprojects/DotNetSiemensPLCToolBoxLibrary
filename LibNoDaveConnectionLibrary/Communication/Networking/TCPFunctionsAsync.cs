@@ -244,7 +244,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 }
 
                 if (UseKeepAlive)
-                    tcpc.Client.SetKeepAlive(50, 100);
+                    tcpc.Client.SetKeepAlive(1000, 2000);
 
                 if (ConnectionEstablished != null)
                     if (context == null)
