@@ -212,7 +212,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 
                 var writeByte = new byte[bytes.Length + sz];
                 Array.Copy(bytes, 0, writeByte, 0, bytes.Length);
-                tag._putControlValueIntoBuffer(writeByte, bytes.Length);
+
+                var putPos = bytes.Length;
+                if (tag.ReadByteSize % 2 > 0)
+                    putPos++;
+
+                tag._putControlValueIntoBuffer(writeByte, putPos);
 
                 _tcpWrite.SendData(writeByte);
                 var data = new byte[Marshal.SizeOf(typeof(ResponseHeader))];
