@@ -217,7 +217,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                 if (tag.ReadByteSize % 2 > 0)
                     putPos++;
 
-                tag._putControlValueIntoBuffer(writeByte, putPos);
+                if (tag.TagDataType == TagDataType.Bool)
+                {
+                    if (object.Equals(tag.Controlvalue, true))
+                        writeByte[putPos] = (byte) (Math.Pow(2,(tag.BitAddress)));
+                    else
+                        writeByte[putPos] = 0;
+                }
+                else
+                {
+                    tag._putControlValueIntoBuffer(writeByte, putPos);    
+                }
+                
 
                 _tcpWrite.SendData(writeByte);
                 var data = new byte[Marshal.SizeOf(typeof(ResponseHeader))];
@@ -230,7 +241,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                 var response = fromBytes<ResponseHeader>(data);
 
             }
-        }
+        }       
 
         byte[] getBytes<T>(T str) where T:struct 
         {
