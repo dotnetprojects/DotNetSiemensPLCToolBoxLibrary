@@ -1567,6 +1567,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                         }
                         break;
+                    case TagDataType.BCDArray:
+                        {
+                            var tmp = (ulong)ctlValue;
+
+                            ulong faktor = 1;
+                            for (int n = 0; n < ArraySize-1; n++)
+                            {
+                                faktor *= 10;
+                            }
+
+                            for (int n = 0; n < ArraySize; n++)
+                            {
+                                buff[startpos + n] = (byte) (tmp/faktor);
+                                tmp -= buff[startpos + n]*faktor;
+                                faktor /= 10;                                
+                            }
+                        }
+                        break;
                     case TagDataType.Bool:
                         bool tmp1 = false;
                         tmp1 = Convert.ToBoolean(ctlValue);
@@ -1680,6 +1698,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             val[n] = buff[n + startpos];
                         */
                         _setValueProp = val;
+                    }
+                    break;
+                case TagDataType.BCDArray:
+                    {
+                        ulong wrt = 0;
+
+                        for (int i = 0; i < ArraySize; i++)
+                        {
+                            wrt *= 10;
+                            wrt += (ulong)libnodave.getBCD8from(buff, startpos + i);
+                        }
+
+                        _setValueProp = wrt;
                     }
                     break;
 

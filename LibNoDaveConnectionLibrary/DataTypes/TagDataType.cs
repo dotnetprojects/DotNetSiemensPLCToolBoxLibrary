@@ -27,5 +27,7 @@
         LInt,
         LWord,
         LReal,
+
+        BCDArray,
     }
 }
