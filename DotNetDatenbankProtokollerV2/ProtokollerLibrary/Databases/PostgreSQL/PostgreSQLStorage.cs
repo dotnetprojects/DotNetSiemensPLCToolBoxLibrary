@@ -260,8 +260,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                             var par = new NpgsqlParameter("@" + field.DatabaseField, value);
                             if (value is string)
                             {
-                                par.Size = ((string) value).Length;
-                                Logging.LogText("String Para:" + par.ParameterName + par.Size + par.Value, Logging.LogLevel.Information);
+                                par.Size = ((string) value).Length;                            
                             }
                             myCmd.Parameters.Add(par);
                         }
@@ -269,7 +268,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         {
                             var par = new NpgsqlParameter("@" + field.DatabaseField, "");
                             par.Size = 0;
-                            Logging.LogText("Null Para:" + par.ParameterName + par.Size + par.Value, Logging.LogLevel.Information);
+                            
                             myCmd.Parameters.Add(par);
                         }
 
