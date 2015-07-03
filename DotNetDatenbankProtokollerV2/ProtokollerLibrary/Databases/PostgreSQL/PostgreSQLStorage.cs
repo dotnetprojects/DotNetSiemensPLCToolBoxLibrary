@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
@@ -250,9 +251,28 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        var par = new NpgsqlParameter("@" + field.DatabaseField, value);
-                        myCmd.Parameters.Add(par);
-                       
+                        if (value != null)
+                        {
+                            if (value is string)
+                            {
+                                value = ((string) value).Replace("\0", "");
+                            }
+                            var par = new NpgsqlParameter("@" + field.DatabaseField, value);
+                            if (value is string)
+                            {
+                                par.Size = ((string) value).Length;
+                                Logging.LogText("String Para:" + par.ParameterName + par.Size + par.Value, Logging.LogLevel.Information);
+                            }
+                            myCmd.Parameters.Add(par);
+                        }
+                        else
+                        {
+                            var par = new NpgsqlParameter("@" + field.DatabaseField, "");
+                            par.Size = 0;
+                            Logging.LogText("Null Para:" + par.ParameterName + par.Size + par.Value, Logging.LogLevel.Information);
+                            myCmd.Parameters.Add(par);
+                        }
+
                         //switch (field.DatabaseFieldType)
                         //{
                         //    case "int8":
@@ -285,6 +305,15 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 {
                     Logging.LogTextToLog4Net("Exception in SQL:" + myCmd.CommandText, Logging.LogLevel.Error, ex);
 
+                    var sql = myCmd.CommandText;
+                    foreach (NpgsqlParameter parameter in myCmd.Parameters.Cast<NpgsqlParameter>().OrderByDescending(x=>x.ParameterName))
+                    {
+                        sql = sql.Replace(parameter.ParameterName,
+                            parameter.Value is string || parameter.Value is DateTime ? "'" + parameter.Value + "'" : parameter.Value.ToString());
+                    }
+                    
+                    Logging.LogTextToLog4Net("Exception in SQL(filled):" + sql, Logging.LogLevel.Error);
+                    
                     //if (ex.ErrorCode == "08P01")
                     //{
                     //    myCmd = new NpgsqlCommand();
