@@ -22,8 +22,6 @@ build:
 after_build:
   - ps: .\nuget\pack.ps1
 
-test: off
-
 artifacts:
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
     name: DotNetSiemensPLCToolBoxLibrary.dll
