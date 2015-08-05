@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DotNetProjects.DotNetSiemensPLCToolBoxLibrary</id>
+    <version>$version$</version>
+    <authors>DotNetProjects</authors>
+    <owners>DotNetProjects</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl-3.0.de.html</licenseUrl>
+    <projectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DLL for Accessing S7 PLCs</description>
+    <copyright>Copyright 2015</copyright>
+  </metadata>
+  <files>
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.dll" target="lib\net40" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.pdb" target="lib\net40" />
+	<file src="..\externalDlls\libnodave_jfkmod.dll" target="build\net40" />
+    <file src="..\externalDlls\libnodave_jfkmod64.dll" target="build\net40" />
+  </files>
+</package>
