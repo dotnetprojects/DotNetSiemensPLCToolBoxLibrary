@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/j96f95ejg1cj4u6q/branch/master?svg=true)](https://ci.appveyor.com/project/jogibear9988/dotnetsiemensplctoolboxlibrary/branch/master)
+
 DotNetSiemensPLCToolBoxLibrary
 ==============================
 
