@@ -22,50 +22,46 @@ typedef int (DECL2 * _setHWnd) (int, HWND);
 
 EXPORTSPEC HANDLE DECL2 openS7online(const char * accessPoint, HWND handle) {
     HMODULE hmod;
-    HANDLE h;
-    int en;
-    _setHWnd SetSinecHWnd; 
+    int h,en;
+	_setHWnd SetSinecHWnd; 
 
     hmod=LoadLibrary("S7onlinx.dll");
     if (daveDebug & daveDebugOpen)
-    LOG2("LoadLibrary(S7onlinx.dll) returned %p)\n",hmod);
+	LOG2("LoadLibrary(S7onlinx.dll) returned %p)\n",hmod);
 
     SCP_open=GetProcAddress(hmod,"SCP_open");
     if (daveDebug & daveDebugOpen)
-        LOG2("GetProcAddress returned %p)\n",SCP_open);
+    	LOG2("GetProcAddress returned %p)\n",SCP_open);
 
     SCP_close=GetProcAddress(hmod,"SCP_close");
     if (daveDebug & daveDebugOpen)
-    LOG2("GetProcAddress returned %p)\n",SCP_close);
+	LOG2("GetProcAddress returned %p)\n",SCP_close);
 
     SCP_get_errno=GetProcAddress(hmod,"SCP_get_errno");
     if (daveDebug & daveDebugOpen)
-    LOG2("GetProcAddress returned %p)\n",SCP_get_errno);
+	LOG2("GetProcAddress returned %p)\n",SCP_get_errno);
 
     SCP_send=GetProcAddress(hmod,"SCP_send");
     if (daveDebug & daveDebugOpen)
-    LOG2("GetProcAddress returned %p)\n",SCP_send);
+	LOG2("GetProcAddress returned %p)\n",SCP_send);
 
     SCP_receive=GetProcAddress(hmod,"SCP_receive");
     if (daveDebug & daveDebugOpen)
-    LOG2("GetProcAddress returned %p)\n",SCP_receive);
+	LOG2("GetProcAddress returned %p)\n",SCP_receive);
     
     SetSinecHWnd=GetProcAddress(hmod,"SetSinecHWnd");
     if (daveDebug & daveDebugOpen)
-    LOG2("GetProcAddress returned %p)\n",SetSinecHWnd);
-
-    if (daveDebug & daveDebugOpen)
-    LOG2("Access Point %s\n",accessPoint);
+	LOG2("GetProcAddress returned %p)\n",SetSinecHWnd);
 
     en = SCP_get_errno();
     h = SCP_open(accessPoint);
-    /*if (h == -1)
-    {
-        en = SCP_get_errno();
-        return en * -1;
-    }*/
+	/*if (h == -1)
+	{
+		en = SCP_get_errno();
+		return en * -1;
+	}*/
     LOG3("handle: %d  error:%d\n", h, en);
-    SetSinecHWnd(h, handle);
+	SetSinecHWnd(h, handle);
     return h;
 };
 
