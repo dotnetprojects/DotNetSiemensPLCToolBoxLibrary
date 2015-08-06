@@ -12,9 +12,9 @@
     <copyright>Copyright 2015</copyright>
   </metadata>
   <files>
-    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.dll" target="lib\net40" />
-    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.pdb" target="lib\net40" />
-	<file src="..\externalDlls\libnodave_jfkmod.dll" target="build\net40" />
-    <file src="..\externalDlls\libnodave_jfkmod64.dll" target="build\net40" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.dll" target="lib\net45" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.pdb" target="lib\net45" />
+	<file src="..\externalDlls\libnodave_jfkmod.dll" target="content\net45" />
+    <file src="..\externalDlls\libnodave_jfkmod64.dll" target="content\net45" />
   </files>
 </package>
