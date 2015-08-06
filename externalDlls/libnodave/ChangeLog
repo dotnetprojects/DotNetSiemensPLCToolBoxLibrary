@@ -1,0 +1,113 @@
+08/26/2003	partly unified versions for MPI adapter and IBH NetLink. Common stuff went into
+		nodaveCommon.c.
+		It should now work with S7-400 PLCs without a patch, but I've not tested this.
+09/19/2003	Found remedy to prevent hangups in nodaveIBH.c
+10/04/2003  	Added the stuff for S7-200 over PPI cable.
+10/05/2003  	Wrote a test program for S7-200 over PPI cable.
+
+03/13/2004  	New functions to load a program block from the CPU.
+03/14/2004  	New area type system data (SD), daveArea_SD
+
+03/26/2004  	Retry PPI send, when response times out.
+
+05/20/2004  	Working ISO/TCP transport with CPs x43
+06/14/2004	Fixed a bug regarding initialization of MPI/TS adapter
+
+09/09/2004	Applied patch for variable Profibus speed from Andrew Rostovtsew. 
+		The Profibus speed is a new parameter to daveNewInterface,
+		so you will need to change existing programs :-(
+		The parameter is only meaningful for the MPI protocol. It is meaningful for but 
+		not yet supported by nodaveIBH. For all other protocols, any integer will do.
+		
+09/09/2004	Partly applied patch for compilation under Windows using Cygwin. Non-inline
+		data conversion functions replace the inlined ones and the byteswap.h from Linux.
+		
+09/12/2004	Implemented the read from multiple addresses.
+	  
+10/10/2004	Made a unified version for all protocols (not yet IBH)
+		Added targets: make install, make dynamic to Makefile
+12/01/2004	Fixed a bug in nodave.c that made compilers complain.
+12/08/2004	Make read of analog inputs and outputs of 2xx work.
+
+12/09/2004	Rmoved some debug printf()s.
+12/09/2004 	Found and fixed a bug in daveFreeResults(): The result set is provided by the 
+	        application and not necessarily dynamic. So we shall not free() it.
+12/19/2004 	First version for WIN32 and C
+01/11/2005 	Some code cleanup. Can now load program blocks into CPU 315. Win32 version
+		COM port settings fixed.
+01/16/2005 	Fixed reception of SZL-lists and block lists that don't fir into a single PDU.
+01/26/2005 	Multiple write implemented.
+01/31/2005 	Fixed isotest4.c, which could not be compiled with most C-compilers but mine,
+		however.
+02/06/2005 	Added workarounds to run on ARM processors.
+02/12/2005 	Integrated code for IBH NetLink.
+02/13/2005 	Put benchmarks into a separate file.
+02/21/2005 	Put program download and RUN/STOP functions into main test programs.
+03/03/2005 	Added fix from Axel Kinting that speeds up connections via IBH-NetLink.
+03/03/2005 	Added an option to set slot number in testISO_TCP.
+03/03/2005 	Changed dword to longword in pascal/nodave.pas for Delphi compatibility.
+
+03/18/2005 	Added code to access S7-200 with PPI protocol over IBH/MHJ-NetLink gateways.
+03/18/2005 	Changed unified benchmark code to use different memory areas on 200 or 300/400 CPUs.
+04/06/2005	renamed swap functions. When I began libnodave on little endian i386 and Linux, I used
+		used Linux bswap functions. Then users (and later me) tried other systems without
+		a bswap. I also cannot use inline functions in Pascal. So I made my own bswaps. Then 
+		I, made the core of my own swaps dependent of LITTLEENDIAN conditional to support also
+		bigendien systems. Now I want to rename them from bswap to something else to avoid 
+		confusion for LINUX/UNIX users. The new names are swapIed_16 and swapIed_32. This
+		shall say swap "if endianness differs". While I could have used similar functions 
+		from the network API (htons etc.) on Unix and Win32, they may not be present on
+		e.g. microcontrollers.
+		I highly recommend to use these functions even when writing software for big endian 
+		systems, where they effectively do nothing, as it will make your software portable.
+04/06/05 	removed daveGetByte(), daveGetWORD(), daveGetWORDat(), getByteAt(), getInteger(). 	
+		I first named these function according to Linux gcc C or PLC data types. But the 
+		problem is that e.g. an INT on Siemens PLCs is a 16bit signed value. That's in turn
+		a short on gcc, an integer on Turbo Pascal, Is it still an integer in Delphi? So the
+		newer funtions are named after bit length and signedness of what they transfer to/from
+		PLC data copies. So daveGetU16 means get an unsigned 16 bit value.
+04/10/05 	Hope I fixed a bug in daveWriteBytes(), daveWriteBits(): In multiple write, if the 
+		data to be written is of odd length, a 0 byte is appended before further data 
+		follows. Versions 0.6.x	appended such a byte to each write request if data length
+		is odd, but this fails under some circumstances.
+		This version appends the 0 byte only before further data is appended.
+04/11/05 	Fixed some bugs in test programs: Test programs (and all other applications) may 
+		only retrieve data from internal buffer (via daveGetU8 etc.) if read result is 0.
+		Otherwise they would read from an undefined pointer.
+04/21/05	renamed LITTLEENDIAN to LITTLE_ENDIAN because it seems to conflict with
+	        another #define in winsock2.h.	      
+04/29/05 	Added a function to set Outputs in S7-200 when the PLC is in Stop mode. I called 
+		this function "daveForce", but it DOES not force the values in the sense that the
+		forced state would override the result of the PLC program. Instead, as soon as you
+		switch to RUN, these settings are of no more effect. When you switch back to stop, 
+		all outputs will be 0 again.
+05/06/05 	Because some users reported difficulties to use the prebuilt .dll and .lib file
+		created with Borland tools, I cared to add a .dll and .lib file compiled with MSVC.
+		I could download a VCToolkitSetup and the Platform SDK from Microsoft for free. 
+		There is neither an IDE nor a make utility. So I used GNU-make and wine on Linux 
+		to find out how to build the .dll and test programs.
+		The Makefile for GNU make is MAKEFILE.VC.WINE.
+		I cannot write a Makefile for MS-make without having it. So, for people which want
+		to use MSVC but cannot find out how to set options to the IDE or build a Makefile,
+		I provide a batch file which will just rebuild all.
+05/11/05	Added a free function to dispose memory reserved by the library.		
+08/05/05	Added a string copy function.
+08/06/05	Added daveGetProgramBlock() and daveFetMaxPDULen()
+08/06/05	Added a PERL interface and example code.
+08/07/05	Added a VB interface and example code.
+10/06/05	Added usage of Siemens libraries for transport.
+
+03/30/06	Bug fixes for .NET
+05/15/06	Applied patch from Ken Wenzel for NETLink PRO
+05/15/06	Applied PERL patches from H.-J. Beie
+05/29/06	Bug fixes for AS511
+Version 0.8.4.5    
+07/10/09  	Changed readISOpacket for Win32 to select() before recv().
+07/10/09  	Added closeSocket()
+07/10/09  	Added daveCopyRAMtoROM
+07/12/09  	Changed flags in setport.c. Older version does not work with recent Linux 
+		kernels.
+
+07/12/09  	Removed C-Sharp subdirectory. These were my first experiments with that 
+		language.
+

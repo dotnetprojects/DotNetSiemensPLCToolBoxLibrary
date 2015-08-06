@@ -1,0 +1,74 @@
+# Configuration for iPhone OS, making static libs
+# this will generate both iPhone (arm) and iPhoneSimulator (i686) libs
+
+CFLAGS =  -g -O2 -Wall -Wmissing-prototypes -std=c99 -ffast-math -fno-strict-aliasing -DLINUX -DDAVE_LITTLE_ENDIAN
+CXXFLAGS =  -g -O2 -Wall -fno-strict-aliasing
+
+GCC_VERSION = 4.2
+IPHONEOS_DEPLOYMENT_TARGET = 4.3
+MACOSX_DEPLOYMENT_TARGET = 10.5
+
+PLATFORM_SIM = iPhoneSimulator
+PLATFORM_PHONE = iPhoneOS
+
+ARCH_SIM = i686
+ARCH_PHONE = armv6
+
+PLATFORM_SIM_DEVELOPER_BIN_DIR = /Developer/Platforms/$(PLATFORM_SIM).platform/Developer/usr/bin
+PLATFORM_PHONE_DEVELOPER_BIN_DIR = /Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin
+
+SDKROOT_SIM = /Developer/Platforms/$(PLATFORM_SIM).platform/Developer/SDKs/$(PLATFORM_SIM)$(IPHONEOS_DEPLOYMENT_TARGET).sdk
+SDKROOT_PHONE = /Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/SDKs/$(PLATFORM_PHONE)$(IPHONEOS_DEPLOYMENT_TARGET).sdk
+
+EXTRA_CFLAGS_SIM += -arch $(ARCH_SIM) -pipe  -mdynamic-no-pic -fvisibility=hidden $(INCLUDE) -isysroot $(SDKROOT_SIM)
+EXTRA_LDFLAGS_SIM += -arch $(ARCH_SIM) -isysroot $(SDKROOT_SIM) -Wl,-dead_strip
+EXTRA_CFLAGS_SIM += -D__IPHONE_OS_VERSION_MIN_REQUIRED=20000 -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+EXTRA_LDFLAGS_SIM += -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+
+EXTRA_CFLAGS_PHONE += -arch $(ARCH_PHONE) -pipe -mdynamic-no-pic -fvisibility=hidden $(INCLUDE) -isysroot $(SDKROOT_PHONE)
+EXTRA_LDFLAGS_PHONE += -arch $(ARCH_PHONE) -isysroot $(SDKROOT_PHONE) -Wl,-dead_strip
+EXTRA_CFLAGS_PHONE += -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+EXTRA_LDFLAGS_PHONE += -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+
+AR_SIM = $(PLATFORM_SIM_DEVELOPER_BIN_DIR)/ar
+AR_PHONE = $(PLATFORM_PHONE_DEVELOPER_BIN_DIR)/ar
+
+CC_SIM = $(PLATFORM_SIM_DEVELOPER_BIN_DIR)/gcc-$(GCC_VERSION) -arch $(ARCH_SIM)
+CC_PHONE = $(PLATFORM_PHONE_DEVELOPER_BIN_DIR)/gcc-$(GCC_VERSION) -arch $(ARCH_PHONE) -isysroot $(SDKROOT_PHONE)
+CC = $(CC_PHONE)
+
+CFLAGS_SIM = $(CFLAGS) $(EXTRA_CFLAGS_SIM)
+LDFLAGS_SIM = $(EXTRA_LDFLAGS_SIM)
+CXX_SIM = $(PLATFORM_SIM_DEVELOPER_BIN_DIR)/g++-$(GCC_VERSION)
+CXXFLAGS_SIM += $(EXTRA_CFLAGS_SIM) -fvisibility-inlines-hidden
+LIBTOOL_SIM = /Developer/Platforms/$(PLATFORM_SIM).platform/Developer/usr/bin/libtool
+
+CFLAGS_PHONE = $(CFLAGS) $(EXTRA_CFLAGS_PHONE)
+LDFLAGS_PHONE += $(EXTRA_LDFLAGS_PHONE)
+CXX_PHONE = $(PLATFORM_PHONE_DEVELOPER_BIN_DIR)/g++-$(GCC_VERSION)
+CXXFLAGS_PHONE += $(EXTRA_CFLAGS_PHONE) -fvisibility-inlines-hidden
+LIBTOOL_PHONE = /Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin/libtool
+
+TARGET = freeimage
+STATICLIB_SIM = lib$(TARGET)-iphonesimulator.a
+STATICLIB_PHONE = lib$(TARGET)-iphone.a
+HEADER = Source/FreeImage.h
+
+.SUFFIXES: .o-i686 .o-arm
+MODULES_ARM = $(SRCS:.c=.o-arm)
+MODULES_ARM := $(MODULES_ARM:.cpp=.o-arm)
+MODULES_i686 = $(SRCS:.c=.o-i686)
+MODULES_i686 := $(MODULES_i686:.cpp=.o-i686)
+
+LIBRARIES=libnodave.a
+all: $(LIBRARIES)
+
+nodave.o: nodave.h log2.h
+openSocket.o: openSocket.h nodave.h log2.h
+crc: crc.o
+	$(CC_PHONE) $(LDFLAGS) crc.o -o crc
+crc3: crc3.o
+	$(CC_PHONE) $(LDFLAGS) crc3.o -o crc3
+libnodave.a: nodave.o setport.o openSocket.o
+	$(AR_PHONE) cru libnodave.iphone.a nodave.o setport.o openSocket.o	
+	ranlib libnodave.iphone.a

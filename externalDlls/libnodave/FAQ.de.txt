@@ -1,0 +1,189 @@
+Fragen, die mir schon oefter gestellt wurden und die Antworten:
+
+Q: Meine VB,.NET oder Delphi-Anwendung funktioniert nicht. Ich vermute, Libnodave funktioniert
+   nicht mit meiner Hardware oder funktioniert gar nicht. Kannst du mir helfen?
+A: Du kannst ganz einfach herausfinden, ob Libnodave mit deiner Hardware, SPS, Adapter
+   usw. arbeitet: Probierer es mit den vorkompilierten Testprogrammen. Wenn die nicht funktionieren
+   (auch die vorgeschlagenen Optionen probieren, wenn welche vorgeschlagen werden), ist es ganz
+   klar ein Fehler in Libnodave.
+   Wenn sie funktionieren, liegt es an deiner Anwendung (oder, selten, koennte das Problem in 
+   der Schnittstelle zu der verwendeten Programmiersprache liegen).
+
+Q: Kannst du mir helfen?
+A: Bevor du fragst, probiere die Testprogramme wie oben beschrieben. Wenn die bei dir nicht
+   funktionieren, schicke mir die Ausgabe mit der Debug-Option, z.B.:
+   testMPI -d COM1 >debugout.txt
+   Wenn sie funktionieren, deine Anwendung aber nicht, probier mal:
+   Fuege die Zeile "daveSetDebug(daveDebugAll)" vor allen anderen Aufrufen von Libnodave in
+   deinen Code ein.
+   Dann versuche:
+   deineAnwendung >debugout.txt
+   Fuer die Leute, die mit Maeusen gross wurden und die Kommandozeile nicht mehr kennen:
+   Das funktioniert sogar mit MS-Excel. Erzeuge eine neue Tabelle, importiere das VBA_Modul, 
+   - nimm das "rem" weg vor "call daveSetDebug(daveDebugAll)" am Anfang von sub initialize,
+   - Speichere das Arbeitsblatt.
+   - Starte dann von der Kommandozeile (Dos-Box, Ausfuehren/cmd):
+	excel testsheet >debugout.txt 
+   Alle Debug-Ausgaben gelangen in die Datei debugout.txt.
+   Wenn meine Zeit knapp wird, schmeisse ich Mails ohne Debug-Ausgabe weg!
+
+Q: Welches E-mail Format bevorzugst du?
+A: Na ja, niemand hat danach gefragt, aber ich ziehe PUREN TEXT vor.
+
+Q: Ich moechte auslesen, ob meine CPU in RUN oder STOP ist. Gibt es dafuer eine Funktion?
+A: Nein, keine spezialisierte. Verwende bei S7-300/400 daveReadSZL, um die SZL Systemzustandslisten
+   zu lesen. Step7 macht das auch so. Informationen ueber IDs und Indizes findest du in der Siemens 
+   Dokumentation. Der Zustand aller CPU-LEDs ist in ID 25 (19hex), index 0.
+   Bei der S7-200 befindet sich diese Information irgendwo in den Systemdaten.
+
+Q: Ich versuche, Libnodave mit einem Debugger nachzuvollziehen. Ich brauche Hilfe?
+A: Es gibt kaum einen Grund, Libnodave mit einem Debugger zu untersuchen, ausser du vermutest eine
+   der fogenden Sachen:
+   - Speicherprobleme (memory leaks)
+   - Bereichsueberschreitungen (range overflows) bei Zahlen oder Array-Indizes.
+   - Probleme bei der Uebergabe von Parametern an Bibliotheksfunktionen
+   Im letzteren Fall uebersetze besser Libnodave neu, nachdem du das Kommentarzeichen vor
+   #define DEBUG_CALLS in nodave.c entfernt hast.
+   Um Probleme mit SPS und Adaptern zu finden, ist die Debug-Ausgabe der weit bessere Weg. 
+   Sie zeigt dir alles, was von und zu SPS/Adapter gesendet und empfangen wird und sie
+   zeigt dir das, was wichtig ist, anstatt es aus Speicher und Registern herauszufinden.
+
+Q: Kannst du mir eine Dokumentation ueber die S7-Kommunikation oder das MPI-Protokoll geben?
+A: Nein, kann ich nicht. Was ich darueber weiss, stammt aus "reverse engineering". Das 
+   bedeutet, eine Menge Pakete mitzuschreiben, versuchen, einen Sinn hineinzuinterpretieren
+   und sie mit eigenem Code nachzubilden. Wenn in Libnodave Dinge Namen haben, so geben diese
+   meine gegenwaertige Hypothese wieder. Ich koennte versuchen, Dokumentation zu schreiben, aber
+   die wuerde immer einen Schritt hinter dem Code hinterherhinken: Der Code kann an der gegebenen 
+   Hardware, also an der Realitaet, getestet werden, die Dokumentation nicht. Und der Code ist
+   recht gut dokumentiert...
+
+Q: Also, warum gibt es diese komplizierten Strukturen (structs)?
+A: Was kompliziert erscheint, sind wahrscheinlich zunaechst die Zeiger auf protokollspezifische
+   Funktionen. In Wahrheit machen sie die Bibliothek einfacher in zweierlei Hinsicht:
+   - Erstens trennen sie die Bildung der Pakete vom Transport. Wenn jemand herausfindet, wie man
+     mit der S7 etwas neues machen kann, reicht es, die Paketbildung zu implementieren und schon
+     wird es hoechstwahrscheinlich mit jedem Transportprotokoll funktionieren. Wenn andererseits
+     ein neuer Transportmechanismus hinzukommt, werden wahrscheinlich alle Functionen damit 
+     funktionieren, sobald der Transport an sich funktioniert.
+     Version 0.8 zeigt das klar anhand der Implementierung des Transports ueber s7online.dll.
+   - Kommerzielle Bibliotheken, die ich gesehen habe, haben meist getrennte Saetze von Funktionen
+     fuer die 200 und die 300/400 Familie. Libnodave hat das nicht. So musst du weniger ueber das 
+     API der Bibliothek lernen waehrend deine Anwendung ohne Veraenderung des Codes mehr kann.
+
+Q: Warum exportierst du alle diese Strukturen, wenn du sagst, man braucht sie fuer keinerlei
+   Anwendung? 
+A: Sie sind nicht ganz bedeutungslos. Es sind auch eine Menge Funktionen dabei, die
+   "Zwischenschritte" duechfhren un normalerweise fr den Endanwender von keinem Nutzen sind.
+   Dennoch werden sie aus der .dll exportiert.
+   - Das ist alles verfuegbar - im Sinne von Open Source - fueer diejenigen, die eigene
+     Experimente machen wollen. Es mag ja Moeglichkeiten gebn, an die ich nicht gedacht habe.
+   - Wenigstens einmal konnte ich einem Benutzer helfen, eine neue Funktion (daveForce200) zu
+     implementiern. Er mute nur ca. 20 Zeilen in sein Programm einfuegen, die zum groessten Teil
+     solche Zwischenschritte beim Zusammenstellen eines Pakets und zur Analyse der Antwort
+     aufriefen, wie z.B. _daveAddData.
+
+Q: Warum gibts keine Funktionen wie readOutputs, readInputs, readData ?     
+A: Andere Bibliotheken haben ueblicherweise separate Functionen um Eingaenge, Ausgaenge,
+   Merker, Datenbausteine zu lesen. Libnodave hat das nicht. Schon wieder musst du weniger 
+   ueber das API lernen.
+Q: Warum gibt es keine Funktionen wie readBytes, readIntegers, readDWords, readFloat ?     
+A: Andere Bibliotheken haben oft separate Funktionen um Integers, Worte oder Fliesskomma-
+   zahlen zu lesen. Libnodave hat das nicht. Der Grund ist: Wenn du einen DB (oder einen
+   anderen Speicherbereich in der SPS) hast, der Daten verschiedener Types enthaelt, koenntest
+   du mit solchen Functionen nur Teile davon lesen. Oder du benutzt readBytes um den Speicher
+   als eine Reihe von Bytes zu lesen und bist bei der Umwandlung auf dich allein gestellt.
+   Libnodave liest generell den ganzen Block als Bytes und stellt dir dann Funktionen zur
+   Umwandlung von/in SPS-Datentypen und Byte-Anordnung zur Verfuegung.
+
+Q: Ich versuche, meinen Quellcode zu kompilieren, der nodave.h einbindet. Warum erhalte ich: 
+    "#error Fill in what you need for your OS or API" ?     
+A: Libnodave mu unter verschiedenen Betriebssystemen verschiedene Funktionen nutzen,
+   um Daten byteweise von seriellen Schnittstellen oder TCP/IP streams zu lesen.
+   Diese Funktionen sind betriebssystemspezifisch. Du mut spezifizieren fr welches BS du
+   kompilierst. Definiere BCCWIN fuer Windows und LINUX fuer Linux oder andere Unix-artige
+   BS. Ich benutze -DBCCWIN oder -DLINUX beim Aufruf der Compiler aus einem Makefile. Wenn du
+   eine IDE (integrierte Entwicklungsumgebung) nutzt, entnimm der Dokumentation der IDE wie das
+   dort geht. Wenn du es nicht herausfinden kannst, kannst du dir auch helfen indem du die 
+   #defines in deinen Quellcode schreibst (was bedeutet, dass dein Quellcode nicht mehr 
+   ohne Aenderungen auf ein anderes System portiert werden kann). Beispiel:
+   
+   ...
+   #define BCCWIN 		// if you work on windows
+   #include nodave.h		// or nodavesimple.h, but NEVER both
+   #include setport.h		// if your code works with serial connections
+   #include openSocket.h	// if your code works with TCP/IP
+   ...       
+Q: Ich versuche, libnodave aus dem Quellcode zu kompilieren. Es gibt Probleme.
+A: - Du brauchst Libnodave nicht selbst zu kompilieren. Du wrdest das mit anderen DLLs (Windows)
+     oderr .sos (gemeinsam genutzte Bibliotheken unter Linux) auch nicht machen. Normalerweise
+     linkt man solche Bibliotheken dynamisch zum eigenen Code.
+   - Nichtsdestotrotz steht dir der Quellcode zur Verfuegunge und du moechtes ihn oder nur die
+     benoetigten Teile rekompilieren usw..
+   - Du solltest wissen, dass die S7 die Motorola- (big endian, hchstwertiges byte zuerst) 
+     Byteanordnung (endianness) verwendet, waehrend Intel-Prozessoren Intel-Byteanordnung 
+     (little endian, niederwertigstes Byte zuerst). Auf Intel- und aehnlichen Maschinen
+     muss Libnodave Mehbyte-Werte umsortieren. Dies geschieht mittels der Funktionen daveGetS2(),
+     daveGetU2(), daveGetFloat() usw.. Der Code zur Konvertierung wird nur mitkompiliert
+     wenn du DAVE_LITTLE_ENDIAN definierst. Ansonsten wird "big endian" vorausgesetzt. 
+   - Beachte, dass ich die publizierten Versionen von Libnodave mit gcc (fuer Linux) und MSVC++ 
+     (fuer windows) kompiliere. Dazu verwende ich das Skript buildall um Linux und Windows 
+     Release-Versionen und Testprogramme auf einem Linux-Rechner zu erzeugen. Buildall benutzt
+     seinerseits das make von Linux mit MAKEFILE.VC.WINE um den MSVC++-Compiler fuer die 
+     Windows-Versionen aufzurufen. Es gibt auch ein MAKEFILE.VC das auf einem Windows-System
+     mittels nmake dasselbe leisten sollte, aber es koennte nicht auf dem neuesten Stand sein :-( 
+     Wenn du Zweifel hast, welche Compileroptionen oder Quelldateien noetig sind, schau in
+     MAKEFILE.VC.WINE nach!
+
+Q: Ich moechte Libnodave fuer ein anderes Betriebssystem kompilieren. Welche Anpassungen
+   muss ich vornehmen?
+A: - Ich nehme mal an, dass dein Betriebssystem ein 32-Bit-System ist und der zugehoerige
+     Compiler int als 32-Bit-Zahl behandelt. Wenn nicht, wird es schwierig!
+   - Du brauchst funktionsgleichen Ersatz fuer setport.c oder setportw.c und openSocket.c oder 
+     openSocketw.c
+   - nodave.h: Du musst ein struct _daveOSserialType definieren, dass folgende Elemente beinhaltet:
+     rfd: Ein Datentyp, der eine serielle Schnittstelle oder ein TCP socket bei einem Lesezugriff
+     indentifiziert.
+     wfd: Ein Datentyp, der eine serielle Schnittstelle oder ein TCP socket bei einem Schreibzugriff
+     indentifiziert.
+   - nodave.c: Du musst die Funktionen stdread() und stdwrite() implementieren, die Bytes
+     von/an eine serielle Schnittstelle in/aus einem Puffer lesen/schreiben.
+     
+Q: Gibt es eine Funktion um die Struktur eines Datenbausteins zu lesen? Variablen und ihre 
+   Datentypen ?
+A: Nein. Die Strukturinformation steht nur in Step7 und nur vor der Compilierung verfuegbar.
+   Sie wird nicht in die SPS selbst uebertragen. Es ist dasselbe, wenn du ein neues Projekt
+   anlegst und den Programmcode aus der SPS laedtst: Von den Datenbausteinen bleiben nur
+   Byte-Arrays.
+      
+Q: Ich habe Probleme, auf Eingaenge zu schreiben. Koennen Sie mir hefen?
+A: Zunaechst gibt es zwei Typen von "Eingaengen": 1. Periphere Adressen. Das ist das, was Sie
+   mit daveP ansprechen, oder, in einen SPS-Programm, mittels L PEW <adresse>. Zugriffe auf
+   diese Adressen sind echte Schreib- oder Lesezugriffe auf die Hardware und es gibt keine
+   Moeglichkeit, die Hardware von Eingaengen zu schreiben.
+   2. Prozessabbild der Ein- und Ausgaenge. Das ist was Programmierer von Siemens-SPS 
+   normalerweise als Ein- und Ausgaenge ansprechen, wie bei:
+   L EW <Adresse>
+   or 
+   U E 2.5
+   Zugriffe auf diese Adressen sprechen NICHT die Hardware sondern einen speziellen Speicherbereich
+   an. Der Zustand der Eingaenge wird in jedem Zyklus in diesen Speicherbereich kopiert, bevor 
+   das Anwenderprogramm ausgefhrt wird. Wenn Sie mittels daveInputs dorthin schreiben, werden die
+   Werte vor dem naechsten Zyklus ueberschrieben.
+   Ob Ihr SPS-Programm oder Ihre Libnodave-Anwendung die geschriebenen Werte "sehen" wird, ist
+   ein zeitlicher Wettlauf.
+   
+Q: Ist es moeglich, mehrere (bis zu 3) Bits gleichzeitig in die SPS zu schreiben?
+   Ich moechte "Read-modify-write"-Techniken vermeiden und das Schreiben so "atomar" wie moeglich
+   halten.
+A: daveWriteBits() stellt eine "atomare" Schreibfunktion bereit, aber nur fr ein einzelnes Bit.
+   Der Parameter "length" bei daveWriteBits() muss 1 sein, andere Werte liefern Fehler bei den
+   CPUs die ich kenne. Warum also ist der Parameter vorhanden? Es gibt ein entsprechendes Feld
+   in der Nachricht, das in anderen Faellen die Zahl der Bits angibt.
+   
+Q: Kann das ("atomares" Schreiben auf 3 Bits) mit daveWriteBits() erreicht werden oder muss
+   ich mehrere Variablen mit einer PDU schreiben?
+A: Es kann NICHT mit daveWriteBits() erreicht werden, jedenfalls mit den CPUs die ich kenne. Ob
+   das I know. Whether Schreiben mehrerer Variablen mit einer PDU atomar ist, weiss ich nicht.
+   Wenn Sie das SPS-Programm verndern koennen, denke ich das Beste waere, die 3 Bits in ein Byte
+   zu packen, dessen andere Bits nicht gebraucht werden.
+       

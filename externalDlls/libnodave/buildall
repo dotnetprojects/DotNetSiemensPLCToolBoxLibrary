@@ -1,0 +1,29 @@
+#
+# This is just my script to remake all of the distribution
+#
+# make the LINUX library and test programs
+make
+#
+# install them for e.g. PERL
+#
+sudo make install
+#make dynamic
+rm *.o
+make -f MAKEFILE.VC.WINE
+mv -f *.exe win
+mv -f libnodave.dll win
+mv -f libnodave.lib win
+rm -f *.obj
+rm -f *.exp
+rm -f *.lib
+cd Dot.NET
+./mono.sh
+cd ..
+cd pascal
+./build.linux
+./buildwine.sh
+cd ..
+cd PERL
+perl Makefile.PL
+make
+

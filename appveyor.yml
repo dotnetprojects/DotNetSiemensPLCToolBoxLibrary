@@ -15,6 +15,8 @@ configuration: Debug
 
 before_build:
   - nuget restore
+  - externalDlls\libnodave\vcwinmake.bat
+  - externalDlls\libnodave\vcwinmake_64.bat
   
 build:
   project: DotNetSiemensPLCToolBoxLibrary.sln
@@ -27,9 +29,9 @@ artifacts:
     name: DotNetSiemensPLCToolBoxLibrary.dll
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.pdb
     name: DotNetSiemensPLCToolBoxLibrary.pdb
-  - path: externalDlls\libnodave_jfkmod.dll
+  - path: externalDlls\libnodave\libnodave_jfkmod.dll
     name: libnodave_jfkmod.dll
-  - path: externalDlls\libnodave_jfkmod64.dll
+  - path: externalDlls\libnodave\libnodave_jfkmod64.dll
     name: libnodave_jfkmod64.dll
   - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg'
 

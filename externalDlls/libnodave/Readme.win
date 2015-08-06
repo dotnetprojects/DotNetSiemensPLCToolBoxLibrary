@@ -1,0 +1,67 @@
+To build for windows:
+While former versions where built with Borland's free commandline tools, the resulting .dll and
+.lib files are incompatible with MSVC. So, from this version on, MSVC is preferred compiler for 
+Win32. You can still build the .dll with Borland tools. For instructions see below.
+
+To build libnodave.dll with MSVC:
+1.  Get and install MSVC. There is a freely available package from Microsoft containing only the
+    compiler and linker. You need some windows header files also, which are available as part
+    of the "Platform Software Development Kit (PSDK)". This PSDK contains also a make utility
+    named nmake.
+2.  Makefile is for LINUX. For Windows, you need the file MAKEFILE.VC
+    Either remove the file Makefile or call make with -fMAKEFILE.VC.
+3.  Running make with no target will build statically used versions of the test 
+    programs and libnodave.dll
+4.  Running make with target "dynamic" builds dynamically linked versions of the test 
+    programs and libnodave.dll.
+5.  If you have difficulties to rebuild libnodave.dll, e.g.:
+     - you get more or less underscores
+     - you get error messages when compiling
+     - you get mangled names
+     - you get error messages when linking
+     - the recompiled .dll behaves different from the precompiled one
+    Allways check MAKEFILE.VC.WINE. This is what I use do build the files I distribute. And
+    besides all efforts to maintain other makefiles, I may forget to update them...
+
+To build libnodave.dll with BorlandC:
+1.  Get and install the free commandline tools from borland (www.borland.com).
+2.  The Makefile is for LINUX. For Windows, you need the file MAKEFILE.MAK.
+    Either remove the file Makefile or call make with -f MAKEFILE.MAK.
+3.  Running make with no target will build statically linked versions of the test 
+    programs and libnodave.dll
+4.  Running make with target "dynamic" builds dynamically linked versions of the test 
+    programs and libnodave.dll.
+
+Using the .dll with C:
+You can import either nodave.h or nodavesimple.h. While it makes no difference for most 
+applications, it is recommended to use nodave.h, because:
+ - it gives you full access to all internal structures and routines in case you want to do
+   something unforeseen.
+ - it is most certainly up to date because the library itself is build with it.
+nodavesimple.h is merely there for people who want to interface with languages not yet
+supported to give them a guideline what they need to define. 
+In any case you must make sure that the conditionals BCCWIN and DAVE_LITTLE_ENDIAN are defined 
+at the moment the preprocessor enters into nodave.h. You can do this by one of these means:
+ - specify -DBCCWIN -DDAVELITTLE_ENDIAN on the compiler's commandline (recommended)
+ - put the lines #define BCCWIN, #define DAVE_LITTLE_ENDIAN before #include "nodave.h"
+
+
+Using the .dll with FreePascal or Delphi:
+use unit nodave in your program. nodave.pas corresponds to the .dll generated with MSVC. Should
+you want to recompile the .dll with BorlandC and then use it from Pascal, also recompile 
+unit nodave from nodave.pas.borland. The difference is in the use of underscores in the names 
+imported from the .dll. 
+
+Using the .dll with C#:
+There are C# versions of testMPI in the directory dot-net. There is also another README in that
+directory. The files have been compiled and found to work with MONO 1.0.5 under Win2k. MONO is
+an open source implementation of C# and the .NET framework.
+
+Using the .dll with other languages:
+Some people found it very difficult to port the structures daveInterface and daveConnection to 
+other languages, e.g. VB. In fact, this is not necessary for 99% of all possible applications.
+Member fields of these structure either never need to be accessed outside libnodave itself or
+they can be accessed using some newly added helper functions. So, regardless how complicate
+you think daveInterface is, all you need is a pointer to it.
+
+

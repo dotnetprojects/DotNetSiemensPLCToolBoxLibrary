@@ -1,0 +1,67 @@
+	"c:\programme\microsoft visual Studio 9.0\vc\bin\link" /LIBPATH:"c:\programme\microsoft visual Studio 9.0\vc"\lib,"c:\programme\microsoft sdks\windows\v6.0a"\lib nodave.obj testS7online.obj openS7online.obj "c:\programme\microsoft sdks\windows\v6.0a"\lib\ws2_32.lib "c:\programme\microsoft sdks\windows\v6.0a"\lib\user32.lib /out:testS7online.exe
+Microsoft (R) Incremental Linker Version 9.00.21022.08
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+   Bibliothek "testS7online.lib" und Objekt "testS7online.exp" werden erstellt.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetU16from@4" wurde in _readSZL-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveStrerror@4" wurde in _readSZL-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveReadSZL@20" wurde in _readSZL-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_endUpload@8" wurde in _loadBlocksOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_doUpload@20" wurde in _loadBlocksOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_initUpload@16" wurde in _loadBlocksOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveBlockName@4" wurde in _loadBlocksOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveListBlocksOfType@12" wurde in _loadBlocksOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "__daveDump@12" wurde in _getBlockHeadersOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetBlockInfo@16" wurde in _getBlockHeadersOfType-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveExecReadRequest@12" wurde in _rBenchmark-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveAddVarToReadRequest@20" wurde in _rBenchmark-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_davePrepareReadRequest@8" wurde in _rBenchmark-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveReadBytes@24" wurde in _rBenchmark-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveWriteBytes@24" wurde in _wBenchmark-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_closeS7online@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveFree@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveDisconnectPLC@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveReadManyBytes@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveFromBCD@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveReadPLCTime@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveSetPLCTimeToSystime@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveListBlocks@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveStart@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveStop@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_toPLCfloat@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveSwapIed_32@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetU32@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveExecWriteRequest@12" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveAddBitVarToWriteRequest@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveAddVarToWriteRequest@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_davePrepareWriteRequest@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveFreeResults@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetU16@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetS16@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveUseResult@12" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveAddBitVarToReadRequest@20" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetCounterValueAt@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetCounterValue@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetSecondsAt@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetSeconds@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveReadBits@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetDebug@0" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveForce200@16" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetU8@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetFloat@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveGetS32@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveWriteBits@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveConnectPLC@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveNewConnection@16" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveDisconnectAdapter@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveListReachablePartners@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveInitAdapter@4" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveSetTimeout@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveNewInterface@24" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_openS7online@8" wurde in _main-Funktion importiert.
+testS7online.obj : warning LNK4217: Lokal definiertes Symbol "_daveSetDebug@4" wurde in _main-Funktion importiert.
+	"c:\programme\microsoft visual Studio 9.0\vc\bin\link" /LIBPATH:"c:\programme\microsoft visual Studio 9.0\vc\lib" /DEF:libnodave.DEF /DLL nodave.obj setportw.obj openSocketw.obj openS7online.obj "c:\programme\microsoft sdks\windows\v6.0a"\lib\ws2_32.lib /OUT:libnodave.dll
+Microsoft (R) Incremental Linker Version 9.00.21022.08
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+   Bibliothek "libnodave.lib" und Objekt "libnodave.exp" werden erstellt.

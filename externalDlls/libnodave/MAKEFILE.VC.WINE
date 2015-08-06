@@ -1,0 +1,122 @@
+#
+# Makefile to build a Windows Version of LIBNODAVE using VC++ 
+# from Microsoft under wine. The Makefile itself is executed by
+# good old GNU make.
+#
+#
+# Make the "alien" suffixes known:
+#
+.SUFFIXES:
+.SUFFIXES: .obj .h .c .cpp
+#
+# type 'make' to build libnodave.dll and some statically linked test programs.
+# type 'make dynamic' to make libnodave.dll and some dynamically linked test programs.
+#
+# The directories where the windows tools and libs are:
+#
+#VCPATH=e:\programme\microsoft visual C++ Toolkit 2003
+#SDKPATH=e:\programme\microsoft platform sdk
+VCPATH=c:/vc
+SDKPATH=c:/psdk
+
+INCPATH=$(VCPATH)/include
+INCPATH2="$(SDKPATH)/include"
+INCPATH3="$(SDKPATH)/include/crt"
+
+CC=wine $(VCPATH)/bin/cl
+LL=wine $(VCPATH)/bin/link
+
+CFLAGS= -I$(INCPATH) -I$(INCPATH2) -I$(INCPATH3) -c -DBCCWIN -DDAVE_LITTLE_ENDIAN -TC
+CPPFLAGS= -I$(INCPATH) -I$(INCPATH2) -I$(INCPATH3) -c -DBCCWIN -DDAVE_LITTLE_ENDIAN 
+LFLAGS = /LIBPATH:"$(VCPATH)\lib"
+LLFLAGS = /LIBPATH:"$(VCPATH)\lib" /DEF:libnodave.DEF
+L2FLAGS = /LIBPATH:"$(VCPATH)\lib" /DEF:s7onlinx.DEF
+
+PROGRAMS=testMPI.exe testPPI.exe testAS511.exe \
+testPPI_IBH.exe testPPI_IBHload.exe testPPIload.exe \
+testMPIload.exe testISO_TCP.exe testISO_TCPload.exe testIBH.exe testMPI_IBHload.exe \
+testS7online.exe testNLpro.exe
+
+DYNAMIC_PROGRAMS=testMPId.exe testPPId.exe testISO_TCPd.exe testIBHd.exe testPPI_IBHd.exe
+
+LIBRARIES=libnodave.dll
+
+SERIAL_OBJECTS=nodave.obj setportw.obj
+
+all:  $(LIBRARIES) $(PROGRAMS)
+
+dynamic: $(DYNAMIC_PROGRAMS)
+
+testISO_TCP.exe: nodave.obj openSocketw.obj testISO_TCP.obj
+	$(LL) $(LFLAGS) testISO_TCP.obj openSocketw.obj nodave.obj "$(SDKPATH)\lib\ws2_32.lib" /OUT:$@
+testMPI.exe: testMPI.obj $(SERIAL_OBJECTS)
+	$(LL) $(LFLAGS) $(SERIAL_OBJECTS) testMPI.obj "$(SDKPATH)\lib\ws2_32.lib" /OUT:$@
+testIBH.exe: openSocketw.obj nodave.obj testIBH.obj
+	$(LL) $(LFLAGS) testIBH.obj openSocketw.obj nodave.obj "$(SDKPATH)\lib\ws2_32.lib" /OUT:$@
+testIBHd.exe: libnodave.dll testIBH.obj
+	$(LL) $(LFLAGS) testIBH.obj libnodave.lib /OUT:$@
+testPPI_IBH.exe: openSocketw.obj nodave.obj testPPI_IBH.obj
+	$(LL) $(LFLAGS) openSocketw.obj nodave.obj testPPI_IBH.obj "C:\\psdk\\lib\\ws2_32.lib" /OUT:$@
+testPPI_IBHd.exe: libnodave.dll testPPI_IBH.obj
+	$(LL) $(LFLAGS) testPPI_IBH.obj libnodave.lib /OUT:$@
+testMPId.exe: libnodave.dll testMPI.obj
+	$(LL) $(LFLAGS) testMPI.obj libnodave.lib /OUT:$@
+testPPI.exe: testPPI.obj nodave.obj setportw.obj
+	$(LL) $(LFLAGS) setportw.obj nodave.obj testPPI.obj "C:\\psdk\\lib\\ws2_32.lib" /out:$@
+testPPId.exe: libnodave.dll testPPI.obj
+	$(LL) $(LFLAGS) testPPI.obj libnodave.lib /OUT:$@
+testISO_TCPd.exe: libnodave.dll testISO_TCP.obj
+	$(LL) $(LFLAGS) testISO_TCP.obj libnodave.lib /OUT:$@
+testPPIload.exe: testPPIload.obj $(SERIAL_OBJECTS)
+	$(LL) $(LFLAGS) testPPIload.obj $(SERIAL_OBJECTS) "$(SDKPATH)\lib\ws2_32.lib" /OUT:$@
+testMPIload.exe: testMPIload.obj $(SERIAL_OBJECTS)
+	$(LL) $(LFLAGS) testMPIload.obj $(SERIAL_OBJECTS) "$(SDKPATH)\lib\ws2_32.lib" /OUT:$@
+testISO_TCPload.exe: nodave.obj  openSocketw.obj testISO_TCPload.obj 
+	$(LL) $(LFLAGS) testISO_TCPload.obj openSocketw.obj nodave.obj "C:\\psdk\\lib\\ws2_32.lib" /out:testISO_TCPload.exe
+testMPI_IBHload.exe: nodave.obj  openSocketw.obj testMPI_IBHload.obj 
+	$(LL) $(LFLAGS) openSocketw.obj nodave.obj testMPI_IBHload.obj "C:\\psdk\\lib\\ws2_32.lib" /out:testMPI_IBHload.exe
+testPPI_IBHload.exe: nodave.obj  openSocketw.obj testPPI_IBHload.obj 
+	$(LL) $(LFLAGS) openSocketw.obj nodave.obj testPPI_IBHload.obj "C:\\psdk\\lib\\ws2_32.lib" /out:testPPI_IBHload.exe
+testAS511.exe: testAS511.obj nodave.obj setportw.obj
+	$(LL) $(LFLAGS) setportw.obj nodave.obj testAS511.obj "C:\\psdk\\lib\\ws2_32.lib" /out:$@	
+testNLpro.exe: testNLpro.obj nodave.obj openSocketw.obj
+	$(LL) $(LFLAGS) openSocketw.obj nodave.obj testNLpro.obj "C:\\psdk\\lib\\ws2_32.lib" /out:$@	
+libnodave.dll: nodave.obj setportw.obj openSocketw.obj openS7online.obj 
+	$(LL) $(LLFLAGS) /DLL nodave.obj setportw.obj openSocketw.obj openS7online.obj "C:\\psdk\\lib\\ws2_32.lib" /OUT:libnodave.dll
+testS7online.exe: testS7online.obj nodave.obj openS7online.obj
+	$(LL) $(LFLAGS) nodave.obj testS7online.obj openS7online.obj "C:\\psdk\\lib\\ws2_32.lib" "C:\\psdk\\lib\\User32.lib" /out:$@		
+#
+# delete all but the sources:
+#
+clean:
+	rm -f *.tds
+	rm -f *.il?
+	rm -f *.lib
+	rm -f *.obj
+	rm -f *.dll
+	rm -f *.exe
+	rm -f *.map
+	rm -f *.exp
+#
+# The general rule to build create an .obj:
+#
+.c.obj:
+	$(CC) $(CFLAGS) $<
+.cpp.obj:
+	$(CC) $(CPPFLAGS) $<	
+#
+# Special rules for those objects that are part of the .dll:
+#
+nodave.obj: nodave.c nodave.h
+	$(CC) $(CFLAGS) -DDOEXPORT nodave.c
+setportw.obj: setportw.c
+	$(CC) $(CFLAGS) -DDOEXPORT setportw.c
+openSocketw.obj: openSocketw.c
+	$(CC) $(CFLAGS) -DDOEXPORT openSocketw.c
+openS7online.obj: openS7online.c openS7online.h 
+	$(CC) $(CFLAGS) -DDOEXPORT openS7online.c
+s7fake.obj: s7fake.c
+	$(CC) $(CFLAGS) -DDOEXPORT s7fake.c
+getHandle.obj: getHandle.c 
+	$(CC) $(CFLAGS) -DDOEXPORT getHandle.c
+	
