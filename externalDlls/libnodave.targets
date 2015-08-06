@@ -1,0 +1,140 @@
+<!--
+ *
+ * libnodave.targets -
+ *
+ * WARNING: This MSBuild file requires MSBuild 4.0 features.
+ *
+ * Written by Joe Mistachkin and David Archer.
+ * Released to the public domain, use at your own risk!
+ *
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  ******************************************************************************
+  **                          Load Per-User Settings                          **
+  ******************************************************************************
+  -->
+
+  <!--
+      NOTE: If the per-user settings file exists, import it now.  The contained
+            settings, if any, will override the default ones provided below.
+  -->
+  <Import Condition="'$(MSBuildThisFileDirectory)' != '' And
+                     HasTrailingSlash('$(MSBuildThisFileDirectory)') And
+                     Exists('$(MSBuildThisFileDirectory)\libnodave.targets.user')"
+          Project="$(MSBuildThisFileDirectory)\libnodave.targets.user" />
+
+  <!--
+  ******************************************************************************
+  **                    libnodave Library Build Items                         **
+  ******************************************************************************
+  -->
+
+  <ItemGroup>
+    <LibnodaveInteropFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
+                                   HasTrailingSlash('$(MSBuildThisFileDirectory)')"
+                        Include="$(MSBuildThisFileDirectory)**\libnodave_jfkmod*.*" />
+  </ItemGroup>
+
+  <!--
+  ******************************************************************************
+  **                   libnodave Library Content Items                        **
+  ******************************************************************************
+  -->
+
+  <ItemGroup Condition="'$(ContentLibnodaveInteropFiles)' != '' And
+                        '$(ContentLibnodaveInteropFiles)' != 'false' And
+                        '@(LibnodaveInteropFiles)' != ''">
+    <Content Include="@(LibnodaveInteropFiles)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!--
+  ******************************************************************************
+  **                   libnodave Library Build Targets                        **
+  ******************************************************************************
+  -->
+
+  <Target Name="CopyLibnodaveInteropFiles"
+          Condition="'$(CopyLibnodaveInteropFiles)' != 'false' And
+                     '$(OutDir)' != '' And
+                     HasTrailingSlash('$(OutDir)') And
+                     Exists('$(OutDir)')"
+          Inputs="@(LibnodaveInteropFiles)"
+          Outputs="@(LibnodaveInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')">
+    <!--
+        NOTE: Copy "libnodave_jfkmod*.*" and all related files, for every
+              architecture that we support, to the build output directory.
+    -->
+    <Copy SourceFiles="@(LibnodaveInteropFiles)"
+          DestinationFiles="@(LibnodaveInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <!--
+  ******************************************************************************
+  -->
+
+  <Target Name="CleanLibnodaveInteropFiles"
+          Condition="'$(CleanLibnodaveInteropFiles)' != 'false' And
+                     '$(OutDir)' != '' And
+                     HasTrailingSlash('$(OutDir)') And
+                     Exists('$(OutDir)')">
+    <!--
+        NOTE: Delete "libnodave_jfkmod*.*" and all related files, for every
+              architecture that we support, from the build output directory.
+    -->
+    <Delete Files="@(LibnodaveInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <!--
+  ******************************************************************************
+  -->
+
+  <Target Name="CollectLibnodaveInteropFiles"
+          Condition="'$(CollectLibnodaveInteropFiles)' != 'false'">
+    <ItemGroup>
+      <FilesForPackagingFromProject Include="@(LibnodaveInteropFiles)">
+        <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+
+  <!--
+  ******************************************************************************
+  **                 libnodave Interop Library Build Properties                  **
+  ******************************************************************************
+  -->
+
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+      $(PostBuildEventDependsOn);
+      CopyLibnodaveInteropFiles;
+    </PostBuildEventDependsOn>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      CopyLibnodaveInteropFiles;
+    </BuildDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CleanLibnodaveInteropFiles;
+    </CleanDependsOn>
+  </PropertyGroup>
+
+  <!--
+  ******************************************************************************
+  **     Libnodave Interop Library Publish Properties for Visual Studio 201x     **
+  ******************************************************************************
+  -->
+
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '' Or
+                            '$(VisualStudioVersion)' == '10.0' Or
+                            '$(VisualStudioVersion)' == '11.0' Or
+                            '$(VisualStudioVersion)' == '12.0'">
+    <PipelineCollectFilesPhaseDependsOn>
+      CollectLibnodaveInteropFiles;
+      $(PipelineCollectFilesPhaseDependsOn);
+    </PipelineCollectFilesPhaseDependsOn>
+  </PropertyGroup>
+</Project>
