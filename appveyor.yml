@@ -15,14 +15,14 @@ configuration: Debug
 
 before_build:
   - nuget restore
-  - externalDlls\libnodave\vcwinmake.bat
-  - externalDlls\libnodave\vcwinmake_64.bat
   
 build:
   project: DotNetSiemensPLCToolBoxLibrary.sln
 
 after_build:
   - ps: .\nuget\pack.ps1
+  - externalDlls\libnodave\vcwinmake.bat
+  - externalDlls\libnodave\vcwinmake_64.bat
 
 artifacts:
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
