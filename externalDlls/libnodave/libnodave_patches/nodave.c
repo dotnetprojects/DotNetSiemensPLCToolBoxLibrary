@@ -1240,6 +1240,7 @@ int DECL2 daveListBlocksOfType(daveConnection * dc,uc type,daveBlockEntry * buf)
 		pam[7]=p2.param[7];
 		res=daveBuildAndSendPDU(dc, &p2,pam, sizeof(pam), NULL, 1);
 		if (res==0xa) break;
+		if (res==0xd20e) break; //hopefully fixes: http://www.sps-forum.de/hochsprachen-opc/76710-libnodave-davelistblocksoftype-error.html#post542914
 		if (res!=daveOk) return res;
 	}
 
