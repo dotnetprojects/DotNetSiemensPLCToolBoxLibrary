@@ -20,10 +20,10 @@ build:
   project: DotNetSiemensPLCToolBoxLibrary.sln
 
 after_build:
-  - ps: .\nuget\pack.ps1
   - externalDlls\libnodave\vcwinmake.bat
   - externalDlls\libnodave\vcwinmake_64.bat
-
+  - ps: .\nuget\pack.ps1
+  
 artifacts:
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
     name: DotNetSiemensPLCToolBoxLibrary.dll
