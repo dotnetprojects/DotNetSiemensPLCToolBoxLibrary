@@ -5,6 +5,9 @@ DotNetSiemensPLCToolBoxLibrary
 
 Switch from Codeplex http://siemensplctoolboxlib.codeplex.com/ to GitHub
 
+NuGet
+=====
+https://www.nuget.org/packages/DotNetProjects.DotNetSiemensPLCToolBoxLibrary/
 
 Description
 ==============================
