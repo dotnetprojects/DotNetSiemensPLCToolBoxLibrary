@@ -643,31 +643,52 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                     else
                     {
-                        switch (datatype)
+                        switch (datatype.ToLower())
                         {
-                            case "Byte":
+                            case "byte":
                                 row.DataType = S7DataRowType.BYTE;
                                 break;
-                            case "Bool":
+                            case "bool":
                                 row.DataType = S7DataRowType.BOOL;
                                 break;
-                            case "Int":
+                            case "int":
                                 row.DataType = S7DataRowType.INT;
                                 break;
-                            case "UInt":
+                            case "uint":
                                 row.DataType = S7DataRowType.DWORD;
                                 break;
-                            case "DInt":
+                            case "dint":
                                 row.DataType = S7DataRowType.DINT;
                                 break;
-                            case "Word":
+                            case "word":
                                 row.DataType = S7DataRowType.WORD;
                                 break;
-                            case "Char":
+                            case "dword":
+                                row.DataType = S7DataRowType.DWORD;
+                                break;
+                            case "char":
                                 row.DataType = S7DataRowType.CHAR;
                                 break;
-                            case "Any":
+                            case "any":
                                 row.DataType = S7DataRowType.ANY;
+                                break;
+                            case "date":
+                                row.DataType = S7DataRowType.DATE;
+                                break;
+                            case "date_and_time":
+                                row.DataType = S7DataRowType.DATE_AND_TIME;
+                                break;
+                            case "real":
+                                row.DataType = S7DataRowType.REAL;
+                                break;
+                            case "s5time":
+                                row.DataType = S7DataRowType.S5TIME;
+                                break;
+                            case "time_of_day":
+                                row.DataType = S7DataRowType.TIME_OF_DAY;
+                                break;
+                            case "time":
+                                row.DataType = S7DataRowType.TIME;
                                 break;
                             default:
                                 row.DataType = S7DataRowType.UNKNOWN;
