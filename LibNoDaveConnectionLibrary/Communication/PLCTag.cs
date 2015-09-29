@@ -1205,7 +1205,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
                             ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
-                        ArraySize = Convert.ToInt32(myPlcAddress[2]);
+                        double _ArraySize = Convert.ToInt32(myPlcAddress[2]);
 
                         var tsize = 1;
                         switch (myPlcAddress[1])
@@ -1227,11 +1227,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         var baseS = _internalGetBaseTypeSize();
                         if (baseS > 0)
-                            ArraySize = ArraySize / baseS;
+                            _ArraySize = _ArraySize / baseS;
                         else
-                            ArraySize *= 8;
+                            _ArraySize *= 8;
 
-                        ArraySize = ArraySize * tsize;
+                        ArraySize = Convert.ToInt32(_ArraySize * tsize);
 
                         //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
                         //    this.TagDataType = TagDataType.ByteArray;
