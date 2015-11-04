@@ -1177,6 +1177,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     plcAddress = plcAddress.Trim();
                     if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
                     {
+                    	if (plcAddress.Substring(2, 3).Contains(" "))
+                            plcAddress = plcAddress.Remove(plcAddress.IndexOf(" "), 1);
                         string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
                         BitAddress = 0;
                         if (!myPlcAddress[0].Contains("db"))
@@ -1198,6 +1200,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             else if (tmp.Contains("z") || tmp.Contains("c"))
                                 this.TagDataSource = MemoryArea.Counter;
                             ByteAddress = getNumberFromString(myPlcAddress[0].Split('.')[0]);
+                            
+                            if (myPlcAddress[1] == "bool")
+                                BitAddress = getNumberFromString(myPlcAddress[0].Split('.')[1]);
                         }
                         else
                         {
@@ -2061,6 +2066,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             switch (this.TagDataType)
             {
+            	case TagDataType.Bool:
                 case TagDataType.Byte:
                 case TagDataType.SByte:
                 case TagDataType.BCDByte:
