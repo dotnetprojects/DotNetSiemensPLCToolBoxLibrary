@@ -182,7 +182,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 par = Parameter;
 
 	        if (_SymbolTableEntry != null && !string.IsNullOrEmpty(SymbolTableEntry.Symbol))
-		        par = "-" + SymbolTableEntry.Symbol + "          (" + SymbolTableEntry.Operand + ")" +
+		        par = "-" + SymbolTableEntry.Symbol.PadRight(10, ' ') + ("          (" + SymbolTableEntry.Operand + ")").PadRight(18, ' ') +
 		              (string.IsNullOrEmpty(SymbolTableEntry.Comment) ? "" : "     //" + SymbolTableEntry.Comment);
 
             return (retVal + Command.PadRight(6) + par).PadRight(35) + cmt + ext; // +"Sz:" + ByteSize.ToString();
