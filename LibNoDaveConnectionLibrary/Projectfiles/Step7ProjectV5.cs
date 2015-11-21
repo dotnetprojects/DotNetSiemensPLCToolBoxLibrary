@@ -1160,7 +1160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             //remove DP from DPlist to DPFolder
             foreach(var dp in DPlist)
             {
-                var dpf = DPFolders.FirstOrDefault(x => x.IdTobjId.Any(y => y == dp.TobjID));
+                var dpf = DPFolders.FirstOrDefault(x => x.IdTobjId != null && x.IdTobjId.Any(y => y == dp.TobjID));
                 if ( dpf != null)
                 {
                     if (dpf.TobjId == null) dpf.TobjId = new List<int>();
