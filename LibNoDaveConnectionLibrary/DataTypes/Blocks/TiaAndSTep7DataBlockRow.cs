@@ -85,7 +85,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                         return "DB" + BaseBlockNumber + ".DBD" + BlockAddress.ByteAddress.ToString();
                 }
 
-                return "P#DB" + BaseBlockNumber + "DBX" + BlockAddress + ".0 BYTES " + this.ByteLength;
+                return "P#DB" + BaseBlockNumber + "DBX" + BlockAddress.ByteAddress + ".0 BYTE " + this.ByteLength;
             }
         }
 
