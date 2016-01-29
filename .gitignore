@@ -7,6 +7,7 @@ compiled/*.pdb
 *.vshost.exe
 *.vshost.exe.config
 *.vshost.exe.manifest
+comoiled/
 
 # mstest test results
 TestResults

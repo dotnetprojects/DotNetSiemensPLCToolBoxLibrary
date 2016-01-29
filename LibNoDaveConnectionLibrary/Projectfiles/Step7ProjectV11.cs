@@ -12,18 +12,24 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls;
+using Microsoft.Win32;
+using Siemens.Engineering;
+using Siemens.Engineering.HW;
+using Siemens.Engineering.SW;
+
 //using CompressionMode = ZLibNet.CompressionMode;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
-    public class Step7ProjectV11 : Project
+    public partial class Step7ProjectV11 : Project, IDisposable
     {
         public enum TiaVersionTypes
         {
@@ -54,7 +60,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
-            if (ProjectFile.ToLower().EndsWith("zip"))
+            if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap13"))
             {
                 ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
                 if (string.IsNullOrEmpty(ProjectFile))               
@@ -91,9 +97,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             DataFile = Path.GetDirectoryName(projectfile) + "\\System\\PEData.plf";
             ProjectFolder = projectfile.Substring(0, projectfile.LastIndexOf(Path.DirectorySeparatorChar)) + Path.DirectorySeparatorChar;
 
-            BinaryParseTIAFile();
-
-            LoadProject();
+            //BinaryParseTIAFile();
+            //LoadProject();
+            LoadViaOpennessDlls();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;            
         }        
@@ -102,6 +108,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         
         Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
+            int index = args.Name.IndexOf(',');
+            if (index == -1)
+            {
+                return null;
+            }
+            var name = args.Name.Substring(0, index) + ".dll";
+
+            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
+                              Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");
+            if (filePathReg != null)
+            {
+                string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13";
+                if (Directory.Exists(filePath) == false)
+                    filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13 SP1";
+                var path = Path.Combine(filePath, name);
+                var fullPath = Path.GetFullPath(path);
+                if (File.Exists(fullPath))
+                {
+                    return Assembly.LoadFrom(fullPath);
+                }
+
+                //filePath = filePathReg.GetValue("Path").ToString() + "Bin\\PublicAPI";
+                //path = Path.Combine(filePath, name);
+                //fullPath = Path.GetFullPath(path);
+                //if (File.Exists(fullPath))
+                //{
+                //    return Assembly.LoadFrom(fullPath);
+                //}
+
+                //filePath = filePathReg.GetValue("Path").ToString() + "Bin";
+                //path = Path.Combine(filePath, name);
+                //fullPath = Path.GetFullPath(path);
+                //if (File.Exists(fullPath))
+                //{
+                //    return Assembly.LoadFrom(fullPath);
+                //}
+            }
+
+
+            return null;
+
+
             var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
             TiaVersion = TiaVersionTypes.V13;
@@ -194,168 +242,179 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        
+       
+        
         internal override void LoadProject()
         {
             _projectLoaded = true;
+            return;
+
+            ////Stream stream = new FileStream("c:\\tia.xml", FileMode.OpenOrCreate); // new ChunkedMemoryStream();
+            ////StreamWriter streamWriter = new StreamWriter(stream);
             
-            Stream stream = new MemoryStream();
-            StreamWriter streamWriter = new StreamWriter(stream);
-            XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = true, CheckCharacters = false });
+            ////XmlWriter xmlWriter = XmlWriter.Create(streamWriter, new XmlWriterSettings { Indent = true, CheckCharacters = false });
 
-            xmlWriter.WriteStartDocument();
-            xmlWriter.WriteStartElement("root");
+            //var tiaObjectStructure = new TiaObjectStructure();
+            //var xmlWriter = new TiaXmlWriter(tiaObjectStructure);
 
-            if (tiaExport == null)
-            {
-                tiaExportType = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Conversion.Export, Siemens.Automation.ObjectFrame.FileStorage");
-                if (TiaVersion < TiaVersionTypes.V13)
-                {
-                    tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
-                }
-                else
-                {
-                    //V13
-                    var helper = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Base.Client.DataStoreClientHelper, Siemens.Automation.ObjectFrame.FileStorage.Base");
-                    var metaManagerMth = helper.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).FirstOrDefault(x => x.Name == "GetMetaManager");
-                    var metaManager = metaManagerMth.Invoke(null, null);
-                    var crInst = tiaExportType.GetMethods().FirstOrDefault(x => x.Name == "CreateInstance");
-                    tiaExport = crInst.Invoke(null, new object[] { DataFile, null, true, metaManager });                
-                }
+            ////xmlWriter.WriteStartDocument();
+            ////xmlWriter.WriteStartElement("root");
 
-                var memMgrType = Type.GetType("Siemens.Automation.ObjectFrame.Kernel.MemoryManager, Siemens.Automation.ObjectFrame.Kernel");
-                try
-                {
-                    memMgrType.InvokeMember("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { 104857600 });                    
-                }
-                catch (Exception)
-                {
+            //if (tiaExport == null)
+            //{
+            //    tiaExportType = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Conversion.Export, Siemens.Automation.ObjectFrame.FileStorage");
+            //    if (TiaVersion < TiaVersionTypes.V13)
+            //    {
+            //        tiaExport = tiaExportType.InvokeMember("CreateInstance", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { DataFile, true });
+            //    }
+            //    else
+            //    {
+            //        //V13
+            //        var helper = Type.GetType("Siemens.Automation.ObjectFrame.FileStorage.Base.Client.DataStoreClientHelper, Siemens.Automation.ObjectFrame.FileStorage.Base");
+            //        var metaManagerMth = helper.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).FirstOrDefault(x => x.Name == "GetMetaManager");
+            //        var metaManager = metaManagerMth.Invoke(null, null);
+            //        var crInst = tiaExportType.GetMethods().FirstOrDefault(x => x.Name == "CreateInstance");
+            //        tiaExport = crInst.Invoke(null, new object[] { DataFile, null, true, metaManager });                
+            //    }
 
-                }
-            }
+            //    var memMgrType = Type.GetType("Siemens.Automation.ObjectFrame.Kernel.MemoryManager, Siemens.Automation.ObjectFrame.Kernel");
+            //    try
+            //    {
+            //        memMgrType.InvokeMember("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod, null, null, new object[] { 104857600 });                    
+            //    }
+            //    catch (Exception)
+            //    {
 
-            tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-            tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
-            tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            //    }
+            //}
 
-            if (TiaVersion >= TiaVersionTypes.V13)
-            {
-                var bgWorker = tiaExportType.GetField("m_BgWorker", BindingFlags.Instance | BindingFlags.NonPublic);
-                bgWorker.SetValue(tiaExport, new BackgroundWorker() {WorkerReportsProgress = true, WorkerSupportsCancellation = true});
-            }
+            ////tiaExportType.InvokeMember("WriteCultures", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            ////tiaExportType.InvokeMember("StartExport", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
+            ////tiaExportType.InvokeMember("WriteRootObjectList", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, tiaExport, new object[] { xmlWriter });
 
-            var serializeObjects = tiaExportType.GetMethod("SerializeObjects",
-                BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null,
-                new Type[] {typeof (XmlWriter)}, null);
+            //if (TiaVersion >= TiaVersionTypes.V13)
+            //{
+            //    var bgWorker = tiaExportType.GetField("m_BgWorker", BindingFlags.Instance | BindingFlags.NonPublic);
+            //    bgWorker.SetValue(tiaExport, new BackgroundWorker() {WorkerReportsProgress = true, WorkerSupportsCancellation = true});
+            //}
 
-            serializeObjects.Invoke(tiaExport, new object[] {xmlWriter});
+            //var serializeObjects = tiaExportType.GetMethod("SerializeObjects",
+            //    BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null,
+            //    new Type[] {typeof (XmlWriter)}, null);
+
+            //serializeObjects.Invoke(tiaExport, new object[] {xmlWriter});
             
-            xmlWriter.Flush();
-            xmlWriter.Close();
+            //xmlWriter.Flush();
+            //xmlWriter.Close();
 
-            stream.Position = 0;
-            var rd = new StreamReader(stream);
-            var prj = rd.ReadToEnd();
+            ////streamWriter.Close();
+            ////stream.Close();
 
-            ParseProjectString(prj);            
+            ////stream.Position = 0;
+            ////ParseProject(stream);            
         }
 
-        internal Dictionary<string, string> importTypeInfos;
-        internal Dictionary<string, string> asId2Names;
-        internal Dictionary<string, string> relationId2Names;
-        internal string CoreAttributesId;
+        //internal Dictionary<string, string> importTypeInfos;
+        //internal Dictionary<string, string> asId2Names;
+        //internal Dictionary<string, string> relationId2Names;
+        //internal string CoreAttributesId;
 
-        private TIAProjectFolder getProjectFolder(XmlNode Node)
-        {
-            TIAProjectFolder fld = null;
-            string id = Node.Attributes["id"].Value;
-            string instid = Node.Attributes["instId"].Value;
+        //private TIAProjectFolder getProjectFolder(XmlNode Node)
+        //{
+        //    TIAProjectFolder fld = null;
+        //    string id = Node.Attributes["id"].Value;
+        //    string instid = Node.Attributes["instId"].Value;
 
-            string tiaType = importTypeInfos[id];
+        //    string tiaType = importTypeInfos[id];
 
             
 
-            switch (tiaType)
-            {
-                case "Siemens.Automation.DomainModel.ProjectData":
-                    fld = new TIAProjectFolder(this, Node);
-                    break;
-                case "Siemens.Automation.DomainModel.FolderData":
-                    {
-                        var subType = Node.SelectSingleNode("attribSet[@id='" + CoreAttributesId + "']/attrib[@name='Subtype']").InnerText;
-                        if (subType == "ProgramBlocksFolder" || subType == "ProgramBlocksFolder.Subfolder")
-                        {
-                            fld = new TIABlocksFolder(this, Node);
-                        }
-                        else
-                        {
-                            fld = new TIAProjectFolder(this, Node);
-                        }
-                        break;
-                    }
-                case "Siemens.Simatic.HwConfiguration.Model.DeviceData":
-                    fld = new TIAProjectFolder(this, Node);
-                    break;
-                case "Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData":
-                    fld = new TIACPUFolder(this, Node);
-                    break;
-                case "Siemens.Automation.DomainModel.EAMTZTagTableData":
-                    fld = new TIASymTabFolder(this, Node);
-                    break;
-                //case "Siemens.Simatic.PlcLanguages.Model.DataBlockData":
-                //    fld = new TIAProjectFolder(this, Node);
-                //    break;
-                default:                    
-                    break;
-            }
+        //    switch (tiaType)
+        //    {
+        //        case "Siemens.Automation.DomainModel.ProjectData":
+        //            fld = new TIAProjectFolder(this, Node);                    
+        //            break;
+        //        case "Siemens.Automation.DomainModel.FolderData":
+        //            {
+        //                var subType = Node.SelectSingleNode("attribSet[@id='" + CoreAttributesId + "']/attrib[@name='Subtype']").InnerText;
+        //                if (subType == "ProgramBlocksFolder" || subType == "ProgramBlocksFolder.Subfolder")
+        //                {
+        //                    fld = new TIABlocksFolder(this, Node);
+        //                }
+        //                else
+        //                {
+        //                    fld = new TIAProjectFolder(this, Node);
+        //                }
+        //                break;
+        //            }
+        //        case "Siemens.Simatic.HwConfiguration.Model.DeviceData":
+        //            fld = new TIAProjectFolder(this, Node);
+        //            break;
+        //        case "Siemens.Simatic.HwConfiguration.Model.S7ControllerTargetData":
+        //            fld = new TIACPUFolder(this, Node);
+        //            break;
+        //        case "Siemens.Automation.DomainModel.EAMTZTagTableData":
+        //            fld = new TIASymTabFolder(this, Node);
+        //            break;
+        //        //case "Siemens.Simatic.PlcLanguages.Model.DataBlockData":
+        //        //    fld = new TIAProjectFolder(this, Node);
+        //        //    break;
+        //        default:                    
+        //            break;
+        //    }
 
-            if (fld != null)
-            {
-                var subFolderNodes = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + id + "-" + instid + "']]");
+        //    if (fld != null)
+        //    {
+        //        _allFolders.Add(fld);
+
+        //        var subFolderNodes = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + id + "-" + instid + "']]");
                 
-                fld.SubNodes = subFolderNodes;
+        //        fld.SubNodes = subFolderNodes;
                 
-                foreach (XmlNode subFolderNode in subFolderNodes)
-                {
-                    var subFld = this.getProjectFolder(subFolderNode);
-                    if (subFld != null) 
-                        fld.SubItems.Add(subFld);
-                }
-            }
+        //        foreach (XmlNode subFolderNode in subFolderNodes)
+        //        {
+        //            var subFld = this.getProjectFolder(subFolderNode);
+        //            if (subFld != null) 
+        //                fld.SubItems.Add(subFld);
+        //        }
+        //    }
             
-            return fld;
-        }
+        //    return fld;
+        //}
 
-        private void ParseProjectString(string data)
-        {
-            xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(data);
+        //private void ParseProject(Stream data)
+        //{
+        //    xmlDoc = new XmlDocument();
+            
+        //    xmlDoc.Load(data);
+            
+        //    //xmlDoc.Save("C:\\Temp\\tia-export.xml");
 
-            //xmlDoc.Save("C:\\Temp\\tia-export.xml");
+        //    importTypeInfos = new Dictionary<string, string>();
+        //    foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/importTypes/typeInfo"))
+        //    {
+        //        importTypeInfos.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
+        //    }
 
-            importTypeInfos = new Dictionary<string, string>();
-            foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/importTypes/typeInfo"))
-            {
-                importTypeInfos.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
-            }
+        //    asId2Names = new Dictionary<string, string>();
+        //    foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/asId2Name/typeInfo"))
+        //    {
+        //        asId2Names.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
+        //    }
 
-            asId2Names = new Dictionary<string, string>();
-            foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/asId2Name/typeInfo"))
-            {
-                asId2Names.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
-            }
+        //    relationId2Names = new Dictionary<string, string>();
+        //    foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/relationId2Name/typeInfo"))
+        //    {
+        //        relationId2Names.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
+        //    }
 
-            relationId2Names = new Dictionary<string, string>();
-            foreach (XmlNode typeInfo in xmlDoc.SelectNodes("root/relationId2Name/typeInfo"))
-            {
-                relationId2Names.Add(typeInfo.Attributes["id"].Value, typeInfo.Attributes["name"].Value);
-            }
+        //    CoreAttributesId = asId2Names.FirstOrDefault(itm=>itm.Value=="Siemens.Automation.ObjectFrame.ICoreAttributes").Key;
 
-            CoreAttributesId = asId2Names.FirstOrDefault(itm=>itm.Value=="Siemens.Automation.ObjectFrame.ICoreAttributes").Key;
-
-            var nd = xmlDoc.SelectSingleNode("root/rootObjects/entry[@name='Project']");
-            var prjObjId = nd.Attributes["objectId"].Value;
-            var projectNode = xmlDoc.SelectSingleNode("root/objects/StorageObject[@instId='" + prjObjId.Split('-')[1] + "']");
-            ProjectStructure = this.getProjectFolder(projectNode);
-        }
+        //    var nd = xmlDoc.SelectSingleNode("root/rootObjects/entry[@name='Project']");
+        //    var prjObjId = nd.Attributes["objectId"].Value;
+        //    var projectNode = xmlDoc.SelectSingleNode("root/objects/StorageObject[@instId='" + prjObjId.Split('-')[1] + "']");
+        //    ProjectStructure = this.getProjectFolder(projectNode);
+        //}
     }
 }

@@ -1,15 +1,48 @@
 ﻿using System;
 using System.Net;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 {
-    /*
-    public class TCPInterface : ISONetworkInterface
+    
+    public class TCPInterface// : ISONetworkInterface
     {
+        //IPAddress addr;
+        public TcpNETdave _dc = null;
+        TimeSpan TimeOut;
+        PLCConnectionConfiguration conf = new PLCConnectionConfiguration();
 
-        protected override byte[] ConnectPlc(byte cpuMpi, byte cpuRack, byte cpuSlot, byte connType, bool routing, bool routingDestIsIp, IPAddress routingIp, byte routingMpi, byte routingRack, byte routingSlot, byte routingConnType)
+        public TCPInterface()
         {
-            byte[] stdConn = {0x11, //Length
+            TimeOut = TimeSpan.FromMilliseconds(5000);
+        }
+        public void SetTimeOut(int timeout_ms)
+        {
+            TimeOut = TimeSpan.FromMilliseconds(timeout_ms);
+        }
+
+        public void disconnectAdapter()
+        {
+
+        }
+        public void ConnectPlc(ConnectionConfig config)
+        {
+        }
+        public void ConnectPlc(PLCConnectionConfiguration config)
+        {
+            conf = config;
+            //_dc = new TcpNETdave(conf.CpuIP, conf.Port, conf.CpuRack, conf.CpuSlot);
+            _dc = new TcpNETdave(conf);
+            _dc.connectPLC();
+        }
+        public bool Connected()
+        {
+            return _dc != null ? _dc.Connected() : false;
+        }
+        //protected override byte[] ConnectPlc(byte cpuMpi, byte cpuRack, byte cpuSlot, byte connType, bool routing, bool routingDestIsIp, IPAddress routingIp, byte routingMpi, byte routingRack, byte routingSlot, byte routingConnType)
+        //{
+            
+/*            byte[] stdConn = {0x11, //Length
                               0xE0, // TDPU Type CR = Connection Request (see RFC1006/ISO8073)
                               0x00, 0x00, // TPDU Destination Reference (unknown)
                               0x00, 0x01, // TPDU Source-Reference (my own reference, should not be zero)
@@ -27,7 +60,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
                               9, // requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
                              };
 
-            /*
+            
             byte[] routingConn ={			// for routing
 		6 + 30 + 30 + 3,	// Length over all without this byte (fixed
 		// Data 6 Bytes + size of Parameters (3 for C0h,30 for C1h+C2h)
@@ -56,7 +89,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 		(byte)(routingDestIsIp==true ? 4 : 1) ,		// Length of PLC-Number - 04 if you use a IP as Destination!
 		2,		// Length of Function/Rack/Slot
 
-		(unsigned char) (dc->routingSubnetFirst >> 8), (unsigned char) dc->routingSubnetFirst,	// first part of S7-Subnet-ID 
+		(byte) (dc->routingSubnetFirst >> 8), (unsigned char) dc->routingSubnetFirst,	// first part of S7-Subnet-ID 
 		// (look into the S7Project/Network configuration)
 		0x00,0x00,		// fix always 0000 (reserved for later use ?)
 		(unsigned char) (dc->routingSubnetSecond >> 8), (unsigned char) dc->routingSubnetSecond,		// second part of S7-Subnet-ID 
@@ -80,14 +113,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
         }*/
       
     
-  	/*           
-            byte[] res;
+  	           
+          //  byte[] res;
 
-            sendISOPacket(stdConn);
-            res = readISOPacket();
+            //sendISOPacket(stdConn);
+          //  res = readISOPacket();
 
-            return null;
-        }
+          //  return null;
+        //}
 
         private void sendISOPacket(byte[] message)
         {
@@ -99,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 
             Array.Copy(message, 0, _message, 4, message.Length);
 
-            sendPacket(_message);
+            //sendPacket(_message);
 
             
         }
@@ -107,8 +140,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
         private byte[] readISOPacket()
         {
 
-            byte[] res = readPacket();
-            return readPacket();
-        }        
-    }*/
+            //byte[] res = readPacket();
+            //return readPacket();
+            return null;
+        }
+        public void ExchangePdu(Pdu pdu, Connection connection)
+        {
+        }
+    }
 }

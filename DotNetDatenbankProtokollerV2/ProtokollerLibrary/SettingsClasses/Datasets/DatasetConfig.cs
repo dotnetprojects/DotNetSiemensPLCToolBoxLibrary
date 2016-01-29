@@ -45,6 +45,13 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             }
         }
 
+        private string _datasetTableName = "";
+        public string DatasetTableName
+        {
+            get { return _datasetTableName; }
+            set { _datasetTableName = value; NotifyPropertyChanged("DatasetTableName"); }
+        }
+
         [Browsable(false)]
         public string ObjectAsString
         {
@@ -138,6 +145,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets
             get { return _triggerconnection; }
             set { _triggerconnection = value; NotifyPropertyChanged("TriggerConnection"); }
         }
+
+        private int _noDataInterval = 300;
+        public int NoDataInterval
+        {
+            get { return _noDataInterval; }
+            set { _noDataInterval = value; NotifyPropertyChanged("NoDataInterval"); }
+        }
+        
         #endregion
 
         #region Quartz Trigger

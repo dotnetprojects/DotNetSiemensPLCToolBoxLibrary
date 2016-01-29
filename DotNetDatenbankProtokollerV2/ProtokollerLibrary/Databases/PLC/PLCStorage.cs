@@ -59,6 +59,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PLC
             _plcConnection = new PLCConnection(myConfig.Configuration);
             _plcConnection.AutoConnect = true;
             _plcConnection.Connect();
+            Logging.LogTextToLog4Net("Connect_To_Database() => \"" + _plcConnection.Name + "\" => Connect...");
         }
 
         private string dateFieldName;

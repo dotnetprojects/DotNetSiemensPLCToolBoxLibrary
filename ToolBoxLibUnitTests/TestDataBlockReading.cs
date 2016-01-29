@@ -82,5 +82,23 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[2], 2);
             Assert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 4624);
         }
+
+        [TestMethod]
+        public void TestDB4()
+        {
+            var txt = "\r\n  STRUCT \t\r\n   X_KOORDINATE : ARRAY  [0 .. 67, 0 .. 16, 1 .. 2 ] OF //X, Y, Z (Z1 = links, Z2 = rechts)\r\n   INT ;\t\r\n  END_STRUCT ;\t";
+            var par1 = new List<string>();
+            var fld = new BlocksOfflineFolder();
+            var blk = new S7Block();
+            var test =
+                DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.Parameter.GetInterfaceOrDBFromStep7ProjectString(txt,
+                                                                                                                ref par1,
+                                                                                                               PLCBlockType
+                                                                                                                    .DB,
+                                                                                                                false,
+                                                                                                                fld, blk);
+            var rw = test.Children[0] as S7DataRow;
+            var callStr = rw.GetCallingString();
+        }
     }
 }

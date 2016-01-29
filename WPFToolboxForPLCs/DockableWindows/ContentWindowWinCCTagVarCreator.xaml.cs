@@ -246,13 +246,13 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             {
                 S7DataBlock myDB = (S7DataBlock)projectBlockInfo.GetBlock();
 
-                List<S7DataRow> myLst = null;
+                List<DataBlockRow> myLst = null;
                 if (chkExpandArrays.IsChecked.Value)
                     myLst =
-                        S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())));
+                        DataBlockRow.GetChildrowsAsList(((DataBlockRow)myDB.GetArrayExpandedStructure(new S7DataBlockExpandOptions())));
                 // ) myDB.GetRowsAsArrayExpandedList(ne);
                 else
-                    myLst = S7DataRow.GetChildrowsAsList(((S7DataRow)myDB.Structure)); // myDB.GetRowsAsList();
+                    myLst = DataBlockRow.GetChildrowsAsList(((DataBlockRow)myDB.Structure)); // myDB.GetRowsAsList();
 
                 int cnt = 0;
 

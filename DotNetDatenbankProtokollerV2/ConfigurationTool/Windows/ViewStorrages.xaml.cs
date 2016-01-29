@@ -97,7 +97,13 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
                 if (dbViewSQL != null)
                 {
-                    txtSQL.Text = "SELECT " + dbFieldNames + " FROM " + datasetConfig.Name + " ORDER BY id DESC LIMIT " + 1000.ToString();
+                    string table;
+                    if (datasetConfig.DatasetTableName != "")
+                        table = datasetConfig.DatasetTableName;
+                    else
+                        table = datasetConfig.Name;
+
+                    txtSQL.Text = "SELECT " + dbFieldNames + " FROM " + table + " ORDER BY id DESC LIMIT " + 1000.ToString();
                     txtSQL.IsEnabled = true;
                     cmdSQL.IsEnabled = true;
                     txtSearch.IsEnabled = true;

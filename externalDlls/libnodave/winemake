@@ -1,0 +1,5 @@
+#
+# For usage with wine under Linux only.
+# Whether YOU can use it may depend on your WINE setup.
+#
+wine C:\\BCC55\\bin\\make -fMAKEFILE.WINE

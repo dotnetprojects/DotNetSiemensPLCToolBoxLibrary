@@ -251,14 +251,14 @@ namespace SimpleCSharpDemonstration
             myConn.PLCPutBlockFromMC7toPLC("DB98", db);*/
 
 
-            var prj = new Step7ProjectV11("C:\\Users\\jkuehner\\Documents\\Automatisierung\\Projekt2\\Projekt2.ap13");
-            var fld = prj.ProjectStructure as TIAProjectFolder;
-            var allFolders = fld.SubItems.Flatten(x => x.SubItems).Cast<TIAProjectFolder>();
-            var blockFolders = allFolders.Where(x => x is TIABlocksFolder).Cast<TIABlocksFolder>();
-            foreach (var ffld in blockFolders)
-            {
-                var blocks = ffld.readPlcBlocksList();
-            }
+            //var prj = new Step7ProjectV11("C:\\Users\\jkuehner\\Documents\\Automatisierung\\Projekt2\\Projekt2.ap13");
+            //var fld = prj.ProjectStructure as TIAProjectFolder;
+            //var allFolders = fld.SubItems.Flatten(x => x.SubItems).Cast<TIAProjectFolder>();
+            //var blockFolders = allFolders.Where(x => x is TIABlocksFolder).Cast<TIABlocksFolder>();
+            //foreach (var ffld in blockFolders)
+            //{
+            //    var blocks = ffld.readPlcBlocksList();
+            //}
         }
 
         private void button5_Click(object sender, EventArgs e)

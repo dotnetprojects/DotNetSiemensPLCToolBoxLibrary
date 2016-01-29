@@ -1,8 +1,13 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/j96f95ejg1cj4u6q/branch/master?svg=true)](https://ci.appveyor.com/project/jogibear9988/dotnetsiemensplctoolboxlibrary/branch/master)
+
 DotNetSiemensPLCToolBoxLibrary
 ==============================
 
 Switch from Codeplex http://siemensplctoolboxlib.codeplex.com/ to GitHub
 
+NuGet
+=====
+https://www.nuget.org/packages/DotNetProjects.DotNetSiemensPLCToolBoxLibrary/
 
 Description
 ==============================
@@ -33,11 +38,16 @@ And to Brian Duke for his DBF parsing Code: http://www.codeproject.com/KB/bugs/L
 SevenMag -> For CP Read Code
 
 
+Special thanks
+==============================
+![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)  
+[ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
+
+[Reflector](http://www.red-gate.com/products/dotnet-development/reflector/) - Best DotNet decompiler
+
+[OzCode](http://www.oz-code.com/) - Best Debugging Tool
 
 
-
-
-
-
-
+Trademarks
+==============================
 Step 5, Step 7, S7-300, S7-400 are Trademarks of Siemens

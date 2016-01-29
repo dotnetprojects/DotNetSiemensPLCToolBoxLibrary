@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -39,9 +40,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
     public class DataBlockRow : IDataRow, INotifyPropertyChanged
     {
+        public static List<DataBlockRow> GetChildrowsAsList(DataBlockRow akRow)
+        {
+            var retVal = new List<DataBlockRow>();
+            retVal.Add(akRow);
+            if (akRow != null && akRow.Children != null && (akRow.DataType == S7DataRowType.STRUCT || akRow.DataType == S7DataRowType.UDT || akRow.DataType == S7DataRowType.FB))
+                foreach (DataBlockRow plcDataRow in akRow.Children)
+                    retVal.AddRange(GetChildrowsAsList(plcDataRow));
+            return retVal;
+        }
+
         public virtual List<IDataRow> Children { get; protected set; }
 
-        public virtual S7DataRowType DataType { get; set; }
+        protected internal S7DataRowType _datatype;
+        public virtual S7DataRowType DataType
+        {
+            get { return _datatype; }
+            set { _datatype = value; }
+        }
+
 
         public virtual string Name { get; set; }
         public virtual string FullName { get { return Parent == null ? string.Empty : (Parent.FullName + '.' + Name).Trim('.'); } }
@@ -51,7 +68,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public virtual IDataRow Parent { get; set; }
 
-        public virtual ByteBitAddress BlockAddress { get; protected set; }
+        protected internal ByteBitAddress _BlockAddress;
+        public virtual ByteBitAddress BlockAddress
+        {
+            get { return _BlockAddress; }
+            protected set { _BlockAddress = value; }
+        }
 
         public virtual Block CurrentBlock { get; protected set; }
 
@@ -63,6 +85,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     return this.Parent.PlcBlock;
 
                 return CurrentBlock;
+            }
+        }
+
+        protected int BaseBlockNumber
+        {
+            get
+            {
+                if (this.Parent != null)
+                    return ((DataBlockRow)Parent).BaseBlockNumber;
+                return PlcBlock.BlockNumber;
             }
         }
 
@@ -111,7 +143,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public int StringSize { get; set; } //Only Relevant for String     
 
-        public string DataTypeAsString
+        public virtual string DataTypeAsString
         {
             get
             {

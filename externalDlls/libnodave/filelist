@@ -1,0 +1,49 @@
+accepter.c	include file for servers
+benchmark.c	include file for benchmarks
+ibhtest7.c	Partly simulates an IBH-NetLink
+isotest4.c	Partly simulates an Ethernet CP x43
+libnodave.so	Precompiled dynamic library
+libnodave.DEF	Defines names to export for the Microsoft linker
+loadPLC		
+log.h
+Makefile	Makefile for LINUX/UNIX	
+MAKEFILE.MAK	Makefile for WIN32/BCC
+nodave.c	Main library source code file
+nodave.h	Library header file
+nodavesimple.h	Simplified Library header file. This file is not intended to be used as the 
+		header file for your application. It is there to give a hind to people who
+		want to use libnodave from applications in VB or dot.net what is the minimum
+		they must make known to these languages for simple applications. I use it in
+		test applications only to verify that is sufficient indeed.
+openSocket.c	Opens a TCP/IP connection. Library source code file
+openSocket.h	Library header file (UNIX only)
+openSocketw.c	Library header file (Win32 only)
+pascal		Pascal glue unit and example programs
+README		
+Readme.win
+readoutISO_TCP	Readout program blocks from PLC, ISO over TCP protocol
+readoutMPI	Readout program blocks from PLC, MPI protocol, serial interface
+readoutMPIIBH	Readout program blocks from PLC, MPI protocol, ethernet with IBH-NetLink
+readoutPPI	Readout program blocks from PLC, PPI protocol, serial interface
+runStopISO_TCP	Make PLC run or stop, ISO over TCP protocol
+runStopMPI	Make PLC run or stop, ISO over TCP protocol
+runStopPPI	Make PLC run or stop, ISO over TCP protocol
+sampIBH.c	include file for NetLink simulation
+setport.c	Opens a serial interface. Library source code file
+setport.h	Library header file (UNIX only)
+setportw.c	Library header file (Win32 only)
+testIBH		General test program for MPI over IBH/MHJ-NetLink.
+testISO_TCP	General test program.
+testISO_TCPload Store program blocks into PLC, ISO over TCP protocol
+testMPI		General test program.
+testMPI2	Tests multiple MPI connections to a single PLC.
+testMPIload	Store program blocks into PLC, MPI protocol
+testPPI		General test program.
+testPPI_IBH	General test program for PPI over IBH/MHJ-NetLink.
+testPPIload	Store program blocks into PLC, PPI protocol
+testPPI_IBHload	Store program blocks into PLC, PPI over IBH/MHJ-NetLink.
+win		DLL, .lib file and precompiled test programs for Win32
+winmake.bat	Batch file to compile under Win32
+MAKEFILE.VC.WINE	Makefile to build libnodave.dll and test programs with MSVC++ under wine
+MAKEFILE.WINE		Makefile to build libnodave.dll and test programs with BorlandC under wine
+

@@ -61,6 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             //Create the main Project Folder
             ProjectStructure = new Step5ProgrammFolder() {Project = this, Name = this.ToString()};
+            _allFolders.Add(ProjectStructure);
 
             //int startpos = s5ProjectByteArray[0x12] * 0x80;
 
@@ -305,9 +306,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 symtab.Parent = ProjectStructure;
                 symtab.Project = this;
                 ProjectStructure.SubItems.Add(symtab);
+                _allFolders.Add(symtab);
             }
 
-            ProjectStructure.SubItems.Add(new ReferenceData((Step5ProgrammFolder)ProjectStructure, this)); // { Parent = ProjectStructure, Project = this });
+            var refFld = new ReferenceData((Step5ProgrammFolder) ProjectStructure, this);
+            ProjectStructure.SubItems.Add(refFld); // { Parent = ProjectStructure, Project = this });
+            _allFolders.Add(refFld);
 
         }
 

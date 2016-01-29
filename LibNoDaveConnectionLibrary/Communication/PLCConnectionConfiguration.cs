@@ -114,6 +114,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _port = value; NotifyPropertyChanged("Port"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
+        private int _writePort = 30501;
+        public int WritePort
+        {
+            get { return _writePort; }
+            set { _writePort = value; NotifyPropertyChanged("WritePort"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
         private int _lokalMpi = 0;
         public int LokalMpi
         {
@@ -395,6 +402,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         this.RoutingSubnet2 = akConf.RoutingSubnet2;
                         this.RoutingDestination = akConf.RoutingDestination;
                         this.Port = akConf.Port;
+                        this.WritePort = akConf.WritePort;
                         this.UseShortDataBlockRequest = akConf.UseShortDataBlockRequest;
 
                         this.PLCConnectionType = akConf.PLCConnectionType;
@@ -433,6 +441,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     this.RoutingSubnet2 = Convert.ToInt32(myConnectionKey.GetValue("RoutingSubnet2", "0"));
                     this.RoutingDestination = Convert.ToString(myConnectionKey.GetValue("RoutingDestination", "2"));
                     this.Port = Convert.ToInt32(myConnectionKey.GetValue("Port", "102"));
+                    this.WritePort = Convert.ToInt32(myConnectionKey.GetValue("WritePort", "30501"));
 
                     this.PLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("PLCConnectionType", "1"));
                     this.RoutingPLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("RoutingPLCConnectionType", "1"));
@@ -557,6 +566,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     myConnectionKey.SetValue("RoutingSubnet2", this.RoutingSubnet2);
                     myConnectionKey.SetValue("RoutingDestination", this.RoutingDestination);
                     myConnectionKey.SetValue("Port", this.Port);
+                    myConnectionKey.SetValue("WritePort", this.WritePort);
                     myConnectionKey.SetValue("PLCConnectionType", this.PLCConnectionType);
                     myConnectionKey.SetValue("RoutingPLCConnectionType", this.RoutingPLCConnectionType);
                     myConnectionKey.SetValue("Timeout", this.Timeout);
@@ -608,6 +618,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 230:
                     retVal = "Netlink PRO" + " (IP:" + CpuIP.ToString() + ")";
                     break;
+                case 500:
+                    retVal = "Fetch/Write (Active)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ", WritePort:" + WritePort + ")";
+                    break;
+                case 501:
+                    retVal = "Fetch/Write (Passive)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ", WritePort:" + WritePort + ")";
+                    break;
             }
 
             if (Routing)
@@ -658,6 +674,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Netlink_lite = 223,
         Netlink_lite_PPI = 224,
         Netlink_Pro = 230,
+        ISO_over_TCP_Managed = 9122,
+        Fetch_Write_Active = 500,
+        Fetch_Write_Passive = 501,
         // ReSharper restore InconsistentNaming
     }
 

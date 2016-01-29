@@ -39,30 +39,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
     {
 
 
-        public TIAFunctionBlock(Step7ProjectV11 TIAProject, XmlNode Node)
-            : base(TIAProject, Node)
-        { }
+        //        public TIAFunctionBlock(Step7ProjectV11 TIAProject, XmlNode Node)
+        //            : base(TIAProject, Node)
+        //        { }
 
-       
-        
-        public IDataRow Structure
-        {
-            get
-            {
-                return new TIADataRow(node, tiaProject, this);
-            }
-            set
-            {
 
-            }
-        }
 
-        public override string ToString()
-        {
-            var ret = "Block:" + this.Name + " (" + this.BlockName + ")" + Environment.NewLine;
-            ret += "Titel:" + (this.Title ?? "") + Environment.NewLine;
-            ret += "Comment:" + (this.Comment ?? "") + Environment.NewLine;
-            return ret;
-        }
+        //        public IDataRow Structure
+        //        {
+        //            get
+        //            {
+        //                return new TIADataRow(node, tiaProject, this);
+        //            }
+        //            set
+        //            {
+
+        //            }
+        //        }
+
+        //        public override string ToString()
+        //        {
+        //            var ret = "Block:" + this.Name + " (" + this.BlockName + ")" + Environment.NewLine;
+        //            ret += "Titel:" + (this.Title ?? "") + Environment.NewLine;
+        //            ret += "Comment:" + (this.Comment ?? "") + Environment.NewLine;
+        //            return ret;
+        //        }
     }
 }

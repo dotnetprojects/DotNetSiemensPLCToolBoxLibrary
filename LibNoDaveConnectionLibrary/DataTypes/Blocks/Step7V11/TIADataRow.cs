@@ -8,128 +8,237 @@ using System.Xml;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 {
-    public class TIADataRow : DataBlockRow, INotifyPropertyChanged
+    public class TIADataRow : TiaAndSTep7DataBlockRow, INotifyPropertyChanged
     {
-        private XmlNode node;
-        private Step7ProjectV11 tiaProject;
-        private TIABlock block;
+        public Block DataTypeBlock { get; set; } //When the Type is SFB, FB or UDT, this contains the Block!
 
-        public TIADataRow(XmlNode Node, Step7ProjectV11 Project, TIABlock Block)
+        public TIADataRow(string name, S7DataRowType datatype, Block block)
         {
-            this.node = Node;
-            this.tiaProject = Project;
-            this.block = Block;
+            this.Name = name;
+            this.DataType = datatype;
+            this.CurrentBlock = block;
+        }
 
-            var id = this.node.Attributes["id"].Value;
-            string instId = this.node.Attributes["instId"].Value;
+        public bool isRootBlock { get; set; }
+        
 
-            var arrayLowerBounds = this.node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainServices.CommonTypeSystem.IStructureItem").Key + "']/attrib[@name='LowerBounds']/array");
-            if (arrayLowerBounds != null && (arrayLowerBounds.Attributes["nil"] == null || arrayLowerBounds.Attributes["nil"].Value != "1"))
-            {
-                ArrayStart = new List<int>();
-                ArrayStop = new List<int>();
-                var arrayUpperBounds = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainServices.CommonTypeSystem.IStructureItem").Key + "']/attrib[@name='UpperBounds']/array");
-                this.IsArray = true;
-                foreach (var low in arrayLowerBounds.InnerText.Split(','))
-                {
-                    ArrayStart.Add(int.Parse(low));
-                }
-                foreach (var high in arrayUpperBounds.InnerText.Split(','))
-                {
-                    ArrayStop.Add(int.Parse(high));
-                }
+        public override TiaAndSTep7DataBlockRow DeepCopy()
+        {
+            var newRow = new TIADataRow(this.Name, this.DataType, this.PlcBlock);
+            newRow.Parent = this.Parent;
+            newRow.ArrayStart = this.ArrayStart;
+            newRow.ArrayStop = this.ArrayStop;
+            newRow.IsArray = this.IsArray;
+            newRow.WasFirstInArray = this.WasFirstInArray;
+            newRow.WasArray = this.WasArray;
+            newRow.WasNextHigherIndex = this.WasNextHigherIndex;
+            newRow.DataTypeBlock = DataTypeBlock;
+            
+            newRow.Comment = this.Comment;
+            newRow.DataTypeBlockNumber = this.DataTypeBlockNumber;
+            newRow.ReadOnly = this.ReadOnly;
+            newRow.StartValue = this.StartValue;
+            newRow.StringSize = this.StringSize;
+            newRow.isInOut = this.isInOut;
+            newRow.isRootBlock = this.isRootBlock;
+            newRow.Value = this.Value;
 
-                this.node = Project.xmlDoc.SelectSingleNode("root/objects/StorageObject[parentlink[@link='" + id + "-" + instId + "']]");
-                id = this.node.Attributes["id"].Value;
-                instId = this.node.Attributes["instId"].Value;
-            }
-
-            var idChildRow = Project.importTypeInfos.First(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.StructureItemData").Key;
-           
-
+            //newRow.Attributes = this.Attributes;
+            //newRow.TimeStampConflict = this.TimeStampConflict;
             
 
-            var subNodes = Project.xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + id + "-" + instId + "']]");
-            this.Children = new List<IDataRow>();
-            foreach (XmlNode subNode in subNodes)
-            {
-                if (subNode.Attributes["id"].Value == idChildRow)
+            if (Children != null)
+                foreach (TIADataRow plcDataRow in Children)
                 {
-                    var row = new TIADataRow(subNode, Project, Block);
-                    row.Parent = this;
-                    this.Children.Add(row);
+                    var copy = plcDataRow.DeepCopy();
+                    copy.Parent = newRow;
+                    newRow.Add(copy);
                 }
-            }            
-        }
 
-        public uint LocalIdentifier
+            return newRow;
+        }      
+
+        private ByteBitAddress _parentOldAddress;
+        internal override ByteBitAddress FillBlockAddresses(ByteBitAddress startAddr)
         {
-            get
+            if (isRootBlock && this.Name == "TEMP")
             {
-                var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainModel.ITagAddress").Key + "']/attrib[@name='LocalIdentifier']");
-                if (lidNode != null) return Convert.ToUInt32(lidNode.InnerText);
-                return 0;
+                _BlockAddress = new ByteBitAddress(0, 0);
+                startAddr = new ByteBitAddress(0, 0);
             }
-        }
 
-        public override S7DataRowType DataType
-        {
-            get
+            ByteBitAddress akAddr = new ByteBitAddress(startAddr);
+            if (Parent != null && startAddr == null)
+                ((TIADataRow)Parent).FillBlockAddresses(null);
+            else
             {
-                var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainServices.CommonTypeSystem.IStructureItem").Key + "']/attrib[@name='DisplayTypeName']");
-                if (lidNode != null)
+                //Create a function wich fills in the Block address for all Subitems...
+                if (Children != null || _datatype != S7DataRowType.STRUCT)
                 {
-                    switch (lidNode.InnerText.ToLower())
+                    if (akAddr.BitAddress != 0)
+                        akAddr.ByteAddress++;
+                    if (akAddr.ByteAddress % 2 != 0)
+                        akAddr.ByteAddress++;
+
+                    bool lastRowWasArrayOrStruct = false;
+
+                    //int structlen = 0;
+                    foreach (TIADataRow plcDataRow in Children)
                     {
-                        case "struct":
-                            return S7DataRowType.STRUCT;
-                        case "block_db":
-                            return S7DataRowType.BLOCK_DB;
-                        case "word":
-                            return S7DataRowType.WORD;
-                        case "dword":
-                            return S7DataRowType.DWORD;
-                        case "real":
-                            return S7DataRowType.REAL;
-                        case "int":
-                            return S7DataRowType.INT;
-                        case "dint":
-                            return S7DataRowType.DINT;
-                        case "bool":
-                            return S7DataRowType.BOOL;
-                        case "byte":
-                            return S7DataRowType.BYTE;
+
+                        if (akAddr.BitAddress != 0 && plcDataRow._datatype == S7DataRowType.BOOL && plcDataRow.WasArray && !plcDataRow.WasFirstInArray && plcDataRow.WasNextHigherIndex)
+                        {
+                            akAddr.BitAddress = 0;
+                            akAddr.ByteAddress++;
+                        }
+                        else if (akAddr.BitAddress != 0 && (plcDataRow._datatype != S7DataRowType.BOOL || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
+                        {
+                            akAddr.BitAddress = 0;
+                            akAddr.ByteAddress++;
+                        }
+
+
+                        if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
+                            if (!(this.PlcBlock is Step5.S5DataBlock))
+                            {
+                                akAddr.ByteAddress++;
+                            }
+
+
+                        if (plcDataRow.Children != null && plcDataRow.Children.Count > 0)
+                        {
+                            plcDataRow._BlockAddress = new ByteBitAddress(akAddr);
+
+                            var useAddr = akAddr;
+                            if (plcDataRow.Parent != null && ((TIADataRow)plcDataRow.Parent).isInOut)
+                                useAddr = new ByteBitAddress(0, 0);
+                            plcDataRow.FillBlockAddresses(useAddr);
+
+                            //Struct or UDT are Handeled as Pointer in IN_OUT so only Increase about 6 Byte
+                            //if (plcDataRow.Parent != null && ((S7DataRow) plcDataRow.Parent).isInOut)
+                            akAddr.ByteAddress += plcDataRow.ByteLength;
+                            //if (!plcDataRow.IsArray)
+                            //    akAddr = plcDataRow.FillBlockAddresses(akAddr);
+                            //else
+                            //    akAddr = plcDataRow.FillBlockAddresses(akAddr);
+                            if (akAddr.BitAddress != 0)
+                            {
+                                akAddr.BitAddress = 0;
+                                akAddr.ByteAddress++;
+                            }
+                            if (akAddr.ByteAddress % 2 != 0)
+                                akAddr.ByteAddress++;
+
+                            plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
+                        }
+                        else
+                        {
+                            plcDataRow._BlockAddress = new ByteBitAddress(akAddr);
+                            if (plcDataRow._datatype == S7DataRowType.BOOL && !plcDataRow.IsArray)
+                                akAddr = Helper.GetNextBitAddress(akAddr);
+                            else
+                            {
+                                akAddr.BitAddress = 0;
+                                akAddr.ByteAddress += plcDataRow.ByteLength;
+                            }
+                            plcDataRow._NextBlockAddress = new ByteBitAddress(akAddr);
+                        }
+
+                        //structlen += plcDataRow.ByteLength;
+
+                        lastRowWasArrayOrStruct = plcDataRow.WasArray;
                     }
+                    //this. = structlen;
                 }
-                return S7DataRowType.UNKNOWN;
+            }
+            return akAddr;
+        }
+        /// </summary>
+        internal override void ClearBlockAddress()
+        {
+            if (_BlockAddress != null || _parentOldAddress != null)
+            {
+                _BlockAddress = null;
+                _parentOldAddress = null;
+                //_structureLength = null;
+
+                if (Children != null)
+                    foreach (TIADataRow plcDataRow in Children)
+                    {
+                        plcDataRow.ClearBlockAddress();
+                    }
+                if (Parent != null)
+                    ((TIADataRow)Parent).ClearBlockAddress();
             }
         }
 
-
-        public override string Name
+        public override ByteBitAddress BlockAddress
         {
             get
             {
-                var nameNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.CoreAttributesId + "']/attrib[@name='Name']");
-                if (nameNode != null) return nameNode.InnerText;
-                return "";
-            }
-            set
-            {
+                if (_BlockAddress == null)
+                    FillBlockAddresses(null);
+                if (this.PlcBlock is Step5.S5DataBlock && _BlockAddress != null)
+                    return new ByteBitAddress(_BlockAddress.ByteAddress / 2, _BlockAddress.BitAddress);
+                return new ByteBitAddress(_BlockAddress);
+
             }
         }
+
+
+        public override string DataTypeAsString
+        {
+            get
+            {
+                string retVal = "";
+                if (IsArray)
+                {
+                    retVal += "ARRAY [";
+                    for (int n = 0; n < ArrayStart.Count; n++)
+                    {
+                        retVal += ArrayStart[n].ToString() + ".." + ArrayStop[n].ToString();
+                        if (n < ArrayStart.Count - 1)
+                            retVal += ",";
+                    }
+                    retVal += "] OF ";
+                }
+
+                if (DataTypeBlock != null)
+                    retVal += "\"" + DataTypeBlock.Name + "\"";
+                else
+                {
+                    retVal += DataType.ToString();
+                }
+                if (DataType == S7DataRowType.STRING)
+                    retVal += "[" + StringSize.ToString() + "]";
+
+                return retVal;
+            }
+        }
+
+        //        public uint LocalIdentifier
+        //        {
+        //            get
+        //            {
+        //                var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainModel.ITagAddress").Key + "']/attrib[@name='LocalIdentifier']");
+        //                if (lidNode != null) return Convert.ToUInt32(lidNode.InnerText);
+        //                return 0;
+        //            }
+        //        }
+
         
-        public string SymbolicVisuAccessKey
-        {
-            get
-            {
-                var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(Name));
-                return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + crc.ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');                
-            }
-        }       
+        //        public string SymbolicVisuAccessKey
+        //        {
+        //            get
+        //            {
+        //                var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(Name));
+        //                return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + crc.ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');                
+        //            }
+        //        }       
     }
 }

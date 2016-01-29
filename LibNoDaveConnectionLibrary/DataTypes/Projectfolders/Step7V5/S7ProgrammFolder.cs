@@ -1,4 +1,6 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+
+namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
     public class S7ProgrammFolder : Step7ProjectFolder, IProgrammFolder
     {
@@ -15,6 +17,11 @@
             {
                 BlocksOfflineFolder = (BlocksOfflineFolder)value;
             }
+        }
+
+        public Block GetBlockRecursive(string name)
+        {
+            return BlocksOfflineFolder.GetBlock(name);
         }
     }
 }

@@ -1,0 +1,68 @@
+Things preceded by a # are done with this release (0.8)
+
+ 0. Add support for FORTRAN. Deserves it more than VB.
+  
+#1. Define and implement a consistent way to handle debug output, so that the user
+#   can direct it to a file of choice.
+All debug output should now go to standard error
+
+#2. Write safer test programs, i.e. do write operations only with special options
+#   or/and after explicit confirmation.
+
+#3. Write code to support ISO over TCP.
+
+4. Make a completely unified versions for all sorts of transports.
+#   This will result in a single library.
+#   There should be a table containig the positions of headers and PDU in the packet.
+#   Maybe this table should also contain pointers to the functions actually needed.
+#   Done also for IBH NetLink. 
+   
+5. Evaluate error codes returned from PLC.
+   Current suspicions for read results:
+   The first data byte in the returned result means:    
+   255	Success
+   3 	Not a readable data area.
+   5 	Read past end of area = not enough data for this read request.
+   10   data item not available
+   There are more error codes the CPU puts into response PDUs of type 2 and 3.
+
+#6. Integrate Andrew's protocol from the rostic subdirectory. Find out what is the difference
+#   between it and the protocol currently used in the main branch. 
+#   It does not include the MPI address of receiver (and sender?) in each packet, so maybe
+#   it cannot be used in an MPI net with multiple masters.
+#   Once I have initialized my MPI adapter to use it, I cannot connect with the other protocol
+#   unless I remove the power from the adapter.
+Done. Specify daveProtoMPI2 in daveNewConnection. I found it worked with an adapter that seems
+not to support my former version.
+
+7. Find out whether there is an ISO transport in raw ethernet packets used in Siemens
+   devices and write support for it.
+
+#8. Support multiple item read requests.
+#8. Support multiple item write requests.
+
+#9. I suppose that it is possible to set some fields in the PDU to some ID, which is then
+#   returned unchanged in the answer. This could be used to build up a mechanism to accept
+#   packets from more than one application and transmit them with different IDs to the PLC.
+#   The answers could then be delivered to the respective application. 
+#   A possible application for this would be to access the PLC with a programming device
+#   while running a SCADA application.
+This is possible using multiple connections.
+
+#10. Find out where to put the local MPI address of the PC in the protocol used by MPI
+#    adapters.
+Should now work. For IBH NetLink, you have to configure the local address via IBH setup software.
+
+11. Add support for more data areas (instance data blocks, timers, counters, system data)
+    if possible.
+
+12. Add functions for teleservice.
+
+#13. Find out how other functions like program up-/download, start,stop etc. work.
+# start,stop work
+# reading program from PLC works
+# loading program into PLC works
+
+14. Add support for CP5511, CP5611, CP5512 etc.
+# at least for win32 and if Step7 or maybe other Siemens products are installed,
+# libnodave can now use s7onlinx.dll for transport.

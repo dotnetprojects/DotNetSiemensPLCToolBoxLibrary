@@ -12,14 +12,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     internal partial class SelectProjectPartForm : Form
     {
-        public SelectProjectPartForm(string projectFile)
+        public SelectProjectPartForm(string projectFile, bool hideOpenProjectButton = true)
         {
             InitializeComponent();
 
             fnm = projectFile;
             if (!string.IsNullOrEmpty(fnm))
             {
-                cmdOpenProject.Visible = false;
+                if (hideOpenProjectButton)
+                    cmdOpenProject.Visible = false;
                 loadPrj();
             }            
         }               
@@ -131,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog op=new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13, *.al11, *.al12, *.al13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13, *.al11, *.al12, *.al13, *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13";
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)
             {
@@ -146,10 +147,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {               
                 treeStep7Project.Nodes.Clear();
 
-                tmpPrj = Projects.LoadProject(fnm, chkShowDeleted.Checked);
-                //tmpPrj = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
-
-                //listBox1.Items.AddRange(tmp.PrgProjectFolders.ToArray());
+                tmpPrj = Projects.LoadProject(fnm.Split('|')[0], chkShowDeleted.Checked);
+                
                 lblProjectName.Text = tmpPrj.ProjectName;
                 lblProjectInfo.Text = tmpPrj.ProjectDescription;
 
@@ -241,13 +240,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         retVal = null;                    
                 }
             }
-            else if (SelectPart==SelectPartType.S7ProgrammFolder)
+            else if (SelectPart == SelectPartType.S7ProgrammFolder)
             {
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
                     if (tmp.myObject.GetType() == typeof(S7ProgrammFolder))
                         retVal = (S7ProgrammFolder)tmp.myObject;
+                    else
+                        retVal = null;
+                }
+            }
+            else if (SelectPart == SelectPartType.RootProgrammFolder)
+            {
+                if (treeStep7Project.SelectedNode != null)
+                {
+                    var tmp = (myTreeNode)treeStep7Project.SelectedNode;
+                    if (tmp.myObject is IRootProgrammFolder)
+                        retVal = (IRootProgrammFolder)tmp.myObject;
                     else
                         retVal = null;
                 }

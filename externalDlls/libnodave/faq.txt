@@ -1,0 +1,172 @@
+Questions I have been asked and answers:
+
+Q: My VB,.NET or Delphi application doesn't work. I suppose libnodave doesn't work with my 
+   hardware or doesn't work at all. Can you help me?
+A: You can most easily find out whether Libnodave works with your hardware, PLC, adapter
+   etc: try the precompiled test programs. If they don't work (trying different options when
+   suggested), it's clearly libnodave's fault.
+   If they work, it's your application (or there is a little chance, the problem is in the 
+   interface to the language you use).
+
+Q: Can you help me?
+A: Before asking me, try out the test programs as described above. When they don't work for
+   you, send me the output with debug option, e.g. do:
+   testMPI -d COM1 >debugout.txt
+   If they work, but your application doesn't, do:
+   Insert "daveSetDebug(daveDebugAll)" before calling anything else from libnodave.
+   Then do:
+   yourappliation >debugout.txt
+   For those people who grew up with mice and don't know the command line:
+   This works even with MS-Excel. Create a spreadsheet, import the VBA module, 
+   - uncomment the "call daveSetDebug(daveDebugAll)" at the begin of sub initialize,
+   - save the sheet.
+   - then, from commandline (dos box, cmd) do:
+	excel testsheet >debugout.txt 
+   All debug output (otherwise invisible) goes into debugout.txt.
+   When time falls short, I shall discard mails not containig debug output!
+
+Q: What mail format do you prefer?
+A: Ok, nobody asked that, but I DO prefer PLAIN TEXT.
+
+Q: I want to read out whether my PLC is in RUN or STOP mode. Is there a function for that?
+A: No, not a specialized one. For S7-300/400, use daveReadSZL to read the diagnostic lists. 
+   This is what Step7 does. You will find information about IDs and indices in Siemens 
+   documentation. The state of all the CPU LEDs is in ID 25 (19hex) index 0.
+   With S7-200, the information is somewhere in the system data.
+
+Q: I trying to trace libnodave with a debugger. I need help?
+A: There is no reason to use a debugger on libnodave unless you suspect one of the
+   following things:
+   - memory leaks
+   - range overflows, on numbers or array indices
+   - problems with passing parameters to library functions
+   In the latter case, better recompile libnodave after uncommenting #define DEBUG_CALLS in
+   nodave.c.
+   To find problems with PLCs and adapters, the FAR better way is to use 
+   setDaveDebug(daveDebugAll). This will show you what is sent and received from PLC/adapter
+   and it will show you the relevant information instead of extracting it from memory
+   contents or processor registers. Thus, data exchange with the PLC is still carried out with
+   normal timing. With a debugger, the code might send one part of a message and then pause 
+   longer than PLC side timeouts.
+
+Q: Can you give documentation about S7 communication or MPI protocol?
+A: No, I can't. What I know about it is from reverse engineering. This means sniffing lots of 
+   packets, trying to make sense of them and trying to generate them with my own code.
+   If things are named so or so in libnodave this reflects my current hypothesis. I could 
+   try to write documentation, but that would allways be a step behind the code: The code
+   is what can be proven against existing hardware, i.e. reaity. The docs cannot. And I think 
+   the code is fairly well documented... 
+
+Q: So why do you have these complicated structures?
+A: What people might have found complicated are probably the pointers to protocol dependent
+   functions. In fact, they make the library more simple in two ways:
+   - First, they separate packet forming from transport. If someone finds out how to do some
+     function that can be done with a Simatic S7, it is sufficient to implement the packet
+     forming part and it will most likely work with any transport protocol. Vice versa, if there
+     would be a new transport mechanism, probaly all functions will work with it as soon as the
+     transport functions are implemented. Version 0.8 clearly shows that by implementing a 
+     transport vie s7online.dll.
+   - Commercial libraries I looked at usually have separate sets of functions for the 200 
+     and the 300/400 family. Libnodave hasn't, so you have less to learn about the API while your
+     code can do more without any modification.
+   
+Q: Why do you export these structures if you say they are meaningless for applications?     
+A: They are not completely meaningless. There are also a lot of "intermediate step functions"
+   that are exported from the .dll or.so which are normally of no use to end users.
+   - All this is there - in the spirit of open source - for those who want to do their
+     own experiments. It may give you possibilities I did not think of.
+   - At least once, I could help a user implementing a new function (daveForce200). He only
+     had to add about 20 lines to his application which in turn called intermediate steps
+     of packet forming and analysis, like _daveAddData.
+
+Q: Why aren't there functions like readOutputs, readInputs, readData ?     
+A: Other libraries usually have separate functions to read from inputs, outputs, flags,
+     data blocks and so on. Libnodave hasn't. Again, you have to learn less about the API.
+     
+Q: Why aren't there functions like readBytes, readIntegers, readDWords, readFloat ?     
+A: Other libraries often have separate functions to read integers, dwords or floats.
+   Libnodave hasn't. The reason is: If you have a DB (or memory area) containg mixed data 
+   types, with those function you can only read parts of such a block. Or you use readBytes
+   to read the memory as raw bytes and you are left alone wit the conversion.
+   Libnodave generally reads an entire block of data as bytes and then provides you 
+   with conversion functions to convert it to PLC data types and byte order.
+       
+Q: I try to compile my source code which includes nodave.h. Why do I get: 
+    "#error Fill in what you need for your OS or API" ?     
+A: Libnodave has to use different functions to read byte data from serial ports or TCP/IP streams
+   depending on the operating system. You have to specify which OS you compile for. 
+   Define BCCWIN for Windows and LINUX for Linux or other Unix style operating systems. I do
+   that using -DBCCWIN or -DLINUX when I call the compilers out of a Makefile. If you use an IDE
+   (integrated development environment), refer to the IDE's documentation to learn where to do 
+   this. If you can't find out, you can help yourself putting the #define into your code (which
+   means your code will not be portable to other OS without modification). example:
+   
+   ...
+   #define BCCWIN 		// if you work on windows
+   #include nodave.h		// or nodavesimple.h, but NEVER both
+   #include setport.h		// if your code works with serial connections
+   #include openSocket.h	// if your code works with TCP/IP
+   ...       
+Q: I try to compile libnodave from source code. There are problems.
+A: - You do not need to compile libnodave yourself. You won't do it with other DLLs (windows)
+     or .so (Linux shared libraries). Normally, you will link such libraries dynamically with
+     your code. 
+   - Nevertheless, you have the sources and you may chose to recompile it or recompile only the
+     parts you need, etcetera.     
+   - You should know that S7 uses Motorola (big endian, high byte first) byte order (endianness) 
+     while Intel processors use Intel (little endian, low byte first). On Intel and similar
+     machines, libnodave has to convert multibyte values. This is done in daveGetS2(), daveGetU2(),
+     daveGetFloat() and friends. The conversion code is only compiled in if you #define
+     DAVE_LITTLE_ENDIAN. Otherwise, big endian is assumed. 
+   - Be aware that I do compile releases of libnodave using gcc (for Linux) and MSVC++ 
+     (for windows). I use the script buildall to build Linux and Windows release versions and test 
+     programs on a Linux box. Buildall uses Linux make with MAKEFILE.VC.WINE to invoke the MSVC++ 
+     compiler for windows versions. There is also a MAKEFILE.VC which should work on a windows 
+     system using nmake, but it may be out of date :-(. If in doubt about compiler options or
+     source files involved, refer to MAKEFILE.VC.WINE!
+
+Q: I want to compile libnodave for another OS. What adaptions shall I have to make?
+A: - I suppose your OS is 32 bit and your compiler treats int as 32 bit. If not, you are in
+     trouble!
+   - You need to provide functional replacements for setport.c or setportw.c and openSocket.c or 
+     openSocketw.c
+   - nodave.h: You need to define a record _daveOSserialType containing members:
+     rfd: a data type that can refer to a serial port or a TCP socket for read access
+     wfd: a data type that can refer to a serial port or a TCP socket for write access
+   - nodave.c: You need to code functions stdread() and stdwrite() to read and write a number of
+     bytes from/to a serial port to/from a buffer.
+     
+Q: Is there a function to read PLC Data structure of a data block? The variables
+   and their data type ?
+A: No. The structure information is only available to Step7 BEFORE compilation. It is NOT stored 
+   in the PLC itself. Same situation if you open a new project and load the code from PLC  into
+   programmer: Your DBs will be nothing more than arrays of bytes.
+   
+Q: I have problems writing inputs. Can you help me?
+A: Well, there are 2 types of inputs: 1. Peripheral adresses. This is what you read with daveP 
+   or, in a PLC program, with L PIW <address>. Accesses to these addresses are real hardware
+   read or write accesses and there is no way to write to input hardware.
+   2. Input/Output image memory. This is how programmers normally access Siemens I/O like in:
+   L IW <address>
+   or 
+   A I 2.5
+   Accesses to these addresses do NO access the hardware but a special memory area. The
+   inputs are copied to this memory in each cycle before the application program is executed.
+   If you write to this memory area using daveInputs, the memory will be overwritten before next
+   cycle. Whether your PLC program or your application of Libnodave will "see" the values written
+   to this memory is a matter of time race.
+   
+Q: Is it possible to write a number of bits (up to 3) simultaneously to the PLC?
+   I want to avoid using "read-modify-write" techniques and make the write as "atomic"
+   as possible.
+A: daveWriteBits() does provide an "atomic" write function, but only for a single bit.
+   The length parameter to daveWriteBits() has to be one, other values produce errors with 
+   CPUs that I know of. So why is this parameter there? It corresponds to a field in the message
+   which contains the number of bits to read or write.
+   
+Q: Can this (an atomic read to 3 bits) be done using daveWriteBits() or do I have to use multiple 
+   write "items" within the same PDU?
+A: It CANNOT be done with daveWriteBits() with the CPUs I know. Whether writing with a PDU containing
+   multiple items is "atomic" or not I don't know. If you can modify the PLC program, I think the best 
+   solution would be locating the 3 bits into a byte the rest of which remains unused.
+  

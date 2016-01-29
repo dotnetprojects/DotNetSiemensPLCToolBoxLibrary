@@ -131,6 +131,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _itemDoesNotExist = value;
                     NotifyPropertyChanged("ItemDoesNotExist");
                     NotifyPropertyChanged("ValueAsString");
+                    if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(null, null));
                 }
             }
         }
@@ -663,7 +664,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = Int32.Parse(myValue);
                         } catch (Exception) {}
-                    break;                
+                    break;    
+                case TagDataType.BCDArray:
+                    if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
+                        Controlvalue = Convert.ToUInt64(Helper.GetIntFromHexString(myValue));
+                    else if (myValue.StartsWith("2#"))
+                        Controlvalue = Convert.ToUInt64(Helper.GetIntFromBinString(myValue));
+                    else
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(myValue))
+                                Controlvalue = UInt64.Parse(myValue);
+                        } catch (Exception) {}
+                    break;               
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
@@ -825,6 +838,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     case TagDataType.String:
                     case TagDataType.CharArray:
+                    case TagDataType.BCDArray:
                         return myValue.ToString();
                     case TagDataType.ByteArray:
                         {
@@ -1163,6 +1177,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     plcAddress = plcAddress.Trim();
                     if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
                     {
+                    	if (plcAddress.Substring(2, 3).Contains(" "))
+                            plcAddress = plcAddress.Remove(plcAddress.IndexOf(" "), 1);
                         string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
                         BitAddress = 0;
                         if (!myPlcAddress[0].Contains("db"))
@@ -1184,6 +1200,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             else if (tmp.Contains("z") || tmp.Contains("c"))
                                 this.TagDataSource = MemoryArea.Counter;
                             ByteAddress = getNumberFromString(myPlcAddress[0].Split('.')[0]);
+                            
+                            if (myPlcAddress[1] == "bool")
+                                BitAddress = getNumberFromString(myPlcAddress[0].Split('.')[1]);
                         }
                         else
                         {
@@ -1191,7 +1210,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
                             ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
-                        ArraySize = Convert.ToInt32(myPlcAddress[2]);
+                        double _ArraySize = Convert.ToInt32(myPlcAddress[2]);
 
                         var tsize = 1;
                         switch (myPlcAddress[1])
@@ -1213,11 +1232,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         var baseS = _internalGetBaseTypeSize();
                         if (baseS > 0)
-                            ArraySize = ArraySize / baseS;
+                            _ArraySize = _ArraySize / baseS;
                         else
-                            ArraySize *= 8;
+                            _ArraySize *= 8;
 
-                        ArraySize = ArraySize * tsize;
+                        ArraySize = Convert.ToInt32(_ArraySize * tsize);
 
                         //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
                         //    this.TagDataType = TagDataType.ByteArray;
@@ -1424,6 +1443,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "bcddword":
                         tp = TagDataType.BCDDWord;
                         break;
+                    case "bcdarray":
+                        tp = TagDataType.BCDArray;
+                        break;
                     case "datetime":
                     case "dateandtime":
                         tp = TagDataType.DateTime;
@@ -1523,7 +1545,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            if (this.ArraySize == 1 || this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+            if (this.ArraySize == 1 || this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray || this.TagDataType == TagDataType.BCDArray)
             {
                 _putControlValueIntoBuffer(buff, startpos, Controlvalue);
             }
@@ -1563,6 +1585,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     buff[startpos + n] = 0x00;
                                 else
                                     buff[startpos + n] = tmp[n];
+                            }
+                        }
+                        break;
+                    case TagDataType.BCDArray:
+                        {
+                            var tmp = (ulong)ctlValue;
+
+                            ulong faktor = 1;
+                            for (int n = 0; n < ArraySize-1; n++)
+                            {
+                                faktor *= 10;
+                            }
+
+                            for (int n = 0; n < ArraySize; n++)
+                            {
+                                buff[startpos + n] = (byte) (tmp/faktor);
+                                tmp -= buff[startpos + n]*faktor;
+                                faktor /= 10;                                
                             }
                         }
                         break;
@@ -1651,19 +1691,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 case TagDataType.String:                    
                     {
-                        var sb = new StringBuilder();
-                        int size = ArraySize > buff[startpos + 1] ? buff[startpos+1] : ArraySize;
-                        for (var n = 2; n < size+2; n++)
-                            sb.Append((char) buff[n + startpos]);
-                        _setValueProp = sb.ToString();
+                        int maxsize = (int)buff[startpos];
+                        int size = (int)buff[startpos + 1];
+
+                        if (ArraySize == 1 && ArraySize != maxsize) 
+                            ArraySize = Math.Max(ArraySize,maxsize);
+                        else
+                            _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
                     }
                     break;
                 case TagDataType.CharArray:
                     {
-                        var sb = new StringBuilder();
-                        for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
-                            sb.Append((char)buff[n + startpos]);
-                        _setValueProp = sb.ToString();
+                        //var sb = new StringBuilder();
+                        //for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
+                        //    sb.Append((char)buff[n + startpos]);
+                        //_setValueProp = sb.ToString();
+                        _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize));
                     }
                     break;
                 case TagDataType.ByteArray:
@@ -1676,6 +1719,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             val[n] = buff[n + startpos];
                         */
                         _setValueProp = val;
+                    }
+                    break;
+                case TagDataType.BCDArray:
+                    {
+                        ulong wrt = 0;
+
+                        for (int i = 0; i < ArraySize; i++)
+                        {
+                            wrt *= 10;
+                            wrt += (ulong)libnodave.getBCD8from(buff, startpos + i);
+                        }
+
+                        _setValueProp = wrt;
                     }
                     break;
 
@@ -1966,6 +2022,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return ArraySize + 2;                   
                 case TagDataType.CharArray:
                 case TagDataType.ByteArray:
+                case TagDataType.BCDArray:
                     return ArraySize;                    
                 case TagDataType.Byte:
                 case TagDataType.SByte:
@@ -2009,9 +2066,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             switch (this.TagDataType)
             {
+            	case TagDataType.Bool:
                 case TagDataType.Byte:
                 case TagDataType.SByte:
                 case TagDataType.BCDByte:
+                case TagDataType.BCDArray:
+                case TagDataType.CharArray:
+                case TagDataType.ByteArray:
                     return 1;
                 case TagDataType.Word:
                 case TagDataType.BCDWord:

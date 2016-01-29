@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 {
@@ -15,6 +16,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             disposed = true;
 
             Stop();
+        }
+
+        public bool DoNotUseRecieveEvent { get; set; }
+
+        public Socket CurrentSocket
+        {
+            get { return tcpClient.Client; }
+        }
+
+        public NetworkStream NetworkStream
+        {
+            get { return tcpClient.GetStream(); }
         }
 
         /// <summary>
@@ -129,11 +142,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         public void StartAsync()
         {
-            Start();
-        }
-
-        public void Start()
-        {
             if (!this.connection_active)
             {
                 this.State = Status.LISTENING;
@@ -170,6 +178,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     }
                 }
             }
+        }
+
+        public async void Start()
+        {
+           var t = new TaskCompletionSource<object>();
+            
+            Action<TcpClient> vCHandler = null;
+            vCHandler = res =>
+            {
+                ConnectionEstablished -= vCHandler;
+                ConnectionClosed -= vCHandler;
+                t.TrySetResult(res);
+            };
+            this.ConnectionEstablished += vCHandler;
+            this.ConnectionClosed += vCHandler;
+
+            StartAsync();
+
+            await t.Task;
         }
 
         public void Stop()
@@ -217,7 +244,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 }
 
                 if (UseKeepAlive)
-                    tcpc.Client.SetKeepAlive(50, 100);
+                    tcpc.Client.SetKeepAlive(1000, 2000);
 
                 if (ConnectionEstablished != null)
                     if (context == null)
@@ -246,7 +273,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect) Start();
+                        if (AutoReConnect) StartAsync();
                 }
                 else
                 {
@@ -295,67 +322,72 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         private void beginRead(TcpClient akTcpClient)
         {
-            if (!disposed && akTcpClient.Connected == false)
+            if (!DoNotUseRecieveEvent)
             {
-                if (ConnectionClosed != null && this.State == Status.CONNECTED)
-                    if (context == null)
-                        ConnectionClosed(tcpClient);
-                    else
-                        context.Post(delegate { ConnectionClosed(tcpClient); }, null);
-
-                //if (this.State != Status.CONNECTING)
-                StopInternal();
-
-                if (!AllowMultipleClients || connection_active)
-                    if (AutoReConnect && this.State != Status.CONNECTING) Start();
-                return;
-            }
-
-            if (!disposed)
-            {
-                try
+                if (!disposed && akTcpClient.Connected == false)
                 {
-                    if (readBytesPerCennection.ContainsKey(akTcpClient))
-                    {
-                        readBytesPerCennection.Remove(akTcpClient);
-                        readBytesCountPerCennection.Remove(akTcpClient);
-                    }
-                    byte[] readBytes;
+                    if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                        if (context == null)
+                            ConnectionClosed(tcpClient);
+                        else
+                            context.Post(delegate { ConnectionClosed(tcpClient); }, null);
 
-                    if (fixedLength <= 0)
-                        readBytes = new Byte[65536];
-                    else
-                        readBytes = new Byte[fixedLength];
+                    //if (this.State != Status.CONNECTING)
+                    StopInternal();
 
-                    readBytesPerCennection.Add(akTcpClient, readBytes);
-                    readBytesCountPerCennection.Add(akTcpClient, 0);
-
-                    akTcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None, new AsyncCallback(DoReadCallback), akTcpClient);
+                    if (!AllowMultipleClients || connection_active)
+                        if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
+                    return;
                 }
-                catch (Exception ex)
+
+                if (!disposed)
                 {
-
-                    string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
-                    this.LastErrorMessage = sMsg;
-
-                    if (ex is SocketException) // && ((SocketException)ex).ErrorCode == 10060)
+                    try
                     {
-                        if (ConnectionClosed != null && this.State == Status.CONNECTED)
-                            if (context == null)
-                                ConnectionClosed(tcpClient);
-                            else
-                                context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+                        if (readBytesPerCennection.ContainsKey(akTcpClient))
+                        {
+                            readBytesPerCennection.Remove(akTcpClient);
+                            readBytesCountPerCennection.Remove(akTcpClient);
+                        }
+                        byte[] readBytes;
 
-                        //if (this.State != Status.CONNECTING)
-                        StopInternal();
+                        if (fixedLength <= 0)
+                            readBytes = new Byte[65536];
+                        else
+                            readBytes = new Byte[fixedLength];
 
-                        if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                        readBytesPerCennection.Add(akTcpClient, readBytes);
+                        readBytesCountPerCennection.Add(akTcpClient, 0);
+
+                        akTcpClient.Client.BeginReceive(readBytes, 0, readBytes.Length, SocketFlags.None,
+                            new AsyncCallback(DoReadCallback), akTcpClient);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        if (AsynchronousExceptionOccured != null)
-                            AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+
+                        string sMsg = DateTime.Now.ToString() + " - " +
+                                      "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
+                        this.LastErrorMessage = sMsg;
+
+                        if (ex is SocketException) // && ((SocketException)ex).ErrorCode == 10060)
+                        {
+                            if (ConnectionClosed != null && this.State == Status.CONNECTED)
+                                if (context == null)
+                                    ConnectionClosed(tcpClient);
+                                else
+                                    context.Post(delegate { ConnectionClosed(tcpClient); }, null);
+
+                            //if (this.State != Status.CONNECTING)
+                            StopInternal();
+
+                            if (!AllowMultipleClients || connection_active)
+                                if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
+                        }
+                        else
+                        {
+                            if (AsynchronousExceptionOccured != null)
+                                AsynchronousExceptionOccured(this, new ThreadExceptionEventArgs(ex));
+                        }
                     }
                 }
             }
@@ -377,7 +409,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 StopInternal();
 
                 if (!AllowMultipleClients || connection_active)
-                    if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                    if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                 return;
             }
 
@@ -413,7 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                            if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                     }
                     else
                     {
@@ -451,7 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                         if (!AllowMultipleClients || connection_active)
-                            if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                            if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                     }
                     else
                     {
@@ -517,7 +549,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                         StopInternal();
 
                     if (!AllowMultipleClients || connection_active)
-                        if (AutoReConnect && this.State != Status.CONNECTING) Start();
+                        if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                 }
 
 

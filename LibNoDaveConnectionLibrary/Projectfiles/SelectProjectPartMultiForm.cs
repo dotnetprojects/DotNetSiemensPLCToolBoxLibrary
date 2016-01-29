@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13, *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.zap13";
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)
             {

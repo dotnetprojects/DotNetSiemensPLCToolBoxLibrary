@@ -1,0 +1,18 @@
+#!/bin/sh
+MPI="2";
+for a in SDB*.mc7; do
+    echo $a;        
+    ./testMPIload --mpi=$MPI /dev/ttyS0 $a
+done;
+for a in DB*.mc7; do
+    echo $a;        
+    ./testMPIload --mpi=$MPI /dev/ttyS0 $a
+done;
+for a in FC*.mc7; do
+    echo $a;        
+    ./testMPIload --mpi=$MPI /dev/ttyS0 $a
+done;
+for a in OB*.mc7; do
+    echo $a;        
+    ./testMPIload --mpi=$MPI /dev/ttyS0 $a
+done;

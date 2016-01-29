@@ -64,10 +64,14 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
 
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
-            this.dataTable = dataTable;
+            if (!string.IsNullOrEmpty(datasetConfig.DatasetTableName)) //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
+            
             this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
-
+            
             string sql = "";
             try
             {
@@ -163,7 +167,9 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                         break;
                 }
 
-                sql = "ALTER TABLE " + dataTable + " ADD COLUMN " + myFeld.DatabaseField + " " + dbfieldtype;
+
+
+                sql = "ALTER TABLE " + dataTable + " ADD COLUMN " + QuoteField(myFeld.DatabaseField) + " " + dbfieldtype;
 
                 try
                 {
@@ -196,14 +202,28 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                     updateliste += ",";
                 }
 
-                felderliste += myFeld.DatabaseField;
-                wertliste += "?" + myFeld.DatabaseField;
+                felderliste += QuoteField(myFeld.DatabaseField);
+                wertliste += "?" + ValueName(myFeld.DatabaseField);
 
-                updateliste += myFeld.DatabaseField + "= ?" + myFeld.DatabaseField;
+                updateliste += QuoteField(myFeld.DatabaseField) + "= ?" + ValueName(myFeld.DatabaseField);
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
 
-            updateCommand = "UPDATE " + dataTable + " SET " + updateliste;
+            updateCommand = "UPDATE " + this.dataTable + " SET " + updateliste;
+        }
+
+
+        private string QuoteField(string field)
+        {
+            if (field.Contains("-") || field.Contains(" "))
+                return "`" + field + "`";
+
+            return field;
+        }
+
+        private string ValueName(string field)
+        {
+            return field.Replace(" ", "").Replace("-", "");
         }
 
         protected override bool _internal_Write()
@@ -256,7 +276,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MySQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        myCmd.Parameters.Add(new MySqlParameter("?" + field.DatabaseField, value));                        
+                        myCmd.Parameters.Add(new MySqlParameter("?" + ValueName(field.DatabaseField), value));                        
                     }
                 }
                

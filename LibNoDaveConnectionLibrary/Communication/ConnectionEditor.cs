@@ -77,6 +77,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private void LockControls()
         {
             cmdTest.Enabled = false;
+            txtWritePort.Enabled = false;
             lblLIBNODAVEEntryPoint.Enabled = false;
             lstListEntryPoints.Enabled = false;
             lblLIBNODAVECPURack.Enabled = false;
@@ -161,6 +162,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             txtLIBNODAVECPUMPI.Text = myConfig.CpuMpi.ToString();
             txtLIBNODAVECPUIP.Text = myConfig.CpuIP;
             txtLIBNODAVECPUPort.Text = myConfig.Port.ToString();
+            txtWritePort.Text = myConfig.WritePort.ToString();
             txtLIBNODAVELokalMPI.Text = myConfig.LokalMpi.ToString();
             lstLIBNODAVELokalCOMPort.SelectedItem = myConfig.ComPort;
             if (myConfig.ComPortParity == 'e')
@@ -216,6 +218,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             myConfig.CpuMpi = Convert.ToInt32(txtLIBNODAVECPUMPI.Text);
             myConfig.CpuIP = txtLIBNODAVECPUIP.Text;
             myConfig.Port = Convert.ToInt32(txtLIBNODAVECPUPort.Text);
+            myConfig.WritePort = Convert.ToInt32(txtWritePort.Text);
             myConfig.LokalMpi = Convert.ToInt32(txtLIBNODAVELokalMPI.Text);
             myConfig.ComPort = lstLIBNODAVELokalCOMPort.SelectedItem != null ? lstLIBNODAVELokalCOMPort.SelectedItem.ToString() : "";
 
@@ -265,6 +268,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private void lstLIBNODAVEConnectionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             LockControls();
+
+            lstConnType.Enabled = true;
 
             if (lstLIBNODAVEConnectionType.SelectedItem != null)
                 switch (((EnumListItem)lstLIBNODAVEConnectionType.SelectedItem).Value)
@@ -336,6 +341,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         txtLIBNODAVECPUPort.Text = "102";
                         chkRouting.Enabled = true;
                         break;
+                    case 9122:
+                        cmdTest.Enabled = true;
+                        lblLIBNODAVECPUIP.Enabled = true;
+                        txtLIBNODAVECPUIP.Enabled = true;
+                        lblLIBNODAVECPURack.Enabled = true;
+                        txtLIBNODAVECPURack.Enabled = true;
+                        lblLIBNODAVECPUSlot.Enabled = true;
+                        txtLIBNODAVECPUSlot.Enabled = true;
+                        lblLIBNODAVECPUPort.Enabled = true;
+                        txtLIBNODAVECPUPort.Enabled = true;
+                        txtTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnectDescr.Enabled = true;
+                        txtTimeout.Enabled = true;
+                        lblTimeout.Enabled = true;
+                        lblTimeoutDescr.Enabled = true;
+                        txtLIBNODAVECPUPort.Text = "102";
+                        break;
 
                     case 223:
                     case 224:
@@ -385,6 +408,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         lblTimeoutDescr.Enabled = true;
                         txtLIBNODAVECPUPort.Text = "7777";
                         chkRouting.Enabled = true;
+                        break;
+
+                    case 500: //Fetch/Write
+                        cmdTest.Enabled = false;
+                        txtWritePort.Enabled = true;
+                        lblLIBNODAVECPUIP.Enabled = true;
+                        txtLIBNODAVECPUIP.Enabled = true;
+                        lblLIBNODAVECPURack.Enabled = false;
+                        txtLIBNODAVECPURack.Enabled = false;
+                        lblLIBNODAVECPUSlot.Enabled = false;
+                        txtLIBNODAVECPUSlot.Enabled = false;
+                        lblLIBNODAVECPUPort.Enabled = true;
+                        txtLIBNODAVECPUPort.Enabled = true;
+                        txtTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnect.Enabled = true;
+                        lblTimeoutIPConnectDescr.Enabled = true;
+                        txtTimeout.Enabled = true;
+                        lblTimeout.Enabled = true;
+                        lblTimeoutDescr.Enabled = true;
+                        //txtLIBNODAVECPUPort.Text = "30500";
+                        //txtWritePort.Text = "30501";
+                        chkRouting.Enabled = false;
+                        lstConnType.Enabled = false;
+
                         break;
                 }
 

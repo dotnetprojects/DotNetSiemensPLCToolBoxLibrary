@@ -86,6 +86,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                     else
                     {
+                        if (nw == null)
+                        {
+                           nw = new S7FunctionBlockNetwork();
+                           nw.Parent = blk;
+                           nw.AWLCode = new List<FunctionBlockRow>();
+                           retVal.Add(nw);
+                        }
                         nw.AWLCode.Add(s7FunctionBlockRow);
                     }
 

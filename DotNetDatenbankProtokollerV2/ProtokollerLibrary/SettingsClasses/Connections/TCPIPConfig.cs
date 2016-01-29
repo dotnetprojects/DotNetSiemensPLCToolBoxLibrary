@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Runtime.Serialization;
+using DotNetSimaticDatabaseProtokollerLibrary.Common;
+using Newtonsoft.Json;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
 {
@@ -14,6 +16,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections
         }
 
         [System.ComponentModel.Browsable(false)]
+        [JsonIgnore]
         public IPAddress IPasIPAddress
         {
             get

@@ -2,35 +2,54 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:avalonedit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-        xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
         xmlns:converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
         xmlns:customWpfColorPicker="clr-namespace:CustomWPFColorPicker"
-        Title="TCP-Socket (Version 3.17)" Height="573" Width="812">
-    <Window.Resources>
-        <ObjectDataProvider x:Key="settings" ObjectType="{x:Type properties:Settings}"></ObjectDataProvider>
-    </Window.Resources>
+        xmlns:properties="clr-namespace:SimpleTcpSocketWPF.Properties"
+        Title="TCP-Socket (Version 4.0)"
+        Width="812"
+        Height="573">    
     <Grid Background="{Binding ElementName=colSel, Path=CurrentBrush}" DataContext="{Binding Source={x:Static properties:Settings.Default}}">
-        <TextBox Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter}}" HorizontalAlignment="Left" Margin="41,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Height="22" RenderTransformOrigin="0.288,0.501" Text="{Binding IP}"/>
-        <Label Content="IP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="26"/>
+        <TextBox Width="270"
+                 Height="22"
+                 Margin="41,14,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 RenderTransformOrigin="0.288,0.501"
+                 Text="{Binding IP}"
+                 TextWrapping="Wrap"
+                 Visibility="{Binding Active,
+                                      Converter={converters:BoolToVisibilityConverter}}" />
+        <Label Width="26"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="IP:" />
 
         <TabControl Margin="10,54,10,28">
             <TabItem Header="Logger">
                 <Grid>
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,20">
+                    <Border Margin="0,0,0,20"
+                            BorderBrush="Black"
+                            BorderThickness="1">
                         <avalonedit:TextEditor x:Name="txtRecieve"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch"
-                                  
-                                   FontFamily="Courier New"
-                                   FontSize="13"
-                                   IsReadOnly="True"                                   
-                                   ShowLineNumbers="True"                                   
-                                   Visibility="Visible" />
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               FontFamily="Courier New"
+                                               FontSize="13"
+                                               IsReadOnly="True"
+                                               ShowLineNumbers="True"
+                                               Visibility="Visible" />
                     </Border>
-                    <CheckBox x:Name="chkLoggerRefresh"  VerticalAlignment="Bottom" Content="Refresh" IsChecked="True" Checked="chkLoggerRefresh_Checked" />
+                    <CheckBox x:Name="chkLoggerRefresh"
+                              VerticalAlignment="Bottom"
+                              Checked="chkLoggerRefresh_Checked"
+                              Content="Refresh"
+                              IsChecked="True" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Sender" Height="23" VerticalAlignment="Top">
+            <TabItem Height="23"
+                     VerticalAlignment="Top"
+                     Header="Sender">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35" />
@@ -38,64 +57,207 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Border BorderBrush="Black" Grid.Row="2" BorderThickness="1">
-                        <avalonedit:TextEditor Margin="0,0,0,5"  x:Name="txtSended"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch"
-                                   BorderBrush="DarkGray"
-                                   BorderThickness="1"
-                                   FontFamily="Courier New"
-                                   FontSize="13"
-                                   IsReadOnly="True"                                   
-                                   ShowLineNumbers="True"                                   
-                                   Visibility="Visible" Grid.ColumnSpan="2" />
-                    </Border>
-                    <Border BorderBrush="Black" Grid.Row="3" BorderThickness="1">
-                        <avalonedit:TextEditor  x:Name="txtRecieve2"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch"
-                                   BorderBrush="DarkGray"
-                                   BorderThickness="1"
-                                   FontFamily="Courier New"
-                                   FontSize="13"
-                                   IsReadOnly="True"                                   
-                                   ShowLineNumbers="True"                                   
-                                   Visibility="Visible" Grid.ColumnSpan="2" />
-                    </Border>
-                    <GridSplitter Grid.Row="2" Background="#FFE4E4E4" Opacity="0.8" VerticalAlignment="Bottom" Height="5" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" />
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="Telegramm: " Margin="27,10,0,0"/>
-                    <TextBlock Text="Telegramm (HEX): " Margin="0,10,0,0" Grid.Row="1" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="98"/>
-                    <TextBox x:Name="txtTelegramm" Grid.Row="0" Margin="98,5,170,5" TextWrapping="Wrap" RenderTransformOrigin="0.288,0.501" TextChanged="txtTelegramm_TextChanged" MouseDoubleClick="txtTelegramm_MouseDoubleClick" MouseUp="txtTelegramm_MouseUp" KeyDown="txtTelegramm_KeyDown"/>
-                    <TextBox x:Name="txtTelegrammHex" Grid.Row="1" Margin="98,5,0,5" TextWrapping="Wrap" RenderTransformOrigin="0.288,0.501" PreviewTextInput="txtTelegrammHex_PreviewTextInput" PreviewKeyDown="txtTelegrammHex_PreviewKeyDown" TextChanged="txtTelegrammHex_TextChanged" KeyDown="txtTelegrammHex_KeyDown" />
+                    <TextBlock Margin="27,10,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="Telegramm: " />
+                    <Label x:Name="blLen"
+                           Width="69"
+                           Margin="0,5,96,5"
+                           HorizontalAlignment="Right"
+                           BorderBrush="Black"
+                           BorderThickness="1" />
+                    <TextBox x:Name="txtTelegramm"
+                             Grid.Row="0"
+                             Margin="98,5,170,5"
+                             KeyDown="txtTelegramm_KeyDown"
+                             MouseDoubleClick="txtTelegramm_MouseDoubleClick"
+                             MouseUp="txtTelegramm_MouseUp"
+                             RenderTransformOrigin="0.288,0.501"
+                             TextChanged="txtTelegramm_TextChanged"
+                             TextWrapping="Wrap" />
+                    <Button x:Name="cmdSend"
+                            Grid.Row="0"
+                            Width="91"
+                            Margin="0,5"
+                            HorizontalAlignment="Right"
+                            Click="cmdSend_Click"
+                            Content="Send"
+                            MouseDown="cmdSend_MouseDown" />
+                    <TextBlock Grid.Row="1"
+                               Width="98"
+                               Height="20"
+                               Margin="0,10,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Text="Telegramm (HEX): " />
+                    <TextBox x:Name="txtTelegrammHex"
+                             Grid.Row="1"
+                             Margin="98,5,0,5"
+                             KeyDown="txtTelegrammHex_KeyDown"
+                             PreviewKeyDown="txtTelegrammHex_PreviewKeyDown"
+                             PreviewTextInput="txtTelegrammHex_PreviewTextInput"
+                             RenderTransformOrigin="0.288,0.501"
+                             TextChanged="txtTelegrammHex_TextChanged"
+                             TextWrapping="Wrap" />
 
-                    <Button x:Name="cmdSend" Grid.Row="0" Margin="0,5" Content="Send" Click="cmdSend_Click" HorizontalAlignment="Right" Width="91" MouseDown="cmdSend_MouseDown" />
-                    <Label x:Name="blLen" BorderBrush="Black" BorderThickness="1" Margin="0,5,96,5" HorizontalAlignment="Right" Width="69"  />
+                    <Border Grid.Row="2"
+                            BorderBrush="Black"
+                            BorderThickness="1">
+                        <avalonedit:TextEditor x:Name="txtSended"
+                                               Grid.ColumnSpan="2"
+                                               Margin="0,0,0,5"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               BorderBrush="DarkGray"
+                                               BorderThickness="1"
+                                               FontFamily="Courier New"
+                                               FontSize="13"
+                                               IsReadOnly="True"
+                                               ShowLineNumbers="True"
+                                               Visibility="Visible" />
+                    </Border>
+                    <GridSplitter Grid.Row="2"
+                                  Grid.ColumnSpan="2"
+                                  Height="5"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Bottom"
+                                  Background="#FFE4E4E4"
+                                  Opacity="0.8" />
+                    <Border Grid.Row="3"
+                            BorderBrush="Black"
+                            BorderThickness="1">
+                        <avalonedit:TextEditor x:Name="txtRecieve2"
+                                               Grid.ColumnSpan="2"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               BorderBrush="DarkGray"
+                                               BorderThickness="1"
+                                               FontFamily="Courier New"
+                                               FontSize="13"
+                                               IsReadOnly="True"
+                                               ShowLineNumbers="True"
+                                               Visibility="Visible" />
+                    </Border>
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced Options">
                 <Grid>
-                    <ComboBox x:Name="cbEncoding" HorizontalAlignment="Left" Height="24" Margin="86,113,0,0" VerticalAlignment="Top" Width="159"/>
-                    <Label Content="Encoding:" HorizontalAlignment="Left" Margin="13,113,0,0" VerticalAlignment="Top" Width="68" RenderTransformOrigin="2.714,1.808"/>
-                    <CheckBox Content="Show Date" HorizontalAlignment="Left" Margin="11,19,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowDate}"/>
-                    <CheckBox Content="Show Length" HorizontalAlignment="Left" Margin="11,36,0,0" VerticalAlignment="Top" IsChecked="{Binding ShowRecievedLen}"/>
-                    <CheckBox Content="Escape Special Chars" HorizontalAlignment="Left" Margin="11,53,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
-                    <CheckBox Content="Log Data as Hex-Bytes" HorizontalAlignment="Left" Margin="11,70,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
-                    <CheckBox x:Name="chkAnswer" Content="Automaticly send an Answer Telegram" HorizontalAlignment="Left" Margin="13,206,0,0" VerticalAlignment="Top" IsChecked="{Binding LogDataAsHexBytes}"/>
-                    <CheckBox Content="Mirror Recieved Telegram" HorizontalAlignment="Left" Margin="13,226,0,0" VerticalAlignment="Top" IsChecked="{Binding EscapeSpecialChars}"/>
-                    <TextBox Margin="13,246,0,0" Height="20" Text="2;SR01MFC1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="232" />
-                    <Label Content="Color:" HorizontalAlignment="Left" Margin="13,298,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="2.714,1.808"/>
-                    <customWpfColorPicker:ColorPickerControlView x:Name="colSel" Height="20" Margin="68,303,0,0" CurrentColor="{Binding Color}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32" />
-                    <Label Content="Name:" HorizontalAlignment="Left" Margin="13,328,0,0" VerticalAlignment="Top" Width="55" RenderTransformOrigin="2.714,1.808"/>
-                    <TextBox Name="txtName" Margin="68,332,0,0" Height="20" Text="{Binding Name}" HorizontalAlignment="Left" Width="232" VerticalAlignment="Top" />
+                    <ComboBox x:Name="cbEncoding"
+                              Width="159"
+                              Height="24"
+                              Margin="86,113,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top" />
+                    <Label Width="68"
+                           Margin="13,113,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Encoding:"
+                           RenderTransformOrigin="2.714,1.808" />
+                    <CheckBox Margin="11,19,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Show Date"
+                              IsChecked="{Binding ShowDate}" />
+                    <CheckBox Margin="11,36,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Show Length"
+                              IsChecked="{Binding ShowRecievedLen}" />
+                    <CheckBox Margin="11,53,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Escape Special Chars"
+                              IsChecked="{Binding EscapeSpecialChars}" />
+                    <CheckBox Margin="11,70,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Log Data as Hex-Bytes"
+                              IsChecked="{Binding LogDataAsHexBytes}" />
+                    <CheckBox x:Name="chkAnswer"
+                              Margin="13,206,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Automaticly send an Answer Telegram"
+                              IsChecked="{Binding AutoAnswer}" />
+                    <CheckBox Margin="13,226,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Mirror Recieved Telegram"
+                              IsChecked="{Binding MirrorRecieved}" />
+                    <TextBox Width="232"
+                             Height="20"
+                             Margin="13,246,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="2;SR01MFC1" />
+                    <Label Width="50"
+                           Margin="13,298,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Color:"
+                           RenderTransformOrigin="2.714,1.808" />
+                    <customWpfColorPicker:ColorPickerControlView x:Name="colSel"
+                                                                 Width="32"
+                                                                 Height="20"
+                                                                 Margin="68,303,0,0"
+                                                                 HorizontalAlignment="Left"
+                                                                 VerticalAlignment="Top"
+                                                                 CurrentColor="{Binding Color}" />
+                    <Label Width="55"
+                           Margin="13,328,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Name:"
+                           RenderTransformOrigin="2.714,1.808" />
+                    <TextBox Name="txtName"
+                             Width="232"
+                             Height="20"
+                             Margin="68,332,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Name}" />
                 </Grid>
             </TabItem>
         </TabControl>
-        <TextBox HorizontalAlignment="Left" Margin="363,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding Port}"/>
-        <Label Content="Port:" HorizontalAlignment="Left" Margin="316,11,0,0" VerticalAlignment="Top" Width="42"/>
-        <CheckBox x:Name="___No_Name_" Content="Active" HorizontalAlignment="Left" Margin="447,16,0,0" VerticalAlignment="Top" IsChecked="{Binding Active, Mode=TwoWay}"/>
-        <Button x:Name="cmdConnect" Content="Connect" HorizontalAlignment="Left" Margin="512,13,0,0" VerticalAlignment="Top" Width="116" Height="24" Click="cmdConnect_Click"/>
-        <Button x:Name="cmdSave" Content="Save" HorizontalAlignment="Right" Margin="0,15,8,0" VerticalAlignment="Top" Width="75" Click="cmdSave_Click"/>
-        <StatusBar HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom">
+        <TextBox Width="70"
+                 Margin="363,15,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 RenderTransformOrigin="0.957,0.455"
+                 Text="{Binding Port}"
+                 TextWrapping="Wrap" />
+        <Label Width="42"
+               Margin="316,11,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Port:" />
+        <CheckBox x:Name="___No_Name_"
+                  Margin="447,16,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Content="Active"
+                  IsChecked="{Binding Active,
+                                      Mode=TwoWay}" />
+        <Button x:Name="cmdConnect"
+                Width="116"
+                Height="24"
+                Margin="512,13,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="cmdConnect_Click"
+                Content="Connect" />
+        <Button x:Name="cmdSave"
+                Width="75"
+                Margin="0,15,8,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdSave_Click"
+                Content="Save" />
+        <StatusBar Height="25"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom">
             <StatusBarItem DockPanel.Dock="Left">
                 <TextBlock Text="{Binding Text, ElementName=txtName}" />
             </StatusBarItem>
@@ -106,11 +268,47 @@
                 <TextBlock Name="lblException" />
             </StatusBarItem>
         </StatusBar>
-        <Label Content="all" BorderBrush="Black" BorderThickness="1" HorizontalContentAlignment="Center"  Visibility="{Binding Active, Converter={converters:BoolToVisibilityConverter FalseValue=Visible, TrueValue=Hidden}}" VerticalContentAlignment="Center" Padding="0"  HorizontalAlignment="Left" Margin="41,14,0,0" VerticalAlignment="Top" Width="125" Height="22"/>
-        <CheckBox Visibility="{Binding LogDataAsHexBytes, Converter={converters:BoolToVisibilityConverter}}" Content="Hex &amp; Ascii" HorizontalAlignment="Left" Margin="637,54,-13,0" VerticalAlignment="Top" IsChecked="{Binding LogHexAndAscii}"/>
-        <Button x:Name="cmdClear" Content="Clear" HorizontalAlignment="Right" Margin="0,49,8,0" VerticalAlignment="Top" Width="78" Height="24" Click="cmdClear_Click" />
-        <TextBox HorizontalAlignment="Left" Margin="447,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.957,0.455" Text="{Binding RecieveFixedLength}"/>
-        <Label Content="Fixed telegram Length:" HorizontalAlignment="Left" Margin="316,36,0,0" VerticalAlignment="Top" Width="131"/>
+        <Label Width="125"
+               Height="22"
+               Margin="41,14,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               BorderBrush="Black"
+               BorderThickness="1"
+               Content="all"
+               Padding="0"
+               Visibility="{Binding Active,
+                                    Converter={converters:BoolToVisibilityConverter FalseValue=Visible,
+                                                                                    TrueValue=Hidden}}" />
+        <CheckBox Margin="637,54,-13,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Content="Hex &amp; Ascii"
+                  IsChecked="{Binding LogHexAndAscii}"
+                  Visibility="{Binding LogDataAsHexBytes,
+                                       Converter={converters:BoolToVisibilityConverter}}" />
+        <Button x:Name="cmdClear"
+                Width="78"
+                Height="24"
+                Margin="0,49,8,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="cmdClear_Click"
+                Content="Clear" />
+        <TextBox Width="70"
+                 Margin="447,39,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 RenderTransformOrigin="0.957,0.455"
+                 Text="{Binding RecieveFixedLength}"
+                 TextWrapping="Wrap" />
+        <Label Width="131"
+               Margin="316,36,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Fixed telegram Length:" />
 
     </Grid>
 </Window>

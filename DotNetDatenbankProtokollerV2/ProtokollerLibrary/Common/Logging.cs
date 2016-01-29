@@ -11,6 +11,12 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
 
     public static class Logging
     {
+        static Logging()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+
+        }
+
         private static Thread myThread;
 
         private static List<string> _stringMessageList = new List<string>();
@@ -48,10 +54,25 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
                 inner = inner.InnerException;
             }
 
-            return LogText(Message, MessageLogLevel);
+
+            log4net.LogManager.GetLogger("test").Info(Message, ex);
+
+            return internalLogText(Message, MessageLogLevel);
+        }
+
+        public static void LogTextToLog4Net(string message, Logging.LogLevel messageLogLevel = LogLevel.Information, Exception exception = null)
+        {
+            log4net.LogManager.GetLogger("test").Info(message, exception);
         }
 
         public static string LogText(string Message, LogLevel MessageLogLevel)
+        {
+            log4net.LogManager.GetLogger("test").Info(Message);
+            
+            return internalLogText(Message, MessageLogLevel);
+        }
+
+        private static string internalLogText(string Message, LogLevel MessageLogLevel)
         {
             if (MessageLogLevel <= SelectedLogLevel)
             {

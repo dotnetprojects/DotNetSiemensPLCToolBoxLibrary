@@ -25,6 +25,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         private IEnumerable<DatasetConfigRow> fieldList;
         private string dataTable;
         private string insertCommand = "";
+        private string updateCommand = "";
 
         private DbConnection myDBConn;
         private DbCommand myCmd = new SqlCommand();
@@ -80,7 +81,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
             this.datasetConfig = datasetConfig;
-            this.dataTable = dataTable;
+            if (!string.IsNullOrEmpty(datasetConfig.DatasetTableName)) //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
             List<DatasetConfigRow> createFieldList;
@@ -171,19 +175,22 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
 
 
             //Create Insert Command
-            string wertliste = "", felderliste = "";
+            string wertliste = "", felderliste = "", updateliste = "";
             foreach (DatasetConfigRow myFeld in createFieldList)
             {
                 if (wertliste != "")
                 {
                     wertliste += ",";
                     felderliste += ",";
+                    updateliste += ",";
                 }
 
                 felderliste += myFeld.DatabaseField;
                 wertliste += "@" + myFeld.DatabaseField;
+                updateliste += myFeld.DatabaseField + "=@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            updateCommand = "UPDATE " + this.dataTable + " SET " + updateliste;
         }
         
         protected override bool _internal_Write()
@@ -217,7 +224,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.MsSQL
                 {
                     using (DbCommand cmd = myDBConn.CreateCommand())
                     {
-                        cmd.CommandText = insertCommand;
+                        if (datasetConfig.UseDbUpdateNoInsert)
+                            cmd.CommandText = updateCommand + " " + (datasetConfig.UpdateWhereClause ?? "");
+                        else
+                            cmd.CommandText = insertCommand;
 
                         if (myConfig.CombineMultipleInsertsInATransaction)
                             cmd.Transaction = dbTrans;

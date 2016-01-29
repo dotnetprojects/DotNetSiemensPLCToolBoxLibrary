@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using JFKCommonLibrary.ExtensionMethods;
 using JFKCommonLibrary.Networking;
@@ -578,8 +579,8 @@ namespace Kopplungstester
                 {
                     if (itm.DataType != S7DataRowType.STRUCT && itm.DataType != S7DataRowType.UDT)
                     {
-                        dtaSendTabelle.Rows.Add(new object[] {itm.StructuredName, itm.ByteLength});
-                        dtaEmpfangstelegrammAufgeschluesselt.Rows.Add(new object[] {itm.StructuredName, itm.ByteLength});
+                        dtaSendTabelle.Rows.Add(new object[] {itm.StructuredName, ((TiaAndSTep7DataBlockRow)itm).ByteLength});
+                        dtaEmpfangstelegrammAufgeschluesselt.Rows.Add(new object[] { itm.StructuredName, ((TiaAndSTep7DataBlockRow)itm).ByteLength });
                     }
                 }
             }

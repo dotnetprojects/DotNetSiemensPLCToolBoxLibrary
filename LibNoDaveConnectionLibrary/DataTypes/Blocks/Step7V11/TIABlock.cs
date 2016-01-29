@@ -36,53 +36,53 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
     [Serializable()]
     public class TIABlock : Block
     {
-        protected XmlNode node;
-        protected Step7ProjectV11 tiaProject;
+        //        protected XmlNode node;
+        //        protected Step7ProjectV11 tiaProject;
 
-        public TIABlock(Step7ProjectV11 TIAProject, XmlNode Node)
-        {
-            this.node = Node;
-            this.tiaProject = TIAProject;
-        }
-
-
-        public override string Name
-        {
-            get
-            {
-                return node.SelectSingleNode("attribSet[@id='" + tiaProject.CoreAttributesId + "']/attrib[@name='Name']").InnerText;
-            }
-        }
+        //        public TIABlock(Step7ProjectV11 TIAProject, XmlNode Node)
+        //        {
+        //            this.node = Node;
+        //            this.tiaProject = TIAProject;
+        //        }
 
 
-        internal S7ConvertingOptions usedS7ConvertingOptions;
+        //        public override string Name
+        //        {
+        //            get
+        //            {
+        //                return node.SelectSingleNode("attribSet[@id='" + tiaProject.CoreAttributesId + "']/attrib[@name='Name']").InnerText;
+        //            }
+        //        }
 
-        public string BlockVersion;
 
-        public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+        //        internal S7ConvertingOptions usedS7ConvertingOptions;
 
-        public List<Step7Attribute> Attributes { get; set; }
+        //        public string BlockVersion;
 
-        public double Length;
+        //        public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
-        public virtual string Title { get; set; }
+        //        public List<Step7Attribute> Attributes { get; set; }
 
-        public virtual string Comment { get; set; }
-      
-        public string Author { get; set; }
+        //        public double Length;
 
-        public string Family { get; set; }
+        //        public virtual string Title { get; set; }
 
-        public string Version { get; set; }
+        //        public virtual string Comment { get; set; }
 
-        public DateTime LastCodeChange { get; set; }
+        //        public string Author { get; set; }
 
-        public DateTime LastInterfaceChange { get; set; }
+        //        public string Family { get; set; }
 
-        public virtual MultiLanguangeString Comments { get; set; }
+        //        public string Version { get; set; }
 
-        public virtual MultiLanguangeString Titels { get; set; }
+        //        public DateTime LastCodeChange { get; set; }
 
-    }        
+        //        public DateTime LastInterfaceChange { get; set; }
+
+        //        public virtual MultiLanguangeString Comments { get; set; }
+
+        //        public virtual MultiLanguangeString Titels { get; set; }
+
+    }
 }
 

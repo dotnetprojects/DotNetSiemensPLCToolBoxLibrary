@@ -1,0 +1,41 @@
+#
+# Makefile to build a Windows Version of LIBNODAVE using MSVC++ from Microsoft.
+#
+# type 'make' to build libnodave.dll and some statically linked test programs.
+# type 'make dynamic' to make libnodave.dll and some dynamically linked test programs.
+#
+# The directory where the tools are:
+#
+VCPATH=E:\Program Files\Microsoft Visual Studio 10.0\VC
+SDKPATH=C:\Program Files\Windows CE Tools\wce500\STANDARDSDK_500
+ARCH=ARMV4I
+
+CC="$(VCPATH)\bin\cl"
+LL="$(VCPATH)\bin\link"
+
+CFLAGS= -I"$(VCPATH)\include" -I"$(SDKPATH)\include\$(ARCH)" -c -DBCCWIN -DDAVE_LITTLE_ENDIAN -TC
+LFLAGS= /LIBPATH:"$(VCPATH)"\lib,"$(SDKPATH)"\lib
+LLFLAGS = /LIBPATH:"$(VCPATH)\lib" /DEF:libnodave.DEF /MACHINE:ARM
+
+LIBRARIES=libnodave.dll
+
+all: $(LIBRARIES)
+
+libnodave.dll: nodave.obj setportw.obj openSocketw.obj 
+	$(LL) $(LLFLAGS) /DLL nodave.obj setportw.obj openSocketw.obj "$(SDKPATH)"\lib\$(ARCH)\ws2.lib /OUT:libnodave.dll	
+#
+# delete all but the sources:
+#
+clean: 	
+	del /f /q *.tds *.il? *.obj *.map *.lib *.dll *.exe *.exp *.o *.a
+distclean: 	
+	del /f /q *.tds *.il? *.obj *.map
+
+nodave.obj: nodave.c nodave.h
+	$(CC) $(CFLAGS) -DDOEXPORT nodave.c
+setportw.obj: setportw.c
+	$(CC) $(CFLAGS) -DDOEXPORT setportw.c
+openSocketw.obj: openSocketw.c
+	$(CC) $(CFLAGS) -DDOEXPORT openSocketw.c
+s7fake.obj: s7fake.c
+	$(CC) $(CFLAGS) -DDOEXPORT s7fake.c

@@ -207,12 +207,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             int p2 = 0, p3 = 0;
                             if (p1 > 0)
                             {
-                                p2 = rows[n].IndexOf(";", p1);
-                                p3 = rows[n].IndexOf("//", p1);
+                                p2 = rows[n].IndexOf(";", 0);
+                                p3 = rows[n].IndexOf("//", 0);
                             }
 
-                            //if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && !rows[n].Contains("\t\r")) //    !rows[n].Contains("\t")
-                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && (!(p2 > p1 && (p2 < p3 || p3 < 0)) && !rows[n].Contains("\t\r")))
+                            var isArray = (((p1 < p2) || p2 < 0) && ((p1 < p3) || p3 < 0));
+                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && (isArray && !rows[n].Contains("\t\r")))
                             {
                                 if (rows.Length > n + 1)
                                 {
@@ -358,7 +358,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
                                 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children.Cast<S7DataRow>());                                    
+                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children);                                    
                             }
                             else if (tmpType.Contains("UDT"))
                             {
@@ -376,7 +376,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
-                                    addRW.AddRange(((S7DataRow)tmpBlk.Structure).DeepCopy().Children.Cast<S7DataRow>());
+                                    addRW.AddRange(((S7DataRow)tmpBlk.Structure).DeepCopy().Children);
 
                             }
                             else if (tmpType.Contains("BLOCK_FB"))
@@ -404,7 +404,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
 
                                 if (tmpBlk != null && tmpBlk.Parameter != null && tmpBlk.Parameter.Children != null)
-                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children.Cast<S7DataRow>());
+                                    addRW.AddRange(tmpBlk.ParameterWithoutTemp.DeepCopy().Children);
                             }
                             else if (tmpType.Contains("STRING"))
                             {

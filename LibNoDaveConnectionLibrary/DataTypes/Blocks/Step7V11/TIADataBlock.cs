@@ -36,64 +36,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 {
     [Serializable()]
     public class TIADataBlock : TIAProgrammBlock, IDataBlock
-    {
+    {   
+        public IDataRow Structure { get; set; }
 
 
-        public TIADataBlock(Step7ProjectV11 TIAProject, XmlNode Node)
-            : base(TIAProject, Node)
-        {            
+        /// <summary>
+        /// With this function you get the Structure with expanden Arrays!
+        /// </summary>
+        /// <returns></returns>
+        public IDataRow GetArrayExpandedStructure(S7DataBlockExpandOptions myExpOpt)
+        {
+            return ((TiaAndSTep7DataBlockRow)Structure)._GetExpandedChlidren(myExpOpt)[0];
         }
 
-        public override string Name
+        public DataBlockRow GetDataRowWithAddress(ByteBitAddress address)
         {
-            get
-            {
-                return base.Name;
-            }
-            set
-            {
-                
-            }
+            var allRw = this.GetArrayExpandedStructure();
+            return TiaAndSTep7DataBlockRow.GetDataRowWithAddress((TiaAndSTep7DataBlockRow)allRw, address);
         }
 
-        public bool SymbolicDataBlock { get; set; }
+        private DataBlockRow expStruct = null;
 
-        //public override int BlockNumber
-        //{
-        //    get
-        //    {
-        //        var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.IGeneralBlockData").Key + "']/attrib[@name='Number']");
-        //        if (lidNode != null) return Convert.ToInt32(lidNode.InnerText);
-        //        return 0;
-        //    }
-        //}
-        
-        public int FBNumber { get; set;}  //If it is a Instance DB
-        public bool IsInstanceDB { get; set; }
-
-        public IDataRow Structure
+        public IDataRow GetArrayExpandedStructure()
         {
-            get
-            {
-                return new TIADataRow(node, tiaProject, this);
-            }
-            set
-            {
-
-            }
+            //Todo: Vergleich der Expand Options, und beim änderen eines inneren wertes des blocks, diesen löschen (erst bei schreibsup wichtig!)
+            if (expStruct != null)
+                return expStruct;
+            return expStruct = (DataBlockRow)GetArrayExpandedStructure(new S7DataBlockExpandOptions());
         }
-
-        public override string ToString()
-        {
-            string retVal = "";
-            if (this.BlockType == PLCBlockType.UDT)
-                retVal += "UDT";
-            else
-                retVal += "DB";
-            retVal += this.BlockNumber.ToString() + Environment.NewLine;
-            if (this.Structure != null)
-                retVal += this.Structure.ToString();
-            return retVal;
-        }       
     }
 }

@@ -1,0 +1,46 @@
+version: 2.0.{build}
+
+branches:
+  only:
+    - master
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+configuration: Debug
+
+before_build:
+  - nuget restore
+  
+build:
+  project: DotNetSiemensPLCToolBoxLibrary.sln
+
+after_build:
+  - externalDlls\libnodave\vcwinmake.bat
+  - externalDlls\libnodave\vcwinmake_64.bat
+  - ps: .\nuget\pack.ps1
+  
+artifacts:
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
+    name: DotNetSiemensPLCToolBoxLibrary.dll
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.pdb
+    name: DotNetSiemensPLCToolBoxLibrary.pdb
+  - path: externalDlls\libnodave\libnodave_jfkmod.dll
+    name: libnodave_jfkmod.dll
+  - path: externalDlls\libnodave\libnodave_jfkmod64.dll
+    name: libnodave_jfkmod64.dll
+  - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg'
+
+#uncomment to publish to NuGet
+deploy:
+  provider: NuGet
+  api_key:
+    secure: OrhpK2cLXXcoWW+hU6xAv3eeKIbATEFbenteoFsi9EfM1yyDof6ZuNKAsA3Vy6vb
+  artifact: /.*\.nupkg/
+  
+  
+  

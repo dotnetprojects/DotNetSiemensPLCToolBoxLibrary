@@ -20,7 +20,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
+//using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
@@ -60,18 +60,18 @@ namespace JFK_VarTab
             if (lstConnections.Items.Count > 0) lstConnections.SelectedItem = lstConnections.Items[0];
 
 
-            try
-            {
-                if (Settings.Default.OpenedProjects != null)
-                    foreach (string prj in Settings.Default.OpenedProjects)
-                    {
-                        loadPrj(prj);
-                    }
-            }
-            catch (Exception ex)
-            {
-                lblStatus.Text = ex.Message;
-            }
+            //try
+            //{
+            //    if (Settings.Default.OpenedProjects != null)
+            //        foreach (string prj in Settings.Default.OpenedProjects)
+            //        {
+            //            loadPrj(prj);
+            //        }
+            //}
+            //catch (Exception ex)
+            //{
+            //    lblStatus.Text = ex.Message;
+            //}
 
 
             if (!string.IsNullOrEmpty(Settings.Default.ProjectsPath))
@@ -205,17 +205,17 @@ namespace JFK_VarTab
                         dtaSymbolTable.Rows.Clear();
                         foreach (var step7SymbolTableEntry in tmp2.SymbolTableEntrys)
                         {
-                            var tiaRow = step7SymbolTableEntry as TIASymbolTableEntry;
-                            if (tiaRow != null)
-                            {
-                                dtaSymbolTable.Rows.Add(new object[]
-                                {
-                                    step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType,
-                                    step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC,
-                                    step7SymbolTableEntry.Comment, tiaRow.TIATagAccessKey
-                                });
-                            }
-                            else
+                            //var tiaRow = step7SymbolTableEntry as TIASymbolTableEntry;
+                            //if (tiaRow != null)
+                            //{
+                            //    dtaSymbolTable.Rows.Add(new object[]
+                            //    {
+                            //        step7SymbolTableEntry.Symbol, step7SymbolTableEntry.DataType,
+                            //        step7SymbolTableEntry.Operand, step7SymbolTableEntry.OperandIEC,
+                            //        step7SymbolTableEntry.Comment, tiaRow.TIATagAccessKey
+                            //    });
+                            //}
+                            //else
                             {
                                 dtaSymbolTable.Rows.Add(new object[]
                                 {
@@ -259,18 +259,18 @@ namespace JFK_VarTab
                     if (tmp.myObject.GetType() == typeof (BlocksOfflineFolder))
                         lblToolStripFileSystemFolder.Text = ((BlocksOfflineFolder) blkFld).Folder;
                 }
-                else if (tmp.myObject is TIAProjectFolder)
-                {
-                    var afld = tmp.myObject as TIAProjectFolder;
-                    if (oldNode != treeStep7Project.SelectedNode)
-                    {
-                        lstListBox.Items.Clear();
-                        //lstListBox.Items.Add("ID: " + afld.ID);
-                        //lstListBox.Items.Add("InstID: " + afld.InstID);
+                //else if (tmp.myObject is TIAProjectFolder)
+                //{
+                //    var afld = tmp.myObject as TIAProjectFolder;
+                //    if (oldNode != treeStep7Project.SelectedNode)
+                //    {
+                //        lstListBox.Items.Clear();
+                //        //lstListBox.Items.Add("ID: " + afld.ID);
+                //        //lstListBox.Items.Add("InstID: " + afld.InstID);
 
-                    }
-                    viewBlockList.Visible = true;
-                }
+                //    }
+                //    viewBlockList.Visible = true;
+                //}
                 else if (tmp.myObject.GetType() == typeof (SourceFolder))
                 {
                     src = (SourceFolder) tmp.myObject;
@@ -697,7 +697,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(
@@ -830,7 +830,7 @@ namespace JFK_VarTab
                     int start = (int) myScrollViewer.VerticalOffset/20;
                     if (valueList == null || start != oldPos)
                     {
-                        List<S7DataRow> tmpLst = S7DataRow.GetChildrowsAsList(expRow);
+                        List<S7DataRow> tmpLst = S7DataRow.GetChildrowsAsList(expRow).Cast<S7DataRow>().ToList();
                         List<S7DataRow> askLst = new List<S7DataRow>();
                         for (int n = 0; n < tmpLst.Count; n++)
                         {
@@ -960,7 +960,7 @@ namespace JFK_VarTab
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Filter =
-                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.al11; *.al12; *.al13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13";
+                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.al11; *.al12; *.al13; *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13";
             op.CheckFileExists = false;
             op.ValidateNames = false;
             var ret = op.ShowDialog();
@@ -1123,7 +1123,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(
@@ -1473,7 +1473,7 @@ namespace JFK_VarTab
             S7DataBlock myDB =
                 (S7DataBlock) ((BlocksOfflineFolder) blkFld).GetBlock((S7ProjectBlockInfo) lstListBox.SelectedItem);
 
-            List<S7DataRow> myLst = null;
+            List<DataBlockRow> myLst = null;
             if (chkExpandArrays.Checked)
                 myLst =
                     S7DataRow.GetChildrowsAsList(

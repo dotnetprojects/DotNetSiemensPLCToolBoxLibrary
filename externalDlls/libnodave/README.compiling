@@ -1,0 +1,97 @@
+How to compile in different enviroments:
+
+1. Linux on i386: Just type make. Type (as root) make install. This will:
+    copy libnodave.so to /usr/local/lib
+    copy nodave.h to /usr/local/include
+
+2. Linux on ARM: 
+    Uncomment the line: #CFLAGS+=-DARM_FIX in Makefile
+    For cross development, replace CC= and LD= with the appropriate paths to your ARM compiler
+    and linker.
+    Do make.
+    Either do make install or copy libnodave.so to the target system.
+
+3. Linux on MIPS: 
+    For cross development, replace CC= and LD= with the appropriate paths to your MIPS compiler
+    and linker.
+    Do make.
+    Either do make install or copy libnodave.so to the target system.
+
+4. Microsoft Visual C++
+    Adjust the path to nmake in vcwinmake.bat.
+    Adjust paths in MAKEFILE.VC to your installation.
+    Run batch file vcwinmake.bat.
+
+5. Borland Free Commandline Tools
+    Adjust the path to make in winmake.bat.
+    Adjust paths in MAKEFILE.MAK to your installation.
+    Run batch file winmake.bat.
+       
+6. Microsoft Visual C++ on LINUX under Wine
+    Adjust paths in MAKEFILE.VC.WINE to your installation.
+    Run make -f MAKEFILE.VC.WINE. This will use GNU make to build everything.
+
+7. Borland Free Commandline Tools on LINUX under Wine
+    Adjust the path to make in winemake script.
+    Adjust paths in MAKEFILE.MAK to your installation.
+    Run script winemake
+    
+Hint: I use 
+
+make -f MAKEFILE.VC.WINE 
+
+on a Linux box to compile the windows stuff. While I TRY to keep the other makefiles up to date,
+this file is where you should look for compiler options and filenames and compare to your setup
+if you have difficulties to reproduce the same results.
+
+from the FAQ:
+
+Q: I try to compile my source code which includes nodave.h. Why do I get: 
+    "#error Fill in what you need for your OS or API" ?     
+A: Libnodave has to use different functions to read byte data from serial ports or TCP/IP streams
+   depending on the operating system. You have to specify which OS you compile for. 
+   Define BCCWIN for Windows and LINUX for Linux or other Unix style operating systems. I do
+   that using -DBCCWIN or -DLINUX when I call the compilers out of a Makefile. If you use an IDE
+   (integrated development environment), refer to the IDE's documentation to learn where to do 
+   this. If you can't find out, you can help yourself putting the #define into your code (which
+   means your code will not be portable to other OS without modification). example:
+
+   ...
+   #define BCCWIN 		// if you work on windows
+   #include nodave.h		// or nodavesimple.h, but NEVER both
+   #include setport.h		// if your code works with serial connections
+   #include openSocket.h	// if your code works with TCP/IP
+   ...       
+Q: I try to compile libnodave from source code. There are problems.
+A: - You do not need to compile libnodave yourself. You won't do it with other DLLs (windows)
+     or .so (Linux shared libraries). Normally, you will link such libraries dynamically with
+     your code. 
+   - Nevertheless, you have the sources and you may chose to recompile it, recompile only the
+     parts you need, etcetera.     
+   - You should know that S7 uses Motorola (big endian, high byte first) byte order (endianness) 
+     while Intel processors use Intel (little endian, low byte first). On Intel and similar
+     machines, libnodave has to convert multibyte values. This is done in daveGetS2(), daveGetU2(),
+     daveGetFloat() and friends. The conversion code is only compiled in if you #define
+     DAVE_LITTLE_ENDIAN. Otherwise, big endian is assumed. 
+   - Be aware that I do compile releases of libnodave using gcc (for Linux) and MSVC++ 
+     (for windows). I use the script buildall to build Linux and Windows release versions and test 
+     programs on a Linux box. Buildall uses Linux make with MAKEFILE.VC.WINE to invoke the MSVC++ 
+     compiler for windows versions. There is also a MAKEFILE.VC which should work on a windows 
+     system using nmake, but it may be out of date :-(. If in doubt about compiler options or
+     source files involved, refer to MAKEFILE.VC.WINE!
+
+Q: I want to compile libnodave for another OS. What adaptions shall I have to make?
+A: - I suppose your OS is 32 bit and your compiler treats int as 32 bit. If not, you are in
+     trouble!
+   - You need to provide functional replacements for setport.c or setportw.c and openSocket.c or 
+     openSocketw.c
+   - nodave.h: You need to define a record _daveOSserialType containing members:
+     rfd: a data type that can refer to a serial port or a TCP socket for read access
+     wfd: a data type that can refer to a serial port or a TCP socket for write access
+   - nodave.c: You need to code functions stdread() and stdwrite() to read and write a number of
+     bytes from/to a serial port to/from a buffer.
+     
+
+    
+       
+    

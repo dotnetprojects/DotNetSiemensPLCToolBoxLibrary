@@ -276,7 +276,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     if (oper == "PAR")
                     {
                     	int paridx = find_mc5_param(code, codepos, index);
-                    	newRow.Parameter = "=" + parameters[paridx - 1].Name;
+
+	                    if (parameters != null && parameters.Count > paridx - 1)
+	                    {
+		                    newRow.Parameter = "=" + parameters[paridx - 1].Name;
+	                    }
+	                    else
+	                    {
+		                    newRow.Parameter = "$$error$$ -> invalid Parameter, idx:"+ (paridx - 1);
+	                    }
                     }
                     else
                     	

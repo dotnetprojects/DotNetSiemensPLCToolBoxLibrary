@@ -61,6 +61,7 @@
             this.txtTimeout = new System.Windows.Forms.TextBox();
             this.txtTimeoutIPConnect = new System.Windows.Forms.TextBox();
             this.lblTimeoutIPConnect = new System.Windows.Forms.Label();
+            this.txtWritePort = new System.Windows.Forms.TextBox();
             this.btnConfigEntryPoint = new System.Windows.Forms.Button();
             this.lstListEntryPoints = new System.Windows.Forms.ComboBox();
             this.lblLIBNODAVELokalComSpeed = new System.Windows.Forms.Label();
@@ -285,6 +286,13 @@
             resources.ApplyResources(this.lblTimeoutIPConnect, "lblTimeoutIPConnect");
             this.lblTimeoutIPConnect.Name = "lblTimeoutIPConnect";
             this.toolTip.SetToolTip(this.lblTimeoutIPConnect, resources.GetString("lblTimeoutIPConnect.ToolTip"));
+            // 
+            // txtWritePort
+            // 
+            resources.ApplyResources(this.txtWritePort, "txtWritePort");
+            this.txtWritePort.Name = "txtWritePort";
+            this.toolTip.SetToolTip(this.txtWritePort, resources.GetString("txtWritePort.ToolTip"));
+            this.txtWritePort.TextChanged += new System.EventHandler(this.ValueChanged);
             // 
             // btnConfigEntryPoint
             // 
@@ -521,6 +529,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ControlBox = false;
+            this.Controls.Add(this.txtWritePort);
             this.Controls.Add(this.chkUseShortRequest);
             this.Controls.Add(this.lstConnType);
             this.Controls.Add(this.label3);
@@ -644,5 +653,6 @@
         private System.Windows.Forms.ComboBox lstConnType;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkUseShortRequest;
+        private System.Windows.Forms.TextBox txtWritePort;
     }
 }

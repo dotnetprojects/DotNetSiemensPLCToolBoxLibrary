@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 {
@@ -63,7 +66,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
 
         public override void CreateOrModify_TablesAndFields(string dataTable, DatasetConfig datasetConfig)
         {
-            this.dataTable = dataTable;
+            if (!string.IsNullOrEmpty(datasetConfig.DatasetTableName)) //Add the posibility to use a specific table_name (for using the table more then ones)
+                this.dataTable = datasetConfig.DatasetTableName;
+            else
+                this.dataTable = dataTable;
             this.datasetConfig = datasetConfig;
             this.fieldList = datasetConfig.DatasetConfigRows;
 
@@ -194,7 +200,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 felderliste += myFeld.DatabaseField;
                 wertliste += "@" + myFeld.DatabaseField;
             }
-            insertCommand = "INSERT INTO " + dataTable + "(" + felderliste + ") values(" + wertliste + ")";
+            insertCommand = "INSERT INTO " + this.dataTable + "(" + felderliste + ") values(" + wertliste + ")";
         }
 
         protected override bool _internal_Write()
@@ -208,8 +214,10 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myCmd.ExecuteNonQuery();
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logging.LogTextToLog4Net("Exception in SQL:" + myCmd.CommandText, Logging.LogLevel.Error, ex);
+
                 myDBConn.Close(); //Verbindung schließen!
                 myDBConn.Open();
                 if (myDBConn.State != System.Data.ConnectionState.Open)
@@ -243,7 +251,43 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                         DatasetConfigRow field = e1.Current;
                         Object value = e2.Current; //values[fnr++];
 
-                        myCmd.Parameters.Add(new NpgsqlParameter("@" + field.DatabaseField, value));
+                        if (value != null)
+                        {
+                            if (value is string)
+                            {
+                                value = ((string) value).Replace("\0", "");
+                            }
+                            var par = new NpgsqlParameter("@" + field.DatabaseField, value);
+                            if (value is string)
+                            {
+                                par.Size = ((string) value).Length;                            
+                            }
+                            myCmd.Parameters.Add(par);
+                        }
+                        else
+                        {
+                            var par = new NpgsqlParameter("@" + field.DatabaseField, "");
+                            par.Size = 0;
+                            
+                            myCmd.Parameters.Add(par);
+                        }
+
+                        //switch (field.DatabaseFieldType)
+                        //{
+                        //    case "int8":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Bigint;
+                        //        //par.Size = 1;
+                        //        break;
+                        //    case "timestamp":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Timestamp;
+                        //        //par.Size = 1;
+                        //        break;
+                        //    case "varchar":
+                        //        par.NpgsqlDbType = NpgsqlDbType.Varchar;
+                        //        par.Size = value != null ? value.ToString().Length : 0;
+                        //        break;
+                        //}
+
 
                         //Logging.LogText(string.Format("KeyValue Key:{0} Value:{1}", field.DatabaseField, value ?? "null"), Logging.LogLevel.Information);                   
                     }
@@ -256,8 +300,50 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 {
                     myCmd.ExecuteNonQuery();                   
                 }
+                catch (NpgsqlException ex)
+                {
+                    Logging.LogTextToLog4Net("Exception in SQL:" + myCmd.CommandText, Logging.LogLevel.Error, ex);
+
+                    var sql = myCmd.CommandText;
+                    foreach (NpgsqlParameter parameter in myCmd.Parameters.Cast<NpgsqlParameter>().OrderByDescending(x=>x.ParameterName))
+                    {
+                        sql = sql.Replace(parameter.ParameterName,
+                            parameter.Value is string || parameter.Value is DateTime ? "'" + parameter.Value + "'" : parameter.Value.ToString());
+                    }
+                    
+                    Logging.LogTextToLog4Net("Exception in SQL(filled):" + sql, Logging.LogLevel.Error);
+                    
+                    //if (ex.ErrorCode == "08P01")
+                    //{
+                    //    myCmd = new NpgsqlCommand();
+                    //    myCmd.Connection = myDBConn;
+                    //    myCmd.CommandText = ex.ErrorSql;
+                    //    myCmd.Parameters.Clear();
+                    //    myCmd.ExecuteNonQuery();
+                    //}
+                    //else
+                    //{
+
+                    //    Logging.LogText(
+                    //        "Exception (ColumnName:" + (ex.ColumnName ?? "") + ", SQL:" + (ex.ErrorSql ?? "") +
+                    //        ", Detail:" +
+                    //        (ex.Detail ?? "") + ": ",
+                    //        Logging.LogLevel.Error);
+
+                    //    //using (StreamWriter outfile = new StreamWriter("c:\\error.txt", true))
+                    //    //{
+                    //    //    outfile.WriteLine("Exception (ColumnName:" + (ex.ColumnName ?? "") + ", Detail:" +
+                    //    //                      (ex.Detail ?? "") + ", SQL:" + (ex.ErrorSql ?? "") + ": ");
+                    //    //}
+
+                    //    throw ex;
+                    //}
+                    throw;
+
+                }
                 catch (Exception ex)
                 {
+                    Logging.LogText("Exception: ", ex, Logging.LogLevel.Error);
                     throw ex;
                 }
             }

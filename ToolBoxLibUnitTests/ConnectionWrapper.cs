@@ -123,6 +123,11 @@ namespace ToolBoxLibUnitTests
             return new PDUWrapper();
         }
 
+        public IPDU createPDU()
+        {
+            return new PDUWrapper();
+        }
+
         public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
         {
             throw new NotImplementedException();

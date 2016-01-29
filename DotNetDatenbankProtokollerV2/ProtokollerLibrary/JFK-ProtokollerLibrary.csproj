@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetSimaticDatabaseProtokollerLibrary</RootNamespace>
     <AssemblyName>JFK-ProtokollerLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\externalDlls\JFKCommonLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\externalDlls\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO">
       <HintPath>..\AdditionalDlls\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
@@ -104,6 +107,7 @@
     <Compile Include="aspx\AspxPage.cs" />
     <Compile Include="aspx\AspxRequestInfo.cs" />
     <Compile Include="aspx\AspxVirtualRoot.cs" />
+    <Compile Include="Common\IpAddressConverter.cs" />
     <Compile Include="Common\LogErrorLevel.cs" />
     <Compile Include="Common\NetworkShare.cs" />
     <Compile Include="Connections\DatabaseConnection.cs" />
