@@ -888,6 +888,9 @@ EXPORTSPEC int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int 
 EXPORTSPEC void DECL2 daveFreeResults(daveResultSet * rl);
 /* Adds a new bit variable to a prepared request: */
 EXPORTSPEC void DECL2 daveAddBitVarToReadRequest(PDU *p, int area, int DBnum, int start, int byteCount);
+/* Adds a new NCK read Request... (see: http://www.sps-forum.de/hochsprachen-opc/80971-dotnetsiemensplctoolboxlibrary-libnodave-zugriff-auf-dual-port-ram-fb15-post611026.html#post611026) */
+EXPORTSPEC void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount);
+
 
 /* use this to initialize a multivariable write: */
 EXPORTSPEC void DECL2 davePrepareWriteRequest(daveConnection * dc, PDU *p);
