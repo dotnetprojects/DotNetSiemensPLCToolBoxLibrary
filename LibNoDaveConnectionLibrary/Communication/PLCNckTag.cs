@@ -50,9 +50,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 		}
 
 		//Todo: look how long a NCK Request is???
-		internal override int _internalGetSize()
-		{
-			return 1;
-		}
+		//internal override int _internalGetSize()
+		//{
+		//	return 1;
+		//}
 	}
 }

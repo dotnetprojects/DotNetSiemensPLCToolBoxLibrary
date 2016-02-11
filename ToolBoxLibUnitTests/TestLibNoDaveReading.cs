@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace ToolBoxLibUnitTests
 {
@@ -87,6 +88,8 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             string req5 = string.Join(Environment.NewLine, pdus5);
             string t5 = "READ  Area:132, DBnum:1, Start:0, Bytes:14\r\nREAD  Area:132, DBnum:1, Start:30, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:50, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:80, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:90, Bytes:30\r\nREAD  Area:132, DBnum:1, Start:140, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:160, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:180, Bytes:44\r\nREAD  Area:132, DBnum:1, Start:230, Bytes:24\r\nREAD  Area:132, DBnum:1, Start:260, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:270, Bytes:4";
             Assert.AreEqual(req5, t5);
+
+            //var tag=new PLCNckTag() { TagDataType = TagDataType.Float, NckArea = 0xa, NckUnit = 0x8,NckColumn = 0x23, NckLine = 0x1,NckModule = 0x1a,NckLinecount = 0x1};
         }
     }
 }
