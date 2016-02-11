@@ -2344,8 +2344,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
 
                         bool symbolicTag = false;
-                        
-                        if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
+
+						var nckT = libNoDaveValue as PLCNckTag;
+
+						if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
                         {
                             askSize = 4 + libNoDaveValue.SymbolicAccessKey.Length;
                             symbolicTag = true;
@@ -2374,7 +2376,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if ((readSizeWithHeader + gesReadSize > maxReadSize || gesAskSize + currentAskSize > maxReadSize))
                         {
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
-                            if (!symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
+                            if (nckT == null && !symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
                                 //Howmany Bytes can be added to this call
@@ -2386,7 +2388,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         lastRequestWasAUnevenRequest = false;
                                     }
 
-                                    //Only at the rest of the bytes to the next read request, and increase the start address!  
+	                                //Only at the rest of the bytes to the next read request, and increase the start address!  
                                     if (shortDbRequest)
                                     {
                                         usedShortRequest.Add(true);
@@ -2492,7 +2494,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             lastRequestWasAUnevenRequest = false;
                         }
 
-                        if (symbolicTag)
+						if (nckT != null)
+						{
+							myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
+						}
+						else if (symbolicTag)
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
@@ -2730,7 +2736,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+			if (value is PLCNckTag)
+			{
+				ReadValues(new[] { value });
+				return;
+			}
+
+			if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
             {
                 ReadValuesFetchWrite(new[] { value }, false);
                 return;

@@ -1455,6 +1455,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     daveAddVarToReadRequest32(pointer, area, DBnum, start, bytes);
             }
 
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddNCKToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddNCKToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToReadRequest64(IntPtr p, int area, int unit, int column, int line, int module, int linecount);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddNCKToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToReadRequest32(IntPtr p, int area, int unit, int column, int line, int module, int linecount);
+            public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+            {
+                if (IntPtr.Size == 8)
+                    daveAddNCKToReadRequest64(pointer, area, unit, column, line, module, linecount);
+                else
+                    daveAddNCKToReadRequest32(pointer, area, unit, column, line, module, linecount);
+            }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddSymbolVarToReadRequest")]

@@ -40,7 +40,12 @@ namespace ToolBoxLibUnitTests
             Requests.Add("WRITE Area:" + area + ", DBnum:" + DBnum + ", Start:" + start + ", Bytes:" + bytes);
         }
 
-        public void daveAddFillByteToReadRequest()
+	    public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+	    {
+			Requests.Add("NCK");
+		}
+
+	    public void daveAddFillByteToReadRequest()
         { }
 
         public override string ToString()
