@@ -705,7 +705,7 @@ void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int l
     p->data = p->param+p->plen;
     p->dlen = 0;
     if (daveDebug & daveDebugPDU) {
-        daveDumpPDU(p);
+        _daveDumpPDU(p);
     }
 }
 
