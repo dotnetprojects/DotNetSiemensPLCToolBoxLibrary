@@ -433,9 +433,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public string GetCallingString()
         {
             if (Parent == null || Parent.Parent == null)
-                return Name;
-            
-            return ((S7DataRow)Parent).GetCallingString() + "." + Name;
+            {
+                return isRootBlock ? null : Name;
+            }
+            var pcs = ((S7DataRow) Parent).GetCallingString();
+            if (isRootBlock) return pcs;
+            return (pcs==null?"":pcs+".") + Name;
         }
 
         public override string ToString()
