@@ -699,8 +699,8 @@ void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int l
     memcpy(p->param+p->plen, pa, sizeof(pa));
     p->plen += sizeof(pa);
 
-    ((PDUHeader*)p->header)->plenHi = p->plen / 256;
-    ((PDUHeader*)p->header)->plenLo = p->plen % 256;
+    ((PDUHeader2*)p->header)->plenHi = p->plen / 256;
+    ((PDUHeader2*)p->header)->plenLo = p->plen % 256;
 
     p->data = p->param+p->plen;
     p->dlen = 0;

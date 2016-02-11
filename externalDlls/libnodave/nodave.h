@@ -571,6 +571,21 @@ typedef struct {
     us dlen;	/* length of data which follow the parameters */
     uc result[2]; /* only present in type 2 and 3 headers. This contains error information. */
 } PDUHeader;
+
+/*
+    same as above, but made up of single bytes only, so that every single byte can be adressed separately
+*/
+typedef struct {
+    uc P;	/* allways 0x32 */
+    uc type;	/* Header type, one of 1,2,3 or 7. type 2 and 3 headers are two bytes longer. */
+    uc a,b;	/* currently unknown. Maybe it can be used for long numbers? */
+    uc numberHi,numberLo;	/* A number. This can be used to make sure a received answer */
+		/* corresponds to the request with the same number. */
+    uc plenHi,plenLo;	/* length of parameters which follow this header */
+    uc dlenHi,dlenLo;	/* length of data which follow the parameters */
+    uc result[2]; /* only present in type 2 and 3 headers. This contains error information. */
+} PDUHeader2;
+
 /*
     set up the header. Needs valid header pointer in the struct p points to.
 */
