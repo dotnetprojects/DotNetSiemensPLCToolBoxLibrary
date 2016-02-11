@@ -678,6 +678,37 @@ void DECL2 daveAddBitVarToReadRequest(PDU *p, int area, int DBnum, int start, in
 	daveAddToReadRequest(p, area, DBnum, start, byteCount, 1);
 }    
 
+void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount) {
+    uc pa[] = {
+        0x12, 0x08, 0x82,   /* VarSpec, Length, SyntaxId */
+        0x00,               /* Area/Unit: 3 Bits Area, 5 Bits unit */
+        0x00, 0x00,         /* column */
+        0x00, 0x00,         /* line */
+        0x00,               /* module */
+        0x01,               /* linecount */
+    };
+    pa[3] = ((area & 0x07) << 5) | (unit & 0x1f);
+    pa[4] = column / 256;
+    pa[5] = column & 0xff;
+    pa[6] = line / 256;
+    pa[7] = line & 0xff;
+    pa[8] = module;
+    pa[9] = linecount;
+
+    p->param[1]++;
+    memcpy(p->param+p->plen, pa, sizeof(pa));
+    p->plen += sizeof(pa);
+
+    ((PDUHeader2*)p->header)->plenHi = p->plen / 256;
+    ((PDUHeader2*)p->header)->plenLo = p->plen % 256;
+
+    p->data = p->param+p->plen;
+    p->dlen = 0;
+    if (daveDebug & daveDebugPDU) {
+        daveDumpPDU(p);
+    }
+}
+
 void DECL2 daveAddToWriteRequest(PDU *p, int area, int DBnum, int start, int byteCount, 
 	void * buffer,
 	uc * da,
