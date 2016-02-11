@@ -1104,6 +1104,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
                     DataTypes.PLCBlockType blk = DataTypes.PLCBlockType.AllBlocks;
 
+                   
+
+
                     switch (block)
                     {
                         case "FC":
@@ -1122,6 +1125,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             blk = DataTypes.PLCBlockType.SDB;
                             break;
                     }
+
+
+                    //Transfer crc:
+                    //Benötigt für Safety übertragung!
+                    //Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
+                    //Die Prüfsumme wird aus folgenden Bytes gebildet:
+                    //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
+                    //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
+                    // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
+                    //var crcbyte = new[] {0x9003, (short) blk,};
+
                     if (blk == DataTypes.PLCBlockType.AllBlocks || nr < 0)
                         throw new Exception("Unsupported Block Type!");
 
