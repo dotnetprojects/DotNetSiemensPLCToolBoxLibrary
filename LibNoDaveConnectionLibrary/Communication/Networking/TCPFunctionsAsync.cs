@@ -180,7 +180,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             }
         }
 
-        public async void Start()
+        public void Start()
         {
            var t = new TaskCompletionSource<object>();
             
@@ -190,13 +190,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 ConnectionEstablished -= vCHandler;
                 ConnectionClosed -= vCHandler;
                 t.TrySetResult(res);
-            };
+            };   
             this.ConnectionEstablished += vCHandler;
             this.ConnectionClosed += vCHandler;
 
             StartAsync();
 
-            await t.Task;
+            var result = t.Task.Result;
         }
 
         public void Stop()
