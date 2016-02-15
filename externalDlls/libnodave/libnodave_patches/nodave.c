@@ -858,6 +858,12 @@ int DECL2 _daveTestResultData(PDU * p) {
 			/* len is already in bytes, ok */
 		} else if (p->data[1]==3) {
 			/* len is in bits, but there is a byte per result bit, ok */
+		} else if (p->data[1]==5) {			/* Fehlenden Size-Type INTEGER ergänzt */
+		    p->udlen>>=3;	/* len is in bits, adjust */
+		} else if (p->data[1]==7) {			/* Fehlenden Size-Type REAL ergänzt */
+			/* len is already in bytes, ok */
+		} else if (p->data[1]==6) {
+			/* integer access, len is in bytes */
 		} else {
 			if (daveDebug & daveDebugPDU)
 				LOG2("fixme: what to do with data type %d?\n",p->data[1]);
@@ -891,6 +897,12 @@ int DECL2 _daveTestResultDataMulti(PDU * p) {
 			/* len is already in bytes, ok */
 		} else if (p->data[1]==3) {
 			/* len is in bits, but there is a byte per result bit, ok */
+		} else if (p->data[1]==5) {			/* Fehlenden Size-Type INTEGER ergänzt */
+		    p->udlen>>=3;	/* len is in bits, adjust */
+		} else if (p->data[1]==7) {			/* Fehlenden Size-Type REAL ergänzt */
+			/* len is already in bytes, ok */
+		} else if (p->data[1]==6) {
+			/* integer access, len is in bytes */	
 		} else {
 			if (daveDebug & daveDebugPDU)
 				LOG2("fixme: what to do with data type %d?\n",p->data[1]);
