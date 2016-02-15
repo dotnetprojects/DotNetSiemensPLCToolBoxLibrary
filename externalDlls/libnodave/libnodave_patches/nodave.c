@@ -1564,6 +1564,8 @@ int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 					/* len is already in bytes, ok */
 				} else if (q[1]==3) {
 					/* len is in bits, but there is a byte per result bit, ok */
+				} else if (q[1]==6) {
+					/* integer access, len is in bytes */
 				} else {
 					if (daveDebug & daveDebugPDU)
 						LOG2("fixme: what to do with data type %d?\n",q[1]);
