@@ -2496,7 +2496,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 						if (nckT != null)
 						{
-							myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
+                            usedShortRequest.Add(false);
+                            tagWasSplitted.Add(false);
+                            myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
 						}
 						else if (symbolicTag)
                         {
