@@ -2080,7 +2080,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     NotExistedValue.Add(true);
                                 }
                                 else if (res != 0)
-                                    throw new Exception("Error: " + _errorCodeConverter(res));
+                                {
+                                    var details = Environment.NewLine + Environment.NewLine + "AnzVar " +
+                                                  cPDU.anzVar.ToString() + "; akVar " + akVar.ToString() +
+                                                  Environment.NewLine;
+
+                                    details += "readsizes " + string.Join(";", cPDU.readenSizes) + Environment.NewLine;
+                                    details += "usedShortRequest " + string.Join(";", cPDU.usedShortRequest) + Environment.NewLine;
+                                    throw new Exception("Error (1): " + _errorCodeConverter(res) + details);
+                                }
                                 else
                                 {
                                     int myBuffStart = 0;
@@ -2441,7 +2449,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         NotExistedValue.Add(true);
                                 }
                                 else if (res != 0)
-                                    throw new Exception("Error: " + _errorCodeConverter(res));
+                                {
+                                    var details = Environment.NewLine + Environment.NewLine + "AnzVar " +
+                                                   anzVar.ToString() + "; akVar " + akVar.ToString() +
+                                                   Environment.NewLine;
+
+                                    details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
+                                    details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
+                                    throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
+                                }
                                 else
                                 {
                                     int myBuffStart = 0;
@@ -2547,7 +2563,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 NotExistedValue.Add(true);
                             }
                             else if (res != 0)
-                                throw new Exception("Error: " + _errorCodeConverter(res));
+                            {
+                                var details = Environment.NewLine + Environment.NewLine + "AnzVar " +
+                                                   anzVar.ToString() + "; akVar " + akVar.ToString() +
+                                                   Environment.NewLine;
+
+                                details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
+                                details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
+                                throw new Exception("Error (3): " + _errorCodeConverter(res) + details);
+                            }
                             else
                             {
                                 int myBuffStart = 0;
