@@ -2585,6 +2585,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
+                                    var nckT = ((List<PLCTag>)readTagList)[akVar] as PLCNckTag;
+                                    if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
+                                        System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
