@@ -328,7 +328,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         //    string tiaType = importTypeInfos[id];
 
-            
+
 
         //    switch (tiaType)
         //    {
@@ -369,9 +369,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         //        _allFolders.Add(fld);
 
         //        var subFolderNodes = xmlDoc.SelectNodes("root/objects/StorageObject[parentlink[@link='" + id + "-" + instid + "']]");
-                
+
         //        fld.SubNodes = subFolderNodes;
-                
+
         //        foreach (XmlNode subFolderNode in subFolderNodes)
         //        {
         //            var subFld = this.getProjectFolder(subFolderNode);
@@ -379,16 +379,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         //                fld.SubItems.Add(subFld);
         //        }
         //    }
-            
+
         //    return fld;
         //}
 
         //private void ParseProject(Stream data)
         //{
         //    xmlDoc = new XmlDocument();
-            
+
         //    xmlDoc.Load(data);
-            
+
         //    //xmlDoc.Save("C:\\Temp\\tia-export.xml");
 
         //    importTypeInfos = new Dictionary<string, string>();

@@ -2052,12 +2052,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //    listPDU.Add(curReadPDU);
 
                     List<bool> NotExistedValue = new List<bool>();
-                    foreach (var cPDU in listPDU)
+
+					//Only for debugging...
+
+					foreach (var cPDU in listPDU)
                     {
                         if (cPDU.gesReadSize > 0)
                         {
                             var rs = _dc.getResultSet();
-                            int res = _dc.execReadRequest(cPDU.pdu, rs);
+							int res = _dc.execReadRequest(cPDU.pdu, rs);
 
                             if (res == -1025)
                             {
@@ -2341,7 +2344,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     var myPDU = _dc.prepareReadRequest();
 
-                    foreach (var libNoDaveValue in readTagList)
+					var currentRead = new List<string>();
+
+					foreach (var libNoDaveValue in readTagList)
                     {
                         bool shortDbRequest = false;
                         int askSize = 12;
@@ -2401,12 +2406,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     {
                                         usedShortRequest.Add(true);
                                         lastRequestWasAUnevenRequest = true;
-                                        myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+										currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+										myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                     else
                                     {
                                         usedShortRequest.Add(false);
-                                        myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+										currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+										myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                         
                                     readSize = readSize - restBytes;
@@ -2428,7 +2435,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                             }
                             var rs = _dc.getResultSet();
-                            int res = _dc.execReadRequest(myPDU, rs);
+							int res = _dc.execReadRequest(myPDU, rs);
                             if (res == -1025)
                             {
                                 this.Disconnect();
@@ -2456,7 +2463,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
                                     details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
-                                    throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
+	                                details += Environment.NewLine + Environment.NewLine +
+	                                           string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
+	                                           Environment.NewLine;
+
+									throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
                                 }
                                 else
                                 {
@@ -2482,9 +2493,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                             }
 
-                            //rs = null;
-                            //myPDU = null;
-                            anzVar = 0;
+							//rs = null;
+							//myPDU = null;
+							currentRead = new List<string>();
+							anzVar = 0;
                             gesAskSize = 0;
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
@@ -2527,12 +2539,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Add(true);
                             tagWasSplitted.Add(false);
                             lastRequestWasAUnevenRequest = true;
-                            myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
+							currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}",libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+							myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                         else
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
+							currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
                             myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                     }

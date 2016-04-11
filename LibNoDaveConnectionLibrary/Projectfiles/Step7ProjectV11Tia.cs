@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
@@ -86,7 +84,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 //var b = IBlock as Siemens.Engineering.SW.CodeBlock;
                 //var nm = b.GetAttributeNames(AttributeAccessMode.Read).Concat(b.GetAttributeNames(AttributeAccessMode.ReadOnly)).Concat(b.GetAttributeNames(AttributeAccessMode.ReadWrite)).Concat(b.GetAttributeNames(AttributeAccessMode.Write));
                 //var att = b.GetAttributes(nm);
+
+                //var brws = new StateBrowserForm();
+                //brws.ObjectToBrowse = IBlock;
+                //brws.Show();
+
                 IBlock.Export(file, ExportOptions.None);
+
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
@@ -317,7 +321,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                 var iv = blkInfo as ITiaProjectBlockInfo;
                 var text = iv.ExportToString();
-
+                  
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
