@@ -872,7 +872,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDByte:
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
-                        if (!myValue.GetType().IsArray /*ArraySize < 2*/)
+                        if (ArraySize < 2)
                         {
                             return this.GetValueAsStringInternal(myValue);
                         }

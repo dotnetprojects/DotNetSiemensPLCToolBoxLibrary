@@ -184,12 +184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
 		    throw new NotImplementedException();
 	    }
 
-        public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void daveAddFillByteToReadRequest()
+	    public void daveAddFillByteToReadRequest()
         {
             byte[] pa = {
                 0           /* fill byte */
