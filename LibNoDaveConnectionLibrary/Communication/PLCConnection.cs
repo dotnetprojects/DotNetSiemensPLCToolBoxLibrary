@@ -2229,7 +2229,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     #region Optimize Reading List....
 
-                    if (useReadOptimization && !(valueList.Cast<PLCTag>().ToList()[0] is PLCNckTag))
+                    if (useReadOptimization)
                     {
                         List<PLCTag> orderedList = new List<PLCTag>();
                         orderedList.AddRange(valueList);
@@ -2599,9 +2599,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                    var nckT = readTagList.Cast<PLCTag>().ToList()[akVar] as PLCNckTag;
-                                    if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                        System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
@@ -2859,12 +2856,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="value"></param>
         public void WriteValue(PLCTag value)
         {
-            if (value is PLCNckTag)
-            {
-                WriteValues(new[] { value });
-                return;
-            }
-
             lock (lockObj)
             {
                 if (AutoConnect && !Connected)
@@ -2969,8 +2960,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         plcTag.RaiseValueChangedEvenWhenNoChangeHappened = true;
                     }*/
 
-                    //PLCNckTag kann im Moment noch nicht optimiert werden
-                    if (useWriteOptimation && !(valueList.Cast<PLCTag>().ToList()[0] is PLCNckTag))
+                    if (useWriteOptimation)
                     {
                         #region Optimize Writing List....
 
@@ -3086,7 +3076,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         var currVal = valueListT[0];
                         var currValSize = currVal._internalGetSize();
 
-                        if (!(currVal is PLCNckTag) && gesWriteSize < maxWriteSize && //Maximale Byte Anzahl noch nicht erreicht
+                        if (gesWriteSize < maxWriteSize && //Maximale Byte Anzahl noch nicht erreicht
                             /*anzWriteVar < maxWriteVar &&*/
                             ( //maximale Variablenanzahl noch nicht erreicht                        
                                 splitPos != 0 || //Value ist schon gesplitted
@@ -3167,39 +3157,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             //Send Request
                             rs = new libnodave.resultSet();
-
-                            if (currVal is PLCNckTag)
-                            {
-                                byte[] wrt = new byte[currValSize];
-                                currVal._putControlValueIntoBuffer(wrt, 0);
-                                var nckT = currVal as PLCNckTag;
-                                #region Reverse
-                                if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                    System.Array.Reverse(wrt, 0, wrt.Length);
-                                #endregion
-
-                                #region Transport sizes
-                                //**************************************************************************
-                                // Transport sizes in data
-                                //
-                                //S7COMM_DATA_TRANSPORT_SIZE_NULL     0
-                                //S7COMM_DATA_TRANSPORT_SIZE_BBIT     3           /* bit access, len is in bits */
-                                //S7COMM_DATA_TRANSPORT_SIZE_BBYTE    4           /* byte/word/dword access, len is in bits */
-                                //S7COMM_DATA_TRANSPORT_SIZE_BINT     5           /* integer access, len is in bits */
-                                //S7COMM_DATA_TRANSPORT_SIZE_BDINT    6           /* integer access, len is in bytes */
-                                //S7COMM_DATA_TRANSPORT_SIZE_BREAL    7           /* real access, len is in bytes */
-                                //S7COMM_DATA_TRANSPORT_SIZE_BSTR     9           /* octet string, len is in bytes */
-                                //**************************************************************************
-
-                                //int transsize = 4;
-                                //if (nckT.TagDataType == TagDataType.LReal)
-                                //    transsize = 9;
-
-                                #endregion
-                                myPDU.addNCKToWriteRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount, wrt.Length, wrt);
-                                valueListT.Remove(currVal); //Wert erledigt... löschen....
-                            }
-
                             res = _dc.execWriteRequest(myPDU, rs);
                             if (res == -1025)
                             {

@@ -29,9 +29,6 @@ using System;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
-#if !IPHONE
-    [System.ComponentModel.Editor(typeof(NckTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
-#endif
 	[Serializable]
 	public class PLCNckTag : PLCTag
 	{
@@ -52,32 +49,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 			set { }
 		}
 
-        public override string ToString()
-        {
-            string old = "";
-            if (_oldvalues != null)
-            {
-                old = "   -- Old-Values: ";
-                foreach (var oldvalue in _oldvalues)
-                {
-                    old += oldvalue.ToString() + ",";
-                }
-                old += "";
-            }
-
-            string s = string.Format("0x{0},0x{1},0x{2},0x{3},0x{4},0x{5},{6},0x{7}", NckArea.ToString("X"), NckUnit.ToString("X"), NckColumn.ToString("X"), NckLine.ToString("X"), NckModule.ToString("X"), NckLinecount.ToString("X"), TagDataType, _internalGetSize().ToString("X"));
-
-            if (Value != null)
-            {
-                return s + " = " + GetValueAsString() + old;
-            }
-            return s;
-        }
-
-        //Todo: look how long a NCK Request is???
-        //internal override int _internalGetSize()
-        //{
-        //	return 1;
-        //}
+		//Todo: look how long a NCK Request is???
+		//internal override int _internalGetSize()
+		//{
+		//	return 1;
+		//}
 	}
 }
