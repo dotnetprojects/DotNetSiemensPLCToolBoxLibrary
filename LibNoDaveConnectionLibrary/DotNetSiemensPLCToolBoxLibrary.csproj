@@ -66,7 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\C_PropertyNck.cs" />
+    <Compile Include="Communication\Editors\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\FetchWrite\OperationCode.cs" />
@@ -83,13 +83,13 @@
     <Compile Include="Communication\Library\Pdus\daveConst.cs" />
     <Compile Include="Communication\Library\Pdus\PduRequest.cs" />
     <Compile Include="Communication\Library\TcpNETdave.cs" />
-    <Compile Include="Communication\NckTagEditor.cs">
+    <Compile Include="Communication\Editors\NckTagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Communication\NckTagEditor.Designer.cs">
+    <Compile Include="Communication\Editors\NckTagEditor.Designer.cs">
       <DependentUpon>NckTagEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Communication\NckTagUITypeEditor.cs" />
+    <Compile Include="Communication\Editors\NckTagUITypeEditor.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Communication\PLCNckTag.cs" />
@@ -246,21 +246,21 @@
     <Compile Include="General\TiaCrcHelper.cs" />
     <Compile Include="General\ZipHelper.cs" />
     <Compile Include="General\InputBox.cs" />
-    <Compile Include="Communication\PLCTagUITypeEditor.cs" />
+    <Compile Include="Communication\Editors\PLCTagUITypeEditor.cs" />
     <Compile Include="General\EnumListBoxExtensions.cs" />
     <Compile Include="Communication\PLCConnection.cs" />
-    <Compile Include="Communication\ConnectionEditor.cs">
+    <Compile Include="Communication\Editors\ConnectionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Communication\ConnectionEditor.Designer.cs">
+    <Compile Include="Communication\Editors\ConnectionEditor.Designer.cs">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Communication\PLCConnectionConfiguration.cs" />
-    <Compile Include="Communication\PLCConnectionUITypeEditor.cs" />
-    <Compile Include="Communication\PLCTagEditor.cs">
+    <Compile Include="Communication\Editors\PLCConnectionUITypeEditor.cs" />
+    <Compile Include="Communication\Editors\PLCTagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Communication\PLCTagEditor.Designer.cs">
+    <Compile Include="Communication\Editors\PLCTagEditor.Designer.cs">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PLCs\S5\MC5\MC5toComment.cs" />
@@ -349,29 +349,29 @@
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Communication\ConnectionEditor.en.resx">
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.en.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\ConnectionEditor.es.resx">
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.es.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\ConnectionEditor.resx">
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\NckTagEditor.en.resx">
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.en.resx">
       <DependentUpon>NckTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\NckTagEditor.resx">
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.resx">
       <DependentUpon>NckTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.en.resx">
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.en.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.es.resx">
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.es.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.resx">
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
