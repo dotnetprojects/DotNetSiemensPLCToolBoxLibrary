@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\FetchWrite\OperationCode.cs" />
@@ -82,6 +83,13 @@
     <Compile Include="Communication\Library\Pdus\daveConst.cs" />
     <Compile Include="Communication\Library\Pdus\PduRequest.cs" />
     <Compile Include="Communication\Library\TcpNETdave.cs" />
+    <Compile Include="Communication\NckTagEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Communication\NckTagEditor.Designer.cs">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\NckTagUITypeEditor.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Communication\PLCNckTag.cs" />
@@ -350,6 +358,12 @@
     <EmbeddedResource Include="Communication\ConnectionEditor.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\NckTagEditor.en.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\NckTagEditor.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Communication\PLCTagEditor.en.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>

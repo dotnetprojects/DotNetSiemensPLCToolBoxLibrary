@@ -1477,6 +1477,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
 
 #if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddNCKToWriteRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddNCKToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToWriteRequest64(IntPtr p, int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer);
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddNCKToWriteRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToWriteRequest32(IntPtr p, int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer);
+            public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
+            {
+                if (IntPtr.Size == 8)
+                    daveAddNCKToWriteRequest64(pointer, area, unit, column, line, module, linecount, bytes, buffer);
+                else
+                    daveAddNCKToWriteRequest32(pointer, area, unit, column, line, module, linecount, bytes, buffer);
+            }
+
+#if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddSymbolVarToReadRequest")]
 #else
             [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
