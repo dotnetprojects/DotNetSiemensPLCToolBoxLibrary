@@ -27,7 +27,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
     {
         public static void RespectEndianness(Type type, byte[] data)
         {
-            foreach (FieldInfo f in type.GetFields()) //BindingFlags.Instance | BindingFlags.NonPublic))
+            foreach (FieldInfo f in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)) //BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 if (f.IsDefined(typeof(EndianAttribute), false))
                 {

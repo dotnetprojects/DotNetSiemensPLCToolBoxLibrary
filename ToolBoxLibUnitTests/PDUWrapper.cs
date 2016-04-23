@@ -42,7 +42,7 @@ namespace ToolBoxLibUnitTests
 
 	    public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
 	    {
-			Requests.Add("NCK");
+			Requests.Add("Read NCK");
 		}
 
         public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
