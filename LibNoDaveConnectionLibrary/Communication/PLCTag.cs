@@ -1608,7 +1608,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                     case TagDataType.Bool:
                         bool tmp1 = false;
-                        tmp1 = Convert.ToBoolean(ctlValue);
+                        try
+                        {
+                            tmp1 = Convert.ToBoolean(ctlValue);
+                        }
+                        catch (Exception)
+                        {
+                            tmp1 = Convert.ToBoolean(Convert.ToInt32(ctlValue));
+                        }
                         buff[startpos] = Convert.ToByte(tmp1);
                         break;
                     case TagDataType.Byte:
