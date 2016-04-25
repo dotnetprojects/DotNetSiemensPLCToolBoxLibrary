@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ZLibNet;
+//using ZLibNet;
 using CompressionMode = System.IO.Compression.CompressionMode;
 using DeflateStream = System.IO.Compression.DeflateStream;
 
@@ -31,10 +31,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
             {
                 return new DeflateStream(compressedStream, CompressionMode.Decompress, true);
             }
-            else
-            {
-                return new ZLibNet.ZLibStream(compressedStream, ZLibNet.CompressionMode.Decompress, CompressionLevel.BestCompression, true);
-            }            
+
+            return null;
+            //else
+            //{
+            //    return new ZLibNet.ZLibStream(compressedStream, ZLibNet.CompressionMode.Decompress, CompressionLevel.BestCompression, true);
+            //}            
         }
     }
 }
