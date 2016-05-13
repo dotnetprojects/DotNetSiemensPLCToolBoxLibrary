@@ -3120,6 +3120,38 @@ int DECL2 _daveInitAdapterMPI1(daveInterface * di) {
 	}
 }
 
+us ccrc(uc *b,int size) {
+	us sum;
+	int i,j,m,lll;
+//initialize for crc
+	lll=0xcf87;
+	sum=0x7e;
+	for(j=2;j<=size;j++) {
+	    for(m=0;m<=7;m++) {
+		if((lll&0x8000)!=0) {
+		    lll=lll^0x8408;
+		    lll=lll<<1;
+		    lll=lll+1;
+		} else {
+		    lll=lll<<1;
+		}
+	    }
+	    sum=sum^lll;
+	}
+	for(j=0;j<size;j++) {
+	    sum=sum ^ b[j];
+	    for(i=0;i<=7;i++) {
+		if(sum&0x01) {
+		    sum=sum>>1;
+		    sum=sum^0x8408;
+		} else {
+		    sum=sum>>1;
+		}
+	    }
+	}
+	return sum;
+}
+
 int daveSendWithCRC3(daveInterface * di, uc* buffer,int length) {
 	uc target[daveMaxRawLen];
 	us crc;
