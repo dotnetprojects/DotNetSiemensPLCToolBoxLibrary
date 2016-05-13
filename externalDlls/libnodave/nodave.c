@@ -4072,7 +4072,7 @@ int DECL2 _daveExchangeTCP(daveConnection * dc, PDU * p) {
 }
 
 int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
-	int res, success, retries;
+	int res, success, retries, i, px;
 	uc b4[]={
 		0x11,		//Length
 		0xE0,		// TDPU Type CR = Connection Request (see RFC1006/ISO8073)
