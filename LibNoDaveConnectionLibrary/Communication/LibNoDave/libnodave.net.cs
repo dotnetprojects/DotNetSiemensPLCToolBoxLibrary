@@ -1188,20 +1188,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #else
             [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
-            protected static extern int davePutProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
+            protected static extern int davePutProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, int length);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutProgramBlock")]
 #else
             [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
-            protected static extern int davePutProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
-            public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
+            protected static extern int davePutProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, int length);
+            public int putProgramBlock(int blockType, int number, byte[] buffer, int length)
             {
                 if (IntPtr.Size == 8)
-                    return davePutProgramBlock64(pointer, blockType, number, buffer, ref length);
+                    return davePutProgramBlock64(pointer, blockType, number, buffer, length);
                 else
-                    return davePutProgramBlock32(pointer, blockType, number, buffer, ref length);
+                    return davePutProgramBlock32(pointer, blockType, number, buffer, length);
             }
 
 #if !IPHONE

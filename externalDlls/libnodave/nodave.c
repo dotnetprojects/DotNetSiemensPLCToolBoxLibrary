@@ -6205,7 +6205,7 @@ int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int number, ch
 	return res;
 }
 
-int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber, char* buffer, int * length) {
+int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber, char* buffer, int length) {
 #define maxPBlockLen 0xDe	// real maximum 222 bytes
 
 	int res=0;
@@ -6248,7 +6248,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber,
 	pup[15] = pup[15] + 0x30;
 	pup[16] = pup[16] + 0x30;*/
 	
-	memcpy(progBlock+4,buffer,maxPBlockLen);
+	int copyLen = maxPBlockLen > length ? length : maxPBlockLen; 
+	memcpy(progBlock+4,buffer,copyLen);
 
 	progBlock[9] = (blockType + 0x0A - 'A'); //Convert 'A' to 0x0A
 	if (blockType == '8') progBlock[9] = 0x08;
@@ -6294,7 +6295,8 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber,
 				number=((PDUHeader*)p2.header)->number;
 				if (p2.param[0]==0x1B) {
 					//READFILE
-					memcpy(progBlock+4,buffer+(cnt*maxPBlockLen),maxPBlockLen);
+				    copyLen = (cnt+1)*maxPBlockLen > length ? length - (cnt*maxPBlockLen) : maxPBlockLen;
+					memcpy(progBlock+4,buffer+(cnt*maxPBlockLen),copyLen);
 					
 					if (cnt == 0)
 					{
@@ -6309,11 +6311,11 @@ int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber,
 					_daveInitPDUheader(&p, 3);
 					size = maxPBlockLen;
 
-					if (*length > ((cnt+1) * maxPBlockLen))  
+					if (length > ((cnt+1) * maxPBlockLen))  
 						pablock[1]=1;
 					else
 					{
-						size = *length - (cnt * maxPBlockLen);
+						size = length - (cnt * maxPBlockLen);
 						pablock[1]=0;	//last block
 						blockCont=0;
 					}
