@@ -26,7 +26,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         IPDU prepareReadRequest();
         IPDU prepareWriteRequest();
         IPDU createPDU();
-        int putProgramBlock(int blockType, int number, byte[] buffer, ref int length);
+        int putProgramBlock(int blockType, int number, byte[] buffer, int length);
         int readBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int readBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int readManyBytes(int area, int DBnumber, int start, int len, ref byte[] buffer);

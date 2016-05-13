@@ -1140,7 +1140,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         throw new Exception("Unsupported Block Type!");
 
                     int readsize = buffer.Length;
-                    int ret = _dc.putProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, ref readsize);
+                    int ret = _dc.putProgramBlock(Helper.GetPLCBlockTypeForBlockList(blk), nr, buffer, readsize);
 
                     if (ret == 0 && readsize > 0)
                     {

@@ -128,7 +128,7 @@ namespace ToolBoxLibUnitTests
             return new PDUWrapper();
         }
 
-        public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
+        public int putProgramBlock(int blockType, int number, byte[] buffer, int length)
         {
             throw new NotImplementedException();
         }

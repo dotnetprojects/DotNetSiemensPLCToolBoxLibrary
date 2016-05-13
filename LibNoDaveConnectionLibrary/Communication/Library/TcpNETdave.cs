@@ -788,7 +788,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             return new Pdu();
         }
 
-        public int putProgramBlock(int blockType, int blknumber, byte[] buffer, ref int length)
+        public int putProgramBlock(int blockType, int blknumber, byte[] buffer, int length)
         {
             //int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int blknumber, char* buffer, int * length) {
             int maxPBlockLen = 0xDe;	// real maximum 222 bytes
