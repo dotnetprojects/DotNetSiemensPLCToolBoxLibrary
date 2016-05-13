@@ -6208,7 +6208,7 @@ int DECL2 daveSetPLCTimeToSystime(daveConnection * dc) {
 	WORD wSecond;
 	WORD wMilliseconds;
 	*/
-	ts[1]=daveToBCD(t1.tm_year / 100); // fix 2010 bug is this line necessary? ok?
+	ts[1]=daveToBCD(t1.wYear / 100); // fix 2010 bug is this line necessary? ok?
 	ts[2]=daveToBCD(t1.wYear % 100);
 	ts[3]=daveToBCD(t1.wMonth);
 	ts[4]=daveToBCD(t1.wDay);
