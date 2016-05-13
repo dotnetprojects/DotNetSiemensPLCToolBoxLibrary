@@ -7247,16 +7247,11 @@ return res;
 }
 */
 /***
-NetLink 50
+    NetLink Pro
 ***/
-#ifdef NET
-/*
-    Read one complete packet. The bytes 0 and 1 contain length information.
-    This version needs a socket filedescriptor that is set to O_NONBLOCK or
-    it will hang, if there are not enough bytes to read.
-    The advantage may be that the timeout is not used repeatedly.
-*/
+#define NET
 
+#ifdef NET
 int DECL2 _daveReadMPINLpro(daveInterface * di,uc *b) {
 	int res,i,length;
 	i=_daveTimedRecv(di, b, 2);
