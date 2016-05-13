@@ -3561,7 +3561,7 @@ int DECL2 _daveDisconnectAdapterMPI(daveInterface * di) {
 	if (daveDebug & daveDebugInitAdapter) 
 		LOG2("%s daveDisconnectAdapter() step 2.\n", di->name);	
 	_daveSendSingle(di, DLE);
-	di->ifread(di, b1, daveMaxRawLen)
+	di->ifread(di, b1, daveMaxRawLen);
 	//    _daveReadChars(di, b1, tmo_normal, daveMaxRawLen);
 	_daveSendSingle(di, DLE);
 	if (daveDebug & daveDebugInitAdapter) 
