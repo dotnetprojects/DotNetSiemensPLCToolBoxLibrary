@@ -7252,7 +7252,7 @@ return res;
 #define NET
 
 #ifdef NET
-int DECL2 _daveReadMPINLpro(daveInterface * di,uc *b) {
+int DECL2 _daveReadMPINLPro(daveInterface * di,uc *b) {
 	int res,i,length;
 	i=_daveTimedRecv(di, b, 2);
 	res=i;
