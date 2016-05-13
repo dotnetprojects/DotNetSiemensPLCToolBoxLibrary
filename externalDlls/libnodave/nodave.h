@@ -1072,7 +1072,7 @@ EXPORTSPEC int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int
 /*
     Program Block to PLC:
 */
-EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int * length);
+EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int length);
 /*
     Delete Block from PLC:
 */
