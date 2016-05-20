@@ -1893,7 +1893,7 @@ daveConnection * DECL2 daveNewConnection(daveInterface * di, int MPI, int rack, 
 
 daveConnection * DECL2 _daveNewConnection(daveConnection * dc) {	
 	if (dc) {
-		dc->maxPDUlength=1920;				// assume an (unreal?) maximum
+		dc->maxPDUlength=960;				// assume an (unreal?) maximum
 		dc->connectionNumber=dc->iface->nextConnection;	// 1/10/05 trying Andrew's patch
 
 		dc->PDUnumber=0xFFFE;			// just a start value; // test!
@@ -4121,7 +4121,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 		(dc->slot + dc->rack * 32),			// Rack (Bit 7-5) and Slot (Bit 4-0)
 		0xC0,		// Parameter requested TPDU-Size
 		1,			// Length of this parameter 
-		9,			// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
+		0xa,			// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
 	};
 
 	uc b4R[]={			// for routing
@@ -4172,7 +4172,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 
 		0xC0,		// Parameter requested TPDU-Size
 		1,		// Length of this parameter 
-		9,		// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
+		0xa,		// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
 	};	
 
 	uc b243[]={
@@ -4180,7 +4180,7 @@ int DECL2 _daveConnectPLCTCP(daveConnection * dc) {
 		0x00,0x00,0x01,0x00,
 		0xC1,2,'M','W',
 		0xC2,2,'M','W',
-		0xC0,1,9,
+		0xC0,1,0xa,
 	};
 
 	PDU p1;	
