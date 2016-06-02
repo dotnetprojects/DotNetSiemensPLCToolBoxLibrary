@@ -485,6 +485,10 @@ struct _daveConnection {
     uc	packetNumber;	/* packetNumber in transport layer */
     void * hook;	/* used in CPU/CP simulation: pointer to the rest we have to send if message doesn't fit in a single packet */
     daveS5cache * cache; /* used in AS511: We cache addresses of memory areas and datablocks here */
+	
+	int TPDUsize; 		// size of TPDU for ISO over TCP
+    int partPos;  		// remember position for ISO over TCP fragmentation
+  
 	uc application_block_subsystem; /* used in S7Online */
 
 	int DestinationIsIP;
@@ -1068,7 +1072,7 @@ EXPORTSPEC int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int
 /*
     Program Block to PLC:
 */
-EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int * length);
+EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int length);
 /*
     Delete Block from PLC:
 */
