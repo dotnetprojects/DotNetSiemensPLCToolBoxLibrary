@@ -1506,5 +1506,67 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             memcpy(p->param+p->plen, pa, 1);
             p->plen+=1;
         }*/
+
+        public int PI_StartNC(string piservice, string[] param, int paramCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int initUploadNC(string file, ref byte[] uploadID)
+        {
+            Pdu p1 = new Pdu(); ;
+            //p1.header=dc->msgOut+dc->PDUstartO;
+            _daveConstructUploadNC(p1, file);
+            Pdu ret = ExchangePdu(p1);
+
+            //if(res!=daveResOK) return res;
+            //res=daveSetupReceivedPDU(dc, &p2);
+            //if(res!=daveResOK) return res;
+            uploadID[0] = ret.Param[4];
+            uploadID[1] = ret.Param[5];
+            uploadID[2] = ret.Param[6];
+            uploadID[3] = ret.Param[7];
+            return 0;
+        }
+
+        private void _daveConstructUploadNC(Pdu p, string file)
+        {
+            //byte[] pa =	new byte[1024];
+            List<byte> pa = new List<byte>();
+            pa.AddRange(new byte[] { 0x1d, 0, 0, 0, 0, 0, 0, 0, 0x11 });
+            foreach (var item in file)
+            {
+                pa.Add((byte)item);
+            }
+
+            var xx = file.Select(c => (byte)c).ToArray();
+
+            //pa.AddRange(new byte[] { () });
+
+            //_daveInitPDUheader(p,1);
+            //_daveAddParam(p, pa, sizeof(pa));
+
+            p.Param.AddRange(pa);
+        }
+
+        public int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int endUploadNC(byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int daveGetNCProgram(string filename, byte[] buffer, ref int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

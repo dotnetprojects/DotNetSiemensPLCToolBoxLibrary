@@ -39,5 +39,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         IresultSet getResultSet();
+        int PI_StartNC(string piservice, string[] param, int paramCount);
+        int initUploadNC(string file, ref byte[] uploadID);
+        int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID);
+        int endUploadNC(byte[] uploadID);
+        int daveGetNCProgram(string filename, byte[] buffer, ref int length);
+        int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length);
     }
 }
