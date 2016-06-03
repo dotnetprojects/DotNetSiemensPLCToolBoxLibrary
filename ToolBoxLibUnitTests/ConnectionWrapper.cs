@@ -196,5 +196,35 @@ namespace ToolBoxLibUnitTests
         {
             return new ResultSetWrapper();
         }
+
+        public int PI_StartNC(string piservice, string[] param, int paramCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int initUploadNC(string file, ref byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int endUploadNC(byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int daveGetNCProgram(string filename, byte[] buffer, ref int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
