@@ -1441,7 +1441,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             protected static extern int daveGetNCProgram64(IntPtr dc, string filename, byte[] buffer, ref int length);
 
 #if !IPHONE
-            [DllImport("libnodave_jfkmod32.dll", EntryPoint = "daveGetNCProgram")]
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetNCProgram")]
 #else
             [DllImport("__Internal", EntryPoint = "daveGetNCProgram")]
 #endif
@@ -1465,7 +1465,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             protected static extern int davePutNCProgram64(IntPtr dc, string filename, string path, string ts, byte[] buffer, int length);
 
 #if !IPHONE
-            [DllImport("libnodave_jfkmod32.dll", EntryPoint = "davePutNCProgram")]
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutNCProgram")]
 #else
             [DllImport("__Internal", EntryPoint = "davePutNCProgram")]
 #endif
