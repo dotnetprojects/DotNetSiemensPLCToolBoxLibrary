@@ -3229,6 +3229,108 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        #region NC PI-Service
+
+        public void PI_Service(string piservice, string[] param, int paramCount)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            int res = _dc.PI_StartNC(piservice, param, paramCount);
+
+            if (res == -1025)
+            {
+                this.Disconnect();
+                throw new System.Runtime.InteropServices.ExternalException("PI_Service: " + res);
+            }
+            if (res != 0)
+                throw new Exception("PI_Service: " + res);
+        }
+        #endregion
+
+        #region NC file transfer
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <returns></returns>
+        public string UploadFromNC(string fullFileName)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            byte[] id = new byte[4];
+            string ret = string.Empty;
+            string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+
+            int res = _dc.initUploadNC(file, ref id);
+            if (res != 0)
+                throw new Exception("UploadFromNC: " + res);
+
+            int more = 0;
+            int len = 0;
+            byte[] buffer = new byte[1024];
+
+            do
+            {
+                res = _dc.doUploadNC(out more, buffer, out len, id);
+                if (res != 0)
+                    break;
+                ret += System.Text.Encoding.Default.GetString(buffer, 0, len);
+            } while (more != 0);
+
+            res = _dc.endUploadNC(id);
+            if (res != 0)
+                throw new Exception("UploadFromNC: " + res);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="size">size of the file (buffer)</param>
+        /// <returns></returns>
+        public string UploadFromNC(string fullFileName, int size)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string ret = string.Empty;
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+
+            int length = 0;
+            byte[] buffer = new byte[size];
+            int res = _dc.daveGetNCProgram(filename, buffer, ref length);
+
+            if (res != 0)
+                throw new Exception("UploadFromNC: " + res);
+            else
+                ret = System.Text.Encoding.Default.GetString(buffer, 0, length);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Transfer file to NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="ts">DateTime Format: yyMMddHHmmss</param>
+        /// <param name="data">Data of the file</param>
+        public void DownloadToNC(string fullFileName, string ts, string data)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+            string path = fullFileName.Substring(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') : fullFileName.Length);
+
+            byte[] buffer = System.Text.Encoding.Default.GetBytes(data);
+            int res = _dc.davePutNCProgram(filename, path, ts, buffer, buffer.Length);
+            if (res != 0)
+                throw new Exception("DownloadToNC: " + res);
+        }
+        #endregion
+
+
         /// <summary>
         /// This Disconnects from the PLC and the Adapter
         /// </summary>

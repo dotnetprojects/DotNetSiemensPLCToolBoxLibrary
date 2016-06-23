@@ -759,10 +759,15 @@ EXPORTSPEC int DECL2 daveGetCounterValueAt(daveConnection * dc,int pos);
     Functions to load blocks from PLC:
 */
 EXPORTSPEC void DECL2 _daveConstructUpload(PDU *p, char blockType, int blockNr); // char or uc,to decide
-
 EXPORTSPEC void DECL2 _daveConstructDoUpload(PDU * p, int uploadID);
-
 EXPORTSPEC void DECL2 _daveConstructEndUpload(PDU * p, int uploadID);
+
+/*
+    Functions to load files from NC:
+*/
+EXPORTSPEC void DECL2 _daveConstructUploadNC(PDU *p, const char *filename);
+EXPORTSPEC void DECL2 _daveConstructDoUploadNC(PDU * p, uc *uploadID);
+EXPORTSPEC void DECL2 _daveConstructEndUploadNC(PDU * p, uc *uploadID);
 /*
     Get the PLC's order code as ASCIIZ. Buf must provide space for
     21 characters at least.
@@ -863,6 +868,16 @@ EXPORTSPEC int DECL2 daveGetBlockInfo(daveConnection * dc, daveBlockInfo *dbi, u
 EXPORTSPEC int DECL2 initUpload(daveConnection * dc, char blockType, int blockNr, int * uploadID); // char or uc,to decide
 EXPORTSPEC int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploadID);
 EXPORTSPEC int DECL2 endUpload(daveConnection*dc, int uploadID);
+
+/*
+    NC file read functions:
+*/
+EXPORTSPEC int DECL2 initUploadNC(daveConnection *dc, const char *filename, uc *uploadID);
+EXPORTSPEC int DECL2 doUploadNC(daveConnection *dc, int *more, uc**buffer, int *len, uc *uploadID);
+EXPORTSPEC int DECL2 doSingleUploadNC(daveConnection *dc, int *more, uc *buffer, int *len, uc *uploadID);
+EXPORTSPEC int DECL2 endUploadNC(daveConnection *dc, uc *uploadID);
+
+
 /*
     PLC run/stop control functions:
 */
@@ -911,6 +926,9 @@ EXPORTSPEC void DECL2 daveAddBitVarToReadRequest(PDU *p, int area, int DBnum, in
 EXPORTSPEC void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount);
 /* Adds a new NCK write Request... */
 EXPORTSPEC void DECL2 daveAddNCKToWriteRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount, int byteCount, void * buffer);
+
+/* use this to initialize a NC PI-Service: (see: http://www.sps-forum.de/hochsprachen-opc/80971-dotnetsiemensplctoolboxlibrary-libnodave-zugriff-auf-dual-port-ram-fb15-12.html#post619571)*/
+EXPORTSPEC int DECL2 davePIstart_nc(daveConnection *dc, const char *piservice, const char *param[], int paramCount);
 
 /* use this to initialize a multivariable write: */
 EXPORTSPEC void DECL2 davePrepareWriteRequest(daveConnection * dc, PDU *p);
@@ -1007,6 +1025,9 @@ EXPORTSPEC int DECL2 _daveSendMessageMPI(daveConnection * dc, PDU * p);
 EXPORTSPEC int DECL2 _daveReadISOPacket(daveInterface * di,uc *b);
 EXPORTSPEC int DECL2 _daveGetResponseISO_TCP(daveConnection *dc);
 
+/* Sendet eine PDU, ohne auf Antwort zu warten */
+EXPORTSPEC int DECL2 _daveSendTCP(daveConnection *dc, PDU *p);
+
 
 typedef uc * (*userReadFunc) (int , int, int, int, int *);
 typedef void (*userWriteFunc) (int , int, int, int, int *,uc *);
@@ -1077,6 +1098,16 @@ EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int
     Delete Block from PLC:
 */
 EXPORTSPEC int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number);
+
+/*
+   Send Receive NC Program:
+*/
+EXPORTSPEC int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length);
+
+//DateTime ts Format: yyMMddHHmmss
+EXPORTSPEC int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, char *ts, char *buffer, int length);
+
+
 /*
     PLC realtime clock handling:
 */ 

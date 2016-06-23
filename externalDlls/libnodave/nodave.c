@@ -783,6 +783,76 @@ void DECL2 daveAddNCKToWriteRequest(PDU *p, int area, int unit, int column, int 
     }
 }
 
+int DECL2 davePIstart_nc(daveConnection *dc, const char *piservice, const char *param[], int paramCount) {
+    int res;
+    int i;
+    PDU p, p2;
+    int paramlen;
+    int len;
+    int pos;
+    uc pa[1024]; 
+
+#ifdef DEBUG_CALLS
+    LOG2("davePIstart_nc(dc:%p)\n", dc);
+    FLUSH;
+#endif
+    /* Header */
+    pa[0] = 0x28;   /* Function code for PI-Start*/
+    pa[1] = 0x00;   /* unknown */
+    pa[2] = 0x00;
+    pa[3] = 0x00;
+    pa[4] = 0x00;
+    pa[5] = 0x00;
+    pa[6] = 0x00;
+    pa[7] = 0xfd;   /* max. string length */
+    pa[8] = 0x00;   /* Parameterblock length */
+    pa[9] = 0x00;   /* Parameterblock length */
+
+    /* Parameterblock */
+    pos = 10;                               /* start of Parameterblock */
+    paramlen = 0;
+    for (i = 0; i < paramCount; i++) {
+        len = strlen(param[i]);
+        pa[pos++] = len;                    /* 1 Byte stringlength */
+        memcpy(&pa[pos], param[i], len);    /* the string */
+        pos += len;
+        if (len % 2 == 0) {                 /* stringlength + length header must be even */
+            pa[pos++] = '\0';               /* fillbyte */
+            paramlen += 1 + len + 1;
+        } else {
+            paramlen += 1 + len;
+        }
+    }
+    /* set parameter block length */
+    pa[8] = paramlen / 256;
+    pa[9] = paramlen % 256;
+
+    /* add servicename */
+    len = strlen(piservice);
+    pa[pos++] = len;
+    memcpy(&pa[pos], piservice, len);
+    pos += len;
+
+    /* length of complete parameter part */
+    len = 10 + paramlen + 1 + strlen(piservice);
+
+    p.header=dc->msgOut+dc->PDUstartO;
+    _daveInitPDUheader(&p, 1);
+    _daveAddParam(&p, pa, len);
+
+    ((PDUHeader2*)p.header)->plenHi = p.plen / 256;
+    ((PDUHeader2*)p.header)->plenLo = p.plen % 256;
+
+    res =_daveExchange(dc, &p);
+    if (res == daveResOK) {
+        res =_daveSetupReceivedPDU(dc, &p2);
+        if (daveDebug & daveDebugPDU) {
+            _daveDumpPDU(&p2);
+        }
+    }
+    return res;
+}
+
 void DECL2 daveAddToWriteRequest(PDU *p, int area, int DBnum, int start, int byteCount, 
 	void * buffer,
 	uc * da,
@@ -1209,6 +1279,48 @@ void DECL2 _daveConstructEndUpload(PDU * p, int uploadID) {
 		_daveDumpPDU(p);
 	}	
 }    
+
+/*
+Functions to load files from NC:
+*/
+void DECL2 _daveConstructUploadNC(PDU *p, const char *filename) {
+    uc pa[260];
+    memset(pa, 0, sizeof(pa));
+    pa[0] = 0x1d;   /* Function code for start upload*/
+    pa[8] = strlen(filename);
+    memcpy(&pa[9], filename, strlen(filename));
+    _daveInitPDUheader(p, 1);
+    _daveAddParam(p, pa, strlen(filename) + 9);
+    if (daveDebug & daveDebugPDU) {
+        _daveDumpPDU(p);
+    }
+}
+
+void DECL2 _daveConstructDoUploadNC(PDU *p, uc *uploadID) {
+    uc pa[] = {0x1e,0,0,0,0,0,0,1};
+    pa[4] = uploadID[0];
+    pa[5] = uploadID[1];
+    pa[6] = uploadID[2];
+    pa[7] = uploadID[3];
+    _daveInitPDUheader(p, 1);
+    _daveAddParam(p, pa, sizeof(pa));
+    if (daveDebug & daveDebugPDU) {
+        _daveDumpPDU(p);
+    }
+}
+
+void DECL2 _daveConstructEndUploadNC(PDU * p, uc *uploadID) {
+    uc pa[] = {0x1f,0,0,0,0,0,0,1};
+    pa[4] = uploadID[0];
+    pa[5] = uploadID[1];
+    pa[6] = uploadID[2];
+    pa[7] = uploadID[3];
+    _daveInitPDUheader(p,1);
+    _daveAddParam(p, pa, sizeof(pa));
+    if (daveDebug & daveDebugPDU) {
+        _daveDumpPDU(p);
+    }
+}
 
 uc paInsert[]= {		// sended after transmission of a complete block,
 	// I guess this makes the CPU link the block into a program.
@@ -2045,6 +2157,9 @@ int DECL2 daveClrBit(daveConnection * dc,int area, int DB, int byteAdr, int bitA
 }
 
 
+/*
+PLC program read functions:
+*/
 int DECL2 initUpload(daveConnection * dc,char blockType, int blockNr, int * uploadID){
 	PDU p1,p2;
 	int res;
@@ -2064,7 +2179,6 @@ int DECL2 initUpload(daveConnection * dc,char blockType, int blockNr, int * uplo
 	* uploadID=p2.param[7];
 	return 0;
 }
-
 
 int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploadID){
 	PDU p1,p2;
@@ -2110,6 +2224,105 @@ int DECL2 endUpload(daveConnection*dc, int uploadID){
 	if(res!=daveResOK) return res;	
 	res=_daveSetupReceivedPDU(dc, &p2);
 	return res;
+}
+
+/*
+NC file read functions:
+*/
+int DECL2 initUploadNC(daveConnection *dc, const char *filename, uc *uploadID){
+    PDU p1,p2;
+    int res;
+    if (daveDebug & daveDebugUpload) {
+        LOG1("****initUploadNC\n");
+    }
+    p1.header = dc->msgOut + dc->PDUstartO;
+    _daveConstructUploadNC(&p1, filename);
+    res = _daveExchange(dc, &p1);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("error:%d\n", res);
+        FLUSH;
+    }
+    if (res != daveResOK) return res;
+    res = _daveSetupReceivedPDU(dc, &p2);
+    if (res != daveResOK) return res;
+    uploadID[0] = p2.param[4];
+    uploadID[1] = p2.param[5];
+    uploadID[2] = p2.param[6];
+    uploadID[3] = p2.param[7];
+    return 0;
+}
+
+int DECL2 doUploadNC(daveConnection *dc, int *more, uc **buffer, int *len, uc *uploadID){
+    PDU p1,p2;
+    int res, netLen;
+    p1.header = dc->msgOut + dc->PDUstartO;
+    _daveConstructDoUploadNC(&p1, uploadID);
+    res=_daveExchange(dc, &p1);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("error:%d\n", res);
+        FLUSH;
+    }
+    *more = 0;
+    if (res != daveResOK) return res;
+    res = _daveSetupReceivedPDU(dc, &p2);
+    *more = p2.param[1];
+    if (res != daveResOK) return res;
+    netLen = p2.data[1] + 256*p2.data[0];
+    if (*buffer) {
+        memcpy(*buffer, p2.data+4, netLen);
+        *buffer += netLen;
+        if (daveDebug & daveDebugUpload) {
+            LOG2("buffer:%p\n",*buffer);
+            FLUSH;
+        }
+    }
+    *len=netLen;
+    return res;
+}
+
+int DECL2 doSingleUploadNC(daveConnection *dc, int *more, uc *buffer, int *len, uc *uploadID){
+    PDU p1,p2;
+    int res, netLen;
+    p1.header = dc->msgOut + dc->PDUstartO;
+    _daveConstructDoUploadNC(&p1, uploadID);
+    res=_daveExchange(dc, &p1);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("error:%d\n", res);
+        FLUSH;
+    }
+    *more = 0;
+    if (res != daveResOK) return res;
+    res = _daveSetupReceivedPDU(dc, &p2);
+    *more = p2.param[1];
+    if (res != daveResOK) return res;
+    netLen = p2.data[1] + 256*p2.data[0];
+	if (netLen > 1024) return -1;
+    //if (*buffer) {
+        memcpy(buffer, p2.data+4, netLen);
+        //*buffer += netLen;
+        if (daveDebug & daveDebugUpload) {
+            LOG2("buffer:%p\n",*buffer);
+            FLUSH;
+        }
+    //}
+    *len=netLen;
+    return res;
+}
+
+int DECL2 endUploadNC(daveConnection *dc, uc *uploadID){
+    PDU p1,p2;
+    int res;
+    
+    p1.header = dc->msgOut + dc->PDUstartO;
+    _daveConstructEndUploadNC(&p1, uploadID);
+    res = _daveExchange(dc, &p1);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("error:%d\n", res);
+        FLUSH;
+    }
+    if(res != daveResOK) return res;
+    res = _daveSetupReceivedPDU(dc, &p2);
+    return res;
 }
 
 /*
@@ -4060,6 +4273,34 @@ int DECL2 _daveGetResponseISO_TCP(daveConnection * dc) {
 	if (res<ISOTCPminPacketLength) return  daveResShortPacket; 
 	return 0;
 }
+
+/* Sendet eine PDU, ohne auf Antwort zu warten */
+int DECL2 _daveSendTCP(daveConnection *dc, PDU *p)
+{
+    int res, totLen, sLen;
+
+    if (daveDebug & daveDebugExchange) {
+        LOG2("%s enter _daveSendTCP\n", dc->iface->name);
+    }
+    dc->partPos = 0;
+    totLen = p->hlen + p->plen + p->dlen;
+    while (totLen) {
+        if (totLen>dc->TPDUsize) {
+            sLen = dc->TPDUsize;
+            *(dc->msgOut + dc->partPos + 6) = 0x00;
+        } else {
+            sLen = totLen;
+            *(dc->msgOut + dc->partPos + 6) = 0x80;
+        }
+        *(dc->msgOut + dc->partPos + 5) = 0xf0;
+        *(dc->msgOut + dc->partPos + 4) = 0x02;
+        _daveSendISOPacket(dc, 3 + sLen);
+        totLen -= sLen;
+        dc->partPos += sLen;
+    }
+    return 0;
+}
+
 /*
 Executes the dialog around one message:
 */
@@ -6143,6 +6384,233 @@ int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number) {
 	//This needs to be implemneted and also error Codes Like Block does not exist or block is locked and so on...
 	return res;
 }
+
+/*
+Send Receive NC Program:
+*/
+
+int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length) {
+	int res, len, more, totlen;
+	unsigned char uploadID[4];
+	uc *bb=(uc*)buffer;
+	len=0;
+	totlen=0;
+
+	res=initUploadNC(dc, filename, uploadID); 
+	if (res!=0) return res;
+	do {
+		res=doUploadNC(dc, &more, &bb, &len, uploadID);
+		totlen+=len;
+		if (res!=0) return res;
+	} while (more);
+	res=endUploadNC(dc, uploadID);
+	*length=totlen;
+	return res;
+}
+
+/*
+1. NC Request -> Request Download
+  -> Antwort auswerten, ob OK, und das erste Byte für die Anzahl n_unack. Sequenc-Number aus Antwort für weitere verwenden
+     Data-unit-ref aus Antwort +1
+2. Nur Push senden bis Anzahl unackcount gesendet.
+3. Antwort abwarten, unackcount neu auslesen
+4. Weitersenden. Bei letztem Paket "Last data unit" auf 0x00 setzen
+*/
+
+// Für Testmodus, Antworten von der NC werden nicht ausgewertet
+// #define NCTESTMODE
+
+//DateTime ts Format: yyMMddHHmmss
+int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, char *ts, char *buffer, int length)
+{
+    PDU p, p2;
+    int res = 0;
+    int size = 0;
+    uc unackcount = 0;
+    uc seq_num = 0;
+    uc dataunitref = 0;
+    int max_data_len = 0;
+    int filename_len = 0;
+    int prefix_len = 0;
+    int buffer_pos = 0;
+    int tot_len = 0;
+
+    /* Request download */
+    uc req_down_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x7f, 0x01, 0x00
+    };
+    uc req_down_da[]= {
+        0xff, 0x09, 0x00, 32,
+        /* Dateiname max. 32 Zeichen */
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00
+    };
+
+    /* Download block */
+    uc do_down_pa[]= {
+        0x00, 0x01, 0x12, 0x08, 0x12, 0x3f, 0x02,
+        0x00,       /* sequence number */
+        0x00,       /* data unit reference */
+        0x01,       /* Last data unit: 0=yes, 1=no */
+        0x00, 0x00  /* errorcode */
+    };
+    /* 1920 ist die von libnodave vorgeschlagene max. PDU-Größe */
+    uc do_down_da[1920 + 6]= {
+        0xff, 0x09,
+        0x00, 0x00, /* block size in bytes */
+        0x00, 0xfb,
+    };
+
+    /* End download */
+    uc end_down_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x7f, 0x04,
+        0x00       /* sequence number */
+    };
+    uc end_down_da[]= { 
+        0xff, 0x09, 0x00, 0x02, 0x00, 0x00
+    };
+
+    filename_len = strlen(filename);    /* max. 32 chars */
+    if (filename_len > 32) {
+        return -1;
+    }
+    req_down_da[3] = filename_len;
+    memcpy(&req_down_da[4], filename, filename_len);
+
+    p.header = dc->msgOut + dc->PDUstartO;
+    _daveInitPDUheader(&p, 7);
+    _daveAddParam(&p, req_down_pa, sizeof(req_down_pa));
+    _daveAddData(&p, req_down_da, 4 + filename_len);
+
+    res = _daveExchange(dc, &p);
+    #ifdef NCTESTMODE
+        res = 0;
+    #endif
+    if (res == daveResOK) {
+        res = _daveSetupReceivedPDU(dc, &p2);
+        if (daveGetDebug() & daveDebugPDU) {
+            _daveDumpPDU(&p2);
+        }
+        /* Errorcode im Parameterteil prüfen */
+        res = daveGetU16from(&p2.param[10]);
+        #ifdef NCTESTMODE
+            res = 0;
+        #endif
+        if (res == 0) {
+            seq_num = p2.param[7];      /* Diesen Wert für alle folgenden Downloadtelegramme verwenden */
+            unackcount = p2.data[4];    /* Anzahl an Paketen die gesendet werden dürfen, ohne auf ein Ack zu warten */
+            do_down_pa[7] = seq_num;
+            /* Max. Länge in datablock = PDUsize - hlen - plen - dheader */
+            max_data_len = daveGetMaxPDULen(dc) - 10 - 12 - 6;
+            do_down_da[6] = '/0';
+            sprintf(do_down_da + 6, "%08d%s    ;$PATH=%s\n", 
+                length + strlen(pathname) + 8,
+                ts,
+                pathname);
+            prefix_len = strlen(do_down_da + 6);
+            tot_len = prefix_len + length;
+            /* Daten senden bis unackcount = 0, dann auf Antwort warten, usw. usf. */
+            while (tot_len > 0) {
+                do_down_pa[8] = ++dataunitref;
+                p.header = dc->msgOut + dc->PDUstartO;
+                _daveInitPDUheader(&p, 7);
+                if (tot_len > max_data_len) {
+                    size = max_data_len;
+                    do_down_pa[9] = 1;  // Last data unit: 1=no
+                } else {
+                    size = tot_len;
+                    do_down_pa[9] = 0;	// Last data unit: 0=yes
+                }
+                memcpy(do_down_da + 6 + prefix_len, buffer + buffer_pos, size - prefix_len);
+                tot_len -= size;
+                buffer_pos += size - prefix_len;
+                prefix_len = 0;
+                do_down_da[2] = (size+2) / 256;
+                do_down_da[3] = (size+2) % 256;
+
+                LOG2("davePutNCProgram: tot_len=%d\n", tot_len);
+
+                _daveAddParam(&p, do_down_pa, sizeof(do_down_pa));
+                _daveAddData(&p, do_down_da, size + 6);
+                if (daveGetDebug() & daveDebugPDU) {
+                    _daveDumpPDU(&p);
+                }
+                if (--unackcount > 0 || do_down_pa[9] == 0) {
+                    /* PDU senden ohne auf Antwort zu warten */
+                    LOG1("davePutNCProgram: Senden ohne auf Antwort zu warten, Aufruf _daveSendTCP...\n");
+                    res = _daveSendTCP(dc, &p);
+                    if (res != daveResOK || do_down_pa[9] == 0) {
+                        LOG1("davePutNCProgram: Daten sind gesendet, gehe zu 'End Download'\n");
+                        break;
+                    }
+                } else {
+                    /* PDU senden mit Warten auf Antwort von NC */
+                    LOG2("davePutNCProgram: unackcount=%d, warte auf Antwort von NC um fortzusetzen...\n", unackcount);
+                    res = _daveExchange(dc, &p);
+                    if (res == daveResOK) {
+                        res = _daveSetupReceivedPDU(dc, &p2);
+                        if (daveGetDebug() & daveDebugPDU) {
+                            _daveDumpPDU(&p2);
+                        }
+                        /* Hier weiß ich nicht wie ein Fehler auszuwerten ist, da weder im
+                         * Kopf- noch im Parameterteil ein Errorcode vorhanden ist.
+                         * Bei Erfolg sollte der Datenteil 6 Bytes groß sein, und unackcount > 0
+                         */
+
+                        /*              push-nc                   continue */
+                        if (p2.param[5] == 0x3f && p2.param[6] == 0x03 && p2.dlen == 6) {
+                            unackcount = 8; //p2.data[4];    /* Anzahl an Paketen die gesendet werden dürfen, ohne auf ein Ack zu warten */
+                            if (unackcount == 0) {
+                                LOG2("davePutNCProgram: in continue response unackcount=%d. Exit!\n", unackcount);
+                                res = daveResUnexpectedFunc;
+                                break;
+                            }
+                        } else {
+                            LOG2("davePutNCProgram: in continue response, falscher Aufbau der Antwort (p2.param[5] = %d). Exit!\n", p2.param[5]);
+                            res = daveResUnexpectedFunc;
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            };
+
+            if (res == daveResOK) {
+                /* End-download senden */
+                LOG1("davePutNCProgram: Sende End download...\n");
+                end_down_pa[7] = seq_num;
+                p.header = dc->msgOut + dc->PDUstartO;
+                _daveInitPDUheader(&p, 7);
+                _daveAddParam(&p, end_down_pa, sizeof(end_down_pa));
+                _daveAddData(&p, end_down_da, sizeof(end_down_da));
+                res = _daveExchange(dc, &p);
+                LOG2("davePutNCProgram: End download, res=%d\n", res);
+                /* Antwort auswerten */
+                if (res == daveResOK) {
+                    res = _daveSetupReceivedPDU(dc, &p2);
+                    if (daveGetDebug() & daveDebugPDU) {
+                        _daveDumpPDU(&p2);
+                    }
+                    if (p2.param[5] == 0xbf && p2.param[6] == 0x04) {
+                        /* Errorcode im Parameterteil prüfen */
+                        res = daveGetU16from(&p2.param[10]);
+                        LOG2("davePutNCProgram: End download, errorcode in parameterteil war res=%d\n", res);
+                    } else {
+                        LOG2("davePutNCProgram: End download, Fehler Parameter: p2.param[5]=0x%02x\n", p2.param[5]);
+                        LOG2("davePutNCProgram: End download, Fehler Parameter: p2.param[6]=0x%02x\n", p2.param[6]);
+                        res = daveResUnexpectedFunc;
+                    }
+                }
+            }
+        } else {
+            LOG2("davePutNCProgram: errorcode erster Antwort: %04X\n", res);
+        }
+    }
+    return res;
+}
+
 
 int DECL2 daveReadPLCTime(daveConnection * dc) {
 	int res, len;

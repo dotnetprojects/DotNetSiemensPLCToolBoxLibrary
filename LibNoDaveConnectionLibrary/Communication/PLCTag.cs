@@ -416,7 +416,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         NotifyPropertyChanged("Value");
                         NotifyPropertyChanged("ValueAsString");
 
-                        if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
+                        if (_raiseValueChangedOnFirstRead == true || _oldvalue != null)
+                            if (ValueChanged != null) ValueChanged(this, new ValueChangedEventArgs(_oldvalue, _value));
 
                         if (MaximumReached != null && _value is IComparable && ((IComparable)_value).CompareTo(Maximum) >= 0) MaximumReached(this, new LimitReachedEventArgs(_oldvalue, Maximum));
 

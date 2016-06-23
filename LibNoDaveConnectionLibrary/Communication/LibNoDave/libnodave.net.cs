@@ -1408,6 +1408,155 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return new libnodave.resultSet();
             }
 
+            #region PI_StartNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePIstart_nc")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePIstart_nc")]
+#endif
+            protected static extern int davePIstart_nc64(IntPtr dc, string piservice, string[] param, int paramCount);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePIstart_nc")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePIstart_nc")]
+#endif
+            protected static extern int davePIstart_nc32(IntPtr dc, string piservice, string[] param, int paramCount);
+            public int PI_StartNC(string piservice, string[] param, int paramCount)
+            {
+                if (IntPtr.Size == 8)
+                    return davePIstart_nc64(pointer, piservice, param, paramCount);
+                else
+                    return davePIstart_nc32(pointer, piservice, param, paramCount);
+            }
+            #endregion
+
+            #region NC file transfer
+            #region daveGetNCProgram
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNCProgram")]
+#endif
+            protected static extern int daveGetNCProgram64(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNCProgram")]
+#endif
+            protected static extern int daveGetNCProgram32(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+            public int daveGetNCProgram(string filename, byte[] buffer, ref int length)
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetNCProgram64(pointer, filename, buffer, ref length);
+                else
+                    return daveGetNCProgram32(pointer, filename, buffer, ref length);
+            }
+            #endregion
+
+            #region davePutNCProgram
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePutNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePutNCProgram")]
+#endif
+            protected static extern int davePutNCProgram64(IntPtr dc, string filename, string path, string ts, byte[] buffer, int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePutNCProgram")]
+#endif
+            protected static extern int davePutNCProgram32(IntPtr dc, string filename, string path, string ts, byte[] buffer, int length);
+
+            /// <summary>
+            /// Send File to NC
+            /// </summary>
+            /// <param name="filename">Path + Filename</param>
+            /// <param name="ts">DateTime: dt.ToString("yyMMddHHmmss")</param>
+            /// <param name="buffer">Filedata to send</param>
+            /// <param name="length">buffer.Length</param>
+            /// <returns></returns>
+            public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+            {
+                if (IntPtr.Size == 8)
+                    return davePutNCProgram64(pointer, filename, path, ts, buffer, length);
+                else
+                    return davePutNCProgram32(pointer, filename, path, ts, buffer, length);
+            }
+            #endregion
+
+            #region initUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "initUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "initUploadNC")]
+#endif
+            protected static extern int initUploadNC64(IntPtr dc, string file, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "initUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "initUploadNC")]
+#endif
+            protected static extern int initUploadNC32(IntPtr dc, string file, byte[] uploadID);
+            public int initUploadNC(string file, ref byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return initUploadNC64(pointer, file, uploadID);
+                else
+                    return initUploadNC32(pointer, file, uploadID);
+            }
+            #endregion
+
+            #region doUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "doSingleUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "doSingleUploadNC")]
+#endif
+            protected static extern int doUploadNC64(IntPtr dc, out int more, byte[] buffer, out int len, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "doSingleUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "doSingleUploadNC")]
+#endif
+            protected static extern int doUploadNC32(IntPtr dc, out int more, byte[] buffer, out int len, byte[] uploadID);
+            public int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return doUploadNC64(pointer, out more, buffer, out len, uploadID);
+                else
+                    return doUploadNC32(pointer, out more, buffer, out len, uploadID);
+            }
+            #endregion
+
+            #region endUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "endUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "endUploadNC")]
+#endif
+            protected static extern int endUploadNC64(IntPtr dc, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "endUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "endUploadNC")]
+#endif
+            protected static extern int endUploadNC32(IntPtr dc, byte[] uploadID);
+            public int endUploadNC(byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return endUploadNC64(pointer, uploadID);
+                else
+                    return endUploadNC32(pointer, uploadID);
+            }
+            #endregion
+            #endregion
         }
 
         public class PDU : pseudoPointer, IPDU

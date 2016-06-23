@@ -24,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private C_PropertyNck pNCK = new C_PropertyNck();
         private PLCNckTag _libnodavevalue;
         private bool startWasNull = false;
-        
+
         private void LibNoDaveValueEditor_Load(object sender, EventArgs e)
         {
             if (_libnodavevalue != null)
@@ -65,10 +65,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return 7;
                 case TagDataType.Float:
                     return 8;
-                case TagDataType.CharArray:
-                    return 19;
                 case TagDataType.LReal:
                     return 15;
+                case TagDataType.LInt:
+                    return 18;
+                case TagDataType.String:
+                case TagDataType.CharArray:
+                    return 19;
                 default:
                     return 0;
             }
@@ -108,13 +111,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case 15:
                     dataType = TagDataType.LReal; //eNCK_LE_Float64;
                     break;
+                case 18:
+                    dataType = TagDataType.LInt; //eNCK_LE_Int64;
+                    break;
                 case 19:
-                    dataType = TagDataType.CharArray; //eNCK_LE_String;
+                    if (_bereich == 2)
+                        dataType = TagDataType.String; //eNCK_LE_String;
+                    else
+                        dataType = TagDataType.CharArray; //eNCK_LE_String;
                     _ArraySize = pNCK.laenge;
                     break;
                 default:
                     throw new Exception("Unknown Type");
-                    break;
             }
             #endregion
 
@@ -122,7 +130,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             this.Close();
         }
-        
+
         private void Cancel_Click(object sender, EventArgs e)
         {
             if (startWasNull)
