@@ -1840,7 +1840,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         /// <param name="valueList"></param>
         /// <param name="useReadOptimization"></param>
-        public void _TestNewReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
+        private void _TestNewReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             if (Configuration.ConnectionType == 20) //AS511
             {
@@ -2337,7 +2337,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
                     //Get the Maximum Answer Len for One PDU
-                    int maxReadSize = _dc.getMaxPDULen() - 32; //32 = Header
+                    int maxReadSize = GetPduSize() - 32; //32 = Header
 
                     //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
 
@@ -3083,7 +3083,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
                     //Get the Maximum Answer Len for One PDU
-                    int maxWriteSize = _dc.getMaxPDULen() - 32; //32 = Header
+                    int maxWriteSize = GetPduSize() - 32; //32 = Header
                     int gesWriteSize = 0;
 
                     //int maxWriteVar = 12; //Is this limit reality? Maybe this is somewhere in the system Data...
