@@ -91,5 +91,21 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
 
             //var tag=new PLCNckTag() { TagDataType = TagDataType.Float, NckArea = 0xa, NckUnit = 0x8,NckColumn = 0x23, NckLine = 0x1,NckModule = 0x1a,NckLinecount = 0x1};
         }
+
+        [TestMethod]
+        public void TestReading2()
+        {
+            var wrapper = new ConnectionWrapper(480);
+            var conn = new PLCConnection(new PLCConnectionConfiguration(), wrapper);
+            var listTag = new List<PLCTag>();
+            listTag.Add(new PLCTag("DB2.DBB0"));
+            listTag.Add(new PLCTag("DB2.DBB1"));
+            listTag.Add(new PLCTag("DB2.DBB2"));
+            conn.ReadValues(listTag, true);
+            var pdus = wrapper.PDUs;
+            string req = string.Join(Environment.NewLine, pdus);
+            string t = "READ  Area:132, DBnum:2, Start:0, Bytes:3";
+            Assert.AreEqual(req, t);
+        }
     }
 }

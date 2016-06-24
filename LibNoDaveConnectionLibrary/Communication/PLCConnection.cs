@@ -2280,15 +2280,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     cntCombinedTags++;
                                     int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                     oldLen = oldLen < newlen ? newlen : oldLen;
-                                    if (oldLen % 2 != 0)
-                                        oldLen++;
+                                    //if (oldLen % 2 != 0)
+                                    //    oldLen++;
                                     rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                     rdHlp.ByteAddress = oldByteAddress;
                                     rdHlp.ArraySize = oldLen;
                                     rdHlp.TagDataSource = oldDataSource;
                                     rdHlp.DataBlockNumber = oldDB;
-                                    //if (oldLen % 2 != 0)
-                                    //    oldLen++;
+                                    if (oldLen % 2 != 0)
+                                        oldLen++;
                                 }
                                 else
                                 {
