@@ -1823,13 +1823,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+
+        public int? ForcedPduSize { get; set; }
+
+        private int GetPduSize()
+        {
+            if (ForcedPduSize.HasValue)
+                return ForcedPduSize.Value;
+
+            return _dc.getMaxPDULen();
+        } 
+
         /// <summary>
         /// A new impl. of read Values...
         /// Need to test it befor, maybe I switch to this....
         /// </summary>
         /// <param name="valueList"></param>
         /// <param name="useReadOptimization"></param>
-        public void _TestNewReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
+        private void _TestNewReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             if (Configuration.ConnectionType == 20) //AS511
             {
@@ -1949,7 +1960,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
                     //Get the Maximum Answer Len for One PDU
-                    int maxReadSize = _dc.getMaxPDULen() - 32; //32 = Header
+                    int maxReadSize = GetPduSize() - 32; //32 = Header
 
                     //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
 
@@ -2269,12 +2280,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     cntCombinedTags++;
                                     int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                     oldLen = oldLen < newlen ? newlen : oldLen;
-                                    if (oldLen%2 != 0) oldLen++;
+                                    //if (oldLen % 2 != 0)
+                                    //    oldLen++;
                                     rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                     rdHlp.ByteAddress = oldByteAddress;
                                     rdHlp.ArraySize = oldLen;
                                     rdHlp.TagDataSource = oldDataSource;
                                     rdHlp.DataBlockNumber = oldDB;
+                                    if (oldLen % 2 != 0)
+                                        oldLen++;
                                 }
                                 else
                                 {
@@ -2294,7 +2308,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     oldDB = plcTag.DataBlockNumber;
                                     oldByteAddress = plcTag.ByteAddress;
                                     oldLen = plcTag._internalGetSize();
-                                    if (oldLen%2 != 0) oldLen++;
+                                    if (oldLen%2 != 0)
+                                        oldLen++;
                                     lastTag = plcTag;
                                     cntCombinedTags++;
                                 }
@@ -2322,7 +2337,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
                     //Get the Maximum Answer Len for One PDU
-                    int maxReadSize = _dc.getMaxPDULen() - 32; //32 = Header
+                    int maxReadSize = GetPduSize() - 32; //32 = Header
 
                     //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
 
@@ -3068,7 +3083,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
                     //Get the Maximum Answer Len for One PDU
-                    int maxWriteSize = _dc.getMaxPDULen() - 32; //32 = Header
+                    int maxWriteSize = GetPduSize() - 32; //32 = Header
                     int gesWriteSize = 0;
 
                     //int maxWriteVar = 12; //Is this limit reality? Maybe this is somewhere in the system Data...
