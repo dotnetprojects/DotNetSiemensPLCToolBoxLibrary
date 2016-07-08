@@ -1004,6 +1004,67 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        public S7BlockInfo LoadBlockInfo(PLCBlockType type, int number)
+        {
+            //Auto connect or Error if not connected yet
+            if (AutoConnect && !Connected)
+                Connect();
+
+            //Load Block List from PLC
+            //Para Format:
+            //Byte 0 : 0 Header 
+            //Byte 1 : 1 Header
+            //Byte 2 : 18 Header
+            //Byte 3 : length of Parameter in Bytes starting at byte 4
+            //Byte 4 : 17 Unknown
+            //Byte 5 : Function code?
+            //Byte 6 :Sub Function Code?
+
+            //Data Format:
+            //   Byte 0-1    : Block type as Hexadecimal in ASCII (DB = 10d = 0xA = 'A')
+            //   Byte 2-6    : Block Number formated as "0" padded ASCII Number. So the maximum number is 99999
+            //   Byte 7      : 'A' Identifier for end of request
+            int res = 0;
+            libnodave.PDU PDU = new libnodave.PDU();
+            byte[] Para = {0,1,18,4,17,67,3,0};
+
+            //Data for Initial Request
+            byte[] Data = {48 ,48,48,48,48,49,48,65}; //Fill request with out default Block type and Block number = 1
+            
+            //Block Type sent as Hexadecimal via ASCII
+            Data[1] = (byte)((int)type).ToString("X")[0];
+
+            //Block number
+            string NumberStr = number.ToString().PadLeft(5, '0');
+            byte[] NumberBytes = System.Text.Encoding.ASCII.GetBytes(NumberStr);
+            NumberBytes.CopyTo(Data, 2);
+
+            //End of Request
+            Data[7] =(byte)'A';         
+
+            //Send Request
+            res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
+            if (!(res == 0))
+            {
+                throw new Exception("Block Info could not be loaded: " + libnodave.daveStrerror(res));
+            }
+
+            //Wait for Respond
+            byte[] RecData = null;
+            //the Received Data
+            byte[] RecPara = null;
+            //The Receive Parameter
+
+            res = _dc.daveRecieveData(out RecData, out RecPara);
+            if (!(res == 0))
+            {
+                throw new Exception("Block Info could not be loaded: " + libnodave.daveStrerror(res));
+            }
+
+            //Trim first 4 bytes from Result header
+            return new S7BlockInfo(RecData, 4);
+        }
+
         public int PLCGetDataBlockSize(string BlockName)
         {
             var akdb = this.PLCGetBlockInMC7(BlockName);
