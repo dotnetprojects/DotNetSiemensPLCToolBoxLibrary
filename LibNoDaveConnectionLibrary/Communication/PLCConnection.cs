@@ -1004,7 +1004,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        public S7BlockInfo LoadBlockInfo(PLCBlockType type, int number)
+        /// <summary>
+        /// Load the basic header information from the PLC. This is more efficient than loading whole MC7 code from the plc
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public S7Block PLCGetBlockHeader(PLCBlockType type, int number)
         {
             //Auto connect or Error if not connected yet
             if (AutoConnect && !Connected)
@@ -1027,8 +1033,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             int res = 0;
             libnodave.PDU PDU = new libnodave.PDU();
             byte[] Para = {0,1,18,4,17,67,3,0};
-
-            //Data for Initial Request
             byte[] Data = {48 ,48,48,48,48,49,48,65}; //Fill request with out default Block type and Block number = 1
             
             //Block Type sent as Hexadecimal via ASCII
@@ -1044,10 +1048,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //Send Request
             res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
-            if (!(res == 0))
-            {
-                throw new Exception("Block Info could not be loaded: " + libnodave.daveStrerror(res));
-            }
+            if (res != 0)
+                throw new Exception("Error: " + _errorCodeConverter(res));
 
             //Wait for Respond
             byte[] RecData = null;
@@ -1057,12 +1059,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             res = _dc.daveRecieveData(out RecData, out RecPara);
             if (!(res == 0))
-            {
-                throw new Exception("Block Info could not be loaded: " + libnodave.daveStrerror(res));
-            }
+                throw new Exception("Error: " + _errorCodeConverter(res));
 
-            //Trim first 4 bytes from Result header
-            return new S7BlockInfo(RecData, 4);
+            //Trim first 10 bytes from header
+            byte[] MC7Code = new byte[RecData.Length - 10];
+            Array.Copy(RecData, 10, MC7Code, 0, MC7Code.Length);
+
+            //Parse Header
+            return MC7Converter.GetAWLBlockBasicInfoFromBlockHeader(MC7Code, 0);
         }
 
         public int PLCGetDataBlockSize(string BlockName)
