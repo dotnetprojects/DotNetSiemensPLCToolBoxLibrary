@@ -1005,6 +1005,71 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         /// <summary>
+        /// List available blocks of an given type in the online plc
+        /// </summary>
+        /// <param name="myBlk">the block-type to list. Also "AllBlocks" is supported</param>
+        /// <returns></returns>
+        public List<PLCBlockName> PLCListBlocks2(DataTypes.PLCBlockType myBlk)
+        {
+            lock (lockObj)
+            {
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                if (_dc != null)
+                {
+                    List<PLCBlockName> myRet = new List<PLCBlockName>();
+
+                    byte[] blocks = new byte[2048 * 16];
+
+                    if (myBlk == DataTypes.PLCBlockType.AllBlocks &&
+                        ConnectionTargetPLCType == ConnectionTargetPLCType.S7)
+                    {
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.OB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.DB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SFC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SFB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SDB));
+                    }
+                    else if (myBlk == DataTypes.PLCBlockType.AllEditableBlocks &&
+                        ConnectionTargetPLCType == ConnectionTargetPLCType.S7)
+                    {
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.OB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.DB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SDB));
+                    }
+                    else
+                    {
+                        int ret = _dc.ListBlocksOfType(Helper.GetPLCBlockTypeForBlockList(myBlk), blocks);
+                        if (ret < 0 && ret != -53763 && ret != -53774 && ret != -255)
+                            throw new Exception("Error: " + _errorCodeConverter(ret));
+                        if (ret > 0)
+                            for (int n = 0; n < ret * 4; n += 4)
+                            {
+                                int nr = blocks[n] + blocks[n + 1] * 256;
+                                myRet.Add(new PLCBlockName(myBlk, nr));
+                            }
+                    }
+                    return myRet;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Load the basic header information from the PLC. This is more efficient than loading whole MC7 code from the plc
+        /// </summary>
+        public S7Block PLCGetBlockHeader(string blockName)
+        {
+            PLCBlockName bn = new PLCBlockName(blockName);
+            return PLCGetBlockHeader(bn.BlockType, bn.BlockNumber);
+        }
+
+        /// <summary>
         /// Load the basic header information from the PLC. This is more efficient than loading whole MC7 code from the plc
         /// </summary>
         /// <param name="type"></param>
@@ -1071,14 +1136,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public int PLCGetDataBlockSize(string BlockName)
         {
-            var akdb = this.PLCGetBlockInMC7(BlockName);
-            var blk = MC7Converter.GetAWLBlockBasicInfo(akdb, 0);
-
+            var blk = PLCGetBlockHeader(BlockName);
             if (blk == null)
                 return 0;
             return blk.CodeSize;
         }
-
 
         public byte[] PLCGetBlockInMC7(string BlockName)
         {
