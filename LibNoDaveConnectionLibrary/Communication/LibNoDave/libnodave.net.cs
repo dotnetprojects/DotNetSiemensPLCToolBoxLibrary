@@ -813,10 +813,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             {
                 int res = 0;
                 if (IntPtr.Size == 8)
-                    res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
+                    if (Data == null)
+                        res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, null,0);
+                    else
+                        res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
+
                 else
-                    res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
-                //return p;
+                    if (Data == null)
+                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, null, 0);
+                    else
+                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
                 return res;
             }
 
