@@ -396,6 +396,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             Dispose();
         }
 
+        /// <summary>
+        /// Stop execution of the User Program in the Controller
+        /// WARNING! use with caution!
+        /// </summary>
         public void PLCStop()
         {
             lock (lockObj)
@@ -408,6 +412,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Start execution of the User Program in the Controller
+        /// WARNING! use with caution!
+        /// </summary>
         public void PLCStart()
         {
             lock (lockObj)
@@ -420,6 +428,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Read the current time of the controllers system time
+        /// </summary>
+        /// <returns></returns>
         public DateTime PLCReadTime()
         {
             lock (lockObj)
@@ -433,6 +445,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Set the controllers current system time
+        /// </summary>
+        /// <param name="tm"></param>
         public void PLCSetTime(DateTime tm)
         {
             lock (lockObj)
@@ -899,6 +915,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Send the password to the PLC for authentication. this is only necessary if the controllers password protection is active
+        /// </summary>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
         public bool PLCSendPassword(string pwd)
         {
             lock (lockObj)
@@ -931,6 +952,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Get the current Execution status from the controller
+        /// </summary>
+        /// <returns></returns>
         public DataTypes.PLCState PLCGetState()
         {
             lock (lockObj)
@@ -960,6 +985,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #endregion
 
         #region PLC Blocks and Inventory
+        /// <summary>
+        /// Load an full or partial list of all currently loaded code and data blocks in the controller
+        /// </summary>
+        /// <param name="myBlk">the block type that will be listed</param>
+        /// <returns>Returns an list of string short names of the existing blocks such as "DB1" "FC987"...</returns>
         public List<string> PLCListBlocks(DataTypes.PLCBlockType myBlk)
         {
             lock (lockObj)
@@ -1014,10 +1044,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         /// <summary>
-        /// List available blocks of an given type in the online plc
+        /// Load an full or partial list of all currently loaded code and data blocks in the controller
         /// </summary>
-        /// <param name="myBlk">the block-type to list. Also "AllBlocks" is supported</param>
-        /// <returns></returns>
+        /// <param name="myBlk">the block type that will be listed</param>
+        /// <returns>Returns an list of Block Names containing the block types and numbers</returns>
         public List<PLCBlockName> PLCListBlocks2(DataTypes.PLCBlockType myBlk)
         {
             lock (lockObj)
@@ -1197,6 +1227,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Returns the data block size of th Requested data block
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <returns></returns>
         public int PLCGetDataBlockSize(string BlockName)
         {
             var blk = PLCGetBlockHeader(BlockName);
@@ -1205,6 +1240,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return blk.CodeSize;
         }
 
+        /// <summary>
+        /// Get the MC7 Code from the controller of the requested block. The MC7 code represents the whole code and all header information of the block
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <returns></returns>
         public byte[] PLCGetBlockInMC7(string BlockName)
         {
             lock (lockObj)
@@ -1270,6 +1310,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Downloads an MC7 formatted block to the PLC. WARNING use with caution!
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <param name="buffer">An buffer containing the MC7 code of the block to download</param>
         public void PLCPutBlockFromMC7toPLC(string BlockName, byte[] buffer)
         {
             lock (lockObj)
@@ -1345,6 +1390,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Deletes an code or data block from the connected controller. WARNING use with cation!
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
         public void PLCDeleteBlock(string BlockName)
         {
             lock (lockObj)
@@ -1384,6 +1433,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #endregion
 
         #region PLC Memory and Diagnostics
+        /// <summary>
+        /// Upload an System State list (SZL) from the controller that hold configuration, state and capability information
+        /// For information about SZLNummbers and indexes please consult the information from SIEMENS regarding SFC51 "RDSYSST"
+        /// </summary>
+        /// <param name="SZLNummer">The System State list Number</param>
+        /// <param name="Index">The System State sub list number</param>
+        /// <returns></returns>
         public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
         {
             lock (lockObj)
@@ -1544,6 +1600,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Read the Controllers Diagnostic buffer containing controller events
+        /// </summary>
+        /// <returns></returns>
         public List<DataTypes.DiagnosticEntry> PLCGetDiagnosticBuffer()
         {
             lock (lockObj)
