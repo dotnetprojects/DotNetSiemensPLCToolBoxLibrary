@@ -833,8 +833,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             Result = "";
             for (i = 0; i <= Count - 1; i++)
-                Result = Result + (BD[Start + i]).ToString();
-            Result = Result.Trim();
+                Result = Result + (char)(BD[Start + i]);
+            Result = Result.Trim().Replace("\0", string.Empty); //Remove Null chars
 
             return Result;
         }

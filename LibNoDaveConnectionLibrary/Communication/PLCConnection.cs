@@ -49,7 +49,7 @@ using ThreadState = System.Threading.ThreadState;
  * Todo: List Online Partners
  * Todo: (Maybe) Read the Routing SDB (write it also)
  * Todo: Memory of the CPU
- * Todo: Compress Memory
+ * Todo: Compress Memory (needs more testing)
  */
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
@@ -190,6 +190,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
         }
 
+        #region General
         /// <summary>
         /// Connect to the PLC
         /// </summary>
@@ -387,6 +388,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
         
+        /// <summary>
+        /// This Disconnects from the PLC and the Adapter
+        /// </summary>
+        public void Disconnect()
+        {
+            Dispose();
+        }
+
         public void PLCStop()
         {
             lock (lockObj)
@@ -583,7 +592,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
         private byte GetByteForSelectedRegisters(S7FunctionBlockRow.SelectedStatusValues mySel, byte telegrammType)            
         {
             byte retval = 0x00;
@@ -601,8 +609,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return retval;
             }
         }
-
-
+        
         /// <summary>
         /// This Starts a Request for the Status of a PLC FunctionBlock
         /// </summary>
@@ -950,7 +957,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return DataTypes.PLCState.Unkown;
             }
         }
+        #endregion
 
+        #region PLC Blocks and Inventory
         public List<string> PLCListBlocks(DataTypes.PLCBlockType myBlk)
         {
             lock (lockObj)
@@ -1004,16 +1013,197 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// List available blocks of an given type in the online plc
+        /// </summary>
+        /// <param name="myBlk">the block-type to list. Also "AllBlocks" is supported</param>
+        /// <returns></returns>
+        public List<PLCBlockName> PLCListBlocks2(DataTypes.PLCBlockType myBlk)
+        {
+            lock (lockObj)
+            {
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                if (_dc != null)
+                {
+                    List<PLCBlockName> myRet = new List<PLCBlockName>();
+
+                    byte[] blocks = new byte[2048 * 16];
+
+                    if (myBlk == DataTypes.PLCBlockType.AllBlocks &&
+                        ConnectionTargetPLCType == ConnectionTargetPLCType.S7)
+                    {
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.OB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.DB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SFC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SFB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SDB));
+                    }
+                    else if (myBlk == DataTypes.PLCBlockType.AllEditableBlocks &&
+                        ConnectionTargetPLCType == ConnectionTargetPLCType.S7)
+                    {
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.OB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FC));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.FB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.DB));
+                        myRet.AddRange(PLCListBlocks2(DataTypes.PLCBlockType.SDB));
+                    }
+                    else
+                    {
+                        int ret = _dc.ListBlocksOfType(Helper.GetPLCBlockTypeForBlockList(myBlk), blocks);
+                        if (ret < 0 && ret != -53763 && ret != -53774 && ret != -255)
+                            throw new Exception("Error: " + _errorCodeConverter(ret));
+                        if (ret > 0)
+                            for (int n = 0; n < ret * 4; n += 4)
+                            {
+                                int nr = blocks[n] + blocks[n + 1] * 256;
+                                myRet.Add(new PLCBlockName(myBlk, nr));
+                            }
+                    }
+                    return myRet;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the amount of blocks per block type in the PLC
+        /// </summary>
+        /// <returns>An Dictionary containing the block count for each Block type in the PLC</returns>
+        public Dictionary<PLCBlockType, int> PLCGetBlockCount()
+        {
+            lock (lockObj)
+            {
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                if (_dc != null)
+                {
+                    int res = 0;
+                    libnodave.PDU PDU = new libnodave.PDU();
+                    byte[] Para = { 0, 1, 18, 4, 17, 67, 1, 0 };
+                    byte[] Data = null; //no data part for this message
+
+                    //Send Request
+                    res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
+                    if (res != 0)
+                        throw new Exception("Error: " + _errorCodeConverter(res));
+
+                    //Wait for Respond
+                    byte[] RecData = null;
+                    byte[] RecPara = null;
+
+                    res = _dc.daveRecieveData(out RecData, out RecPara);
+                    if (!(res == 0))
+                        throw new Exception("Error: " + _errorCodeConverter(res));
+
+                    //Parse Response data
+                    Dictionary<PLCBlockType, int> dict = new Dictionary<PLCBlockType, int>();
+
+                    //Each Structure has 4 Byte
+                    for (int i = 4; i <= RecData.Length - 1; i += 4)
+                    {
+                        int count = RecData[i + 3] + RecData[i + 2] * 256;
+
+                        //the Block type is sent as ASCII
+                        char blk = (char)RecData[i + 1];
+                        PLCBlockType blkt = (PLCBlockType)int.Parse(blk.ToString(), System.Globalization.NumberStyles.HexNumber);
+
+                        dict.Add(blkt, count);
+                    }
+                    return dict;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Load the basic header information from the PLC. This is more efficient than loading whole MC7 code from the plc
+        /// </summary>
+        public S7Block PLCGetBlockHeader(string blockName)
+        {
+            PLCBlockName bn = new PLCBlockName(blockName);
+            return PLCGetBlockHeader(bn.BlockType, bn.BlockNumber);
+        }
+
+        /// <summary>
+        /// Load the basic header information from the PLC. This is more efficient than loading whole MC7 code from the plc
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public S7Block PLCGetBlockHeader(PLCBlockType type, int number)
+        {
+            lock (lockObj)
+            {
+                //Auto connect or Error if not connected yet
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                //Load Block List from PLC
+                //Para Format:
+                //Byte 0 : 0 Header 
+                //Byte 1 : 1 Header
+                //Byte 2 : 18 Header
+                //Byte 3 : length of Parameter in Bytes starting at byte 4
+                //Byte 4 : 17 Unknown
+                //Byte 5 : Function code?
+                //Byte 6 :Sub Function Code?
+
+                //Data Format:
+                //   Byte 0-1    : Block type as Hexadecimal in ASCII (DB = 10d = 0xA = 'A')
+                //   Byte 2-6    : Block Number formated as "0" padded ASCII Number. So the maximum number is 99999
+                //   Byte 7      : 'A' Identifier for end of request
+                int res = 0;
+                libnodave.PDU PDU = new libnodave.PDU();
+                byte[] Para = { 0, 1, 18, 4, 17, 67, 3, 0 };
+                byte[] Data = { 48, 48, 48, 48, 48, 49, 48, 65 }; //Fill request with out default Block type and Block number = 1
+
+                //Block Type sent as Hexadecimal via ASCII
+                Data[1] = (byte)((int)type).ToString("X")[0];
+
+                //Block number
+                string NumberStr = number.ToString().PadLeft(5, '0');
+                byte[] NumberBytes = System.Text.Encoding.ASCII.GetBytes(NumberStr);
+                NumberBytes.CopyTo(Data, 2);
+
+                //End of Request
+                Data[7] = (byte)'A';
+
+                //Send Request
+                res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
+                if (res != 0)
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+
+                //Wait for Respond
+                byte[] RecData = null;
+                //the Received Data
+                byte[] RecPara = null;
+                //The Receive Parameter
+
+                res = _dc.daveRecieveData(out RecData, out RecPara);
+                if (!(res == 0))
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+
+                //Trim first 10 bytes from header
+                byte[] MC7Code = new byte[RecData.Length - 10];
+                Array.Copy(RecData, 10, MC7Code, 0, MC7Code.Length);
+
+                //Parse Header
+                return MC7Converter.GetAWLBlockBasicInfoFromBlockHeader(MC7Code, 0);
+            }
+        }
+
         public int PLCGetDataBlockSize(string BlockName)
         {
-            var akdb = this.PLCGetBlockInMC7(BlockName);
-            var blk = MC7Converter.GetAWLBlockBasicInfo(akdb, 0);
-
+            var blk = PLCGetBlockHeader(BlockName);
             if (blk == null)
                 return 0;
             return blk.CodeSize;
         }
-
 
         public byte[] PLCGetBlockInMC7(string BlockName)
         {
@@ -1154,6 +1344,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
         }
+
         public void PLCDeleteBlock(string BlockName)
         {
             lock (lockObj)
@@ -1190,7 +1381,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+        #endregion
 
+        #region PLC Memory and Diagnostics
         public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
         {
             lock (lockObj)
@@ -1351,9 +1544,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
-
-
         public List<DataTypes.DiagnosticEntry> PLCGetDiagnosticBuffer()
         {
             lock (lockObj)
@@ -1430,7 +1620,83 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return null;
             }
         }
-        
+
+        /// <summary>
+        /// Compress the Memory of the PLC. This performs an "de-fragmentation" of the PLCs memory 
+        /// in order to produce bigger "chunks" of free memory.
+        /// </summary>
+        /// <remarks>This function takes a very, very long time to process</remarks>
+        public void PLCCompressMemory()
+        {
+            lock (lockObj)
+            {
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                //This is a very slow function, so increase the timeout
+                int Timeout = _di.getTimeout();
+                _di.setTimeout(Timeout * 10);
+
+                int res = 0;
+                libnodave.PDU PDU = new libnodave.PDU();
+                byte[] Para = { 0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 0x00, 5, (byte)'_', (byte)'G', (byte)'A', (byte)'R', (byte)'B' };
+                byte[] Data = null; //no data part for this message
+
+                //Send Request
+                res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
+                if (res != 0)
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+
+                //Wait for Respond
+                byte[] RecData = null;
+                byte[] RecPara = null;
+
+                res = _dc.daveRecieveData(out RecData, out RecPara);
+                _di.setTimeout(Timeout * 10); //Restore original Timeout
+
+                if (!(res == 0))
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+            }
+       }
+
+        /// <summary>
+        /// Copy the Content of the volatile RAM memory to the Non-volatile ROM memory
+        /// </summary>
+        public void PLCCopyRamToRom()
+        {
+            lock (lockObj)
+            {
+                if (AutoConnect && !Connected)
+                    Connect();
+
+                //This is a very slow function, so increase the timeout
+                int Timeout = _di.getTimeout();
+                _di.setTimeout(Timeout * 10);
+
+                int res = 0;
+                libnodave.PDU PDU = new libnodave.PDU();
+                byte[] Para = { 0x28, 0, 0, 0, 0, 0, 0, 0xfd, 0, 2, (byte)'E', (byte)'P', 5, (byte)'_', (byte)'M', (byte)'O', (byte)'D', (byte)'U' };
+                byte[] Data = null; //no data part for this message
+
+                //Send Request
+                res = _dc.daveBuildAndSendPDU(PDU, Para, Data);
+                if (res != 0)
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+
+                //Wait for Respond
+                byte[] RecData = null;
+                byte[] RecPara = null;
+
+                res = _dc.daveRecieveData(out RecData, out RecPara);
+                _di.setTimeout(Timeout * 10); //Restore original Timeout
+
+                if (!(res == 0))
+                    throw new Exception("Error: " + _errorCodeConverter(res));
+            }
+        }
+        #endregion
+
+        #region VarTab
         public class VarTabReadData : IDisposable
         {
             internal short ReqestID;
@@ -1527,7 +1793,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     Close();
             }
         }
-
 
         public VarTabReadData ReadValuesWithVarTabFunctions(IEnumerable<PLCTag> valueList, PLCTriggerVarTab ReadTrigger)
         {
@@ -1759,7 +2024,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return retVal;
             */
         }
+        #endregion
 
+        #region Read and Write Memory
         //Helper for Readvalues
         //Sort the PLC TAGs
         private class SorterForPLCTags : IComparer<PLCTag>
@@ -3243,6 +3510,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+        #endregion
 
         #region NC PI-Service
 
@@ -3344,15 +3612,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 throw new Exception("DownloadToNC: " + res);
         }
         #endregion
-
-
-        /// <summary>
-        /// This Disconnects from the PLC and the Adapter
-        /// </summary>
-        public void Disconnect()
-        {
-            Dispose();
-        }
 
         public void Dispose()
         {
