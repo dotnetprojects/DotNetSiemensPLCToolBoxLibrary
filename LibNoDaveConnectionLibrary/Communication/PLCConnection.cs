@@ -192,8 +192,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         #region General
         /// <summary>
-        /// Connect to the PLC
-        /// </summary>
+        /// Connect to the PLC with the selected Configuration
+        /// /// </summary>
         public void Connect()
         {
             lock (lockObj)
@@ -2479,12 +2479,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
+        /// It tries to Optimize how the Values are Read from the PLC
+        /// </summary>
+        /// <param name="valueList">The List of values to be read form the controller</param>   
         public void ReadValues(IEnumerable<PLCTag> valueList)
         {
             ReadValues(valueList, true);
         }
 
         Dictionary<int, int> _dbSizes = null;
+
+        /// <summary>
+        /// This function read Values from the PLC but also tries to verify the data-block sizes against 
+        /// the current sizes in the controller. If an requested TAG exceeds the data-blocks current size
+        /// the item will be set to "ItemDoesNotExist". This will only affect Tags reading from data-blocks
+        /// </summary>
+        /// <param name="valueList">The list of tags to read from the controller</param>
+        /// <param name="cacheDbSizes">Read the data-blocks length and cache them for future requests.</param>
+        /// <remarks>This function potentially improves read performance when there are many tags with different data block length.
+        /// if the tag exceeds the data-blocks length, it will fail before sending it to the controller</remarks>
         public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList, bool cacheDbSizes = false)
         {
             if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
@@ -2531,7 +2546,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
         /// It tries to Optimize how the Values are Read from the PLC
         /// </summary>
-        /// <param name="valueList"></param>        
+        /// <param name="valueList">The List of values to be read form the controller</param>   
         public void ReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             if (Configuration.ConnectionType == 20) //AS511
@@ -2987,7 +3002,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }  
         }
 
-
+        /// <summary>
+        /// Read PLC Tags using the Fetch/Write mechanism
+        /// </summary>
+        /// <param name="valueList"></param>
+        /// <param name="useReadOptimization"></param>
         internal void ReadValuesFetchWrite(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             lock (lockObj)
@@ -3085,6 +3104,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <param name="type">The PLC data type to load and convert</param>
+        /// <returns></returns>
         public object ReadValue(string address, TagDataType type)
         {
             var tag = new PLCTag(address, type);
@@ -3092,12 +3118,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return tag.Value;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <param name="type">The PLC data type to load and convert</param>
+        /// <returns></returns>
         public object ReadValue<T>(string address, TagDataType type)
         {
             var wrt = ReadValue(address, type);
             return (T) wrt;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <returns></returns>
         public object ReadValue(string address)
         {
             var tag = new PLCTag(address);
@@ -3105,6 +3142,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return tag.Value;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <returns></returns>
         public object ReadValue<T>(string address)
         {
             var wrt = ReadValue(address);
@@ -3257,17 +3299,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Remove all PLC tags currently in the write Queue. This aborts the pending write requests.
+        /// </summary>
         public void WriteQueueClear()
         {
             _writeQueue.Clear();
         }
 
+        /// <summary>
+        /// Add an new PLC tag to the Queue to be written to the PLC
+        /// </summary>
+        /// <param name="tag"></param>
         public void WriteQueueAdd(PLCTag tag)
         {
             _writeQueue.Add(tag);
         }
 
-         
+        /// <summary>
+        /// Write all pending PLC tags in the Queue to the PLC
+        /// </summary>
         public void WriteQueueWriteToPLC()
         {
             if (_writeQueue.Count > 0)
@@ -3282,15 +3333,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _writeQueue.Clear();
         }
 
+        /// <summary>
+        /// Write an list of values to the PLC
+        /// </summary>
+        /// <param name="valueList">The list of Values to write to the controller</param>
         public void WriteValues(IEnumerable<PLCTag> valueList)
         {
             WriteValues(valueList, false);
         }
 
         /// <summary>
-        /// 
+        /// Write an list of values to the PLC
         /// </summary>
-        /// <param name="valueList"></param>
+        /// <param name="valueList">The list of Values to write to the controller</param>
         /// <param name="useWriteOptimation">If set to true, write optimation is enabled, but then, the order of your written values can varry, also a 4 byte value can be splittet written to the plc!</param>
         public void WriteValues(IEnumerable<PLCTag> valueList, bool useWriteOptimation)
         {
