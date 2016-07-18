@@ -178,7 +178,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// Create an new PLC Tag
         /// </summary>
-        /// <param name="address">The Simatic Address for the data in the controller such as: "DB23.DBW0"; "DB67.DBX8.0 Byte9" (for Arrays); "M0.2"; "MB8"; "T8"</param>
+        /// <param name="address">The Simatic Address for the data in the controller such as:
+        /// Inputs: I4.0, IB4, IW4 , ID4
+        /// Outputs: Q124.0, QB124, QW124, QD124
+        /// Markers: M11.0, MB10, MW10, MD10
+        /// Timers: T34
+        /// Counters: C23
+        /// Data Block: DB5.DBX2.0, DB5.DBW6
+        /// Arrays and String: "P#DB25.DBX0.0 BYTE 14"; "P#M0.0 WORD 2"; "P#I0.0 DWORD 5"
+        ///</param>
         /// <param name="type">The data type to be read from the Controller</param>
         public PLCTag(string address, TagDataType type)
         {
