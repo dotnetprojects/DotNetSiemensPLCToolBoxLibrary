@@ -56,6 +56,7 @@
     <Compile Include="ResultSetWrapper.cs" />
     <Compile Include="TestDataBlockReading.cs" />
     <Compile Include="TestLibNoDaveReading.cs" />
+    <Compile Include="TestMC7Converter.cs" />
     <Compile Include="TestPLCBlockName.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +64,22 @@
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="S7Blocks\DB121.awl" />
+    <None Include="S7Blocks\DB121.bin" />
+    <None Include="S7Blocks\DB13.awl" />
+    <None Include="S7Blocks\DB13.bin" />
+    <None Include="S7Blocks\DB4.awl" />
+    <None Include="S7Blocks\DB4.bin" />
+    <None Include="S7Blocks\FB1001.awl" />
+    <None Include="S7Blocks\FB1001.bin" />
+    <None Include="S7Blocks\FB101.awl" />
+    <None Include="S7Blocks\FB101.bin" />
+    <None Include="S7Blocks\FC1.awl" />
+    <None Include="S7Blocks\FC1.bin" />
+    <None Include="S7Blocks\FC100.awl" />
+    <None Include="S7Blocks\FC100.bin" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
