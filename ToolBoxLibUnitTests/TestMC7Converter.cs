@@ -149,18 +149,18 @@ namespace ToolBoxLibUnitTests
 
             //_____________________________________________________________________________
             //Read Function-Block with Instance data
-            block = File.ReadAllBytes(dir + "FB1001.bin");
-            FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+            //block = File.ReadAllBytes(dir + "FB1001.bin");
+            //FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
 
-            Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
-            Assert.AreEqual(1001, FB.BlockNumber);
-            Assert.AreEqual(126, FB.Length); //Load memory Size
-            Assert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
-            Assert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
-            Assert.AreEqual(1, FB.Networks.Count);
+            //Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
+            //Assert.AreEqual(1001, FB.BlockNumber);
+            //Assert.AreEqual(126, FB.Length); //Load memory Size
+            //Assert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
+            //Assert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
+            //Assert.AreEqual(1, FB.Networks.Count);
 
-            string t = FB.ToString();
-            Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl"), FB.ToString());
+            //string t = FB.ToString();
+            //Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl"), FB.ToString());
         }
 
 
