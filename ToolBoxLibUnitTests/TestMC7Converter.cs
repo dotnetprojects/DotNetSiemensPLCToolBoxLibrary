@@ -32,7 +32,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(121, DB.BlockNumber);
             Assert.AreEqual(21418, DB.Length); //Load memory Size
             Assert.AreEqual(20824, DB.CodeSize); //Data size, this is the relevant data length
-            Assert.AreEqual(File.ReadAllText(dir + "DB121.awl"), DB.Structure.ToString());
+            Assert.AreEqual(File.ReadAllText(dir + "DB121.awl").Trim(), DB.Structure.ToString().Trim());
 
             //_____________________________________________________________________________
             //Read Data-block With long Array of Structs
@@ -44,7 +44,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(13, DB.BlockNumber);
             Assert.AreEqual(64214, DB.Length); //Load memory Size
             Assert.AreEqual(64040, DB.CodeSize); //Data size, this is the relevant data length
-            Assert.AreEqual(File.ReadAllText(dir + "DB13.awl"), DB.Structure.ToString());
+            Assert.AreEqual(File.ReadAllText(dir + "DB13.awl").Trim(), DB.Structure.ToString().Trim());
 
             //_____________________________________________________________________________
             //Read Data-block With array and single Static Reals
@@ -56,7 +56,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(4, DB.BlockNumber);
             Assert.AreEqual(8094, DB.Length); //Load memory Size
             Assert.AreEqual(6000, DB.CodeSize); //Data size, this is the relevant data length
-            Assert.AreEqual(File.ReadAllText(dir + "DB4.awl"), DB.Structure.ToString());          
+            Assert.AreEqual(File.ReadAllText(dir + "DB4.awl").Trim(), DB.Structure.ToString().Trim());          
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual("FC16", tmp[11]);
             Assert.AreEqual("FC21", tmp[13]);
 
-            Assert.AreEqual(File.ReadAllText(dir + "FC1.awl"), FC.ToString());
+            Assert.AreEqual(File.ReadAllText(dir + "FC1.awl").Trim(), FC.ToString().Trim());
 
             //_____________________________________________________________________________
             //Read complex Function-code 
@@ -114,7 +114,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual("FC[LW16]", tmp[18]);
             Assert.AreEqual("SFC20", tmp[22]);
 
-            Assert.AreEqual(File.ReadAllText(dir + "FC100.awl"), FC.ToString());
+            Assert.AreEqual(File.ReadAllText(dir + "FC100.awl").Trim(), FC.ToString().Trim());
         }
 
         [TestMethod]
@@ -145,24 +145,22 @@ namespace ToolBoxLibUnitTests
             List<string> tmp = new List<string>(FB.CalledBlocks);
             Assert.AreEqual("FC100", tmp[0]);
 
-            Assert.AreEqual(File.ReadAllText(dir + "FB101.awl"), FB.ToString());
+            Assert.AreEqual(File.ReadAllText(dir + "FB101.awl").Trim(), FB.ToString().Trim());
 
             //_____________________________________________________________________________
             //Read Function-Block with Instance data
-            //block = File.ReadAllBytes(dir + "FB1001.bin");
-            //FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+            block = File.ReadAllBytes(dir + "FB1001.bin");
+            FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
 
-            //Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
-            //Assert.AreEqual(1001, FB.BlockNumber);
-            //Assert.AreEqual(126, FB.Length); //Load memory Size
-            //Assert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
-            //Assert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
-            //Assert.AreEqual(1, FB.Networks.Count);
+            Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
+            Assert.AreEqual(1001, FB.BlockNumber);
+            Assert.AreEqual(126, FB.Length); //Load memory Size
+            Assert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
+            Assert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
+            Assert.AreEqual(1, FB.Networks.Count);
 
-            //string t = FB.ToString();
-            //Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl"), FB.ToString());
+            string t = FB.ToString();
+            Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl").Trim(), FB.ToString().Trim());
         }
-
-
     }
 }
