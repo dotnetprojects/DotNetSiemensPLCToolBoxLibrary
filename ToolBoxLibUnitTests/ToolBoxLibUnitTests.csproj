@@ -66,20 +66,48 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="S7Blocks\DB121.awl" />
-    <None Include="S7Blocks\DB121.bin" />
-    <None Include="S7Blocks\DB13.awl" />
-    <None Include="S7Blocks\DB13.bin" />
-    <None Include="S7Blocks\DB4.awl" />
-    <None Include="S7Blocks\DB4.bin" />
-    <None Include="S7Blocks\FB1001.awl" />
-    <None Include="S7Blocks\FB1001.bin" />
-    <None Include="S7Blocks\FB101.awl" />
-    <None Include="S7Blocks\FB101.bin" />
-    <None Include="S7Blocks\FC1.awl" />
-    <None Include="S7Blocks\FC1.bin" />
-    <None Include="S7Blocks\FC100.awl" />
-    <None Include="S7Blocks\FC100.bin" />
+    <None Include="S7Blocks\DB121.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\DB121.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\DB13.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\DB13.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\DB4.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\DB4.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FB1001.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FB1001.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FB101.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FB101.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FC1.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FC1.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FC100.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\FC100.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
