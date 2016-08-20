@@ -117,59 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 13</value>
+  <data name="abbruchToolStripMenuItem.Text" xml:space="preserve">
+    <value>Abortar</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Connections</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Editor de Tag NCK</value>
   </data>
-  <data name="cmdConnectionAdd.Text" xml:space="preserve">
-    <value>add</value>
-  </data>
-  <data name="cmdConnectionDelete.Text" xml:space="preserve">
-    <value>delete</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 13</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Protocol</value>
-  </data>
-  <data name="lblLIBNODAVEEntryPoint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="lblLIBNODAVEEntryPoint.Text" xml:space="preserve">
-    <value>Entry-Point</value>
-  </data>
-  <data name="lblLIBNODAVECPUIP.Text" xml:space="preserve">
-    <value>IP-Address</value>
-  </data>
-  <data name="cmdSave.Text" xml:space="preserve">
-    <value>save</value>
-  </data>
-  <data name="cmdUndo.Text" xml:space="preserve">
-    <value>undo</value>
-  </data>
-  <data name="chkNetlinkReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 17</value>
-  </data>
-  <data name="chkNetlinkReset.Text" xml:space="preserve">
-    <value>Reset Netlink on Connection</value>
-  </data>
-  <data name="lblRoutingSubnet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
-  </data>
-  <data name="lblRoutingSubnet.Text" xml:space="preserve">
-    <value>S7-Subnet-ID</value>
-  </data>
-  <data name="cmdTest.Text" xml:space="preserve">
-    <value>Test Connection</value>
-  </data>
-  <data name="chkUseShortRequest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 17</value>
-  </data>
-  <data name="chkUseShortRequest.Text" xml:space="preserve">
-    <value>Use shor DB Request (only on 400 CPU)</value>
+  <data name="oKToolStripMenuItem.Text" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>
