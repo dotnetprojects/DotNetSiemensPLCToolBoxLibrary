@@ -1208,13 +1208,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (res != 0)
                     throw new Exception("Error: " + _errorCodeConverter(res));
 
-                //Wait for Respond
-                byte[] RecData = null;
-                //the Received Data
-                byte[] RecPara = null;
-                //The Receive Parameter
+                byte[] RecData = null;  //the Received Data
+                byte[] RecPara = null;  //The Receive Parameter
 
-                res = _dc.daveRecieveData(out RecData, out RecPara);
+                //Get response from controller
+                res = _dc.daveRecieveDataWithoutResponse(out RecData, out RecPara);
                 if (!(res == 0))
                     throw new Exception("Error: " + _errorCodeConverter(res));
 

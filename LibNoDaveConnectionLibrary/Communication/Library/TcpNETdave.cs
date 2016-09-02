@@ -545,6 +545,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             return 0;
         }
 
+        public int daveRecieveDataWithoutResponse(out byte[] data, out byte[] param)
+        {
+            throw new NotImplementedException();
+        }
+
         public int daveGetPDUData(Pdu mPDU, out byte[] rdata, out byte[] rparam)
         {
             Pdu myPDU = mPDU as Pdu;
