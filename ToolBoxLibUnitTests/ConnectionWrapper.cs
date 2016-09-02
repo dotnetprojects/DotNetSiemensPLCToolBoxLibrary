@@ -226,5 +226,10 @@ namespace ToolBoxLibUnitTests
         {
             throw new NotImplementedException();
         }
+
+        public int daveRecieveDataWithoutResponse(out byte[] data, out byte[] param)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
