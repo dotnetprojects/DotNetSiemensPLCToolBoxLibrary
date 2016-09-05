@@ -9,7 +9,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int daveGetPDUData(IPDU myPDU, out byte[] data, out byte[] param);
         DateTime daveReadPLCTime();
         int daveRecieveData(out byte[] data, out byte[] param);
-        int daveRecieveDataWithoutResponse(out byte[] data, out byte[] param);
         int daveSetPLCTime(DateTime tm);
         int deleteProgramBlock(int blockType, int number);
         int disconnectPLC();

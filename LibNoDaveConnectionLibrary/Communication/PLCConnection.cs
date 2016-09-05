@@ -1212,7 +1212,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 byte[] RecPara = null;  //The Receive Parameter
 
                 //Get response from controller
-                res = _dc.daveRecieveDataWithoutResponse(out RecData, out RecPara);
+                res = _dc.daveGetPDUData(PDU, out RecData, out RecPara);
                 if (!(res == 0))
                     throw new Exception("Error: " + _errorCodeConverter(res));
 

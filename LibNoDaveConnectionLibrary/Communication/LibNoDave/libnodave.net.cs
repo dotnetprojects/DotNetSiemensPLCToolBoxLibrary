@@ -1417,46 +1417,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return res;
             }
 
-            /// <summary>
-            /// This function Receives data from the controller, without waiting for an Response
-            /// </summary>
-            /// <param name="data"></param>
-            /// <param name="param"></param>
-            /// <returns></returns>
-            /// <remarks>This function should not be necessary but functions like "GetBlockHeader" do get an "Timeout" if "DaveGetResponse" is called.
-            /// However the data that is uploaded seems fine. The reason is currently not completely clear to me. Further investigation is needed. 
-            /// I think this happens because the response data is sent directly in the acknowledge message (02.09.2016 Hasensperling)</remarks>
-            public int daveRecieveDataWithoutResponse(out byte[] data, out byte[] param)
-            {
-                int res = 0;
-                //if (IntPtr.Size == 8)
-                //    res = daveGetResponse64(pointer);
-                //else
-                //    res = daveGetResponse32(pointer);
-
-                PDU myPDU = new PDU();
-                if (IntPtr.Size == 8)
-                    _daveSetupReceivedPDU64(pointer, myPDU.pointer);
-                else
-                    _daveSetupReceivedPDU32(pointer, myPDU.pointer);
-
-                byte[] tmp1 = new byte[65536];
-                byte[] tmp2 = new byte[65536];
-                int ltmp1 = 0;
-                int ltmp2 = 0;
-
-                if (IntPtr.Size == 8)
-                    res = daveGetPDUData64(pointer, myPDU.pointer, tmp1, ref ltmp1, tmp2, ref ltmp2);
-                else
-                    res = daveGetPDUData32(pointer, myPDU.pointer, tmp1, ref ltmp1, tmp2, ref ltmp2);
-
-                data = new byte[ltmp1];
-                param = new byte[ltmp2];
-                Array.Copy(tmp1, data, ltmp1);
-                Array.Copy(tmp2, param, ltmp2);
-                return res;
-            }
-
             public IresultSet getResultSet()
             {
                 return new libnodave.resultSet();
