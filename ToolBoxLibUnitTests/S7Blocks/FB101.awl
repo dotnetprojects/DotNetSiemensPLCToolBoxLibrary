@@ -1,0 +1,23 @@
+FB101 : 
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 	OUT: STRUCT
+000.0: 	IN_OUT: STRUCT
+000.0: 	STATIC: STRUCT
+000.0: 	TEMP: STRUCT
+000.0: 		TEMP0: BOOL
+002.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+Netzwerk 2 : 
+Netzwerk 3 : 
+      BLD   1
+      L     1
+      T     LW1
+      UC    FC100
+            P#V 1.0
+      BLD   2

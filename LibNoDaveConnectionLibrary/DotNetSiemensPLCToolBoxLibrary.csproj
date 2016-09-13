@@ -360,6 +360,9 @@
     <EmbeddedResource Include="Communication\Editors\NckTagEditor.en.resx">
       <DependentUpon>NckTagEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.es.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Communication\Editors\NckTagEditor.resx">
       <DependentUpon>NckTagEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -374,6 +377,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.en.resx">
+      <DependentUpon>DiagnosticEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataTypes\DiagnosticEntry.es.resx">
       <DependentUpon>DiagnosticEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.resx">

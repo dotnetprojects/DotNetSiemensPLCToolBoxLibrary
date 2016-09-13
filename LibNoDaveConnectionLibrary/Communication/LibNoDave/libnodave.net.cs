@@ -1386,6 +1386,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     res = daveGetResponse32(pointer);
 
+                //if there was an error getting the response, then fail fast
+                if (res != 0)
+                {
+                    data = null;
+                    param = null;
+                    return res;
+                }
+
                 PDU myPDU = new PDU();
                 if (IntPtr.Size == 8)
                     _daveSetupReceivedPDU64(pointer, myPDU.pointer);

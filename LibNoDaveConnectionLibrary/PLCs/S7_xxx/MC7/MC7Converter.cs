@@ -230,10 +230,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             {
 
                 int IntfStart = MC7Start_or_DBBodyStart + retBlock.CodeSize + 3;
-                int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart) + 2;
-                int IntfValStart = IntfStart + IntfLength + 2;
+                int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart) + 4;
+                int IntfValStart = IntfStart + IntfLength;
 
-                if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b))
+                //MC7Code[5] = BlockType
+                //0x0a = DB
+                //0x0b = SDB
+                if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b)) //Block is an Data block or System Data block
                 {
                     //Instance DB??
                     if (MC7Code[MC7Start_or_DBBodyStart + retBlock.CodeSize] == 0x0a)
@@ -261,7 +264,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
 
                 }
-                else
+                else //Block is an code block (FB, FC or OB)
                 {
                     var interfaceBytes = new byte[IntfLength + 3];
                     Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
