@@ -122,9 +122,12 @@
     <value>56, 20</value>
   </data>
   <data name="abbruchToolStripMenuItem.Text" xml:space="preserve">
-    <value>Abbort</value>
+    <value>Abort</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>PLC Tag Editor</value>
+  </data>
+  <data name="oKToolStripMenuItem.Text" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

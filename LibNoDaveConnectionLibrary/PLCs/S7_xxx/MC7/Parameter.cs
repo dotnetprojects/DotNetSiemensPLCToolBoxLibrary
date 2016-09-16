@@ -212,7 +212,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             }
 
                             var isArray = (((p1 < p2) || p2 < 0) && ((p1 < p3) || p3 < 0));
-                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && (isArray && !rows[n].Contains("\t\r")))
+                            if (rows[n].Contains("ARRAY") && rows[n].Contains(" OF ") && (isArray && !rows[n].Contains("\t")))
                             {
                                 if (rows.Length > n + 1)
                                 {
