@@ -114,7 +114,7 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual("FC[LW16]", tmp[18]);
             Assert.AreEqual("SFC20", tmp[22]);
 
-            Assert.AreEqual(File.ReadAllText(dir + "FC100.awl").Trim(), FC.ToString().Trim());
+            Assert.AreEqual(File.ReadAllText(dir + "FC100.awl").Trim().Replace("\r\n","\n"), FC.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [TestMethod]
