@@ -8,6 +8,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using Siemens.Engineering.SW;
@@ -98,6 +99,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     rootFolder = (TIAOpennessProjectFolder)rootFolder.Parent;
                 }
                 var ext = this.IBlock.ProgrammingLanguage.ToString().ToLower();
+                if (ext == "stl")
+                {
+                    ext = "awl";
+                }
+
                 dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
