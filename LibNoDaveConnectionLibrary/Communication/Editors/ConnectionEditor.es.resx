@@ -112,29 +112,47 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lstConnectionList.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Conexiones</value>
   </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="cmdConnectionAdd.Text" xml:space="preserve">
     <value>Agregar</value>
   </data>
+  <data name="cmdConnectionAdd.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="cmdConnectionDelete.Text" xml:space="preserve">
     <value>Eliminar</value>
+  </data>
+  <data name="cmdConnectionDelete.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstLIBNODAVEConnectionType.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 13</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Protocolo</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="lblLIBNODAVEEntryPoint.Location" type="System.Drawing.Point, System.Drawing">
     <value>39, 148</value>
@@ -145,14 +163,83 @@
   <data name="lblLIBNODAVEEntryPoint.Text" xml:space="preserve">
     <value>Punto de Acceso</value>
   </data>
+  <data name="lblLIBNODAVEEntryPoint.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVECPURack.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVECPURack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 13</value>
+  </data>
+  <data name="lblLIBNODAVECPURack.Text" xml:space="preserve">
+    <value>Ranura CPU</value>
+  </data>
+  <data name="lblLIBNODAVECPURack.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVECPUSlot.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVECPUSlot.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVECPUIP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="lblLIBNODAVECPUIP.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 13</value>
   </data>
   <data name="lblLIBNODAVECPUIP.Text" xml:space="preserve">
     <value>Dirección IP</value>
   </data>
+  <data name="lblLIBNODAVECPUIP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVELokalCOMPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 13</value>
+  </data>
+  <data name="lblLIBNODAVELokalCOMPort.Text" xml:space="preserve">
+    <value>Puerta-COM</value>
+  </data>
+  <data name="lblLIBNODAVELokalCOMPort.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVELokalMPI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVELokalMPI.Text" xml:space="preserve">
+    <value>MPI-Local</value>
+  </data>
+  <data name="lblLIBNODAVELokalMPI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVECPUMPI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVECPUMPI.Text" xml:space="preserve">
+    <value>MPI-CPU</value>
+  </data>
+  <data name="lblLIBNODAVECPUMPI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstLIBNODAVEBusSpeed.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdOK.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="cmdSave.Text" xml:space="preserve">
     <value>Guardar</value>
+  </data>
+  <data name="cmdSave.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblConnectionName.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstLIBNODAVELokalCOMPort.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="lblLIBNODAVEBusSpeed.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 317</value>
@@ -163,8 +250,14 @@
   <data name="lblLIBNODAVEBusSpeed.Text" xml:space="preserve">
     <value>Velocidad MPI/DP</value>
   </data>
+  <data name="lblLIBNODAVEBusSpeed.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="cmdUndo.Text" xml:space="preserve">
     <value>Deshacer</value>
+  </data>
+  <data name="cmdUndo.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="chkNetlinkReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>190, 17</value>
@@ -173,10 +266,25 @@
     <value>Resetear siempre el enlace Netlink</value>
   </data>
   <data name="chkNetlinkReset.ToolTip" xml:space="preserve">
-    <value>Puede suceder que el Netlink, cuando una conexión no se cierra correctamente, mantenga ocupado el recurso de conexión.</value>
+    <value>Puede suceder que el Netlink, cuando una conexión no se cierra correctamente, mantenga ocupado el recurso de conexión
+Ya que. el Netlink solo puede tener dos conexiones, no estaria disponible a la segunda vez que esto pasa. 
+Por esto se puede resetear el NetLink cada vez que se establezca una nueva conexion. 
+ADVERTENCIA: Conexiones de otros Software hacia Netlinka tambien seran desconectado</value>
+  </data>
+  <data name="lblTimeout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 13</value>
+  </data>
+  <data name="lblTimeout.Text" xml:space="preserve">
+    <value>Tiempo de espera</value>
   </data>
   <data name="lblTimeout.ToolTip" xml:space="preserve">
     <value>Tiempo de espera de los datos de la CPU</value>
+  </data>
+  <data name="txtTimeout.ToolTip" xml:space="preserve">
+    <value>Tiempo de espera de los datos de la CPU</value>
+  </data>
+  <data name="txtTimeoutIPConnect.ToolTip" xml:space="preserve">
+    <value>Tiempo de espera que se utiliza para la conexión a una IPTiempo de espera que se utiliza para la conexión a una IP</value>
   </data>
   <data name="lblTimeoutIPConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 13</value>
@@ -187,6 +295,51 @@
   <data name="lblTimeoutIPConnect.ToolTip" xml:space="preserve">
     <value>Tiempo de espera que se utiliza para la conexión a una IPTiempo de espera que se utiliza para la conexión a una IP</value>
   </data>
+  <data name="txtWritePort.ToolTip" xml:space="preserve">
+    <value>Puerta para escribir</value>
+  </data>
+  <data name="btnConfigEntryPoint.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstListEntryPoints.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVELokalComSpeed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 13</value>
+  </data>
+  <data name="lblLIBNODAVELokalComSpeed.Text" xml:space="preserve">
+    <value>Velocidad COM</value>
+  </data>
+  <data name="lblLIBNODAVELokalComSpeed.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstLIBNODAVELokalComSpeed.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblLIBNODAVELokalComParity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 13</value>
+  </data>
+  <data name="lblLIBNODAVELokalComParity.Text" xml:space="preserve">
+    <value>Paridad COM</value>
+  </data>
+  <data name="lblLIBNODAVELokalComParity.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstLIBNODAVELokalComParity.Items" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="lstLIBNODAVELokalComParity.Items1" xml:space="preserve">
+    <value>par</value>
+  </data>
+  <data name="lstLIBNODAVELokalComParity.Items2" xml:space="preserve">
+    <value>impar</value>
+  </data>
+  <data name="lstLIBNODAVELokalComParity.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtRoutingDestination.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="lblRoutingDestination.Location" type="System.Drawing.Point, System.Drawing">
     <value>22, 45</value>
   </data>
@@ -196,11 +349,20 @@
   <data name="lblRoutingDestination.Text" xml:space="preserve">
     <value>CPU destino (MPI/DP/IP)</value>
   </data>
+  <data name="lblRoutingDestination.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="chkRouting.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 17</value>
   </data>
   <data name="chkRouting.Text" xml:space="preserve">
     <value>Enrutamiento</value>
+  </data>
+  <data name="chkRouting.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtRoutingSubnetFirst.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="lblRoutingSubnet.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 13</value>
@@ -208,11 +370,59 @@
   <data name="lblRoutingSubnet.Text" xml:space="preserve">
     <value>S7-Subred-ID</value>
   </data>
+  <data name="lblRoutingSubnet.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtRoutingSubnetSecond.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblRoutingMinus.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtRoutingRack.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblRoutingRack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 13</value>
+  </data>
+  <data name="lblRoutingRack.Text" xml:space="preserve">
+    <value>Ranura</value>
+  </data>
+  <data name="lblRoutingRack.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtRoutingSlot.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblRoutingSlot.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Tipo de conexion</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstConnTypeRouting.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="lblS7OnlineDevice.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 9</value>
   </data>
   <data name="lblS7OnlineDevice.Text" xml:space="preserve">
     <value>(ninguna)</value>
+  </data>
+  <data name="lblS7OnlineDevice.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtLIBNODAVECPUPort.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="lblLIBNODAVECPUPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 13</value>
@@ -220,10 +430,52 @@
   <data name="lblLIBNODAVECPUPort.Text" xml:space="preserve">
     <value>Puerto</value>
   </data>
+  <data name="lblLIBNODAVECPUPort.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblTimeoutDescr.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblTimeoutIPConnectDescr.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="cmdTest.Text" xml:space="preserve">
     <value>Prueba de conexión</value>
   </data>
+  <data name="cmdTest.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lblState.Text" xml:space="preserve">
+    <value>Estatus</value>
+  </data>
+  <data name="lblState.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lstConnType.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Tipo de conexion</value>
+  </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkUseShortRequest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>217, 17</value>
+  </data>
+  <data name="chkUseShortRequest.Text" xml:space="preserve">
+    <value>Usar pedido DB corto (solo en CPU 400)</value>
+  </data>
+  <data name="chkUseShortRequest.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Librería Conexión a PLC - Editor Conexiones</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

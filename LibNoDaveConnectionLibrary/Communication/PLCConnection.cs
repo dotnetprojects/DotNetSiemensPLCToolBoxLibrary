@@ -192,8 +192,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         #region General
         /// <summary>
-        /// Connect to the PLC
-        /// </summary>
+        /// Connect to the PLC with the selected Configuration
+        /// /// </summary>
         public void Connect()
         {
             lock (lockObj)
@@ -396,6 +396,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             Dispose();
         }
 
+        /// <summary>
+        /// Stop execution of the User Program in the Controller
+        /// WARNING! use with caution!
+        /// </summary>
         public void PLCStop()
         {
             lock (lockObj)
@@ -408,6 +412,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Start execution of the User Program in the Controller
+        /// WARNING! use with caution!
+        /// </summary>
         public void PLCStart()
         {
             lock (lockObj)
@@ -420,6 +428,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Read the current time of the controllers system time
+        /// </summary>
+        /// <returns></returns>
         public DateTime PLCReadTime()
         {
             lock (lockObj)
@@ -433,6 +445,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Set the controllers current system time
+        /// </summary>
+        /// <param name="tm"></param>
         public void PLCSetTime(DateTime tm)
         {
             lock (lockObj)
@@ -899,6 +915,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Send the password to the PLC for authentication. this is only necessary if the controllers password protection is active
+        /// </summary>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
         public bool PLCSendPassword(string pwd)
         {
             lock (lockObj)
@@ -931,6 +952,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Get the current Execution status from the controller
+        /// </summary>
+        /// <returns></returns>
         public DataTypes.PLCState PLCGetState()
         {
             lock (lockObj)
@@ -960,6 +985,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #endregion
 
         #region PLC Blocks and Inventory
+        /// <summary>
+        /// Load an full or partial list of all currently loaded code and data blocks in the controller
+        /// </summary>
+        /// <param name="myBlk">the block type that will be listed</param>
+        /// <returns>Returns an list of string short names of the existing blocks such as "DB1" "FC987"...</returns>
         public List<string> PLCListBlocks(DataTypes.PLCBlockType myBlk)
         {
             lock (lockObj)
@@ -1014,10 +1044,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         /// <summary>
-        /// List available blocks of an given type in the online plc
+        /// Load an full or partial list of all currently loaded code and data blocks in the controller
         /// </summary>
-        /// <param name="myBlk">the block-type to list. Also "AllBlocks" is supported</param>
-        /// <returns></returns>
+        /// <param name="myBlk">the block type that will be listed</param>
+        /// <returns>Returns an list of Block Names containing the block types and numbers</returns>
         public List<PLCBlockName> PLCListBlocks2(DataTypes.PLCBlockType myBlk)
         {
             lock (lockObj)
@@ -1178,13 +1208,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (res != 0)
                     throw new Exception("Error: " + _errorCodeConverter(res));
 
-                //Wait for Respond
-                byte[] RecData = null;
-                //the Received Data
-                byte[] RecPara = null;
-                //The Receive Parameter
+                byte[] RecData = null;  //the Received Data
+                byte[] RecPara = null;  //The Receive Parameter
 
-                res = _dc.daveRecieveData(out RecData, out RecPara);
+                //Get response from controller
+                res = _dc.daveGetPDUData(PDU, out RecData, out RecPara);
                 if (!(res == 0))
                     throw new Exception("Error: " + _errorCodeConverter(res));
 
@@ -1197,6 +1225,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Returns the data block size of th Requested data block
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <returns></returns>
         public int PLCGetDataBlockSize(string BlockName)
         {
             var blk = PLCGetBlockHeader(BlockName);
@@ -1205,6 +1238,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return blk.CodeSize;
         }
 
+        /// <summary>
+        /// Get the MC7 Code from the controller of the requested block. The MC7 code represents the whole code and all header information of the block
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <returns></returns>
         public byte[] PLCGetBlockInMC7(string BlockName)
         {
             lock (lockObj)
@@ -1270,6 +1308,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Downloads an MC7 formatted block to the PLC. WARNING use with caution!
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
+        /// <param name="buffer">An buffer containing the MC7 code of the block to download</param>
         public void PLCPutBlockFromMC7toPLC(string BlockName, byte[] buffer)
         {
             lock (lockObj)
@@ -1345,6 +1388,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Deletes an code or data block from the connected controller. WARNING use with cation!
+        /// </summary>
+        /// <param name="BlockName">The short name representation of the data block. such as "DB1" or "DB992"</param>
         public void PLCDeleteBlock(string BlockName)
         {
             lock (lockObj)
@@ -1384,6 +1431,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #endregion
 
         #region PLC Memory and Diagnostics
+        /// <summary>
+        /// Upload an System State list (SZL) from the controller that hold configuration, state and capability information
+        /// For information about SZLNummbers and indexes please consult the information from SIEMENS regarding SFC51 "RDSYSST"
+        /// </summary>
+        /// <param name="SZLNummer">The System State list Number</param>
+        /// <param name="Index">The System State sub list number</param>
+        /// <returns></returns>
         public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
         {
             lock (lockObj)
@@ -1544,6 +1598,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Read the Controllers Diagnostic buffer containing controller events
+        /// </summary>
+        /// <returns></returns>
         public List<DataTypes.DiagnosticEntry> PLCGetDiagnosticBuffer()
         {
             lock (lockObj)
@@ -2419,12 +2477,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
+        /// It tries to Optimize how the Values are Read from the PLC
+        /// </summary>
+        /// <param name="valueList">The List of values to be read form the controller</param>   
         public void ReadValues(IEnumerable<PLCTag> valueList)
         {
             ReadValues(valueList, true);
         }
 
         Dictionary<int, int> _dbSizes = null;
+
+        /// <summary>
+        /// This function read Values from the PLC but also tries to verify the data-block sizes against 
+        /// the current sizes in the controller. If an requested TAG exceeds the data-blocks current size
+        /// the item will be set to "ItemDoesNotExist". This will only affect Tags reading from data-blocks
+        /// </summary>
+        /// <param name="valueList">The list of tags to read from the controller</param>
+        /// <param name="cacheDbSizes">Read the data-blocks length and cache them for future requests.</param>
+        /// <remarks>This function potentially improves read performance when there are many tags with different data block length.
+        /// if the tag exceeds the data-blocks length, it will fail before sending it to the controller</remarks>
         public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList, bool cacheDbSizes = false)
         {
             if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
@@ -2471,7 +2544,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// This Function Reads Values from the PLC it needs a Array of LibNodaveValues
         /// It tries to Optimize how the Values are Read from the PLC
         /// </summary>
-        /// <param name="valueList"></param>        
+        /// <param name="valueList">The List of values to be read form the controller</param>   
         public void ReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             if (Configuration.ConnectionType == 20) //AS511
@@ -2927,7 +3000,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }  
         }
 
-
+        /// <summary>
+        /// Read PLC Tags using the Fetch/Write mechanism
+        /// </summary>
+        /// <param name="valueList"></param>
+        /// <param name="useReadOptimization"></param>
         internal void ReadValuesFetchWrite(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
             lock (lockObj)
@@ -3025,6 +3102,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <param name="type">The PLC data type to load and convert</param>
+        /// <returns></returns>
         public object ReadValue(string address, TagDataType type)
         {
             var tag = new PLCTag(address, type);
@@ -3032,12 +3116,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return tag.Value;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <param name="type">The PLC data type to load and convert</param>
+        /// <returns></returns>
         public object ReadValue<T>(string address, TagDataType type)
         {
             var wrt = ReadValue(address, type);
             return (T) wrt;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <returns></returns>
         public object ReadValue(string address)
         {
             var tag = new PLCTag(address);
@@ -3045,6 +3140,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return tag.Value;
         }
 
+        /// <summary>
+        /// Read one single value from the PLC
+        /// </summary>
+        /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
+        /// <returns></returns>
         public object ReadValue<T>(string address)
         {
             var wrt = ReadValue(address);
@@ -3197,17 +3297,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Remove all PLC tags currently in the write Queue. This aborts the pending write requests.
+        /// </summary>
         public void WriteQueueClear()
         {
             _writeQueue.Clear();
         }
 
+        /// <summary>
+        /// Add an new PLC tag to the Queue to be written to the PLC
+        /// </summary>
+        /// <param name="tag"></param>
         public void WriteQueueAdd(PLCTag tag)
         {
             _writeQueue.Add(tag);
         }
 
-         
+        /// <summary>
+        /// Write all pending PLC tags in the Queue to the PLC
+        /// </summary>
         public void WriteQueueWriteToPLC()
         {
             if (_writeQueue.Count > 0)
@@ -3222,15 +3331,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _writeQueue.Clear();
         }
 
+        /// <summary>
+        /// Write an list of values to the PLC
+        /// </summary>
+        /// <param name="valueList">The list of Values to write to the controller</param>
         public void WriteValues(IEnumerable<PLCTag> valueList)
         {
             WriteValues(valueList, false);
         }
 
         /// <summary>
-        /// 
+        /// Write an list of values to the PLC
         /// </summary>
-        /// <param name="valueList"></param>
+        /// <param name="valueList">The list of Values to write to the controller</param>
         /// <param name="useWriteOptimation">If set to true, write optimation is enabled, but then, the order of your written values can varry, also a 4 byte value can be splittet written to the plc!</param>
         public void WriteValues(IEnumerable<PLCTag> valueList, bool useWriteOptimation)
         {

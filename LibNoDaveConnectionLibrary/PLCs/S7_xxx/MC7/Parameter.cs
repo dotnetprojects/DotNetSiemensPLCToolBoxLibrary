@@ -532,7 +532,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
 
 
-        //
+        /// <summary>
+        /// Parses the interface from an MC7 Interface block
+        /// </summary>
+        /// <param name="interfaceBytes">The interface bytes from the MC7 code</param>
+        /// <param name="actualvalueBytes">The corresponding Current data values. Only valid for DB</param>
+        /// <param name="ParaList">OUT: The parsed Parameter list</param>
+        /// <param name="blkTP">the block type of the block interface to be parsed</param>
+        /// <param name="isInstanceDB">Indicates if the data block belongs to an Function block</param>
+        /// <param name="myBlk">The block header</param>
+        /// <returns></returns>
         internal static S7DataRow GetInterface(byte[] interfaceBytes, byte[] actualvalueBytes, ref List<String> ParaList, DataTypes.PLCBlockType blkTP, bool isInstanceDB, S7Block myBlk)        
         {
             S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
@@ -716,7 +725,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         //internal PLCDataRow GetInterfaceSubrows(PLCDataRow currRow)
 
-
+            /// <summary>
+            /// Parses an Interface parameter Row from the Interface of an MC7 block 
+            /// </summary>
+            /// <param name="currPar">The Parent Interface Row of the rows to be parsed</param>
+            /// <param name="startVal">The start value of the interface parameter row (null if there is no start value)</param>
+            /// <param name="b">The Interface parameter data type"/></param>
+            /// <param name="Struct">The parameter row is inside an struct</param>
+            /// <param name="Arry">the parameter row is inside an array</param>
+            /// <param name="VarName">The variable name to be used</param>
+            /// <param name="interfaceBytes">the interface bytes from the MC7 Code</param>
+            /// <param name="actualvalueBytes">The current data bytes from the MC7 code</param>
+            /// <param name="pos">OUT: the current parsing position</param>
+            /// <param name="ParaList">OUT: the parsed parameter row number</param>
+            /// <param name="StackNr">OUT: The current parsing stack depth</param>
+            /// <param name="VarNamePrefix">The prefix to be used to generate the variable names from</param>
+            /// <param name="VarCounter">OUT: the current variable count, used to generate the variable names</param>
+            /// <param name="Valpos">OUT: the current parsing position for the actual values</param>
+            /// <param name="myBlk">The block, where the interface belongs to</param>
         internal static void GetVarTypeEN(S7DataRow currPar, object startVal, byte b, bool Struct, bool Arry, string VarName, byte[] interfaceBytes, byte[] actualvalueBytes, ref int pos, ref List<string> ParaList, ref int StackNr, string VarNamePrefix, ref int VarCounter, ref int Valpos, S7Block myBlk)
         {
             int i, max, dim;
@@ -930,6 +956,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             //return Result;
         }
 
+        /// <summary>
+        /// Get the current data value for an interface Row
+        /// </summary>
+        /// <param name="b">The data-type of the interface row</param>
+        /// <param name="BD">The actual data of data block</param>
+        /// <param name="Valpos">OUT: Current position of parsing</param>
+        /// <returns></returns>
         internal static object GetVarTypeVal(byte b, byte[] BD, ref int Valpos)
         {
 

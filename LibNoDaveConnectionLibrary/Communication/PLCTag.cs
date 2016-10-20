@@ -39,6 +39,9 @@ using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
+    /// <summary>
+    /// Represents on single data Tag or data unit that can be read or written to the controller
+    /// </summary>
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(PLCTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
@@ -49,7 +52,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private string _valueName;
         /// <summary>
-        /// This is a Property wich addresses the values you've read with a Name
+        /// This is a Property which addresses the values you've read with a Name
         /// </summary>        
         public String ValueName
         {
@@ -60,6 +63,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _byteAddress;
+        /// <summary>
+        /// The byte offset or Byte address of the data in the controller. Represents the start of the data
+        /// </summary>
         public int ByteAddress
         {
             get { return _byteAddress; }
@@ -69,6 +75,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _bitAddress;
+        /// <summary>
+        /// Represents the Bit offset of the data int the controller. Only relevant for boolean values
+        /// Will be ignored for non boolean values
+        /// </summary>
         public int BitAddress
         {
             get { return _bitAddress; }
@@ -120,6 +130,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //For Tags used with Full Symbolic in TIA Portal
 
         private bool _itemDoesNotExist;
+        /// <summary>
+        /// The Item does not exist in the controller, or the data can not be read completely from the controller (byte size wrong,..)
+        /// </summary>
         [XmlIgnore]
         public virtual bool ItemDoesNotExist
         {
@@ -136,9 +149,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Create an new PLC Tag
+        /// </summary>
         public PLCTag()
         { }
 
+        /// <summary>
+        /// Create an new PLC tag from an existing one by copying its information
+        /// </summary>
+        /// <param name="oldTag"></param>
         public PLCTag(PLCTag oldTag)
         {
             if (oldTag != null)
@@ -155,6 +175,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        /// <summary>
+        /// Create an new PLC Tag
+        /// </summary>
+        /// <param name="address">The Simatic Address for the data in the controller such as:
+        /// Inputs: I4.0, IB4, IW4 , ID4
+        /// Outputs: Q124.0, QB124, QW124, QD124
+        /// Markers: M11.0, MB10, MW10, MD10
+        /// Timers: T34
+        /// Counters: C23
+        /// Data Block: DB5.DBX2.0, DB5.DBW6
+        /// Arrays and String: "P#DB25.DBX0.0 BYTE 14"; "P#M0.0 WORD 2"; "P#I0.0 DWORD 5"
+        ///</param>
+        /// <param name="type">The data type to be read from the Controller</param>
         public PLCTag(string address, TagDataType type)
         {
             this.ChangeAddressFromString(address);
@@ -198,6 +231,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _datablockNumber = 1;
+        /// <summary>
+        /// The Data block number of the tag. If the TagDataSource is not in an data-block this number is 0
+        /// </summary>
         public int DataBlockNumber
         {
             get
@@ -213,6 +249,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private MemoryArea tagDataSource = MemoryArea.Datablock;
+        /// <summary>
+        /// Specifies the area where the PLCTags data is located in the controller
+        /// </summary>
         public MemoryArea TagDataSource
         {
             get
@@ -231,6 +270,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
         private TagDisplayDataType _dataTypeStringFormat = TagDisplayDataType.Bool;
+        /// <summary>
+        /// The tats display type. Defines how the tags data should be represented
+        /// </summary>
         public TagDisplayDataType DataTypeStringFormat
         {
             get
@@ -289,6 +331,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private TagDataType tagDataType;
+        /// <summary>
+        /// The type of data of the tag
+        /// </summary>
         public virtual TagDataType TagDataType
         {
             get
@@ -328,6 +373,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         
         //For a List of old Values...
         protected List<Object> _oldvalues;
+        /// <summary>
+        /// An list of values of the previous read requests from the controller
+        /// </summary>
         [XmlIgnore]
         public List<Object> OldValues
         {
@@ -335,6 +383,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         protected int _backupvaluescount = 0;
+
+        /// <summary>
+        /// Sets or gets the amount of values to be kept as oldValues after each read request
+        /// </summary>
         public int BackupValuesCount
         {
             get
@@ -368,7 +420,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private int _arraySize = 1;
         /// <summary>
-        /// Only valid (and used!) with String, CharArray and ByteArray Type!
+        /// Defines the length of Array data types. Only valid (and used!) with String, CharArray and ByteArray Type! 
         /// </summary>
         public int ArraySize
         {
@@ -901,7 +953,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             return "";
         }
-
 
         private string GetValueAsStringInternal(object myValue)
         {
