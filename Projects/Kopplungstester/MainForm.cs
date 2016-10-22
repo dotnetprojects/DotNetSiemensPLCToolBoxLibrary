@@ -814,7 +814,7 @@ namespace Kopplungstester
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            Settings.Default.SequenceNumberLength = numericUpDown1.Value;
-        }                
+            Settings.Default.Laufnummer = numericUpDown1.Value;
+        }
     }
 }
