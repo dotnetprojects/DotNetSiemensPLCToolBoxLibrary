@@ -84,13 +84,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private PLCConnectionConfiguration _configuration;
         public PLCConnectionConfiguration Configuration
         {
-            get { return _configuration; }            
+            get { return _configuration; }
         }
 
         private ConnectionTargetPLCType _connectionTargetPlcType;
         ConnectionTargetPLCType ConnectionTargetPLCType
         {
-            get { return _connectionTargetPlcType; }            
+            get { return _connectionTargetPlcType; }
         }
 
         public PLCConnection(String name)
@@ -149,17 +149,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private libnodave.daveOSserialType _fds;
         private libnodave.daveInterface _di = null; //dave Interface
         public IDaveConnection _dc = null;
-        private Func<int,string> _errorCodeConverter;
+        private Func<int, string> _errorCodeConverter;
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
 
         private FetchWriteConnection _fetchWriteConnection;
-        
+
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (socketThread != null)
-                socketThread.Abort();            
+                socketThread.Abort();
         }
 
         public void socket_Thread()
@@ -168,7 +168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             string ip = null;
             try
             {
-                IPAddress[] addresslist = Dns.GetHostAddresses(_configuration.CpuIP);                
+                IPAddress[] addresslist = Dns.GetHostAddresses(_configuration.CpuIP);
                 foreach (var ipAddress in addresslist)
                 {
                     if (ipAddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
@@ -201,15 +201,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _NeedDispose = true;
                 //Debugging for LibNoDave
                 libnodave.daveSetDebug(0x0);
-                //libnodave.daveSetDebug(0x1ffff);
+            //libnodave.daveSetDebug(0x1ffff);
 
                 //_configuration.ReloadConfiguration();
 
                 //if (hwnd == 0 && _configuration.ConnectionType == 50)
-                //    throw new Exception("Error: You can only use the S7Online Connection when you specify the HWND Parameter on the Connect Function");
+            //    throw new Exception("Error: You can only use the S7Online Connection when you specify the HWND Parameter on the Connect Function");
 
                 //This Jump mark is used when the Netlink Reset is activated!
-                NLAgain:
+            NLAgain:
 
                 //LibNodave Verbindung aufbauen
                 switch (_configuration.ConnectionType)
@@ -270,7 +270,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         socketThread = null;
                         break;
                     case 500:
-                        _fetchWriteConnection=new FetchWriteConnection(this.Configuration);
+                        _fetchWriteConnection = new FetchWriteConnection(this.Configuration);
                         _fetchWriteConnection.Connect();
                         Connected = true;
                         return;
@@ -307,7 +307,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //daveOSserialType Struktur befüllen
                     _fds.wfd = _fds.rfd;
                 }
-                
+
                 if (_configuration.ConnectionName == null)
                     _configuration.ConnectionName = Guid.NewGuid().ToString();
 
@@ -315,7 +315,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     //Dave Interface Erzeugen
                     _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
-                    
+
                     //Timeout setzen...
                     _di.setTimeout(_configuration.Timeout);
 
@@ -333,13 +333,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     RegistryKey myConnectionKey =
                         Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" +
                                                            _configuration.EntryPoint);
-                    string tmpDevice = (string) myConnectionKey.GetValue("LogDevice");
+                    string tmpDevice = (string)myConnectionKey.GetValue("LogDevice");
                     string retVal = "";
                     if (tmpDevice != "")
                     {
                         myConnectionKey =
                             Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogDevices\\" + tmpDevice);
-                        retVal = (string) myConnectionKey.GetValue("L4_PROTOCOL");
+                        retVal = (string)myConnectionKey.GetValue("L4_PROTOCOL");
                     }
                     if (retVal == "TCPIP" || retVal == "ISO")
                         IPConnection = true;
@@ -363,9 +363,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else
                 {
-                    
+
                 }
-                
+
                 if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
                 {
                     _dc.resetIBH();
@@ -383,11 +383,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 if (ret != 0)
                     throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " + _errorCodeConverter(ret));
-                
+
                 Connected = true;
             }
         }
-        
+
         /// <summary>
         /// This Disconnects from the PLC and the Adapter
         /// </summary>
@@ -496,7 +496,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         byte[] data;
 
                         var myPDU = myConn._dc.createPDU();
-                        para = new byte[] {0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00};
+                        para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00 };
                         data = new byte[]
                         {
                             0x00, 0x14, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
@@ -518,7 +518,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else if (rdata.Length < 14) //Function Block is not called!
                             return;
 
-                        int answLen = rdata[6]*0x100 + rdata[7];
+                        int answLen = rdata[6] * 0x100 + rdata[7];
 
                         var prev = new S7FunctionBlockRow.BlockStatus();
                         int linenr = 14;
@@ -550,7 +550,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                             if (linenr >= rdata.Length)
                                 return;
-                            int ByteRow = rdata[linenr]*0x100 + rdata[linenr + 1];
+                            int ByteRow = rdata[linenr] * 0x100 + rdata[linenr + 1];
                             akRow = ByteAdressNumerPLCFunctionBlocks[ByteRow];
 
                             /*
@@ -608,12 +608,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        private byte GetByteForSelectedRegisters(S7FunctionBlockRow.SelectedStatusValues mySel, byte telegrammType)            
+        private byte GetByteForSelectedRegisters(S7FunctionBlockRow.SelectedStatusValues mySel, byte telegrammType)
         {
             byte retval = 0x00;
 
             if (telegrammType == 0x13)
-                return (byte) mySel;
+                return (byte)mySel;
             else
             {
                 retval |= (mySel & S7FunctionBlockRow.SelectedStatusValues.STW) > 0 ? (byte)0x00 : (byte)0x00;
@@ -625,7 +625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return retval;
             }
         }
-        
+
         /// <summary>
         /// This Starts a Request for the Status of a PLC FunctionBlock
         /// </summary>
@@ -662,7 +662,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     SZLData szlData = PLCGetSZL(0x0131, 2);
                     SZLDataset[] szlDatasets = szlData.SZLDaten;
                     //if ((((DefaultSZLDataset)szlDatasets[0]).Bytes[4] & 0x08) > 0) //Byte 3 and 4 say as a Bit array wich Status Tele is supported!
-                    if ((((xy31_2Dataset) szlDatasets[0]).funkt_2 & 0x08) > 0)
+                    if ((((xy31_2Dataset)szlDatasets[0]).funkt_2 & 0x08) > 0)
                         //Byte 3 and 4 say as a Bit array wich Status Tele is supported!                     
                         DiagDataTeletype = 0x13;
 
@@ -671,12 +671,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //len of the AnswBlock Block in the PDU
                     short answSize =
-                        (short) (S7FunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype) + 2);
+                        (short)(S7FunctionBlockRow._GetCommandStatusAskSize(selRegister, DiagDataTeletype) + 2);
 
 
                     //Todo: Implement Callingpath
                     int askHeaderSize = 28;
-                        //This is 28 when no Callingpath is defined! (Callingpatth is not yet implemented)
+                    //This is 28 when no Callingpath is defined! (Callingpatth is not yet implemented)
 
                     //These are the Bytes in wich the Selected Registers for each Row are stored!
                     //When in a Row there is no Change for the selected Registers, these Row is added to the previous, so no extra Status for this row is necessary
@@ -706,7 +706,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             int akAskSize = S7FunctionBlockRow._GetCommandStatusAskSize(askRegister, DiagDataTeletype);
 
                             if ((answSize + akAskSize) < 182)
-                                //Max Size of the Answer Len! (In Step 7 this is 202 i think, have to try it...)
+                            //Max Size of the Answer Len! (In Step 7 this is 202 i think, have to try it...)
                             {
                                 if (StartAWLByteAdress <= rowByteAdress)
                                 {
@@ -742,7 +742,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                         lastByteAddress = rowByteAdress;
 
-                                        var newLst = new List<S7FunctionBlockRow> {plcFunctionBlockRow};
+                                        var newLst = new List<S7FunctionBlockRow> { plcFunctionBlockRow };
                                         //This is a List of the Byte Address and the Coresponing Command List.
                                         //The Corresponding Commands are a List, because not every Command changes every Value,
                                         //So when not asked for all Registers, it can be that 2 commands have the same Status values and it's only asked for that one times!
@@ -754,22 +754,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                             //Ausgewählte Register für die zeile in die Abfrage eintragen
                                             byte askRegisterByte = GetByteForSelectedRegisters(askRegister,
                                                 DiagDataTeletype);
-                                            LinesSelectedRegisters.AddRange(new byte[]
-                                            {bt[1], bt[0], 0x00, askRegisterByte});
+                                            LinesSelectedRegisters.AddRange(new byte[] { bt[1], bt[0], 0x00, askRegisterByte });
                                             //askSize += 4;
                                         }
                                         else
                                         {
                                             byte askRegisterByte = GetByteForSelectedRegisters(askRegister,
                                                 DiagDataTeletype);
-                                            LinesSelectedRegisters.AddRange(new byte[] {0x80, askRegisterByte});
+                                            LinesSelectedRegisters.AddRange(new byte[] { 0x80, askRegisterByte });
                                             //askSize += 2;
 
-                                            for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2)/2); g++)
+                                            for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2) / 2); g++)
                                             {
                                                 byte wr = 0x00;
                                                 //if (g % 2 != 0) wr = 0x80;
-                                                LinesSelectedRegisters.AddRange(new byte[] {wr, wr});
+                                                LinesSelectedRegisters.AddRange(new byte[] { wr, wr });
                                                 //askSize += 2;
                                             }
                                         }
@@ -779,7 +778,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
                                         //Antwortgröße
-                                        answSize += (short) (akAskSize + 2); //+2 for the Line Address
+                                        answSize += (short)(akAskSize + 2); //+2 for the Line Address
                                         //Anzahl der angefr. Zeilen!
                                         cnt++;
                                     }
@@ -788,21 +787,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         if (DiagDataTeletype == 0x01)
                                         {
                                             //Add for every Command, that asks for no Register a 0x80 0x80 to the ask Command!
-                                            LinesSelectedRegisters.AddRange(new byte[] {0x80, 0x80});
+                                            LinesSelectedRegisters.AddRange(new byte[] { 0x80, 0x80 });
                                             //askSize += 2;
 
-                                            for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2)/2); g++)
+                                            for (int g = 0; g < ((plcFunctionBlockRow.ByteSize - 2) / 2); g++)
                                             {
                                                 byte wr = 0x00;
                                                 //if (g % 2 != 0) wr = 0x80;
-                                                LinesSelectedRegisters.AddRange(new byte[] {wr, wr});
+                                                LinesSelectedRegisters.AddRange(new byte[] { wr, wr });
                                                 //askSize += 2;
                                             }
                                         }
 
                                         if (ByteAdressNumerPLCFunctionBlocks.Count == 0)
                                         {
-                                            var newLst = new List<S7FunctionBlockRow> {plcFunctionBlockRow};
+                                            var newLst = new List<S7FunctionBlockRow> { plcFunctionBlockRow };
                                             ByteAdressNumerPLCFunctionBlocks.Add(rowByteAdress, newLst);
                                         }
                                         else
@@ -835,8 +834,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //PDU Data
                     byte[] data;
 
-                    para = new byte[]
-                    {0x00, 0x01, 0x12, 0x08, 0x12, 0x41, DiagDataTeletype, 0x00, 0x00, 0x00, 0x00, 0x00};
+                    para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, DiagDataTeletype, 0x00, 0x00, 0x00, 0x00, 0x00 };
                     byte[] tmp1;
                     if (DiagDataTeletype == 0x13)
                         tmp1 = new byte[]
@@ -872,7 +870,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] rdata, rparam;
                     int res = _dc.daveGetPDUData(myPDU, out rdata, out rparam);
 
-                    byte[] stid = new byte[] {rparam[6], rparam[7]};
+                    byte[] stid = new byte[] { rparam[6], rparam[7] };
 
                     if (rparam[10] != 0x00 && rparam[11] != 0x00) // 0xd05f
                         throw new Exception("Error Requesting Block Status, Error Code: 0x" +
@@ -936,7 +934,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //PDU Data
                     byte[] data;
 
-                    para = new byte[] {0x00, 0x01, 0x12, 0x04, 0x11, 0x45, 0x01, 0x00};
+                    para = new byte[] { 0x00, 0x01, 0x12, 0x04, 0x11, 0x45, 0x01, 0x00 };
                     data = Helper.EncodePassword(pwd);
                     _dc.daveBuildAndSendPDU(myPDU, para, data);
 
@@ -1001,7 +999,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     List<string> myRet = new List<string>();
 
-                    byte[] blocks = new byte[2048*16];
+                    byte[] blocks = new byte[2048 * 16];
 
                     //_configuration.ConnectionTyp
 
@@ -1031,9 +1029,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if (ret < 0 && ret != -53763 && ret != -53774 && ret != -255)
                             throw new Exception("Error: " + _errorCodeConverter(ret));
                         if (ret > 0)
-                            for (int n = 0; n < ret*4; n += 4)
+                            for (int n = 0; n < ret * 4; n += 4)
                             {
-                                int nr = blocks[n] + blocks[n + 1]*256;
+                                int nr = blocks[n] + blocks[n + 1] * 256;
                                 myRet.Add(myBlk.ToString() + nr.ToString());
                             }
                     }
@@ -1253,7 +1251,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_dc != null)
                 {
                     //Todo: Better way to Split number and chars
-                    byte[] buffer = new byte[65536*3];
+                    byte[] buffer = new byte[65536 * 3];
                     string tmp = BlockName.ToUpper().Trim().Replace(" ", "");
                     string block = "";
                     int nr = 0;
@@ -1337,7 +1335,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
                     DataTypes.PLCBlockType blk = DataTypes.PLCBlockType.AllBlocks;
 
-                   
+
 
 
                     switch (block)
@@ -1461,17 +1459,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (ret < 0)
                         throw new Exception("Error: " + _errorCodeConverter(ret));
 
-                    retVal.SzlId = (short) (buffer[1] + buffer[0]*256);
-                    retVal.Index = (short) (buffer[3] + buffer[2]*256);
-                    retVal.Size = (short) (buffer[5] + buffer[4]*256);
-                    retVal.Count = (short) (buffer[7] + buffer[6]*256);
+                    retVal.SzlId = (short)(buffer[1] + buffer[0] * 256);
+                    retVal.Index = (short)(buffer[3] + buffer[2] * 256);
+                    retVal.Size = (short)(buffer[5] + buffer[4] * 256);
+                    retVal.Count = (short)(buffer[7] + buffer[6] * 256);
 
                     List<SZLDataset> datsets = new List<SZLDataset>();
 
                     for (int n = 0; n < retVal.Count; n++)
                     {
                         byte[] objBuffer = new byte[retVal.Size];
-                        Array.Copy(buffer, (n*retVal.Size) + 8, objBuffer, 0, retVal.Size);
+                        Array.Copy(buffer, (n * retVal.Size) + 8, objBuffer, 0, retVal.Size);
                         //GCHandle handle = GCHandle.Alloc(objBuffer, GCHandleType.Pinned);
 
                         switch (retVal.SzlId & 0x00ff)
@@ -1546,11 +1544,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy31_6Dataset>(objBuffer));
                                         break;
                                     default:
-                                    {
-                                        DefaultSZLDataset tmp = new DefaultSZLDataset();
-                                        tmp.Bytes = objBuffer;
-                                        datsets.Add(tmp);
-                                    }
+                                        {
+                                            DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                            tmp.Bytes = objBuffer;
+                                            datsets.Add(tmp);
+                                        }
                                         break;
                                 }
                                 break;
@@ -1564,11 +1562,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy32_8Dataset>(objBuffer));
                                         break;
                                     default:
-                                    {
-                                        DefaultSZLDataset tmp = new DefaultSZLDataset();
-                                        tmp.Bytes = objBuffer;
-                                        datsets.Add(tmp);
-                                    }
+                                        {
+                                            DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                            tmp.Bytes = objBuffer;
+                                            datsets.Add(tmp);
+                                        }
                                         break;
                                 }
                                 break;
@@ -1579,11 +1577,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 datsets.Add(EndianessMarshaler.BytesToStruct<xy74Dataset>(objBuffer));
                                 break;
                             default:
-                            {
-                                DefaultSZLDataset tmp = new DefaultSZLDataset();
-                                tmp.Bytes = objBuffer;
-                                datsets.Add(tmp);
-                            }
+                                {
+                                    DefaultSZLDataset tmp = new DefaultSZLDataset();
+                                    tmp.Bytes = objBuffer;
+                                    datsets.Add(tmp);
+                                }
                                 break;
                         }
 
@@ -1624,14 +1622,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (ret < 0)
                         throw new Exception("Error: " + _errorCodeConverter(ret));
 
-                    int cnt = buffer[7] + buffer[6]*256;
+                    int cnt = buffer[7] + buffer[6] * 256;
 
                     if (cnt > 10000) cnt = 100;
 
                     for (int n = 0; n < cnt; n++)
                     {
                         byte[] diagData = new byte[20];
-                        Array.Copy(buffer, n*20 + 8, diagData, 0, 20);
+                        Array.Copy(buffer, n * 20 + 8, diagData, 0, 20);
 
                         DataTypes.DiagnosticEntry myEntr = new DataTypes.DiagnosticEntry(diagData);
                         retVal.Add(myEntr);
@@ -1715,7 +1713,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (!(res == 0))
                     throw new Exception("Error: " + _errorCodeConverter(res));
             }
-       }
+        }
 
         /// <summary>
         /// Copy the Content of the volatile RAM memory to the Non-volatile ROM memory
@@ -1759,11 +1757,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             internal short ReqestID;
             internal PLCConnection myConn;
-            
+
             private PLCTag[] _plcTags;
             public PLCTag[] PLCTags
             {
-                get { return _plcTags; }                
+                get { return _plcTags; }
             }
 
             internal VarTabReadData(short reqId, PLCTag[] plcTags, PLCConnection conn)
@@ -1784,7 +1782,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         byte[] para;
                         byte[] data;
 
-                        para = new byte[] {0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00};
+                        para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00 };
                         data = new byte[]
                         {
                             0x00, 0x14, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
@@ -1807,7 +1805,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         else if (rdata.Length < 14) //Function Block is not called!
                             return;
 
-                        int answLen = rdata[6]*0x100 + rdata[7];
+                        int answLen = rdata[6] * 0x100 + rdata[7];
 
                         int pos = 14;
                         for (int i = 0; i < PLCTags.Length; i++)
@@ -1816,12 +1814,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (rdata[pos + 0] == 0xff)
                             {
                                 //rdata[pos + 1] == 4 means len is in BITS, maybe we need this???
-                                len = rdata[pos + 2]*0x100 + rdata[pos + 3];
+                                len = rdata[pos + 2] * 0x100 + rdata[pos + 3];
                                 if (len < PLCTags[i].ReadByteSize)
                                     throw new Exception("The Tag for the VarTabRead Function was to huge, " +
                                         PLCTags[i].ReadByteSize + " Bytes should be read, but only " + len +
                                         " Bytes were read!");
-                                if (len%2 != 0) len++;
+                                if (len % 2 != 0) len++;
                                 PLCTags[i]._readValueFromBuffer(rdata, pos + 4);
                             }
                             else
@@ -1864,7 +1862,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 int dtaSize = 0;
                 int dtaArrSize = 1;
                 int dbNo = 0;
-                
+
                 byte[] akAsk = new byte[6];
 
                 switch (plcTag.TagDataSource)
@@ -1918,25 +1916,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                 }
 
-                akAsk[0] = (byte) (dtaTyp*0x10 + dtaSize);
-                akAsk[1] = (byte) dtaArrSize;
-                akAsk[2] = (byte) (dbNo/0x100);
-                akAsk[3] = (byte) (dbNo%0x100);
-                akAsk[4] = (byte) (plcTag.ByteAddress/0x100);
-                akAsk[5] = (byte) (plcTag.ByteAddress%0x100);
+                akAsk[0] = (byte)(dtaTyp * 0x10 + dtaSize);
+                akAsk[1] = (byte)dtaArrSize;
+                akAsk[2] = (byte)(dbNo / 0x100);
+                akAsk[3] = (byte)(dbNo % 0x100);
+                akAsk[4] = (byte)(plcTag.ByteAddress / 0x100);
+                akAsk[5] = (byte)(plcTag.ByteAddress % 0x100);
 
                 askBytes.AddRange(akAsk);
 
                 anzZeilen++;
             }
 
-            int len1 = anzZeilen*6 + 2;
+            int len1 = anzZeilen * 6 + 2;
 
             var myPDU = _dc.createPDU();
 
             byte[] para;
             byte[] data;
-            
+
             para = new byte[] { 0x00, 0x01, 0x12, 0x08, 0x12, 0x41, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
             data = new byte[]
                                     {
@@ -2048,8 +2046,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 anzZeilen++;
             }
 
-            int len1 = anzZeilen*6 + 2 + controlValues.Count;
-            
+            int len1 = anzZeilen * 6 + 2 + controlValues.Count;
+
             byte[] para;
             byte[] data;
 
@@ -2075,7 +2073,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             byte[] stid = new byte[] { rparam[6], rparam[7] };
 
             if (rparam[10] != 0x00 && rparam[11] != 0x00) // 0xd05f
-                throw new Exception("Error Wrting Tags with VarTab Functions, Error Code: 0x" + rparam[10].ToString("X").PadLeft(2,'0') + rparam[11].ToString("X").PadLeft(2,'0'));
+                throw new Exception("Error Wrting Tags with VarTab Functions, Error Code: 0x" + rparam[10].ToString("X").PadLeft(2, '0') + rparam[11].ToString("X").PadLeft(2, '0'));
             /*
             VarTabWriteData retVal = new VarTabWriteData(BitConverter.ToInt16(stid, 0), General.IEnumerableExtensions.ToArray<PLCTag>(valueList), this);
 
@@ -2091,8 +2089,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             public int Compare(PLCTag pt1, PLCTag pt2)
             {
-               //Beides DBs, vergleiche DBs
-                if (pt1.TagDataSource==MemoryArea.Datablock && pt2.TagDataSource==MemoryArea.Datablock)
+                //Beides DBs, vergleiche DBs
+                if (pt1.TagDataSource == MemoryArea.Datablock && pt2.TagDataSource == MemoryArea.Datablock)
                 {
                     if (pt1.DataBlockNumber == pt2.DataBlockNumber)
                         if (pt1.ByteAddress > pt2.ByteAddress)
@@ -2126,7 +2124,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return -1;
 
                 }
-            }           
+            }
         }
 
         private class pduRead
@@ -2157,7 +2155,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return ForcedPduSize.Value;
 
             return _dc.getMaxPDULen();
-        } 
+        }
 
         /// <summary>
         /// A new impl. of read Values...
@@ -2392,14 +2390,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     List<bool> NotExistedValue = new List<bool>();
 
-					//Only for debugging...
+                    //Only for debugging...
 
-					foreach (var cPDU in listPDU)
+                    foreach (var cPDU in listPDU)
                     {
                         if (cPDU.gesReadSize > 0)
                         {
                             var rs = _dc.getResultSet();
-							int res = _dc.execReadRequest(cPDU.pdu, rs);
+                            int res = _dc.execReadRequest(cPDU.pdu, rs);
 
                             if (res == -1025)
                             {
@@ -2524,7 +2522,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             foreach (var tag in tags)
             {
-                if ((tag.TagDataSource == MemoryArea.Datablock || tag.TagDataSource == MemoryArea.InstanceDatablock) && _dbSizes[tag.DataBlockNumber]< tag.ByteAddress + tag.ReadByteSize)
+                if ((tag.TagDataSource == MemoryArea.Datablock || tag.TagDataSource == MemoryArea.InstanceDatablock) && _dbSizes[tag.DataBlockNumber] < tag.ByteAddress + tag.ReadByteSize)
                 {
                     tag.ItemDoesNotExist = true;
                 }
@@ -2596,7 +2594,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         int oldDB = 0, oldByteAddress = 0, oldLen = 0;
                         int cntCombinedTags = 0;
                         PLCTag lastTag = null;
-                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() {TagDataType = TagDataType.ByteArray};
+                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
                         foreach (PLCTag plcTag in orderedList)
                         {
                             if (cntCombinedTags == 0)
@@ -2635,7 +2633,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     if (cntCombinedTags > 1)
                                     {
                                         intReadTagList.Add(rdHlp);
-                                        rdHlp = new PLCTagReadHelper() {TagDataType = TagDataType.ByteArray};
+                                        rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
                                         cntCombinedTags = 0;
                                     }
                                     else
@@ -2648,7 +2646,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     oldDB = plcTag.DataBlockNumber;
                                     oldByteAddress = plcTag.ByteAddress;
                                     oldLen = plcTag._internalGetSize();
-                                    if (oldLen%2 != 0)
+                                    if (oldLen % 2 != 0)
                                         oldLen++;
                                     lastTag = plcTag;
                                     cntCombinedTags++;
@@ -2696,15 +2694,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int akByteAddress = 0;
 
                     int gesAskSize = 0;
-                        //Size f the current ask request, that means every Tag adds 12 Bytes (symbolic tia Tags add more)
+                    //Size f the current ask request, that means every Tag adds 12 Bytes (symbolic tia Tags add more)
 
                     bool lastRequestWasAUnevenRequest = false;
 
                     var myPDU = _dc.prepareReadRequest();
 
-					var currentRead = new List<string>();
+                    var currentRead = new List<string>();
 
-					foreach (var libNoDaveValue in readTagList)
+                    foreach (var libNoDaveValue in readTagList)
                     {
                         bool shortDbRequest = false;
                         int askSize = 12;
@@ -2716,9 +2714,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         bool symbolicTag = false;
 
-						var nckT = libNoDaveValue as PLCNckTag;
+                        var nckT = libNoDaveValue as PLCNckTag;
 
-						if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
+                        if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
                         {
                             askSize = 4 + libNoDaveValue.SymbolicAccessKey.Length;
                             symbolicTag = true;
@@ -2736,7 +2734,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         tryAgain:
                         int readSizeWithHeader = readSize + HeaderTagSize; //HeaderTagSize Bytes Header for each Tag
-                        if (readSizeWithHeader%2 != 0) //Ungerade Anzahl Bytes, noch eines dazu...
+                        if (readSizeWithHeader % 2 != 0) //Ungerade Anzahl Bytes, noch eines dazu...
                             readSizeWithHeader++;
 
                         var currentAskSize = askSize;       //
@@ -2759,21 +2757,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         lastRequestWasAUnevenRequest = false;
                                     }
 
-	                                //Only at the rest of the bytes to the next read request, and increase the start address!  
+                                    //Only at the rest of the bytes to the next read request, and increase the start address!  
                                     if (shortDbRequest)
                                     {
                                         usedShortRequest.Add(true);
                                         lastRequestWasAUnevenRequest = true;
-										currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-										myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+                                        currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                     else
                                     {
                                         usedShortRequest.Add(false);
-										currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-										myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+                                        currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
-                                        
+
                                     readSize = readSize - restBytes;
 
                                     //Tag was splitted to more than one read request
@@ -2788,12 +2786,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     readenSizes.Add(restBytes);
                                     anzVar++;
-                                    
+
                                     //useresult muss noch programmiert werden.
                                 }
                             }
                             var rs = _dc.getResultSet();
-							int res = _dc.execReadRequest(myPDU, rs);
+                            int res = _dc.execReadRequest(myPDU, rs);
                             if (res == -1025)
                             {
                                 this.Disconnect();
@@ -2821,11 +2819,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
                                     details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
-	                                details += Environment.NewLine + Environment.NewLine +
-	                                           string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
-	                                           Environment.NewLine;
+                                    details += Environment.NewLine + Environment.NewLine +
+                                               string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
+                                               Environment.NewLine;
 
-									throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
+                                    throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
                                 }
                                 else
                                 {
@@ -2851,10 +2849,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                             }
 
-							//rs = null;
-							//myPDU = null;
-							currentRead = new List<string>();
-							anzVar = 0;
+                            //rs = null;
+                            //myPDU = null;
+                            currentRead = new List<string>();
+                            anzVar = 0;
                             gesAskSize = 0;
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
@@ -2864,7 +2862,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Clear();
                             //I need to do the whole splitting in anothe way, so that the goto disapears! But for the moment ir works!
                             goto tryAgain;
-                                //It tries again the Size test, this is necessary, when the Tag is bigger then one PDU
+                            //It tries again the Size test, this is necessary, when the Tag is bigger then one PDU
                         }
 
                         gesReadSize = gesReadSize + readSizeWithHeader;
@@ -2880,13 +2878,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             lastRequestWasAUnevenRequest = false;
                         }
 
-						if (nckT != null)
-						{
+                        if (nckT != null)
+                        {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
                             myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
-						}
-						else if (symbolicTag)
+                        }
+                        else if (symbolicTag)
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
@@ -2897,14 +2895,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Add(true);
                             tagWasSplitted.Add(false);
                             lastRequestWasAUnevenRequest = true;
-							currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}",libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-							myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
+                            currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                         else
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
-							currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
                             myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                     }
@@ -2968,7 +2966,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 //    completeData[positionInCompleteData++] = myBuff[n]; // Convert.ToByte(_dc.getU8());
                                 //}
                             }
-                            }
+                        }
                     }
 
                     int buffPos = 0;
@@ -2997,7 +2995,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             foreach (var libNoDaveValue in valueList)
             {
                 _fetchWriteConnection.WriteValue(libNoDaveValue);
-            }  
+            }
         }
 
         /// <summary>
@@ -3009,7 +3007,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             lock (lockObj)
             {
-                
+
 
                 if (_fetchWriteConnection != null)
                 {
@@ -3098,7 +3096,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     foreach (var libNoDaveValue in readTagList)
                     {
                         _fetchWriteConnection.ReadValue(libNoDaveValue);
-                    }                   
+                    }
                 }
             }
         }
@@ -3125,7 +3123,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public object ReadValue<T>(string address, TagDataType type)
         {
             var wrt = ReadValue(address, type);
-            return (T) wrt;
+            return (T)wrt;
         }
 
         /// <summary>
@@ -3164,13 +3162,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-			if (value is PLCNckTag)
-			{
-				ReadValues(new[] { value });
-				return;
-			}
+            if (value is PLCNckTag)
+            {
+                ReadValues(new[] { value });
+                return;
+            }
 
-			if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
             {
                 ReadValuesFetchWrite(new[] { value }, false);
                 return;
@@ -3257,7 +3255,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
                 {
-                    WriteValuesFetchWrite(new []{value});
+                    WriteValuesFetchWrite(new[] { value });
                     return;
                 }
 
@@ -3281,7 +3279,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int res;
                     if (value.TagDataType == TagDataType.Bool)
                         res = _dc.writeBits(Convert.ToInt32(value.TagDataSource), value.DataBlockNumber,
-                            value.ByteAddress*8 + value.BitAddress, readSize, myBuff);
+                            value.ByteAddress * 8 + value.BitAddress, readSize, myBuff);
                     else
                         res = _dc.writeManyBytes(Convert.ToInt32(value.TagDataSource), value.DataBlockNumber,
                             value.ByteAddress, readSize, myBuff);
@@ -3383,7 +3381,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         int oldDB = 0, oldByteAddress = 0, oldLen = 0;
                         int cntCombinedTags = 0;
                         PLCTag lastTag = null;
-                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() {TagDataType = TagDataType.ByteArray};
+                        PLCTagReadHelper rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
                         foreach (PLCTag plcTag in orderedList)
                         {
                             if (cntCombinedTags == 0) // && plcTag.TagDataType!=TagDataType.Bool)
@@ -3408,7 +3406,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     cntCombinedTags++;
                                     int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                     oldLen = oldLen < newlen ? newlen : oldLen;
-                                    if (oldLen%2 != 0) oldLen++;
+                                    if (oldLen % 2 != 0) oldLen++;
                                     rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                     rdHlp.ByteAddress = oldByteAddress;
                                     rdHlp.ArraySize = oldLen;
@@ -3421,7 +3419,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     if (cntCombinedTags > 1)
                                     {
                                         writeTagList.Add(rdHlp);
-                                        rdHlp = new PLCTagReadHelper() {TagDataType = TagDataType.ByteArray};
+                                        rdHlp = new PLCTagReadHelper() { TagDataType = TagDataType.ByteArray };
                                         cntCombinedTags = 0;
                                     }
                                     else
@@ -3441,7 +3439,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         oldDB = plcTag.DataBlockNumber;
                                         oldByteAddress = plcTag.ByteAddress;
                                         oldLen = plcTag._internalGetSize();
-                                        if (oldLen%2 != 0) oldLen++;
+                                        if (oldLen % 2 != 0) oldLen++;
                                         lastTag = plcTag;
                                         cntCombinedTags++;
                                     }
@@ -3510,13 +3508,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     if (currVal.TagDataType == TagDataType.Bool)
                                         myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
                                             currVal.DataBlockNumber,
-                                            (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
+                                            (currVal.ByteAddress + splitPos) * 8 + currVal.BitAddress, 1, wrt);
                                     else
                                         myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
                                             currVal.DataBlockNumber, currVal.ByteAddress + splitPos, currValSize, wrt);
                                     gesWriteSize += tagHeaderSize + wrt.Length;
                                 }
-                                    //Wert war gesplittet
+                                //Wert war gesplittet
                                 else
                                 {
                                     byte[] tmp = new byte[currValSize];
@@ -3527,7 +3525,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     if (currVal.TagDataType == TagDataType.Bool)
                                         myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
                                             currVal.DataBlockNumber,
-                                            (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress, 1, wrt);
+                                            (currVal.ByteAddress + splitPos) * 8 + currVal.BitAddress, 1, wrt);
                                     else
                                         myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
                                             currVal.DataBlockNumber, currVal.ByteAddress + splitPos, wrt.Length, wrt);
@@ -3539,7 +3537,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 anzWriteVar++;
                                 valueListT.Remove(currVal); //Wert erledigt... löschen....
                             }
-                                //Wert muss gesplittet werden...
+                            //Wert muss gesplittet werden...
                             else
                             {
                                 byte[] tmp = new byte[currValSize];
@@ -3549,7 +3547,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 Array.Copy(tmp, splitPos, wrt, 0, maxCurrAddSize);
                                 if (currVal.TagDataType == TagDataType.Bool)
                                     myPDU.addBitVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
-                                        currVal.DataBlockNumber, (currVal.ByteAddress + splitPos)*8 + currVal.BitAddress,
+                                        currVal.DataBlockNumber, (currVal.ByteAddress + splitPos) * 8 + currVal.BitAddress,
                                         1, wrt);
                                 else
                                     myPDU.addVarToWriteRequest(Convert.ToInt32(currVal.TagDataSource),
@@ -3647,15 +3645,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Load complete file from NC
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
         /// <returns></returns>
-        public string UploadFromNC(string fullFileName)
+        public string UploadFromNC(string fullFileName, bool F_XFER = true)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
             byte[] id = new byte[4];
             string ret = string.Empty;
             string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
-            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
 
             int res = _dc.initUploadNC(file, ref id);
             if (res != 0)
@@ -3685,14 +3685,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>
         /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
         /// <returns></returns>
-        public string UploadFromNC(string fullFileName, int size)
+        public string UploadFromNC(string fullFileName, int size, bool F_XFER = true)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
             string ret = string.Empty;
             string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
-            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
 
             int length = 0;
             byte[] buffer = new byte[size];
@@ -3744,7 +3746,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _di.disconnectAdapter();
                 _di = null;
 
-                if (_configuration!=null)
+                if (_configuration != null)
                     switch (_configuration.ConnectionType)
                     {
                         case 1:
