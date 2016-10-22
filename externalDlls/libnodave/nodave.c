@@ -1260,9 +1260,12 @@ void DECL2 _daveConstructUpload(PDU *p,char blockType, int blockNr) {
 	}	
 }
 
-void DECL2 _daveConstructDoUpload(PDU * p, int uploadID) {
+void DECL2 _daveConstructDoUpload(PDU * p, uc* uploadID) {
 	uc pa[]=	{0x1e,0,0,0,0,0,0,1};
-	pa[7]=uploadID;
+	pa[4] = uploadID[0];
+	pa[5] = uploadID[1];
+	pa[6] = uploadID[2];
+	pa[7] = uploadID[3];
 	_daveInitPDUheader(p,1);
 	_daveAddParam(p, pa, sizeof(pa));
 	if (daveDebug & daveDebugPDU) {
@@ -1270,9 +1273,12 @@ void DECL2 _daveConstructDoUpload(PDU * p, int uploadID) {
 	}	
 }    
 
-void DECL2 _daveConstructEndUpload(PDU * p, int uploadID) {
+void DECL2 _daveConstructEndUpload(PDU * p, uc* uploadID) {
 	uc pa[]=	{0x1f,0,0,0,0,0,0,1};
-	pa[7]=uploadID;
+	pa[4] = uploadID[0];
+	pa[5] = uploadID[1];
+	pa[6] = uploadID[2];
+	pa[7] = uploadID[3];
 	_daveInitPDUheader(p,1);
 	_daveAddParam(p, pa, sizeof(pa));
 	if (daveDebug & daveDebugPDU) {
@@ -2160,7 +2166,7 @@ int DECL2 daveClrBit(daveConnection * dc,int area, int DB, int byteAdr, int bitA
 /*
 PLC program read functions:
 */
-int DECL2 initUpload(daveConnection * dc,char blockType, int blockNr, int * uploadID){
+int DECL2 initUpload(daveConnection * dc,char blockType, int blockNr, uc *uploadID){
 	PDU p1,p2;
 	int res;
 	if (daveDebug & daveDebugUpload) {
@@ -2176,11 +2182,16 @@ int DECL2 initUpload(daveConnection * dc,char blockType, int blockNr, int * uplo
 	if(res!=daveResOK) return res;
 	res=_daveSetupReceivedPDU(dc, &p2);
 	if(res!=daveResOK) return res;
-	* uploadID=p2.param[7];
+	
+	uploadID[0] = p2.param[4];
+	uploadID[1] = p2.param[5];
+	uploadID[2] = p2.param[6];
+	uploadID[3] = p2.param[7];
+	
 	return 0;
 }
 
-int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploadID){
+int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, uc *uploadID){
 	PDU p1,p2;
 	int res, netLen;
 	p1.header=dc->msgOut+dc->PDUstartO;
@@ -2209,7 +2220,7 @@ int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploa
 	return res;
 }
 
-int DECL2 endUpload(daveConnection*dc, int uploadID){
+int DECL2 endUpload(daveConnection*dc, uc *uploadID){
 	PDU p1,p2;
 	int res;
 
@@ -6177,7 +6188,8 @@ void DECL2 daveFree(void * dc) {
 }
 
 int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int * length) {
-	int res, uploadID, len, more, totlen;
+	int res, len, more, totlen;
+	unsigned char uploadID[4];
 	uc *bb=(uc*)buffer;	//cs: is this right?
 	len=0;
 	totlen=0;
@@ -6396,7 +6408,7 @@ int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer,
 	len=0;
 	totlen=0;
 
-	res=initUploadNC(dc, filename, uploadID); 
+	res=initUploadNC(dc, filename, &uploadID); 
 	if (res!=0) return res;
 	do {
 		res=doUploadNC(dc, &more, &bb, &len, uploadID);

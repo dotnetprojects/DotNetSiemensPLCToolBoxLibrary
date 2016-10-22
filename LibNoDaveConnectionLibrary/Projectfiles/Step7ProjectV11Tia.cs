@@ -8,6 +8,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using Siemens.Engineering.SW;
@@ -17,6 +18,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
     public interface ITiaProjectBlockInfo : IProjectBlockInfo
     {
         string ExportToString();
+
+        string GenerateSource();
     }
 
     public partial class Step7ProjectV11
@@ -80,16 +83,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
-
-                //var b = IBlock as Siemens.Engineering.SW.CodeBlock;
-                //var nm = b.GetAttributeNames(AttributeAccessMode.Read).Concat(b.GetAttributeNames(AttributeAccessMode.ReadOnly)).Concat(b.GetAttributeNames(AttributeAccessMode.ReadWrite)).Concat(b.GetAttributeNames(AttributeAccessMode.Write));
-                //var att = b.GetAttributes(nm);
-
-                //var brws = new StateBrowserForm();
-                //brws.ObjectToBrowse = IBlock;
-                //brws.Show();
-
                 IBlock.Export(file, ExportOptions.None);
+
+                var text = File.ReadAllText(file);
+                File.Delete(file);
+
+                return text;
+            }
+
+            public virtual string GenerateSource()
+            {
+                var rootFolder = (TIAOpennessProjectFolder)ParentFolder;
+                while (!(rootFolder.TiaPortalItem is Siemens.Engineering.SW.ProgramblockSystemFolder))
+                {
+                    rootFolder = (TIAOpennessProjectFolder)rootFolder.Parent;
+                }
+                var ext = this.IBlock.ProgrammingLanguage.ToString().ToLower();
+                if (ext == "stl")
+                {
+                    ext = "awl";
+                }
+
+                if (this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_DB ||
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_FBD ||
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_FBD_LIB ||
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_LAD ||
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_LAD_LIB ||
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_STL)
+                {
+                    return null;
+                }
+                if (this.IBlock.ProgrammingLanguage != ProgrammingLanguage.SCL &&
+                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.STL)
+                {
+                    return this.ExportToString();
+                }
+
+                dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
+                var tmp = Path.GetTempPath();
+                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                tiaItem.GenerateSourceFromBlocks(new[] { this.IBlock }, file);
 
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -111,12 +144,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
-
+                 
                 IBlock.Export(file, ExportOptions.None);
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
                 return text;
+            }
+
+            public string GenerateSource()
+            {
+                return ExportToString();
             }
         }
 
@@ -205,7 +243,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                 foreach (var block in blocks)
                 {
-                    var info = new TIAOpennessProjectDataTypeInfo() { Name = block.Name, IBlock = block };
+                    var info = new TIAOpennessProjectDataTypeInfo() { Name = block.Name, IBlock = block, ParentFolder = this};
                     info.BlockType = DataTypes.PLCBlockType.UDT;
                     _blockInfos.Add(info);
                 }
@@ -274,7 +312,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                 foreach (var block in blocks)
                 {
-                    var info = new TIAOpennessProjectBlockInfo() { Name = block.Name, IBlock = block };
+                    var info = new TIAOpennessProjectBlockInfo() { Name = block.Name, IBlock = block, ParentFolder = this};
                     if (block.Type == BlockType.DB)
                         info.BlockType = DataTypes.PLCBlockType.DB;
                     else if (block.Type == BlockType.FB)

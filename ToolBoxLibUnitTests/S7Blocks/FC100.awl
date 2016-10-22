@@ -347,7 +347,7 @@ M008: SET
       L     0
       AUF   DB91
       T     DBD44
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB91
       T     DBD8
 M007: SET   
@@ -360,7 +360,7 @@ Netzwerk 6 :
       T     MD940
       L     MB10
       T     MD944
-      L     0,000000e+000
+      L     0.000000e+000
       T     MD952
       T     MD956
       AUF   DB100
@@ -795,14 +795,14 @@ M024: AUF   DB100
       U     M2.3
       O     M2.4
       SPB   M025
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB100
       T     DBD36
 M025: SET   
       U     M2.5
       O     M2.6
       SPB   M026
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB100
       T     DBD32
 M026: SET   
@@ -810,7 +810,7 @@ M026: SET
       O     M2.4
       UN    M5.6
       SPB   M027
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB100
       T     DBD40
 M027: SET   
@@ -845,18 +845,18 @@ M028: SET
       S     M6.0
       SET   
       R     L 24.5
-      L     1,000000e+000
+      L     1.000000e+000
       AUF   DB100
       L     DBD40
       >R    
       U     L 25.1
       R     M4.7
-      L     2,000000e+000
+      L     2.000000e+000
       >R    
       U     L 25.1
       AUF   DB100
       =     DBX3.2
-      L     3,000000e+000
+      L     3.000000e+000
       AUF   DB100
       L     DBD40
       >R    
@@ -972,7 +972,7 @@ M029: SET
       O     M1.6
       AUF   DB100
       =     DBX0.0
-      L     1,000000e-001
+      L     1.000000e-001
       AUF   DB100
       L     DBD388
       <R    
@@ -991,7 +991,7 @@ M029: SET
       R     M1.5
       R     M1.6
       R     M1.7
-      L     1,000000e-001
+      L     1.000000e-001
       AUF   DB100
       L     DBD392
       <R    
@@ -1052,7 +1052,7 @@ M034: SET
       AUF   DB100
       =     DBX3.6
       SPB   M035
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB100
       T     DBD380
 M035: SET   
@@ -1066,7 +1066,7 @@ M035: SET
       AUF   DB100
       =     DBX3.7
       SPBN  M036
-      L     0,000000e+000
+      L     0.000000e+000
       AUF   DB100
       T     DBD384
       L     0
