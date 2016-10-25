@@ -25,6 +25,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -35,6 +36,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class MC7toAWL
     {
+        static MC7toAWL()
+        {
+            numberFormat = new NumberFormatInfo();
+            numberFormat.NumberDecimalSeparator = ".";
+            numberFormat.NumberGroupSeparator = "";
+            numberFormat.CurrencyDecimalSeparator = ".";
+            numberFormat.CurrencyGroupSeparator = "";
+            numberFormat.PercentDecimalSeparator = ".";
+            numberFormat.PercentGroupSeparator = "";
+        }
+        private static NumberFormatInfo numberFormat;
+       
         internal static List<FunctionBlockRow> GetAWL(int Start, int Count, int MN, byte[] BD, int[] Networks, List<string> ParaList, S7ProgrammFolder prjBlkFld, S7FunctionBlock block)
         {
             var retVal = new List<FunctionBlockRow>();
@@ -432,7 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 switch (BD[pos + 1])
                                 {
                                     case 0x01:
-                                        par = libnodave.getFloatfrom(BD, pos + 2).ToString("0.000000e+000");
+                                        par = libnodave.getFloatfrom(BD, pos + 2).ToString("0.000000e+000", numberFormat);
                                         break;
                                     case 0x02:
                                         par = "2#" +
