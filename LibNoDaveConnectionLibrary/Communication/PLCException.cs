@@ -8,18 +8,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
     public class PLCException:Exception
     {
-        int ErrorCode {get;}
+        int _ErrorCode;
+        int ErrorCode
+        {
+            get { return _ErrorCode; }
+        }
 
         public PLCException (int errorCode): 
             base(String.Format("Operation failed due to error from PLC {0}: {1}",errorCode, libnodave.daveStrerror(errorCode)))
         {
-            ErrorCode = errorCode; 
+            _ErrorCode = errorCode; 
         }
 
         public PLCException(string msg, int errorCode) :
             base(msg)
         {
-            ErrorCode = errorCode;
+            _ErrorCode = errorCode;
         }
     }
 }
