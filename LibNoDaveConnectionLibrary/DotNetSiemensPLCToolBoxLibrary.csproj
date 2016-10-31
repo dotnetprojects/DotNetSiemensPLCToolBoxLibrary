@@ -90,6 +90,7 @@
     <Compile Include="Communication\Editors\NckTagUITypeEditor.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
+    <Compile Include="Communication\PLCException.cs" />
     <Compile Include="Communication\PLCNckTag.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
     <Compile Include="Communication\Configuration.cs" />
