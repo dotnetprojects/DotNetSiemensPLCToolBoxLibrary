@@ -201,7 +201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _NeedDispose = true;
 
                 //Debugging for LibNoDave
-                libnodave.daveSetDebug(0x0);
+                libnodave.daveSetDebug(0x0); //turn off libnodave log messages to console
                 //libnodave.daveSetDebug(0x1ffff);
 
                 //_configuration.ReloadConfiguration();
@@ -212,23 +212,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //This Jump mark is used when the Netlink Reset is activated!
                 NLAgain:
 
+                #region Setup Port/Adapter
                 //LibNodave Verbindung aufbauen
                 switch (_configuration.ConnectionType)
                 {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 10:
+                    case LibNodaveConnectionTypes.MPI_über_Serial_Adapter:
+                    case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Andrews_Version_without_STX:
+                    case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Step_7_Version:
+                    case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Adrews_Version_with_STX:
+                    case LibNodaveConnectionTypes.PPI_über_Serial_Adapter:
                         _errorCodeConverter = libnodave.daveStrerror;
-                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, (int)_configuration.ComPortParity);
                         break;
-                    case 20: //AS511            
+
+                    case LibNodaveConnectionTypes.AS_511:             
                         _errorCodeConverter = libnodave.daveStrerror;
-                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, _configuration.ComPortParity);
+                        _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, (int)_configuration.ComPortParity);
                         break;
-#if !IPHONE
-                    case 50:
+
+#if !IPHONE   
+                    case LibNodaveConnectionTypes.Use_Step7_DLL:
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
                         if (_fds.rfd.ToInt32() == -1)
@@ -238,14 +241,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         break;
 #endif
-                    case 122:
-                    case 123:
-                    case 124:
-                    case 223:
-                    case 224:
-                    case 230:
+
+                    case LibNodaveConnectionTypes.ISO_over_TCP:
+                    case LibNodaveConnectionTypes.ISO_over_TCP_CP_243:
+                    case LibNodaveConnectionTypes.Netlink_lite:
+                    case LibNodaveConnectionTypes.Netlink_lite_PPI:
+                    case LibNodaveConnectionTypes.Netlink_Pro:
                         _errorCodeConverter = libnodave.daveStrerror;
-                        socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect);
+                        socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect.TotalMilliseconds);
                         socketTimer.AutoReset = true;
                         socketTimer.Elapsed += socketTimer_Elapsed;
                         socketTimer.Start();
@@ -269,59 +272,62 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             socketThread.Abort();
                         socketTimer = null;
                         socketThread = null;
-
-
-
                         break;
-                    case 500:
+
+                    case LibNodaveConnectionTypes.Fetch_Write_Active:
                         _fetchWriteConnection=new FetchWriteConnection(this.Configuration);
                         _fetchWriteConnection.Connect();
                         Connected = true;
                         return;
-                        break;
+
                     //case 9050:
                     //    _errorCodeConverter = Connection.daveStrerror;
                     //    _dc = new S7onlineNETdave(_configuration);
                     //    break;
-                    case 9122:
+                    case LibNodaveConnectionTypes.ISO_over_TCP_Managed:
                         _errorCodeConverter = Connection.daveStrerror;
                         _dc = new TcpNETdave(_configuration);
                         break;
                 }
 
-
-                if (_configuration.ConnectionType < 9000 && _fds.rfd.ToInt32() == -999)
+                //if it is an Non manged version, using libnodave. Enums > 9000 are Managed implemntations
+                if ((int)_configuration.ConnectionType < 9000)
                 {
-                    _NeedDispose = false;
-                    throw new Exception("Error: Timeout Connecting the IP");
-                }
 
-                if (_configuration.ConnectionType < 9000)
-                {
-                    if ((_configuration.ConnectionType != 50 && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
+                    //if the socket handle still has its default value after connection
+                    //this means it was an IP connection type, and it did not succed
+                    if (_fds.rfd.ToInt32() == -999)
+                    {
+                        _NeedDispose = false;
+                        throw new Exception("Error: Timeout Connecting the IP");
+                    }
+
+                    //if the read handle is still null or even has an error code, except for Simatic NEt connectoins
+                    if ((_configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
                     {
                         _NeedDispose = false;
                         throw new Exception(
                             "Error: Could not creating the Physical Interface (Maybe wrong IP, COM-Port not Ready,...)");
                     }
-                }
 
-                if (_configuration.ConnectionType < 9000)
-                {
-                    //daveOSserialType Struktur befüllen
+                    //The connection was successfull
                     _fds.wfd = _fds.rfd;
                 }
                 
                 if (_configuration.ConnectionName == null)
                     _configuration.ConnectionName = Guid.NewGuid().ToString();
 
-                if (_configuration.ConnectionType < 9000)
+                #endregion
+
+                #region Create the Interface
+                //Create the Interface
+                if ((int)_configuration.ConnectionType < 9000) //Enums > 9000 are Managed implemntations
                 {
                     //Dave Interface Erzeugen
-                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
+                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, (int)_configuration.ConnectionType, (int)_configuration.BusSpeed);
                     
                     //Timeout setzen...
-                    _di.setTimeout(_configuration.Timeout);
+                    _di.setTimeout((int)_configuration.TimeoutMicroseconds); //WARNING! setTimeout needs value in Microseconds
 
                     //Dave Interface initialisieren
                     var initret = _di.initAdapter();
@@ -332,7 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //Get S7OnlineType - To detect if is a IPConnection 
                 bool IPConnection = false;
 #if !IPHONE
-                if (_configuration.ConnectionType == 50)
+                if (_configuration.ConnectionType ==  LibNodaveConnectionTypes.Use_Step7_DLL)
                 {
                     RegistryKey myConnectionKey =
                         Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" +
@@ -350,27 +356,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 //Get S7OnlineType - To detect if is a IPConnection
 #endif
+                #endregion
 
-                //AS511
-                if (_configuration.ConnectionType == 20)
+                #region Create Connection
+                if (_configuration.ConnectionType == LibNodaveConnectionTypes.AS_511)
                 {
                     _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, 0, 0);
                 }
-                else if (_configuration.ConnectionType < 9000)
+                else if ((int)_configuration.ConnectionType < 9000) //Enums > 9000 are Managed implemntations
                 {
                     _dc = new libnodave.daveConnection(_di, _configuration.CpuMpi, _configuration.CpuIP, IPConnection,
                         _configuration.CpuRack, _configuration.CpuSlot, _configuration.Routing,
                         _configuration.RoutingSubnet1, _configuration.RoutingSubnet2,
                         _configuration.RoutingDestinationRack, _configuration.RoutingDestinationSlot,
-                        _configuration.RoutingDestination, _configuration.PLCConnectionType,
-                        _configuration.RoutingPLCConnectionType);
+                        _configuration.RoutingDestination, (int)_configuration.PLCConnectionType,
+                        (int)_configuration.RoutingPLCConnectionType);
                 }
                 else
                 {
                     
                 }
-                
-                if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
+                #endregion
+
+                #region Connect PLC
+                if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == LibNodaveConnectionTypes.Netlink_lite || _configuration.ConnectionType == LibNodaveConnectionTypes.Netlink_lite_PPI))
                 {
                     _dc.resetIBH();
                     _netlinkReseted = true;
@@ -379,7 +388,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
 
                 var ret = _dc.connectPLC();
-
                 if (ret == -1)
                 {
                     _dc = null;
@@ -389,6 +397,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     throw new PLCException("Error: (Connection) (Code: " + ret.ToString() + ") " + _errorCodeConverter(ret), ret);
                 
                 Connected = true;
+                #endregion
             }
         }
         
@@ -2163,7 +2172,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="useReadOptimization"></param>
         private void _TestNewReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
-            if (Configuration.ConnectionType == 20) //AS511
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.AS_511) //AS511
             {
                 foreach (var plcTag in valueList)
                 {
@@ -2495,7 +2504,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// if the tag exceeds the data-blocks length, it will fail before sending it to the controller</remarks>
         public void ReadValuesWithCheck(IEnumerable<PLCTag> valueList, bool cacheDbSizes = false)
         {
-            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active)
             {
                 ReadValuesFetchWrite(valueList, false);
                 return;
@@ -2542,7 +2551,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="valueList">The List of values to be read form the controller</param>   
         public void ReadValues(IEnumerable<PLCTag> valueList, bool useReadOptimization)
         {
-            if (Configuration.ConnectionType == 20) //AS511
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.AS_511) //AS511
             {
                 foreach (var plcTag in valueList)
                 {
@@ -2551,7 +2560,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
             {
                 ReadValuesFetchWrite(valueList, useReadOptimization);
                 return;
@@ -3152,7 +3161,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <returns></returns>        
         public void ReadValue(PLCTag value)
         {
-            if (!string.IsNullOrEmpty(value.SymbolicAccessKey) && Configuration.ConnectionType != 20)
+            if (!string.IsNullOrEmpty(value.SymbolicAccessKey) && Configuration.ConnectionType != LibNodaveConnectionTypes.AS_511)
             {
                 ReadValues(new[] { value });
                 return;
@@ -3164,7 +3173,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 				return;
 			}
 
-			if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+			if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
             {
                 ReadValuesFetchWrite(new[] { value }, false);
                 return;
@@ -3248,7 +3257,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 CheckConnection();
 
-                if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+                if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
                 {
                     WriteValuesFetchWrite(new []{value});
                     return;
@@ -3344,7 +3353,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 CheckConnection();
 
-                if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
+                if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
                 {
                     WriteValuesFetchWrite(valueList);
                     return;
@@ -3739,24 +3748,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (_configuration!=null)
                     switch (_configuration.ConnectionType)
                     {
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 10:
-                        case 20:
+                        case LibNodaveConnectionTypes.MPI_über_Serial_Adapter:
+                        case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Andrews_Version_without_STX:
+                        case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Step_7_Version:
+                        case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Adrews_Version_with_STX:
+                        case LibNodaveConnectionTypes.PPI_über_Serial_Adapter:
+                        case LibNodaveConnectionTypes.AS_511:
                             libnodave.closePort(_fds.rfd);
                             break;
-                        case 50:
+                        case LibNodaveConnectionTypes.Use_Step7_DLL:
                             libnodave.closeS7online(_fds.rfd);
                             break;
-                        case 122:
-                        case 123:
-                        case 124:
-                        case 223:
-                        case 224:
-                        case 230:
-                        case 231:
+                        case LibNodaveConnectionTypes.ISO_over_TCP:
+                        case LibNodaveConnectionTypes.ISO_over_TCP_CP_243:
+                        case LibNodaveConnectionTypes.Netlink_lite:
+                        case LibNodaveConnectionTypes.Netlink_lite_PPI:
+                        case LibNodaveConnectionTypes.Netlink_Pro:
                             libnodave.closeSocket(_fds.rfd);
                             break;
                     }
