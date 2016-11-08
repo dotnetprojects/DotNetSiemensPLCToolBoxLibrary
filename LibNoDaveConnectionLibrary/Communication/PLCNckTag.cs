@@ -1,4 +1,5 @@
-﻿/*
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
  
@@ -51,6 +52,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 			set { }
 		}
 
+
         public override string ToString()
         {
             string old = "";
@@ -79,4 +81,102 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //	return 1;
         //}
 	}
+
+    public class NC_Var
+    {
+        public NC_Var()
+        {
+        }
+        public NC_Var(string ncVarSelector)
+        {
+            throw new NotImplementedException();
+            //bereich_u_einheit = 0x40;
+            //spalte = 0x78;
+            //zeile = 0x1;
+            //bausteintyp = 0x7F;
+            //ZEILENANZAHL = 0x1;
+            //typ = 0xF;
+            //laenge = 0x8;
+        }
+
+        public NC_Var(int syntaxId, int bereich_u_einheit, int spalte, int zeile, int bausteinTyp, int zeilenAnzahl, int typ, int laenge)
+        {
+            this.SYNTAX_ID = (byte)syntaxId;
+            this.Bereich_u_einheit = (byte)bereich_u_einheit;
+            this.Spalte = (UInt16)spalte;
+            this.Zeile = (UInt16)zeile;
+            this.Bausteintyp = (byte)bausteinTyp;
+            this.ZEILENANZAHL = (byte)zeilenAnzahl;
+            this.Typ = (byte)typ;
+            this.Laenge = (byte)laenge;
+        }
+
+        public byte SYNTAX_ID;
+        public byte Bereich_u_einheit;
+        public UInt16 Spalte;
+        public UInt16 Zeile;
+        public byte Bausteintyp;
+        public byte ZEILENANZAHL;
+        public byte Typ;
+        public byte Laenge;
+
+        public PLCNckTag GetNckTag(int unit, int rowOffset)
+        {
+            //byte SYNTAX_ID = 0x82;
+            byte bereich_u_einheit = (byte)(this.Bereich_u_einheit + unit);
+            byte _bereich = (byte)((bereich_u_einheit & 0xE0) >> 5);         // (bereich_u_einheit & 2#11100000) schiebe rechts um 5 Bit
+            byte _einheit = (byte)(bereich_u_einheit & 0x1F);                // & 2#00011111
+
+            #region TYP
+            TagDataType dataType = new TagDataType();
+            int _ArraySize = 0;
+            switch (this.Typ)
+            {
+                case 1:
+                    dataType = TagDataType.Bool;
+                    break;
+                case 3:
+                    dataType = TagDataType.Byte; //eNCK_LE_Int8;
+                    break;
+                case 4:
+                    dataType = TagDataType.Word;
+                    break;
+                case 5:
+                    dataType = TagDataType.Int; //eNCK_LE_Int16;
+                    break;
+                case 6:
+                    dataType = TagDataType.Dword; //eNCK_LE_Uint32;
+                    break;
+                case 7:
+                    dataType = TagDataType.Dint; //eNCK_LE_Int32;
+                    break;
+                case 8:
+                    dataType = TagDataType.Float; //eNCK_LE_Float32;
+                    break;
+                case 15:
+                    dataType = TagDataType.LReal; //eNCK_LE_Float64;
+                    break;
+                case 18:
+                    dataType = TagDataType.LInt; //eNCK_LE_Int64;
+                    break;
+                case 19:
+                    //if (_bereich == 2)// && NC_Var.bausteintyp == 0x7f)
+                    //    dataType = TagDataType.String; //eNCK_LE_String;
+                    //else
+                        dataType = TagDataType.CharArray; //eNCK_LE_String;
+
+                    _ArraySize = this.Laenge;
+                    break;
+                default:
+                    throw new Exception("Unknown Type");
+                    break;
+            }
+            #endregion
+
+            return new PLCNckTag() { TagDataType = dataType, NckArea = _bereich, NckUnit = _einheit, NckColumn = (int)this.Spalte, NckLine = (int)this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
+        }
+
+
+    }
+
 }

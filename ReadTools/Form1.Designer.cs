@@ -34,14 +34,14 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnReadTools = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.toolDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lblActualParts = new System.Windows.Forms.Label();
+            this.lblTotalParts = new System.Windows.Forms.Label();
+            this.lblCounter = new System.Windows.Forms.Label();
+            this.lblCycleTime = new System.Windows.Forms.Label();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.machineIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.newAddedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolIdentNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.duploDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.edgesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.internalToolNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.depotDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.placeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +53,8 @@
             this.maxTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.currTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.restDurabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lblOldProgNetTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toolDataBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -107,12 +109,9 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.idDataGridViewTextBoxColumn,
-            this.machineIdDataGridViewTextBoxColumn,
-            this.newAddedDataGridViewCheckBoxColumn,
             this.toolIdentNumberDataGridViewTextBoxColumn,
             this.duploDataGridViewTextBoxColumn,
             this.edgesDataGridViewTextBoxColumn,
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn,
             this.internalToolNumberDataGridViewTextBoxColumn,
             this.depotDataGridViewTextBoxColumn,
             this.placeDataGridViewTextBoxColumn,
@@ -131,9 +130,41 @@
             this.dataGridView1.Size = new System.Drawing.Size(1206, 330);
             this.dataGridView1.TabIndex = 6;
             // 
-            // toolDataBindingSource
+            // lblActualParts
             // 
-            this.toolDataBindingSource.DataSource = typeof(ToolReader.ToolData);
+            this.lblActualParts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblActualParts.Location = new System.Drawing.Point(641, 7);
+            this.lblActualParts.Name = "lblActualParts";
+            this.lblActualParts.Size = new System.Drawing.Size(180, 36);
+            this.lblActualParts.TabIndex = 7;
+            this.lblActualParts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTotalParts
+            // 
+            this.lblTotalParts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotalParts.Location = new System.Drawing.Point(641, 72);
+            this.lblTotalParts.Name = "lblTotalParts";
+            this.lblTotalParts.Size = new System.Drawing.Size(180, 36);
+            this.lblTotalParts.TabIndex = 8;
+            this.lblTotalParts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCounter
+            // 
+            this.lblCounter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCounter.Location = new System.Drawing.Point(858, 7);
+            this.lblCounter.Name = "lblCounter";
+            this.lblCounter.Size = new System.Drawing.Size(180, 36);
+            this.lblCounter.TabIndex = 9;
+            this.lblCounter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCycleTime
+            // 
+            this.lblCycleTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCycleTime.Location = new System.Drawing.Point(858, 72);
+            this.lblCycleTime.Name = "lblCycleTime";
+            this.lblCycleTime.Size = new System.Drawing.Size(180, 36);
+            this.lblCycleTime.TabIndex = 10;
+            this.lblCycleTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -141,20 +172,6 @@
             this.idDataGridViewTextBoxColumn.HeaderText = "Id";
             this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             this.idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // machineIdDataGridViewTextBoxColumn
-            // 
-            this.machineIdDataGridViewTextBoxColumn.DataPropertyName = "MachineId";
-            this.machineIdDataGridViewTextBoxColumn.HeaderText = "MachineId";
-            this.machineIdDataGridViewTextBoxColumn.Name = "machineIdDataGridViewTextBoxColumn";
-            this.machineIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // newAddedDataGridViewCheckBoxColumn
-            // 
-            this.newAddedDataGridViewCheckBoxColumn.DataPropertyName = "NewAdded";
-            this.newAddedDataGridViewCheckBoxColumn.HeaderText = "NewAdded";
-            this.newAddedDataGridViewCheckBoxColumn.Name = "newAddedDataGridViewCheckBoxColumn";
-            this.newAddedDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // toolIdentNumberDataGridViewTextBoxColumn
             // 
@@ -176,13 +193,6 @@
             this.edgesDataGridViewTextBoxColumn.HeaderText = "Edges";
             this.edgesDataGridViewTextBoxColumn.Name = "edgesDataGridViewTextBoxColumn";
             this.edgesDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // alternativeToolIdentNumberDataGridViewTextBoxColumn
-            // 
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn.DataPropertyName = "AlternativeToolIdentNumber";
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn.HeaderText = "AlternativeToolIdentNumber";
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn.Name = "alternativeToolIdentNumberDataGridViewTextBoxColumn";
-            this.alternativeToolIdentNumberDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // internalToolNumberDataGridViewTextBoxColumn
             // 
@@ -261,11 +271,29 @@
             this.restDurabilityDataGridViewTextBoxColumn.Name = "restDurabilityDataGridViewTextBoxColumn";
             this.restDurabilityDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // toolDataBindingSource
+            // 
+            this.toolDataBindingSource.DataSource = typeof(ToolReader.ToolData);
+            // 
+            // lblOldProgNetTime
+            // 
+            this.lblOldProgNetTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOldProgNetTime.Location = new System.Drawing.Point(1044, 72);
+            this.lblOldProgNetTime.Name = "lblOldProgNetTime";
+            this.lblOldProgNetTime.Size = new System.Drawing.Size(180, 36);
+            this.lblOldProgNetTime.TabIndex = 11;
+            this.lblOldProgNetTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1220, 523);
+            this.Controls.Add(this.lblOldProgNetTime);
+            this.Controls.Add(this.lblCycleTime);
+            this.Controls.Add(this.lblCounter);
+            this.Controls.Add(this.lblTotalParts);
+            this.Controls.Add(this.lblActualParts);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnReadTools);
             this.Controls.Add(this.lblStatus);
@@ -305,6 +333,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn currTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn restDurabilityDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource toolDataBindingSource;
+        private System.Windows.Forms.Label lblActualParts;
+        private System.Windows.Forms.Label lblTotalParts;
+        private System.Windows.Forms.Label lblCounter;
+        private System.Windows.Forms.Label lblCycleTime;
+        private System.Windows.Forms.Label lblOldProgNetTime;
     }
 }
 

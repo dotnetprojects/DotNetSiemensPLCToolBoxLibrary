@@ -62,33 +62,7 @@ namespace ToolReader
             /////////////////////////////////////////////////////
             // Beginn mit Datenbaustein TP (MagazinPlatzdaten):
 
-            //Dictionary<int, int> test = new Dictionary<int, int>();
-            //for (int i = 1; i < 500; i++)
-            //{
-            //    try
-            //    {
-            //        AGL4.NckDataRW[] rwfieldTm = new AGL4.NckDataRW[1];
-            //        rwfieldTm[0] = new AGL4.NckDataRW();
-            //        rwfieldTm[0].Area = AGL4.NCK_Area.AreaTool;
-            //        rwfieldTm[0].Block = AGL4.NCK_Block.BlockTP;
-
-            //        rwfieldTm[0].RowCount = 1;
-            //        rwfieldTm[0].Unit = 1;
-
-            //        rwfieldTm[0].Row = (ushort)i;
-            //        rwfieldTm[0].Column = 1;
-
-            //        object oTM = new object();
-            //        int resTM = 0;
-
-            //        resTM = GetSinlgeNckVar(ref rwfieldTm, out oTM, nckVarType.UInt16);
-            //        int magType = (UInt16)oTM;
-            //        test.Add(i, magType);
-            //    }
-            //    catch
-            //    {
-            //    }
-            //}
+        
 
             List<ToolData> toolData = new List<ToolData>();
 
@@ -106,21 +80,14 @@ namespace ToolReader
             tag.TagDataType = DotNetSiemensPLCToolBoxLibrary.DataTypes.TagDataType.Word;
 
 
+            myConn.ReadValue(tag);
             ushort numberOfTools = 0;
             object o = new object();
-            int res = 0;
-            myConn.ReadValue(tag);
             numberOfTools = (UInt16)tag.Value;
-
-            /// column 3 bin incl. 8
-            /// // 9 wäre num tool groups
-            ushort column;
-
 
 
             List<PLCNckTag> tagList = new List<PLCNckTag>();
 
-            Int32 result = 0;
             int line = 1;
             for (int i = 0; i < numberOfTools; i++)
             {
@@ -383,6 +350,87 @@ namespace ToolReader
         private void btnReadTools_Click(object sender, EventArgs e)
         {
             GetToolList();
+            GetParts();
+        }
+
+        private void GetParts()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            if (myConn == null)
+                DoConnect();
+            
+            List<PLCNckTag> tagList = new List<PLCNckTag>();
+
+            try
+            {
+                //---------------------  ActualParts   -------------------------------
+
+                NC_Var actualParts = new NC_Var();
+                actualParts.Bereich_u_einheit = 0x40;
+                actualParts.Spalte = 0x79;
+                actualParts.Zeile = 0x1;
+                actualParts.Bausteintyp = 0x7F;
+                actualParts.ZEILENANZAHL = 0x1;
+                actualParts.Typ = 0xF;
+                actualParts.Laenge = 0x8;
+
+
+
+                PLCNckTag actualPartsTag = actualParts.GetNckTag(1, 0);
+                actualPartsTag.Tag = "ActualParts";
+                tagList.Add(actualPartsTag);
+                
+                //---------------------  TotalParts  -------------------------------
+
+                NC_Var totalParts = new NC_Var();
+                totalParts.Bereich_u_einheit = 0x40;
+                totalParts.Spalte = 0x78;
+                totalParts.Zeile = 0x1;
+                totalParts.Bausteintyp = 0x7F;
+                totalParts.ZEILENANZAHL = 0x1;
+                totalParts.Typ = 0xF;
+                totalParts.Laenge = 0x8;
+                
+                PLCNckTag totalPartsTag = totalParts.GetNckTag(1, 0);
+                totalPartsTag.Tag = "TotalParts";
+                tagList.Add(totalPartsTag);
+
+
+
+                NC_Var partsCounter = new NC_Var(0x82, 0x40, 0x6CE8, 0x1, 0x1A, 0x1, 0x7, 0x4);  // soll 272 sein, dann ists richtig aktiviert
+                PLCNckTag counterPartsTag = partsCounter.GetNckTag(1, 0);
+                tagList.Add(counterPartsTag);
+                                
+
+                NC_Var cycleTime = new NC_Var(0x82, 0x40, 0x9, 0x1, 0x3B, 0x1, 0xF, 0x8);
+                PLCNckTag cycleTimeTag = cycleTime.GetNckTag(1, 0);
+                tagList.Add(cycleTimeTag);
+                
+                NC_Var oldProgNetTime = new NC_Var(0x82, 0x40, 0x12A, 0x1, 0x7F, 0x1, 0xF, 0x8);
+                PLCNckTag oldProgNetTimeTag = oldProgNetTime.GetNckTag(1, 0);
+                tagList.Add(oldProgNetTimeTag);
+
+                oldProgNetTimeTag.Value = 12.3;
+                myConn.WriteValue(oldProgNetTimeTag);
+
+                myConn.ReadValues(tagList);
+
+                lblActualParts.Text = String.Format("Actual: {0}", actualPartsTag.Value.ToString());
+                lblTotalParts.Text = String.Format("Total: {0}", totalPartsTag.Value.ToString());
+                lblCounter.Text = String.Format("Counter: {0}", counterPartsTag.Value.ToString());
+                lblCycleTime.Text = String.Format("CycleTime: {0}", cycleTimeTag.Value.ToString());
+                lblOldProgNetTime.Text = String.Format("OldProgNetTime: {0}", oldProgNetTimeTag.Value.ToString());
+
+            }
+            catch
+            {
+
+            }
+
+            sw.Stop();
+
+            lblStatus.Text += "           "+ sw.ElapsedMilliseconds.ToString() + " ms";
         }
 
     }

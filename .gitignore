@@ -123,3 +123,4 @@ compiled/WPFVarTab.exe
 externalDlls/libnodave/libnodave_jfkmod64.exp
 *.exp
 *.bak
+*.dll
