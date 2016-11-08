@@ -2747,6 +2747,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
                             if (nckT == null && !symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
+                                #region Without NCK
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
                                 //Howmany Bytes can be added to this call
                                 if (restBytes > 0)
@@ -2789,6 +2790,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     //useresult muss noch programmiert werden.
                                 }
+#endregion
                             }
                             var rs = _dc.getResultSet();
                             int res = _dc.execReadRequest(myPDU, rs);
@@ -2839,6 +2841,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     {
                                         if (!tagWasSplitted[akVar])
                                             NotExistedValue.Add(false);
+                                        
                                         Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                         positionInCompleteData += readenSizes[akVar];
                                     }
@@ -2955,9 +2958,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                    var nckT = readTagList.Cast<PLCTag>().ToList()[akVar] as PLCNckTag;
-                                    if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                        System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
+                                  //  int cnt = readTagList.Cast<PLCTag>().ToList().Count;
+                                   // var nckT = readTagList.Cast<PLCTag>().ToList()[(cnt - anzVar) + akVar] as PLCNckTag;
+
+
+                                    //if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
+                                    //    System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
+                                    //else
+                                    //{
+
+                                    //}
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
@@ -2973,6 +2983,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int nr = 0;
                     foreach (var value in readTagList)
                     {
+
+
                         if (!NotExistedValue[nr])
                         {
                             value.ItemDoesNotExist = false;
@@ -2989,7 +3001,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
-
         internal void WriteValuesFetchWrite(IEnumerable<PLCTag> valueList)
         {
             foreach (var libNoDaveValue in valueList)
