@@ -1,30 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
-using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.General;
-
-using DotNetSimaticDatabaseProtokollerLibrary;
-using DotNetSimaticDatabaseProtokollerLibrary.Databases;
-using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace SimpleCSharpDemonstration
 {
@@ -109,9 +89,6 @@ namespace SimpleCSharpDemonstration
             myConn.WriteValue(tst);
 
         }
-
-        private Connection aa, bb;
-
 
         private byte[] getBytes(int value)
         {

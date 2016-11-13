@@ -30,9 +30,9 @@ using System;
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
-    [System.ComponentModel.Editor(typeof(NckTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [System.ComponentModel.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.NckTagUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif
-	[Serializable]
+    [Serializable]
 	public class PLCNckTag : PLCTag
 	{
 		public PLCNckTag()

@@ -57,14 +57,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\Editors\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\FetchWrite\OperationCode.cs" />
@@ -75,37 +72,11 @@
     <Compile Include="Communication\LibNoDave\IPDU.cs" />
     <Compile Include="Communication\LibNoDave\IresultSet.cs" />
     <Compile Include="Communication\LibNoDave\libnodave.net.cs" />
-    <Compile Include="Communication\Library\ConnectionConfig.cs" />
-    <Compile Include="Communication\Library\Interfaces\ISONetworkInterface.cs" />
-    <Compile Include="Communication\Library\internal\SocketExtensions.cs" />
-    <Compile Include="Communication\Library\Pdus\daveConst.cs" />
-    <Compile Include="Communication\Library\Pdus\PduRequest.cs" />
-    <Compile Include="Communication\Library\TcpNETdave.cs" />
-    <Compile Include="Communication\Editors\NckTagEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Communication\Editors\NckTagEditor.Designer.cs">
-      <DependentUpon>NckTagEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Communication\Editors\NckTagUITypeEditor.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
     <Compile Include="Communication\PLCException.cs" />
     <Compile Include="Communication\PLCNckTag.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
-    <Compile Include="Communication\Configuration.cs" />
-    <Compile Include="Communication\Library\ByteFunctions.cs" />
-    <Compile Include="Communication\Library\Connection.cs" />
-    <Compile Include="Communication\Library\Interfaces\Interface.cs" />
-    <Compile Include="Communication\Library\internal\TCPConnection.cs" />
-    <Compile Include="Communication\Library\Interfaces\NetLinkLiteInterface.cs" />
-    <Compile Include="Communication\Library\Interfaces\NetLinkProInterface.cs" />
-    <Compile Include="Communication\Library\Interfaces\NetworkInterface.cs" />
-    <Compile Include="Communication\Library\Pdus\Pdu.cs" />
-    <Compile Include="Communication\Library\Interfaces\S7OnlineInterface.cs" />
-    <Compile Include="Communication\Library\Interfaces\SerialInterface.cs" />
-    <Compile Include="Communication\Library\Interfaces\TCPInterface.cs" />
-    <Compile Include="Communication\Library\ResultSet.cs" />
     <Compile Include="Communication\PLCTagReadHelper.cs" />
     <Compile Include="Communication\S7_xxx\SZLData.cs" />
     <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
@@ -245,24 +216,8 @@
     <Compile Include="General\StringLogicalComparer.cs" />
     <Compile Include="General\TiaCrcHelper.cs" />
     <Compile Include="General\ZipHelper.cs" />
-    <Compile Include="General\InputBox.cs" />
-    <Compile Include="Communication\Editors\PLCTagUITypeEditor.cs" />
-    <Compile Include="General\EnumListBoxExtensions.cs" />
     <Compile Include="Communication\PLCConnection.cs" />
-    <Compile Include="Communication\Editors\ConnectionEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Communication\Editors\ConnectionEditor.Designer.cs">
-      <DependentUpon>ConnectionEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Communication\PLCConnectionConfiguration.cs" />
-    <Compile Include="Communication\Editors\PLCConnectionUITypeEditor.cs" />
-    <Compile Include="Communication\Editors\PLCTagEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Communication\Editors\PLCTagEditor.Designer.cs">
-      <DependentUpon>PLCTagEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="PLCs\S5\MC5\MC5toComment.cs" />
     <Compile Include="PLCs\S5\MC5\MC5LIB_SYMTAB.cs" />
     <Compile Include="PLCs\S5\MC5\MC5toAWL.cs" />
@@ -294,12 +249,6 @@
     <Compile Include="DBF\ParseDBF.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7VATRow.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
-    <Compile Include="Projectfiles\SelectProjectPartMultiForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
-      <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Projectfiles\Step7ProjectV11Tia.cs" />
     <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
     <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
@@ -332,14 +281,6 @@
     <Compile Include="Projectfiles\TIA\UsingTiaDlls\TiaXmlWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\PLCTag.cs" />
-    <Compile Include="Projectfiles\SelectPartType.cs" />
-    <Compile Include="Projectfiles\SelectProjectPart.cs" />
-    <Compile Include="Projectfiles\SelectProjectPartForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Projectfiles\SelectProjectPartForm.Designer.cs">
-      <DependentUpon>SelectProjectPartForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Projectfiles\Step5Project.cs" />
     <Compile Include="Projectfiles\Project.cs" />
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
@@ -349,35 +290,6 @@
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.en.resx">
-      <DependentUpon>ConnectionEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.es.resx">
-      <DependentUpon>ConnectionEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.resx">
-      <DependentUpon>ConnectionEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\NckTagEditor.en.resx">
-      <DependentUpon>NckTagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\NckTagEditor.es.resx">
-      <DependentUpon>NckTagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\NckTagEditor.resx">
-      <DependentUpon>NckTagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.en.resx">
-      <DependentUpon>PLCTagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.es.resx">
-      <DependentUpon>PLCTagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.resx">
-      <DependentUpon>PLCTagEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.en.resx">
       <DependentUpon>DiagnosticEntry.cs</DependentUpon>
     </EmbeddedResource>
@@ -386,9 +298,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.resx">
       <DependentUpon>DiagnosticEntry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Projectfiles\SelectProjectPartForm.resx">
-      <DependentUpon>SelectProjectPartForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -409,9 +318,6 @@
     <Content Include="Documentation\SZLs.txt" />
     <Content Include="Documentation\Info.txt" />
     <Content Include="Documentation\TIA CRC.txt" />
-    <EmbeddedResource Include="Projectfiles\SelectProjectPartMultiForm.resx">
-      <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\FolderImages\closed_folder.ico" />
     <EmbeddedResource Include="Resources\FolderImages\opened_folder.ico" />
     <EmbeddedResource Include="Resources\FolderImages\s5.ico" />

@@ -35,8 +35,6 @@ using System.Timers;
 using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -284,10 +282,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //    _errorCodeConverter = Connection.daveStrerror;
                     //    _dc = new S7onlineNETdave(_configuration);
                     //    break;
-                    case LibNodaveConnectionTypes.ISO_over_TCP_Managed:
-                        _errorCodeConverter = Connection.daveStrerror;
-                        _dc = new TcpNETdave(_configuration);
-                        break;
                 }
 
                 //if it is an Non manged version, using libnodave. Enums > 9000 are Managed implemntations

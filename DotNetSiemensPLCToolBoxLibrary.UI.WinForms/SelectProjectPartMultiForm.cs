@@ -66,7 +66,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (row.Children != null)
                 foreach (S7DataRow s7DataRow in row.Children)
                 {
-                    if (s7DataRow._children != null && s7DataRow.Children.Count > 0)
+                    if (s7DataRow.Children.Count > 0)
                     {
                         DBValueTreeNode newNd = new DBValueTreeNode();
                         newNd.Text = s7DataRow.Name;

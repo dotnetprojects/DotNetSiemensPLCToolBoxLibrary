@@ -36,7 +36,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 pNCK.bausteintyp = (byte)_libnodavevalue.NckModule;
                 pNCK.ZEILENANZAHL = (byte)_libnodavevalue.NckLinecount;
                 pNCK.typ = getType(_libnodavevalue.TagDataType);
-                pNCK.laenge = (byte)_libnodavevalue._internalGetSize();
+                pNCK.laenge = (byte)_libnodavevalue.ReadByteSize;
             }
             else
             {

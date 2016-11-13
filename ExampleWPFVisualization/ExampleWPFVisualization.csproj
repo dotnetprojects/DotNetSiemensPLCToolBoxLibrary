@@ -102,6 +102,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.UI.WinForms\DotNetSiemensPLCToolBoxLibrary.UI.WinForms.csproj">
+      <Project>{743541a3-4bd8-4758-8f2e-9cf7027f9b0d}</Project>
+      <Name>DotNetSiemensPLCToolBoxLibrary.UI.WinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>

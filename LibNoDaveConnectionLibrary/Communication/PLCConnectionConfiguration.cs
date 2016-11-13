@@ -34,7 +34,7 @@ using Microsoft.Win32;
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
 #if !IPHONE
-    [System.ComponentModel.Editor(typeof(PLCConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [System.ComponentModel.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.PLCConnectionUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif   
     [Serializable]
     /// <summary>
