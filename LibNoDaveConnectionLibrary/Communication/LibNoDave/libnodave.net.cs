@@ -466,6 +466,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             [DllImport("__Internal", EntryPoint = "daveSetTimeout")]
 #endif
             protected static extern void daveSetTimeout32(IntPtr di, int time);
+            /// <summary>
+            /// Set the default Response timeout
+            /// </summary>
+            /// <param name="time">Time in Microseconds</param>
             public void setTimeout(int time)
             {
                 if (IntPtr.Size == 8)

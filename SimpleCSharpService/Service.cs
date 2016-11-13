@@ -47,7 +47,7 @@ namespace SimpleCSharpService
             base.OnStart(args);
 
             var cfg = new PLCConnectionConfiguration("myConnection", LibNodaveConnectionConfigurationType.ObjectSavedConfiguration);
-            cfg.ConnectionType = (int) LibNodaveConnectionTypes.ISO_over_TCP;
+            cfg.ConnectionType = LibNodaveConnectionTypes.ISO_over_TCP;
             cfg.CpuIP = "192.168.1.185";
             cfg.CpuSlot = 2;
 
