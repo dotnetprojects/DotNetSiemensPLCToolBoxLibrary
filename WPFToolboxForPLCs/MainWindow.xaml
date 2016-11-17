@@ -5,9 +5,10 @@
         mc:Ignorable="d" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" 
         xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-        xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:converters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+        xmlns:shared="urn:mlog-sharedclasses-ns"
         Title="WPFToolBox for Siemens PLCs" Height="800" Width="1000" Icon="/WPFToolboxForSiemensPLCs;component/Images/1.png" Closing="Window_Closing">
 <Window.Resources>
         <ControlTemplate x:Name="TemplateEditor" x:Key="TemplateEditor" TargetType="avalonEdit:TextEditor">
@@ -18,7 +19,7 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <local:BoolToBrushConverter x:Key="ConnectedConverter" FalseValue="Red" TrueValue="Green" />
+        <shared:BoolToBrushConverter x:Key="ConnectedConverter" FalseValue="Red" TrueValue="Green" />
 
     </Window.Resources>
     
@@ -56,23 +57,33 @@
             <MenuItem Header="DB2WinCC" Click="MenuItem_Click_4"></MenuItem>
         </Menu>
     
-    <ad:DockingManager x:Name="DockManager" IsAnimationEnabled="True" Grid.Row="1" Margin="0,0,0,0"
+    <xcad:DockingManager x:Name="DockManager" Grid.Row="1" Margin="0,0,0,0"
                      ActiveContent="{Binding ElementName=Content1}" >
-        <ad:DockingManager.LayoutTransform>
+        <xcad:DockingManager.LayoutTransform>
             <ScaleTransform
                     ScaleX="{Binding Value, ElementName=zoomSlider}"
                     ScaleY="{Binding Value, ElementName=zoomSlider}"/>
-        </ad:DockingManager.LayoutTransform>
-            <ad:ResizingPanel Orientation="Horizontal" >
-                <ad:ResizingPanel Orientation="Vertical"  ad:ResizingPanel.ResizeWidth="0.25*">
-                    <ad:DockablePane SelectedIndex="1" ad:ResizingPanel.ResizeHeight="1.9*" SelectionChanged="DockablePane_SelectionChanged">
-                        <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" IsCloseable="False" />                      
-                    </ad:DockablePane>                  
-                </ad:ResizingPanel>
-                <ad:DocumentPane x:Name="DocumentHost">
-                </ad:DocumentPane>
-            </ad:ResizingPanel>
-    </ad:DockingManager>
+        </xcad:DockingManager.LayoutTransform>
+            <xcad:LayoutRoot x:Name="LayoutRoot" >
+                <xcad:LayoutPanel Orientation="Horizontal">
+                <xcad:LayoutAnchorablePaneGroup DockWidth="280" Orientation="Vertical">
+                    <xcad:LayoutAnchorablePane DockHeight="65*">
+                        <xcad:LayoutAnchorable x:Name="Tree" Title="ProjectTree">
+                            <dockwin:DockableContentProjectList x:Name="ProjectTree" Title="ProjectTree" />
+                        </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+
+                    <xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutDocumentPane x:Name="DocumentHost" />
+                    </xcad:LayoutDocumentPaneGroup>
+                    
+                </xcad:LayoutPanel>
+
+
+            
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
         <StatusBar Grid.Row="2">
             <StatusBarItem HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" >
@@ -99,3 +110,4 @@
         </StatusBar>
 </Grid>
 </Window>
+

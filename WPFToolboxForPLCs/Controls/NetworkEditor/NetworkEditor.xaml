@@ -1,13 +1,12 @@
 ﻿<UserControl x:Class="WPFToolboxForSiemensPLCs.Controls.NetworkEditor.NetworkEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
              xmlns:avalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
              xmlns:Controls="clr-namespace:WPFToolboxForSiemensPLCs.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
-             xmlns:local="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+             xmlns:shared="urn:mlog-sharedclasses-ns"
              Name="NetworkEditorWindow"
              HorizontalAlignment="Stretch"
              HorizontalContentAlignment="Stretch"
@@ -39,10 +38,10 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <local:BoolToVisibilityConverter x:Key="TrueVisibleConverter"
+        <shared:BoolToVisibilityConverter x:Key="TrueVisibleConverter"
                                          FalseValue="Collapsed"
                                          TrueValue="Visible" />
-        <local:NullToCollapsedConverter x:Key="NullCollapsedConverter" />
+        <shared:NullToCollapsedConverter x:Key="NullCollapsedConverter" />
 
         <Style TargetType="{x:Type avalonEdit:TextEditor}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />

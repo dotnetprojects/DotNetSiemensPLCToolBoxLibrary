@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.HMIGENOBJECTSLib">
-      <HintPath>..\externalDlls\Interop.HMIGENOBJECTSLib.dll</HintPath>
+      <HintPath>..\externalDlls\siemens\Interop.HMIGENOBJECTSLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationCore" />

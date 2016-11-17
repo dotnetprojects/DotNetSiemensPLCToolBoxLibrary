@@ -8,14 +8,16 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
     using System.Threading;
 
     using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
+    
 
     public static class Logging
     {
         static Logging()
         {
-            log4net.Config.XmlConfigurator.Configure();
-
+            _logger = NLog.LogManager.GetCurrentClassLogger();
         }
+
+        private static NLog.Logger _logger;
 
         private static Thread myThread;
 
@@ -55,19 +57,19 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Common
             }
 
 
-            log4net.LogManager.GetLogger("test").Info(Message, ex);
+            _logger.Info(ex, Message);
 
             return internalLogText(Message, MessageLogLevel);
         }
 
         public static void LogTextToLog4Net(string message, Logging.LogLevel messageLogLevel = LogLevel.Information, Exception exception = null)
         {
-            log4net.LogManager.GetLogger("test").Info(message, exception);
+            _logger.Info(exception, message);
         }
 
         public static string LogText(string Message, LogLevel MessageLogLevel)
         {
-            log4net.LogManager.GetLogger("test").Info(Message);
+            _logger.Info(Message);
             
             return internalLogText(Message, MessageLogLevel);
         }

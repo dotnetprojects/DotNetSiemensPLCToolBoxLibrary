@@ -7,16 +7,15 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Windows;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
-using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Protocolling;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
-using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSimaticDatabaseProtokollerLibrary
 {

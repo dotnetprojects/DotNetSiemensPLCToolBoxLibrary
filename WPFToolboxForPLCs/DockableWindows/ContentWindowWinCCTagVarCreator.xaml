@@ -1,10 +1,10 @@
-﻿<ad:DocumentContent
+﻿<xcad:LayoutDocument
     x:Class="WPFToolboxForSiemensPLCs.DockableWindows.ContentWindowWinCCTagVarCreator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              mc:Ignorable="d" d:DesignHeight="707" d:DesignWidth="591">
     <StackPanel>
         <StackPanel.Background>
@@ -45,4 +45,5 @@
         <TextBlock></TextBlock>
         <Button Width="300" Click="Button_Click_2">Create WinCC Tags</Button>
     </StackPanel>
-</ad:DocumentContent>
+</xcad:LayoutDocument>
+

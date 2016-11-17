@@ -8,7 +8,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:WPF1="clr-namespace:DotNetSimaticDatabaseProtokollerConfigurationTool.WPF"
-             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" Name="myControl"
+             xmlns:Converters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+             Name="myControl"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -493,21 +494,21 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBox Width="114"
-                	Height="17"
-                	Margin="311,27,0,0"
-                	HorizontalAlignment="Left"
-                	VerticalAlignment="Top"
-                	BorderBrush="Black"
-                	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
-                	Text="{Binding ElementName=grdDatasets,
+                    Height="17"
+                    Margin="311,27,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    BorderBrush="Black"
+                    IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
+                    Text="{Binding ElementName=grdDatasets,
                                                  Path=SelectedItem.NoDataInterval}" />
                 <Label Width="40"
-                	Height="19"
-                	Margin="271,26,0,0"
-                	HorizontalAlignment="Left"
-                	VerticalAlignment="Top"
-                	Content="NoDIv"
-                	Padding="1" />
+                    Height="19"
+                    Margin="271,26,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="NoDIv"
+                    Padding="1" />
             </Grid>
         </GroupBox>
 
@@ -1128,7 +1129,7 @@
                Padding="0"
                ToolTip="If this is Empty, PC Date is not saved to database!" />
         <Button Name="cmdAddDatasetRowsFromProjectFile"
-		Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}"
+        Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}"
                 Width="129"
                 Height="23"
                 Margin="0,239,68,0"
@@ -1221,16 +1222,16 @@
                   IsEnabled="{Binding ElementName=grdDatasets, Path=SelectedItem, Converter={StaticResource myNullToFalseConverter}}"
                   IsChecked="{Binding ElementName=grdDatasets, Path=SelectedItem.UseFloatIfMultiplierIsUsed}" HorizontalAlignment="Right" Width="392"/>
         <CheckBox Content="Expert Mode" Height="16" Margin="186,269,0,0" x:Name="cb_ExpertMode" VerticalAlignment="Top"
-        	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
-        	HorizontalAlignment="Left" Width="114"/>
+            IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
+            HorizontalAlignment="Left" Width="114"/>
         <CheckBox IsChecked="{Binding SelectedItem.UseDbUpdateNoInsert, ElementName=grdDatasets}" Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Content="Use Update no insert (on databases)" Height="16" HorizontalAlignment="Left" IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}" Margin="671,70,0,0" x:Name="chkConvertTypes_Copy" VerticalAlignment="Top" />
         <TextBox Visibility="{Binding IsChecked, Converter={StaticResource boolToVisibilityConverter}, ElementName=cb_ExpertMode}" Width="179"
-        	Height="26"
-        	Margin="671,91,0,0"
-        	HorizontalAlignment="Left"
-        	VerticalAlignment="Top"
-        	BorderBrush="Black"
-        	IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
-        	Text="{Binding SelectedItem.UpdateWhereClause, ElementName=grdDatasets}" ToolTip="Where Clause for Update" />
+            Height="26"
+            Margin="671,91,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            BorderBrush="Black"
+            IsEnabled="{Binding SelectedItem, Converter={StaticResource myNullToFalseConverter}, ElementName=grdDatasets}"
+            Text="{Binding SelectedItem.UpdateWhereClause, ElementName=grdDatasets}" ToolTip="Where Clause for Update" />
     </Grid>
 </UserControl>

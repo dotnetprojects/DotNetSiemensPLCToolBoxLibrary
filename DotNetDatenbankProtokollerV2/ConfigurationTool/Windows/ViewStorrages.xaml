@@ -2,11 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Datasets="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Datasets;assembly=JFK-ProtokollerLibrary"
              xmlns:DotNetSimaticDatabaseProtokollerLibrary="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" d:DesignHeight="426"
+             xmlns:Converters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+             d:DesignHeight="426"
              d:DesignWidth="765"
              mc:Ignorable="d">
 

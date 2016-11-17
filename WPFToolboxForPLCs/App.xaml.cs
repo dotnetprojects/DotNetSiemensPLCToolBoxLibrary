@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Windows;
-using AvalonDock;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WPFToolboxForSiemensPLCs
 {
@@ -14,7 +10,7 @@ namespace WPFToolboxForSiemensPLCs
     public partial class App : Application
     {
         public static MainWindow clientForm;
-        public static DocumentContent activeDocument;
+        public static LayoutDocument activeDocument;
 
         private void Application_DispatcherUnhandledException(object sender,
                                                               System.Windows.Threading.

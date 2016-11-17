@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Networking;
 using DotNetSimaticDatabaseProtokollerLibrary.Common;
 using DotNetSimaticDatabaseProtokollerLibrary.Connections;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases;
@@ -28,7 +29,6 @@ using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
 using DotNetSimaticDatabaseProtokollerLibrary.aspx;
 using DotNetSimaticDatabaseProtokollerLibrary.wcfService;
 
-using JFKCommonLibrary.Networking;
 
 
 namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling

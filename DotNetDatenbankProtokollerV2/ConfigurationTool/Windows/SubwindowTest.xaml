@@ -4,12 +4,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:my="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary;assembly=JFK-ProtokollerLibrary"
-             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" d:DesignHeight="348"
+             xmlns:Coverters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+             d:DesignHeight="348"
              d:DesignWidth="800"
              Unloaded="UserControl_Unloaded"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
+        <Coverters:NullToFalseConverter x:Key="myNullToFalseConverter" />
 
     </UserControl.Resources>
     <Grid>

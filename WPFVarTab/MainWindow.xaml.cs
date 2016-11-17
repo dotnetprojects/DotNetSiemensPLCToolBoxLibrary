@@ -4,29 +4,21 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Serialization;
 using CustomChromeLibrary;
+using DotNetProjects.WPF.Converters.Collections;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-//using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
-using JFKCommonLibrary.Serialization;
 using Microsoft.Win32;
 
 
@@ -148,12 +140,12 @@ namespace WPFVarTab
             Point _point = new Point(_window.Left + 24, _window.Top + 24);
             if (_window.WindowState == WindowState.Maximized)
                 _point = new Point(18, 18);
-            Microsoft.Windows.Shell.SystemCommands.ShowSystemMenu(_window, _point);
+            SystemCommands.ShowSystemMenu(_window, _point);
         }
 
         private void _OnSystemCommandCloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            Microsoft.Windows.Shell.SystemCommands.CloseWindow((Window)e.Parameter);
+           SystemCommands.CloseWindow((Window)e.Parameter);
         }
 
         private void cmdConfigConnection_Click(object sender, RoutedEventArgs e)

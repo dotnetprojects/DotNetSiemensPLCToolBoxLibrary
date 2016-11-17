@@ -6,10 +6,12 @@
              xmlns:Common="clr-namespace:DotNetSimaticDatabaseProtokollerLibrary.Common;assembly=JFK-ProtokollerLibrary"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary" Name="myControl"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" mc:Ignorable="d" d:DesignHeight="590" d:DesignWidth="562">
+            Name="myControl"
+             xmlns:converters="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" d:DesignHeight="590" d:DesignWidth="562">
     <UserControl.Resources>
-        <Converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
+        <converters:NullToFalseConverter x:Key="myNullToFalseConverter" />
         <ObjectDataProvider x:Key="ErrorLevel"
                             MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -92,3 +94,6 @@
         </Grid>
     </ScrollViewer>
 </UserControl>
+
+
+

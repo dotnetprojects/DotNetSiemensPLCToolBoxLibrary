@@ -1,16 +1,16 @@
 ﻿<ccl:CustomChromeWindow x:Class="WPFVarTab.MainWindow"
                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                        xmlns:behavior="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
                         xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
                         xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
                         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                        xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
                         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                         xmlns:Properties="clr-namespace:WPFVarTab.Properties"
-                        xmlns:wpf="clr-namespace:JFKCommonLibrary.WPF;assembly=JFKCommonLibrary" Name="ThisWindow"
+                        xmlns:behavior="clr-namespace:DotNetProjects.WPF.Converters;assembly=DotNetProjects.WPF.Converters"
+                        xmlns:shared="urn:mlog-sharedclasses-ns"
+                        Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -22,8 +22,8 @@
                         WindowStyle="None" Closing="ThisWindow_Closing">
 
     <Window.CommandBindings>
-        <CommandBinding Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}" Executed="_OnShowSystemMenuCommand" />
-        <CommandBinding Command="{x:Static Shell:SystemCommands.CloseWindowCommand}" Executed="_OnSystemCommandCloseWindow" />
+        <CommandBinding Command="{x:Static SystemCommands.ShowSystemMenuCommand}" Executed="_OnShowSystemMenuCommand" />
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" Executed="_OnSystemCommandCloseWindow" />
     </Window.CommandBindings>
 
     <Window.Resources>
@@ -136,11 +136,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <behavior:NullableBoolToBrushConverter x:Key="connectedConv"
+        <shared:NullableBoolToBrushConverter x:Key="connectedConv"
                                                FalseValue="Red"
                                                NullValue="Transparent"
                                                TrueValue="LightGreen" />
-        <behavior:NullableBoolToBrushConverter x:Key="connectedConv2"
+        <shared:NullableBoolToBrushConverter x:Key="connectedConv2"
                                                FalseValue="Red"
                                                NullValue="Transparent"
                                                TrueValue="LightGreen" />
@@ -184,9 +184,9 @@
         </Style>
 
         <Style x:Key="GlassStyle" TargetType="{x:Type WPFVarTab:MainWindow}">
-            <Setter Property="Shell:WindowChrome.WindowChrome">
+            <Setter Property="WindowChrome.WindowChrome">
                 <Setter.Value>
-                    <Shell:WindowChrome CaptionHeight="36"
+                    <WindowChrome CaptionHeight="36"
                                         GlassFrameThickness="-1"
                                         ResizeBorderThickness="4" />
                 </Setter.Value>
@@ -203,10 +203,10 @@
                                 <Button Margin="7,7,0,2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
-                                        Command="{x:Static Shell:SystemCommands.ShowSystemMenuCommand}"
+                                        Command="{x:Static SystemCommands.ShowSystemMenuCommand}"
                                         CommandParameter="{Binding ElementName=ThisWindow}"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                        WindowChrome.IsHitTestVisibleInChrome="True">
                                     <Image Width="16"
                                            Height="16"
                                            Source="{Binding RelativeSource={RelativeSource TemplatedParent},
@@ -218,7 +218,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdNew_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="New VarTab">
                                     <Image Width="16"
                                            Height="16"
@@ -230,7 +230,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdOpen_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Open an existing VarTab">
                                     <Image Width="16"
                                            Height="16"
@@ -243,7 +243,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdSave_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Save VarTab">
                                     <Image Width="16"
                                            Height="16"
@@ -255,7 +255,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdConfigConnection_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Config Connections">
                                     <Image Width="16"
                                            Height="16"
@@ -267,7 +267,7 @@
                                               VerticalAlignment="Top"
                                               Click="cmdOnlineView_Click"
                                               Padding="3"
-                                              Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                              WindowChrome.IsHitTestVisibleInChrome="True"
                                               ToolTip="Online View">
                                     <Image Width="16"
                                            Height="16"
@@ -279,12 +279,12 @@
                                         VerticalAlignment="Top"
                                         Click="cmdControlValues_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Control Values">
                                     <Button.Visibility>
                                         <Binding Path="AllowTagsControl" Source="{x:Static Properties:Settings.Default}">
                                             <Binding.Converter>
-                                                <behavior:BoolToVisibilityConverter></behavior:BoolToVisibilityConverter>
+                                                <shared:BoolToVisibilityConverter></shared:BoolToVisibilityConverter>
                                             </Binding.Converter>
                                         </Binding>                                        
                                     </Button.Visibility>
@@ -298,7 +298,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdConfigVarTab_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="VarTab Options">
                                     <Image Width="16"
                                            Height="16"
@@ -310,7 +310,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdImportVarTab_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Import Step7 VarTab">
                                     <Image Width="16"
                                            Height="16"
@@ -322,7 +322,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdSetSymbolTabels_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Select Symbol Tables">
                                     <Image Width="16"
                                            Height="16"
@@ -338,7 +338,7 @@
                                           ItemsSource="{Binding ConnectionDictionary}"
                                           Padding="3"
                                           SelectedItem="{Binding DefaultConnectionEntry}"
-                                          Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                          WindowChrome.IsHitTestVisibleInChrome="True"
                                           ToolTip="Default Connection"
                                           WPFVarTab:ComboBoxExtension.IsNullable="True">
                                     <ComboBox.ItemTemplate>
@@ -358,7 +358,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdExportAllConnections_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Export All Connections">
                                     <Image Width="16"
                                            Height="16"
@@ -370,7 +370,7 @@
                                         VerticalAlignment="Top"
                                         Click="cmdImportAllConnections_Click"
                                         Padding="3"
-                                        Shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                                        WindowChrome.IsHitTestVisibleInChrome="True"
                                         ToolTip="Import All Connections">
                                     <Image Width="16"
                                            Height="16"
@@ -483,7 +483,7 @@
                                       WPFVarTab:ComboBoxExtension.IsNullable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger>
-                                        <wpf:ResolveElementName PropertyName="ItemsSource" />
+                                        <behavior:ResolveElementName PropertyName="ItemsSource" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
@@ -530,3 +530,4 @@
         </StatusBar>
     </Grid>
 </ccl:CustomChromeWindow>
+

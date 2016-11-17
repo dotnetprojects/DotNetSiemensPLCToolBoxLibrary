@@ -1,10 +1,11 @@
-﻿<ad:DockableContent
+﻿<xcad:LayoutAnchorable
              x:Class="WPFToolboxForSiemensPLCs.DockableWindows.DockableContentOnlineConnections"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Projectfiles="clr-namespace:DotNetSiemensPLCToolBoxLibrary.Projectfiles;assembly=DotNetSiemensPLCToolBoxLibrary" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -16,4 +17,5 @@
         <Button Grid.Row="1" DockPanel.Dock="Bottom" Height="20" Click="Button_Click">Config Connections</Button>
     </Grid> 
 
-</ad:DockableContent>
+</xcad:LayoutAnchorable>
+

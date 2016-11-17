@@ -1,10 +1,15 @@
-﻿<ad:DocumentContent
+﻿<xcad:LayoutDocument
     x:Class="WPFToolboxForSiemensPLCs.DockableWindows.ContentWindowChart"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock" xmlns:Charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482">
+    xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
+   >
 
-    <Charting:Chart VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Charting:Chart>
-</ad:DocumentContent>
+    <chartingToolkit:Chart VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></chartingToolkit:Chart>
+</xcad:LayoutDocument>
+
+
+

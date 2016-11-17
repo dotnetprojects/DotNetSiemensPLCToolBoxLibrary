@@ -12,11 +12,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Networking;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using JFKCommonLibrary.ExtensionMethods;
-using JFKCommonLibrary.Networking;
-using JFKCommonLibrary.Settings;
 using Kopplungstester.Properties;
 
 namespace Kopplungstester

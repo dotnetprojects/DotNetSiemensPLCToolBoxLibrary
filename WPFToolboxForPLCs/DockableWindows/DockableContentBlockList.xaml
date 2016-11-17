@@ -1,25 +1,24 @@
-﻿<ad:DockableContent
+﻿<xcad:LayoutAnchorable
     x:Class="WPFToolboxForSiemensPLCs.DockableWindows.DockableContentBlockList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
-             mc:Ignorable="d" d:DesignHeight="339" d:DesignWidth="482" ad:ResizingPanel.ResizeWidth="400"
-             GotFocus="DockableContent_GotFocus">
-    <ad:DockableContent.Resources>
-        <ContextMenu x:Key="cellContextMenu">
-            <MenuItem x:Name="menuCreateAwl" Header="Create AWL" Click="menuCreateAwl_Click" />
-        </ContextMenu>
-        <Style TargetType="{x:Type DataGridCell}">
-            <Setter Property="ContextMenu" Value="{DynamicResource cellContextMenu}" />
-        </Style>
-    </ad:DockableContent.Resources>
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             mc:Ignorable="d">
+   
 
 
         <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="True"
               AlternatingRowBackground="Gainsboro"  AlternationCount="2" MouseDoubleClick="myDataGrid_MouseDoubleClick" CanUserAddRows="False" PreviewMouseDown="myDataGrid_PreviewMouseDown" PreviewMouseMove="myDataGrid_PreviewMouseMove" AllowDrop="False" GiveFeedback="myDataGrid_GiveFeedback" MouseDown="myDataGrid_MouseDown" SelectionChanged="myDataGrid_SelectionChanged">
-            
+         <DataGrid.Resources>
+                <ContextMenu x:Key="cellContextMenu">
+                    <MenuItem x:Name="menuCreateAwl" Header="Create AWL" Click="menuCreateAwl_Click" />
+                </ContextMenu>
+            <Style TargetType="{x:Type DataGridCell}">
+                <Setter Property="ContextMenu" Value="{DynamicResource cellContextMenu}" />
+            </Style>
+        </DataGrid.Resources>   
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="ObjectName" Width="Auto" IsReadOnly="True" SortMemberPath="ObjectName">
                 <DataGridTemplateColumn.CellTemplate>
@@ -91,4 +90,5 @@
         </DataGrid.GroupStyle>
     </DataGrid>
 
-</ad:DockableContent>
+</xcad:LayoutAnchorable>
+

@@ -2,10 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                         xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
-                        xmlns:Converters="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
+                        xmlns:shared="urn:mlog-sharedclasses-ns"
                         Title="Symbol Tables" Height="300" Width="614" Style="{DynamicResource GlassStyle}" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
     <ccl:CustomChromeWindow.Resources>
-        <Converters:ObjectToStringConverter x:Key="objectToString"></Converters:ObjectToStringConverter>
+        <shared:ObjectToStringConverter x:Key="objectToString"></shared:ObjectToStringConverter>
     </ccl:CustomChromeWindow.Resources>
         <Grid>
         <DataGrid AutoGenerateColumns="False" Margin="12" Name="dtaConnectionsAndSymbolSources" ItemsSource="{Binding MainWindow.DictonaryConnectionSymboltables}" >
@@ -26,3 +26,4 @@
         </DataGrid>
     </Grid>
 </ccl:CustomChromeWindow>
+

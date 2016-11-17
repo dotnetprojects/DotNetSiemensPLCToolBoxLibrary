@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
 using FirebirdSql.Data.FirebirdClient;
 using MySql.Data.MySqlClient;
