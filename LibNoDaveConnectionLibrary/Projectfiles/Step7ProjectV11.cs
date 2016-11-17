@@ -60,7 +60,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             ProjectFile = projectfile;
 
-            if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap13"))
+            if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap13") || ProjectFile.ToLower().EndsWith("zap14"))
             {
                 ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
                 if (string.IsNullOrEmpty(ProjectFile))               
@@ -68,11 +68,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap13");
                 if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap14");
+                if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al11");
                 if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al12");
                 if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al13");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al14");
 
                 if (string.IsNullOrEmpty(projectfile))
                     throw new Exception("Zip-File contains no valid TIA Project !");
@@ -115,7 +119,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
             var name = args.Name.Substring(0, index) + ".dll";
 
-            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
+            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global") ??
+                              Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global");
+
+            if (filePathReg != null)
+            {
+                string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14";
+                if (Directory.Exists(filePath) == false)
+                    filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14 SP1";
+                var path = Path.Combine(filePath, name);
+                var fullPath = Path.GetFullPath(path);
+                if (File.Exists(fullPath))
+                {
+                    return Assembly.LoadFrom(fullPath);
+                }
+            }
+
+            filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
                               Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");
             if (filePathReg != null)
             {

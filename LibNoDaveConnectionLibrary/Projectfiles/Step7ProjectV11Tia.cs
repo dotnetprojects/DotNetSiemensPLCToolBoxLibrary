@@ -67,6 +67,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
+            public string ProgrammingLanguage
+            {
+                get { return IBlock.ProgrammingLanguage.ToString(); }
+            }
+
             public override string ToString()
             {
                 string retVal = "";
@@ -93,6 +98,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             public virtual string GenerateSource()
             {
+                //if (this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_DB ||
+                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_FBD ||
+                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_FBD_LIB ||
+                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_LAD ||
+                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_LAD_LIB ||
+                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_STL)
+                //{
+                //    return null;
+                //}
+                if (this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.SCL &&
+                    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.STL)
+                {
+                    return GenerateSourceCode();
+                }
+
+                return GenerateSourceXML();
+            }
+
+            public virtual string GenerateSourceXML()
+            {
                 var rootFolder = (TIAOpennessProjectFolder)ParentFolder;
                 while (!(rootFolder.TiaPortalItem is Siemens.Engineering.SW.ProgramblockSystemFolder))
                 {
@@ -104,21 +129,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     ext = "awl";
                 }
 
-                if (this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_DB ||
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_FBD ||
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_FBD_LIB ||
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_LAD ||
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_LAD_LIB ||
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.F_STL)
-                {
-                    return null;
-                }
-                if (this.IBlock.ProgrammingLanguage != ProgrammingLanguage.SCL &&
-                    this.IBlock.ProgrammingLanguage != ProgrammingLanguage.STL)
-                {
-                    return this.ExportToString();
-                }
-
                 dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
@@ -128,6 +138,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 File.Delete(file);
 
                 return text;
+            }
+
+            public virtual string GenerateSourceCode()
+            {
+                return this.ExportToString();
             }
         }
 
