@@ -124,6 +124,10 @@ compiled/WPFVarTab.exe
 externalDlls/libnodave/libnodave_jfkmod64.exp
 *.exp
 *.bak
+<<<<<<< HEAD
 =======
 compiled/DotNetSiemensPLCToolBoxLibrary.dll
 >>>>>>> refs/remotes/origin/master
+=======
+*.dll
+>>>>>>> refs/heads/pr/3
