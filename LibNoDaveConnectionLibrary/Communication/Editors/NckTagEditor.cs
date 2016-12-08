@@ -115,10 +115,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     dataType = TagDataType.LInt; //eNCK_LE_Int64;
                     break;
                 case 19:
-                    if (_bereich == 2)
-                        dataType = TagDataType.String; //eNCK_LE_String;
-                    else
-                        dataType = TagDataType.CharArray; //eNCK_LE_String;
+                    //if (_bereich == 2)// && pNCK.bausteintyp == 0x7f)
+                    //    dataType = TagDataType.String; //eNCK_LE_String;
+                    //else
+                    dataType = TagDataType.CharArray; //eNCK_LE_String;
                     _ArraySize = pNCK.laenge;
                     break;
                 default:

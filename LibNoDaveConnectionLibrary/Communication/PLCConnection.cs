@@ -2964,10 +2964,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     //if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
                                     //    System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
-                                    //else
-                                    //{
-
-                                    //}
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
@@ -2983,8 +2979,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     int nr = 0;
                     foreach (var value in readTagList)
                     {
-
-
                         if (!NotExistedValue[nr])
                         {
                             value.ItemDoesNotExist = false;
@@ -3001,6 +2995,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
         }
+
         internal void WriteValuesFetchWrite(IEnumerable<PLCTag> valueList)
         {
             foreach (var libNoDaveValue in valueList)

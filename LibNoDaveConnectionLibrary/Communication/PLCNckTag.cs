@@ -45,6 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 		public int NckLine { get; set; }
 		public int NckModule { get; set; }
 		public int NckLinecount { get; set; }
+
 		public override  bool DontSplitValue
 		{
 			get { return true; }
