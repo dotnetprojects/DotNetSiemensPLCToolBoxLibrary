@@ -53,7 +53,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 			set { }
 		}
 
-
         public override string ToString()
         {
             string old = "";
@@ -88,6 +87,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public NC_Var()
         {
         }
+		
         public NC_Var(string ncVarSelector)
         {
             throw new NotImplementedException();
@@ -164,7 +164,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //if (_bereich == 2)// && NC_Var.bausteintyp == 0x7f)
                     //    dataType = TagDataType.String; //eNCK_LE_String;
                     //else
-                        dataType = TagDataType.CharArray; //eNCK_LE_String;
+                    dataType = TagDataType.CharArray; //eNCK_LE_String;
 
                     _ArraySize = this.Laenge;
                     break;
@@ -176,8 +176,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             return new PLCNckTag() { TagDataType = dataType, NckArea = _bereich, NckUnit = _einheit, NckColumn = (int)this.Spalte, NckLine = (int)this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
         }
-
-
     }
-
 }

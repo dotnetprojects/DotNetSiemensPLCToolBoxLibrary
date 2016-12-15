@@ -1759,7 +1759,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _readValueFromBuffer(byte[] buff, int startpos)
         {
-
             if (this is PLCNckTag && this.TagDataType != DataTypes.TagDataType.String && this.TagDataType != DataTypes.TagDataType.CharArray)
             {
                 if ((this as PLCNckTag).NckArea != 5 && (this as PLCNckTag).NckArea != 6)
@@ -1774,13 +1773,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 case TagDataType.String:
                     {
-                        int maxsize = (int)buff[startpos];
-                        int size = (int)buff[startpos + 1];
+                        if (!(this is PLCNckTag))
+                        {
+                            int maxsize = (int)buff[startpos];
+                            int size = (int)buff[startpos + 1];
 
-                        if (ArraySize == 1 && ArraySize != maxsize)
-                            ArraySize = Math.Max(ArraySize, maxsize);
+                            if (ArraySize == 1 && ArraySize != maxsize)
+                                ArraySize = Math.Max(ArraySize, maxsize);
+                            else
+                                _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
+                        }
                         else
-                            _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
+                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
                     }
                     break;
                 case TagDataType.CharArray:
@@ -1790,8 +1794,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         //    sb.Append((char)buff[n + startpos]);
                         //_setValueProp = sb.ToString();
 
-
-                        _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Trim('\0');
+                        if (this is PLCNckTag) //BugFix für NCK v2.6
+                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
+                        else
+                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Trim('\0');
                     }
                     break;
                 case TagDataType.ByteArray:

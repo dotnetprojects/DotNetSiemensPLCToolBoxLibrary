@@ -3156,6 +3156,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         /// <summary>
+        /// Read one single value from the NCK
+        /// </summary>
+        /// <param name="address">An Sinumerik Address Identifier. see <seealso cref="PLCNckTag"/> for syntax</param>
+        /// <returns></returns>
+        public object ReadValue(NC_Var address)
+        {
+            var tag = address.GetNckTag(0,0);
+            this.ReadValue(tag);
+            return tag.Value;
+        }
+
+        /// <summary>
+        /// Read one single value from the NCK
+        /// </summary>
+        /// <param name="address">An Sinumerik Address Identifier. see <seealso cref="PLCNckTag"/> for syntax</param>
+        /// <returns></returns>
+        public object ReadValue<T>(NC_Var address)
+        {
+            var wrt = ReadValue(address);
+            return (T)wrt;
+        }
+
+        /// <summary>
         /// This Function Reads One LibNoDave Value from the PLC
         /// </summary>
         /// <param name="value"></param>
@@ -3647,6 +3670,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #endregion
 
         #region NC file transfer
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <returns></returns>
+        public byte[] BinaryUploadFromNC(string fullFileName)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            byte[] id = new byte[4];
+            List<byte> lRet = new List<byte>();
+            string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            int res = _dc.initUploadNC(file, ref id);
+            if (res != 0)
+                throw new Exception("UploadFromNC: " + res);
+
+            int more = 0;
+            int len = 0;
+            byte[] buffer = new byte[1024];
+
+            do
+            {
+                res = _dc.doUploadNC(out more, buffer, out len, id);
+                if (res != 0)
+                    break;
+
+                for (int i = 0; i < len; i++)
+                {
+                    lRet.Add(buffer[i]);
+                }
+            } while (more != 0);
+
+            res = _dc.endUploadNC(id);
+            if (res != 0)
+                throw new Exception("BinaryUploadFromNC: " + res);
+
+            return lRet.ToArray();
+        }
+
         /// <summary>
         /// Load complete file from NC
         /// </summary>
