@@ -43,6 +43,7 @@
     <Compile Include="TestLibNoDaveReading.cs" />
     <Compile Include="TestMC7Converter.cs" />
     <Compile Include="TestPLCBlockName.cs" />
+    <Compile Include="TestCRC.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
