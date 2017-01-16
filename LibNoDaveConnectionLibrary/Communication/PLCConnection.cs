@@ -153,7 +153,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private System.Timers.Timer socketTimer;
         private Thread socketThread;
-        
+
         private FetchWriteConnection _fetchWriteConnection;
 
         void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -201,13 +201,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 _NeedDispose = true;
 
                 //Debugging for LibNoDave
-<<<<<<< HEAD
-                libnodave.daveSetDebug(0x0);
-            //libnodave.daveSetDebug(0x1ffff);
-=======
                 libnodave.daveSetDebug(0x0); //turn off libnodave log messages to console
-                //libnodave.daveSetDebug(0x1ffff);
->>>>>>> refs/heads/pr/4
+            //libnodave.daveSetDebug(0x1ffff);
 
                 //_configuration.ReloadConfiguration();
 
@@ -230,12 +225,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, (int)_configuration.ComPortParity);
                         break;
 
-                    case LibNodaveConnectionTypes.AS_511:             
+                    case LibNodaveConnectionTypes.AS_511:
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, (int)_configuration.ComPortParity);
                         break;
 
-#if !IPHONE   
+#if !IPHONE
                     case LibNodaveConnectionTypes.Use_Step7_DLL:
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
@@ -278,14 +273,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         socketTimer = null;
                         socketThread = null;
                         break;
-<<<<<<< HEAD
-                    case 500:
-                        _fetchWriteConnection = new FetchWriteConnection(this.Configuration);
-=======
 
                     case LibNodaveConnectionTypes.Fetch_Write_Active:
-                        _fetchWriteConnection=new FetchWriteConnection(this.Configuration);
->>>>>>> refs/heads/pr/4
+                        _fetchWriteConnection = new FetchWriteConnection(this.Configuration);
                         _fetchWriteConnection.Connect();
                         Connected = true;
                         return;
@@ -334,26 +324,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if ((int)_configuration.ConnectionType < 9000) //Enums > 9000 are Managed implemntations
                 {
                     //Dave Interface Erzeugen
-<<<<<<< HEAD
-                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, _configuration.ConnectionType, _configuration.BusSpeed);
-
-=======
                     _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, (int)_configuration.ConnectionType, (int)_configuration.BusSpeed);
-                    
->>>>>>> refs/heads/pr/4
+
                     //Timeout setzen...
                     _di.setTimeout((int)_configuration.TimeoutMicroseconds); //WARNING! setTimeout needs value in Microseconds
 
                     //Dave Interface initialisieren
                     var initret = _di.initAdapter();
                     if (initret != 0)
-                        throw new PLCException("Error: (Interface) (Code: " + initret.ToString() + ") " + _errorCodeConverter(initret),initret);
+                        throw new PLCException("Error: (Interface) (Code: " + initret.ToString() + ") " + _errorCodeConverter(initret), initret);
                 }
 
                 //Get S7OnlineType - To detect if is a IPConnection 
                 bool IPConnection = false;
 #if !IPHONE
-                if (_configuration.ConnectionType ==  LibNodaveConnectionTypes.Use_Step7_DLL)
+                if (_configuration.ConnectionType == LibNodaveConnectionTypes.Use_Step7_DLL)
                 {
                     RegistryKey myConnectionKey =
                         Registry.LocalMachine.CreateSubKey("SOFTWARE\\Siemens\\SINEC\\LogNames\\" +
@@ -391,15 +376,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
 
                 }
-<<<<<<< HEAD
-
-                if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == 223 || _configuration.ConnectionType == 224))
-=======
                 #endregion
 
                 #region Connect PLC
                 if (_configuration.NetLinkReset && !_netlinkReseted && (_configuration.ConnectionType == LibNodaveConnectionTypes.Netlink_lite || _configuration.ConnectionType == LibNodaveConnectionTypes.Netlink_lite_PPI))
->>>>>>> refs/heads/pr/4
                 {
                     _dc.resetIBH();
                     _netlinkReseted = true;
@@ -414,13 +394,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     throw new Exception("Error: CPU not available! Maybe wrong IP or MPI Address or Rack/Slot or ...");
                 }
                 if (ret != 0)
-<<<<<<< HEAD
-                    throw new Exception("Error: (Connection) (Code: " + ret.ToString() + ") " + _errorCodeConverter(ret));
-
-=======
                     throw new PLCException("Error: (Connection) (Code: " + ret.ToString() + ") " + _errorCodeConverter(ret), ret);
-                
->>>>>>> refs/heads/pr/4
+
                 Connected = true;
                 #endregion
             }
@@ -1335,7 +1310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return retVal;
                     }
                     else if (ret == 53825) //Error: D241: Operation not permitted in current protection level.
-                        throw new PLCException("PLC is Password Protected, unlock before downloading Blocks!",ret);
+                        throw new PLCException("PLC is Password Protected, unlock before downloading Blocks!", ret);
                     else
                         throw new PLCException(ret);
                 }
@@ -1394,22 +1369,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
 
-					//Transfer crc:
-					//Benötigt für Safety übertragung!
-					//Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
-					//Die Prüfsumme wird aus folgenden Bytes gebildet:
-					//Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
-					//    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
-					// Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
-					//var crcbyte = new[] {0x9003, (short) blk,};
-					var sizeHighByte = (buffer.Length - 36) / 256;
-					var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
-					var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
-					var crcBytes = new byte[buffer.Length - 36 + 3];
-					Array.Copy(crcHeader, 0, crcBytes, 0, 3);
-					Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36); 
-					var crc = CrcHelper.GetCrc16(crcBytes);
-					//Add CRC to transmit data
+                    //Transfer crc:
+                    //Benötigt für Safety übertragung!
+                    //Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
+                    //Die Prüfsumme wird aus folgenden Bytes gebildet:
+                    //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
+                    //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
+                    // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
+                    //var crcbyte = new[] {0x9003, (short) blk,};
+                    var sizeHighByte = (buffer.Length - 36) / 256;
+                    var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
+                    var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
+                    var crcBytes = new byte[buffer.Length - 36 + 3];
+                    Array.Copy(crcHeader, 0, crcBytes, 0, 3);
+                    Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36);
+                    var crc = CrcHelper.GetCrc16(crcBytes);
+                    //Add CRC to transmit data
 
                     if (blk == DataTypes.PLCBlockType.AllBlocks || nr < 0)
                         throw new Exception("Unsupported Block Type!");
@@ -1422,7 +1397,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return;
                     }
                     else if (ret == 53825)
-                        throw new PLCException("PLC is Password Protected, unlock before downloading Blocks!",ret);
+                        throw new PLCException("PLC is Password Protected, unlock before downloading Blocks!", ret);
                     else
                         throw new PLCException(ret);
                 }
@@ -2826,7 +2801,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     //useresult muss noch programmiert werden.
                                 }
-#endregion
+                                #endregion
                             }
                             var rs = _dc.getResultSet();
                             int res = _dc.execReadRequest(myPDU, rs);
@@ -2861,11 +2836,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                                string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
                                                Environment.NewLine;
 
-<<<<<<< HEAD
-                                    throw new Exception("Error (2): " + _errorCodeConverter(res) + details);
-=======
-									throw new PLCException("Error (2): " + _errorCodeConverter(res) + details, res);
->>>>>>> refs/heads/pr/4
+                                    throw new PLCException("Error (2): " + _errorCodeConverter(res) + details, res);
                                 }
                                 else
                                 {
@@ -2881,7 +2852,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     {
                                         if (!tagWasSplitted[akVar])
                                             NotExistedValue.Add(false);
-                                        
+
                                         Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                         positionInCompleteData += readenSizes[akVar];
                                     }
@@ -2998,8 +2969,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                  //  int cnt = readTagList.Cast<PLCTag>().ToList().Count;
-                                   // var nckT = readTagList.Cast<PLCTag>().ToList()[(cnt - anzVar) + akVar] as PLCNckTag;
+                                    //  int cnt = readTagList.Cast<PLCTag>().ToList().Count;
+                                    // var nckT = readTagList.Cast<PLCTag>().ToList()[(cnt - anzVar) + akVar] as PLCNckTag;
 
 
                                     //if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
@@ -3053,11 +3024,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             lock (lockObj)
             {
-
-
                 if (_fetchWriteConnection != null)
                 {
-
                     IEnumerable<PLCTag> readTagList = valueList;
 
                     #region Optimize Reading List....
@@ -3202,7 +3170,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <returns></returns>
         public object ReadValue(NC_Var address)
         {
-            var tag = address.GetNckTag(0,0);
+            var tag = address.GetNckTag(0, 0);
             this.ReadValue(tag);
             return tag.Value;
         }
@@ -3237,11 +3205,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-<<<<<<< HEAD
-            if (Configuration.ConnectionType == 500 || Configuration.ConnectionType == 501)
-=======
-			if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
->>>>>>> refs/heads/pr/4
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
             {
                 ReadValuesFetchWrite(new[] { value }, false);
                 return;
