@@ -275,7 +275,7 @@ ADVERTENCIA: Conexiones de otros Software hacia Netlinka tambien seran desconect
     <value>92, 13</value>
   </data>
   <data name="lblTimeout.Text" xml:space="preserve">
-    <value>Tiempo de espera</value>
+    <value>Timeout</value>
   </data>
   <data name="lblTimeout.ToolTip" xml:space="preserve">
     <value>Tiempo de espera de los datos de la CPU</value>
@@ -324,15 +324,6 @@ ADVERTENCIA: Conexiones de otros Software hacia Netlinka tambien seran desconect
   </data>
   <data name="lblLIBNODAVELokalComParity.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="lstLIBNODAVELokalComParity.Items" xml:space="preserve">
-    <value>Ninguno</value>
-  </data>
-  <data name="lstLIBNODAVELokalComParity.Items1" xml:space="preserve">
-    <value>par</value>
-  </data>
-  <data name="lstLIBNODAVELokalComParity.Items2" xml:space="preserve">
-    <value>impar</value>
   </data>
   <data name="lstLIBNODAVELokalComParity.ToolTip" xml:space="preserve">
     <value />

@@ -131,3 +131,9 @@ compiled/DotNetSiemensPLCToolBoxLibrary.dll
 =======
 *.dll
 >>>>>>> refs/heads/pr/3
+compiled/DotNetSiemensPLCToolBoxLibrary.dll
+compiled/en/DotNetSiemensPLCToolBoxLibrary.resources.dll
+compiled/es/DotNetSiemensPLCToolBoxLibrary.resources.dll
+compiled/JFK-ProtokollerConfigurationTool.exe
+compiled/JFK-ProtokollerService.exe
+compiled/WPFVarTab.exe

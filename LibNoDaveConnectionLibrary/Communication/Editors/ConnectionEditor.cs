@@ -165,16 +165,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             txtWritePort.Text = myConfig.WritePort.ToString();
             txtLIBNODAVELokalMPI.Text = myConfig.LokalMpi.ToString();
             lstLIBNODAVELokalCOMPort.SelectedItem = myConfig.ComPort;
-            if (myConfig.ComPortParity == 'e')
+            if (myConfig.ComPortParity == LibNodaveConnectionBusParity.even)
                 lstLIBNODAVELokalComParity.SelectedItem = "even";
-            else if (myConfig.ComPortParity == 'o')
+            else if (myConfig.ComPortParity ==  LibNodaveConnectionBusParity.odd)
                 lstLIBNODAVELokalComParity.SelectedItem = "odd";
             else
                 lstLIBNODAVELokalComParity.SelectedItem = "none";
             lstLIBNODAVELokalComSpeed.SelectedItem = myConfig.ComPortSpeed;
 
-            EnumListBoxExtensions.SelectEnumListItem(lstLIBNODAVEConnectionType, myConfig.ConnectionType);
-            EnumListBoxExtensions.SelectEnumListItem(lstLIBNODAVEBusSpeed, myConfig.BusSpeed);
+            EnumListBoxExtensions.SelectEnumListItem(lstLIBNODAVEConnectionType, (int)myConfig.ConnectionType);
+            EnumListBoxExtensions.SelectEnumListItem(lstLIBNODAVEBusSpeed, (int)myConfig.BusSpeed);
 
             txtRoutingDestination.Text = myConfig.RoutingDestination;
             txtRoutingRack.Text = myConfig.RoutingDestinationRack.ToString();
@@ -183,15 +183,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             txtRoutingSubnetFirst.Text = myConfig.RoutingSubnet1.ToString("X");
             txtRoutingSubnetSecond.Text = myConfig.RoutingSubnet2.ToString("X");
 
-            txtTimeout.Text = myConfig.Timeout.ToString();
-            txtTimeoutIPConnect.Text = myConfig.TimeoutIPConnect.ToString();
+            txtTimeout.Text = myConfig.Timeout.TotalMilliseconds.ToString();
+            txtTimeoutIPConnect.Text = myConfig.TimeoutIPConnect.TotalMilliseconds.ToString();
 
             chkNetlinkReset.Checked = myConfig.NetLinkReset;
 
             chkUseShortRequest.Checked = myConfig.UseShortDataBlockRequest;
 
-            lstConnType.SelectedIndex = myConfig.PLCConnectionType;
-            lstConnTypeRouting.SelectedIndex = myConfig.RoutingPLCConnectionType;
+            lstConnType.SelectedIndex = (int)myConfig.PLCConnectionType;
+            lstConnTypeRouting.SelectedIndex = (int)myConfig.RoutingPLCConnectionType;
 
             cmdUndo.Visible = false;
             cmdSave.Visible = false;
@@ -226,15 +226,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 myConfig.ComPortSpeed = lstLIBNODAVELokalComSpeed.SelectedItem.ToString();
 
             if (lstLIBNODAVELokalComParity.SelectedItem.ToString() == "even")
-                myConfig.ComPortParity = 'e';
+                myConfig.ComPortParity =  LibNodaveConnectionBusParity.even;
             else if (lstLIBNODAVELokalComParity.SelectedItem.ToString() == "odd")
-                myConfig.ComPortParity = 'o';
+                myConfig.ComPortParity =  LibNodaveConnectionBusParity.odd;
             else
-                myConfig.ComPortParity = 'n';
+                myConfig.ComPortParity =  LibNodaveConnectionBusParity.none;
 
-            myConfig.ConnectionType = lstLIBNODAVEConnectionType.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEConnectionType.SelectedItem).Value : 0;
+            myConfig.ConnectionType = (LibNodaveConnectionTypes)(lstLIBNODAVEConnectionType.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEConnectionType.SelectedItem).Value : 0);
 
-            myConfig.BusSpeed = lstLIBNODAVEBusSpeed.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEBusSpeed.SelectedItem).Value : 0;
+            myConfig.BusSpeed = (LibNodaveConnectionBusSpeed)(lstLIBNODAVEBusSpeed.SelectedItem != null ? ((EnumListItem)lstLIBNODAVEBusSpeed.SelectedItem).Value : 0);
 
             myConfig.NetLinkReset = chkNetlinkReset.Checked;
 
@@ -247,11 +247,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             myConfig.RoutingSubnet1 = Convert.ToInt32(txtRoutingSubnetFirst.Text, 16);
             myConfig.RoutingSubnet2 = Convert.ToInt32(txtRoutingSubnetSecond.Text, 16);
 
-            myConfig.Timeout = Convert.ToInt32(txtTimeout.Text);
-            myConfig.TimeoutIPConnect = Convert.ToInt32(txtTimeoutIPConnect.Text);
+            myConfig.Timeout = TimeSpan.FromMilliseconds(Convert.ToInt32(txtTimeout.Text));
+            myConfig.TimeoutIPConnect = TimeSpan.FromMilliseconds(Convert.ToInt32(txtTimeoutIPConnect.Text));
 
-            myConfig.PLCConnectionType = lstConnType.SelectedIndex;
-            myConfig.RoutingPLCConnectionType = lstConnTypeRouting.SelectedIndex;
+            myConfig.PLCConnectionType = (LibNodaveConnectionResource)lstConnType.SelectedIndex;
+            myConfig.RoutingPLCConnectionType = (LibNodaveConnectionResource)lstConnTypeRouting.SelectedIndex;
         }
 
         private void SaveSettings()
