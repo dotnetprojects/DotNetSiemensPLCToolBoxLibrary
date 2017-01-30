@@ -65,6 +65,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return 7;
                 case TagDataType.Float:
                     return 8;
+                case TagDataType.DateTime:
+                    return 14;
                 case TagDataType.LReal:
                     return 15;
                 case TagDataType.LInt:
@@ -107,6 +109,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     break;
                 case 8:
                     dataType = TagDataType.Float; //eNCK_LE_Float32;
+                    break;
+                case 14:
+                    dataType = TagDataType.DateTime;
                     break;
                 case 15:
                     dataType = TagDataType.LReal; //eNCK_LE_Float64;

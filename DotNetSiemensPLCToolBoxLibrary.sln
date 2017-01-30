@@ -74,11 +74,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbfReader", "DbfReader\DbfR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiaExImPorter", "TiaExImPorter\TiaExImPorter.csproj", "{E2169C6E-6606-41FF-8ACB-485151574872}"
 EndProject
-<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolReader", "ReadTools\ToolReader.csproj", "{C0C1142F-592C-4F26-9655-A737C74DAF7E}"
-=======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiaGitHandler", "TiaGitHandler\TiaGitHandler.csproj", "{147CD31F-F449-4568-AF62-56B987851D26}"
->>>>>>> refs/heads/pr/4
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -470,7 +467,6 @@ Global
 		{E2169C6E-6606-41FF-8ACB-485151574872}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E2169C6E-6606-41FF-8ACB-485151574872}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E2169C6E-6606-41FF-8ACB-485151574872}.Release|x86.ActiveCfg = Release|Any CPU
-<<<<<<< HEAD
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -485,7 +481,6 @@ Global
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E}.Release|x86.ActiveCfg = Release|Any CPU
-=======
 		{147CD31F-F449-4568-AF62-56B987851D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{147CD31F-F449-4568-AF62-56B987851D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{147CD31F-F449-4568-AF62-56B987851D26}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -506,7 +501,6 @@ Global
 		{147CD31F-F449-4568-AF62-56B987851D26}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{147CD31F-F449-4568-AF62-56B987851D26}.Release|x86.ActiveCfg = Release|Any CPU
 		{147CD31F-F449-4568-AF62-56B987851D26}.Release|x86.Build.0 = Release|Any CPU
->>>>>>> refs/heads/pr/4
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -538,11 +532,8 @@ Global
 		{E08F71C6-E98F-41BB-BA6B-056FD08D0EB4} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{A7D1B64C-7045-4B32-9AD7-7649E40512C7} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{E2169C6E-6606-41FF-8ACB-485151574872} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
-<<<<<<< HEAD
 		{C0C1142F-592C-4F26-9655-A737C74DAF7E} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
-=======
 		{147CD31F-F449-4568-AF62-56B987851D26} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
->>>>>>> refs/heads/pr/4
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DotNetSiemensPLCToolBoxLibrary.vsmdi

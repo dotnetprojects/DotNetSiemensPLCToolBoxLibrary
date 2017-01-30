@@ -33,25 +33,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(NckTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
-	[Serializable]
-	public class PLCNckTag : PLCTag
-	{
-		public PLCNckTag()
-		{
-		}
+    [Serializable]
+    public class PLCNckTag : PLCTag
+    {
+        public PLCNckTag()
+        {
+        }
 
-		public int NckArea { get; set; }
-		public int NckUnit { get; set; }
-		public int NckColumn { get; set; }
-		public int NckLine { get; set; }
-		public int NckModule { get; set; }
-		public int NckLinecount { get; set; }
+        public int NckArea { get; set; }
+        public int NckUnit { get; set; }
+        public int NckColumn { get; set; }
+        public int NckLine { get; set; }
+        public int NckModule { get; set; }
+        public int NckLinecount { get; set; }
 
-		public override  bool DontSplitValue
-		{
-			get { return true; }
-			set { }
-		}
+        public override bool DontSplitValue
+        {
+            get { return true; }
+            set { }
+        }
 
         public override string ToString()
         {
@@ -80,14 +80,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         //{
         //	return 1;
         //}
-	}
+    }
 
     public class NC_Var
     {
         public NC_Var()
         {
         }
-		
+
+        public NC_Var(NC_Var var)
+        {
+            this.SYNTAX_ID = var.SYNTAX_ID;
+            this.Bereich_u_einheit = var.Bereich_u_einheit;
+            this.Spalte = var.Spalte;
+            this.Zeile = var.Zeile;
+            this.Bausteintyp = var.Bausteintyp;
+            this.ZEILENANZAHL = var.ZEILENANZAHL;
+            this.Typ = var.Typ;
+            this.Laenge = var.Laenge;
+        }
+
         public NC_Var(string ncVarSelector)
         {
             throw new NotImplementedException();
@@ -121,7 +133,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public byte Typ;
         public byte Laenge;
 
-        public PLCNckTag GetNckTag(int unit, int rowOffset)
+        public PLCNckTag GetNckTag(int unit = 0, int rowOffset = 0)
         {
             //byte SYNTAX_ID = 0x82;
             byte bereich_u_einheit = (byte)(this.Bereich_u_einheit + unit);
@@ -153,6 +165,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     break;
                 case 8:
                     dataType = TagDataType.Float; //eNCK_LE_Float32;
+                    break;
+                case 14:
+                    dataType = TagDataType.DateTime;
                     break;
                 case 15:
                     dataType = TagDataType.LReal; //eNCK_LE_Float64;
