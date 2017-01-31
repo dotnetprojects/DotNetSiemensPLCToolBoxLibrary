@@ -1244,7 +1244,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         if (plcAddress.Substring(2, 3).Contains(" "))
                             plcAddress = plcAddress.Remove(plcAddress.IndexOf(" "), 1);
-                        string[] myPlcAddress = plcAddress.ToLower().Replace("byte", " byte ").Replace("  ", " ").Replace("p#", "").Split(' ');
+                        string[] myPlcAddress = plcAddress.ToLower().Replace("p#", "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         BitAddress = 0;
                         if (!myPlcAddress[0].Contains("db"))
                         {
@@ -1275,7 +1275,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
                             ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
                         }
-                        double _ArraySize = Convert.ToInt32(myPlcAddress[2]);
+
+                        double _ArraySize;
+                        if (myPlcAddress.Length >= 3)
+                            _ArraySize = Convert.ToInt32(myPlcAddress[2]);
+                        else
+                        {
+                            _ArraySize = Convert.ToInt32(myPlcAddress[1].Replace("dword", "").Replace("word", "").Replace("byte", "").Replace("bool", "").Trim());
+                            myPlcAddress[1] = myPlcAddress[1].Replace(_ArraySize.ToString(), "");
+                        }
 
                         var tsize = 1;
                         switch (myPlcAddress[1])
