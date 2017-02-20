@@ -122,18 +122,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global") ??
                               Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global");
 
-            if (filePathReg != null)
-            {
-                string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14";
-                if (Directory.Exists(filePath) == false)
-                    filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14 SP1";
-                var path = Path.Combine(filePath, name);
-                var fullPath = Path.GetFullPath(path);
-                if (File.Exists(fullPath))
-                {
-                    return Assembly.LoadFrom(fullPath);
-                }
-            }
+            //if (filePathReg != null)
+            //{
+            //    string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14";
+            //    if (Directory.Exists(filePath) == false)
+            //        filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14 SP1";
+            //    var path = Path.Combine(filePath, name);
+            //    var fullPath = Path.GetFullPath(path);
+            //    if (File.Exists(fullPath))
+            //    {
+            //        return Assembly.LoadFrom(fullPath);
+            //    }
+            //}
 
             filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
                               Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");

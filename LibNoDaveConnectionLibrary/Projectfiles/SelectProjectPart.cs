@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -70,12 +71,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return (S7DataBlock)myFrm.retVal;
         }
 
+        public static IDataBlock SelectIDataBlock(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
+            myFrm.SelectPart = SelectPartType.IDataBlock;
+            myFrm.ShowDialog();
+            return (IDataBlock)myFrm.retVal;
+        }
+
         public static List<S7DataBlock> SelectDataBlocks(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
         {
             SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
             myFrm.SelectPart = SelectPartType.DataBlocks;
             myFrm.ShowDialog();
             return (List<S7DataBlock>)myFrm.retVal;
+        }
+
+        public static List<IDataBlock> SelectIDataBlocks(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
+        {
+            SelectProjectPartForm myFrm = new SelectProjectPartForm(FileAndProjectInternalFolder, hideOpenProjectButton);
+            myFrm.SelectPart = SelectPartType.IDataBlocks;
+            myFrm.ShowDialog();
+            return (List<IDataBlock>)myFrm.retVal;
         }
 
         public static S7FunctionBlock SelectFunctionBlock(string FileAndProjectInternalFolder, bool hideOpenProjectButton = true)
