@@ -1371,14 +1371,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
 
-                    //Transfer crc:
-                    //Benötigt für Safety übertragung!
-                    //Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
-                    //Die Prüfsumme wird aus folgenden Bytes gebildet:
-                    //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
-                    //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
-                    // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
-                    //var crcbyte = new[] {0x9003, (short) blk,};
+					//Transfer crc:
+					//Benötigt für Safety übertragung!
+					//Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
+					//Die Prüfsumme wird aus folgenden Bytes gebildet:
+					//Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
+					//    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
+					// Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
+					//var crcbyte = new[] {0x9003, (short) blk,};
+					var sizeHighByte = (buffer.Length - 36) / 256;
+					var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
+					var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
+					var crcBytes = new byte[buffer.Length - 36 + 3];
+					Array.Copy(crcHeader, 0, crcBytes, 0, 3);
+					Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36); 
+					var crc = CrcHelper.GetCrc16(crcBytes);
+					//Add CRC to transmit data
 
                     if (blk == DataTypes.PLCBlockType.AllBlocks || nr < 0)
                         throw new Exception("Unsupported Block Type!");
