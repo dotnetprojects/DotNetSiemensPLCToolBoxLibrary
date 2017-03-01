@@ -299,7 +299,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (_fds.rfd.ToInt32() == -999)
                     {
                         _NeedDispose = false;
-                        throw new Exception("Error: Timeout Connecting the IP");
+                        throw new Exception("Error: Timeout Connecting the IP (" + _configuration.CpuIP + ":" +
+                                            _configuration.Port + ")");
                     }
 
                     //if the read handle is still null or even has an error code, except for Simatic NEt connectoins
