@@ -1350,6 +1350,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 if (this._internalGetSize() != 4)
                                     this.TagDataType = TagDataType.Dword;
                             }
+                            else if (myPlcAddress[1].Contains("DBR"))
+                            {
+                                ArraySize = 1;
+                                this.TagDataType = TagDataType.Float;
+                            }
                             else if (myPlcAddress[1].Contains("DBX"))
                             {
                                 ArraySize = 1;
@@ -1359,7 +1364,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                     this.BitAddress = 0;
                             }
-                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBX", "").Replace("DBB", "").Trim());
+                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBR", "").Replace("DBX", "").Replace("DBB", "").Trim());
                         }
                         else
                         {
