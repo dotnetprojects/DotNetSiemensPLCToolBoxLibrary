@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -10,6 +11,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     internal class PLCTagReadHelper : PLCTag
     {
         public Dictionary<PLCTag, int> PLCTags = new Dictionary<PLCTag, int>();
+
+        public override string ValueName
+        {
+            get { return "Readhelper (" + string.Join(",", PLCTags.Select(x => x.Key.ValueName ?? "")) + ")"; }
+            set { }
+        }
 
         public override bool DontSplitValue
         {
