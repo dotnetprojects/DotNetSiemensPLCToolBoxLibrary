@@ -2960,6 +2960,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                                    anzVar.ToString() + "; akVar " + akVar.ToString() +
                                                    Environment.NewLine;
 
+                                details += "variables " + string.Join(";", readTagList.Select(x => x.ValueName ?? "")) + Environment.NewLine;
                                 details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
                                 details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
                                 throw new PLCException("Error (3): " + _errorCodeConverter(res) + details, res);
@@ -2977,7 +2978,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                    var nckT = readTagList.Cast<PLCTag>().ToList()[akVar] as PLCNckTag;
+                                    var nckT = readTagList.ToList()[akVar] as PLCNckTag;
                                     if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
                                         System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
