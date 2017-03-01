@@ -1301,7 +1301,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             [DllImport("__Internal", EntryPoint = "daveReadPLCTime")]
 #endif
             protected static extern int daveReadPLCTime32(IntPtr dc);
-            public DateTime daveReadPLCTime()
+
+            public int daveReadPLCTime(out DateTime dateTime)
             {
                 int res = 0;
                 if (IntPtr.Size == 8)
@@ -1309,31 +1310,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     res = daveReadPLCTime32(pointer);
 
-                int year, month, day, hour, minute, second, millisecond;
-                getU8();
-                getU8();
-                byte[] tmp = new byte[1];
-                tmp[0] = Convert.ToByte(getU8());
-                year = getBCD8from(tmp, 0);
-                year += year >= 90 ? 1900 : 2000;
-                tmp[0] = Convert.ToByte(getU8());
-                month = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                day = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                hour = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                minute = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                second = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                millisecond = getBCD8from(tmp, 0) * 10;
-                tmp[0] = Convert.ToByte(getU8());
-                tmp[0] = Convert.ToByte(tmp[0] >> 4);
-                millisecond += getBCD8from(tmp, 0);
-                DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
+                if (res == 0)
+                {
+                    int year, month, day, hour, minute, second, millisecond;
+                    getU8();
+                    getU8();
+                    byte[] tmp = new byte[1];
+                    tmp[0] = Convert.ToByte(getU8());
+                    year = getBCD8from(tmp, 0);
+                    year += year >= 90 ? 1900 : 2000;
+                    tmp[0] = Convert.ToByte(getU8());
+                    month = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    day = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    hour = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    minute = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    second = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    millisecond = getBCD8from(tmp, 0) * 10;
+                    tmp[0] = Convert.ToByte(getU8());
+                    tmp[0] = Convert.ToByte(tmp[0] >> 4);
+                    millisecond += getBCD8from(tmp, 0);
+                    DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
 
-                return ret;
+                    dateTime = ret;
+                }
+                else
+                {
+                    dateTime = DateTime.MinValue;
+                }
+
+                return res;
             }
 
 #if !IPHONE

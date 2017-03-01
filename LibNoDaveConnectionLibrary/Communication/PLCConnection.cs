@@ -84,7 +84,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private PLCConnectionConfiguration _configuration;
         public PLCConnectionConfiguration Configuration
         {
-            get { return _configuration; }            
+            get { return _configuration; }
         }
 
         private ConnectionTargetPLCType _connectionTargetPlcType;
@@ -460,9 +460,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 CheckConnection();
 
+                DateTime retVal = DateTime.MinValue;
                 if (_dc != null)
-                    return _dc.daveReadPLCTime();
-                return DateTime.MinValue;
+                {
+                    var res = _dc.daveReadPLCTime(out retVal);
+
+                    if (res != 0)
+                    {
+                        throw new PLCException(res);
+                    }
+                }
+
+                return retVal;
             }
         }
 
@@ -1371,22 +1380,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
 
-					//Transfer crc:
-					//Benötigt für Safety übertragung!
-					//Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
-					//Die Prüfsumme wird aus folgenden Bytes gebildet:
-					//Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
-					//    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
-					// Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
-					//var crcbyte = new[] {0x9003, (short) blk,};
-					var sizeHighByte = (buffer.Length - 36) / 256;
-					var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
-					var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
-					var crcBytes = new byte[buffer.Length - 36 + 3];
-					Array.Copy(crcHeader, 0, crcBytes, 0, 3);
-					Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36); 
-					var crc = CrcHelper.GetCrc16(crcBytes);
-					//Add CRC to transmit data
+                    //Transfer crc:
+                    //Benötigt für Safety übertragung!
+                    //Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
+                    //Die Prüfsumme wird aus folgenden Bytes gebildet:
+                    //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
+                    //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
+                    // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
+                    //var crcbyte = new[] {0x9003, (short) blk,};
+                    var sizeHighByte = (buffer.Length - 36) / 256;
+                    var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
+                    var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
+                    var crcBytes = new byte[buffer.Length - 36 + 3];
+                    Array.Copy(crcHeader, 0, crcBytes, 0, 3);
+                    Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36); 
+                    var crc = CrcHelper.GetCrc16(crcBytes);
+                    //Add CRC to transmit data
 
                     if (blk == DataTypes.PLCBlockType.AllBlocks || nr < 0)
                         throw new Exception("Unsupported Block Type!");
@@ -2404,14 +2413,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     List<bool> NotExistedValue = new List<bool>();
 
-					//Only for debugging...
+                    //Only for debugging...
 
-					foreach (var cPDU in listPDU)
+                    foreach (var cPDU in listPDU)
                     {
                         if (cPDU.gesReadSize > 0)
                         {
                             var rs = _dc.getResultSet();
-							int res = _dc.execReadRequest(cPDU.pdu, rs);
+                            int res = _dc.execReadRequest(cPDU.pdu, rs);
 
                             if (res == -1025)
                             {
@@ -2713,9 +2722,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     var myPDU = _dc.prepareReadRequest();
 
-					var currentRead = new List<string>();
+                    var currentRead = new List<string>();
 
-					foreach (var libNoDaveValue in readTagList)
+                    foreach (var libNoDaveValue in readTagList)
                     {
                         bool shortDbRequest = false;
                         int askSize = 12;
@@ -2727,9 +2736,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                         bool symbolicTag = false;
 
-						var nckT = libNoDaveValue as PLCNckTag;
+                        var nckT = libNoDaveValue as PLCNckTag;
 
-						if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
+                        if (!string.IsNullOrEmpty(libNoDaveValue.SymbolicAccessKey))
                         {
                             askSize = 4 + libNoDaveValue.SymbolicAccessKey.Length;
                             symbolicTag = true;
@@ -2770,19 +2779,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         lastRequestWasAUnevenRequest = false;
                                     }
 
-	                                //Only at the rest of the bytes to the next read request, and increase the start address!  
+                                    //Only at the rest of the bytes to the next read request, and increase the start address!  
                                     if (shortDbRequest)
                                     {
                                         usedShortRequest.Add(true);
                                         lastRequestWasAUnevenRequest = true;
-										currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-										myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+                                        currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                     else
                                     {
                                         usedShortRequest.Add(false);
-										currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-										myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
+                                        currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                         
                                     readSize = readSize - restBytes;
@@ -2804,7 +2813,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                             }
                             var rs = _dc.getResultSet();
-							int res = _dc.execReadRequest(myPDU, rs);
+                            int res = _dc.execReadRequest(myPDU, rs);
                             if (res == -1025)
                             {
                                 this.Disconnect();
@@ -2832,11 +2841,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
                                     details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
-	                                details += Environment.NewLine + Environment.NewLine +
-	                                           string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
-	                                           Environment.NewLine;
+                                    details += Environment.NewLine + Environment.NewLine +
+                                               string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
+                                               Environment.NewLine;
 
-									throw new PLCException("Error (2): " + _errorCodeConverter(res) + details, res);
+                                    throw new PLCException("Error (2): " + _errorCodeConverter(res) + details, res);
                                 }
                                 else
                                 {
@@ -2862,10 +2871,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 }
                             }
 
-							//rs = null;
-							//myPDU = null;
-							currentRead = new List<string>();
-							anzVar = 0;
+                            //rs = null;
+                            //myPDU = null;
+                            currentRead = new List<string>();
+                            anzVar = 0;
                             gesAskSize = 0;
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
@@ -2891,13 +2900,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             lastRequestWasAUnevenRequest = false;
                         }
 
-						if (nckT != null)
-						{
+                        if (nckT != null)
+                        {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
                             myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
-						}
-						else if (symbolicTag)
+                        }
+                        else if (symbolicTag)
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
@@ -2908,14 +2917,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Add(true);
                             tagWasSplitted.Add(false);
                             lastRequestWasAUnevenRequest = true;
-							currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}",libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-							myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
+                            currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}",libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                         else
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
-							currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
                             myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                     }
@@ -3175,13 +3184,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-			if (value is PLCNckTag)
-			{
-				ReadValues(new[] { value });
-				return;
-			}
+            if (value is PLCNckTag)
+            {
+                ReadValues(new[] { value });
+                return;
+            }
 
-			if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
+            if (Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Active || Configuration.ConnectionType == LibNodaveConnectionTypes.Fetch_Write_Passive)
             {
                 ReadValuesFetchWrite(new[] { value }, false);
                 return;
