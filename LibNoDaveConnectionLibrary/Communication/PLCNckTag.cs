@@ -184,7 +184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     _ArraySize = this.Laenge;
                     break;
                 default:
-                    throw new Exception("Unknown Type");
+                    throw new Exception(string.Format("Unknown Type: {0}", this.Typ));
                     break;
             }
             #endregion

@@ -1772,7 +1772,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal virtual void _readValueFromBuffer(byte[] buff, int startpos)
         {
-            if (this is PLCNckTag && this.TagDataType != DataTypes.TagDataType.String && this.TagDataType != DataTypes.TagDataType.CharArray)
+            if (this is PLCNckTag && this.TagDataType != DataTypes.TagDataType.String && this.TagDataType != DataTypes.TagDataType.CharArray && this.TagDataType != DataTypes.TagDataType.DateTime)
             {
                 if ((this as PLCNckTag).NckArea != 5 && (this as PLCNckTag).NckArea != 6)
                 {
