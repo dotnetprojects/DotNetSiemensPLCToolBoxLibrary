@@ -9,6 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
+ The NCK part was written by J.Eger
+ * 
+ * Thanks go to:
+ * Jochen Kuehner -> For his nice ConnectionLibrary
+ * Thomas_v2.1    -> For the support of the telegram analyze
+
  WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
@@ -1574,6 +1580,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 {
                                     case 1:
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy32_1Dataset>(objBuffer));
+                                        break;
+                                    case 4:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy32_4Dataset>(objBuffer));
                                         break;
                                     case 8:
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy32_8Dataset>(objBuffer));
@@ -3660,10 +3669,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         #region NC PI-Service
 
-        public void PI_Service(string piservice, string[] param, int paramCount)
+        public void PI_Service(string piservice, string[] param)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
-            int res = _dc.PI_StartNC(piservice, param, paramCount);
+            int res = _dc.PI_StartNC(piservice, param, param.Length);
 
             if (res == -1025)
             {
@@ -3680,13 +3689,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Load complete file from NC
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
         /// <returns></returns>
-        public byte[] BinaryUploadFromNC(string fullFileName)
+        public byte[] BinaryUploadFromNC(string fullFileName, bool F_XFER = false)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
             byte[] id = new byte[4];
             List<byte> lRet = new List<byte>();
             string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
             int res = _dc.initUploadNC(file, ref id);
             if (res != 0)
@@ -3729,7 +3742,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
             if (F_XFER)
-                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
             int res = _dc.initUploadNC(file, ref id);
             if (res != 0)
@@ -3768,7 +3781,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
             if (F_XFER)
-                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
             int length = 0;
             byte[] buffer = new byte[size];
@@ -3800,6 +3813,193 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (res != 0)
                 throw new Exception("DownloadToNC: " + res);
         }
+        #endregion
+
+        #region SPS Alarm Query
+        public int[] GetAlarmS_IDs()
+        {
+            int size = 32767;
+
+            libnodave.resultSet rs = new libnodave.resultSet();
+            List<int> lRet = new List<int>();
+
+            try
+            {
+                int alarmCount = 0;
+                byte[] buffer = new byte[size];
+                int res = _dc.alarmQueryAlarm_S(buffer, size, ref alarmCount);
+
+                if (res != 0)
+                    throw new Exception("GetSPS_AlarmQuery: " + res);
+                else
+                {
+                    byte[] dummy = new byte[System.Runtime.InteropServices.Marshal.SizeOf(typeof(alarmMessageHeader))];
+                    int index = 0;
+                    for (int i = 0; i < alarmCount; i++)
+                    {
+                        Array.Copy(buffer, index, dummy, 0, dummy.Length);
+                        var alarmHeader = EndianessMarshaler.BytesToStruct<alarmMessageHeader>(dummy);
+                        lRet.Add(alarmHeader.EventID);
+                        index += alarmHeader.Lenght + 2;
+                    }
+                }
+                //ret = System.Text.Encoding.Default.GetString(buffer, 0, alarmCount);
+            }
+            catch (Exception)
+            {
+            }
+
+            return lRet.ToArray();
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi, Pack = 1)]
+        public class alarmMessageHeader
+        {
+            //[Endian(Endianness.BigEndian)]
+            private byte _Lenght;
+            public Byte Lenght
+            {
+                get { return _Lenght; }
+                set { _Lenght = value; }
+            }
+
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst = 2)]
+            private byte[] _x;
+            public Byte[] _
+            {
+                get { return _x; }
+                set { _x = value; }
+            }
+
+            private byte _Alarmtype;
+            public Byte Alarmtype
+            {
+                get { return _Alarmtype; }
+                set { _Alarmtype = value; }
+            }
+
+            [Endian(Endianness.BigEndian)]
+            private int _EventID;
+            public Int32 EventID
+            {
+                get { return _EventID; }
+                set { _EventID = value; }
+            }
+
+#if TimestampMessageComing
+            private byte __x;
+            public Byte __
+            {
+                get { return __x; }
+                set { __x = value; }
+            }
+
+            private byte _EventState;
+            public Byte EventState
+            {
+                get { return _EventState; }
+                set { _EventState = value; }
+            }
+
+            private byte _AckState_going;
+            public Byte AckState_going
+            {
+                get { return _AckState_going; }
+                set { _AckState_going = value; }
+            }
+
+            private byte _AckState_coming;
+            public Byte AckState_coming
+            {
+                get { return _AckState_coming; }
+                set { _AckState_coming = value; }
+            }
+
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst = 8)]
+            private byte[] _TimestampMessageComing;
+            public DateTime TimestampMessageComing
+            {
+                get { return GetDateTimeFromByteArray(_TimestampMessageComing); }
+                set { _TimestampMessageComing = GetByteArrayFromBuffer(value); }
+            }
+#endif
+        }
+
+        private static DateTime GetDateTimeFromByteArray(byte[] buffer)
+        {
+            try
+            {
+                string[] sAr = BitConverter.ToString(buffer).Trim().Split('-');
+                return new DateTime(int.Parse(sAr[0]) >= 90 ? 1900 + int.Parse(sAr[0]) : 2000 + int.Parse(sAr[0]), int.Parse(sAr[1]), int.Parse(sAr[2]), int.Parse(sAr[3]), int.Parse(sAr[4]), int.Parse(sAr[5]), int.Parse(sAr[6] + sAr[7].Substring(0, 1)));
+            }
+            catch (Exception)
+            {
+                return new DateTime(); // DateTime(1990, 1, 1);
+            }
+        }
+
+        private static byte[] GetByteArrayFromBuffer(DateTime dt)
+        {
+            byte[] ret = new byte[8];
+            try
+            {
+                if (Equals(dt, new DateTime()))
+                    return new byte[8];
+
+                ret[0] = Convert.ToByte((dt.Year > 2000 ? dt.Year - 2000 : dt.Year - 1900).ToString(), 16);
+                ret[1] = Convert.ToByte(dt.Month.ToString(), 16);// (byte)dt.Month;
+                ret[2] = Convert.ToByte(dt.Day.ToString(), 16);
+                ret[3] = Convert.ToByte(dt.Hour.ToString(), 16);
+                ret[4] = Convert.ToByte(dt.Minute.ToString(), 16);
+                ret[5] = Convert.ToByte(dt.Second.ToString(), 16);
+                ret[6] = Convert.ToByte(dt.Millisecond.ToString("000").Substring(0, 2), 16);
+                ret[7] = Convert.ToByte(dt.Millisecond.ToString("000").Substring(2) + ((byte)dt.DayOfWeek + 1), 16);
+            }
+            catch (Exception)
+            { }
+            return ret;
+        }
+
+#if aaa
+        public class objMSG
+        {
+            objMSG() { }
+
+            objMSG(byte[] Buffer)
+            {
+                this.lenght = Buffer[0];
+                byte Alarmtype = Buffer[3];
+
+                dummy = new byte[4];
+                Array.Copy(Buffer, index + 4, dummy, 0, dummy.Length);
+                Array.Reverse(dummy);
+                var EventID = BitConverter.ToUInt32(dummy, 0);
+
+                byte EventState = Buffer[index + 9];
+                byte ActStateGoing = Buffer[index + 10];
+                byte ActStateComing = Buffer[index + 11];
+                byte[] _TimeStampMessageComming = new byte[8];
+                Array.Copy(Buffer, index + 12, _TimeStampMessageComming, 0, _TimeStampMessageComming.Length);
+                DateTime TimeStampMessageComming = getDateTimeFromDateAndTimeString(BitConverter.ToString(_TimeStampMessageComming));
+            }
+
+            [Endian(Endianness.BigEndian)]
+            private byte lenght;
+            public Byte Lenght
+            {
+                get { return lenght; }
+                set { lenght = value; }
+            }
+
+            private byte alarmtype;
+            public Byte Alarmtype
+            {
+                get { return alarmtype; }
+                set { alarmtype = value; }
+            }
+
+        }
+#endif
         #endregion
 
         public void Dispose()

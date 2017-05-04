@@ -45,5 +45,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int endUploadNC(byte[] uploadID);
         int daveGetNCProgram(string filename, byte[] buffer, ref int length);
         int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length);
+        int alarmQueryAlarm_S(byte[] buffer, int length, ref int alarmCount);
     }
 }

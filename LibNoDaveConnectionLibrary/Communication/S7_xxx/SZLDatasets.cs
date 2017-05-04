@@ -6,7 +6,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]    
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public abstract class SZLDataset
     {
     }
@@ -19,7 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy00Dataset : SZLDataset
     {
-        [Endian(Endianness.BigEndian)]        
+        [Endian(Endianness.BigEndian)]
         private ushort _szlId;
         public UInt16 SZL_id
         {
@@ -31,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy11Dataset : SZLDataset
     {
-        [Endian(Endianness.BigEndian)]        
+        [Endian(Endianness.BigEndian)]
         private short _index;
         public short Index
         {
@@ -39,15 +39,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _index = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)] 
-        private string _mlfB;     
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
+        private string _mlfB;
         public string MlfB
         {
             get { return _mlfB; }
             set { _mlfB = value; }
         }
 
-        [Endian(Endianness.BigEndian)]      
+        [Endian(Endianness.BigEndian)]
         private ushort _bgTyp;
         public UInt16 BGTyp
         {
@@ -213,7 +213,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _reman = value; }
         }
     }
-    
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy15Dataset : SZLDataset
     {
@@ -718,7 +718,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _aseg = value; }
         }
 
-         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         private byte[] _eseg;
         public byte[] eseg
         {
@@ -1005,7 +1005,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
             set { _ver = value; }
         }
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 25)]        
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 25)]
         private byte[] _res;
         public byte[] res
         {
@@ -1400,6 +1400,187 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         {
             get { return _res; }
             set { _res = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy32_4Dataset : SZLDataset
+    {
+        //[Endian(Endianness.BigEndian)]
+        private ushort _index;
+        /// <summary>
+        /// ·	Byte 1: B#16#04: CPU-Schutzstufe, Bedienschalterstellungen und Prüfsummen
+        /// ·	Byte 0:Standard-CPU: B#16#00H-CPU: Bits 0 bis 2: Baugruppenträger-Nr.Bit 3: 0 = Reserve-CPU, 1 = Master-CPUBits 4 bis 7: 1111
+        /// </summary>
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _sch_schal;
+        /// <summary>
+        /// Durch Betriebsartenschalter eingestellte Schutzstufe (1, 2, 3)
+        /// </summary>
+        public UInt16 sch_schal
+        {
+            get { return _sch_schal; }
+            set { _sch_schal = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _sch_par;
+        /// <summary>
+        /// Parametrierte Schutzstufe (0, 1, 2, 3; 0: kein Paßword vergeben, parametrierte Schutzstufe ungültig).
+        /// </summary>
+        public UInt16 sch_par
+        {
+            get { return _sch_par; }
+            set { _sch_par = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _sch_rel;
+        /// <summary>
+        /// Gültige Schutzstufe der CPU
+        /// </summary>
+        public UInt16 sch_rel
+        {
+            get { return _sch_rel; }
+            set { _sch_rel = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _bart_sch;
+        /// <summary>
+        /// Stellung des Betriebsartenschalters (1:RUN, 2:RUN-P, 3:STOP, 4:MRES, 0:undefiniert bzw. nicht ermittelbar)
+        /// </summary>
+        public UInt16 bart_sch
+        {
+            get { return _bart_sch; }
+            set { _bart_sch = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _anl_sch;
+        /// <summary>
+        /// Stellung des Anlaufartenschalters (1:CRST, 2:WRST, 0:undefiniert, nicht vorhanden oder nicht ermittelbar)
+        /// </summary>
+        public UInt16 anl_sch
+        {
+            get { return _anl_sch; }
+            set { _anl_sch = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_f;
+        /// <summary>
+        /// Reserviert
+        /// </summary>
+        public UInt16 ken_f
+        {
+            get { return _ken_f; }
+            set { _ken_f = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_rel;
+        /// <summary>
+        /// Kennung für die Gültigkeit der vier folgenden Prüfsummen (0: ungültig)
+        /// </summary>
+        public UInt16 ken_rel
+        {
+            get { return _ken_rel; }
+            set { _ken_rel = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_ver1_hw;
+        /// <summary>
+        /// Prüfsumme 1 der Hardwarekonfiguration (Intel-Format):Exklusiv-Oder-Verknüpfung über die Längen aller Systemdatenbausteine
+        /// </summary>
+        public UInt16 ken_ver1_hw
+        {
+            get { return _ken_ver1_hw; }
+            set { _ken_ver1_hw = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_ver2_hw;
+        /// <summary>
+        /// Prüfsumme 2 der Hardwarekonfiguration (Intel-Format):Exklusiv-Oder-Verknüpfung über die Prüfsummen aller Systemdatenbausteine
+        /// </summary>
+        public UInt16 ken_ver2_hw
+        {
+            get { return _ken_ver2_hw; }
+            set { _ken_ver2_hw = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_ver1_awp;
+        /// <summary>
+        /// Prüfsumme 1 des Anwenderprogramms (Intel-Format):Exklusiv-Oder-Verknüpfung über die Längen der folgenden Bausteine: OBs, DBs, FBs, FCs
+        /// </summary>
+        public UInt16 ken_ver1_awp
+        {
+            get { return _ken_ver1_awp; }
+            set { _ken_ver1_awp = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _ken_ver2_awp;
+        /// <summary>
+        /// Prüfsumme 2 des Anwenderprogramms (Intel-Format):Exklusiv-Oder-Verknüpfung über die Prüfsummen der folgenden Bausteine: OBs, DBs, FBs, FCs
+        /// </summary>
+        public UInt16 ken_ver2_awp
+        {
+            get { return _ken_ver2_awp; }
+            set { _ken_ver2_awp = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        private ushort[] _res;
+        /// <summary>
+        /// Reserviert
+        /// </summary>
+        public UInt16[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _sfc_req;
+        /// <summary>
+        /// Anforderung von Schutzstufe 2 bzw. 3 durch SFC 109 (1: Anforderung ist erfolgt)
+        /// </summary>
+        public UInt16 sfc_req
+        {
+            get { return _sfc_req; }
+            set { _sfc_req = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _sfc_act;
+        /// <summary>
+        /// Aktivierung von Schutzstufe 2 bzw. 3 durch SFC 109 (1: Aktivierung ist erfolgt)
+        /// </summary>
+        public UInt16 sfc_act
+        {
+            get { return _sfc_act; }
+            set { _sfc_act = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        private ushort[] _res2;
+        /// <summary>
+        /// Reserviert
+        /// </summary>
+        public UInt16[] res2
+        {
+            get { return _res2; }
+            set { _res2 = value; }
         }
     }
 

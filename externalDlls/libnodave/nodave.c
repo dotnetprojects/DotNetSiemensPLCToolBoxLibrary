@@ -853,42 +853,36 @@ int DECL2 davePIstart_nc(daveConnection *dc, const char *piservice, const char *
     return res;
 }
 
-void DECL2 daveAddToWriteRequest(PDU *p, int area, int DBnum, int start, int byteCount, 
-	void * buffer,
-	uc * da,
-	int dasize,
-	uc * pa,
-	int pasize
-	) {
-		uc saveData[1024];
+void DECL2 daveAddToWriteRequest(PDU *p, int area, int DBnum, int start, int byteCount, void * buffer, uc * da, int dasize, uc * pa, int pasize) {
+	uc saveData[1024];
 #ifdef DEBUG_CALLS
     LOG7("daveAddToWriteRequest(PDU:%p area:%s area number:%d start address:%d byte count:%d buffer:%p)\n",
 	p, daveAreaName(area), DBnum, start, byteCount, buffer);
 //    _daveDumpPDU(p);
     FLUSH;
 #endif     
-		if ((area==daveTimer) || (area==daveCounter)||(area==daveTimer200) || (area==daveCounter200)) {    
-			pa[3]=area;
-			pa[4]=((byteCount+1)/2) / 0x100;
-			pa[5]=((byteCount+1)/2) & 0xff;
-		} else if ((area==daveAnaIn) || (area==daveAnaOut)) {
-			pa[3]=4;
-			pa[4]=((byteCount+1)/2) / 0x100;
-			pa[5]=((byteCount+1)/2) & 0xff;
-		} else {	
-			pa[4]=byteCount / 0x100;		
-			pa[5]=byteCount & 0xff;	
-		}
-		pa[6]=DBnum / 256;		
-		pa[7]=DBnum & 0xff;		
-		pa[8]=area;		
-		pa[11]=start & 0xff;
-		pa[10]=(start / 0x100) & 0xff;
-		pa[9]=start / 0x10000; 
-		if(p->dlen%2) {
-			_daveAddData(p, da, 1); 
-		}    
-		p->param[1]++;
+	if ((area==daveTimer) || (area==daveCounter)||(area==daveTimer200) || (area==daveCounter200)) {    
+		pa[3]=area;
+		pa[4]=((byteCount+1)/2) / 0x100;
+		pa[5]=((byteCount+1)/2) & 0xff;
+	} else if ((area==daveAnaIn) || (area==daveAnaOut)) {
+		pa[3]=4;
+		pa[4]=((byteCount+1)/2) / 0x100;
+		pa[5]=((byteCount+1)/2) & 0xff;
+	} else {	
+		pa[4]=byteCount / 0x100;		
+		pa[5]=byteCount & 0xff;	
+	}
+	pa[6]=DBnum / 256;		
+	pa[7]=DBnum & 0xff;		
+	pa[8]=area;		
+	pa[11]=start & 0xff;
+	pa[10]=(start / 0x100) & 0xff;
+	pa[9]=start / 0x10000; 
+	if(p->dlen%2) {
+		_daveAddData(p, da, 1); 
+	}    
+	p->param[1]++;
 #ifdef DAVE_HAVE_MEMCPY
     if(p->dlen){
 	 memcpy(saveData, p->data, p->dlen);
@@ -939,7 +933,6 @@ void DECL2 daveAddVarToWriteRequest(PDU *p, int area, int DBnum, int start, int 
 
 	daveAddToWriteRequest(p, area, DBnum, 8*start, byteCount,buffer,da,sizeof(da),pa,sizeof(pa));
 }
-
 
 void DECL2 daveAddBitVarToWriteRequest(PDU *p, int area, int DBnum, int start, int byteCount, void * buffer) {
 	uc da[]=	{0,3,0,0,};
@@ -6420,6 +6413,16 @@ int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer,
 	return res;
 }
 
+#ifdef TestXXX
+#include <time.h>
+int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, struct tm *ts, char *buffer, int length)
+{
+	char dt[13];
+	sprintf(dt, "%02d%02d%02d%02d%02d%02d", ts->tm_year % 100, ts->tm_mon + 1, ts->tm_mday, ts->tm_hour, ts->tm_min, ts->tm_sec);
+	return davePutNCProgram(dc, filename, pathname, dt, buffer, length);
+}
+#endif
+
 /*
 1. NC Request -> Request Download
   -> Antwort auswerten, ob OK, und das erste Byte für die Anzahl n_unack. Sequenc-Number aus Antwort für weitere verwenden
@@ -6620,6 +6623,66 @@ int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, c
             LOG2("davePutNCProgram: errorcode erster Antwort: %04X\n", res);
         }
     }
+    return res;
+}
+
+/*
+Receive Alarm query:
+*/
+
+int DECL2 alarmQueryAlarm_S(daveConnection *dc, void *buffer, int buflen, int *number_of_alarms){
+    int res, len, cpylen;
+    int pa7;
+    PDU p2;
+
+    uc pa[] = { 0x00, 0x01, 0x12, 0x04, 0x11, 0x44, 0x13, 0x00};                          /* Parameter 1. Anfrage */
+    uc da[] = { 0x00, 0x01, 0x12, 0x08, 0x1a, 0x00, 0x01, 0x34, 0x00, 0x00, 0x00, 0x04 }; /* Datenteil 1. Anfrage */
+    uc pa2[]= { 0x00, 0x01, 0x12, 0x08, 0x12, 0x44, 0x13, 0x01, 0x00, 0x00, 0x00, 0x00 }; /* Parameter weitere Anfragen */
+
+    *number_of_alarms = 0;
+
+    res = daveBuildAndSendPDU(dc, &p2,pa, sizeof(pa), da, sizeof(da));
+    if (res != daveResOK) return res;
+
+    len = 0;
+    pa7 = p2.param[7];              /* Sequence number für weitere Abfragen */
+
+    if (p2.udlen < 2) return daveEmptyResultError;
+    /* Aufbau des 1. Antworttelegramms ist anders und besitzt noch einen 6 Byte Header */
+    if (p2.udlen > 6 && p2.udata[1] == 1 && p2.udata[2] == 0xff) {
+        *number_of_alarms += 1;
+        cpylen = p2.udlen - 6;
+        if (buffer != NULL) {
+            if (len + cpylen > buflen) cpylen = buflen - len;
+            if (cpylen > 0) memcpy((uc *)buffer+len, &(p2.udata[6]), cpylen);
+            len += cpylen;
+        }
+    }
+    
+    if (p2.param[9] != 0) {
+        pa2[7] = pa7;
+        res = daveBuildAndSendPDU(dc, &p2, pa2, sizeof(pa2), NULL, 1);
+        if (res != daveResOK) return res;
+        
+        while (p2.param[9] != 0) {      /* Last Data unit 0=Yes*/
+            if (p2.udlen > 2) {
+                *number_of_alarms += 1;
+                cpylen = p2.udlen;
+                if (buffer != NULL) {
+                    if (len + cpylen > buflen) cpylen = buflen - len;
+                    if (cpylen > 0) memcpy((uc *)buffer+len, p2.udata, cpylen);
+                    len += cpylen;
+                }
+            }
+            dc->resultPointer = p2.udata;
+            dc->_resultPointer = p2.udata;
+            pa2[7] = pa7;
+            res = daveBuildAndSendPDU(dc, &p2, pa2, sizeof(pa2), NULL, 1);
+            if (res != daveResOK) return res;
+        }
+    }
+
+    dc->AnswLen = len;
     return res;
 }
 

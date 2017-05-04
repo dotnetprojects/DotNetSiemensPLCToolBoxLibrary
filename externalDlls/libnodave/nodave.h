@@ -1107,6 +1107,10 @@ EXPORTSPEC int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, 
 //DateTime ts Format: yyMMddHHmmss
 EXPORTSPEC int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, char *ts, char *buffer, int length);
 
+/*
+Receive Alarm query:
+*/
+EXPORTSPEC int DECL2 alarmQueryAlarm_S(daveConnection *dc, void *buffer, int buflen, int *number_of_alarms);
 
 /*
     PLC realtime clock handling:

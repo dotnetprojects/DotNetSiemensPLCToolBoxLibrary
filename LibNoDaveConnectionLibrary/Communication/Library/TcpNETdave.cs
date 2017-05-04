@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public int error;
         public byte[] bytes;
     }
-    public class daveResultN :IresultSet
+    public class daveResultN : IresultSet
     {
         public List<resultN> allResults;
         public daveResultN()
@@ -201,7 +201,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             Dispose();
             return 0;
         }
-        
+
         public bool Connected()
         {
             return tcpClient != null ? tcpClient.Connected : false;
@@ -353,7 +353,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             return 0;
         }
-        
+
         private int NegPDUlengthRequest()
         {
             byte[] pa = { 0xF0, 0, 0, 1, 0, 1, 3, 0xC0 };
@@ -739,7 +739,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             int res;
 
             //p1.header=dc->msgOut+dc->PDUstartO;
-            _daveConstructEndUpload(p1,uploadID);
+            _daveConstructEndUpload(p1, uploadID);
             Pdu ret = ExchangePdu(p1);
             //res=_daveExchange(dc, &p1);
             //if(res!=daveResOK) return res;	
@@ -1188,7 +1188,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public int writeBits(int area, int DB, int start, int len, byte[] buffer)
         {
             var p1 = new Pdu_WriteRequest();
-                Pdu p2;
+            Pdu p2;
             //p1.header = dc->msgOut + dc->PDUstartO;
             //davePrepareWriteRequest(ref p1);
             p1.addBitVarToWriteRequest(area, DB, start, len, buffer);
@@ -1242,7 +1242,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             return new Pdu_WriteRequest();
         }
-        
+
         public int execWriteRequest(IPDU p, IresultSet rl)//not checked
         {
             Pdu p2;
@@ -1565,6 +1565,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int alarmQueryAlarm_S(byte[] buffer, int length, ref int alarmCount)
         {
             throw new NotImplementedException();
         }

@@ -226,5 +226,10 @@ namespace ToolBoxLibUnitTests
         {
             throw new NotImplementedException();
         }
+
+        public int alarmQueryAlarm_S(byte[] buffer, int length, ref int alarmCount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
