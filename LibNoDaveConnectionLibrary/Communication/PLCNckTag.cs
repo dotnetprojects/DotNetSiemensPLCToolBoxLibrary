@@ -74,7 +74,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //string s = string.Format("0x{0},0x{1},0x{2},0x{3},0x{4},0x{5},{6},0x{7}", NckArea.ToString("X"), NckUnit.ToString("X"), NckColumn.ToString("X"), NckLine.ToString("X"), NckModule.ToString("X"), NckLinecount.ToString("X"), TagDataType, _internalGetSize().ToString("X"));
             NC_Var ncVar = new NC_Var(this);
-            string s = string.Format("0x{0},0x{1},0x{2},0x{3},0x{4},0x{5},{6},0x{7},0x{8}", ncVar.SYNTAX_ID, ncVar.Bereich_u_einheit, ncVar.Spalte, ncVar.Zeile, ncVar.Bausteintyp, ncVar.ZEILENANZAHL, ncVar.Typ, ncVar.Laenge);
+            string s = string.Format("0x{0},0x{1},0x{2},0x{3},0x{4},0x{5},0x{6},0x{7}", ncVar.SYNTAX_ID.ToString("X"), ncVar.Bereich_u_einheit.ToString("X"), ncVar.Spalte.ToString("X"), ncVar.Zeile.ToString("X"), ncVar.Bausteintyp.ToString("X"), ncVar.ZEILENANZAHL.ToString("X"), ncVar.Typ.ToString("X"), ncVar.Laenge.ToString("X"));
 
             if (Value != null)
             {
