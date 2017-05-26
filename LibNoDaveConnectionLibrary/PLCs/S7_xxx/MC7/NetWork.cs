@@ -75,9 +75,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             if (blk.AWLCode != null)
                 foreach (S7FunctionBlockRow s7FunctionBlockRow in blk.AWLCode)
                 {
+                    nw = new S7FunctionBlockNetwork();
                     if (s7FunctionBlockRow.Command == "NETWORK")
                     {
-                        nw = new S7FunctionBlockNetwork();
                         nw.Parent = blk;
                         nw.AWLCode = new List<FunctionBlockRow>();
                         retVal.Add(nw);
