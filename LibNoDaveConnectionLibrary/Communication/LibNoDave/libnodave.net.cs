@@ -2260,10 +2260,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             putS32at(b, pos, Convert.ToInt32(value.TotalMilliseconds));
         }
 
+        public static void putLTimeat(byte[] b, int pos, TimeSpan value)
+        {
+            putS64at(b, pos, Convert.ToInt64(value.Ticks * 100));
+        }
+
         public static void putTimeOfDayat(byte[] b, int pos, DateTime value)
         {
             var tmp = new TimeSpan(0, value.Hour, value.Minute, value.Second, value.Millisecond);
             putU32at(b, pos, Convert.ToUInt32(tmp.TotalMilliseconds));
+        }
+
+        public static void putLTimeOfDayat(byte[] b, int pos, DateTime value)
+        {
+            putU64at(b, pos, Convert.ToUInt64(value.Ticks * 100));
         }
 
         public static void putDateat(byte[] b, int pos, DateTime value)
@@ -2600,10 +2610,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             return new DateTime(msval * 10000);
         }
 
+        public static DateTime getLTimeOfDayfrom(byte[] b, int pos)
+        {
+            ulong msval = getU64from(b, pos);
+            return new DateTime((long)msval / 100);
+        }
+
         public static TimeSpan getTimefrom(byte[] b, int pos)
         {
             long msval = getS32from(b, pos);
             return new TimeSpan(msval * 10000);
+        }
+
+        public static TimeSpan getLTimefrom(byte[] b, int pos)
+        {
+            long msval = getS64from(b, pos);
+            return new TimeSpan(msval / 100);
         }
 
         public static TimeSpan getS5Timefrom(byte[] b, int pos)

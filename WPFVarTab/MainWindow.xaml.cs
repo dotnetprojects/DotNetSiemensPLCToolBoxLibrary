@@ -38,7 +38,7 @@ namespace WPFVarTab
     /// </summary>
     public partial class MainWindow : CustomChromeWindow, INotifyPropertyChanged
     {
-        private int _readTagsConfig = 4;
+        private int _readTagsConfig = 0;
         private int _writeTagsConfig;
         private ObservableCollection<string> _connections;
         private static ObservableDictionary<string, PLCConnection> _connectionDictionary = new ObservableDictionary<string, PLCConnection>();

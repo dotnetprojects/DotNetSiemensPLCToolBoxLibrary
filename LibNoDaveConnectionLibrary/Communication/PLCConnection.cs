@@ -2556,7 +2556,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
 
-            ReadValues(readList, true);
+            ReadValues(readList, false);
 
             if (!cacheDbSizes)
                 _dbSizes = null;
