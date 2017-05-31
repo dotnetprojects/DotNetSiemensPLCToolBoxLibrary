@@ -1382,7 +1382,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case "SDB":
                             blk = DataTypes.PLCBlockType.SDB;
                             break;
-<<<<<<< HEAD
                     }
 
 
@@ -1393,29 +1392,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
                     //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
                     // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
-=======
-                    }
 
-
-                    //Transfer crc:
-                    //Benötigt für Safety übertragung!
-                    //Es ist eine CRC16 Prüfsumme mit dem Generator Polynom 0x9003 , Init = 0x0000 , RefIn = False, RefOut = False, XorOut = 0x0000.
-                    //Die Prüfsumme wird aus folgenden Bytes gebildet:
-                    //Byte 5, Bausteinkennung(0x0A for DB, 0x0C für FC, .... )
-                    //    Byte 34, 35 Länge des Arbeitsspeicher in Bytes(ohne die 36 Bytes Header Länge) Länge MC7 Code
-                    // Byte 36 bis Byte (36 + Länge des Arbeitsspeicher - 1 ) 
->>>>>>> refs/heads/pr/5
                     //var crcbyte = new[] {0x9003, (short) blk,};
                     var sizeHighByte = (buffer.Length - 36) / 256;
                     var sizeLowByte = ((buffer.Length - 36) - 256 * sizeHighByte);
                     var crcHeader = new byte[] { (byte)blk, (byte)sizeHighByte, (byte)sizeLowByte };
                     var crcBytes = new byte[buffer.Length - 36 + 3];
                     Array.Copy(crcHeader, 0, crcBytes, 0, 3);
-<<<<<<< HEAD
                     Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36);
-=======
-                    Array.Copy(buffer, 36, crcBytes, 3, buffer.Length - 36); 
->>>>>>> refs/heads/pr/5
                     var crc = CrcHelper.GetCrc16(crcBytes);
                     //Add CRC to transmit data
 
@@ -2945,11 +2929,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Add(true);
                             tagWasSplitted.Add(false);
                             lastRequestWasAUnevenRequest = true;
-<<<<<<< HEAD
                             currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
-=======
-                            currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}",libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
->>>>>>> refs/heads/pr/5
                             myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                         else
@@ -3010,18 +2990,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-<<<<<<< HEAD
-                                    //  int cnt = readTagList.Cast<PLCTag>().ToList().Count;
-                                    // var nckT = readTagList.Cast<PLCTag>().ToList()[(cnt - anzVar) + akVar] as PLCNckTag;
-
-
-                                    //if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                    //    System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
-=======
-                                    var nckT = readTagList.ToList()[akVar] as PLCNckTag;
-                                    if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                        System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
->>>>>>> refs/heads/pr/5
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
