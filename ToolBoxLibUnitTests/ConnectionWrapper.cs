@@ -231,5 +231,10 @@ namespace ToolBoxLibUnitTests
         {
             throw new NotImplementedException();
         }
+
+        public int daveReadPLCTime(out DateTime dateTime)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

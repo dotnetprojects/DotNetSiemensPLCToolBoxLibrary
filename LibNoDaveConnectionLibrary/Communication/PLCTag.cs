@@ -54,7 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// This is a Property which addresses the values you've read with a Name
         /// </summary>        
-        public String ValueName
+        public virtual String ValueName
         {
             get { return _valueName; }
             set
@@ -234,6 +234,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     else if (low.Contains("s5time")) this.TagDataType = TagDataType.S5Time;
                     else if (low.Contains("real")) this.TagDataType = TagDataType.Float;
                     else if (low.Contains("time")) this.TagDataType = TagDataType.Time;
+                    else if (low.Contains("ltime")) this.TagDataType = TagDataType.LTime;
+                    else if (low.Contains("lint")) this.TagDataType = TagDataType.LInt;
+                    else if (low.Contains("lword")) this.TagDataType = TagDataType.LWord;
+                    else if (low.Contains("ltimeofday")) this.TagDataType = TagDataType.LTimeOfDay;
+                    else if (low.Contains("lreal")) this.TagDataType = TagDataType.LReal;
                 }
                 this.ChangeAddressFromString(initalizationString);
             }
@@ -273,7 +278,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 this.tagDataSource = value;
                 if (value == MemoryArea.Timer || value == MemoryArea.Counter)
-                    if (this.TagDataType != TagDataType.Bool && this.TagDataType != TagDataType.Int && this.TagDataType != TagDataType.Word && this.TagDataType != TagDataType.S5Time && this.TagDataType != TagDataType.BCDWord)
+                    if (this.TagDataType != TagDataType.Bool && this.TagDataType != TagDataType.Int && this.TagDataType != TagDataType.Word && this.TagDataType != TagDataType.S5Time && this.TagDataType != TagDataType.BCDWord && this.TagDataType != TagDataType.LInt && this.TagDataType != TagDataType.LWord)
                         this.tagDataType = value == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                 NotifyPropertyChanged("TagDataSource"); NotifyPropertyChanged("S7FormatAddress");
             }
@@ -296,6 +301,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         return _dataTypeStringFormat;
                     case TagDataType.S5Time:
                     case TagDataType.Time:
+                    case TagDataType.LTime:
                         if (_dataTypeStringFormat != TagDisplayDataType.TimeSpan && _dataTypeStringFormat != TagDisplayDataType.S5Time && _dataTypeStringFormat != TagDisplayDataType.Time)
                             return TagDisplayDataType.TimeSpan;
                         return _dataTypeStringFormat;
@@ -304,6 +310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return TagDisplayDataType.S7Date;
                         return _dataTypeStringFormat;
                     case TagDataType.TimeOfDay:
+                    case TagDataType.LTimeOfDay:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7TimeOfDay)
                             return TagDisplayDataType.S7TimeOfDay;
                         return _dataTypeStringFormat;
@@ -366,7 +373,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //    ArraySize = _internalGetSize();
                 if (this.tagDataSource == MemoryArea.Timer || this.tagDataSource == MemoryArea.Counter)
                 {
-                    if (value != TagDataType.Bool && value != TagDataType.Int && value != TagDataType.Word && value != TagDataType.S5Time && value != TagDataType.BCDWord)
+                    if (value != TagDataType.Bool && value != TagDataType.LInt && value != TagDataType.LWord && value != TagDataType.Int && value != TagDataType.Word && value != TagDataType.S5Time && value != TagDataType.BCDWord)
                         this.tagDataType = this.TagDataSource == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                     else
                         this.tagDataType = value;
@@ -688,6 +695,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 case TagDataType.S5Time:
                 case TagDataType.Time:
+                case TagDataType.LTime:
                     if (myValueStrip.Contains("t#") || myValueStrip.Contains("s5t#"))
                     {
                         Controlvalue = Helper.GetTimespanFromS5TimeorTime(myValue);
@@ -848,6 +856,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.DateTime:
                 case TagDataType.Date:
                 case TagDataType.TimeOfDay:
+                case TagDataType.LTimeOfDay:
                     if (myValueStrip.StartsWith("d#"))
                         Controlvalue = Helper.GetDateTimeFromDateString(myValue);
                     else if (myValueStrip.StartsWith("tod#"))
@@ -889,10 +898,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = val;
                     }
                     break;
-                /* 
-                 *  case TagDataType.TimeOfDay:    
-                    case TagDataType.Float:
-                    */
+                    /* 
+                     *  case TagDataType.TimeOfDay:    
+                        case TagDataType.Float:
+                        */
             }
         }
 
@@ -921,10 +930,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     case TagDataType.S5Time:
                     case TagDataType.Time:
+                    case TagDataType.LTime:
                     case TagDataType.Bool:
                     case TagDataType.DateTime:
                     case TagDataType.Date:
                     case TagDataType.TimeOfDay:
+                    case TagDataType.LTimeOfDay:
                     case TagDataType.Int:
                     case TagDataType.Dint:
                     case TagDataType.LInt:
@@ -984,6 +995,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return ((TimeSpan)myValue).ToString();
                         }
                     case TagDataType.Time:
+                    case TagDataType.LTime:
                         {
                             var tm = (TimeSpan)myValue;
                             var ret = new StringBuilder("T#");
@@ -1006,6 +1018,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.DateTime:
                     case TagDataType.Date:
                     case TagDataType.TimeOfDay:
+                    case TagDataType.LTimeOfDay:
                         if (DataTypeStringFormat == TagDisplayDataType.S7DateTime)
                         {
                             DateTime ak = (DateTime)myValue;
@@ -1116,6 +1129,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         break;
                                     case 4:
                                         ad = "DW#16#";
+                                        break;
+                                    case 8:
+                                        ad = "L#16#";
                                         break;
                                 }
                                 return ad + val.ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(_internalGetSize() * 2, '0');
@@ -1301,6 +1317,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             case "time_of_day":
                                 tsize = 4;
                                 break;
+                            case "lreal":
+                            case "lword":
+                            case "lint":
+                            case "ltime":
+                            case "ltime_of_day":
+                                tsize = 8;
+                                break;
                         }
 
                         var baseS = _internalGetBaseTypeSize();
@@ -1341,6 +1364,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
                                     this.TagDataType = TagDataType.Byte;
                             }
+                            else if (myPlcAddress[1].Contains("DBL"))
+                            {
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                    ArraySize = 8;
+                                else
+                                    ArraySize = 1;
+                                if (this._internalGetSize() != 8)
+                                    this.TagDataType = TagDataType.LWord;
+                            }
                             else if (myPlcAddress[1].Contains("DBD"))
                             {
                                 if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
@@ -1364,7 +1396,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                     this.BitAddress = 0;
                             }
-                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBR", "").Replace("DBX", "").Replace("DBB", "").Trim());
+                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBR", "").Replace("DBX", "").Replace("DBB", "").Replace("DBL", "").Trim());
                         }
                         else
                         {
@@ -1402,6 +1434,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     ArraySize = 1;
                                 if (_internalGetSize() != 4)
                                     this.TagDataType = TagDataType.Dint;
+                            }
+                            else if (myPlcAddress[0].Contains("L"))
+                            {
+                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                    ArraySize = 8;
+                                else
+                                    ArraySize = 1;
+                                if (_internalGetSize() != 8)
+                                    this.TagDataType = TagDataType.LInt;
                             }
                             else if (myPlcAddress[0].Contains("B"))
                             {
@@ -1502,11 +1543,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "time":
                         tp = TagDataType.Time;
                         break;
+                    case "ltime":
+                        tp = TagDataType.LTime;
+                        break;
                     case "s5time":
                         tp = TagDataType.S5Time;
                         break;
                     case "timeofday":
                         tp = TagDataType.TimeOfDay;
+                        break;
+                    case "ltimeofday":
+                        tp = TagDataType.LTimeOfDay;
                         break;
                     case "date":
                         tp = TagDataType.Date;
@@ -1705,8 +1752,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.Time:
                         libnodave.putTimeat(buff, startpos, (TimeSpan)ctlValue);
                         break;
+                    case TagDataType.LTime:
+                        libnodave.putLTimeat(buff, startpos, (TimeSpan)ctlValue);
+                        break;
                     case TagDataType.TimeOfDay:
                         libnodave.putTimeOfDayat(buff, startpos, (DateTime)ctlValue);
+                        break;
+                    case TagDataType.LTimeOfDay:
+                        libnodave.putLTimeOfDayat(buff, startpos, (DateTime)ctlValue);
                         break;
                     case TagDataType.BCDByte:
                         libnodave.putBCD8at(buff, startpos, Convert.ToInt32(ctlValue));
@@ -1781,7 +1834,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     System.Array.Reverse(buff, startpos, length);
                 }
             }
-
+			
+            try
+            {
             switch (this.TagDataType)
             {
                 case TagDataType.String:
@@ -1843,8 +1898,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Byte:
                 case TagDataType.SByte:
                 case TagDataType.Time:
+                    case TagDataType.LTime:
                 case TagDataType.Date:
                 case TagDataType.TimeOfDay:
+                    case TagDataType.LTimeOfDay:
                 case TagDataType.Word:
                 case TagDataType.BCDByte:
                 case TagDataType.Int:
@@ -1875,11 +1932,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 case TagDataType.Time:
                                     _setValueProp = libnodave.getTimefrom(buff, startpos);
                                     break;
+                                    case TagDataType.LTime:
+                                        _setValueProp = libnodave.getLTimefrom(buff, startpos);
+                                        break;
                                 case TagDataType.Date:
                                     _setValueProp = libnodave.getDatefrom(buff, startpos);
                                     break;
                                 case TagDataType.TimeOfDay:
                                     _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
+                                        break;
+                                    case TagDataType.LTimeOfDay:
+                                        _setValueProp = libnodave.getLTimeOfDayfrom(buff, startpos);
                                     break;
                                 case TagDataType.Word:
                                     _setValueProp = libnodave.getU16from(buff, startpos);
@@ -1972,6 +2035,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         _setValueProp = values.ToArray();
                                         break;
                                     }
+                                    case TagDataType.LTime:
+                                        {
+                                            var values = new List<TimeSpan>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getLTimefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
                                 case TagDataType.Date:
                                     {
                                         var values = new List<DateTime>();
@@ -1987,6 +2059,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         var mSize = _internalGetBaseTypeSize();
                                         for (int n = 0; n < ArraySize; n++)
                                             values.Add(libnodave.getTimeOfDayfrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.LTimeOfDay:
+                                        {
+                                            var values = new List<DateTime>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getLTimeOfDayfrom(buff, startpos + n * mSize));
                                         _setValueProp = values.ToArray();
                                         break;
                                     }
@@ -2112,7 +2193,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
                     break;
             }
-
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "Could not Read value From Buffer (" + (this.ValueName ?? "") + ", BufferLength:" + buff.Length +
+                    ", StartPos:" + startpos, ex);
+            }
         }
 
         [XmlIgnore]
@@ -2140,6 +2227,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.LInt:
                 case TagDataType.LReal:
                 case TagDataType.LWord:
+                case TagDataType.LTime:
+                case TagDataType.LTimeOfDay:
                 case TagDataType.Dword:
                 case TagDataType.Time:
                 case TagDataType.TimeOfDay:
@@ -2194,6 +2283,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.LInt:
                 case TagDataType.LWord:
                 case TagDataType.LReal:
+                case TagDataType.LTime:
+                case TagDataType.LTimeOfDay:
                 case TagDataType.DateTime:
                     return 8;
             }

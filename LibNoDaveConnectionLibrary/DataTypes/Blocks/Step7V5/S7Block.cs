@@ -89,6 +89,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if (value.Length >= 4) _password[3] = value[3];
             }
         }
-    }        
+
+        public override SymbolTableEntry SymbolTableEntry
+        {
+            get
+            {
+                if (ParentFolder != null)
+                {
+                    ISymbolTable tmp = ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
+                    if (tmp != null)
+                        return tmp.GetEntryFromOperand(BlockName);
+                }
+                return null;
+            }
+        }
+    }
 }
 

@@ -1301,7 +1301,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             [DllImport("__Internal", EntryPoint = "daveReadPLCTime")]
 #endif
             protected static extern int daveReadPLCTime32(IntPtr dc);
-            public DateTime daveReadPLCTime()
+
+            public int daveReadPLCTime(out DateTime dateTime)
             {
                 int res = 0;
                 if (IntPtr.Size == 8)
@@ -1309,31 +1310,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     res = daveReadPLCTime32(pointer);
 
-                int year, month, day, hour, minute, second, millisecond;
-                getU8();
-                getU8();
-                byte[] tmp = new byte[1];
-                tmp[0] = Convert.ToByte(getU8());
-                year = getBCD8from(tmp, 0);
-                year += year >= 90 ? 1900 : 2000;
-                tmp[0] = Convert.ToByte(getU8());
-                month = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                day = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                hour = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                minute = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                second = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                millisecond = getBCD8from(tmp, 0) * 10;
-                tmp[0] = Convert.ToByte(getU8());
-                tmp[0] = Convert.ToByte(tmp[0] >> 4);
-                millisecond += getBCD8from(tmp, 0);
-                DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
+                if (res == 0)
+                {
+                    int year, month, day, hour, minute, second, millisecond;
+                    getU8();
+                    getU8();
+                    byte[] tmp = new byte[1];
+                    tmp[0] = Convert.ToByte(getU8());
+                    year = getBCD8from(tmp, 0);
+                    year += year >= 90 ? 1900 : 2000;
+                    tmp[0] = Convert.ToByte(getU8());
+                    month = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    day = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    hour = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    minute = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    second = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    millisecond = getBCD8from(tmp, 0) * 10;
+                    tmp[0] = Convert.ToByte(getU8());
+                    tmp[0] = Convert.ToByte(tmp[0] >> 4);
+                    millisecond += getBCD8from(tmp, 0);
+                    DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
 
-                return ret;
+                    dateTime = ret;
+                }
+                else
+                {
+                    dateTime = DateTime.MinValue;
+                }
+
+                return res;
             }
 
 #if !IPHONE
@@ -2276,10 +2286,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             putS32at(b, pos, Convert.ToInt32(value.TotalMilliseconds));
         }
 
+        public static void putLTimeat(byte[] b, int pos, TimeSpan value)
+        {
+            putS64at(b, pos, Convert.ToInt64(value.Ticks * 100));
+        }
+
         public static void putTimeOfDayat(byte[] b, int pos, DateTime value)
         {
             var tmp = new TimeSpan(0, value.Hour, value.Minute, value.Second, value.Millisecond);
             putU32at(b, pos, Convert.ToUInt32(tmp.TotalMilliseconds));
+        }
+
+        public static void putLTimeOfDayat(byte[] b, int pos, DateTime value)
+        {
+            putU64at(b, pos, Convert.ToUInt64(value.Ticks * 100));
         }
 
         public static void putDateat(byte[] b, int pos, DateTime value)
@@ -2616,10 +2636,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             return new DateTime(msval * 10000);
         }
 
+        public static DateTime getLTimeOfDayfrom(byte[] b, int pos)
+        {
+            ulong msval = getU64from(b, pos);
+            return new DateTime((long)msval / 100);
+        }
+
         public static TimeSpan getTimefrom(byte[] b, int pos)
         {
             long msval = getS32from(b, pos);
             return new TimeSpan(msval * 10000);
+        }
+
+        public static TimeSpan getLTimefrom(byte[] b, int pos)
+        {
+            long msval = getS64from(b, pos);
+            return new TimeSpan(msval / 100);
         }
 
         public static TimeSpan getS5Timefrom(byte[] b, int pos)

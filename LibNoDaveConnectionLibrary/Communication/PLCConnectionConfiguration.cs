@@ -839,48 +839,66 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
     public enum LibNodaveConnectionConfigurationType
     {
+        [XmlEnum("RegistrySavedConfiguration")]
         RegistrySavedConfiguration = 1,
+        [XmlEnum("ObjectSavedConfiguration")]
         ObjectSavedConfiguration = 2
     }
 
     public enum LibNodaveConnectionTypes
     {
         // ReSharper disable InconsistentNaming
+        [XmlEnum("0")]
         None = 0,
 
         /// <summary>
         /// Connection via MPI adapter connected to an Serial Com Port
         /// </summary>
+        [XmlEnum("1")]
         MPI_über_Serial_Adapter = 1,
+        [XmlEnum("2")]
         MPI_über_Serial_Adapter_Andrews_Version_without_STX = 2,
+        [XmlEnum("3")]
         MPI_über_Serial_Adapter_Step_7_Version = 3,
+        [XmlEnum("4")]
         MPI_über_Serial_Adapter_Adrews_Version_with_STX = 4,
+        [XmlEnum("10")]
         PPI_über_Serial_Adapter = 10,
 
         /// <summary>
         /// Connection via the AS511 Protocoll used by S5 series PLCs
         /// </summary>
+        [XmlEnum("20")]
         AS_511 = 20,
 
         /// <summary>
         /// Connection via the Simatic Net libraries. Simatic Net must be installed
         /// </summary>
+        [XmlEnum("50")]
         Use_Step7_DLL = 50,
 
         /// <summary>
         /// Connections via the TCP/IP protocoll
         /// </summary>
+        [XmlEnum("122")]
         ISO_over_TCP = 122,
 
         /// <summary>
         /// Connections via TCP/IP to an CP243 for S7-200 series PLCs
         /// </summary>
+        [XmlEnum("123")]
         ISO_over_TCP_CP_243 = 123,
+        [XmlEnum("223")]
         Netlink_lite = 223,
+        [XmlEnum("224")]
         Netlink_lite_PPI = 224,
+        [XmlEnum("230")]
         Netlink_Pro = 230,
+        [XmlEnum("9122")]
         ISO_over_TCP_Managed = 9122,
+        [XmlEnum("500")]
         Fetch_Write_Active = 500,
+        [XmlEnum("501")]
         Fetch_Write_Passive = 501,
         // ReSharper restore InconsistentNaming
     }
@@ -888,20 +906,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public enum LibNodaveConnectionBusSpeed
     {
         // ReSharper disable InconsistentNaming
+        [XmlEnum("0")]
         Speed_9k = 0,
+        [XmlEnum("1")]
         Speed_19k = 1,
+        [XmlEnum("2")]
         Speed_187k = 2,
+        [XmlEnum("3")]
         Speed_500k = 3,
+        [XmlEnum("4")]
         Speed_1500k = 4,
+        [XmlEnum("5")]
         Speed_45k = 5,
+        [XmlEnum("6")]
         Speed_93k = 6
         // ReSharper restore InconsistentNaming
     }
 
     public enum LibNodaveConnectionBusParity
     {
+        [XmlEnum("101")]
         even = 'e',
+        [XmlEnum("111")]
         odd = 'o',
+        [XmlEnum("110")]
         none = 'n'
     }
 
@@ -915,16 +943,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// No resource or an unknown resource will be used for communication
         /// </summary>
+        [XmlEnum("0")]
         unknown = 0,
 
         /// <summary>
         /// Use PC/PG (Programming functions) resource. Allows manipulation of MC7 code
         /// </summary>
+        [XmlEnum("1")]
         PG = 1,
 
         /// <summary>
         /// Use OP (operator panel) functions. Allows datamanipulation functions only
         /// </summary>
+        [XmlEnum("2")]
         OP = 2
     }
 }

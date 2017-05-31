@@ -369,13 +369,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             // daveGetU16from(p2.param+6);
             return CpuPduLimit;
         }
-        public DateTime daveReadPLCTime()
+
+        public int daveReadPLCTime(out DateTime dateTime)
         {
             //	int res, len;
             Pdu p2 = new Pdu(7);
             byte[] pa = { 0, 1, 18, 4, 17, (byte)'G', 1, 0 };
             //	len=0;
-            _daveBuildAndSendPDU(p2, pa, null, true);
+            var ret = _daveBuildAndSendPDU(p2, pa, null, true);
             /*	if (res==daveResOK) {
                     dc->resultPointer=p2.udata;
                     dc->_resultPointer=p2.udata;
@@ -416,8 +417,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //tmp[0] = Convert.ToByte(tmp[0] >> 4);
             //millisecond += getBCD8from(tmp, 0);
             millisecond += ByteFunctions.getBCD8from(res, 9) >> 4;
-            return new DateTime(year, month, day, hour, minute, second, millisecond);
+            dateTime= new DateTime(year, month, day, hour, minute, second, millisecond);
+            return ret;
         }
+
         public int daveSetPLCTime(DateTime tm)
         {
             byte[] buffer = new byte[] { 0x00, 0x19, 0x05, 0x08, 0x23, 0x04, 0x10, 0x23, 0x67, 0x83, };
