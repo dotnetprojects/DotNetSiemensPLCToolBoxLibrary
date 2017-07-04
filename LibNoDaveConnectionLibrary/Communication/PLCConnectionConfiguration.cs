@@ -862,6 +862,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         MPI_über_Serial_Adapter_Step_7_Version = 3,
         [XmlEnum("4")]
         MPI_über_Serial_Adapter_Adrews_Version_with_STX = 4,
+
+        /// <summary>
+        /// Connection via PPI protocoll of an MPI/PB adapter. This is usually used for S7-200 family
+        /// </summary>
         [XmlEnum("10")]
         PPI_über_Serial_Adapter = 10,
 
@@ -903,21 +907,52 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         // ReSharper restore InconsistentNaming
     }
 
+    /// <summary>
+    /// Communication Speeds for Profibus and MPI bus connection Adapters.
+    /// The possible speeds can not be chosen freely, but are rather defined by the ProfiBus Standard
+    /// </summary>
     public enum LibNodaveConnectionBusSpeed
     {
         // ReSharper disable InconsistentNaming
+        /// <summary>
+        /// 9.6 kbps
+        /// </summary>
         [XmlEnum("0")]
         Speed_9k = 0,
+
+        /// <summary>
+        /// 19.2 kbps
+        /// </summary>
         [XmlEnum("1")]
         Speed_19k = 1,
+
+        /// <summary>
+        /// 187,5 kbps
+        /// </summary>
         [XmlEnum("2")]
         Speed_187k = 2,
+
+        /// <summary>
+        /// 0,5 Mbps
+        /// </summary>
         [XmlEnum("3")]
         Speed_500k = 3,
+
+        /// <summary>
+        /// 1.5 Mbps
+        /// </summary>
         [XmlEnum("4")]
         Speed_1500k = 4,
+
+        /// <summary>
+        /// 45.45 kbps
+        /// </summary>
         [XmlEnum("5")]
         Speed_45k = 5,
+
+        /// <summary>
+        /// 93.75 kbps
+        /// </summary>
         [XmlEnum("6")]
         Speed_93k = 6
         // ReSharper restore InconsistentNaming
