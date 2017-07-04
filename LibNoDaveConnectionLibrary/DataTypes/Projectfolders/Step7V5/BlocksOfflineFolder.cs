@@ -236,7 +236,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// </summary>
         /// <param name="blkInfo">The Block info object that identifies the block to read from Disk</param>
         /// <returns></returns>
-        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
+        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo, S7ConvertingOptions options)
         {
             if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
@@ -319,7 +319,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         {
                             //DB Structure in Plain Text (Structure and StartValues!)
                             if (mc5code != null)
-                                if (!myTmpBlk.IsInstanceDB ) //only take interface if the block is not an instance DB. If it is, then reather take the interface from the FB declaration
+                                if (!myTmpBlk.IsInstanceDB || !options.UseFBDeclarationForInstanceDB) //only take interface if the block is not an instance DB. If it is, then reather take the interface from the FB declaration
                                     myTmpBlk.blkinterface =
                                         Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
@@ -346,8 +346,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                 //The reason is that if you change the comment in an FB, the DB data is not actualized and my contain outdated
                                 //Declarations. When you change the interface, Step7 tells you to "regenerate" the instance DB which only then would 
                                 //Actualize the comments. Simple Commentary changes do not change the Datablocks row. 
-                                tmpBlock InstFB = GetBlockBytes("FB" + myTmpBlk.FBNumber);
-                                myTmpBlk.blkinterface = InstFB.blkinterface;
+                                if (!options.UseFBDeclarationForInstanceDB)
+                                {
+                                    tmpBlock InstFB = GetBlockBytes("FB" + myTmpBlk.FBNumber);
+                                    myTmpBlk.blkinterface = InstFB.blkinterface;
+                                }
                             }
                         }
                         else if (subblktype == 0x14) //DB
@@ -378,6 +381,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 return myTmpBlk;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Reads the raw data from the S7 Project files, without parsing the data
+        /// </summary>
+        /// <param name="blkInfo">The Block info object that identifies the block to read from Disk</param>
+        /// <returns></returns>
+        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
+        {
+            return GetBlockBytes(blkInfo, new S7ConvertingOptions());
+        }
+
+        /// <summary>
+        /// Reads the raw data from the S7 Project files, without parsing the data
+        /// </summary>
+        /// <param name="blkName">The blockname to be read from disk. eg. DB2, FB38....</param>
+        /// <returns></returns>
+        private tmpBlock GetBlockBytes(string blkName, S7ConvertingOptions options)
+        {
+            var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
+            if (blkInfo == null)
+                return null;
+            return GetBlockBytes(blkInfo, options);
         }
 
         /// <summary>
@@ -453,7 +479,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
-            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
+            tmpBlock myTmpBlk = GetBlockBytes(blkInfo, myConvOpt);
 
             List<Step7Attribute> step7Attributes = null;
 
