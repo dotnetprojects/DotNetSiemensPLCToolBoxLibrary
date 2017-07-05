@@ -236,7 +236,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// </summary>
         /// <param name="blkInfo">The Block info object that identifies the block to read from Disk</param>
         /// <returns></returns>
-        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo, S7ConvertingOptions options)
+        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
         {
             if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
@@ -319,7 +319,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         {
                             //DB Structure in Plain Text (Structure and StartValues!)
                             if (mc5code != null)
-                                if (!myTmpBlk.IsInstanceDB || !options.UseFBDeclarationForInstanceDB) //only take interface if the block is not an instance DB. If it is, then reather take the interface from the FB declaration
                                     myTmpBlk.blkinterface =
                                         Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
@@ -340,17 +339,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                 // I do not know what value for SFB
                                 myTmpBlk.IsInstanceDB = true;
                                 myTmpBlk.FBNumber = (int)ssbpart[1] + 256 * (int)ssbpart[2];
-
-                                //if this is an interface DB, then rather take the Interface declaration from the instance FB,
-                                //instead of the data sotred in the project. 
-                                //The reason is that if you change the comment in an FB, the DB data is not actualized and my contain outdated
-                                //Declarations. When you change the interface, Step7 tells you to "regenerate" the instance DB which only then would 
-                                //Actualize the comments. Simple Commentary changes do not change the Datablocks row. 
-                                if (!options.UseFBDeclarationForInstanceDB)
-                                {
-                                    tmpBlock InstFB = GetBlockBytes("FB" + myTmpBlk.FBNumber);
-                                    myTmpBlk.blkinterface = InstFB.blkinterface;
-                                }
                             }
                         }
                         else if (subblktype == 0x14) //DB
@@ -383,30 +371,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             return null;
         }
 
-        /// <summary>
-        /// Reads the raw data from the S7 Project files, without parsing the data
-        /// </summary>
-        /// <param name="blkInfo">The Block info object that identifies the block to read from Disk</param>
-        /// <returns></returns>
-        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
-        {
-            return GetBlockBytes(blkInfo, new S7ConvertingOptions());
-        }
-
-        /// <summary>
-        /// Reads the raw data from the S7 Project files, without parsing the data
-        /// </summary>
-        /// <param name="blkName">The blockname to be read from disk. eg. DB2, FB38....</param>
-        /// <returns></returns>
-        private tmpBlock GetBlockBytes(string blkName, S7ConvertingOptions options)
-        {
-            var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
-            if (blkInfo == null)
-                return null;
-            return GetBlockBytes(blkInfo, options);
-        }
-
-        /// <summary>
+         /// <summary>
         /// Reads the raw data from the S7 Project files, without parsing the data
         /// </summary>
         /// <param name="blkName">The blockname to be read from disk. eg. DB2, FB38....</param>
@@ -479,7 +444,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
-            tmpBlock myTmpBlk = GetBlockBytes(blkInfo, myConvOpt);
+            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
             List<Step7Attribute> step7Attributes = null;
 
@@ -525,6 +490,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.IsInstanceDB = myTmpBlk.IsInstanceDB; 
                     retVal.FBNumber = myTmpBlk.FBNumber;
 
+                    //if this is an interface DB, then rather take the Interface declaration from the instance FB,
+                    //instead of the data sotred in the project. 
+                    //The reason is that if you change the comment in an FB, the DB data is not actualized and my contain outdated
+                    //Declarations. When you change the interface, Step7 tells you to "regenerate" the instance DB which only then would 
+                    //Actualize the comments. Simple Commentary changes do not change the Datablocks row. 
+                    if (retVal.IsInstanceDB && myConvOpt.UseFBDeclarationForInstanceDB)
+                    {
+                        //load the FB data from the Project
+                        tmpBlock InstFB = GetBlockBytes("FB" + myTmpBlk.FBNumber);
+
+                        //Resolve both interfaces
+                        List<string> tmpPar = new List<string>();
+                        S7DataRow InterfaceFB = Parameter.GetInterfaceOrDBFromStep7ProjectString(InstFB.blkinterface, ref tmpPar, PLCBlockType.FB, false, this, null);
+                        S7DataRow InterfaceDB = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, PLCBlockType.DB, false, this, null);
+
+                        //Only use the FB interface Declaration if they are compatible
+                        if (Parameter.IsInterfaceCompatible(InterfaceFB, InterfaceDB)) myTmpBlk.blkinterface = InstFB.blkinterface;
+                    }
+
                     if (myTmpBlk.mc7code != null) 
                         retVal.CodeSize = myTmpBlk.mc7code.Length;
 
@@ -544,8 +528,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
                     blkInfo._Block = retVal;
+                                       
+                   return retVal;
 
-                    return retVal;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
                 {

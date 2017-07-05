@@ -32,6 +32,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -67,6 +68,51 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
+        /// <summary>
+        /// Compares the structure of two Interface declarations and returns true if they are compatible and false if not
+        /// They are compatible if the Structure and Datatypes match up. Datarow names are ignored, since the interface remain
+        /// compatible as long as the general structure matches up.
+        /// Also Actual values are ignores
+        /// </summary>
+        /// <param name="Block1">The first interface to compare</param>
+        /// <param name="Block2">The second interface to campare</param>
+        /// <returns></returns>
+        internal static bool IsInterfaceCompatible (IDataRow Block1, IDataRow Block2)
+        {
+            //Compare basic configuration
+            //if (Block1.BlockAddress != Block2.BlockAddress) return false; //The adress must be the same
+            if (Block1.DataType != Block2.DataType) return false; //Datatypes must match up
+
+            //Check if any of the compared blocks contains an "TEMP" section. This section must be ignored
+            //this assumes that "TEMP" sections are always the last ones
+            //Todo! implement better solution without looping 3 times through the children
+            int Childcount1 = Block1.Children.Count;
+            foreach (var Child in Block1.Children ) { if(Child.Name == "TEMP") Childcount1 -= 1; }
+            int Childcount2 = Block2.Children.Count;
+            foreach (var Child in Block2.Children) { if (Child.Name == "TEMP") Childcount2 -= 1; }
+
+            if (Childcount1 != Childcount2) return false; //if the blocks have different amounts of children, then they cant be compatible
+
+            for (int i = 0; i < Childcount1; i++)
+            {
+                if (!IsInterfaceCompatible(Block1.Children[i], Block2.Children[i])) return false; //Recurse through children
+            }
+
+            //if none of the Children was incompatible, then we must be comptible ...
+            return true;
+        }
+
+        /// <summary>
+        /// Parses the interface from an Step7 Source code as stored in Step7 Project Files
+        /// </summary>
+        /// <param name="txt">The Step7 Code to be parsed</param>
+        /// <param name="ParaList">An list of Parameters that where found in the Step7 Declaration</param>
+        /// <param name="blkTP">The block type that is beeing Parsed</param>
+        /// <param name="isInstanceDB">Indicates if an block is an Instance DB</param>
+        /// <param name="myFld">The BlocksOffline Folder where the parsed block code belongs to</param>
+        /// <param name="myBlk">The Block where the Parsed Step7 code belongs to</param>
+        /// <param name="actualValues">the current values of the DB, if it is an DB</param>
+        /// <returns></returns>
         internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk, byte[] actualValues = null)
         {
             S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
