@@ -2,11 +2,22 @@
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
 {
+    /// <summary>
+    /// Options that define how Step7 Project will behave when opened by this library. 
+    /// </summary>
     public class S7ConvertingOptions
     {
         protected bool Equals(S7ConvertingOptions other)
         {
-            return this.UseComments.Equals(other.UseComments) && this.Mnemonic == other.Mnemonic && this.CombineDBOpenAndDBAccess.Equals(other.CombineDBOpenAndDBAccess) && this.ReplaceDBAccessesWithSymbolNames.Equals(other.ReplaceDBAccessesWithSymbolNames) && this.ReplaceLokalDataAddressesWithSymbolNames.Equals(other.ReplaceLokalDataAddressesWithSymbolNames) && this.ReplaceDIAccessesWithSymbolNames.Equals(other.ReplaceDIAccessesWithSymbolNames) && this.GenerateCallsfromUCs.Equals(other.GenerateCallsfromUCs) && this.UseInFCStoredFCsForCalls.Equals(other.UseInFCStoredFCsForCalls);
+            return this.UseComments.Equals(other.UseComments) 
+                && this.Mnemonic == other.Mnemonic 
+                && this.CombineDBOpenAndDBAccess.Equals(other.CombineDBOpenAndDBAccess) 
+                && this.ReplaceDBAccessesWithSymbolNames.Equals(other.ReplaceDBAccessesWithSymbolNames) 
+                && this.ReplaceLokalDataAddressesWithSymbolNames.Equals(other.ReplaceLokalDataAddressesWithSymbolNames) 
+                && this.ReplaceDIAccessesWithSymbolNames.Equals(other.ReplaceDIAccessesWithSymbolNames) 
+                && this.GenerateCallsfromUCs.Equals(other.GenerateCallsfromUCs) 
+                && this.UseInFCStoredFCsForCalls.Equals(other.UseInFCStoredFCsForCalls)
+                && this.UseFBDeclarationForInstanceDB.Equals(other.UseFBDeclarationForInstanceDB);
         }
 
         public override int GetHashCode()
@@ -21,6 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
                 hashCode = (hashCode * 397) ^ this.ReplaceDIAccessesWithSymbolNames.GetHashCode();
                 hashCode = (hashCode * 397) ^ this.GenerateCallsfromUCs.GetHashCode();
                 hashCode = (hashCode * 397) ^ this.UseInFCStoredFCsForCalls.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.UseFBDeclarationForInstanceDB.GetHashCode();
                 return hashCode;
             }
         }
@@ -40,6 +52,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
             this.GenerateCallsfromUCs = true;
             this.UseInFCStoredFCsForCalls = true; //todo implement the reading of them in the step7 project
             this.UseComments = true;
+            this.UseFBDeclarationForInstanceDB = true; //Default to Simatic Mamager Behavior
         }
 
         public bool UseComments { get; set; }
@@ -53,6 +66,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
 
         public bool GenerateCallsfromUCs { get; set;}
         public bool UseInFCStoredFCsForCalls { get; set; }
+
+        /// <summary>
+        /// use the FB instance declartion symbolics for displaying Instance DB Variables
+        /// Otherwise it is using the Symbolics stored for each individual instance DB, which may be different than the Function Block
+        /// The Step7 Default is TRUE. Simatic Manager always shows the FB declarations.
+        /// </summary>
+        public bool UseFBDeclarationForInstanceDB { get; set; }
 
         public override bool Equals(object obj)
         {
