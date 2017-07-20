@@ -899,7 +899,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 pos += 3;
 
 
-                                if (Helper.IsWithStartVal(interfaceBytes[pos + 1]))
+                                if (Helper.IsWithStartVal(interfaceBytes[pos + 1]) && actualvalueBytes != null)
                                 {
                                     if (interfaceBytes[pos] != 0x10) //Datentyp == Array...
                                         startVal = GetVarTypeVal(interfaceBytes[pos], actualvalueBytes, ref Valpos);
@@ -918,7 +918,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             }
                             else
                             {
-                                if (Helper.IsWithStartVal(interfaceBytes[pos + 4]))
+                                if (Helper.IsWithStartVal(interfaceBytes[pos + 4]) && actualvalueBytes != null)
                                 {
                                     if (interfaceBytes[pos] != 0x10) //Datentyp == Array...
                                         startVal = GetVarTypeVal(interfaceBytes[pos + 3], actualvalueBytes, ref Valpos);
