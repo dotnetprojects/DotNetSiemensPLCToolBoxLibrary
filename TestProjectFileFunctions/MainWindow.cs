@@ -1588,6 +1588,17 @@ namespace JFK_VarTab
                 }
             }
         }
+
+        private void reachablePLCsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DotNetSiemensPLCToolBoxLibrary.Communication.Discovery.S7ReachablePLCDialog Form = new DotNetSiemensPLCToolBoxLibrary.Communication.Discovery.S7ReachablePLCDialog();
+            if (Form.ShowDialog() == DialogResult.OK)
+            {
+                var Conf = Form.SelectedPlc.S7ConnectionSettings;
+                if (Conf == null) return;
+                myConn = new PLCConnection(Conf);
+             }
+        }
     }
 
     public class WEBfactoryTag
