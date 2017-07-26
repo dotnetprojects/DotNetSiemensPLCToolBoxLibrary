@@ -64,6 +64,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\Discovery\IPScanner.cs" />
+    <Compile Include="Communication\Discovery\S7ReachablePLCDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Communication\Discovery\S7ReachablePLCDialog.designer.cs">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\Discovery\S7ReachablePLCScanner.cs" />
     <Compile Include="Communication\Editors\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
@@ -349,6 +357,15 @@
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.de.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.es.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Communication\Editors\ConnectionEditor.en.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </EmbeddedResource>
