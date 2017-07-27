@@ -630,7 +630,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             while (pos <= (interfaceBytes.Length-2)) // && pos < BD.Length - 2)  //pos<BD.Length-2 was added so SDBs can be converted!! but is this needed?
             {
                 object startVal;
-                if (Helper.IsWithStartVal(interfaceBytes[pos + 1]))
+                if (Helper.IsWithStartVal(interfaceBytes[pos + 1]) && actualvalueBytes != null)
                 {
                     if (interfaceBytes[pos] != 0x10) //Datentyp == Array...
                         startVal = GetVarTypeVal(interfaceBytes[pos], actualvalueBytes, ref Valpos);

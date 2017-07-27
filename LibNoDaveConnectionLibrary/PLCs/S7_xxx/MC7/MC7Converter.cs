@@ -99,8 +99,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);
-                retBlock.BlockAttribute = Convert.ToString(MC7Code[3] - 1);
+                retBlock.BlockVersion = new Version (MC7Code[2] /10, MC7Code[2] % 10); 
+                retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
                 retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);
@@ -189,8 +189,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);
-                retBlock.BlockAttribute = Convert.ToString(MC7Code[3] - 1);
+                retBlock.BlockVersion = new Version(MC7Code[2] / 10, MC7Code[2] % 10);
+                retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
                 retBlock.BlockType = Helper.GetPLCBlockType(MC7Code[5]);
