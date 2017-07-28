@@ -108,10 +108,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public enum S7BlockAtributes: byte
         {
             /// <summary>
-            /// The block exists in the controller, and is also linked into execution
-            /// For Code blocks such as FB or FC, this means that they are existing in the controller but not actually executed
-            /// For data blocks this means, that they do not have any Actual values assigned to them. Any attempt to read current data from them will fail.
+            /// The block exists in the controller, and is also linked into execution.
+            /// if this attribute is FALSE:
+            /// -For Code blocks such as FB or FC, this means that they are existing in the controller but not actually executed
+            /// -For data blocks this means, that they do not have any Actual values assigned to them. Any attempt to read current data from them will fail.
             /// </summary>
+            /// <remarks>
+            /// This corresponds to the "Unlinked" attribute in the Simatic manager, which actually shows the status in reverse
+            /// This Attribute is only false when either especifically selected from simatic manager (only possible for Datablocks)
+            /// or during a breif period when an Code block is alrady downloaded, but not yet linked (usually part of the "Block Download" process
+            /// </remarks>
             Linked = 1, //.0
 
             /// <summary>
