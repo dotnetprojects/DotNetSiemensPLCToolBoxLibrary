@@ -37,9 +37,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
-        public string BlockVersion;
+        public Version BlockVersion;
 
-        public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+        public S7BlockAtributes BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
         public List<Step7Attribute> Attributes { get; set; }
 
@@ -102,6 +102,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 }
                 return null;
             }
+        }
+
+        [Flags]
+        public enum S7BlockAtributes: byte
+        {
+            /// <summary>
+            /// The block exists in the controller, and is also linked into execution.
+            /// if this attribute is FALSE:
+            /// -For Code blocks such as FB or FC, this means that they are existing in the controller but not actually executed
+            /// -For data blocks this means, that they do not have any Actual values assigned to them. Any attempt to read current data from them will fail.
+            /// </summary>
+            /// <remarks>
+            /// This corresponds to the "Unlinked" attribute in the Simatic manager, which actually shows the status in reverse
+            /// This Attribute is only false when either especifically selected from simatic manager (only possible for Datablocks)
+            /// or during a breif period when an Code block is alrady downloaded, but not yet linked (usually part of the "Block Download" process
+            /// </remarks>
+            Linked = 1, //.0
+
+            /// <summary>
+            /// This is an standard block from the default library
+            /// </summary>
+            StandardBlock = 2, //.1
+
+            /// <summary>
+            /// The block is protected by an Password
+            /// </summary>
+            KnowHowProtected = 8, //.3
+
+            /// <summary>
+            /// Only applies to datablocks. if an DB is non retentive, its actual data get reset to its initial values every time the controller
+            /// restarts
+            /// </summary>
+            NonRetain = 32 //.5
+
+            //These two Attributes somehow do not appear on online blocks, even though they are settabele in Simatic Manager
+            //Maybe some more testing is necesary
+            //WriteProtected
+            //ReadOnly
+
         }
     }
 }
