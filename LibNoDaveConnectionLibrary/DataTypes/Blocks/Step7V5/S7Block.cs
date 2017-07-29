@@ -37,9 +37,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
-        public Version BlockVersion;
+        public Version BlockVersion { get; set; }
 
-        public S7BlockAtributes BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+        public S7BlockAtributes BlockAttribute { get; set; } // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
         public List<Step7Attribute> Attributes { get; set; }
 
