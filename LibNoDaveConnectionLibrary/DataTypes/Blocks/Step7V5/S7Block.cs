@@ -37,13 +37,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
-        public Version BlockVersion { get; set; }
-
         public S7BlockAtributes BlockAttribute { get; set; } // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
         public List<Step7Attribute> Attributes { get; set; }
 
-        public double Length;
+        public double Length { get; set; }
 
         public string Title { get; set; }
 
@@ -66,6 +64,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public int CodeSize { get; set; }
 
         public bool KnowHowProtection { get; set; }
+
+        public int CheckSum { get; set; }
 
         public virtual string GetSourceBlock(bool useSymbols = false)
         {
