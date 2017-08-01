@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                retBlock.BlockVersion = new Version (MC7Code[2] /10, MC7Code[2] % 10); 
+                //retBlock.BlockVersion = new Version (MC7Code[2] /10, MC7Code[2] % 10); //the Block version is stored as an two digit BCD in Major.Minor format
                 retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
@@ -125,6 +125,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.Family = Helper.GetString(FooterStart + 8, 8, MC7Code);
                 retBlock.Name = Helper.GetString(FooterStart + 16, 8, MC7Code);
                 retBlock.Version = Helper.GetVersion(MC7Code[FooterStart + 24]);
+                retBlock.CheckSum = libnodave.getU16from(MC7Code ,FooterStart + 26);
+
             }
 
             return retBlock;
@@ -189,7 +191,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                retBlock.BlockVersion = new Version(MC7Code[2] / 10, MC7Code[2] % 10);
+                //retBlock.BlockVersion = new Version(MC7Code[2] / 10, MC7Code[2] % 10);
                 retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
@@ -215,6 +217,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.Family = Helper.GetString(FooterStart + 8, 8, MC7Code);
                 retBlock.Name = Helper.GetString(FooterStart + 16, 8, MC7Code);
                 retBlock.Version = Helper.GetVersion(MC7Code[FooterStart + 24]);
+                retBlock.CheckSum = libnodave.getU16from(MC7Code, FooterStart + 26);
             }
 
             return retBlock;

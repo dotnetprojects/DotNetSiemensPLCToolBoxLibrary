@@ -37,35 +37,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
-        public Version BlockVersion;
+        /// <summary>
+        /// The Block Attributes that contain information about the block status and special properties
+        /// </summary>
+        public S7BlockAtributes BlockAttribute { get; set; } // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
 
-        public S7BlockAtributes BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
-
+        /// <summary>
+        /// The Block Attributes defined from the Simatic Manager
+        /// </summary>
         public List<Step7Attribute> Attributes { get; set; }
 
-        public double Length;
+        /// <summary>
+        /// The total lenght of the Block
+        /// </summary>
+        public double Length { get; set; }
 
+        /// <summary>
+        /// The Title of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public string Title { get; set; }
 
+        /// <summary>
+        /// The Author of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public string Author { get; set; }
 
+        /// <summary>
+        /// The Family of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public string Family { get; set; }
 
+        /// <summary>
+        /// The version of the Block
+        /// </summary>
+        /// <remarks>Limited from 0.0 to 9.9</remarks>
         public string Version { get; set; }
 
+        /// <summary>
+        /// Timestamp of the last change to the blocks MC7 code
+        /// </summary>
         public DateTime LastCodeChange { get; set; }
 
+
+        /// <summary>
+        /// Timestamp of the last change to the interface of the blocks
+        /// </summary>
         public DateTime LastInterfaceChange { get; set; }
 
         public int InterfaceSize { get; set; }
 
         public int SegmentTableSize { get; set; }
 
+        /// <summary>
+        /// The size of the local Temp data stack. Only aplicable to OB, FC or FB blocks
+        /// </summary>
         public int LocalDataSize { get; set; }
 
         public int CodeSize { get; set; }
 
         public bool KnowHowProtection { get; set; }
+        
+        /// <summary>
+        /// The checksum of the Blocks MC7 code (without the actual values of Datablocks)
+        /// This property can be used to detect Block changes
+        /// </summary>
+        public int CheckSum { get; set; }
 
         public virtual string GetSourceBlock(bool useSymbols = false)
         {
