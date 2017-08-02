@@ -970,27 +970,51 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
     /// <summary>
     /// Defines the type of connection resource to use for communiction with the PLC
-    /// 'PG' for operations that manipulate MC7 code (this the default)
-    /// 'OP' for operations on data only
+    /// Depending on the connection partner and connection type, the range of values is automatically limited to valid values or the value of the connection resource is assigned permanently. 
     /// </summary>
     public enum LibNodaveConnectionResource
     {
         /// <summary>
-        /// No resource or an unknown resource will be used for communication
+        ///Unknown connection resource
         /// </summary>
         [XmlEnum("0")]
         unknown = 0,
 
         /// <summary>
-        /// Use PC/PG (Programming functions) resource. Allows manipulation of MC7 code
+        /// Programming device connection
+        /// Free connection (not configured)
+        /// At least one resource per CPU is reserved for programming device connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+        /// S7 connections that are typically set up from a programming device or from a PC (with ES functionality). This type of connection is used to configure and program the addressed station/module as well as to test and commission it;
+        /// afterwards, the connection is typically cleared again. This connection resource allows both read and write access (e.g., monitoring and loading). 
         /// </summary>
         [XmlEnum("1")]
         PG = 1,
 
         /// <summary>
-        /// Use OP (operator panel) functions. Allows datamanipulation functions only
+        /// OP connection
+        /// Free connection (not configured)
+        /// At least one resource per CPU is reserved for OP connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+        /// S7 connections that are typically set up from an OP or from a PC (with OS functionality). This type of connection is used to monitor the addressed station/module with regard to the process that is being controlled.
         /// </summary>
         [XmlEnum("2")]
-        OP = 2
+        OP = 2,
+
+        /// <summary>
+        /// Other
+        /// Free connection (configured, unspecified connection)
+        /// This connection resource can operate multiple connections. Use: Connection configured at one end with unspecified connection partner! The connection partner does not have to be configured if the connection resource 0x03 is addressed.
+        /// Use is not specified. For example, this resource is used automatically when an S7 connection configured at both ends is configured from an S7-400 to an S7-300.
+        /// </summary>
+        [XmlEnum("3")]
+        Other = 3,
+
+        /// <summary>
+        /// CPU
+        /// Connections that are typically set up from a CPU to another module (CPU, FM, etc.) within a subnet. The connection setup is initiated by the application program,
+        /// in which a connection configuration does not exist. This type of connection allows process data to be exchanged between the modules. For certain S7-300 CPUs, it is possible to reserve resources for S7 basic communication. 
+        /// </summary>
+        [XmlEnum("253")]
+        CPU = 253
+
     }
 }

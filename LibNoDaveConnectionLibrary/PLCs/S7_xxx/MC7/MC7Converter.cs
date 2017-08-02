@@ -54,7 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 if ((MC7Code[5] == 0x0a) || (MC7Code[5] == 0x0b)) retBlock = (S7Block)new S7DataBlock();
                 else retBlock = (S7Block)new S7FunctionBlock();
 
-              
+
 
                 /*
                  * Description of a MC7 Block (Common)
@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                //retBlock.BlockVersion = new Version (MC7Code[2] /10, MC7Code[2] % 10); //the Block version is stored as an two digit BCD in Major.Minor format
+                retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);  //This is not the Block version from the Simatic Manager. It is unclar what data is stored in MC7Code[2]
                 retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;
@@ -183,7 +183,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 /*
                  * Description of a MC7 Block (Data - Block)
                  * 36-xx   = AWL
-                 * xx+1,     = 0x05 (DB) 0x10 (DI)
+                 * xx+1,     = 0x05 (DB) 0x10 (DI) 
                  * xx+2,xx+3 = Again Block Number or FB Number on a DI   (but bytes swapped)
                  * xx+4,xx+5 = Interface Length 
                  * xx+6-yy   = Interface
@@ -191,7 +191,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * xx      = Nertworks
                  */
 
-                //retBlock.BlockVersion = new Version(MC7Code[2] / 10, MC7Code[2] % 10);
+                retBlock.BlockVersion = Convert.ToString(MC7Code[2] - 1);  //This is not the Block version from the Simatic Manager. It is unclar what data is stored in MC7Code[2]
                 retBlock.BlockAttribute = (S7Block.S7BlockAtributes)MC7Code[3];
                 retBlock.BlockLanguage = (DataTypes.PLCLanguage)MC7Code[4]; // Enum.Parse(typeof(DataTypes.PLCLanguage), Helper.GetLang(MC7Code[4]));
                 retBlock.MnemonicLanguage = (MnemonicLanguage)MnemoricLanguage;

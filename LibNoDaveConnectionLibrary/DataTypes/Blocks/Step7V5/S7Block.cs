@@ -38,6 +38,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
         /// <summary>
+        /// The blocks version
+        /// </summary>
+        /// <remarks>This field does not correspond to the Version field in Simatic Manager</remarks>
+        public string BlockVersion;
+
+        /// <summary>
         /// The Block Attributes that contain information about the block status and special properties
         /// </summary>
         public S7BlockAtributes BlockAttribute { get; set; } // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
