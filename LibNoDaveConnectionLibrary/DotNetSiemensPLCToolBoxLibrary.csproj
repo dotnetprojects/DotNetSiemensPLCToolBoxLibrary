@@ -418,6 +418,7 @@
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
     <Content Include="Documentation\PDUs.txt" />
     <Content Include="Documentation\S5D-Baustein1.bmp" />
+    <Content Include="Documentation\S7 TSAP.txt" />
     <Content Include="Documentation\SDBs.txt" />
     <Content Include="Documentation\StatusOfPLCBlock.txt" />
     <Content Include="Documentation\Step5ProjectInfo.txt" />

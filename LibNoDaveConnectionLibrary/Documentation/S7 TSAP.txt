@@ -1,0 +1,85 @@
+﻿Meaning 
+
+A connection resource such as shown under "Properties > Address details" is part of the TSAP (Transport Service Access Point) of the local module or partner. 
+When a connection is established, the connection-specific resources of a module are assigned permanently to this connection. This assignment requires that the connection resource can be addressed. The TSAP (Transport Service Access Point) is, as it were, the address of the resource that is formed with the help of the connection resource or, in the case of S7-1500 CPUs, with SIMATIC-ACC (SIMATIC Application Controlled Communication). 
+The ability to use connection resources is subject to rules and restrictions. For example, not every connection resource can be used for every connection type. 
+
+Structure of the TSAP
+
+For S7-1500 CPU:
+
+"SIMATIC-ACC"<nnn><mm>
+nnn = Local ID
+mm = any value
+
+For S7-300/400 CPU:
+
+<xx>.<yz>
+xx = Number of the connection resource
+y = Rack number
+z = Slot number
+
+TSAP structure, dependent on partner
+
+The configuration of the TSAP for S7-1500 CPUs is dependent on the remote connection partner. When an S7-1500 CPU is connected to an S7-300/400 CPU, an S7-1500 CPU also uses a TSAP configuration that includes the connection resource.
+See the following examples of TSAPs of various connection configurations
+Connection between two S7-1500 CPUs:
+
+S7-1500 CPU "A" with local ID 200:
+
+TSAP: SIMATIC-ACC20001
+S7-1500 CPU "B" with local ID 3B2:
+
+TSAP: SIMATIC-ACC3B201
+Connection between S7-1500 CPU and S7-300/400 CPU:
+
+S7-1500 CPU (rack 0, slot 1, connection resource 10):
+TSAP: 10.01
+
+S7-300/400 CPU (rack 0, slot 2, connection resource 11):
+TSAP: 11.02
+
+
+Value ranges of connection resource
+The following table provides information on the meaning of the values and the type of connection. Depending on the connection partner and connection type, the range of values is automatically limited to valid values or the value of the connection resource is assigned permanently. 
+
+
+Connection resource
+
+0x01 ("PG")
+ Programming device connection
+ Free connection (not configured)
+ At least one resource per CPU is reserved for programming device connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+ 
+0x02 ("OP")
+ OP connection
+ Free connection (not configured)
+ At least one resource per CPU is reserved for OP connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+ 
+0x03
+ Other
+ Free connection (configured, unspecified connection)
+ This connection resource can operate multiple connections. Use: Connection configured at one end with unspecified connection partner! The connection partner does not have to be configured if the connection resource 0x03 is addressed.
+ 
+0x10..0xDF 
+ Connections with static or dynamic connection setup
+ Configured unspecified connection
+ One of these connection resources can operate one (and only one) connection. Use: Connection configured at both ends with unspecified connection partner!
+ 
+
+
+Free S7 connections are set up dynamically during runtime; the following connections are free: 
+
+Programming device connections (0x01)
+S7 connections that are typically set up from a programming device or from a PC (with ES functionality). This type of connection is used to configure and program the addressed station/module as well as to test and commission it; afterwards, the connection is typically cleared again. This connection resource allows both read and write access (e.g., monitoring and loading). 
+
+OP connections (0x02)
+S7 connections that are typically set up from an OP or from a PC (with OS functionality). This type of connection is used to monitor the addressed station/module with regard to the process that is being controlled.
+
+Other (0x03)
+Use is not specified. For example, this resource is used automatically when an S7 connection configured at both ends is configured from an S7-400 to an S7-300.
+
+S7 basic communication (0xFD)
+Connections that are typically set up from a CPU to another module (CPU, FM, etc.) within a subnet. The connection setup is initiated by the application program, in which a connection configuration does not exist. This type of connection allows process data to be exchanged between the modules. For certain S7-300 CPUs, it is possible to reserve resources for S7 basic communication. 
+
+Recommendation for selection of the connection resource. STEP 7 always suggests a free connection resource for the local partner. We recommend that you accept it
