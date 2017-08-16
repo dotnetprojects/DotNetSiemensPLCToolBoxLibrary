@@ -19,6 +19,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 var retVal = new List<String>();
 
+                if (Parameter == null) return retVal; //fail fast if no parameter is assigned yet
+
                 if (AWLCode != null)
                     foreach (var row in AWLCode)
                     {

@@ -1244,7 +1244,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 Array.Copy(RecData, 10, MC7Code, 0, MC7Code.Length);
 
                 //Parse Header
-                return MC7Converter.GetAWLBlockBasicInfoFromBlockHeader(MC7Code, 0);
+                return MC7Converter.GetAWLBlockBasicInfo(MC7Code, 0);
             }
         }
 

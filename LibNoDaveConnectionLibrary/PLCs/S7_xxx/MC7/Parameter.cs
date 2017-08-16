@@ -1012,6 +1012,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         internal static object GetVarTypeVal(byte b, byte[] BD, ref int Valpos)
         {
 
+            if (BD == null) return null;
+            if (BD.Length <= Valpos) return null;
+
             object Result;
             switch (b)
             {
