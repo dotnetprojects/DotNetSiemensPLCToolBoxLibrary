@@ -24,12 +24,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV13ProjectInstance == null)
                         {
-                            if (_createV14ProjectInstance != null)
+                            if (_createV14SP1ProjectInstance != null)
                             {
                                 throw new Exception("You can not open a V13 Project when you already have had opened a V14 Project. You need to close the Application!");
                             }
                             var assembly = Assembly.Load("DotNetSiemensPLCToolBoxLibrary.TIAV13");
-                            var type = assembly.GetType("Step7ProjectV13");
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.Step7ProjectV13");
                             _createV13ProjectInstance = (file) => (Project) Activator.CreateInstance(type, file);
                         }
                     }
@@ -55,7 +55,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 throw new Exception("You can not open a V14 SP1 Project when you already have had opened a V14 Project. You need to close the Application!");
                             }
                             var assembly = Assembly.Load("DotNetSiemensPLCToolBoxLibrary.TIAV14SP1");
-                            var type = assembly.GetType("Step7ProjectV14SP1");
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1.Step7ProjectV14SP1");
                             _createV14SP1ProjectInstance = (file) => (Project)Activator.CreateInstance(type, file);
                         }
                     }

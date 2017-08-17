@@ -12,7 +12,7 @@ using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
 using Microsoft.Win32;
 
-namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
+namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 {
     public partial class Step7ProjectV14SP1 : Project, IDisposable
     {
@@ -119,76 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         internal Dictionary<TiaObjectId, TiaFileObject> TiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
 
-        internal void BinaryParseTIAFile()
-        {
-            using (var sourceStream = new FileStream(DataFile, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite))
-            {
-                var buffer = new byte[Marshal.SizeOf(typeof(TiaFileHeader))];
-                sourceStream.Read(buffer, 0, buffer.Length);
-
-                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                TiaFileHeader header = (TiaFileHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(TiaFileHeader));
-                handle.Free();
-                TiaMarker? lastMarker = null;
-
-                while (sourceStream.Position < sourceStream.Length)
-                {
-                    if (TiaHelper.IsMarker(sourceStream))
-                    {
-                        var buffer2 = new byte[Marshal.SizeOf(typeof(TiaMarker))];
-                        sourceStream.Read(buffer2, 0, buffer2.Length);
-                        GCHandle handle2 = GCHandle.Alloc(buffer2, GCHandleType.Pinned);
-                        TiaMarker marker = (TiaMarker)Marshal.PtrToStructure(handle2.AddrOfPinnedObject(), typeof(TiaMarker));
-                        handle2.Free();
-
-                        lastMarker = marker;
-                    }
-                    else
-                    {
-                        var buffer3 = new byte[Marshal.SizeOf(typeof(TiaObjectHeader))];
-                        sourceStream.Read(buffer3, 0, buffer3.Length);
-                        GCHandle handle3 = GCHandle.Alloc(buffer3, GCHandleType.Pinned);
-                        TiaObjectHeader hd = (TiaObjectHeader)Marshal.PtrToStructure(handle3.AddrOfPinnedObject(), typeof(TiaObjectHeader));
-                        handle3.Free();
-
-                        var bytes = new byte[hd.Size - buffer3.Length];
-                        sourceStream.Read(bytes, 0, bytes.Length);
-                        var id = hd.GetTiaObjectId();
-                        if (!TiaObjects.ContainsKey(id))
-                        {
-                            TiaObjects.Add(id, new TiaFileObject(hd, bytes));
-
-                            var size = Marshal.SizeOf(typeof (TiaObjectHeader))+4+BitConverter.ToInt32(bytes, 0)+1;
-                            if (hd.Size != size || bytes[bytes.Length - 1] != 0xff)
-                            {
-                                //Fehler ??? 
-                            }
-
-
-                            //var strm = new MemoryStream(bytes);
-                            //var dec = TiaCompression.DecompressStream(strm);
-                            //var rd = new StreamReader(dec);
-                            //var wr = rd.ReadToEnd();
-                        }
-                        else
-                        {
-                            //Todo: look why this happens, and how TIA Handles this!!
-                            //Console.WriteLine("double Id:" + id.ToString());
-                        }
-                    }
-                }
-
-                var rootId = new TiaObjectId(TiaFixedRootObjectInstanceIds.RootObjectCollectionId);
-                var rootObjects = new TiaRootObjectList(TiaObjects[rootId]);
-                var projectid = rootObjects.TiaRootObjectEntrys.FirstOrDefault(x => x.ObjectId.TypeId == (int)TiaTypeIds.Siemens_Automation_DomainModel_ProjectData).ObjectId;
-                var projectobj = TiaObjects[projectid];
-            }
-        }
-
-        
-       
-        
-        internal override void LoadProject()
+        protected override void LoadProject()
         {
             _projectLoaded = true;
         }

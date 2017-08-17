@@ -9,13 +9,20 @@
     <projectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DLL for Accessing S7 PLCs</description>
-    <copyright>Copyright 2015</copyright>
+    <copyright>Copyright 2017</copyright>
+    <dependencies>
+       <dependency id="SharpZipLib" version="0.86.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.dll" target="lib\net45" />
     <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.pdb" target="lib\net45" />
-	<file src="..\externalDlls\DotNetProjects.DotNetSiemensPLCToolBoxLibrary.targets" target="build\net45" />
-	<file src="..\externalDlls\libnodave\libnodave_jfkmod.dll" target="build\net45" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll" target="lib\net45" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb" target="lib\net45" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll" target="lib\net45" />
+    <file src="..\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb" target="lib\net45" />
+    <file src="..\externalDlls\DotNetProjects.DotNetSiemensPLCToolBoxLibrary.targets" target="build\net45" />
+    <file src="..\externalDlls\libnodave\libnodave_jfkmod.dll" target="build\net45" />
     <file src="..\externalDlls\libnodave\libnodave_jfkmod64.dll" target="build\net45" />
   </files>
 </package>

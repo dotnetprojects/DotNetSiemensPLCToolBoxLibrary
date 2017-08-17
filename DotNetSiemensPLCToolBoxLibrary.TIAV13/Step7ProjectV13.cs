@@ -196,10 +196,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
-        
-       
-        
-        internal override void LoadProject()
+        protected override void LoadProject()
         {
             _projectLoaded = true;
             return;

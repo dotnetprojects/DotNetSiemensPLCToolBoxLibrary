@@ -43,7 +43,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public int Size { get; set; }
 
-        internal override void LoadProject()
+        protected override void LoadProject()
         {
             _projectLoaded = true;
 
