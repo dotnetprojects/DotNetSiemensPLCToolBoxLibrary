@@ -1,41 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Xml;
-using System.Xml.Linq;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls;
 using Microsoft.Win32;
-using Siemens.Engineering;
-using Siemens.Engineering.HW;
-using Siemens.Engineering.SW;
-
-//using CompressionMode = ZLibNet.CompressionMode;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
-    public partial class Step7ProjectV11 : Project, IDisposable
+    public partial class Step7ProjectV13 : Project, IDisposable
     {
         public enum TiaVersionTypes
         {
             V11 = 11,
             V12 = 12,
             V13 = 13,
+            V14 = 14,
         }
 
         public static TiaVersionTypes TiaVersion { get; private set; }
@@ -48,7 +34,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public CultureInfo Culture { get; set; }
 
-        public Step7ProjectV11(string projectfile, CultureInfo culture = null)
+        public Step7ProjectV13(string projectfile, CultureInfo culture = null)
         {
             if (culture == null)
                 Culture = CultureInfo.CurrentCulture;
@@ -119,23 +105,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
             var name = args.Name.Substring(0, index) + ".dll";
 
-            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global") ??
-                              Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP14\\Global");
-
-            //if (filePathReg != null)
-            //{
-            //    string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14";
-            //    if (Directory.Exists(filePath) == false)
-            //        filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V14 SP1";
-            //    var path = Path.Combine(filePath, name);
-            //    var fullPath = Path.GetFullPath(path);
-            //    if (File.Exists(fullPath))
-            //    {
-            //        return Assembly.LoadFrom(fullPath);
-            //    }
-            //}
-
-            filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
+            var filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns") ??
                               Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");
             if (filePathReg != null)
             {
@@ -148,46 +118,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     return Assembly.LoadFrom(fullPath);
                 }
-
-                //filePath = filePathReg.GetValue("Path").ToString() + "Bin\\PublicAPI";
-                //path = Path.Combine(filePath, name);
-                //fullPath = Path.GetFullPath(path);
-                //if (File.Exists(fullPath))
-                //{
-                //    return Assembly.LoadFrom(fullPath);
-                //}
-
-                //filePath = filePathReg.GetValue("Path").ToString() + "Bin";
-                //path = Path.Combine(filePath, name);
-                //fullPath = Path.GetFullPath(path);
-                //if (File.Exists(fullPath))
-                //{
-                //    return Assembly.LoadFrom(fullPath);
-                //}
             }
 
 
             return null;
-
-
-            var prg = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-
-            TiaVersion = TiaVersionTypes.V13;
-
-            string tiaPath = prg + "\\Siemens\\Automation\\Portal V13\\Bin";
-            if (!Directory.Exists(tiaPath))
-            {
-                tiaPath = prg + "\\Siemens\\Automation\\Portal V12\\Bin";
-                TiaVersion = TiaVersionTypes.V12;
-            }
-            if (!Directory.Exists(tiaPath))
-            {
-                tiaPath = prg + "\\Siemens\\Automation\\Portal V11\\Bin";
-                TiaVersion = TiaVersionTypes.V11;
-            }
-            var dll = args.Name.Split(',')[0];
-            var load = Path.Combine(tiaPath, dll + ".dll");
-            return Assembly.LoadFrom(load);
         }
 
         private object tiaExport;
