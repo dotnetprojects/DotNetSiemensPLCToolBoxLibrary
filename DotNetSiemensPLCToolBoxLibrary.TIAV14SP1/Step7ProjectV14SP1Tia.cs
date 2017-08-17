@@ -9,6 +9,12 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Siemens.Engineering;
+using Siemens.Engineering.HW.Features;
+using Siemens.Engineering.SW;
+using Siemens.Engineering.HW;
+using Siemens.Engineering.SW.Blocks;
+using Siemens.Engineering.SW.Types;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 {
@@ -37,8 +43,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             internal string InstID { get; private set; }
 
             protected Step7ProjectV14SP1 TiaProject;
-
-            public object TiaPortalItem { get; set; }
 
             public override string Name { get; set; }
 
@@ -127,10 +131,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     ext = "awl";
                 }
 
-                dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
+                //dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
-                tiaItem.GenerateSourceFromBlocks(new[] { this.IBlock }, file);
+                //tiaItem.GenerateSourceFromBlocks(new[] { this.IBlock }, file);
 
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -408,43 +412,64 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
             var main = new TIAOpennessProjectFolder(this) { Name = "Main" };
             ProjectStructure = main;
-            
+
             //var frm = new sliver.Windows.Forms.StateBrowserForm();
             //frm.ObjectToBrowse = tiapProject;
             //frm.Show();
 
             foreach (var d in tiapProject.Devices)
             {
-                //if (d.Subtype.EndsWith(".Device") && !d.Subtype.StartsWith("GSD.") && !d.Subtype.StartsWith("ET200eco.")) //d.Subtype.StartsWith("S7300") || d.Subtype.StartsWith("S7400") || d.Subtype.StartsWith("S71200") || d.Subtype.StartsWith("S71500"))
-                //{
-                    
+                if (d.TypeIdentifier != null && d.TypeIdentifier.EndsWith(".S71500"))
+                {
+                    foreach (DeviceItem deviceItem in d.DeviceItems)
+                    {
+                        var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
+                        if (target != null && target.Software is PlcSoftware)
+                        {
+                            var frm2 = new sliver.Windows.Forms.StateBrowserForm();
+                            frm2.ObjectToBrowse = target;
+                            frm2.Show();
 
-                //    var controller = d.DeviceItems.OfType<Siemens.Engineering.HW.ControllerTarget>().FirstOrDefault();
-                //    if (controller == null)
-                //    {
-                //        var fld = new TIAOpennessProjectFolder(this)
-                //        {
-                //            Name = d.Name,
-                //            TiaPortalItem = d,
-                //            Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                //        };
-                //        main.SubItems.Add(fld);
+                            var software =(PlcSoftware)target.Software;
+                                var fld = new TIAOpennessControllerFolder(this)
+                                {
+                                    Name = software.Name,
+                                    //TiaPortalItem = software,
+                                    //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                                };
+                                main.SubItems.Add(fld);
 
-                //        LoadSubDevicesViaOpennessDlls(fld, d);
-                //    }
-                //    else
-                //    {
-                //        var fld = new TIAOpennessControllerFolder(this)
-                //        {
-                //            Name = d.Name,
-                //            TiaPortalItem = d,
-                //            Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                //        };
-                //        main.SubItems.Add(fld);
+                                LoadControlerFolderViaOpennessDlls(fld, software);
+                           
+                        }
+                    }
 
-                //        LoadControlerFolderViaOpennessDlls(fld, controller);
-                //    }
-                //}
+                    //var controller = d.DeviceItems.OfType<Siemens.Engineering.HW.ControllerTarget>().FirstOrDefault();
+                    //if (controller == null)
+                    //{
+                    //    var fld = new TIAOpennessProjectFolder(this)
+                    //    {
+                    //        Name = d.Name,
+                    //        TiaPortalItem = d,
+                    //        Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                    //    };
+                    //    main.SubItems.Add(fld);
+
+                    //    //LoadSubDevicesViaOpennessDlls(fld, d);
+                    //}
+                    //else
+                    //{
+                    //    var fld = new TIAOpennessControllerFolder(this)
+                    //    {
+                    //        Name = d.Name,
+                    //        TiaPortalItem = d,
+                    //        Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                    //    };
+                    //    main.SubItems.Add(fld);
+
+                    //    //LoadControlerFolderViaOpennessDlls(fld, controller);
+                    //}
+                }
             }
         }
 
@@ -466,44 +491,44 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
         //    }
         //}
 
-        //internal void LoadControlerFolderViaOpennessDlls(TIAOpennessControllerFolder parent, Siemens.Engineering.HW.ControllerTarget controller)
-        //{
-        //    var fld = new TIAOpennessProgramFolder(this, parent)
-        //    {
-        //        TiaPortalItem = controller.ProgramblockFolder,
-        //        Name = controller.ProgramblockFolder.Name,
-        //        Parent = parent,
-        //    };
-        //    parent.ProgramFolder = fld;
-        //    parent.SubItems.Add(fld);
-        //    LoadSubProgramBlocksFoldersViaOpennessDlls(fld, controller.ProgramblockFolder);
+        internal void LoadControlerFolderViaOpennessDlls(TIAOpennessControllerFolder parent, PlcSoftware software)
+        {
+            var fld = new TIAOpennessProgramFolder(this, parent)
+            {
+                //TiaPortalItem = controller.ProgramblockFolder,
+                Name = "software",
+                Parent = parent,
+            };
+            parent.ProgramFolder = fld;
+            parent.SubItems.Add(fld);
+            LoadSubProgramBlocksFoldersViaOpennessDlls(fld, software.BlockGroup);
 
 
-        //    var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent)
-        //    {
-        //        TiaPortalItem = controller.ControllerDatatypeFolder,
-        //        Name = "PLC data types",
-        //        Parent = parent,
-        //    };
-        //    parent.PlcDatatypeFolder = fld2;
-        //    parent.SubItems.Add(fld2);
-        //    LoadSubPlcDatatypeFoldersViaOpennessDlls(fld2, controller.ControllerDatatypeFolder);
-        //}
+            var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent)
+            {
+                //TiaPortalItem = controller.ControllerDatatypeFolder,
+                Name = "data types",
+                Parent = parent,
+            };
+            parent.PlcDatatypeFolder = fld2;
+            parent.SubItems.Add(fld2);
+            LoadSubPlcDatatypeFoldersViaOpennessDlls(fld2, software.TypeGroup);
+        }
 
-        //internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, Siemens.Engineering.SW.ProgramblockSystemFolder blockFolder)
-        //{
-        //    foreach (var e in blockFolder.Folders)
-        //    {
-        //        var fld = new TIAOpennessProgramFolder(this, parent.ControllerFolder)
-        //        {
-        //            TiaPortalItem = e,
-        //            Name = e.Name,
-        //            Parent = parent,
-        //        };
-        //        parent.SubItems.Add(fld);
-        //        LoadSubProgramBlocksFoldersViaOpennessDlls(fld, e);
-        //    }
-        //}
+        internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, PlcBlockGroup plcBlockGroup)
+        {
+            foreach (var e in plcBlockGroup.Groups)
+            {
+                var fld = new TIAOpennessProgramFolder(this, parent.ControllerFolder)
+                {
+                    //TiaPortalItem = e,
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubProgramBlocksFoldersViaOpennessDlls(fld, e);
+            }
+        }
         //internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, Siemens.Engineering.SW.ProgramblockUserFolder blockFolder)
         //{
         //    foreach (var e in blockFolder.Folders)
@@ -518,34 +543,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
         //        LoadSubProgramBlocksFoldersViaOpennessDlls(fld, e);
         //    }
         //}
-        //internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, Siemens.Engineering.SW.ControllerDatatypeSystemFolder blockFolder)
-        //{
-        //    foreach (var e in blockFolder.Folders)
-        //    {
-        //        var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder)
-        //        {
-        //            TiaPortalItem = e,
-        //            Name = e.Name,
-        //            Parent = parent,
-        //        };
-        //        parent.SubItems.Add(fld);
-        //        LoadSubPlcDatatypeFoldersViaOpennessDlls(fld, e);
-        //    }
-        //}
-        //internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, Siemens.Engineering.SW.ControllerDatatypeUserFolder blockFolder)
-        //{
-        //    foreach (var e in blockFolder.Folders)
-        //    {
-        //        var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder)
-        //        {
-        //            TiaPortalItem = e,
-        //            Name = e.Name,
-        //            Parent = parent,
-        //        };
-        //        parent.SubItems.Add(fld);
-        //        LoadSubPlcDatatypeFoldersViaOpennessDlls(fld, e);
-        //    }
-        //}
+        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, PlcTypeSystemGroup p)
+        {
+            foreach (var e in p.Groups)
+            {
+                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder)
+                {
+                    //TiaPortalItem = e,
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubPlcDatatypeFoldersViaOpennessDlls(fld, e);
+            }
+        }
+        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, PlcTypeUserGroup p)
+        {
+            foreach (var e in p.Groups)
+            {
+                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder)
+                {
+                    //TiaPortalItem = e,
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubPlcDatatypeFoldersViaOpennessDlls(fld, e);
+            }
+        }
 
         #region Parse DB UDT XML
 

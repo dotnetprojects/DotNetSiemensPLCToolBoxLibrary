@@ -36,13 +36,19 @@
     <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\externalDlls\siemens\V14SP1\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\externalDlls\siemens\V14SP1\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="sliver.Windows.Forms.StateBrowser">
+      <HintPath>..\..\Software\MLOG\Technologieschemaeditor\Stable\sliver.Windows.Forms.StateBrowser.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,5 +66,6 @@
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

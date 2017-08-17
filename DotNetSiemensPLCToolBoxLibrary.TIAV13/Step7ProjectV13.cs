@@ -109,9 +109,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                               Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns");
             if (filePathReg != null)
             {
-                string filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13";
+                string filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V13");
                 if (Directory.Exists(filePath) == false)
-                    filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13 SP1";
+                    filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V13 SP1");
                 var path = Path.Combine(filePath, name);
                 var fullPath = Path.GetFullPath(path);
                 if (File.Exists(fullPath))

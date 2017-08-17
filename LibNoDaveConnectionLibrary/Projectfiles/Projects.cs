@@ -28,9 +28,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 throw new Exception("You can not open a V13 Project when you already have had opened a V14 Project. You need to close the Application!");
                             }
-                            var assembly = Assembly.Load("DotNetSiemensPLCToolBoxLibrary.TIAV13");
+                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV13.dll");
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.Step7ProjectV13");
-                            _createV13ProjectInstance = (file) => (Project) Activator.CreateInstance(type, file);
+                            _createV13ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
                         }
                     }
                 }
@@ -54,9 +54,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 throw new Exception("You can not open a V14 SP1 Project when you already have had opened a V14 Project. You need to close the Application!");
                             }
-                            var assembly = Assembly.Load("DotNetSiemensPLCToolBoxLibrary.TIAV14SP1");
+                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll");
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1.Step7ProjectV14SP1");
-                            _createV14SP1ProjectInstance = (file) => (Project)Activator.CreateInstance(type, file);
+                            _createV14SP1ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
                         }
                     }
                 }
@@ -195,7 +195,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (file.ToLower().EndsWith(".ap13"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".ap14"))
-                return _createV14SP1ProjectInstance(file);
+                return createV14SP1ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al11"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al12"))
@@ -203,7 +203,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (file.ToLower().EndsWith(".al13"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al14"))
-                return _createV14SP1ProjectInstance(file);
+                return createV14SP1ProjectInstance(file);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
                 return new Step5Project(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))

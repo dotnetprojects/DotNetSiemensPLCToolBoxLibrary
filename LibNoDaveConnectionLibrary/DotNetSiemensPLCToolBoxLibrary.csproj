@@ -45,10 +45,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Siemens.Engineering">
-      <HintPath>..\externalDlls\siemens\V13\Siemens.Engineering.dll</HintPath>
-      <Aliases>global</Aliases>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
