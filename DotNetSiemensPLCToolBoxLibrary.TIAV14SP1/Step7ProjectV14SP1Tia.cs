@@ -19,9 +19,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 {
     public interface ITiaProjectBlockInfo : IProjectBlockInfo
     {
-        string ExportToString();
-
-        string GenerateSource();
     }
 
     public partial class Step7ProjectV14SP1
@@ -91,16 +88,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 return retVal;
             }
 
-            public virtual string ExportToString()
+            public override string Export(ExportFormat exportFormat)
             {
-                var tmp = Path.GetTempPath();
-
-                var ext = this.plcBlock.ProgrammingLanguage.ToString().ToLower();
-                if (ext == "stl")
+                var ext = "xml";
+                if (exportFormat != ExportFormat.Xml)
                 {
-                    ext = "awl";
+                    if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.SCL)
+                    {
+                        ext = "scl";
+                    }
+                    else if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.STL || this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_STL)
+                    {
+                        ext = "awl";
+                    }
+                    else if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.DB || this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_DB)
+                    {
+                        ext = "db";
+                    }
                 }
-
+                var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
 
                 var fld = this.ParentFolder;
@@ -109,34 +115,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     fld = fld.Parent;
                 }
 
-                ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
-               
+                plcBlock.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
                 return text;
             }
-
-            public virtual string GenerateSource()
-            {
-                //if (this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_DB ||
-                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_FBD ||
-                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_FBD_LIB ||
-                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_LAD ||
-                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_LAD_LIB ||
-                //    this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_STL)
-                //{
-                //    return null;
-                //}
-                if (this.plcBlock.ProgrammingLanguage != Siemens.Engineering.SW.Blocks.ProgrammingLanguage.SCL &&
-                    this.plcBlock.ProgrammingLanguage != Siemens.Engineering.SW.Blocks.ProgrammingLanguage.STL)
-                {
-                    return GenerateSourceCode();
-                }
-
-                return GenerateSourceXML();
-            }
-
             private PLCBlockType? _plcBlockType;
 
             public override PLCBlockType BlockType
@@ -146,7 +131,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     if (_plcBlockType == null)
                     {
                         _plcBlockType = PLCBlockType.FC;
-                        var s = GenerateSourceXML();
+                        var s = Export(ExportFormat.Xml);
                         if (s.Contains("<Type>FB</Type>"))
                         {
                             _plcBlockType = PLCBlockType.FB;
@@ -162,51 +147,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             }
 
             private string xml;
-
-            public virtual string GenerateSourceXML()
-            {
-                if (xml != null)
-                    return xml;
-
-                var rootFolder = (TIAOpennessProjectFolder) ParentFolder;
-                //while (!(rootFolder.TiaPortalItem is Siemens.Engineering.SW.ProgramblockSystemFolder))
-                //{
-                //    rootFolder = (TIAOpennessProjectFolder)rootFolder.Parent;
-                //}
-                var ext = "xml";
-                var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp,
-                    "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "")
-                        .Replace(" ", "") + "." + ext);
-
-                var fld = this.ParentFolder;
-                while (!(fld is TIAOpennessControllerFolder))
-                {
-                    fld = fld.Parent;
-                }
-
-                plcBlock.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
-
-                //((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
-
-
-                xml = File.ReadAllText(file);
-                File.Delete(file);
-
-                return xml;
-            }
-
-            public override string Export(ExportFormat exportFormat)
-            {
-                if (exportFormat == ExportFormat.Xml)
-                    return GenerateSourceXML();
-                return ExportToString();
-            }
-
-            public virtual string GenerateSourceCode()
-            {
-                return this.ExportToString();
-            }
         }
 
         public class TIAOpennessProjectDataTypeInfo : ProjectBlockInfo, ITiaProjectBlockInfo
@@ -222,42 +162,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 return Name;
             }
 
-            public virtual string ExportToString()
+            public override PLCBlockType BlockType
             {
-                var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".xml");
-
-                var fld = this.ParentFolder;
-                while (!(fld is TIAOpennessControllerFolder))
+                get
                 {
-                    fld = fld.Parent;
+                    return PLCBlockType.UDT;
                 }
+                set { }
+            }
 
-                //((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcType }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
-
-                plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
-                var text = File.ReadAllText(file);
-                File.Delete(file);
-
-                return text;
+            public override PLCLanguage BlockLanguage
+            {
+                get
+                {
+                    return PLCLanguage.DB;
+                }
             }
 
             public override string Export(ExportFormat exportFormat)
             {
+                var ext = "udt";
                 if (exportFormat == ExportFormat.Xml)
-                    return GenerateSourceXML();
-                return ExportToString();
-            }
+                {
+                    ext = "xml";
+                }
 
-            public string GenerateSource()
-            {
-                return ExportToString();
-            }
-
-            public virtual string GenerateSourceXML()
-            {
-                var rootFolder = (TIAOpennessProjectFolder)ParentFolder;
-                var ext = "xml";
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
 
@@ -268,9 +197,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 }
 
                 plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
-
-                //((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
-
 
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -412,7 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     return null;
                 
                 var iv = blkInfo as TIAOpennessProjectDataTypeInfo;
-                var text = iv.GenerateSourceXML();
+                var text = iv.Export(ExportFormat.Xml);
 
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.DataType);
             }
@@ -503,7 +429,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     return null;
 
                 var iv = blkInfo as TIAOpennessProjectBlockInfo;
-                var text = iv.GenerateSourceXML();
+                var text = iv.Export(ExportFormat.Xml);
                   
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
@@ -781,7 +707,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 }
                 else if (xElement.Name.LocalName == "Sections")
                 {
-                    var row = ParseTiaDbUdtSections(xElement, (TIADataBlock) parentRow.CurrentBlock, controllerFolder);
+                    var row = ParseTiaDbUdtSections(xElement, (TIADataBlock)parentRow.CurrentBlock, controllerFolder);
                     parentRow.AddRange(row.Children);
                 }
                 else if (xElement.Name.LocalName == "Member")
@@ -789,7 +715,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     var name = xElement.Attribute("Name").Value;
                     var datatype = xElement.Attribute("Datatype").Value;
 
-                    var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock) parentRow.PlcBlock);
+                    var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock)parentRow.PlcBlock);
                     row.Parent = parentRow;
 
                     if (datatype.Contains("Array["))
@@ -803,7 +729,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                         foreach (string array in arrays)
                         {
-                            string[] akar = array.Split(new string[] {".."}, StringSplitOptions.RemoveEmptyEntries);
+                            string[] akar = array.Split(new string[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
                             arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
                             arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
                         }
@@ -825,7 +751,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         if (udt != null)
                         {
                             var tiaUdt = udt as TIADataBlock;
-                            row.AddRange(((TIADataRow) tiaUdt.Structure).DeepCopy().Children);
+                            row.AddRange(((TIADataRow)tiaUdt.Structure).DeepCopy().Children);
 
                             row.DataTypeBlock = udt;
                         }
@@ -891,14 +817,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                                 break;
                             default:
                                 row.DataType = S7DataRowType.UNKNOWN;
-                                Console.WriteLine("unkown Datatype: " + datatype);
+
+                                var udt = controllerFolder.PlcDatatypeFolder.GetBlock(datatype);
+                                if (udt != null)
+                                {
+                                    var tiaUdt = udt as TIADataBlock;
+                                    row.AddRange(((TIADataRow)tiaUdt.Structure).DeepCopy().Children);
+
+                                    row.DataTypeBlock = udt;
+                                    row.DataType = S7DataRowType.UDT;
+                                }
+
+                                //Console.WriteLine("unkown Datatype: " + datatype);
                                 break;
                         }
                     }
                 }
+                else if (xElement.Name.LocalName == "AttributeList")
+                { }
+                else if (xElement.Name.LocalName == "Subelement") //todo -> startwerte von arrays von UDTs
+                { }
                 else
                 {
-                    Console.WriteLine("unkown XML Element");
+                    //Console.WriteLine("unkown XML Element");
                 }
             }
         }

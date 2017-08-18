@@ -93,6 +93,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return text;
             }
 
+            public override string Export(ExportFormat exportFormat)
+            {
+                return GenerateSource();
+            }
+
             public virtual string GenerateSource()
             {
                 //if (this.IBlock.ProgrammingLanguage != Siemens.Engineering.SW.ProgrammingLanguage.F_DB ||
@@ -162,6 +167,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 File.Delete(file);
 
                 return text;
+            }
+
+            public override string Export(ExportFormat exportFormat)
+            {
+                return GenerateSource();
             }
 
             public string GenerateSource()
