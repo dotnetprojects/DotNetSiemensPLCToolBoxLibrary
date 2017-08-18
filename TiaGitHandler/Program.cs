@@ -24,7 +24,7 @@ namespace TiaGitHandler
             if (args.Count() < 1)
             {
                 OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "TIA-Portal Project|*.ap13";
+                op.Filter = "TIA-Portal Project|*.ap13;*.ap14";
                 op.CheckFileExists = false;
                 op.ValidateNames = false;
                 var ret = op.ShowDialog();
@@ -65,6 +65,8 @@ namespace TiaGitHandler
             var prj = Projects.LoadProject(file, false);
 
             ParseFolder(prj.ProjectStructure, exportPath);
+
+            Console.ReadLine();
         }
 
         private class EncodingStringWriter : StringWriter
@@ -100,11 +102,11 @@ namespace TiaGitHandler
                 {
                     try
                     {
-                        var src = projectBlockInfo.Export(ExportFormat.Xml);
+                        var src = projectBlockInfo.Export(ExportFormat.Default);
                         if (src != null)
                         {
-                            var ext = "stl";
-                            if (projectBlockInfo.BlockLanguage == PLCLanguage.DB)
+                            var ext = "xml";
+                            if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB)
                             {
                                 ext = "db";
                             }
@@ -120,7 +122,11 @@ namespace TiaGitHandler
                             {
                                 ext = "fbd";
                             }
-                            var file = Path.Combine(path, projectBlockInfo.Name + "." + ext);
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.AWL)
+                            {
+                                ext = "stl";
+                            }
+                            var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();
@@ -136,18 +142,49 @@ namespace TiaGitHandler
 
                             if (xmlValid)
                             {
-                                XmlNodeList nodes = xmlDoc.SelectNodes("//Created");
-                                XmlNode node = nodes[0];
-                                node.ParentNode.RemoveChild(node);
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//Created");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
 
-                                var sb = new StringBuilder();
+                                StringBuilder sb = new StringBuilder();
+                                XmlWriterSettings settings = new XmlWriterSettings
+                                {
+                                    Indent = true,
+                                    IndentChars = "  ",
+                                    NewLineChars = "\r\n",
+                                    NewLineHandling = NewLineHandling.Replace
+                                };
                                 using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
                                 {
                                     xmlDoc.Save(writer);
                                 }
                                 src = sb.ToString();
+                            }
+
+                            if (src != null)
+                            {
                                 Directory.CreateDirectory(path);
-                                File.WriteAllText(file, src);
+                                File.WriteAllText(file, src/*, Encoding.UTF8*/);
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Skipping Block (null)" + projectBlockInfo.Name);
                             }
                         }
                         else
@@ -157,7 +194,7 @@ namespace TiaGitHandler
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Skipping Block (Exception)" + projectBlockInfo.Name);
+                        Console.WriteLine("Skipping Block: \"" + projectBlockInfo.Name + "\" Exception: " + ex.Message);
                     }
                 }
             }
