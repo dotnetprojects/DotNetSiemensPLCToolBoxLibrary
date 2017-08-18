@@ -16,15 +16,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
        public virtual string Name { get; set;}
 
-       public PLCBlockType BlockType { get; set; }
+       public virtual PLCBlockType BlockType { get; set; }
 
-       public Block GetBlock()
+       public virtual Block GetBlock()
        {
            IBlocksFolder blkFld = (IBlocksFolder) ParentFolder;
            return blkFld.GetBlock(this);
        }
 
-        public string GetSourceBlock(bool useSymbols = false)
+        public virtual string GetSourceBlock(bool useSymbols = false)
         {
             if (ParentFolder is BlocksOfflineFolder)
             {
@@ -40,7 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             return null;
         }
 
-       public string BlockTypeString
+       public virtual string BlockTypeString
         {
             get
             {
@@ -103,26 +103,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case PLCBlockType.S5_BB:
                         return "S5-Variabletable";
                     case PLCBlockType.SourceBlock:
-                        return "Sourceblock";                    
+                        return "Sourceblock";
                 }
                 return "";
 
             }
         }
 
-        
+        public virtual bool Deleted { get; set; }
 
-        public bool Deleted { get; set; }
-
-       
-       
         public override string ToString()
         {
-            string retVal = Name;           
+            string retVal = Name;
             if (Deleted)
                 retVal += "$$_";
             
             return retVal;
+        }
+
+        public virtual string Export(ExportFormat exportFormat)
+        {
+            return null;
         }
     }
 }

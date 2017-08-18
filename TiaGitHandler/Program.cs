@@ -61,7 +61,7 @@ namespace TiaGitHandler
                 file = args[0];
             }
 
-            Step7ProjectV11 prj = Projects.LoadProject(file, false) as Step7ProjectV11;
+            var prj = Projects.LoadProject(file, false);
 
             ParseFolder(prj.ProjectStructure, exportPath);
         }
@@ -91,30 +91,19 @@ namespace TiaGitHandler
                 ParseFolder(projectFolder, path);
             }
 
-            if (folder is Step7ProjectV11.TIAOpennessProgramFolder)
+            if (folder is IBlocksFolder)
             {
-                var fld = folder as Step7ProjectV11.TIAOpennessProgramFolder;
-                foreach (Step7ProjectV11.TIAOpennessProjectBlockInfo projectBlockInfo in fld.BlockInfos)
+                var blkFld = folder as IBlocksFolder;
+                
+                foreach (var projectBlockInfo in blkFld.BlockInfos)
                 {
                     try
                     {
-                        var src = projectBlockInfo.GenerateSource();
+                        var src = projectBlockInfo.Export(ExportFormat.Xml);
                         if (src != null)
                         {
-                            var ext = projectBlockInfo.ProgrammingLanguage.ToLower();
+                            var ext = projectBlockInfo.BlockType.ToString().ToLower();
                             var file = Path.Combine(path, projectBlockInfo.Name + "." + ext);
-
-                            //if (projectBlockInfo.ProgrammingLanguage == "SCL" ||
-                            //    projectBlockInfo.ProgrammingLanguage == "STL")
-                            //{
-                            //    if (!string.IsNullOrEmpty(src))
-                            //    {
-                            //        Directory.CreateDirectory(path);
-                            //        File.WriteAllText(file, src);
-                            //    }
-                            //    file += "_header";
-                            //    src = projectBlockInfo.GenerateSourceXML();
-                            //}
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();

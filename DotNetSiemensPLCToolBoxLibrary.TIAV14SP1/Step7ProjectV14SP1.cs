@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1

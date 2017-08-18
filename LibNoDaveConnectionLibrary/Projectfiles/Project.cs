@@ -9,9 +9,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
     public abstract class Project
     {
         public string ProjectFile{ get; set;}
+
         public string ProjectFolder{ get; set;}
 
         public String ProjectName { get; set; }
+
         public String ProjectDescription { get; set; }
 
         private ProjectFolder _ProjectStructure;

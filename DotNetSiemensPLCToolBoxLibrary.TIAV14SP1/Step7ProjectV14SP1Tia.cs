@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Siemens.Engineering;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.SW;
@@ -29,6 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
     {
 
         private Siemens.Engineering.TiaPortal tiaPortal;
+
         private Siemens.Engineering.Project tiapProject;
 
         public virtual void Dispose()
@@ -39,7 +39,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
         public class TIAOpennessProjectFolder : ProjectFolder
         {
-            //internal string ID { get; private set; }
             internal string InstID { get; private set; }
 
             protected Step7ProjectV14SP1 TiaProject;
@@ -135,16 +134,47 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 return GenerateSourceXML();
             }
 
+            private PLCBlockType? _plcBlockType;
+
+            public override PLCBlockType BlockType
+            {
+                get
+                {
+                    if (_plcBlockType == null)
+                    {
+                        _plcBlockType = PLCBlockType.FC;
+                        var s = GenerateSourceXML();
+                        if (s.Contains("<Type>FB</Type>"))
+                        {
+                            _plcBlockType = PLCBlockType.FB;
+                        }
+                        else if (s.Contains("<Type>OB</Type>"))
+                        {
+                            _plcBlockType = PLCBlockType.OB;
+                        }
+                    }
+                    return _plcBlockType.Value;
+                }
+                set { _plcBlockType = value; }
+            }
+
+            private string xml;
+
             public virtual string GenerateSourceXML()
             {
-                var rootFolder = (TIAOpennessProjectFolder)ParentFolder;
+                if (xml != null)
+                    return xml;
+
+                var rootFolder = (TIAOpennessProjectFolder) ParentFolder;
                 //while (!(rootFolder.TiaPortalItem is Siemens.Engineering.SW.ProgramblockSystemFolder))
                 //{
                 //    rootFolder = (TIAOpennessProjectFolder)rootFolder.Parent;
                 //}
                 var ext = "xml";
                 var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                var file = Path.Combine(tmp,
+                    "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "")
+                        .Replace(" ", "") + "." + ext);
 
                 var fld = this.ParentFolder;
                 while (!(fld is TIAOpennessControllerFolder))
@@ -157,10 +187,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 //((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
 
 
-                var text = File.ReadAllText(file);
+                xml = File.ReadAllText(file);
                 File.Delete(file);
 
-                return text;
+                return xml;
+            }
+
+            public override string Export(ExportFormat exportFormat)
+            {
+                if (exportFormat == ExportFormat.Xml)
+                    return GenerateSourceXML();
+                return ExportToString();
             }
 
             public virtual string GenerateSourceCode()
@@ -200,6 +237,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 File.Delete(file);
 
                 return text;
+            }
+
+            public override string Export(ExportFormat exportFormat)
+            {
+                if (exportFormat == ExportFormat.Xml)
+                    return GenerateSourceXML();
+                return ExportToString();
             }
 
             public string GenerateSource()
