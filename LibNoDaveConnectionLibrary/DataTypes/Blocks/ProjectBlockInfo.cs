@@ -125,5 +125,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         {
             return null;
         }
+
+        public virtual PLCLanguage BlockLanguage
+        {
+            get { return GetBlock().BlockLanguage; }
+        }
     }
 }

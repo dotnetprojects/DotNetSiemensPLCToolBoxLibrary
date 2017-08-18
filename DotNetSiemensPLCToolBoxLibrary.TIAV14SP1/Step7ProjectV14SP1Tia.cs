@@ -60,6 +60,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             }
             PlcBlock plcBlock;
 
+            internal PLCLanguage SetBlockLanguage;
+            public override PLCLanguage BlockLanguage { get { return SetBlockLanguage; } }
+
             public int BlockNumber { get; set; }
 
             public string BlockName
@@ -441,16 +444,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 {
                     var info = new TIAOpennessProjectBlockInfo(block) { Name = block.Name, ParentFolder = this };
                     info.BlockType = DataTypes.PLCBlockType.FB;
-                    if (block.ProgrammingLanguage == ProgrammingLanguage.DB)
+                    info.SetBlockLanguage = PLCLanguage.unkown;
+                    if (block.ProgrammingLanguage == ProgrammingLanguage.DB ||
+                        block.ProgrammingLanguage == ProgrammingLanguage.CPU_DB ||
+                        block.ProgrammingLanguage == ProgrammingLanguage.F_DB ||
+                        block.ProgrammingLanguage == ProgrammingLanguage.Motion_DB)
+                    {
                         info.BlockType = DataTypes.PLCBlockType.DB;
-                    //else if (block.Type == Siemens.Engineering.SW.Blocks.BlockType.FB)
-                    //    info.BlockType = DataTypes.PLCBlockType.FB;
-                    //else if (block.Type == Siemens.Engineering.SW.Blocks.BlockType.FC)
-                    //    info.BlockType = DataTypes.PLCBlockType.FC;
-                    //else if (block.Type == Siemens.Engineering.SW.BlockType.OB)
-                    //    info.BlockType = DataTypes.PLCBlockType.OB;
-                    //else if (block.Type == Siemens.Engineering.SW.BlockType.UDT)
-                    //    info.BlockType = DataTypes.PLCBlockType.UDT;
+                        info.SetBlockLanguage = PLCLanguage.DB;
+                    }
+                    else if (block.ProgrammingLanguage == ProgrammingLanguage.LAD ||
+                             block.ProgrammingLanguage == ProgrammingLanguage.F_LAD ||
+                             block.ProgrammingLanguage == ProgrammingLanguage.F_LAD_LIB)
+                        info.SetBlockLanguage = PLCLanguage.KOP;
+                    else if (block.ProgrammingLanguage == ProgrammingLanguage.STL ||
+                             block.ProgrammingLanguage == ProgrammingLanguage.F_STL)
+                        info.SetBlockLanguage = PLCLanguage.AWL;
+                    else if (block.ProgrammingLanguage == ProgrammingLanguage.FBD ||
+                             block.ProgrammingLanguage == ProgrammingLanguage.F_FBD ||
+                             block.ProgrammingLanguage == ProgrammingLanguage.F_FBD_LIB)
+                        info.SetBlockLanguage = PLCLanguage.FUP;
+                    else if (block.ProgrammingLanguage == ProgrammingLanguage.CFC)
+                        info.SetBlockLanguage = PLCLanguage.CFC;
+                    else if (block.ProgrammingLanguage == ProgrammingLanguage.SCL)
+                        info.SetBlockLanguage = PLCLanguage.SCL;
                     info.BlockNumber = block.Number;
                     _blockInfos.Add(info);
                 }

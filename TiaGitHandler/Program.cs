@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
@@ -102,7 +103,23 @@ namespace TiaGitHandler
                         var src = projectBlockInfo.Export(ExportFormat.Xml);
                         if (src != null)
                         {
-                            var ext = projectBlockInfo.BlockType.ToString().ToLower();
+                            var ext = "stl";
+                            if (projectBlockInfo.BlockLanguage == PLCLanguage.DB)
+                            {
+                                ext = "db";
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.SCL)
+                            {
+                                ext = "scl";
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.KOP)
+                            {
+                                ext = "lad";
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.FUP)
+                            {
+                                ext = "fbd";
+                            }
                             var file = Path.Combine(path, projectBlockInfo.Name + "." + ext);
 
                             var xmlValid = false;
