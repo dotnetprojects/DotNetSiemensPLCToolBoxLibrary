@@ -146,12 +146,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     if (_plcBlockType == null)
                     {
                         _plcBlockType = PLCBlockType.FC;
-                        var s = GenerateSourceXML();
-                        if (s.Contains("<Type>FB</Type>"))
+                        //var s = GenerateSourceXML();
+                        if (plcBlock is FB)
                         {
                             _plcBlockType = PLCBlockType.FB;
                         }
-                        else if (s.Contains("<Type>OB</Type>"))
+                        else if (plcBlock is OB)
                         {
                             _plcBlockType = PLCBlockType.OB;
                         }
