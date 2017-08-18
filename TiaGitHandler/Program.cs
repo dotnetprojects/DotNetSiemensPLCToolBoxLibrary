@@ -65,6 +65,8 @@ namespace TiaGitHandler
             var prj = Projects.LoadProject(file, false);
 
             ParseFolder(prj.ProjectStructure, exportPath);
+
+            Console.ReadLine();
         }
 
         private class EncodingStringWriter : StringWriter
@@ -124,7 +126,7 @@ namespace TiaGitHandler
                             {
                                 ext = "stl";
                             }
-                            var file = Path.Combine(path, projectBlockInfo.Name + "." + ext);
+                            var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();

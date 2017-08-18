@@ -106,17 +106,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         ext = "db";
                     }
                 }
+
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
-
-                var fld = this.ParentFolder;
-                while (!(fld is TIAOpennessControllerFolder))
+                if (ext == "xml")
                 {
-                    fld = fld.Parent;
+                    plcBlock.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
                 }
-
-                plcBlock.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
-
+                else
+                {
+                    var fld = this.ParentFolder;
+                    while (!(fld is TIAOpennessControllerFolder))
+                    {
+                        fld = fld.Parent;
+                    }
+                     ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
+                }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
@@ -189,15 +194,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
-
-                var fld = this.ParentFolder;
-                while (!(fld is TIAOpennessControllerFolder))
+                if (ext == "xml")
                 {
-                    fld = fld.Parent;
+                    plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
                 }
-
-                plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
-
+                else
+                {
+                    var fld = this.ParentFolder;
+                    while (!(fld is TIAOpennessControllerFolder))
+                    {
+                        fld = fld.Parent;
+                    }
+                     ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcType }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
+                }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
