@@ -40,6 +40,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     /// This class is responsible for parsing Interface declarations from MC7. It parses all variables from the interface declaration and optionally fills in the startvalues and
     /// actual values. This class is used by the MC7 converter
     /// </summary>
+    /// <remarks>
+    /// The Interface of an MC7 block is structured as follows:
+    /// 0-6     Header
+    /// x-x     Line 1
+    /// x-x     Line 2
+    /// ...
+    /// 
+    /// Following are the interface line descriptors. There are various types of descriptors with different lengths
+    /// Struct:
+    ///     0: Variable data type. see ParameterType enumeration
+    ///     1: Parameter type: see ParameterType enumeration
+    ///     2: Amount of Children
+    ///     
+    /// S7 elementary types:
+    ///     0: Variable data type. see ParameterType enumeration
+    ///     1: Parameter type: see ParameterType enumeration
+    /// 
+    /// for example:
+    /// 		[7]	17	byte		Struct
+    ///         [8]	4	byte        Stat
+    ///         [9] 37	byte		37 children
+    ///         [10]	17	byte        Struct
+    ///         [11]    4	byte        Stat
+    ///         [12]    29	byte		29 Children
+    ///         [13]	    1	byte        Bool
+    ///         [14]        4	byte        Stat
+    ///         [15]        1	byte        Bool
+    ///         [16]        4	byte        Stat
+    ///         .....
+    /// </remarks>
     internal static class Parameter
     {
         //PLCDataRow
