@@ -208,11 +208,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     wr = wr;*/
                     List<string> tmp = new List<string>();
                     var interfaceBytes = new byte[IntfLength + 3];
+                    var startValues = new byte[retBlock.CodeSize];
                     var actualValues = new byte[retBlock.CodeSize];
-                    Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
-                    Array.Copy(MC7Code, MC7Start_or_DBBodyStart, actualValues, 0, retBlock.CodeSize);
 
-                    ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
+                    Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
+                    Array.Copy(MC7Code, MC7Start_or_DBBodyStart, startValues, 0, retBlock.CodeSize);
+                    Array.Copy(MC7Code, IntfValStart, actualValues, 0, retBlock.CodeSize);
+
+                    ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, startValues, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
 
                 }
                 else //Block is an code block (FB, FC or OB)
@@ -221,7 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
 
                     List<string> ParaList = new List<string>();
-                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, null, ref ParaList, retBlock.BlockType, false, retBlock);
+                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, null, null, ref ParaList, retBlock.BlockType, false, retBlock);
 
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + retBlock.CodeSize + retBlock.InterfaceSize, MC7Code);
