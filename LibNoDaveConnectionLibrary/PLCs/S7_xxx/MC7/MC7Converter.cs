@@ -37,21 +37,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     /// Many of the Code is from him (From his Delphi Prog) and also he created Excel sheets wich decribe
     /// how MC7 for most of the AWL Commands looks.
     /// </summary>
-    /// <remarks>The general structure of an online block is as follows:
+    /// <remarks>
+    /// The general structure of an online block is as follows:
     /// 0  - 35 Block header 
     /// 36 - x  MC7 code for Code blocks; Current data for datablocks
     /// x  - x  Interface
     /// x  - x  Start Values (if any)
     /// x  - x  Segment table
+    /// Len -36 Block footer. The footer is always located 36 bytes at the end of the block
     /// 
     /// all values x are depending on the blocks layout and apropiate length fields must be parsed from code
     /// </remarks>
     public static class MC7Converter
     {
-        public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage)
-        {
-            return GetAWLBlock(MC7Code, MnemoricLanguage, null);
-        }
 
         /// <summary>
         /// This value marks the lenght of the actual Block header, and since the MC7 code immeadiatly follows,
@@ -70,7 +68,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// <param name="MC7Code">The online MC7 Code blob from the PLC</param>
         /// <param name="MnemoricLanguage">The Mnemoric that should be used when parsing the Blocks data</param>
         /// <returns></returns>
-        internal static S7Block GetAWLBlockBasicInfo(byte[] MC7Code, int MnemoricLanguage)
+        internal static S7Block ParseBlockHeaderAndFooterFromMC7(byte[] MC7Code, MnemonicLanguage MnemoricLanguage)
         {
             S7Block retBlock = null;
             if (MC7Code != null)
@@ -102,26 +100,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 /*
                  * Description of a MC7 Block (Function - Block)
-                 * 36-xx     = AWL
+                 * 36-xx     = Header
                  * xx+1,     = 0x01
                  * xx+2,xx+3 = Again Block number, Zero on OB            (but bytes swapped)
                  * xx+4,xx+5 = Interface Length (from xx+6 to yy)
                  * xx+6,xx+7 = Interface Blocks Count (In,Out,Satic,TMP etc) * 2
-                 * xx+8,xx+9 = allways Zero
-                 * xx+10-yy  = Interface
+                 * xx+9-yy   = Interface
                  * yy+1-zz   = Networks
                  *
                  */
 
                 /*
                  * Description of a MC7 Block (Data - Block)
-                 * 36-xx   = AWL
-                 * xx+1,     = 0x05 (DB) 0x10 (DI)
-                 * xx+2,xx+3 = Again Block Number or FB Number on a DI   (but bytes swapped)
-                 * xx+4,xx+5 = Interface Length 
-                 * xx+6-yy   = Interface
-                 * yy-zz   = Start-Values
-                 * xx      = Nertworks
+                 * 36-xx        = Header
+                 * xx+1,        = 0x05 (DB) 0x10 (DI)
+                 * xx+2,xx+3    = Again Block Number or FB Number on a DI   (but bytes swapped)
+                 * xx+4,xx+5    = Interface Length
+                 *xx+6,xx+7     = Interface Blocks Count (In,Out,Satic,TMP etc) * 2
+                 * xx+8-yy      = Interface
+                 * yy-zz        = Start-Values
                  */
 
                 //----------------------------------------------------------------------------------------------------
@@ -171,10 +168,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             return retBlock;
         }
-        
+
+        [Obsolete("use GetAWLBlock override with proper Enumeration instead of Integer in MnemoricLanguage parameter")]
+        public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage)
+        {
+            return GetAWLBlock(MC7Code, MnemoricLanguage, null);
+        }
+
+        [Obsolete ("use GetAWLBlock override with proper Enumeration instead of Integer in MnemoricLanguage parameter")]
         public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage, S7ProgrammFolder prjBlkFld)
         {
-            var retBlock = GetAWLBlockBasicInfo(MC7Code, MnemoricLanguage);
+           return GetAWLBlock(MC7Code, (MnemonicLanguage)MnemoricLanguage, prjBlkFld);
+        }
+
+        public static S7Block GetAWLBlock(byte[] MC7Code, MnemonicLanguage MnemoricLanguage)
+        {
+            return GetAWLBlock(MC7Code, MnemoricLanguage, null);
+        }
+
+        public static S7Block GetAWLBlock(byte[] MC7Code, MnemonicLanguage MnemoricLanguage, S7ProgrammFolder prjBlkFld)
+        {
+            var retBlock = ParseBlockHeaderAndFooterFromMC7(MC7Code, MnemoricLanguage);
 
 
             if (retBlock != null)
@@ -182,11 +196,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                 int IntfStart = MC7Start_or_DBBodyStart + retBlock.CodeSize + 3;
                 int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart) + 4;
-                int IntfValStart = IntfStart + IntfLength;
-
-                //MC7Code[5] = BlockType
-                //0x0a = DB
-                //0x0b = SDB
+                int InitialValStart = IntfStart + IntfLength;
+                
                 if (retBlock.BlockType == PLCBlockType.DB || retBlock.BlockType == PLCBlockType.SDB) //Block is an Data block or System Data block
                 {
                     //Instance DB??
@@ -195,26 +206,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         ((S7DataBlock)retBlock).IsInstanceDB = true;
                         ((S7DataBlock)retBlock).FBNumber = BitConverter.ToUInt16(MC7Code, MC7Start_or_DBBodyStart + retBlock.CodeSize + 1);
                     }
-                    //((PLCDataBlock) retBlock).Structure = MC7toDB.GetDBInterface(IntfStart, IntfLength, AWLStart, IntfValStart, MC7Code);
 
-                    /*var interf = new byte[IntfLength];
-                    Array.Copy(MC7Code, IntfStart, interf, 0, IntfLength);
-                    string wr = "";
-                    for (int i=0;i<interf.Length-1;i=i+2)
-                    {
-                        wr += interf[i+1].ToString("X").PadLeft(2, '0');
-                        wr += interf[i].ToString("X").PadLeft(2, '0');
-                    }
-                    wr = wr;*/
-                    List<string> tmp = new List<string>();
+                    List<string> tmp = new List<string>(); //to hold the temporary parameter list while parsing the Interface
                     var interfaceBytes = new byte[IntfLength + 3];
-                    var startValues = new byte[retBlock.CodeSize];
                     var actualValues = new byte[retBlock.CodeSize];
 
                     Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
-                    Array.Copy(MC7Code, MC7Start_or_DBBodyStart, startValues, 0, retBlock.CodeSize);
-                    Array.Copy(MC7Code, IntfValStart, actualValues, 0, retBlock.CodeSize);
+                    Array.Copy(MC7Code, MC7Start_or_DBBodyStart, actualValues, 0, retBlock.CodeSize);
 
+                    //Some blocks do not have current values. These can be identified by checking the MC7 code length.
+                    byte[] startValues = null;
+               
+                    if (MC7Code.Length >= (InitialValStart + retBlock.CodeSize + FooterLength))
+                    {
+                        startValues = new byte[retBlock.CodeSize];
+                        Array.Copy(MC7Code, InitialValStart, startValues, 0, retBlock.CodeSize);
+                    }
+
+                    //Parse the Interface from MC7 code
                     ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, startValues, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
 
                 }
@@ -228,7 +237,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + retBlock.CodeSize + retBlock.InterfaceSize, MC7Code);
-                    ((S7FunctionBlock)retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, retBlock.CodeSize - 2, MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld, (S7FunctionBlock)retBlock);
+                    ((S7FunctionBlock)retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, retBlock.CodeSize - 2, (int)MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld, (S7FunctionBlock)retBlock);
 
                     ((S7FunctionBlock)retBlock).Networks = NetWork.GetNetworksList((S7FunctionBlock)retBlock);
                 }

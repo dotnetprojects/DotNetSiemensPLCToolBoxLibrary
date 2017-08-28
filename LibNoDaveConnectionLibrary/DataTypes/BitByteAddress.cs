@@ -15,7 +15,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
             set
             {
                 //Wrap Bit adresses around to next Byte
-                _BitAdress = _BitAdress + value;
+                _BitAdress = value;
                 if (_BitAdress > 7)
                 {
                     ByteAddress = ByteAddress + _BitAdress / 7;

@@ -42,12 +42,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     /// </summary>
     /// <remarks>
     /// The Interface of an MC7 block is structured as follows:
-    /// 0-6     Header
-    /// x-x     Line 1
+    /// Header:
+    ///     0       Block Type: 0x05 (DB) 0x10 (DI)
+    ///     1-2     Again Block Number or FB Number on a DI   (but bytes swapped)
+    ///     3-4     Interface Length - this header (7 bytes)
+    ///     5-6     Root child count * 2
+    /// Interface:
+    /// 7-x     Line 1
     /// x-x     Line 2
     /// ...
     /// 
-    /// Following are the interface line descriptors. There are various types of descriptors with different lengths
+    /// Following are the interface line descriptors. There are various types of descriptors with different lengths (2 or 3 bytes)
     /// Struct:
     ///     0: Variable data type. see ParameterType enumeration
     ///     1: Parameter type: see ParameterType enumeration
@@ -605,6 +610,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
 
         /// <summary>
+        /// Find and assign the Start value of an Intervace to an given S7Datarow
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="startValues"></param>
+        /// <param name="valuePos">OUT: an pointer for tracking the current value position in the parsing process</param>
+        internal static void FillStartValuesInDataBlock(S7DataRow DbDeclaration, byte[] startValues)
+        {
+            //only valid datatypes will return an "Value" all other will return null
+            DbDeclaration.StartValue = GetVarTypeVal(DbDeclaration.DataType, startValues, DbDeclaration.BlockAddress);
+
+            //go Through children
+            foreach (S7DataRow row in DbDeclaration.Children)
+            {
+                FillActualValuesInDataBlock(row, startValues);
+            }
+        }
+
+        /// <summary>
         /// Parses the interface from an MC7 Interface block
         /// </summary>
         /// <param name="interfaceBytes">The interface bytes from the MC7 code</param>
@@ -702,6 +725,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 pos += 2;
             }
+
+            if (actualValueBytes != null) FillActualValuesInDataBlock(parameterRoot, actualValueBytes);
+            if (startValueBytes != null) FillStartValuesInDataBlock(parameterRoot, startValueBytes);
+
             return parameterRoot;
         }
         
@@ -750,9 +777,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.TIMER:
                     var Par = new S7DataRow(VarNamePrefix + VarCounter.ToString(), datatype, myBlk);
                     currPar.Add(Par);
-                    Par.StartValue = GetVarTypeVal(Par.DataType, startValueBytes, Par.BlockAddress);
-                    Par.Value = GetVarTypeVal(Par.DataType, actualValueBytes, Par.BlockAddress);
-
                     VarCounter++;
                     break;
 
@@ -786,9 +810,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                         var akPar = new S7DataRow(VarNamePrefix + VarCounter.ToString(), datatype, myBlk);
                         currPar.Add(akPar);
-                        akPar.StartValue = GetVarTypeVal(akPar.DataType, startValueBytes, akPar.BlockAddress);
-                        akPar.Value = GetVarTypeVal(akPar.DataType, actualValueBytes, akPar.BlockAddress);
-
                         VarCounter++;
 
                         //Continue parsing insde the new Struct
