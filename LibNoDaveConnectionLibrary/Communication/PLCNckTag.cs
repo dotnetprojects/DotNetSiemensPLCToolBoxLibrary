@@ -46,6 +46,53 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
         }
 
+        /// <summary>
+        /// Create an new Nck tag from an existing one by copying its information
+        /// </summary>
+        /// <param name="oldTag"></param>
+        /// <param name="tag"></param>
+        public PLCNckTag(PLCNckTag oldTag, object tag = null)
+        {
+            CopyTag(oldTag, tag);
+        }
+
+        /// <summary>
+        /// Create an new Nck tag from an existing one by copying its information
+        /// </summary>
+        /// <param name="ncVar"></param>
+        /// <param name="tag"></param>
+        public PLCNckTag(NC_Var ncVar, object tag = null)
+        {
+            CopyTag(ncVar != null ? ncVar.GetNckTag() : null, tag);
+        }
+
+        private void CopyTag(PLCNckTag oldTag, object tag = null)
+        {
+            if (oldTag != null)
+            {
+                this.TagDataSource = oldTag.TagDataSource;
+                this.TagDataType = oldTag.TagDataType;
+                this.ByteAddress = oldTag.ByteAddress;
+                this.BitAddress = oldTag.BitAddress;
+                this.ArraySize = oldTag.ArraySize;
+                this.DataTypeStringFormat = oldTag.DataTypeStringFormat;
+                this.DataBlockNumber = oldTag.DataBlockNumber;
+                this.Controlvalue = oldTag.Controlvalue;
+                this.DontSplitValue = oldTag.DontSplitValue;
+
+                this.Tag = oldTag.Tag;
+
+                this.NckArea = oldTag.NckArea;
+                this.NckUnit = oldTag.NckUnit;
+                this.NckColumn = oldTag.NckColumn;
+                this.NckLine = oldTag.NckLine;
+                this.NckModule = oldTag.NckModule;
+                this.NckLinecount = oldTag.NckLinecount;
+            }
+            if (tag != null)
+                this.Tag = tag;
+        }
+
         public int NckArea { get; set; }
         public int NckUnit { get; set; }
         public int NckColumn { get; set; }
@@ -96,12 +143,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
         }
 
-        public NC_Var(NC_Var var)
+        public NC_Var(NC_Var var, int unitOffset = 0, int rowOffset = 0, int columnOffset = 0)
         {
             this.SYNTAX_ID = var.SYNTAX_ID;
-            this.Bereich_u_einheit = var.Bereich_u_einheit;
-            this.Spalte = var.Spalte;
-            this.Zeile = var.Zeile;
+            this.Bereich_u_einheit = (byte)(var.Bereich_u_einheit + unitOffset);
+            this.Spalte = (ushort)(var.Spalte + columnOffset);
+            this.Zeile = (ushort)(var.Zeile + rowOffset);
             this.Bausteintyp = var.Bausteintyp;
             this.ZEILENANZAHL = var.ZEILENANZAHL;
             this.Typ = var.Typ;
@@ -147,7 +194,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             this.Laenge = (byte)laenge;
         }
 
-        #region private Fields
+        #region Fields
         private byte syntaxId;
         private byte bereich_u_einheit;
         private UInt16 spalte;
@@ -158,7 +205,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private byte laenge;
         #endregion
 
-        #region public Fields
+        #region Properties
 #if !IPHONE
         [Scm.CategoryAttribute("PlcNckTag")]
         [Scm.TypeConverter(typeof(ByteHexTypeConverter))]
@@ -240,10 +287,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
         #endregion
 
-        public PLCNckTag GetNckTag(int unit = 0, int rowOffset = 0)
+        public PLCNckTag GetNckTag(int unitOffset = 0, int rowOffset = 0, int columnOffset = 0)
         {
+            if (this.syntaxId == 0 && this.bereich_u_einheit == 0 && this.spalte == 0 && this.zeile == 0 && this.bausteintyp == 0 && this.zeilenanzahl == 0 && this.typ == 0 && this.laenge == 0)
+                return null;
+
             //byte SYNTAX_ID = 0x82;
-            byte bereich_u_einheit = (byte)(this.Bereich_u_einheit + unit);
+            byte bereich_u_einheit = (byte)(this.Bereich_u_einheit + unitOffset);
             byte _bereich = (byte)((bereich_u_einheit & 0xE0) >> 5);         // (bereich_u_einheit & 2#11100000) schiebe rechts um 5 Bit
             byte _einheit = (byte)(bereich_u_einheit & 0x1F);                // & 2#00011111
 
@@ -295,7 +345,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             #endregion
 
-            return new PLCNckTag() { TagDataType = dataType, NckArea = _bereich, NckUnit = _einheit, NckColumn = (int)this.Spalte, NckLine = (int)this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
+            return new PLCNckTag() { TagDataType = dataType, NckArea = _bereich, NckUnit = _einheit, NckColumn = this.Spalte + columnOffset, NckLine = this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
         }
 
         public static NC_Var GetNC_Var(PLCNckTag nckTag)
