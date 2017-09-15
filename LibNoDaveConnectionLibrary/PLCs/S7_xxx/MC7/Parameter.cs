@@ -45,55 +45,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     /// Header:
     ///     0       Block Type: 0x05 (DB) 0x10 (DI)
     ///     1-2     Again Block Number or FB Number on a DI   (but bytes swapped)
-    ///     3-4     Interface Length - this header (7 bytes)
-    ///     5-6     Root child count * 2
+    ///     3-4     Interface Length minus this header (7 bytes)
+    ///     5-6     Start Value Length
+    ///     
     /// Interface:
     /// 7-x     Line 1
     /// x-x     Line 2
     /// ...
     /// 
-    /// Following are the interface line descriptors. There are various types of descriptors with different lengths (2 or 3 bytes)
-    /// Struct:
-    ///     0: Variable data type. see ParameterType enumeration
-    ///     1: Parameter type: see ParameterType enumeration
-    ///     2: Amount of Children
-    ///     
-    /// S7 elementary types:
-    ///     0: Variable data type. see ParameterType enumeration
-    ///     1: Parameter type: see ParameterType enumeration
-    /// 
-    /// for example:
-    /// 		[7]	17	byte		Struct
-    ///         [8]	4	byte        Stat
-    ///         [9] 37	byte		37 children
-    ///         [10]	17	byte        Struct
-    ///         [11]    4	byte        Stat
-    ///         [12]    29	byte		29 Children
-    ///         [13]	    1	byte        Bool
-    ///         [14]        4	byte        Stat
-    ///         [15]        1	byte        Bool
-    ///         [16]        4	byte        Stat
-    ///         .....
+    /// for more information about the format of an Interface Line, please look at GetVarTypeEN
     /// </remarks>
     internal static class Parameter
     {
-        //PLCDataRow
-        //Diconary ByteAddres, PLCDataRow
 
-        //Create Extra Functions for GetValues and GetActualValues
-        //This functions get the PLCDataRow Structure.
+        /// <summary>
+        /// Represents the Type of Parameter in an Interfacer, Not the Datatype.
+        /// Basically ther are In, Out, INOUT, Static and Temp
+        /// The _Init versions are the same with the above, except they have initial values that must ge parsed
+        /// </summary>
         private enum ParameterType : Byte
         {
-             In = 0x01,
-             DBIn = 0x09,
-             Out = 0x02,
-             DBOut = 0x0A,
-             InOut = 0x03,
-             DBInOut = 0x0b,
-             FBStat = 0x04,
-             DBStat = 0x0C,
-             Temp = 0x05,
-             Ret = 0x06,
+             IN = 0x01,
+             IN_Init = 0x09,
+             OUT = 0x02,
+             OUT_Init = 0x0A,
+             IN_OUT = 0x03,
+             IN_OUT_Init = 0x0b,
+             STATIC = 0x04,
+             STATIC_Init = 0x0C,
+             TEMP = 0x05,
+             RET = 0x06,
         }
 
 
@@ -600,30 +581,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         internal static void FillActualValuesInDataBlock(S7DataRow DbDeclaration, byte[] actualValues)
         {
             //only valid datatypes will return an "Value" all other will return null
-            DbDeclaration.Value = GetVarTypeVal(DbDeclaration.DataType, actualValues, DbDeclaration.BlockAddress);
+            DbDeclaration.Value = GetVarCurrentValue(DbDeclaration.DataType, actualValues, DbDeclaration.BlockAddress);
 
             //go Through children
             foreach (S7DataRow row in DbDeclaration.Children)
             {
                 FillActualValuesInDataBlock(row, actualValues);
-            }
-        }
-
-        /// <summary>
-        /// Find and assign the Start value of an Intervace to an given S7Datarow
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="startValues"></param>
-        /// <param name="valuePos">OUT: an pointer for tracking the current value position in the parsing process</param>
-        internal static void FillStartValuesInDataBlock(S7DataRow DbDeclaration, byte[] startValues)
-        {
-            //only valid datatypes will return an "Value" all other will return null
-            DbDeclaration.StartValue = GetVarTypeVal(DbDeclaration.DataType, startValues, DbDeclaration.BlockAddress);
-
-            //go Through children
-            foreach (S7DataRow row in DbDeclaration.Children)
-            {
-                FillActualValuesInDataBlock(row, startValues);
             }
         }
 
@@ -654,103 +617,109 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             parameterRoot.Add(parameterOUT);
             parameterRoot.Add(parameterINOUT);
 
-            //Only FB's can have Statics
             if (blkTP == DataTypes.PLCBlockType.FB || (blkTP == DataTypes.PLCBlockType.DB && isInstanceDB))
-                parameterRoot.Add(parameterSTAT);
-
-            //All blocks, but DB's can have Temporary Stack variables
+                parameterRoot.Add(parameterSTAT); //Only FB's can have Statics
+            
             if (blkTP != DataTypes.PLCBlockType.DB)
-                parameterRoot.Add(parameterTEMP);
-
-            //All blocks have an RetVal
-            parameterRoot.Add(parameterRETVAL);
-            parameterRoot.ReadOnly = true; //lock the Root in place, so it may not be changed anymore
+                parameterRoot.Add(parameterTEMP);//All blocks, but DB's can have Temporary Stack variables
+           
+            parameterRoot.Add(parameterRETVAL);  //All blocks have an RetVal      
+            parameterRoot.ReadOnly = true;     //lock the Root in place, so it may not be changed anymore
 
             if (blkTP == DataTypes.PLCBlockType.DB && !isInstanceDB)
                 parameterRoot = parameterSTAT;
 
-            int INp = 0;
-            int OUTp = 0;
-            int IN_OUTp = 0;
-            int STATp = 0;
-            int TEMPp = 0;
-            int StackNr = 1;
+            //Initialize parsing help variables
+            int StackNr = 1; //Start at Stack depth 1 by default
+            int InterfacePos = 7; //Start parsing of the Interface at Byte 7, since byte 0-6 are header information
+            int StartValuePos = 0; //Startvalues are starting at 0
+            S7DataRow akParameter = parameterRoot; //initially the root is the current parameter
+            ParaList.Clear(); //just to be sure its empty
 
-            int pos = 7; //Start parsing of the Interface at Byte 7, since byte 0-6 are header information
-            S7DataRow akParameter = parameterRoot;
+            //Varname generators
+            VarNameGenerator VarNameIn = new VarNameGenerator("IN");
+            VarNameGenerator VarNameOut = new VarNameGenerator("Out");
+            VarNameGenerator VarNameInOut = new VarNameGenerator("IN_OUT");
+            VarNameGenerator VarNameStat = new VarNameGenerator("STAT");
+            VarNameGenerator VarNameTemp = new VarNameGenerator("TEMP");
+            VarNameGenerator VarNameRet = new VarNameGenerator("RET");
 
-            ParaList.Clear();
-
-            while (pos <= (interfaceBytes.Length-2)) // && pos < BD.Length - 2)  //pos<BD.Length-2 was added so SDBs can be converted!! but is this needed?
+            //Parse until the whole interface is Parsed. -2 because this is the minimum length of an Interface row
+            while (InterfacePos <= interfaceBytes.Length - 2)
             {
- 
-                //Parse Parameter type from Interface
-                switch ((ParameterType)interfaceBytes[pos + 1])
+                //Parse the Top level from the Interface declaration
+                S7DataRowType DataType = (S7DataRowType)interfaceBytes[InterfacePos];
+                ParameterType ParaType = (ParameterType)interfaceBytes[InterfacePos + 1];
+
+                switch (ParaType)
                 {
-                    case ParameterType.In:
-                    case ParameterType.DBIn:
+                    case ParameterType.IN:
+                    case ParameterType.IN_Init:
                         {
-                            GetVarTypeEN(parameterIN, (S7DataRowType)interfaceBytes[pos], false, false, "IN" + Convert.ToString(INp), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "IN", ref INp, myBlk);
+                            VarNameGenerator VarNameGen = VarNameIn;
+                            GetVarTypeEN(parameterIN, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
-                    case ParameterType.Out:
-                    case ParameterType.DBOut:
+                    case ParameterType.OUT:
+                    case ParameterType.OUT_Init:
                         {
-                            GetVarTypeEN(parameterOUT, (S7DataRowType)interfaceBytes[pos], false, false, "OUT" + Convert.ToString(OUTp), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "OUT", ref OUTp,  myBlk);
+                            VarNameGenerator VarNameGen = VarNameOut;
+                            GetVarTypeEN(parameterOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen,  myBlk);
                         }
                         break;
-                    case ParameterType.InOut:
-                    case ParameterType.DBInOut:
+                    case ParameterType.IN_OUT:
+                    case ParameterType.IN_OUT_Init:
                         {
-                            GetVarTypeEN(parameterINOUT, (S7DataRowType)interfaceBytes[pos], false, false, "IN_OUT" + Convert.ToString(IN_OUTp), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "IN_OUT", ref IN_OUTp,  myBlk);
+                            VarNameGenerator VarNameGen = VarNameInOut;
+                            GetVarTypeEN(parameterINOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen,  myBlk);
                         }
                         break;
-                    case ParameterType.FBStat:
-                    case ParameterType.DBStat:
+                    case ParameterType.STATIC:
+                    case ParameterType.STATIC_Init:
                         {
-                            GetVarTypeEN(parameterSTAT, (S7DataRowType)interfaceBytes[pos], false, false, "STAT" + Convert.ToString(STATp), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "STAT", ref STATp, myBlk);
+                            VarNameGenerator VarNameGen = VarNameStat;
+                            GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
+                            break;
+                        }
+
+                    case ParameterType.TEMP:
+                        {
+                            VarNameGenerator VarNameGen = VarNameTemp;
+                            GetVarTypeEN(parameterTEMP, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
-                    case ParameterType.Temp:
+                    case ParameterType.RET:
                         {
-                            GetVarTypeEN(parameterTEMP, (S7DataRowType)interfaceBytes[pos], false, false, "TEMP" + Convert.ToString(TEMPp), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "TEMP", ref TEMPp, myBlk);
-                        }
-                        break;
-                    case ParameterType.Ret:
-                        {
-                            int tmp = 0;
-                            GetVarTypeEN(parameterRETVAL, (S7DataRowType)interfaceBytes[pos], false, false, "RET_VAL", interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, "RET_VAL", ref tmp, myBlk);
+                            VarNameGenerator VarNameGen = VarNameRet;
+                            GetVarTypeEN(parameterRETVAL, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
                 }
-                pos += 2;
+                //InterfacePos += 2;
             }
 
             if (actualValueBytes != null) FillActualValuesInDataBlock(parameterRoot, actualValueBytes);
-            if (startValueBytes != null) FillStartValuesInDataBlock(parameterRoot, startValueBytes);
 
             return parameterRoot;
         }
-        
+
         /// <summary>
         /// Parses an Interface parameter Row from the Interface of an MC7 block 
         /// </summary>
         /// <param name="currPar">The Parent Interface Row of the rows to be parsed</param>
-        /// <param name="startVal">The start value of the interface parameter row (null if there is no start value)</param>
         /// <param name="datatype">The Interface parameter data type"/></param>
         /// <param name="Struct">The parameter row is inside an struct</param>
         /// <param name="Array">the parameter row is inside an array</param>
-        /// <param name="VarName">The variable name to be used</param>
+        /// <param name="VarName">The variable name to be used for the current row</param>
         /// <param name="interfaceBytes">the interface bytes from the MC7 Code</param>
+        /// <param name="InterfacePos">OUT: the current parsing position</param>
         /// <param name="startValueBytes">The current data bytes from the MC7 code</param>
-        /// <param name="pos">OUT: the current parsing position</param>
+        /// <param name="StartValuePos">OUT: the current parsing position for Initial values</param>
         /// <param name="ParaList">OUT: the parsed parameter row number</param>
         /// <param name="StackNr">OUT: The current parsing stack depth</param>
-        /// <param name="VarNamePrefix">The prefix to be used to generate the variable names from</param>
-        /// <param name="VarCounter">OUT: the current variable count, used to generate the variable names</param>
-        /// <param name="Valpos">OUT: the current parsing position for the actual values</param>
+        /// <param name="VarNameGen">The prefix to be used to generate the variable names from</param>
         /// <param name="myBlk">The block, where the interface belongs to</param>
-        internal static void GetVarTypeEN(S7DataRow currPar,  S7DataRowType datatype, bool Struct, bool Array, string VarName, byte[] interfaceBytes, byte[] startValueBytes, byte[] actualValueBytes, ref int pos, ref List<string> ParaList, ref int StackNr, string VarNamePrefix, ref int VarCounter, S7Block myBlk)
+        internal static void GetVarTypeEN(S7DataRow currPar,  S7DataRowType datatype, bool Struct, bool Array, string VarName,  byte[] interfaceBytes,  ref int InterfacePos, byte[] startValueBytes, ref int StartValuePos, ref List<string> ParaList, ref int StackNr, VarNameGenerator VarNameGen, S7Block myBlk)
         {
             switch (datatype)
             {
@@ -775,88 +744,134 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.BLOCK_SDB:
                 case S7DataRowType.COUNTER:
                 case S7DataRowType.TIMER:
-                    var Par = new S7DataRow(VarNamePrefix + VarCounter.ToString(), datatype, myBlk);
+                    //Parese Elementary unarray datatypes from the interface
+                    //All above datatypes have the same format:
+                    //the Length of the Interface itema is always 2 bytes
+                    //
+                    //InterfacePos + 0     = Datatype: 17 for Array
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+
+                    var Par = new S7DataRow(VarName, datatype, myBlk);
+
+                    //if the type has an Start value, then parse it from the Start values
+                    ParameterType parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+                    if (HasInitialValues(parameterType))
+                        Par.StartValue = GetVarInitialValue(datatype, startValueBytes, ref StartValuePos);
+
                     currPar.Add(Par);
-                    VarCounter++;
+                    InterfacePos += 2; //Interface element is always 2 bytes
+                    break;
+
+                case S7DataRowType.STRING:
+                    //Parse String definition from Interface
+                    //Strings are a special case and have neither the format of Elementary nor the collection types or Array types
+                    //the Interface itme has an fixed length of:  3 
+                    //
+                    //InterfacePos + 0     = Datatype: 0x13 for String
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //InterfacePos + 2     = String Length
+
+                    Par = new S7DataRow(VarName, datatype, myBlk);
+
+                    //if the type has an Start value, then parse it from the Start values
+                    parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+                    Par.StringSize = interfaceBytes[InterfacePos + 2];
+
+                    if (HasInitialValues(parameterType))
+                        Par.StartValue = GetVarInitialValue(datatype, startValueBytes, ref StartValuePos);
+
+                    currPar.Add(Par);
+                    InterfacePos += 3;  //3 byte interface row length
                     break;
 
                 case S7DataRowType.ARRAY: 
-                    {
-                        //First read the array length from the interface
-                        //TODO: Check what happens on multidimensional arrays!
-                        //TODO: Add some documentation here on how the interface is encoded. It is not quite clear what is happening here
-                        int ArrayDim = interfaceBytes[pos + 2];
-                        List<int> arrStart = new List<int>();
-                        List<int> arrStop = new List<int>();
+                     //Read the Array Dimension from the Interface
+                     //An array has the following format
+                     //the Interface itme has an variable length of:  3 + (Dimensions * 4)
+                     //
+                     //InterfacePos + 0     = Datatype: 0x10 for Array
+                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                     //InterfacePos + 2     = Dimensions: Amount of dimensions to be parsed
+                     //InterfacePos + 3-4   = Lower Bound of 1st Dimension
+                     //InterfacePos + 5-6   = Upper Bound of 1st Dimension
+                     //InterfacePos + 7-8   = Lower Bound of 2nd Dimension if any
+                     //InterfacePos + 9-10  = Upper Bound of 2nd Dimensino if any
+                     //....      
 
-                        for (int i = 0; i <= ArrayDim - 1; i++)
-                        {
-                            arrStart.Add(BitConverter.ToInt16(interfaceBytes, pos + 3 + (i * 4)));
-                            arrStop.Add(BitConverter.ToInt16(interfaceBytes, pos + 5 + (i * 4)));                         
-                        }
+                     int ArrayDim = interfaceBytes[InterfacePos + 2];
+                     List<int> arrStart = new List<int>();
+                     List<int> arrStop = new List<int>();
 
-                        GetVarTypeEN(currPar, (S7DataRowType)interfaceBytes[pos + 3 + (ArrayDim * 4)], true, true, VarName, interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, VarNamePrefix, ref VarCounter, myBlk);
-                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStart = arrStart;
-                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStop = arrStop;
-                        ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).IsArray = true;
-                        pos += 3 + (ArrayDim * 4);
+                     for (int i = 0; i <= ArrayDim - 1; i++)
+                     {
+                         arrStart.Add(BitConverter.ToInt16(interfaceBytes, InterfacePos + 3 + (i * 4)));
+                         arrStop.Add(BitConverter.ToInt16(interfaceBytes, InterfacePos + 5 + (i * 4)));                         
+                     }
 
-                    } break;
+                    //Parse down child elements
+                    InterfacePos += 3 + (ArrayDim * 4);  //3 byte array header, and every dimension has an upper and lower bound, each an Uint16
+                    GetVarTypeEN(currPar, (S7DataRowType)interfaceBytes[InterfacePos], true, true, VarName, interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
 
-                    //Structs are nested datatypes, so go one recursivly. Also UDT get converted to Structs, so they are indistiguishable from them
+                    //Mark the current Element as Array, so that the recently parsed elements are counted as Array objects
+                    ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStart = arrStart;
+                    ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).ArrayStop = arrStop;
+                    ((S7DataRow)currPar.Children[currPar.Children.Count - 1]).IsArray = true;
+
+                    break;
+                    
                 case S7DataRowType.STRUCT: //Struct
+                    //Structs are nested datatypes, so go one recursivly. Also UDT get converted to Structs, so they are indistiguishable from them
+                    //Structs have the following format:
+                    //Structure Interface elements have an fixed length of 3 bytes.
+                    //
+                    //InterfacePos + 0     = Datatype: 0x11 for struct
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
+                    //InterfacePos + 2     = Children count: the amount of sub-variables declared inside the structure
+
+                    var akPar = new S7DataRow(VarName, datatype, myBlk);
+                    currPar.Add(akPar);
+
+                    //Continue parsing insde the new Struct
+                    int Children = interfaceBytes[InterfacePos + 2];
+
+                    InterfacePos += 3; //3 bytes for Structure Element length, so it points to the next child element
+                    for (int i = 0; i < Children; i++)
                     {
-                        if (Array) pos += 7; //its an Array of Struct
-
-                        var akPar = new S7DataRow(VarNamePrefix + VarCounter.ToString(), datatype, myBlk);
-                        currPar.Add(akPar);
-                        VarCounter++;
-
-                        //Continue parsing insde the new Struct
-                        int max = interfaceBytes[pos + 2] - 1;
-                        for (int i = 0; i <= max; i++)
-                        {
-                            //in the case it is an nested Structure or Array (so not an elementary S7 type)
-                            if (((S7DataRowType)interfaceBytes[pos + 3] == S7DataRowType.STRUCT) || 
-                                ((S7DataRowType)interfaceBytes[pos + 3] == S7DataRowType.ARRAY))
-                            {
-                                pos += 3;
-                                                              
-                                GetVarTypeEN(akPar,  (S7DataRowType)interfaceBytes[pos], true, false, VarName + "." + VarNamePrefix + VarCounter.ToString(), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, VarNamePrefix, ref VarCounter, myBlk);
-                                pos -= 3;
-                            }                           
-                            else //its an Elementary S7 datatype
-                            {
-                                GetVarTypeEN(akPar, (S7DataRowType)interfaceBytes[pos + 3], true, false, VarName + "." + VarNamePrefix + VarCounter.ToString(), interfaceBytes, startValueBytes, actualValueBytes, ref pos, ref ParaList, ref StackNr, VarNamePrefix, ref VarCounter, myBlk);
-                            }
-                            pos += 2;
-                        }
-                        if (Array) pos -= 7; pos += 1;
-                    } break; 
+                        GetVarTypeEN(akPar, (S7DataRowType)interfaceBytes[InterfacePos], true, false, VarName + "." + VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
+                    }
+                    break; 
                     
                 default:
                     System.Diagnostics.Trace.WriteLine("Found unknown Datatype while parsing an Interface:" + Convert.ToString(datatype) + ")");
                     break;
             }
 
-            //if (!Struct || Arry)
-            {
-                ParaList.Add(VarName);
-                //Result = Result + "(" + Convert.ToString(StackNr * 2) + ")";
-                StackNr = StackNr + 1;
-            }
+            ParaList.Add(VarName);
+            StackNr = StackNr + 1;
+        }
 
-            //return Result;
+        private static bool HasInitialValues(ParameterType pt)
+        {
+            switch (pt)
+            {
+                case ParameterType.IN_Init:
+                case ParameterType.IN_OUT_Init:
+                case ParameterType.OUT_Init:
+                case ParameterType.STATIC_Init:
+                    return true;
+                default: return false;
+            }
         }
 
         /// <summary>
-        /// Get corresponding Data from either Start Values or Actual Values (depending on what data is given in "Data")
+        /// Get corresponding current value. These values essentially have the exact same layout as one is familiar with the "GetBytes" interfaces 
+        /// From the communication library. 
         /// </summary>
         /// <param name="dataType">The data-type of the interface row</param>
         /// <param name="data">Either an Array containing the Start Values or Actual Values</param>
         /// <param name="valpos">OUT: Current position of parsing</param>
         /// <returns>the parsed value acording to the given datatyep and adress. If the datatype is invalid (such as struct) it returns Null</returns>
-        internal static object GetVarTypeVal(S7DataRowType dataType, byte[] data,  ByteBitAddress valpos)
+        internal static object GetVarCurrentValue(S7DataRowType dataType, byte[] data,  ByteBitAddress valpos)
         {
             if (data == null) return null;
 
@@ -930,6 +945,160 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             }
 
             return Result;
+        }
+
+        /// <summary>
+        /// Get corresponding Initial value
+        /// </summary>
+        /// <param name="dataType">The data-type of the interface row</param>
+        /// <param name="data">Either an Array containing the Start Values or Actual Values</param>
+        /// <param name="valpos">OUT: Current position of parsing</param>
+        /// <returns>the parsed value acording to the given datatyep and adress. If the datatype is invalid (such as struct) it returns Null</returns>
+        /// <remarks>
+        /// The Initial values are encoded in an compacted manner. Meaning, if an varialbe does not have an
+        /// Initial value, it does not appear in the start values list!
+        /// this means the valpos must be tracked, and increased every time an Avlue was parsed from the array
+        /// 
+        /// WARNING! be aware that for somehow reason Siemens encoded the Startvalues in Little Endien format,
+        /// completly contrary to the comon S7 format! This means one can not use the Libnodave.Getxxx funcions, 
+        /// but rather has to use the usual Bitconverter
+        /// 
+        /// Basically the logic here uses the default libnodave.getxxx function, but with Bitconverter instead. 
+        /// </remarks>
+        internal static object GetVarInitialValue(S7DataRowType dataType, byte[] data, ref int valpos)
+        {
+            if (data == null) return null;
+
+            //Parse Value from data depending on its interface type
+            object Result;
+            switch (dataType)
+            {
+                case S7DataRowType.BOOL:
+                        Result = data[valpos] > 0;
+                        valpos++;
+                    break;
+                case S7DataRowType.BYTE:
+                        Result = data[valpos];
+                    valpos++;
+                    break;
+                case S7DataRowType.CHAR:
+                    { // 'CHAR';
+                        Result = (char)data[valpos];
+                        valpos++;
+                    }
+                    break;
+                case S7DataRowType.WORD:
+                    { // 'WORD';
+                        Result = BitConverter.ToInt16(data, valpos);
+                        valpos += 2;
+                    }
+                    break;
+                case S7DataRowType.INT:
+                    { // 'INT';
+                        Result = BitConverter.ToInt16(data, valpos);
+                        valpos += 2;
+                    }
+                    break;
+                case S7DataRowType.DWORD:
+                    { // 'DWORD';
+                        Result = BitConverter.ToInt32(data, valpos);
+                        valpos += 4;
+                    }
+                    break;
+                case S7DataRowType.DINT:
+                    { // 'DINT';
+                        Result = BitConverter.ToInt32(data, valpos);
+                        valpos += 4;
+                    }
+                    break;
+                case S7DataRowType.REAL:
+                    { // 'REAL';
+                        Result = BitConverter.ToSingle(data, valpos);
+                        valpos += 4;
+                    }
+                    break;
+                case S7DataRowType.DATE:
+                    { // 'DATE';
+                        DateTime tmp = new DateTime(1990, 1, 1);
+                        var tmp2 = TimeSpan.FromDays(BitConverter.ToUInt16(data, valpos));
+                        tmp = tmp.Add(tmp2);
+                        Result = tmp;
+                        valpos += 2;
+                    }
+                    break;
+                case S7DataRowType.TIME_OF_DAY:
+                    { // 'TIME_OF_DAY';
+                        long msval = BitConverter.ToUInt32(data, valpos);
+                        Result = new DateTime(msval * 10000);
+                        valpos += 4;
+                    }
+                    break;
+                case S7DataRowType.TIME:
+                    { // 'TIME';
+                        long msval = BitConverter.ToInt32(data, valpos);
+                        Result = TimeSpan.FromMilliseconds (msval);
+                        valpos += 4;
+                    }
+                    break;
+                case S7DataRowType.S5TIME:
+                    { // 'S5TIME';
+                        byte[] b1 = new byte[2];
+                        b1[1] = data[valpos + 0];
+                        b1[0] = data[valpos + 1];
+
+                        Result = libnodave.getS5Timefrom(b1, 0);
+                        valpos += 2;
+                    }
+                    break;
+                case S7DataRowType.DATE_AND_TIME:
+                    { // 'DATE_AND_TIME';                        
+                        Result = libnodave.getDateTimefrom(data, valpos);
+                        valpos += 8;
+                    }
+                    break;
+                case S7DataRowType.STRING:
+                    { // 'STRING';
+                        Result = Helper.GetS7String(valpos, -1, data);
+                        valpos += ((string)Result).Length + 2 -2; //+2 because S7 strings have an one byte length filed and one byte used filed, and -2 because this library returns the string single quoted
+                     }
+                    break;
+                //case S7DataRowType.SFB: //unclear, needs to be checked
+                //    { // 'SFB??';
+                //        Result = "SFB??";
+                //    }
+                //    break;
+                default:
+                    Result = null;
+                    break;
+            }
+
+            return Result;
+        }
+
+        /// <summary>
+        /// Small helper class to keep track of the current Variable name
+        /// </summary>
+        internal class VarNameGenerator
+        {
+            private string Prefix = "STAT";
+            private int VarCounter = 0;
+
+            public VarNameGenerator()
+            { }
+
+            public VarNameGenerator(string prefix)
+            {Prefix = prefix; }
+
+            /// <summary>
+            /// Returns the next Variable name and increments the internal Variable count
+            /// </summary>
+            /// <returns></returns>
+            public string GetNextVarName()
+            {
+                string Tmp =  Prefix + VarCounter.ToString();
+                VarCounter++;
+                return Tmp;
+            }
         }
     }
 }

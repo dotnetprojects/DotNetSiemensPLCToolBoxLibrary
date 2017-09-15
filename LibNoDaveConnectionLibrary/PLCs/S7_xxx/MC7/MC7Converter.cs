@@ -215,12 +215,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     Array.Copy(MC7Code, MC7Start_or_DBBodyStart, actualValues, 0, retBlock.CodeSize);
 
                     //Some blocks do not have current values. These can be identified by checking the MC7 code length.
+                    //the Interface Header is structured as follows
+                    ///     0       Block Type: 0x05 (DB) 0x10 (DI),...
+                    ///     1-2     Again Block Number or FB Number on a DI   (but bytes swapped)
+                    ///     3-4     Interface Length minus this header (7 bytes)
+                    ///     5-6     Start Value Length
                     byte[] startValues = null;
-               
-                    if (MC7Code.Length >= (InitialValStart + retBlock.CodeSize + FooterLength))
+                    int startValueLength = BitConverter.ToUInt16(interfaceBytes, 5);
+
+                    if (startValueLength > 0)
                     {
-                        startValues = new byte[retBlock.CodeSize];
-                        Array.Copy(MC7Code, InitialValStart, startValues, 0, retBlock.CodeSize);
+                        startValues = new byte[startValueLength];
+                        Array.Copy(MC7Code, InitialValStart, startValues, 0, startValueLength);
                     }
 
                     //Parse the Interface from MC7 code
@@ -232,8 +238,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     var interfaceBytes = new byte[IntfLength + 3];
                     Array.Copy(MC7Code, IntfStart - 3, interfaceBytes, 0, IntfLength + 3); //-3 because of in the project file in the structere ssbpart is also the same structure with this 4 bytes!!
 
+                    //Some blocks do not have current values. These can be identified by checking the MC7 code length.
+                    //the Interface Header is structured as follows
+                    ///     0       Block Type: 0x05 (DB) 0x10 (DI),...
+                    ///     1-2     Again Block Number or FB Number on a DI   (but bytes swapped)
+                    ///     3-4     Interface Length minus this header (7 bytes)
+                    ///     5-6     Start Value Length
+                    byte[] startValues = null;
+                    int startValueLength = BitConverter.ToUInt16(interfaceBytes, 5);
+
+                    if (retBlock.BlockType == PLCBlockType.FB && startValueLength > 0) //only FB's my have start values, even then they might not exist if none are defined (length = 0)
+                    {
+                        startValues = new byte[startValueLength];
+                        Array.Copy(MC7Code, InitialValStart, startValues, 0, startValueLength);
+                    }
+
                     List<string> ParaList = new List<string>();
-                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, null, null, ref ParaList, retBlock.BlockType, false, retBlock);
+                    ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, startValues, null /*there are never Current values in code blocks*/, ref ParaList, retBlock.BlockType, false, retBlock);
 
                     int[] Networks;
                     Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + retBlock.CodeSize + retBlock.InterfaceSize, MC7Code);
