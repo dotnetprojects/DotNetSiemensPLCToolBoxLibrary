@@ -695,7 +695,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         break;
                 }
-                //InterfacePos += 2;
             }
 
             if (actualValueBytes != null) FillActualValuesInDataBlock(parameterRoot, actualValueBytes);
@@ -822,11 +821,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.STRUCT: //Struct
                     //Structs are nested datatypes, so go one recursivly. Also UDT get converted to Structs, so they are indistiguishable from them
                     //Structs have the following format:
-                    //Structure Interface elements have an fixed length of 3 bytes.
+                    //Structure Interface elements have an fixed length of 3 bytes or fixed length or 5 byte if children count is greater then 255.
                     //
+                    //Child count < 255:
                     //InterfacePos + 0     = Datatype: 0x11 for struct
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
                     //InterfacePos + 2     = Children count: the amount of sub-variables declared inside the structure
+                    //
+                    //There is an Special Case when the Child amount is greater than 255 Children. 
+                    //in that case the original childcount on InterfacePos + 2 is set to FF and the next two bytes contain the real Child count
+                    //
+                    //Child count > 255:
+                    //InterfacePos + 0     = Datatype: 0x11 for struct
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
+                    //InterfacePos + 2     = Marker that there are mor children: always 255
+                    //InterfacePos + 3     = Child count LSB
+                    //InterfacePos + 4     = Child count MSB
 
                     var akPar = new S7DataRow(VarName, datatype, myBlk);
                     currPar.Add(akPar);
@@ -834,10 +844,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //Continue parsing insde the new Struct
                     int Children = interfaceBytes[InterfacePos + 2];
 
-                    InterfacePos += 3; //3 bytes for Structure Element length, so it points to the next child element
+                    if (Children == 255)
+                    {
+                        //Reparse the children count from the next two bytes as an Integer as oposed to an single byte above
+                        Children = BitConverter.ToUInt16(interfaceBytes, InterfacePos + 3);
+                        InterfacePos += 5; //5 bytes for Structure Element length if more than 255 children, so it points to the next child element
+                    }
+                    else {InterfacePos += 3; } //3 bytes for Structure Element length, so it points to the next child element
+
                     for (int i = 0; i < Children; i++)
                     {
-                        GetVarTypeEN(akPar, (S7DataRowType)interfaceBytes[InterfacePos], true, false, VarName + "." + VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
+                        GetVarTypeEN(akPar, (S7DataRowType)interfaceBytes[InterfacePos], true, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                     }
                     break; 
                     

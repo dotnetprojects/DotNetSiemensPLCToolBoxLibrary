@@ -413,9 +413,11 @@
     <Folder Include="DBF\Index\NDX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\DB Interface Example.txt" />
     <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
+    <Content Include="Documentation\MC7 Block Format.txt" />
     <Content Include="Documentation\PDUs.txt" />
     <Content Include="Documentation\S5D-Baustein1.bmp" />
     <Content Include="Documentation\S7 TSAP.txt" />

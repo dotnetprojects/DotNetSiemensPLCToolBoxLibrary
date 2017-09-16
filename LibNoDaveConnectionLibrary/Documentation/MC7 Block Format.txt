@@ -75,6 +75,15 @@ Interface
 		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
 		IntfStrt + IntfHeader + x + 2	Child count. Decalares how many of the following lines
 										belong to this particular starcture
+
+	There is an Special Case when the Child amount is greater than 255 Children. 
+	in that case the original childcount on InterfacePos + 2 is set to FF and the next two bytes contain the real Child count
+
+		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration: Structures always have 0x11
+		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
+		IntfStrt + IntfHeader + x + 2	Child count. Always 255
+		IntfStrt + IntfHeader + x + 3	Child count LSB
+		IntfStrt + IntfHeader + x + 4	Child count MSB
 										
 	3. Arrays: Variable length 3 + (Dimensions * 4) bytes
 	------------------------------------

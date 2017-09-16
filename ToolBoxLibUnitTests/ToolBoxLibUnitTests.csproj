@@ -41,6 +41,7 @@
     <Compile Include="ResultSetWrapper.cs" />
     <Compile Include="TestDataBlockReading.cs" />
     <Compile Include="TestLibNoDaveReading.cs" />
+    <Compile Include="TestParameter.cs" />
     <Compile Include="TestMC7Converter.cs" />
     <Compile Include="TestPLCBlockName.cs" />
     <Compile Include="TestCRC.cs" />
@@ -52,46 +53,82 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="S7Blocks\DB121.awl">
+    <None Include="S7Blocks\MC7Converter\DB121.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\DB121.bin">
+    <None Include="S7Blocks\MC7Converter\DB121.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\DB13.awl">
+    <None Include="S7Blocks\MC7Converter\DB13.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\DB13.bin">
+    <None Include="S7Blocks\MC7Converter\DB13.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\DB4.awl">
+    <None Include="S7Blocks\MC7Converter\DB4.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\DB4.bin">
+    <None Include="S7Blocks\MC7Converter\DB4.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FB1001.awl">
+    <None Include="S7Blocks\MC7Converter\FB1001.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FB1001.bin">
+    <None Include="S7Blocks\MC7Converter\FB1001.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FB101.awl">
+    <None Include="S7Blocks\MC7Converter\FB101.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FB101.bin">
+    <None Include="S7Blocks\MC7Converter\FB101.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FC1.awl">
+    <None Include="S7Blocks\MC7Converter\FC1.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FC1.bin">
+    <None Include="S7Blocks\MC7Converter\FC1.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FC100.awl">
+    <None Include="S7Blocks\MC7Converter\FC100.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="S7Blocks\FC100.bin">
+    <None Include="S7Blocks\MC7Converter\FC100.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3001.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3001.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3002.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3002.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3003.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3003.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3004.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3004.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3005.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\DB3005.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB3003.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB3003.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="S7Blocks\UnitTest Simatic Project.zip" />
