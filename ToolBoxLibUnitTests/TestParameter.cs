@@ -10,6 +10,12 @@ namespace ToolBoxLibUnitTests
 	[TestFixture]
 	public class TestParameter
 	{
+        [SetUp]
+        public void Setup()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo ("en");
+        }
+
         //The bin files are plain dumps obtained via an call to "PLCConnection.PLCGetBlockInMC7(...)"
         //The Awl files are the parsed awl code files for the corresponding files. these files are compared to 
         //default Simatic manager online only output, in order to ensure correctness of the parsing
@@ -48,7 +54,8 @@ namespace ToolBoxLibUnitTests
 
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "DB3003.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            string AWL = File.ReadAllText(dir + "DB3003.awl").Trim().Replace("\r\n", "\n");
+            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Datablock with multi dimensional Arrays")]
@@ -79,9 +86,10 @@ namespace ToolBoxLibUnitTests
             byte[] block = File.ReadAllBytes(dir + "FB3003.bin");
             var DB = DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-            //General Structure must be the same
-            string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "FB3003.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            //Fix up different culture dependent Date conversion
+            //this might not be optimal, but i dont have any better solution at the moment.
+            string AWL = File.ReadAllText(dir + "FB3003.awl").Trim().Replace("\r\n", "\n");
+            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
     }
 }
