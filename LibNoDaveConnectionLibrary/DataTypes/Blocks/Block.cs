@@ -16,6 +16,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public MnemonicLanguage MnemonicLanguage { get; set; }
         //public DateTime LastModified { get; set; }
 
+        /// <summary>
+        /// The Title of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public virtual string Name { get; set; }
 
         public virtual string SymbolOrName
@@ -66,6 +70,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
+        /// <summary>
+        /// The blocks Simatic Short name containing Block type and number
+        /// </summary>
         public string BlockName { get { return BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString(); } }
     }
 }

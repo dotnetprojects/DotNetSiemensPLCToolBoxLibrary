@@ -5,9 +5,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
     [Serializable()]
     public class ByteBitAddress
     {
-        public int ByteAddress { get; set; }
-        public int BitAddress { get; set; }
+        public int ByteAddress { get; set; } = 0;
 
+        private int _BitAdress = 0;
+        public int BitAddress
+        {
+            get
+            { return _BitAdress; }
+            set
+            {
+                //Wrap Bit adresses around to next Byte
+                _BitAdress = value;
+                if (_BitAdress > 7)
+                {
+                    ByteAddress = ByteAddress + _BitAdress / 7;
+                    _BitAdress =  _BitAdress % 7;
+                }
+            }
+        }
 
         public ByteBitAddress(string address)
         {
@@ -99,6 +114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         {
             return !(a == b);
         }
+
         /*
         public override bool Equals(object obj)
         {

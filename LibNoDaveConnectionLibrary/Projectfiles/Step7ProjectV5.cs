@@ -209,7 +209,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             set { _blocksOfflineFolders = value; }
         }
 
-        override protected void LoadProject()
+        override internal void LoadProject()
         {
             _projectLoaded = true;
 

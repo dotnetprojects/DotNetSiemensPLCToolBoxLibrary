@@ -1,0 +1,1242 @@
+FC100 : PhaseCon
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 		IN0: INT
+002.0: 	OUT: STRUCT
+002.0: 	IN_OUT: STRUCT
+002.0: 	TEMP: STRUCT
+002.0: 		TEMP0: DINT
+006.0: 		TEMP1: DINT
+010.0: 		TEMP2: DINT
+014.0: 		TEMP3: DINT
+018.0: 		TEMP4: INT
+020.0: 		TEMP5: INT
+022.0: 		TEMP6: INT
+024.0: 		TEMP7: INT
+026.0: 		TEMP8: BOOL
+026.1: 		TEMP9: BOOL
+026.2: 		TEMP10: BOOL
+026.3: 		TEMP11: BOOL
+026.4: 		TEMP12: BOOL
+026.5: 		TEMP13: BOOL
+026.6: 		TEMP14: BOOL
+026.7: 		TEMP15: BOOL
+027.0: 		TEMP16: BOOL
+027.1: 		TEMP17: BOOL
+027.2: 		TEMP18: BOOL
+027.3: 		TEMP19: BOOL
+027.4: 		TEMP20: BOOL
+028.0: 		TEMP21: DWORD
+032.0: 		TEMP22: DWORD
+036.0: 		TEMP23: INT
+038.0: 		TEMP24: ANY
+048.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      L     1
+      L     #IN0
+      >I    
+      BEB   
+      L     160
+      >I    
+      BEB   
+      AUF   DB99
+      L     DBD56
+      L     #IN0
+      >D    
+      SPB   M000
+      AUF   DB99
+      T     DBD56
+M000: SET   
+      L     #IN0
+      T     MB10
+      T     MD940
+      +     100
+      T     LW16
+      L     32
+      T     LW18
+      AUF   DB99
+      T     DBD64
+      L     0
+      T     LW20
+      T     LW22
+      T     MB7
+      SET   
+      R     L 24.0
+      R     L 24.1
+      R     L 24.2
+      R     L 24.3
+      R     L 24.4
+      R     L 24.5
+      R     L 24.6
+      R     L 24.7
+      R     L 25.0
+      R     L 25.1
+      R     L 25.4
+Netzwerk 2 : 
+      LAR1  P#L 36.0
+      L     B#16#10
+      T     B[AR1,P#0.0]
+      L     B#16#2
+      T     B[AR1,P#1.0]
+      L     400
+      T     W[AR1,P#2.0]
+      L     LW16
+      T     W[AR1,P#4.0]
+      L     P#DBX 0.0
+      T     D[AR1,P#6.0]
+      BLD   7
+      =     L46.0
+      L     W#16#1002
+      T     LW47
+      L     400
+      T     LW49
+      L     100
+      T     LW51
+      L     P#DBX 0.0
+      T     LD53
+      UC    SFC20
+            P#V 36.0
+            P#V 34.0
+            P#V 47.0
+      BLD   8
+      BLD   1
+      =     L46.0
+      UC    FC91
+      BLD   2
+      AUF   DI[LW16]
+      AUF   DB100
+      L     DID1012
+      T     LD4
+      L     DID1020
+      T     LD8
+      L     MB10
+      AUF   DB100
+      T     DBD4
+      L     LW18
+      *I    
+      SLD   3
+      LAR1  
+      AUF   DI97
+      L     DID[AR1,P#0.0]
+      T     LD0
+      AUF   DB100
+      L     DBD76
+      T     MD40
+Netzwerk 3 : 
+      UC    FC99
+      AUF   DB100
+      UN    DBX 3.4
+      AUF   DB100
+      ON    DBX 2.3
+      AUF   DB100
+      O     DBX 2.7
+      SPB   M001
+      AUF   DB90
+      U     DBX 205.1
+      AUF   DB90
+      U     DBX 202.3
+      AUF   DB90
+      UN    DBX 205.7
+      SPB   M002
+      AUF   DB90
+      U     DBX 305.1
+      AUF   DB90
+      U     DBX 302.3
+      AUF   DB90
+      UN    DBX 305.7
+      SPB   M003
+      AUF   DB90
+      U     DBX 405.1
+      AUF   DB90
+      U     DBX 402.3
+      AUF   DB90
+      UN    DBX 405.7
+      SPB   M004
+      AUF   DB90
+      U     DBX 505.1
+      AUF   DB90
+      U     DBX 502.3
+      AUF   DB90
+      UN    DBX 505.7
+      SPB   M005
+      SPA   M001
+M002: SET   
+      AUF   DB90
+      L     DBD220
+      AUF   DB100
+      T     DBD24
+      AUF   DB90
+      L     DBD212
+      AUF   DB100
+      T     DBD20
+      AUF   DB90
+      L     DBD216
+      AUF   DB100
+      T     DBD16
+      SPA   M001
+M003: SET   
+      AUF   DB90
+      L     DBD320
+      AUF   DB100
+      T     DBD24
+      AUF   DB90
+      L     DBD312
+      AUF   DB100
+      T     DBD20
+      AUF   DB90
+      L     DBD316
+      AUF   DB100
+      T     DBD16
+      SPA   M001
+M004: SET   
+      AUF   DB90
+      L     DBD420
+      AUF   DB100
+      T     DBD24
+      AUF   DB90
+      L     DBD412
+      AUF   DB100
+      T     DBD20
+      AUF   DB90
+      L     DBD416
+      AUF   DB100
+      T     DBD16
+      SPA   M001
+M005: SET   
+      AUF   DB90
+      L     DBD520
+      AUF   DB100
+      T     DBD24
+      AUF   DB90
+      L     DBD512
+      AUF   DB100
+      T     DBD20
+      AUF   DB90
+      L     DBD516
+      AUF   DB100
+      T     DBD16
+M001: SET   
+Netzwerk 4 : 
+      AUF   DB100
+      UN    DBX 3.4
+      ON    M40.0
+      AUF   DB100
+      ON    DBX 2.3
+      SPB   M006
+      R     M40.0
+      L     0
+      AUF   DB[LW16]
+      T     DBD1012
+      AUF   DB100
+      T     DBD24
+      AUF   DB100
+      T     DBD20
+      T     MD36
+      AUF   DB100
+      L     DBD16
+      L     1
+      +D    
+      AUF   DB100
+      T     DBD16
+M006: SET   
+      AUF   DB100
+      L     DBD24
+      T     MD36
+      AUF   DB100
+      L     DBD20
+      T     MD32
+      AUF   DB100
+      L     DBD16
+      T     MD28
+      AUF   DB100
+      UN    DBX 3.4
+      AUF   DB100
+      R     DBX 2.7
+      L     MD36
+      L     0
+      >D    
+      AUF   DB100
+      U     DBX 3.4
+      AUF   DB100
+      UN    DBX 2.7
+      AUF   DB100
+      =     DBX3.5
+      =     L24.6
+      L     MD28
+      L     1
+      <D    
+      R     L 24.6
+      AUF   DB100
+      R     DBX 3.5
+      L     MD36
+      L     LD4
+      <>D   
+      AUF   DB100
+      R     DBX 3.5
+      L     MD36
+      L     0
+      ==D   
+      AUF   DB100
+      R     DBX 3.5
+      L     MD32
+      L     LD8
+      <>D   
+      AUF   DB100
+      R     DBX 3.5
+      AUF   DB100
+      U     DBX 3.5
+      R     L 24.6
+Netzwerk 5 : 
+      UN    L 24.6
+      SPB   M007
+      AUF   DB91
+      U     DBX 4.0
+      SPB   M007
+      AUF   DB91
+      L     DBD28
+      L     MB10
+      ==I   
+      S     L 25.4
+      SPB   M007
+      L     MD32
+      L     0
+      >D    
+      SPB   M008
+      AUF   DB91
+      L     DBD32
+      L     0
+      ==D   
+      SPB   M007
+      AUF   DB91
+      L     DBD32
+      AUF   DB100
+      T     DBD20
+      T     MD32
+      L     0
+      AUF   DB91
+      T     DBD32
+M008: SET   
+      AUF   DB91
+      S     DBX 4.0
+      AUF   DB91
+      R     DBX 4.1
+      S     M40.1
+      L     MB10
+      AUF   DB91
+      T     DBD48
+      L     MD36
+      AUF   DB91
+      T     DBD52
+      L     MD28
+      AUF   DB91
+      T     DBD56
+      L     MD32
+      AUF   DB91
+      T     DBD60
+      AUF   DB91
+      L     DBD40
+      L     1
+      +D    
+      AUF   DB91
+      T     DBD40
+      L     0
+      AUF   DB91
+      T     DBD44
+      L     0.000000e+000
+      AUF   DB91
+      T     DBD8
+M007: SET   
+Netzwerk 6 : 
+      L     LD0
+      L     0
+      >=D   
+      SPB   M009
+      L     L#11
+      T     MD940
+      L     MB10
+      T     MD944
+      L     0.000000e+000
+      T     MD952
+      T     MD956
+      AUF   DB100
+      L     DBD8
+      T     MW962
+      AUF   DB100
+      L     DBD12
+      T     MW964
+      AUF   DB100
+      L     DBD20
+      T     MD968
+      AUF   DB100
+      L     DBD16
+      T     MD972
+      L     LD0
+      L     L#-100000000
+      >=D   
+      SPB   M010
+      -D    
+      NEGD  
+      T     LD12
+      L     L#1000000
+      /D    
+      T     LW22
+      L     LD12
+      L     L#30000
+      MOD   
+      T     MW976
+      BLD   1
+      =     L46.0
+      UC    FC95
+            P#V 22.0
+      BLD   2
+      SPA   M009
+M010: SET   
+      L     LD0
+      L     L#-90000000
+      >=D   
+      SPB   M011
+      -D    
+      NEGD  
+      T     MW976
+      BLD   1
+      =     L46.0
+      SET   
+      =     L46.1
+      UC    FC94
+            P#V 46.1
+      BLD   2
+      SPA   M009
+M011: SET   
+      L     LD0
+      L     L#-80000000
+      >=D   
+      SPB   M012
+      -D    
+      NEGD  
+      T     MW976
+      BLD   1
+      =     L46.0
+      SET   
+      =     L46.1
+      UC    FC97
+            P#V 46.1
+      BLD   2
+      SPA   M009
+M012: SET   
+      L     LD0
+      L     L#-20000000
+      >D    
+      SPB   M013
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      UN    DBX 3.4
+      SPB   M009
+      S     L 25.3
+      L     110
+      T     MD948
+      AUF   DB100
+      UN    DBX 2.7
+      U     L 25.3
+      AUF   DB100
+      S     DBX 2.7
+      R     L 25.3
+      CC    FC6
+      L     111
+      T     MD948
+      AUF   DB100
+      U     DBX 2.7
+      U     L 25.3
+      AUF   DB100
+      R     DBX 2.7
+      R     L 25.3
+      CC    FC6
+      SPA   M009
+M013: SET   
+      L     LD0
+      L     L#-19000000
+      >D    
+      SPB   M014
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 3.0
+      AUF   DB100
+      UN    DBX 400.3
+      AUF   DB100
+      ON    DBX 3.1
+      SPB   M009
+      SET   
+      AUF   DB100
+      S     DBX 2.0
+      L     1
+      T     MD948
+      UC    FC6
+      AUF   DB100
+      UN    DBX 400.3
+      SPB   M009
+      SET   
+      AUF   DB100
+      R     DBX 400.3
+      AUF   DB100
+      R     DBX 3.3
+      AUF   DB100
+      R     DBX 3.0
+      AUF   DB100
+      L     DBD404
+      AUF   DB100
+      L     DBD408
+      +R    
+      AUF   DB100
+      T     DBD404
+      SPA   M009
+M014: SET   
+      L     LD0
+      L     L#-18000000
+      >D    
+      SPB   M015
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      UN    DBX 2.3
+      SPB   M009
+      SET   
+      S     L 24.3
+      L     109
+      T     MD948
+      UC    FC6
+      SPA   M009
+M015: SET   
+      L     LD0
+      L     L#-17000000
+      >D    
+      SPB   M016
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      UN    DBX 2.3
+      AUF   DB100
+      O     DBX 3.4
+      SPB   M009
+      SET   
+      S     L 24.2
+      L     108
+      T     MD948
+      UC    FC6
+      SPA   M009
+M016: SET   
+      L     LD0
+      L     L#-16000000
+      >D    
+      SPB   M017
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 2.3
+      AUF   DB100
+      O     DBX 3.4
+      SPB   M009
+      SET   
+      S     L 24.1
+      L     107
+      T     MD948
+      UC    FC6
+      SPA   M009
+M017: SET   
+      L     LD0
+      L     L#-15000000
+      >D    
+      SPB   M018
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 3.4
+      AUF   DB100
+      UN    DBX 3.5
+      AUF   DB100
+      O     DBX 2.3
+      SPB   M009
+      SET   
+      S     L 24.0
+      L     106
+      T     MD948
+      UC    FC6
+      SPA   M009
+M018: SET   
+      L     LD0
+      L     L#-14000000
+      >D    
+      SPB   M019
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      UN    DBX 3.4
+      AUF   DB100
+      ON    DBX 3.5
+      SPB   M009
+      SET   
+      S     L 24.4
+      L     105
+      T     MD948
+      UC    FC6
+      SPA   M009
+M019: SET   
+      L     LD0
+      L     L#-13000000
+      >D    
+      SPB   M020
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 2.6
+      SPB   M009
+      SET   
+      AUF   DB100
+      R     DBX 2.3
+      AUF   DB100
+      R     DBX 2.4
+      AUF   DB100
+      R     DBX 2.5
+      AUF   DB100
+      S     DBX 2.6
+      S     L 24.7
+      L     104
+      T     MD948
+      UC    FC6
+      SPA   M009
+M020: SET   
+      L     LD0
+      L     L#-12000000
+      >D    
+      SPB   M021
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 2.5
+      SPB   M009
+      SET   
+      AUF   DB100
+      R     DBX 2.3
+      AUF   DB100
+      R     DBX 2.4
+      AUF   DB100
+      S     DBX 2.5
+      AUF   DB100
+      R     DBX 2.6
+      S     L 24.7
+      L     103
+      T     MD948
+      UC    FC6
+      SPA   M009
+M021: SET   
+      L     LD0
+      L     L#-11000000
+      >D    
+      SPB   M022
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 2.4
+      SPB   M009
+      SET   
+      AUF   DB100
+      R     DBX 2.3
+      AUF   DB100
+      S     DBX 2.4
+      AUF   DB100
+      R     DBX 2.5
+      AUF   DB100
+      R     DBX 2.6
+      S     L 24.7
+      L     102
+      T     MD948
+      UC    FC6
+      SPA   M009
+M022: SET   
+      L     LD0
+      L     L#-10000000
+      >D    
+      SPB   M023
+      -D    
+      NEGD  
+      T     MW976
+      AUF   DB100
+      U     DBX 2.3
+      SPB   M009
+      SET   
+      AUF   DB100
+      S     DBX 2.3
+      AUF   DB100
+      R     DBX 2.4
+      AUF   DB100
+      R     DBX 2.5
+      AUF   DB100
+      R     DBX 2.6
+      S     L 24.7
+      L     101
+      T     MD948
+      UC    FC6
+      SPA   M009
+M023: SET   
+M009: SET   
+Netzwerk 7 : 
+      AUF   DB100
+      L     DBD36
+      L     MD900
+      +R    
+      AUF   DB100
+      T     DBD36
+      AUF   DB100
+      L     DBD40
+      L     MD900
+      +R    
+      AUF   DB100
+      T     DBD40
+      AUF   DB100
+      L     DBD32
+      L     MD900
+      +R    
+      AUF   DB100
+      T     DBD32
+M033: AUF   DB100
+      L     DBD12
+      T     MB12
+      L     0
+      ==I   
+      AUF   DB100
+      =     DBX3.4
+      AUF   DB100
+      L     DBD8
+      L     1
+      >=I   
+      SPB   M024
+      AUF   DB100
+      T     DBD8
+M024: AUF   DB100
+      L     DBD8
+      T     MB11
+      L     2
+      ==I   
+      =     L25.1
+      AUF   DB100
+      U     DBX 0.1
+      =     M878.5
+      AUF   DB100
+      U     DBX 400.3
+      AUF   DB100
+      UN    DBX 3.4
+      AUF   DB100
+      UN    DBX 3.3
+      =     M878.6
+      AUF   DB100
+      U     DBX 400.3
+      AUF   DB100
+      UN    DBX 3.4
+      AUF   DB100
+      =     DBX3.3
+      AUF   DB100
+      U     DBX 3.3
+      AUF   DB100
+      O     DBX 3.0
+      AUF   DB100
+      S     DBX 3.1
+      AUF   DB100
+      UN    DBX 3.0
+      AUF   DB100
+      U     DBX 2.0
+      AUF   DB100
+      R     DBX 3.1
+      L     1
+      T     MW4
+      AUF   DB100
+      UN    DBX 2.7
+      AUF   DB100
+      UN    DBX 2.6
+      AUF   DB100
+      UN    DBX 2.5
+      =     M5.1
+      =     M5.2
+      U     M5.2
+      AUF   DB100
+      UN    DBX 2.4
+      =     M5.3
+      U     L 24.4
+      =     M5.4
+      U     L 24.3
+      =     M5.5
+      U     L 25.0
+      =     M5.6
+      U     L 24.0
+      =     M7.0
+      U     L 24.1
+      =     M7.1
+      U     L 24.2
+      =     M7.2
+      AUF   DB100
+      L     DBD0
+      T     MD0
+      L     255
+      T     MB9
+      U     M2.3
+      O     M2.4
+      SPB   M025
+      L     0.000000e+000
+      AUF   DB100
+      T     DBD36
+M025: SET   
+      U     M2.5
+      O     M2.6
+      SPB   M026
+      L     0.000000e+000
+      AUF   DB100
+      T     DBD32
+M026: SET   
+      U     M2.3
+      O     M2.4
+      UN    M5.6
+      SPB   M027
+      L     0.000000e+000
+      AUF   DB100
+      T     DBD40
+M027: SET   
+      R     L 24.5
+      UC    FC[LW16]
+      L     0
+      T     MB6
+      AUF   DB100
+      U     DBX 2.4
+      U     M4.7
+      S     M4.0
+      UN    L 25.4
+      SPB   M028
+      SET   
+      S     M4.0
+      L     0
+      AUF   DB100
+      T     DBD24
+M028: SET   
+      U     M4.0
+      AUF   DB100
+      UN    DBX 2.5
+      AUF   DB100
+      UN    DBX 2.6
+      AUF   DB100
+      R     DBX 2.3
+      AUF   DB100
+      R     DBX 2.4
+      AUF   DB100
+      S     DBX 2.5
+      S     L 24.7
+      S     M6.0
+      SET   
+      R     L 24.5
+      L     1.000000e+000
+      AUF   DB100
+      L     DBD40
+      >R    
+      U     L 25.1
+      R     M4.7
+      L     2.000000e+000
+      >R    
+      U     L 25.1
+      AUF   DB100
+      =     DBX3.2
+      L     3.000000e+000
+      AUF   DB100
+      L     DBD40
+      >R    
+      AUF   DB100
+      ON    DBX 3.5
+      U     M3.4
+      R     M4.7
+      U     M4.7
+      U     M2.3
+      S     L 24.5
+      S     M6.5
+      U     L 24.2
+      U     M2.3
+      S     L 24.5
+      S     M6.4
+      U     L 24.1
+      UN    M2.3
+      S     L 24.5
+      S     M6.2
+      U     L 24.0
+      UN    M2.3
+      S     L 24.5
+      S     M6.1
+      U     L 24.4
+      U     M2.3
+      S     L 24.5
+      S     M6.3
+      U     L 24.5
+      O     M4.3
+      O     L 24.7
+      CC    FC87
+      SET   
+      R     L 24.7
+      UN    L 24.5
+      SPB   M029
+      L     LW20
+      +     1
+      T     LW20
+      L     20
+      >I    
+      AUF   DB100
+      S     DBX 2.5
+      AUF   DB100
+      R     DBX 2.3
+      AUF   DB100
+      R     DBX 2.4
+      AUF   DB100
+      R     DBX 2.6
+      SPB   M029
+      SET   
+      S     M5.7
+      R     M5.6
+      R     L 24.5
+      UC    FC[LW16]
+      AUF   DB100
+      UN    DBX 2.3
+      SPB   M030
+      AUF   DB100
+      L     DBD12
+      +     1
+      AUF   DB100
+      T     DBD12
+      L     250
+      L     MB9
+      <I    
+      SPB   M031
+      AUF   DB100
+      T     DBD12
+      SPA   M031
+M030: SET   
+      U     L 24.1
+      SPB   M032
+      AUF   DB100
+      L     DBD12
+      +     1
+      AUF   DB100
+      T     DBD12
+      SPA   M031
+M032: SET   
+      AUF   DB100
+      L     DBD12
+      +     -1
+      AUF   DB100
+      T     DBD12
+M031: SET   
+      UC    FC92
+      SET   
+      S     L 25.0
+      R     L 24.0
+      R     L 24.1
+      R     L 24.2
+      R     L 24.3
+      R     L 24.4
+      R     L 24.7
+      SPA   M033
+Netzwerk 8 : 
+M029: SET   
+      U     M4.0
+      O     M4.1
+      AUF   DB100
+      =     DBX3.0
+      U     M4.2
+      AUF   DB100
+      UN    DBX 0.2
+      AUF   DB100
+      =     DBX0.1
+      U     M4.2
+      AUF   DB100
+      =     DBX0.2
+      U     M1.3
+      O     M1.4
+      O     M1.5
+      O     M1.6
+      AUF   DB100
+      =     DBX0.0
+      L     1.000000e-001
+      AUF   DB100
+      L     DBD388
+      <R    
+      =     L25.2
+      AUF   DB100
+      L     DBD384
+      <R    
+      U     L 25.2
+      U     M1.0
+      U     M3.4
+      R     M1.0
+      S     M1.1
+      R     M1.2
+      R     M1.3
+      R     M1.4
+      R     M1.5
+      R     M1.6
+      R     M1.7
+      L     1.000000e-001
+      AUF   DB100
+      L     DBD392
+      <R    
+      =     L25.2
+      AUF   DB100
+      L     DBD384
+      <R    
+      U     L 25.2
+      U     M1.1
+      U     M3.4
+      R     M1.0
+      R     M1.1
+      S     M1.2
+      R     M1.3
+      R     M1.4
+      R     M1.5
+      R     M1.6
+      R     M1.7
+      L     0
+      AUF   DB100
+      L     DBD376
+      <D    
+      =     L25.2
+      AUF   DB100
+      L     DBD372
+      <=D   
+      U     L 25.2
+      U     M3.4
+      R     M1.0
+      R     M1.1
+      R     M1.2
+      R     M1.3
+      R     M1.4
+      R     M1.5
+      R     M1.6
+      S     M1.7
+      L     MB1
+      AUF   DB100
+      T     DBB1
+      U     M3.4
+      ON    M40.1
+      SPB   M034
+      R     M40.1
+      AUF   DB100
+      L     DBD372
+      L     1
+      +D    
+      AUF   DB100
+      T     DBD372
+M034: SET   
+      AUF   DB100
+      L     DBD380
+      L     MD908
+      +R    
+      AUF   DB100
+      T     DBD380
+      UN    M3.4
+      AUF   DB100
+      =     DBX3.6
+      SPB   M035
+      L     0.000000e+000
+      AUF   DB100
+      T     DBD380
+M035: SET   
+      AUF   DB100
+      L     DBD384
+      L     MD908
+      +R    
+      AUF   DB100
+      T     DBD384
+      U     M4.4
+      AUF   DB100
+      =     DBX3.7
+      SPBN  M036
+      L     0.000000e+000
+      AUF   DB100
+      T     DBD384
+      L     0
+      AUF   DB100
+      T     DBD372
+M036: SET   
+      L     MD40
+      AUF   DB100
+      T     DBD76
+Netzwerk 9 : 
+      SET   
+      AUF   DB100
+      S     DBX 0.6
+      AUF   DB100
+      R     DBX 0.7
+      AUF   DB100
+      R     DBX 2.0
+      U     M 999.0
+      AUF   DB100
+      =     DBX0.3
+      U     M 999.1
+      AUF   DB100
+      =     DBX0.4
+      U     M 999.2
+      AUF   DB100
+      =     DBX0.5
+      LAR1  P#L 36.0
+      L     B#16#10
+      T     B[AR1,P#0.0]
+      L     B#16#2
+      T     B[AR1,P#1.0]
+      L     880
+      T     W[AR1,P#2.0]
+      L     LW16
+      T     W[AR1,P#4.0]
+      L     P#DBX 0.0
+      T     D[AR1,P#6.0]
+      BLD   7
+      =     L46.0
+      L     W#16#1002
+      T     LW47
+      L     880
+      T     LW49
+      L     100
+      T     LW51
+      L     P#DBX 0.0
+      T     LD53
+      UC    SFC20
+            P#V 47.0
+            P#V 34.0
+            P#V 36.0
+      BLD   8
+      L     MB10
+      L     LW18
+      *I    
+      SLD   3
+      LAR1  
+      AUF   DI97
+      AUF   DB100
+      L     DBD0
+      T     DID[AR1,P#0.0]
+      AUF   DB100
+      L     DBD4
+      T     DID[AR1,P#4.0]
+      AUF   DB100
+      L     DBD8
+      T     DID[AR1,P#8.0]
+      AUF   DB100
+      L     DBD12
+      T     DID[AR1,P#12.0]
+      AUF   DB100
+      L     DBD16
+      T     DID[AR1,P#16.0]
+      AUF   DB100
+      L     DBD20
+      T     DID[AR1,P#20.0]
+      AUF   DB100
+      L     DBD24
+      T     DID[AR1,P#24.0]
+      AUF   DB100
+      L     DBD368
+      T     DID[AR1,P#28.0]
+      AUF   DB2
+      L     DBW20
+      SLW   3
+      L     #IN0
+      +D    
+      L     L#1
+      -D    
+      T     LD26
+      AUF   DB2
+      L     DBW22
+      SLW   3
+      L     #IN0
+      +D    
+      L     L#1
+      -D    
+      T     LD30
+      AUF   DI2
+      U     M3.1
+      =     DIXLD26]
+      U     M4.2
+      =     DIXLD30]
+      AUF   DB90
+      U     DBX 49.1
+      AUF   DB90
+      =     DBX49.1
+      AUF   DB99
+      L     DBD68
+      L     MB10
+      *D    
+      SLD   3
+      LAR1  
+      AUF   DI89
+      AUF   DB90
+      L     DBD0
+      T     DID[AR1,P#0.0]
+      L     DBD4
+      T     DID[AR1,P#4.0]
+      L     DBD8
+      T     DID[AR1,P#8.0]
+      L     DBD12
+      T     DID[AR1,P#12.0]
+      L     DBD16
+      T     DID[AR1,P#16.0]
+      L     DBD20
+      T     DID[AR1,P#20.0]
+      L     DBD24
+      T     DID[AR1,P#24.0]
+      L     DBD28
+      T     DID[AR1,P#28.0]
+      L     DBD32
+      T     DID[AR1,P#32.0]
+      L     DBD36
+      T     DID[AR1,P#36.0]
+      L     DBD40
+      T     DID[AR1,P#40.0]
+      L     DBD44
+      T     DID[AR1,P#44.0]
+      L     DBD48
+      T     DID[AR1,P#48.0]
+      L     DBD52
+      T     DID[AR1,P#52.0]
+      L     DBD56
+      T     DID[AR1,P#56.0]
+      L     DBD60
+      T     DID[AR1,P#60.0]
+      L     DBD64
+      T     DID[AR1,P#64.0]
+      L     DBD68
+      T     DID[AR1,P#68.0]
+      L     DBD72
+      T     DID[AR1,P#72.0]
+      L     DBD76
+      T     DID[AR1,P#76.0]
+      L     DBD80
+      T     DID[AR1,P#80.0]
+      L     DBD84
+      T     DID[AR1,P#84.0]
+      L     DBD88
+      T     DID[AR1,P#88.0]
+      L     DBD92
+      T     DID[AR1,P#92.0]
+      L     DBD96
+      T     DID[AR1,P#96.0]
+      L     DBD100
+      T     DID[AR1,P#100.0]
+      L     DBD104
+      T     DID[AR1,P#104.0]
+      L     DBD108
+      T     DID[AR1,P#108.0]
+      L     DBD112
+      T     DID[AR1,P#112.0]

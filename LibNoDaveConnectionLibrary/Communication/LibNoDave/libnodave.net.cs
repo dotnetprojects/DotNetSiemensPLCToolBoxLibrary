@@ -2619,7 +2619,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static TimeSpan getTimefrom(byte[] b, int pos)
         {
             long msval = getS32from(b, pos);
-            return new TimeSpan(msval * 10000);
+            return TimeSpan.FromMilliseconds(msval );
         }
 
         public static TimeSpan getLTimefrom(byte[] b, int pos)

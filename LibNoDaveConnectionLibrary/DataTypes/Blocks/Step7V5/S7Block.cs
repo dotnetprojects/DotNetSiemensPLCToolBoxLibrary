@@ -46,22 +46,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// <summary>
         /// The Block Attributes that contain information about the block status and special properties
         /// </summary>
-        public S7BlockAtributes BlockAttribute { get; set; } // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+        public S7BlockAtributes BlockAttribute { get; set; } 
 
         /// <summary>
-        /// The Block Attributes defined from the Simatic Manager
+        /// The Block Attributes defined from the Simatic Manager in Attributes Tab
         /// </summary>
         public List<Step7Attribute> Attributes { get; set; }
 
         /// <summary>
-        /// The total lenght of the Block
+        /// The total lenght of the Block. Correspnds to the "Load Memory Requirement" in Simatic Manager
         /// </summary>
         public double Length { get; set; }
 
         /// <summary>
-        /// The Title of the Block
+        /// The Title of the Block from the S7 Project file. it is not the online name of the block. 
         /// </summary>
-        /// <remarks>Limited to 8 chars</remarks>
+        /// <remarks>The Header name of an online block is in the "Name" field</remarks>
         public string Title { get; set; }
 
         /// <summary>
@@ -86,15 +86,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// Timestamp of the last change to the blocks MC7 code
         /// </summary>
         public DateTime LastCodeChange { get; set; }
-
-
+        
         /// <summary>
         /// Timestamp of the last change to the interface of the blocks
         /// </summary>
         public DateTime LastInterfaceChange { get; set; }
 
+        /// <summary>
+        /// The total size of the Interface table 
+        /// </summary>
+        /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>
         public int InterfaceSize { get; set; }
 
+        /// <summary>
+        /// The total size of the Segement table in the header
+        /// </summary>
+        /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>
         public int SegmentTableSize { get; set; }
 
         /// <summary>
@@ -102,8 +109,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// </summary>
         public int LocalDataSize { get; set; }
 
+        /// <summary>
+        /// The actual MC7 code size of the block. This corresonds to the "MC7" field in Simatic Manager
+        /// </summary>
         public int CodeSize { get; set; }
 
+        /// <summary>
+        /// the Work memory requirement from Simatic Manager
+        /// </summary>
+        public int WorkMemorySize { get; set;}
+        
+        /// <summary>
+        /// The block has currently set an Password
+        /// </summary>
+        /// <remarks>be aware that the block can also be be marked as protected via the "BlockAttributes"</remarks>
         public bool KnowHowProtection { get; set; }
         
         /// <summary>
@@ -179,7 +198,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             /// Only applies to datablocks. if an DB is non retentive, its actual data get reset to its initial values every time the controller
             /// restarts
             /// </summary>
-            NonRetain = 32 //.5
+            NonRetain = 32, //.5
+
+            /// <summary>
+            /// This is an Safety Block in an Safety PLC. 
+            /// </summary>
+            FBlock = 64 //.6
 
             //These two Attributes somehow do not appear on online blocks, even though they are settabele in Simatic Manager
             //Maybe some more testing is necesary

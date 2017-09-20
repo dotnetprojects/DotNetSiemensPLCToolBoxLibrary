@@ -45,6 +45,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\externalDlls\siemens\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -140,7 +150,6 @@
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />
-    <Compile Include="DataTypes\Projectfolders\ExportFormat.cs" />
     <Compile Include="DataTypes\Projectfolders\IHardwareFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IRootProgrammFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
@@ -299,6 +308,7 @@
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Projectfiles\Step7ProjectV11Tia.cs" />
     <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
     <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
     <Compile Include="Projectfiles\TIA\Enums\TiaObjectStatesLegacy.cs" />
@@ -342,6 +352,7 @@
     <Compile Include="Projectfiles\Project.cs" />
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
     <Compile Include="Projectfiles\Projects.cs" />
+    <Compile Include="Projectfiles\Step7ProjectV11.cs" />
     <Compile Include="Simulator\Simulator.cs" />
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
@@ -402,9 +413,11 @@
     <Folder Include="DBF\Index\NDX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\DB Interface Example.txt" />
     <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
+    <Content Include="Documentation\MC7 Block Format.txt" />
     <Content Include="Documentation\PDUs.txt" />
     <Content Include="Documentation\S5D-Baustein1.bmp" />
     <Content Include="Documentation\S7 TSAP.txt" />

@@ -960,7 +960,7 @@ namespace JFK_VarTab
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Filter =
-                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.ap14; *.al11; *.al12; *.al13; *.al14; *.zap13; *.zap14)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14";
+                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.al11; *.al12; *.al13; *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13";
             op.CheckFileExists = false;
             op.ValidateNames = false;
             var ret = op.ShowDialog();

@@ -9,7 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public class PLCException:Exception
     {
         int _ErrorCode;
-        public int ErrorCode
+        int ErrorCode
         {
             get { return _ErrorCode; }
         }

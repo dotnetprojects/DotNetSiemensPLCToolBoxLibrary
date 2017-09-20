@@ -29,14 +29,6 @@ artifacts:
     name: DotNetSiemensPLCToolBoxLibrary.dll
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.pdb
     name: DotNetSiemensPLCToolBoxLibrary.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
   - path: externalDlls\libnodave\libnodave_jfkmod.dll
     name: libnodave_jfkmod.dll
   - path: externalDlls\libnodave\libnodave_jfkmod64.dll
