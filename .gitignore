@@ -2,8 +2,8 @@
 [Bb]in/
 [Oo]bj/
 Build/
-compiled/*.pdb
-#compiled/**/*
+compiled/*.*
+compiled/**/*
 *.vshost.exe
 *.vshost.exe.config
 *.vshost.exe.manifest
