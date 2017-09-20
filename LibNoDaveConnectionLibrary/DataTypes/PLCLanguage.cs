@@ -5,6 +5,8 @@
     /// </summary>
     public enum PLCLanguage
     {
+        unkown = 0,
+
         /// <summary>
         /// "Anweisungsliste" or AWL for short. The English term is
         /// "Statement list" or STL
