@@ -41,8 +41,6 @@
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -402,9 +400,11 @@
     <Folder Include="DBF\Index\NDX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\DB Interface Example.txt" />
     <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
+    <Content Include="Documentation\MC7 Block Format.txt" />
     <Content Include="Documentation\PDUs.txt" />
     <Content Include="Documentation\S5D-Baustein1.bmp" />
     <Content Include="Documentation\S7 TSAP.txt" />

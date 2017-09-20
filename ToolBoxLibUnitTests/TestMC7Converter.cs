@@ -10,47 +10,48 @@ namespace ToolBoxLibUnitTests
 	[TestFixture]
 	public class TestMC7Converter
 	{
-		[Test]
+        //The bin files are plain dumps obtained via an call to "PLCConnection.PLCGetBlockInMC7(...)"
+        //The Awl files are the parsed awl code files for the corresponding files. these files are compared to 
+        //default Simatic manager online only output, in order to ensure correctness of the parsing
+        //Lengths values are taken from the Simatic Manager Properties dialog
+
+        //Set up templates for parsing
+        string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "S7Blocks", "MC7Converter") + Path.DirectorySeparatorChar;
+
+        [Test]
 		public void ParseDataBlocks()
 		{
-			//The bin files are plain dumps obtained via an call to "PLCConnection.PLCGetBlockInMC7(...)"
-			//The Awl files are the parsed awl code files for the corresponding files. these files are compared to 
-			//default Simatic manager online only output, in order to ensure correctness of the parsing
-			//Lengths values are taken from the Simatic Manager Properties dialog
-
-			//Set up templates for parsing
-			string dir = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "S7Blocks" + Path.DirectorySeparatorChar;
-			byte[] block;
+            byte[] block;
 
 			//_____________________________________________________________________________
 			//Read Data-block with lots of Structs and Structs in Arrays
 			//This db has an complex combination of Structures, arrays and Structures in Arrays
 			block = File.ReadAllBytes(dir + "DB121.bin");
-			S7DataBlock DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			S7DataBlock DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
 			Assert.AreEqual(121, DB.BlockNumber);
 			Assert.AreEqual(21418, DB.Length); //Load memory Size
 			Assert.AreEqual(20824, DB.CodeSize); //Data size, this is the relevant data length
-			Assert.AreEqual(File.ReadAllText(dir + "DB121.awl").Trim().Replace("\r\n", "\n"), DB.Structure.ToString().Trim().Replace("\r\n", "\n"));
+			Assert.AreEqual(File.ReadAllText(dir + "DB121.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read Data-block With long Array of Structs
 			//This is an really long data-block with an really long Array of structures
 			block = File.ReadAllBytes(dir + "DB13.bin");
-			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
 			Assert.AreEqual(13, DB.BlockNumber);
 			Assert.AreEqual(64214, DB.Length); //Load memory Size
 			Assert.AreEqual(64040, DB.CodeSize); //Data size, this is the relevant data length
-			Assert.AreEqual(File.ReadAllText(dir + "DB13.awl").Trim().Replace("\r\n", "\n"), DB.Structure.ToString().Trim().Replace("\r\n", "\n"));
+			Assert.AreEqual(File.ReadAllText(dir + "DB13.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read Data-block With array and single Static Reals
 			//An relatively simple block, with an Array and some simple reals at the end
 			block = File.ReadAllBytes(dir + "DB4.bin");
-			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
 			Assert.AreEqual(4, DB.BlockNumber);
@@ -62,20 +63,13 @@ namespace ToolBoxLibUnitTests
 		[Test]
 		public void ParseFunctionCodeBlocks()
 		{
-			//The bin files are plain dumps obtained via an call to "PLCConnection.PLCGetBlockInMC7(...)"
-			//The Awl files are the parsed awl code files for the corresponding files. these files are compared to 
-			//default Simatic manager online only output, in order to ensure correctness of the parsing
-			//Lengths values are taken from the Simatic Manager Properties dialog
-
-			//Set up templates for parsing
-			string dir = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "S7Blocks" + Path.DirectorySeparatorChar;
 			byte[] block;
 
 			//_____________________________________________________________________________
 			//Read Simple Function-Code with some calls
 			//An relatively simple block, a few segments ans calls to sub functions
 			block = File.ReadAllBytes(dir + "FC1.bin");
-			S7FunctionBlock FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			S7FunctionBlock FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.FC, FC.BlockType);
 			Assert.AreEqual(1, FC.BlockNumber);
@@ -98,7 +92,7 @@ namespace ToolBoxLibUnitTests
 			//Complex function with calls, Address-register manipulations, Indirect addressing of DB.
 			//System functions, and lots of segments. AND indirect FC calls (Call FC[#tempvar])
 			block = File.ReadAllBytes(dir + "FC100.bin");
-			FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.FC, FC.BlockType);
 			Assert.AreEqual(100, FC.BlockNumber);
@@ -120,19 +114,12 @@ namespace ToolBoxLibUnitTests
 		[Test]
 		public void ParseFunctionBlocks()
 		{
-			//The bin files are plain dumps obtained via an call to "PLCConnection.PLCGetBlockInMC7(...)"
-			//The Awl files are the parsed awl code files for the corresponding files. these files are compared to 
-			//default Simatic manager online only output, in order to ensure correctness of the parsing
-			//Lengths values are taken from the Simatic Manager Properties dialog
-
-			//Set up templates for parsing
-			string dir = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "S7Blocks" + Path.DirectorySeparatorChar;
 			byte[] block;
 
 			//_____________________________________________________________________________
 			//Read Simple Function-Block without Instance data
 			block = File.ReadAllBytes(dir + "FB101.bin");
-			S7FunctionBlock FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			S7FunctionBlock FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
 			Assert.AreEqual(101, FB.BlockNumber);
@@ -150,7 +137,7 @@ namespace ToolBoxLibUnitTests
 			//_____________________________________________________________________________
 			//Read Function-Block with Instance data
 			block = File.ReadAllBytes(dir + "FB1001.bin");
-			FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, 0);
+			FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
 			Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
 			Assert.AreEqual(1001, FB.BlockNumber);
@@ -162,5 +149,5 @@ namespace ToolBoxLibUnitTests
 			string t = FB.ToString();
 			Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl").Trim().Replace("\r\n", "\n"), FB.ToString().Trim().Replace("\r\n", "\n"));
 		}
-	}
+    }
 }

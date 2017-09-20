@@ -1,0 +1,107 @@
+FC1 : SysBegin
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 	OUT: STRUCT
+000.0: 	IN_OUT: STRUCT
+000.0: 	TEMP: STRUCT
+000.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      UC    FC50
+      UC    FC86
+      BLD   1
+      =     L0.0
+      L     1
+      T     LW1
+      UC    FC96
+            P#V 1.0
+      BLD   2
+      BLD   1
+      =     L0.0
+      L     2
+      T     LW1
+      UC    FC96
+            P#V 1.0
+      BLD   2
+      BLD   1
+      =     L0.0
+      L     3
+      T     LW1
+      UC    FC96
+            P#V 1.0
+      BLD   2
+      BLD   1
+      =     L0.0
+      L     4
+      T     LW1
+      UC    FC96
+            P#V 1.0
+      BLD   2
+      BLD   1
+      =     L0.0
+      CLR   
+      =     L0.1
+      UC    FC94
+            P#V 0.1
+      BLD   2
+      BLD   1
+      =     L0.0
+      CLR   
+      =     L0.1
+      UC    FC97
+            P#V 0.1
+      BLD   2
+Netzwerk 2 : 
+      UC    FC7
+      SET   
+      AUF   DB45
+      S     DBX 0.1
+      BLD   1
+      =     L0.0
+      UC    FC45
+      BLD   2
+Netzwerk 3 : 
+      UC    FC502
+      BLD   1
+      =     L0.0
+      L     L#400
+      T     LD1
+      UC    FC16
+            P#V 1.0
+      BLD   2
+      UC    FC503
+      BLD   1
+      =     L0.0
+      L     L#240
+      T     LD1
+      UC    FC21
+            P#V 1.0
+      BLD   2
+Netzwerk 4 : 
+      AUF   DB40
+      U     DBX 7.3
+      S     M 878.7
+      L     S5T#1s
+      SE    T257
+      U     T257
+      AUF   DB40
+      R     DBX 7.3
+      AUF   DB2
+      U     DBX 28.3
+      AUF   DB2
+      =     DBX28.0
+      SET   
+      AUF   DB2
+      R     DBX 28.3
+      AUF   DB2
+      U     DBX 28.1
+      L     S5T#10m
+      SE    T256
+      U     T256
+      O     M 878.7
+      AUF   DB2
+      R     DBX 28.1
