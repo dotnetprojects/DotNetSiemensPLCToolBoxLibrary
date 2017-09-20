@@ -1,0 +1,28 @@
+FB1001 : 
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 		IN0: REAL
+004.0: 	OUT: STRUCT
+004.0: 		Out0: TIME
+008.0: 	IN_OUT: STRUCT
+008.0: 		IN_OUT0: DINT
+012.0: 	STATIC: STRUCT
+012.0: 		STAT0: BOOL
+014.0: 		STAT1: INT
+016.0: 		STAT2: STRUCT
+016.0: 			STAT3: INT
+018.0: 			STAT4: INT
+020.0: 			STAT5: INT
+022.0: 	TEMP: STRUCT
+022.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      L     2
+      T     DIW[AR2,P#14.0]
+      T     DIW[AR2,P#16.0]
+      L     P#DIX 16.0
+      LAR1  

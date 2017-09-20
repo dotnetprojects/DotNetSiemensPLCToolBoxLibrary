@@ -41,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         TIME = 0x0b,
         S5TIME = 0x0c,
         DATE_AND_TIME = 0x0e,
-        //ARRAY = 0x10, //I use no Extra Array Data type!
+        ARRAY = 0x10,
         STRUCT = 0x11,
         STRING = 0x13,
        
