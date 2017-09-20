@@ -38,6 +38,9 @@
         /// </summary>
         GRAPH = 6,
 
+        CFC = 7,
+        SFC = 8,
+
         /// <summary>
         /// Same as AWL but for Safty blocks
         /// </summary>
