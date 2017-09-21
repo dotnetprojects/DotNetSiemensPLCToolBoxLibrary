@@ -694,6 +694,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterRETVAL, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+                    default:
+                        {
+                            throw new Exception(string.Format ("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}",InterfacePos, interfaceBytes[InterfacePos +1], interfaceBytes[InterfacePos]));
+                        }
                 }
             }
 
@@ -859,8 +863,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     break; 
                     
                 default:
-                    System.Diagnostics.Trace.WriteLine("Found unknown Datatype while parsing an Interface:" + Convert.ToString(datatype) + ")");
-                    break;
+                    {
+                        throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
+                    }               
             }
 
             ParaList.Add(VarName);
