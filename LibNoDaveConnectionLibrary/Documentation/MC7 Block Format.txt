@@ -101,7 +101,19 @@ Interface
 		IntfStrt + IntfHeader + x + 9-10  	Upper Bound of 2nd Dimensino if any
 		...
 
-	4. Strings: Fixed length 3 bytes
+	4. BLOCK Paraemters: fixed length 3 bytes
+	------------------------------------
+	This descriptor intem is only used for Block Parameters. Be aware that these items are usually followed
+	by an structure corresponging to the Interface of the Referenced BLOCK.
+	
+		IntfStrt + IntfHeader + x + 0		Data Type: see S7DataRowType enumeration
+		IntfStrt + IntfHeader + x + 1		Block Number LSB
+		IntfStrt + IntfHeader + x + 2		Block Number MSB
+
+	These are often seen when introducing Multi instances of SFB's, such as SFB14 "GET". In this case the
+	datatype is BLOCK_SFB, the Block LSB is 14 and MSB is 0
+
+	5. Strings: Fixed length 3 bytes
 	------------------------------------
 	This descriptor intem is only used for strings, and kind of the same as an Structure
 		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration: Structures always have 0x11

@@ -54,6 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         BLOCK_FC = 0x18,
         BLOCK_DB = 0x19,
         BLOCK_SDB = 0x1a,
+        BLOCK_SFB = 0x1b,
         COUNTER = 0x1c,
         TIMER = 0x1d,
         UNKNOWN = 0xff,

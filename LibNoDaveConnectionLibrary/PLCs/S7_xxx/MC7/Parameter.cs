@@ -694,8 +694,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterRETVAL, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
+                     //There is an special case for Block paraemters
+                    default:
+                        switch (DataType)
+                        {
+                            case S7DataRowType.BLOCK_DB:
+                            case S7DataRowType.BLOCK_FB:
+                            case S7DataRowType.BLOCK_FC:
+                            case S7DataRowType.BLOCK_SDB:
+                            case S7DataRowType.BLOCK_SFB:
+                                VarNameGenerator VarNameGen = VarNameStat;
+                                GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
+                                break;
+                        }
+                        break;
+                        }
                 }
-            }
 
             if (actualValueBytes != null) FillActualValuesInDataBlock(parameterRoot, actualValueBytes);
 
@@ -737,10 +752,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.DATE_AND_TIME:
                 case S7DataRowType.POINTER:
                 case S7DataRowType.ANY:
-                case S7DataRowType.BLOCK_FB:
-                case S7DataRowType.BLOCK_FC:
-                case S7DataRowType.BLOCK_DB:
-                case S7DataRowType.BLOCK_SDB:
                 case S7DataRowType.COUNTER:
                 case S7DataRowType.TIMER:
                     //Parese Elementary unarray datatypes from the interface
@@ -761,6 +772,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     InterfacePos += 2; //Interface element is always 2 bytes
                     break;
 
+                case S7DataRowType.BLOCK_FB:
+                case S7DataRowType.BLOCK_FC:
+                case S7DataRowType.BLOCK_DB:
+                case S7DataRowType.BLOCK_SDB:
+                case S7DataRowType.BLOCK_SFB:
+                    //Parese Block datatypes  from the interface
+                    //All above datatypes have the same format:
+                    //the Length of the Interface itema is always 3 bytes
+                    //
+                    //InterfacePos + 0     = Datatype: one of the BLOCK_xx types
+                    //InterfacePos + 1     = Block number LSB
+                    //InterfacePos + 1     = Block number MSB
+
+                     Par = new S7DataRow(VarName, datatype, myBlk);
+
+                    //if the type has an Start value, then parse it from the Start values
+                    int BlockNumber = BitConverter.ToInt16(interfaceBytes, InterfacePos +1);
+                    Par.DataTypeBlockNumber = BlockNumber;
+
+                    currPar.Add(Par);
+                    InterfacePos += 3; //Interface element is always 3 bytes
+                    break;
+ 
                 case S7DataRowType.STRING:
                     //Parse String definition from Interface
                     //Strings are a special case and have neither the format of Elementary nor the collection types or Array types

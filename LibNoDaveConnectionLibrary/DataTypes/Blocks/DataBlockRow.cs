@@ -161,7 +161,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                 }
                 retVal += DataType.ToString();
 
-                if (DataType == S7DataRowType.FB || DataType == S7DataRowType.UDT || DataType == S7DataRowType.SFB)
+                if (DataType == S7DataRowType.FB || DataType == S7DataRowType.UDT || DataType == S7DataRowType.SFB || 
+                    DataType == S7DataRowType.BLOCK_DB || DataType == S7DataRowType.BLOCK_FB || DataType == S7DataRowType.BLOCK_FC || DataType == S7DataRowType.BLOCK_SDB || DataType == S7DataRowType.BLOCK_SFB)
                     retVal += DataTypeBlockNumber.ToString();
                 if (DataType == S7DataRowType.STRING)
                     retVal += "[" + StringSize.ToString() + "]";
