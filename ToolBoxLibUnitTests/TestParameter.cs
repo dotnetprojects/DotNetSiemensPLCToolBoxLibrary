@@ -104,5 +104,17 @@ namespace ToolBoxLibUnitTests
             Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
+        [Test(Description = "Parse Function block with BLOCK_XX Parameters and some Multi Instance Parameters")]
+        public void ParseBlockParameter()
+        {
+            byte[] block = File.ReadAllBytes(dir + "FB3004.bin");
+            var DB = DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
+
+            //Fix up different culture dependent Date conversion
+            //this might not be optimal, but i dont have any better solution at the moment.
+            string AWL = File.ReadAllText(dir + "FB3004.awl").Trim().Replace("\r\n", "\n");
+            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+        }
+
     }
 }

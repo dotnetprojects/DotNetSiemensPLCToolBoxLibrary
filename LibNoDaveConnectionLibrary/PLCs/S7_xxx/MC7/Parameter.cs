@@ -695,18 +695,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                         break;
 
-                     //There is an special case for Block paraemters
                     default:
+
+                        //There is an special case for Multi Instance Block paraemters
+                        //These can only ever occur in STATIC areas of Funciton Blocks
                         switch (DataType)
                         {
-                            case S7DataRowType.BLOCK_DB:
-                            case S7DataRowType.BLOCK_FB:
-                            case S7DataRowType.BLOCK_FC:
-                            case S7DataRowType.BLOCK_SDB:
-                            case S7DataRowType.BLOCK_SFB:
+                            case S7DataRowType.MultiInst_FB:
+                            case S7DataRowType.MultiInst_SFB:
                                 VarNameGenerator VarNameGen = VarNameStat;
                                 GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                                 break;
+
+                                //if it is also not one of the Block parameters, then Abort because the value is unknown
+                            default:
+                                throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
                         }
                         break;
                         }
@@ -754,6 +757,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.ANY:
                 case S7DataRowType.COUNTER:
                 case S7DataRowType.TIMER:
+                case S7DataRowType.BLOCK_FB:
+                case S7DataRowType.BLOCK_FC:
+                case S7DataRowType.BLOCK_DB:
+                case S7DataRowType.BLOCK_SDB:
                     //Parese Elementary unarray datatypes from the interface
                     //All above datatypes have the same format:
                     //the Length of the Interface itema is always 2 bytes
@@ -772,11 +779,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     InterfacePos += 2; //Interface element is always 2 bytes
                     break;
 
-                case S7DataRowType.BLOCK_FB:
-                case S7DataRowType.BLOCK_FC:
-                case S7DataRowType.BLOCK_DB:
-                case S7DataRowType.BLOCK_SDB:
-                case S7DataRowType.BLOCK_SFB:
+                case S7DataRowType.MultiInst_FB:
+                case S7DataRowType.MultiInst_SFB:
                     //Parese Block datatypes  from the interface
                     //All above datatypes have the same format:
                     //the Length of the Interface itema is always 3 bytes
@@ -785,7 +789,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 1     = Block number LSB
                     //InterfacePos + 1     = Block number MSB
 
-                     Par = new S7DataRow(VarName, datatype, myBlk);
+                    Par = new S7DataRow(VarName, datatype, myBlk);
 
                     //if the type has an Start value, then parse it from the Start values
                     int BlockNumber = BitConverter.ToInt16(interfaceBytes, InterfacePos +1);
@@ -893,8 +897,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     break; 
                     
                 default:
-                    System.Diagnostics.Trace.WriteLine("Found unknown Datatype while parsing an Interface:" + Convert.ToString(datatype) + ")");
-                    break;
+                    throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
             }
 
             ParaList.Add(VarName);

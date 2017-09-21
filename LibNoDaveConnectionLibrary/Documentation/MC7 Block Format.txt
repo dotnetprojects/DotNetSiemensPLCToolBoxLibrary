@@ -101,10 +101,10 @@ Interface
 		IntfStrt + IntfHeader + x + 9-10  	Upper Bound of 2nd Dimensino if any
 		...
 
-	4. BLOCK Paraemters: fixed length 3 bytes
+	4. MultiInstance BLOCK Paraemters: fixed length 3 bytes
 	------------------------------------
-	This descriptor intem is only used for Block Parameters. Be aware that these items are usually followed
-	by an structure corresponging to the Interface of the Referenced BLOCK.
+	This descriptor intem is only used for MultiInstance FB or SFB references Parameters. It is only valid for STATIC areas 
+	Be aware that these items are usually followed by an structure corresponging to the Interface of the Referenced BLOCK.
 	
 		IntfStrt + IntfHeader + x + 0		Data Type: see S7DataRowType enumeration
 		IntfStrt + IntfHeader + x + 1		Block Number LSB
