@@ -694,12 +694,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterRETVAL, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
                     default:
+
+                        //There is an special case for Multi Instance Block paraemters
+                        //These can only ever occur in STATIC areas of Funciton Blocks
+                        switch (DataType)
                         {
-                            throw new Exception(string.Format ("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}",InterfacePos, interfaceBytes[InterfacePos +1], interfaceBytes[InterfacePos]));
+                            case S7DataRowType.MultiInst_FB:
+                            case S7DataRowType.MultiInst_SFB:
+                                VarNameGenerator VarNameGen = VarNameStat;
+                                GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
+                                break;
+
+                                //if it is also not one of the Block parameters, then Abort because the value is unknown
+                            default:
+                                throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
+                        }
+                        break;
                         }
                 }
-            }
 
             if (actualValueBytes != null) FillActualValuesInDataBlock(parameterRoot, actualValueBytes);
 
@@ -741,12 +755,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.DATE_AND_TIME:
                 case S7DataRowType.POINTER:
                 case S7DataRowType.ANY:
+                case S7DataRowType.COUNTER:
+                case S7DataRowType.TIMER:
                 case S7DataRowType.BLOCK_FB:
                 case S7DataRowType.BLOCK_FC:
                 case S7DataRowType.BLOCK_DB:
                 case S7DataRowType.BLOCK_SDB:
-                case S7DataRowType.COUNTER:
-                case S7DataRowType.TIMER:
                     //Parese Elementary unarray datatypes from the interface
                     //All above datatypes have the same format:
                     //the Length of the Interface itema is always 2 bytes
@@ -765,6 +779,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     InterfacePos += 2; //Interface element is always 2 bytes
                     break;
 
+                case S7DataRowType.MultiInst_FB:
+                case S7DataRowType.MultiInst_SFB:
+                    //Parese Block datatypes  from the interface
+                    //All above datatypes have the same format:
+                    //the Length of the Interface itema is always 3 bytes
+                    //
+                    //InterfacePos + 0     = Datatype: one of the BLOCK_xx types
+                    //InterfacePos + 1     = Block number LSB
+                    //InterfacePos + 1     = Block number MSB
+
+                    Par = new S7DataRow(VarName, datatype, myBlk);
+
+                    //if the type has an Start value, then parse it from the Start values
+                    int BlockNumber = BitConverter.ToInt16(interfaceBytes, InterfacePos +1);
+                    Par.DataTypeBlockNumber = BlockNumber;
+
+                    currPar.Add(Par);
+                    InterfacePos += 3; //Interface element is always 3 bytes
+                    break;
+ 
                 case S7DataRowType.STRING:
                     //Parse String definition from Interface
                     //Strings are a special case and have neither the format of Elementary nor the collection types or Array types
@@ -863,9 +897,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     break; 
                     
                 default:
-                    {
-                        throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
-                    }               
+                    throw new Exception(string.Format("invalid or unknown interface declarations found while parsing the block interface at pos {0} with Paratype {1} and Datatype {2}", InterfacePos, interfaceBytes[InterfacePos + 1], interfaceBytes[InterfacePos]));
             }
 
             ParaList.Add(VarName);

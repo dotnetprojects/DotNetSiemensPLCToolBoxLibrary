@@ -131,6 +131,18 @@
     <None Include="S7Blocks\Parameter\FB3003.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="S7Blocks\Parameter\FB3004.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB3004.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB80.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB80.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="S7Blocks\UnitTest Simatic Project.zip" />
     <None Include="packages.config" />
   </ItemGroup>
