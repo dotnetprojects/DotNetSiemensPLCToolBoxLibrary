@@ -37,6 +37,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 #if !IPHONE
     using Scm = System.ComponentModel;
     using SG = System.Globalization;
+    [Scm.TypeConverter(typeof(PLCNckTagTypeConverter))]
     [Scm.Editor(typeof(NckTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif
     [Serializable]
@@ -93,7 +94,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.Tag = tag;
         }
 
-        public int NckArea { get; set; }
+        public /*int*/ NCK_Area NckArea { get; set; }
         public int NckUnit { get; set; }
         public int NckColumn { get; set; }
         public int NckLine { get; set; }
@@ -130,6 +131,43 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return s;
         }
 
+#if !IPHONE
+        public class PLCNckTagTypeConverter : Scm.TypeConverter
+        {
+            public override bool CanConvertFrom(Scm.ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(string);
+            }
+
+            public override object ConvertFrom(Scm.ITypeDescriptorContext context, SG.CultureInfo culture, object value)
+            {
+                if (value is string)
+                {
+                    if (string.IsNullOrWhiteSpace((string)value))
+                        return null;
+
+                    string[] sAr = ((string)value).Split(',');
+                    if (sAr.Length == 8)
+                    {
+                        return new NC_Var(HexParse(sAr[0], culture), HexParse(sAr[1], culture), HexParse(sAr[2], culture), HexParse(sAr[3], culture), HexParse(sAr[4], culture), HexParse(sAr[5], culture), HexParse(sAr[6], culture), HexParse(sAr[7], culture)).GetNckTag();
+                    }
+                }
+
+                return base.ConvertFrom(context, culture, value);
+            }
+
+            private static int HexParse(string s, SG.CultureInfo culture)
+            {
+                if (s.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                {
+                    s = s.Substring(2);
+                    return int.Parse(s, SG.NumberStyles.HexNumber, culture);
+                }
+                return int.Parse(s, SG.NumberStyles.AllowThousands, culture);
+            }
+        }
+#endif
+
         //Todo: look how long a NCK Request is???
         //internal override int _internalGetSize()
         //{
@@ -160,7 +198,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (nckTag != null)
             {
                 this.SYNTAX_ID = 0x82;
-                this.Bereich_u_einheit = (byte)(nckTag.NckArea << 5 | nckTag.NckUnit);
+                this.Bereich_u_einheit = (byte)((byte)nckTag.NckArea << 5 | nckTag.NckUnit);
                 this.Spalte = (UInt16)nckTag.NckColumn;
                 this.Zeile = (UInt16)nckTag.NckLine;
                 this.Bausteintyp = (byte)nckTag.NckModule;
@@ -345,7 +383,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             #endregion
 
-            return new PLCNckTag() { TagDataType = dataType, NckArea = _bereich, NckUnit = _einheit, NckColumn = this.Spalte + columnOffset, NckLine = this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
+            return new PLCNckTag() { TagDataType = dataType, NckArea = (NCK_Area)_bereich, NckUnit = _einheit, NckColumn = this.Spalte + columnOffset, NckLine = this.Zeile + rowOffset, NckModule = this.Bausteintyp, NckLinecount = this.ZEILENANZAHL, ArraySize = _ArraySize };
         }
 
         public static NC_Var GetNC_Var(PLCNckTag nckTag)
@@ -355,7 +393,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (nckTag != null)
             {
                 ret.SYNTAX_ID = 0x82;
-                ret.Bereich_u_einheit = (byte)(nckTag.NckArea << 5 | nckTag.NckUnit);
+                ret.Bereich_u_einheit = (byte)((byte)nckTag.NckArea << 5 | nckTag.NckUnit);
                 ret.Spalte = (UInt16)nckTag.NckColumn;
                 ret.Zeile = (UInt16)nckTag.NckLine;
                 ret.Bausteintyp = (byte)nckTag.NckModule;

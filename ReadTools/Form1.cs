@@ -1,4 +1,5 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,7 +70,7 @@ namespace ToolReader
             PLCNckTag tag = new PLCNckTag();
 
             // Anzahl der Werkzeuge
-            tag.NckArea = (int)NCK_Area.AreaTool;
+            tag.NckArea = NCK_Area.AreaTool;
             tag.NckModule = (int)NCK_Block.BlockTV;
 
             tag.NckLinecount = 1;
@@ -95,7 +96,7 @@ namespace ToolReader
                 {
                     //---------------------  InternalNumber Tno   -------------------------------
                     PLCNckTag internalToolNumber = new PLCNckTag();
-                    internalToolNumber.NckArea = (int)NCK_Area.AreaTool;
+                    internalToolNumber.NckArea = NCK_Area.AreaTool;
                     internalToolNumber.NckModule = (int)NCK_Block.BlockTV;
 
                     internalToolNumber.NckLinecount = 1;
@@ -111,7 +112,7 @@ namespace ToolReader
                     //---------------------  IdentNumber  -------------------------------
 
                     PLCNckTag identNumber = new PLCNckTag();
-                    identNumber.NckArea = (int)NCK_Area.AreaTool;
+                    identNumber.NckArea = NCK_Area.AreaTool;
                     identNumber.NckModule = (int)NCK_Block.BlockTV;
 
                     identNumber.NckLinecount = 1;
@@ -126,7 +127,7 @@ namespace ToolReader
                     tagList.Add(identNumber);
                     //---------------------  Duplo  -------------------------------
                     PLCNckTag duploNumber = new PLCNckTag();
-                    duploNumber.NckArea = (int)NCK_Area.AreaTool;
+                    duploNumber.NckArea = NCK_Area.AreaTool;
                     duploNumber.NckModule = (int)NCK_Block.BlockTV;
 
                     duploNumber.NckLinecount = 1;
@@ -141,7 +142,7 @@ namespace ToolReader
                     //---------------------  Edges  -------------------------------
 
                     PLCNckTag edges = new PLCNckTag();
-                    edges.NckArea = (int)NCK_Area.AreaTool;
+                    edges.NckArea = NCK_Area.AreaTool;
                     edges.NckModule = (int)NCK_Block.BlockTV;
 
                     edges.NckLinecount = 1;
@@ -157,7 +158,7 @@ namespace ToolReader
                     //---------------------  Depot  -------------------------------
 
                     PLCNckTag depot = new PLCNckTag();
-                    depot.NckArea = (int)NCK_Area.AreaTool;
+                    depot.NckArea = NCK_Area.AreaTool;
                     depot.NckModule = (int)NCK_Block.BlockTV;
 
                     depot.NckLinecount = 1;
@@ -173,7 +174,7 @@ namespace ToolReader
 
                     //---------------------  Place  -------------------------------
                     PLCNckTag place = new PLCNckTag();
-                    place.NckArea = (int)NCK_Area.AreaTool;
+                    place.NckArea = NCK_Area.AreaTool;
                     place.NckModule = (int)NCK_Block.BlockTV;
 
                     place.NckLinecount = 1;
@@ -270,7 +271,7 @@ namespace ToolReader
                 //    //    Dieser Parameter kann nur gesetzt werden, wenn Bit 5 von Maschinendatum
                 //    //    $MN_MM_TOOL_MANAGEMENT_MASK entsprechend gesetzt ist.
                 PLCNckTag restdurabillity = new PLCNckTag();
-                restdurabillity.NckArea = (int)NCK_Area.AreaTool;
+                restdurabillity.NckArea = NCK_Area.AreaTool;
                 restdurabillity.NckModule = (int)NCK_Block.BlockTS;
 
                 restdurabillity.NckLinecount = 1;
@@ -283,7 +284,7 @@ namespace ToolReader
                 tagList.Add(restdurabillity);
 
                 PLCNckTag setTime = new PLCNckTag();
-                setTime.NckArea = (int)NCK_Area.AreaTool;
+                setTime.NckArea = NCK_Area.AreaTool;
                 setTime.NckModule = (int)NCK_Block.BlockTS;
 
                 setTime.NckLinecount = 1;

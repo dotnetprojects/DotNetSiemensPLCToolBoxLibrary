@@ -1827,10 +1827,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             if (this is PLCNckTag && this.TagDataType != DataTypes.TagDataType.String && this.TagDataType != DataTypes.TagDataType.CharArray && this.TagDataType != DataTypes.TagDataType.DateTime)
             {
-                if ((this as PLCNckTag).NckArea != 5 && (this as PLCNckTag).NckArea != 6)
+                if ((this as PLCNckTag).NckArea != NCK_Area.AreaFeedDrive && (this as PLCNckTag).NckArea != NCK_Area.AreaMainDrive)
                 {
                     int length = Math.Min(buff.Length - startpos, _internalGetSize());
-
                     System.Array.Reverse(buff, startpos, length);
                 }
             }

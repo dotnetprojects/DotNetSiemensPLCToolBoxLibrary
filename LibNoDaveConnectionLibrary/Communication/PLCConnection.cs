@@ -2916,7 +2916,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
-                            myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
+                            myPDU.addNCKToReadRequest((int)nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
                         }
                         else if (symbolicTag)
                         {
@@ -3620,7 +3620,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 currVal._putControlValueIntoBuffer(wrt, 0);
                                 var nckT = currVal as PLCNckTag;
                                 #region Reverse
-                                if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
+                                if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != NCK_Area.AreaFeedDrive && nckT.NckArea != NCK_Area.AreaMainDrive)
                                     System.Array.Reverse(wrt, 0, wrt.Length);
                                 #endregion
 
@@ -3642,7 +3642,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 //    transsize = 9;
 
                                 #endregion
-                                myPDU.addNCKToWriteRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount, wrt.Length, wrt);
+                                myPDU.addNCKToWriteRequest((int)nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount, wrt.Length, wrt);
                                 valueListT.Remove(currVal); //Wert erledigt... löschen....
                             }
 

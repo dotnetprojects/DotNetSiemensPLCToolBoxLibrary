@@ -6,46 +6,6 @@ using System.Threading.Tasks;
 
 namespace ToolReader
 {
-
-    public enum NCK_Area
-    {
-        // Summary:
-        //     N: NC Daten
-        AreaNCK = 0,
-        //
-        // Summary:
-        //     B: Daten Betriebsartengruppe
-        AreaBag = 1,
-        //
-        // Summary:
-        //     C: Kanalzugeordnete Daten
-        AreaChannel = 2,
-        //
-        // Summary:
-        //     A: Achsspezifische Grundeinstellungen
-        AreaAxis = 3,
-        //
-        // Summary:
-        //     T: Wergzeugdaten
-        AreaTool = 4,
-        //
-        // Summary:
-        //     V: Vorschubantrieb
-        AreaFeedDrive = 5,
-        //
-        // Summary:
-        //     H: Hauptantrieb
-        AreaMainDrive = 6,
-        //
-        // Summary:
-        //     M: MMC-Daten
-        AreaMMC = 7,
-        //
-        // Summary:
-        //     ?: Unbekannt
-        AreaUnknown = 255,
-    }
-
     public enum NCK_Block
     {
         // Summary:
