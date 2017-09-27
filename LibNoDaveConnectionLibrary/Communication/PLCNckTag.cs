@@ -94,6 +94,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.Tag = tag;
         }
 
+#if !IPHONE
+        [System.ComponentModel.Browsable(false), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+#endif
+        [System.Xml.Serialization.XmlElement("NckArea")]
+        public int _NckArea
+        {
+            get
+            {
+                return (int)NckArea;
+            }
+            set
+            {
+                NckArea = (NCK_Area)value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
         public /*int*/ NCK_Area NckArea { get; set; }
         public int NckUnit { get; set; }
         public int NckColumn { get; set; }
