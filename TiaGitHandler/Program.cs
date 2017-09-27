@@ -116,15 +116,15 @@ namespace TiaGitHandler
                             }
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.KOP)
                             {
-                                ext = "lad";
+                                ext = "xml";
                             }
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.FUP)
                             {
-                                ext = "fbd";
+                                ext = "xml";
                             }
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.AWL)
                             {
-                                ext = "stl";
+                                ext = "awl";
                             }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
 
