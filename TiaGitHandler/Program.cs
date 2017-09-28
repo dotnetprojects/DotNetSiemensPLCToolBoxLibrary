@@ -126,6 +126,10 @@ namespace TiaGitHandler
                             {
                                 ext = "awl";
                             }
+                            else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
+                            {
+                                ext = "udt";
+                            }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
 
                             var xmlValid = false;

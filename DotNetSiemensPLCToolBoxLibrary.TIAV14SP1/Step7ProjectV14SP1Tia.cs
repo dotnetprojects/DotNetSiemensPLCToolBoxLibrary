@@ -559,8 +559,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             parent.SubItems.Add(fld);
             LoadSubProgramBlocksFoldersViaOpennessDlls(fld, software.BlockGroup);
 
+            var t = (PlcTypeGroup)software.TypeGroup;
 
-            var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, null)
+            var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, t.Types)
             {
                 //TiaPortalItem = controller.ControllerDatatypeFolder,
                 Name = "data types",
