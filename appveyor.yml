@@ -23,6 +23,7 @@ after_build:
   - externalDlls\libnodave\vcwinmake.bat
   - externalDlls\libnodave\vcwinmake_64.bat
   - ps: .\nuget\pack.ps1
+  - 7z a TiaGitHandler.zip %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll %APPVEYOR_BUILD_FOLDER%\compiled\ICSharpCode.SharpZipLib.dll %APPVEYOR_BUILD_FOLDER%\compiled\TiaGitHandler.exe
   
 artifacts:
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
@@ -42,6 +43,8 @@ artifacts:
   - path: externalDlls\libnodave\libnodave_jfkmod64.dll
     name: libnodave_jfkmod64.dll
   - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg'
+  - path: TiaGitHandler.zip
+    name: TiaGitHandler
 
 #uncomment to publish to NuGet
 deploy:
