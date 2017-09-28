@@ -66,7 +66,7 @@ namespace TiaGitHandler
 
             ParseFolder(prj.ProjectStructure, exportPath);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private class EncodingStringWriter : StringWriter
@@ -103,16 +103,19 @@ namespace TiaGitHandler
                     try
                     {
                         var src = projectBlockInfo.Export(ExportFormat.Default);
+                        string xml = null;
                         if (src != null)
                         {
                             var ext = "xml";
                             if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB)
                             {
                                 ext = "db";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.SCL)
                             {
                                 ext = "scl";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.KOP)
                             {
@@ -125,12 +128,14 @@ namespace TiaGitHandler
                             else if (projectBlockInfo.BlockLanguage == PLCLanguage.AWL)
                             {
                                 ext = "awl";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
                             {
                                 ext = "udt";
                             }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
+                            var xmlfile = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();
@@ -184,6 +189,65 @@ namespace TiaGitHandler
                             {
                                 Directory.CreateDirectory(path);
                                 File.WriteAllText(file, src/*, Encoding.UTF8*/);
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Skipping Block (null)" + projectBlockInfo.Name);
+                            }
+
+                            if (xml != null)
+                            {
+                                var xmlValid2 = false;
+                                XmlDocument xmlDoc2 = new XmlDocument();
+                                try
+                                {
+                                    xmlDoc2.LoadXml(xml);
+                                    xmlValid2 = true;
+                                }
+                                catch
+                                {
+                                    xmlValid2 = false;
+                                }
+
+                                if (xmlValid2)
+                                {
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//Created");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//DocumentInfo");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    StringBuilder sb = new StringBuilder();
+                                    XmlWriterSettings settings = new XmlWriterSettings
+                                    {
+                                        Indent = true,
+                                        IndentChars = "  ",
+                                        NewLineChars = "\r\n",
+                                        NewLineHandling = NewLineHandling.Replace
+                                    };
+                                    using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                                    {
+                                        xmlDoc2.Save(writer);
+                                    }
+                                    xml = sb.ToString();
+                                }
+
+                                Directory.CreateDirectory(path);
+                                File.WriteAllText(xmlfile, xml/*, Encoding.UTF8*/);
 
                             }
                             else
