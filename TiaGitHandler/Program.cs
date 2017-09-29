@@ -243,7 +243,10 @@ namespace TiaGitHandler
                                     {
                                         xmlDoc2.Save(writer);
                                     }
+
                                     xml = sb.ToString();
+
+                                    xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
                                 }
 
                                 Directory.CreateDirectory(path);
