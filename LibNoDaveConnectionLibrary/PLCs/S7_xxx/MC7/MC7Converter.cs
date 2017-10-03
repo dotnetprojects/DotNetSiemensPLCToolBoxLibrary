@@ -93,7 +93,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                  * 16-21   = Last Modified
                  * 22-27   = Last Interface Change
                  * 28,29   = Interface length or DB Body (actual Values Part) length
-                 * 30,31   = Segment Table Length?  (Normaly 0 on a DB) (Length of networks!)
+                 * 30,31   = Segment Table Length  (Normaly 0 on a DB) (Length of networks!)
                  * 32,33   = Local Data Length? (Normaly 0 on a DB)
                  * 34,35   = MC7-Length or DB Body (definitions/initial values)
                  */
@@ -256,8 +256,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     List<string> ParaList = new List<string>();
                     ((S7FunctionBlock)retBlock).Parameter = Parameter.GetInterface(interfaceBytes, startValues, null /*there are never Current values in code blocks*/, ref ParaList, retBlock.BlockType, false, retBlock);
 
-                    int[] Networks;
-                    Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + retBlock.CodeSize + retBlock.InterfaceSize, MC7Code);
+                    int[] Networks = null;
+
+                    //Only if there are network descriptions. This generall only happens when the Block is empty and does not contain any code. 
+                    //the Network list always starts after the Interface of the block and have the following format
+
+                    if (retBlock.SegmentTableSize > 0)
+                    {
+                        Networks = NetWork.GetNetworks(MC7Start_or_DBBodyStart + retBlock.CodeSize + retBlock.InterfaceSize, MC7Code);
+                    }
                     ((S7FunctionBlock)retBlock).AWLCode = MC7toAWL.GetAWL(MC7Start_or_DBBodyStart, retBlock.CodeSize - 2, (int)MnemoricLanguage, MC7Code, Networks, ParaList, prjBlkFld, (S7FunctionBlock)retBlock);
 
                     ((S7FunctionBlock)retBlock).Networks = NetWork.GetNetworksList((S7FunctionBlock)retBlock);

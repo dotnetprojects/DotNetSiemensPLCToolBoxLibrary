@@ -66,7 +66,7 @@ Interface
 		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration
 		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
 		
-	2. Structures: fixed length 3 bytes
+	2. Structures: fixed length 3, 4 or 5 bytes
 	------------------------------------
 	This descriptor intem is only used for Structures. Be aware that UDT's get converted to structures
 	during downloading of an Block. So Structures may also be UDT´s.
@@ -84,7 +84,15 @@ Interface
 		IntfStrt + IntfHeader + x + 2	Child count. Always 255
 		IntfStrt + IntfHeader + x + 3	Child count LSB
 		IntfStrt + IntfHeader + x + 4	Child count MSB
-										
+
+	There is another special case, when the ParameterType is 0x14. In that case the layout is similar to the special case with more than 255 children,
+	Except that the value InterfacePos + 2 has seemingly random Values. At the moment i do not know what these values mean
+
+		IntfStrt + IntfHeader + x + 0     = Datatype: 0x11 for struct
+		IntfStrt + IntfHeader + x + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
+		IntfStrt + IntfHeader + x +2     = Seemingly Random values, with unknown meaning
+		IntfStrt + IntfHeader + x +3     = Child count
+									
 	3. Arrays: Variable length 3 + (Dimensions * 4) bytes
 	------------------------------------
 	This descriptor intem is only used for Structures. Be aware that UDT's get converted to structures
