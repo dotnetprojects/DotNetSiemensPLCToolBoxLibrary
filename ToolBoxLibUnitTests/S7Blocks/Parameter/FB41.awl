@@ -1,0 +1,413 @@
+﻿FB41 : CONT_C
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 		IN0: BOOL
+000.1: 		IN1: BOOL := True
+000.2: 		IN2: BOOL
+000.3: 		IN3: BOOL := True
+000.4: 		IN4: BOOL := True
+000.5: 		IN5: BOOL
+000.6: 		IN6: BOOL
+000.7: 		IN7: BOOL
+002.0: 		IN8: TIME := 00:00:01
+006.0: 		IN9: REAL
+010.0: 		IN10: REAL
+014.0: 		IN11: WORD
+016.0: 		IN12: REAL
+020.0: 		IN13: REAL := 2
+024.0: 		IN14: TIME := 00:00:20
+028.0: 		IN15: TIME := 00:00:10
+032.0: 		IN16: TIME := 00:00:02
+036.0: 		IN17: REAL
+040.0: 		IN18: REAL := 100
+044.0: 		IN19: REAL
+048.0: 		IN20: REAL := 1
+052.0: 		IN21: REAL
+056.0: 		IN22: REAL := 1
+060.0: 		IN23: REAL
+064.0: 		IN24: REAL
+068.0: 		IN25: REAL
+072.0: 	OUT: STRUCT
+072.0: 		Out0: REAL
+076.0: 		Out1: WORD
+078.0: 		Out2: BOOL
+078.1: 		Out3: BOOL
+080.0: 		Out4: REAL
+084.0: 		Out5: REAL
+088.0: 		Out6: REAL
+092.0: 		Out7: REAL
+096.0: 		Out8: REAL
+100.0: 	IN_OUT: STRUCT
+100.0: 	STATIC: STRUCT
+100.0: 		STAT0: REAL
+104.0: 		STAT1: REAL
+108.0: 		STAT2: REAL
+112.0: 		STAT3: REAL
+116.0: 		STAT4: REAL
+120.0: 		STAT5: REAL
+124.0: 		STAT6: BOOL
+124.1: 		STAT7: BOOL
+124.2: 		STAT8: BOOL := True
+126.0: 	TEMP: STRUCT
+126.0: 		TEMP0: REAL
+130.0: 		TEMP1: REAL
+134.0: 		TEMP2: REAL
+138.0: 		TEMP3: REAL
+142.0: 		TEMP4: REAL
+146.0: 		TEMP5: REAL
+150.0: 		TEMP6: REAL
+154.0: 		TEMP7: REAL
+158.0: 		TEMP8: REAL
+162.0: 		TEMP9: REAL
+166.0: 		TEMP10: REAL
+170.0: 		TEMP11: REAL
+174.0: 		TEMP12: REAL
+178.0: 		TEMP13: REAL
+182.0: 		TEMP14: REAL
+186.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      SET   
+      SAVE  
+      =     L60.1
+      U     DIX[AR2,P#0.0]
+      SPBN  M000
+      L     DID[AR2,P#64.0]
+      T     DID[AR2,P#104.0]
+      L     0.000000e+000
+      T     DID[AR2,P#72.0]
+      CLR   
+      =     DIX[AR2,P#78.0]
+      =     DIX[AR2,P#78.1]
+      T     DID[AR2,P#80.0]
+      T     DID[AR2,P#84.0]
+      T     DID[AR2,P#88.0]
+      L     W#16#0
+      T     DIW[AR2,P#76.0]
+      TAK   
+      T     DID[AR2,P#92.0]
+      T     DID[AR2,P#96.0]
+      T     DID[AR2,P#100.0]
+      T     DID[AR2,P#108.0]
+      T     DID[AR2,P#112.0]
+      T     DID[AR2,P#116.0]
+      T     DID[AR2,P#120.0]
+      =     DIX[AR2,P#124.0]
+      =     DIX[AR2,P#124.1]
+      SET   
+      =     DIX[AR2,P#124.2]
+      SPA   M001
+M000: L     DID[AR2,P#2.0]
+      DTR   
+      L     1.000000e+003
+      /R    
+      T     LD4
+      L     DIW[AR2,P#14.0]
+      ITD   
+      DTR   
+      L     3.616898e-003
+      *R    
+      T     LD12
+      L     DID[AR2,P#48.0]
+      *R    
+      L     DID[AR2,P#52.0]
+      +R    
+      T     LD12
+      CLR   
+      U     DIX[AR2,P#0.2]
+      NOT   
+      SPBN  M002
+      L     DID[AR2,P#10.0]
+      T     LD12
+M002: L     LD12
+      T     DID[AR2,P#92.0]
+      L     DID[AR2,P#6.0]
+      TAK   
+      -R    
+      T     LD16
+      L     DID[AR2,P#36.0]
+      NEGR  
+      <R    
+      SPBN  M003
+      TAK   
+      L     DID[AR2,P#36.0]
+      +R    
+      T     DID[AR2,P#96.0]
+      SPA   M004
+M003: L     LD16
+      L     DID[AR2,P#36.0]
+      >R    
+      SPBN  M005
+      -R    
+      T     DID[AR2,P#96.0]
+      SPA   M004
+M005: L     0.000000e+000
+      T     DID[AR2,P#96.0]
+M004: L     DID[AR2,P#96.0]
+      L     DID[AR2,P#20.0]
+      *R    
+      T     LD16
+      L     DID[AR2,P#24.0]
+      DTR   
+      L     1.000000e+003
+      /R    
+      T     LD20
+      L     DID[AR2,P#28.0]
+      DTR   
+      L     1.000000e+003
+      /R    
+      T     LD24
+      L     DID[AR2,P#32.0]
+      DTR   
+      L     1.000000e+003
+      /R    
+      T     LD28
+      L     LD4
+      L     5.000000e-001
+      *R    
+      L     LD20
+      TAK   
+      <R    
+      SPBN  M006
+      L     LD4
+      L     5.000000e-001
+      *R    
+      T     LD20
+M006: L     LD24
+      L     LD4
+      <R    
+      SPBN  M007
+      T     LD24
+M007: L     LD4
+      L     5.000000e-001
+      *R    
+      L     LD28
+      TAK   
+      <R    
+      SPBN  M008
+      L     LD4
+      L     5.000000e-001
+      *R    
+      T     LD28
+M008: CLR   
+      U     DIX[AR2,P#0.3]
+      SPBN  M009
+      L     LD16
+      T     LD32
+      SPA   M010
+M009: L     0.000000e+000
+      T     LD32
+M010: CLR   
+      U     DIX[AR2,P#0.4]
+      SPBN  M011
+      U     DIX[AR2,P#0.6]
+      SPBN  M012
+      L     DID[AR2,P#64.0]
+      T     LD36
+      L     0.000000e+000
+      T     DID[AR2,P#108.0]
+      CLR   
+      =     DIX[AR2,P#124.2]
+      SPA   M013
+M012: CLR   
+      U     DIX[AR2,P#0.1]
+      SPBN  M014
+      L     DID[AR2,P#120.0]
+      L     LD32
+      -R    
+      L     DID[AR2,P#68.0]
+      -R    
+      T     LD36
+      L     0.000000e+000
+      T     DID[AR2,P#108.0]
+      CLR   
+      =     DIX[AR2,P#124.2]
+      SPA   M015
+M014: L     LD4
+      L     LD20
+      /R    
+      L     LD16
+      TAK   
+      T     LD62
+      TAK   
+      L     DID[AR2,P#100.0]
+      +R    
+      L     LD62
+      *R    
+      L     5.000000e-001
+      *R    
+      L     DID[AR2,P#108.0]
+      +R    
+      T     LD8
+      L     0.000000e+000
+      >R    
+      U     DIX[AR2,P#124.0]
+      O     DIX[AR2,P#0.5]
+      =     L60.2
+      <R    
+      U     DIX[AR2,P#124.1]
+      O     L 60.2
+      SPBN  M016
+      T     LD8
+M016: L     DID[AR2,P#104.0]
+      L     LD8
+      +R    
+      T     LD36
+      L     DID[AR2,P#104.0]
+      TAK   
+      -R    
+      L     LD8
+      +R    
+      T     DID[AR2,P#108.0]
+      L     LD36
+      L     DID[AR2,P#40.0]
+      >R    
+      SPBN  M017
+      U     DIX[AR2,P#124.2]
+      SPBN  M018
+      T     LD36
+M018: L     0.000000e+000
+      T     DID[AR2,P#108.0]
+      SPA   M015
+M017: L     LD36
+      L     DID[AR2,P#44.0]
+      <R    
+      SPBN  M019
+      U     DIX[AR2,P#124.2]
+      SPBN  M020
+      T     LD36
+M020: L     0.000000e+000
+      T     DID[AR2,P#108.0]
+      SPA   M015
+M019: SET   
+      =     DIX[AR2,P#124.2]
+      L     DID[AR2,P#104.0]
+      L     LD36
+      -R    
+      L     LD8
+      +R    
+      T     DID[AR2,P#108.0]
+M015: SPA   M013
+M011: L     0.000000e+000
+      T     LD36
+      T     DID[AR2,P#108.0]
+      CLR   
+      =     DIX[AR2,P#124.2]
+M013: L     LD16
+      T     LD8
+      CLR   
+      U     DIX[AR2,P#0.1]
+      NOT   
+      U     DIX[AR2,P#0.7]
+      SPBN  M021
+      L     LD4
+      L     5.000000e-001
+      *R    
+      L     LD28
+      +R    
+      L     LD24
+      TAK   
+      /R    
+      T     LD44
+      L     LD8
+      L     DID[AR2,P#116.0]
+      -R    
+      L     LD44
+      *R    
+      T     LD40
+      L     DID[AR2,P#116.0]
+      T     LD52
+      L     LD4
+      L     LD24
+      /R    
+      L     LD40
+      *R    
+      L     DID[AR2,P#112.0]
+      +R    
+      T     LD48
+      L     LD52
+      +R    
+      T     DID[AR2,P#116.0]
+      L     LD52
+      TAK   
+      -R    
+      L     LD48
+      +R    
+      T     DID[AR2,P#112.0]
+      SPA   M022
+M021: L     0.000000e+000
+      T     LD40
+      T     DID[AR2,P#112.0]
+      L     LD8
+      T     DID[AR2,P#116.0]
+M022: L     LD32
+      L     LD36
+      +R    
+      L     LD40
+      +R    
+      L     DID[AR2,P#68.0]
+      +R    
+      T     LD56
+      L     LD32
+      T     DID[AR2,P#80.0]
+      L     LD36
+      T     DID[AR2,P#84.0]
+      L     LD40
+      T     DID[AR2,P#88.0]
+      L     LD16
+      T     DID[AR2,P#100.0]
+      L     LD36
+      T     DID[AR2,P#104.0]
+      CLR   
+      U     DIX[AR2,P#0.1]
+      SPBN  M023
+      L     DID[AR2,P#16.0]
+      T     LD56
+M023: CLR   
+      =     DIX[AR2,P#124.0]
+      =     DIX[AR2,P#124.1]
+      L     LD56
+      L     DID[AR2,P#40.0]
+      >=R   
+      SPBN  M024
+      SET   
+      =     DIX[AR2,P#78.0]
+      CLR   
+      =     DIX[AR2,P#78.1]
+      T     LD56
+      SET   
+      =     DIX[AR2,P#124.0]
+      SPA   M025
+M024: CLR   
+      =     DIX[AR2,P#78.0]
+      L     LD56
+      L     DID[AR2,P#44.0]
+      <=R   
+      SPBN  M026
+      SET   
+      =     DIX[AR2,P#78.1]
+      T     LD56
+      =     DIX[AR2,P#124.1]
+      SPA   M025
+M026: CLR   
+      =     DIX[AR2,P#78.1]
+M025: L     LD56
+      T     DID[AR2,P#120.0]
+      L     DID[AR2,P#56.0]
+      *R    
+      L     DID[AR2,P#60.0]
+      +R    
+      T     LD56
+      L     2.764800e+002
+      *R    
+      RND   
+      T     DIW[AR2,P#76.0]
+      L     LD56
+      T     DID[AR2,P#72.0]
+M001: CLR   
+      U     L 60.1
+      SAVE  
