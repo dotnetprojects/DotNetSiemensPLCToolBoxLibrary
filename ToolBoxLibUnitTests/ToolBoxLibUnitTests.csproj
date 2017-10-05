@@ -98,6 +98,12 @@
     <None Include="S7Blocks\MC7Converter\FC100.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="S7Blocks\MC7Converter\FC21.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\MC7Converter\FC21.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="S7Blocks\Parameter\DB3001.awl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -147,6 +153,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="S7Blocks\MC7Converter\FB751.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB41.awl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="S7Blocks\Parameter\FB41.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="S7Blocks\Parameter\FB80.awl">
