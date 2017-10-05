@@ -185,11 +185,10 @@ namespace TiaGitHandler
                                 src = sb.ToString();
                             }
 
-                            if (src != null)
+                            if (src != null && ext != "db")
                             {
                                 Directory.CreateDirectory(path);
-                                File.WriteAllText(file, src/*, Encoding.UTF8*/);
-
+                                File.WriteAllText(file, src, new UTF8Encoding(true));
                             }
                             else
                             {
@@ -250,7 +249,7 @@ namespace TiaGitHandler
                                 }
 
                                 Directory.CreateDirectory(path);
-                                File.WriteAllText(xmlfile, xml/*, Encoding.UTF8*/);
+                                File.WriteAllText(xmlfile, xml, new UTF8Encoding(true));
 
                             }
                             else
