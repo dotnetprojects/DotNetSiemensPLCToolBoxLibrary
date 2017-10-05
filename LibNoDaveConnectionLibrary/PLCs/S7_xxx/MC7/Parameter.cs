@@ -62,22 +62,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// Represents the Type of Parameter in an Interfacer, Not the Datatype.
         /// Basically ther are In, Out, INOUT, Static and Temp
         /// The _Init versions are the same with the above, except they have initial values that must ge parsed
+        /// the _EX_ version are slightly different, in that they include an extra parameter in the interface declaration row. 
+        /// I think this parameter is some kind of BitFiled declaring some options, but i am not sure what it is? See GetVarEn function for details
         /// </summary>
         private enum ParameterType : Byte
         {
              IN = 0x01,
              IN_Init = 0x09,
+             IN_Ex = 0x11,
+             IN_Ex_Init = 0x19,
+
              OUT = 0x02,
-             OUT_Init = 0x0A,
+             OUT_Init = 0x0a,
+             OUT_Ex = 0x12,
+             OUT_Ex_Init = 0x1a,
+
              IN_OUT = 0x03,
              IN_OUT_Init = 0x0b,
+             IN_OUT_Ex = 0x13,
+             IN_OUT_Ex_Init = 0x1b,
+
              STATIC = 0x04,
              STATIC_Init = 0x0C,
-             STATIC_Old = 0x14, //this is an Parameter type that i found on some online blocks. I do not exactly know what they mean. There is no apparent differnece to regular Static Parameters
-             TEMP = 0x05,
-             RET = 0x06,
-        }
+             STATIC_Ex = 0x14,
+             STATIC_Ex_Init = 0x1c,
 
+             TEMP = 0x05,
+             TEMP_Ex = 0x15,
+             RET = 0x06,
+             RET_Ex = 0x16
+        }
 
         /// <summary>
         /// Goes down in the parameter rows and finds the datarow corresponding to the In, Out or InOut parameter that corresponds to Index
@@ -656,6 +670,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     case ParameterType.IN:
                     case ParameterType.IN_Init:
+                    case ParameterType.IN_Ex:
+                    case ParameterType.IN_Ex_Init:
                         {
                             VarNameGenerator VarNameGen = VarNameIn;
                             GetVarTypeEN(parameterIN, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
@@ -663,6 +679,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         break;
                     case ParameterType.OUT:
                     case ParameterType.OUT_Init:
+                    case ParameterType.OUT_Ex:
+                    case ParameterType.OUT_Ex_Init:
                         {
                             VarNameGenerator VarNameGen = VarNameOut;
                             GetVarTypeEN(parameterOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen,  myBlk);
@@ -670,6 +688,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         break;
                     case ParameterType.IN_OUT:
                     case ParameterType.IN_OUT_Init:
+                    case ParameterType.IN_OUT_Ex:
+                    case ParameterType.IN_OUT_Ex_Init:
                         {
                             VarNameGenerator VarNameGen = VarNameInOut;
                             GetVarTypeEN(parameterINOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen,  myBlk);
@@ -677,7 +697,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         break;
                     case ParameterType.STATIC:
                     case ParameterType.STATIC_Init:
-                    case ParameterType.STATIC_Old:
+                    case ParameterType.STATIC_Ex:
+                    case ParameterType.STATIC_Ex_Init:
                         {
                             VarNameGenerator VarNameGen = VarNameStat;
                             GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
@@ -685,12 +706,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
 
                     case ParameterType.TEMP:
+                    case ParameterType.TEMP_Ex:
                         {
                             VarNameGenerator VarNameGen = VarNameTemp;
                             GetVarTypeEN(parameterTEMP, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,  ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
                     case ParameterType.RET:
+                    case ParameterType.RET_Ex:
                         {
                             VarNameGenerator VarNameGen = VarNameRet;
                             GetVarTypeEN(parameterRETVAL, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes,ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
@@ -769,11 +792,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //
                     //InterfacePos + 0     = Datatype: 17 for Array
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //
+                    //if parametertype is an "Ex" version
+                    //InterfacePos + 0     = Datatype: 17 for Array
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //InterfacePos + 2     = Seemingly Random values, with unknown meaning
 
-                    var Par = new S7DataRow(VarName, datatype, myBlk);
+                    var Par = new S7DataRow(VarName, datatype, myBlk);                  
+                    ParameterType parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+
+                    //There is also an special case for "Extended" paramters. These contain an additional value
+                    if (HasExtendedParameter(parameterType))
+                    {
+                        int unkwonValue = interfaceBytes[InterfacePos + 2];
+                        InterfacePos++; //advance parsing by one additional byte
+                    }
 
                     //if the type has an Start value, then parse it from the Start values
-                    ParameterType parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
                     if (HasInitialValues(parameterType))
                         Par.StartValue = GetVarInitialValue(datatype, startValueBytes, ref StartValuePos);
 
@@ -809,11 +844,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 0     = Datatype: 0x13 for String
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
                     //InterfacePos + 2     = String Length
+                    //
+                    //Parameter Type is an EX version:
+                    //InterfacePos + 0     = Datatype: 0x13 for String
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //InterfacePos + 2     = Seemingly Random values, with unknown meaning
+                    //InterfacePos + 3     = String Length
 
                     Par = new S7DataRow(VarName, datatype, myBlk);
 
-                    //if the type has an Start value, then parse it from the Start values
+                    //There is also an special case for "Extended" paramters. These contain an additional value
                     parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+                    if (HasExtendedParameter(parameterType))
+                    {
+                        int unkwonValue = interfaceBytes[InterfacePos + 2];
+                        InterfacePos++; //advance parsing by one additional byte
+                    }
+
                     Par.StringSize = interfaceBytes[InterfacePos + 2];
 
                     if (HasInitialValues(parameterType))
@@ -823,21 +870,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     InterfacePos += 3;  //3 byte interface row length
                     break;
 
-                case S7DataRowType.ARRAY: 
-                     //Read the Array Dimension from the Interface
-                     //An array has the following format
-                     //the Interface itme has an variable length of:  3 + (Dimensions * 4)
-                     //
-                     //InterfacePos + 0     = Datatype: 0x10 for Array
-                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
-                     //InterfacePos + 2     = Dimensions: Amount of dimensions to be parsed
-                     //InterfacePos + 3-4   = Lower Bound of 1st Dimension
-                     //InterfacePos + 5-6   = Upper Bound of 1st Dimension
-                     //InterfacePos + 7-8   = Lower Bound of 2nd Dimension if any
-                     //InterfacePos + 9-10  = Upper Bound of 2nd Dimensino if any
-                     //....      
+                case S7DataRowType.ARRAY:
+                    //Read the Array Dimension from the Interface
+                    //An array has the following format
+                    //the Interface itme has an variable length of:  3 + (Dimensions * 4)
+                    //
+                    //InterfacePos + 0     = Datatype: 0x10 for Array
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //InterfacePos + 2     = Dimensions: Amount of dimensions to be parsed
+                    //InterfacePos + 3-4   = Lower Bound of 1st Dimension
+                    //InterfacePos + 5-6   = Upper Bound of 1st Dimension
+                    //InterfacePos + 7-8   = Lower Bound of 2nd Dimension if any
+                    //InterfacePos + 9-10  = Upper Bound of 2nd Dimensino if any
+                    //....      
+                    //
+                    //Parameter Type is an EX version:
+                    //InterfacePos + 0     = Datatype: 0x10 for Array
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
+                    //InterfacePos + 2     = Seemingly Random values, with unknown meaning
+                    //InterfacePos + 3     = Dimensions: Amount of dimensions to be parsed
+                    //InterfacePos + 4-5   = Lower Bound of 1st Dimension
+                    //InterfacePos + 6-7   = Upper Bound of 1st Dimension
+                    //InterfacePos + 8-9   = Lower Bound of 2nd Dimension if any
+                    //InterfacePos + 10-11  = Upper Bound of 2nd Dimensino if any
+                    //....      
 
-                     int ArrayDim = interfaceBytes[InterfacePos + 2];
+                    //There is also an special case for "Extended" paramters. These contain an additional value
+                    parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+                    if (HasExtendedParameter(parameterType))
+                    {
+                        int unkwonValue = interfaceBytes[InterfacePos + 2];
+                        InterfacePos++; //advance parsing by one additional byte
+                    }
+
+                    int ArrayDim = interfaceBytes[InterfacePos + 2];
                      List<int> arrStart = new List<int>();
                      List<int> arrStop = new List<int>();
 
@@ -882,7 +948,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //There is another special case, when the ParameterType is 0x14. In that case the layout is similar to the special case with more than 255 children,
                     //Except that the value InterfacePos + 2 has seemingly random Values. At the moment i do not know what these values mean
                     //
-                    //Parameter Type == 0x14:
+                    //Parameter Type is an EX version:
                     //InterfacePos + 0     = Datatype: 0x11 for struct
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
                     //InterfacePos + 2     = Seemingly Random values, with unknown meaning
@@ -891,18 +957,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     var akPar = new S7DataRow(VarName, datatype, myBlk);
                     currPar.Add(akPar);
 
-                    //There is an Special case, if the Parameter type is 0x14, then there is an unknown value before the child count
+                    //There is also an special case for "Extended" paramters. These contain an additional value
                     parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
-                    if (parameterType == ParameterType.STATIC_Old)
+                    if (HasExtendedParameter(parameterType))
                     {
                         int unkwonValue = interfaceBytes[InterfacePos + 2];
                         InterfacePos++; //advance parsing by one additional byte
                     }
-           
 
-                    //Continue parsing insde the new Struct
+                    //Extract Children count from interface
                     int Children = interfaceBytes[InterfacePos + 2];
-
                     if (Children == 255)
                     {
                         //Reparse the children count from the next two bytes as an Integer as oposed to an single byte above
@@ -911,6 +975,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                     else {InterfacePos += 3; } //3 bytes for Structure Element length, so it points to the next child element
 
+                    //Continue parsing insde the new Struct
                     for (int i = 0; i < Children; i++)
                     {
                         GetVarTypeEN(akPar, (S7DataRowType)interfaceBytes[InterfacePos], true, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
@@ -930,9 +995,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             switch (pt)
             {
                 case ParameterType.IN_Init:
+                case ParameterType.IN_Ex_Init:
                 case ParameterType.IN_OUT_Init:
+                case ParameterType.IN_OUT_Ex_Init:
                 case ParameterType.OUT_Init:
+                case ParameterType.OUT_Ex_Init:
                 case ParameterType.STATIC_Init:
+                case ParameterType.STATIC_Ex_Init:
+                    return true;
+                default: return false;
+            }
+        }
+
+        private static bool HasExtendedParameter(ParameterType pt)
+        {
+            switch (pt)
+            {
+                case ParameterType.IN_Ex:
+                case ParameterType.IN_Ex_Init:
+                case ParameterType.IN_OUT_Ex:
+                case ParameterType.IN_OUT_Ex_Init:
+                case ParameterType.OUT_Ex:
+                case ParameterType.OUT_Ex_Init:
+                case ParameterType.STATIC_Ex:
+                case ParameterType.STATIC_Ex_Init:
+                case ParameterType.TEMP_Ex:
+                case ParameterType.RET_Ex:
                     return true;
                 default: return false;
             }

@@ -162,5 +162,17 @@ namespace ToolBoxLibUnitTests
 	        string AWL = File.ReadAllText(dir + "FB751.awl").Trim().Replace("\r\n", "\n");
 	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 	    }
+
+	    [Test(Description = "This block contains an unconditional call of an IN.Block_FB parameter without Parameters 'UC #IN2'")]
+	    public void ParseFcWithParameterlessUnconditionalCall()
+	    {
+	        byte[] block = File.ReadAllBytes(dir + "FC21.bin");
+	        var DB = DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
+
+	        //Fix up different culture dependent Date conversion
+	        //this might not be optimal, but i dont have any better solution at the moment.
+	        string AWL = File.ReadAllText(dir + "FC21.awl").Trim().Replace("\r\n", "\n");
+	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+	    }
     }
 }
