@@ -73,6 +73,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
              IN_OUT_Init = 0x0b,
              STATIC = 0x04,
              STATIC_Init = 0x0C,
+             STATIC_Old = 0x14, //this is an Parameter type that i found on some online blocks. I do not exactly know what they mean. There is no apparent differnece to regular Static Parameters
              TEMP = 0x05,
              RET = 0x06,
         }
@@ -676,6 +677,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         break;
                     case ParameterType.STATIC:
                     case ParameterType.STATIC_Init:
+                    case ParameterType.STATIC_Old:
                         {
                             VarNameGenerator VarNameGen = VarNameStat;
                             GetVarTypeEN(parameterSTAT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
@@ -860,6 +862,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //Structs are nested datatypes, so go one recursivly. Also UDT get converted to Structs, so they are indistiguishable from them
                     //Structs have the following format:
                     //Structure Interface elements have an fixed length of 3 bytes or fixed length or 5 byte if children count is greater then 255.
+                    //There is also an special case with 4 Bytes length
                     //
                     //Child count < 255:
                     //InterfacePos + 0     = Datatype: 0x11 for struct
@@ -875,9 +878,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 2     = Marker that there are mor children: always 255
                     //InterfacePos + 3     = Child count LSB
                     //InterfacePos + 4     = Child count MSB
+                    //
+                    //There is another special case, when the ParameterType is 0x14. In that case the layout is similar to the special case with more than 255 children,
+                    //Except that the value InterfacePos + 2 has seemingly random Values. At the moment i do not know what these values mean
+                    //
+                    //Parameter Type == 0x14:
+                    //InterfacePos + 0     = Datatype: 0x11 for struct
+                    //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
+                    //InterfacePos + 2     = Seemingly Random values, with unknown meaning
+                    //InterfacePos + 3     = Child count
 
                     var akPar = new S7DataRow(VarName, datatype, myBlk);
                     currPar.Add(akPar);
+
+                    //There is an Special case, if the Parameter type is 0x14, then there is an unknown value before the child count
+                    parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
+                    if (parameterType == ParameterType.STATIC_Old)
+                    {
+                        int unkwonValue = interfaceBytes[InterfacePos + 2];
+                        InterfacePos++; //advance parsing by one additional byte
+                    }
+           
 
                     //Continue parsing insde the new Struct
                     int Children = interfaceBytes[InterfacePos + 2];
