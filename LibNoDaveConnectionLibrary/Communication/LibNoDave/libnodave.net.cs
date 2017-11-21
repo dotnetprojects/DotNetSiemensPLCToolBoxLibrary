@@ -1484,6 +1484,54 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
             #endregion
 
+            #region daveGetNCFile
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetNcFile")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNcFile")]
+#endif
+            protected static extern int daveGetNcFile64(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetNcFile")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNcFile")]
+#endif
+            protected static extern int daveGetNcFile32(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+            public int daveGetNcFile(string filename, byte[] buffer, ref int length)
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetNcFile64(pointer, filename, buffer, ref length);
+                else
+                    return daveGetNcFile32(pointer, filename, buffer, ref length);
+            }
+            #endregion
+
+            #region daveGetNCFileSize
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetNcFileSize")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNcFileSize")]
+#endif
+            protected static extern int daveGetNcFileSize64(IntPtr dc, string filename, ref int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetNcFileSize")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNcFileSize")]
+#endif
+            protected static extern int daveGetNcFileSize32(IntPtr dc, string filename, ref int length);
+
+            public int daveGetNcFileSize(string filename, ref int length)
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetNcFileSize64(pointer, filename, ref length);
+                else
+                    return daveGetNcFileSize32(pointer, filename, ref length);
+            }
+            #endregion
+
             #region davePutNCProgram
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePutNCProgram")]

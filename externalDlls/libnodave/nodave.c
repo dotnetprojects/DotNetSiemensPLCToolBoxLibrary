@@ -4202,14 +4202,15 @@ again:
 */
 int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	int res,i,length, follow;
+    int remaining;  /* FIX */
 	uc lhdr[7];
 	i=_daveTimedRecv(di, b, 4);
 	if (i<0) return 0;
 	res=i;
-    	    if (res<4) {
+        if (res<4) {
 	    if (daveDebug & daveDebugByte) {
-		LOG2("res %d ",res);
-		_daveDump("readISOpacket: short packet", b, res);
+		    LOG2("res %d ",res);
+		    _daveDump("readISOpacket: short packet", b, res);
 	    }
 	    return (0); /* short packet */
 	}
@@ -4218,27 +4219,40 @@ int DECL2 _daveReadISOPacket(daveInterface * di,uc *b) {
 	res+=i;
 	if (daveDebug & daveDebugByte) {
 	    LOG3("readISOpacket: %d bytes read, %d needed\n",res, length);
-	    _daveDump("readISOpacket: packet", b, res);    
+	    _daveDump("readISOpacket: packet", b, res);
 	}
+    /* FIX START: Force to read the complete TPKT if first was not complete */
+    remaining = length - res;
+    while (remaining > 0){
+        if (daveDebug & daveDebugByte) {
+            LOG2("readISOpacket: Trying to read %d remaining bytes of the complete TPKT\n", remaining);
+            FLUSH;
+        }
+        i = _daveTimedRecv(di, b + res, remaining);
+        if (i < 0) return 0;
+        res += i;
+        remaining = length - res;
+    }
+    /* FIX END */
 	follow=((b[5]==0xf0)&& ((b[6] & 0x80)==0) );
 	while (follow) {
 	    if (daveDebug & daveDebugByte) {
-		LOG2("readISOpacket: more data follows %d\n",b[6]);
+		    LOG2("readISOpacket: more data follows %d\n",b[6]);
 	    }
 	    i=_daveTimedRecv(di, lhdr, 7);
 	    length=lhdr[3]+0x100*lhdr[2];
-	if (daveDebug & daveDebugByte) {
-		_daveDump("readISOpacket: follow %d %d", lhdr, i);
-	}
+	    if (daveDebug & daveDebugByte) {
+		    _daveDump("readISOpacket: follow %d %d", lhdr, i);
+	    }
 	    i=_daveTimedRecv(di, b+res, length-7);
 	    if (daveDebug & daveDebugByte) {
-		_daveDump("readISOpacket: follow %d %d", b+res, i);
-	}
-	res+=i;
+		    _daveDump("readISOpacket: follow %d %d", b+res, i);
+	    }
+	    res+=i;
 	    follow=((lhdr[5]==0xf0)&& ((lhdr[6] & 0x80)==0) );
 	}
 	return (res);
-    }
+}
 
 
 int DECL2 _daveSendISOPacket(daveConnection * dc, int size) {
@@ -6394,7 +6408,8 @@ int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number) {
 Send Receive NC Program:
 */
 
-int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length) {
+int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length) 
+{
 	int res, len, more, totlen;
 	unsigned char uploadID[4];
 	uc *bb=(uc*)buffer;
@@ -6411,6 +6426,298 @@ int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer,
 	res=endUploadNC(dc, uploadID);
 	*length=totlen;
 	return res;
+}
+
+#define MAXUNACKED 20 // Anzahl Telegramme die ohne ack angenommen werden = 20
+int DECL2 daveGetNcFile(daveConnection *dc, const char *filename, char *buffer, int *length)
+{
+    PDU p, p2;
+    int res = 0;
+    uc unackcount = 0;
+    int filename_len = 0;
+    int tot_len = 0;
+    int part_len = 0;
+
+    /* Request upload */
+    uc req_up_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x7f, 0x06, 0x00
+    };
+    uc req_up_da[]= {
+        0xff, 0x09, 0x00, 32,
+        /* Anzahl Telegramme die ohne ack angenommen werden = 20  */
+        MAXUNACKED, 0x00,
+        /* Dateiname max. 32 Zeichen */
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00
+    };
+
+    /* Continue upload */
+    uc cont_up_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x3f, 0x08, 0x00
+    };
+    uc cont_up_da[]= {
+        0xff, 0x09, 0x00, 0x02,
+        /* Anzahl Telegramme die ohne ack angenommen werden = 20 */
+        MAXUNACKED, 0x00
+    };
+
+    *length = 0;
+    filename_len = strlen(filename);    /* max. 32 chars */
+    if (filename_len > 32) {
+        return -1;
+    }
+    req_up_da[3] = filename_len + 2;    /* + 1 Byte Anzahl Telegramme + 1 Byte unbekannt */
+    memcpy(&req_up_da[6], filename, filename_len);
+
+    p.header = dc->msgOut + dc->PDUstartO;
+    _daveInitPDUheader(&p, 7);
+    _daveAddParam(&p, req_up_pa, sizeof(req_up_pa));
+    _daveAddData(&p, req_up_da, 6 + filename_len);
+
+    res = _daveExchange(dc, &p);
+    if (res != daveResOK) {
+        return res;
+    }
+    res = _daveSetupReceivedPDU(dc, &p2);
+    /* Errorcode im Parameterteil prüfen */
+    res = daveGetU16from(&p2.param[10]);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Response start upload, param.errorcode=0x%04x\n", res);
+        FLUSH;
+    }
+    if (res != 0) {
+        return -2;
+    }
+    cont_up_pa[7] = p2.param[7];      /* Sequenznummer für alle folgenden Continue-Uploads verwenden */
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Verwendete Sequenznummer=%d\n", cont_up_pa[7]);
+        FLUSH;
+    }
+    res = _daveTestResultData(&p2);
+    if (res != daveResOK) {
+        return res;
+    }
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Response start upload, p2.udlen=%d\n", p2.udlen);
+        FLUSH;
+    }
+    /* Vor den eigentlichen Daten sind hier noch 2 Bytes unbekannter Funktion eingeschoben */
+    part_len = p2.udlen - 2;
+    if (part_len <= 0) {
+        return -3;
+    }
+    memcpy(buffer + tot_len, p2.data + 6, part_len);
+    tot_len += part_len;
+    /* Wenn ab hier noch nicht alles gelesen, dann werden bis zu 20 Telegramme gesendet die 
+     * nicht bestätigt werden müssen. Dann gibt es ein ack usw. usf.
+    */
+    while (p2.param[9] != 0) {     /* 0 = Last data unit */
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: unackcount=%d\n", unackcount);
+            FLUSH;
+        }
+        /* Nach 20 Telegrammen continue Telegramm senden */
+        if (unackcount == MAXUNACKED) {
+            if (daveDebug & daveDebugUpload) {
+                LOG1("daveGetNcFile: Sende continue Telegramm\n");
+			}
+            p.header = dc->msgOut + dc->PDUstartO;
+            _daveInitPDUheader(&p, 7);
+            _daveAddParam(&p, cont_up_pa, sizeof(cont_up_pa));
+            _daveAddData(&p, cont_up_da, sizeof(cont_up_da));
+            res = _daveSendTCP(dc, &p);
+            if (res != daveResOK) {
+                return res;
+            }
+            unackcount = 0;
+        }
+        if (daveDebug & daveDebugUpload) {
+            LOG1("daveGetNcFile: Empfange Upload Push-Telegramm\n");
+		}
+        res = _daveGetResponseISO_TCP(dc);
+        if (res != daveResOK) {
+            return res;
+        }
+        res = _daveSetupReceivedPDU(dc, &p2);
+        /* Errorcode im Parameterteil prüfen */
+        res = daveGetU16from(&p2.param[10]);
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: continue upload, param.errorcode=0x%04x\n", res);
+            FLUSH;
+        }
+        if (res != 0) {
+            return -4;
+        }
+        res = _daveTestResultData(&p2);
+        if (res != daveResOK) {
+            return res;
+        }
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: Response start upload, p2.udlen=%d\n", p2.udlen);
+            FLUSH;
+        }
+        part_len = p2.udlen - 2;
+        if (part_len <= 0) {
+            return -5;
+        }
+        memcpy(buffer + tot_len, p2.data + 6, part_len);
+        tot_len += part_len;
+        unackcount++;
+    }
+    *length = tot_len;
+
+	if (daveDebug & daveDebugUpload) {
+		LOG2("daveGetNcFile: tot_len=%d\n", tot_len);
+		LOG2("daveGetNcFile: res=%d\n", res);
+		FLUSH;
+	}
+    return res;
+}
+
+int DECL2 daveGetNcFileSize(daveConnection *dc, const char *filename, int *length)
+{
+    PDU p, p2;
+    int res = 0;
+    uc unackcount = 0;
+    int filename_len = 0;
+    int tot_len = 0;
+    int part_len = 0;
+
+    /* Request upload */
+    uc req_up_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x7f, 0x06, 0x00
+    };
+    uc req_up_da[]= {
+        0xff, 0x09, 0x00, 32,
+        /* Anzahl Telegramme die ohne ack angenommen werden = 20  */
+        MAXUNACKED, 0x00,
+        /* Dateiname max. 32 Zeichen */
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00
+    };
+
+    /* Continue upload */
+    uc cont_up_pa[]= {
+        0x00, 0x01, 0x12, 0x04, 0x11, 0x3f, 0x08, 0x00
+    };
+    uc cont_up_da[]= {
+        0xff, 0x09, 0x00, 0x02,
+        /* Anzahl Telegramme die ohne ack angenommen werden = 20 */
+        MAXUNACKED, 0x00
+    };
+
+    *length = 0;
+    filename_len = strlen(filename);    /* max. 32 chars */
+    if (filename_len > 32) {
+        return -1;
+    }
+    req_up_da[3] = filename_len + 2;    /* + 1 Byte Anzahl Telegramme + 1 Byte unbekannt */
+    memcpy(&req_up_da[6], filename, filename_len);
+
+    p.header = dc->msgOut + dc->PDUstartO;
+    _daveInitPDUheader(&p, 7);
+    _daveAddParam(&p, req_up_pa, sizeof(req_up_pa));
+    _daveAddData(&p, req_up_da, 6 + filename_len);
+
+    res = _daveExchange(dc, &p);
+    if (res != daveResOK) {
+        return res;
+    }
+    res = _daveSetupReceivedPDU(dc, &p2);
+    /* Errorcode im Parameterteil prüfen */
+    res = daveGetU16from(&p2.param[10]);
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Response start upload, param.errorcode=0x%04x\n", res);
+        FLUSH;
+    }
+    if (res != 0) {
+        return -2;
+    }
+    cont_up_pa[7] = p2.param[7];      /* Sequenznummer für alle folgenden Continue-Uploads verwenden */
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Verwendete Sequenznummer=%d\n", cont_up_pa[7]);
+        FLUSH;
+    }
+    res = _daveTestResultData(&p2);
+    if (res != daveResOK) {
+        return res;
+    }
+    if (daveDebug & daveDebugUpload) {
+        LOG2("daveGetNcFile: Response start upload, p2.udlen=%d\n", p2.udlen);
+        FLUSH;
+    }
+    /* Vor den eigentlichen Daten sind hier noch 2 Bytes unbekannter Funktion eingeschoben */
+    part_len = p2.udlen - 2;
+    if (part_len <= 0) {
+        return -3;
+    }
+    tot_len += part_len;
+    /* Wenn ab hier noch nicht alles gelesen, dann werden bis zu 20 Telegramme gesendet die 
+     * nicht bestätigt werden müssen. Dann gibt es ein ack usw. usf.
+    */
+    while (p2.param[9] != 0) {     /* 0 = Last data unit */
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: unackcount=%d\n", unackcount);
+            FLUSH;
+        }
+        /* Nach 20 Telegrammen continue Telegramm senden */
+        if (unackcount == MAXUNACKED) {
+            if (daveDebug & daveDebugUpload) {
+                LOG1("daveGetNcFile: Sende continue Telegramm\n");
+            }
+            p.header = dc->msgOut + dc->PDUstartO;
+            _daveInitPDUheader(&p, 7);
+            _daveAddParam(&p, cont_up_pa, sizeof(cont_up_pa));
+            _daveAddData(&p, cont_up_da, sizeof(cont_up_da));
+            res = _daveSendTCP(dc, &p);
+            if (res != daveResOK) {
+                return res;
+            }
+            unackcount = 0;
+        }
+        if (daveDebug & daveDebugUpload) {
+            LOG1("daveGetNcFile: Empfange Upload Push-Telegramm\n");
+        }
+        res = _daveGetResponseISO_TCP(dc);
+        if (res != daveResOK) {
+            return res;
+        }
+        res = _daveSetupReceivedPDU(dc, &p2);
+        /* Errorcode im Parameterteil prüfen */
+        res = daveGetU16from(&p2.param[10]);
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: continue upload, param.errorcode=0x%04x\n", res);
+            FLUSH;
+        }
+        if (res != 0) {
+            return -4;
+        }
+        res = _daveTestResultData(&p2);
+        if (res != daveResOK) {
+            return res;
+        }
+        if (daveDebug & daveDebugUpload) {
+            LOG2("daveGetNcFile: Response start upload, p2.udlen=%d\n", p2.udlen);
+            FLUSH;
+        }
+        part_len = p2.udlen - 2;
+        if (part_len <= 0) {
+            return -5;
+        }
+        tot_len += part_len;
+        unackcount++;
+    }
+    *length = tot_len;
+	if (daveDebug & daveDebugUpload) {
+		LOG2("daveGetNcFile: tot_len=%d\n", tot_len);
+		LOG2("daveGetNcFile: res=%d\n", res);
+		FLUSH;
+	}
+    return res;
 }
 
 #ifdef TestXXX

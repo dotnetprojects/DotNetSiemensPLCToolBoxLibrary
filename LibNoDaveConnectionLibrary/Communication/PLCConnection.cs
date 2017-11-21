@@ -3802,6 +3802,118 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public byte[] BinaryUploadNcFile(string fullFileName, int size = 0, bool F_XFER = false)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (size == 0)
+                size = UploadNcFileSize(fullFileName, F_XFER);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+            int length = 0;
+            byte[] buffer = new byte[size];
+            int res = _dc.daveGetNcFile(filename, buffer, ref length);
+
+            if (res != 0)
+                throw new Exception("BinaryUploadNcFile: " + res);
+
+            byte[] ret = new byte[length];
+            Array.Copy(buffer, ret, length);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public string UploadNcFile(string fullFileName, int size = 0, bool F_XFER = true)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string ret = string.Empty;
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (size == 0)
+                size = UploadNcFileSize(fullFileName, F_XFER);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+#if daveDebug
+            libnodave.daveSetDebug(0x1ffff);
+#endif
+
+            int length = 0;
+            byte[] buffer = new byte[size];
+            int res = _dc.daveGetNcFile(filename, buffer, ref length);
+
+#if daveDebug
+            var a = libnodave.daveGetDebug();
+
+            if (res != 0)
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    if (buffer[i] == 0)
+                    {
+                        length = i;
+                        break;
+                    }
+                }
+
+            libnodave.daveSetDebug(0);
+#endif
+
+            if (res != 0)
+                throw new Exception("UploadNcFile: " + res);
+            else if (length > buffer.Length)
+                throw new ArgumentOutOfRangeException("size", size, "File size: " + length);
+            else
+                ret = System.Text.Encoding.Default.GetString(buffer, 0, length);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Load file size from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public int UploadNcFileSize(string fullFileName, bool F_XFER = true)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+#if daveDebug
+            libnodave.daveSetDebug(0x1ffff);
+#endif
+
+            int length = 0;
+            int res = _dc.daveGetNcFileSize(filename, ref length);
+
+#if daveDebug
+            libnodave.daveSetDebug(0);
+#endif
+
+            if (res != 0)
+                throw new Exception("UploadNcFileSize: " + res);
+            return length;
+        }
+
+        /// <summary>
         /// Transfer file to NC
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>

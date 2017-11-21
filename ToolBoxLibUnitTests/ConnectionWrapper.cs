@@ -222,6 +222,16 @@ namespace ToolBoxLibUnitTests
             throw new NotImplementedException();
         }
 
+        public int daveGetNcFile(string filename, byte[] buffer, ref int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int daveGetNcFileSize(string filename, ref int length)
+        {
+            throw new NotImplementedException();
+        }
+
         public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
         {
             throw new NotImplementedException();

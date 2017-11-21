@@ -1104,6 +1104,10 @@ EXPORTSPEC int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, in
 */
 EXPORTSPEC int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length);
 
+EXPORTSPEC int DECL2 daveGetNcFile(daveConnection *dc, const char *filename, char *buffer, int *length);
+
+EXPORTSPEC int DECL2 daveGetNcFileSize(daveConnection *dc, const char *filename, int *length);
+
 //DateTime ts Format: yyMMddHHmmss
 EXPORTSPEC int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, char *ts, char *buffer, int length);
 
