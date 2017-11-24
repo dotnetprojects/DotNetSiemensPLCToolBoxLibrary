@@ -43,9 +43,6 @@
       <HintPath>..\externalDlls\siemens\V14SP1\Siemens.Engineering.Hmi.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="sliver.Windows.Forms.StateBrowser">
-      <HintPath>..\..\Software\MLOG\Technologieschemaeditor\Stable\sliver.Windows.Forms.StateBrowser.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
