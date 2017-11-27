@@ -190,10 +190,6 @@ namespace TiaGitHandler
                                 Directory.CreateDirectory(path);
                                 File.WriteAllText(file, src, new UTF8Encoding(true));
                             }
-                            else
-                            {
-                                Console.WriteLine("Skipping Block (null)" + projectBlockInfo.Name);
-                            }
 
                             if (xml != null)
                             {
@@ -251,10 +247,6 @@ namespace TiaGitHandler
                                 Directory.CreateDirectory(path);
                                 File.WriteAllText(xmlfile, xml, new UTF8Encoding(true));
 
-                            }
-                            else
-                            {
-                                Console.WriteLine("Skipping Block (null)" + projectBlockInfo.Name);
                             }
                         }
                         else

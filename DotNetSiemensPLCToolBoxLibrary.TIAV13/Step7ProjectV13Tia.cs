@@ -714,10 +714,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 row.DataType = S7DataRowType.INT;
                                 break;
                             case "uint":
-                                row.DataType = S7DataRowType.DWORD;
+                                row.DataType = S7DataRowType.WORD;
                                 break;
                             case "dint":
                                 row.DataType = S7DataRowType.DINT;
+                                break;
+                            case "udint":
+                                row.DataType = S7DataRowType.DWORD;
                                 break;
                             case "word":
                                 row.DataType = S7DataRowType.WORD;
