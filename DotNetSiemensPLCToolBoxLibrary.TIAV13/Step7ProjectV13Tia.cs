@@ -8,7 +8,9 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Siemens.Engineering.SW;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using System.Text.RegularExpressions;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -21,7 +23,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
     public partial class Step7ProjectV13
     {
-
         private Siemens.Engineering.TiaPortal tiaPortal;
         private Siemens.Engineering.Project tiapProject;
 
@@ -180,6 +181,54 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        public class TIAOpennessTagTable
+        {
+            public string Name { get; set; }
+
+            public List<TIAOpennessConstant> Constants { get; set; }
+
+        }
+
+        public class TIAOpennessConstant
+        {
+            private readonly ControllerConstant controllerConstant;
+
+            internal TIAOpennessConstant(ControllerConstant controllerConstant)
+            {
+                this.controllerConstant = controllerConstant;
+            }
+
+            public string Name { get; set; }
+
+            private Regex _rgx = new Regex("<Value>(.*)</Value>", RegexOptions.Compiled);
+
+            public object Value
+            {
+                get
+                {
+                    var tp = this.controllerConstant.DataTypeName;
+                    var strg = ExportToString();
+
+                    var m = _rgx.Match(strg).Groups[1].Value;
+                    if (tp == "Int")
+                        return int.Parse(m);
+                    return m;
+                }
+            }
+
+            private string ExportToString()
+            {
+                var tmp = Path.GetTempPath();
+                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
+                controllerConstant.Export(file, Siemens.Engineering.ExportOptions.None);
+
+                var text = File.ReadAllText(file);
+                File.Delete(file);
+
+                return text;
+            }
+        }
+
         public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
             public TIAOpennessControllerFolder(Step7ProjectV13 Project)
@@ -191,6 +240,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
             public TIAOpennessPlcDatatypeFolder PlcDatatypeFolder { get; set; }
+            public TIAVarTabFolder VarTabFolder { get; set; }
 
             public Block GetBlockRecursive(string name)
             {
@@ -236,6 +286,65 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        public class TIAVarTabFolder : TIAOpennessProjectFolder
+        {
+            public TIAOpennessControllerFolder ControllerFolder { get; set; }
+
+            public TIAVarTabFolder(Step7ProjectV13 Project, TIAOpennessControllerFolder ControllerFolder) : base(Project)
+            {
+                this.ControllerFolder = ControllerFolder;
+                this.Project = Project;
+                this.TiaProject = Project;
+            }
+
+            public TIAOpennessConstant FindConstant(string name)
+            {
+                foreach (var t in TagTables)
+                {
+                    var c = t.Constants.FirstOrDefault(x => x.Name == name);
+                    if (c != null)
+                        return c;
+                }
+                foreach (var f in SubItems.Flatten(x => x.SubItems))
+                {
+                    foreach (var t in TagTables)
+                    {
+                        var c = t.Constants.FirstOrDefault(x => x.Name == name);
+                        if (c != null)
+                            return c;
+                    }
+                }
+                return null;
+            }
+
+            public List<TIAOpennessTagTable> TagTables
+            {
+                get
+                {
+                    Siemens.Engineering.SW.ControllerTagTableAggregation tags = null;
+                    var o = this.TiaPortalItem as Siemens.Engineering.SW.ControllerTagUserFolder;
+                    if (o != null)
+                        tags = o.TagTables;
+                    var q = this.TiaPortalItem as Siemens.Engineering.SW.ControllerTagSystemFolder;
+                    if (q != null)
+                        tags = q.TagTables;
+
+                    var retVal = new List<TIAOpennessTagTable>();
+
+                    foreach (var tagList in tags)
+                    {
+                        var info = new TIAOpennessTagTable() { Name = tagList.Name };
+                        retVal.Add(info);
+                        info.Constants = new List<TIAOpennessConstant>();
+                        foreach (var c in tagList.Constants)
+                        {
+                            info.Constants.Add(new TIAOpennessConstant(c) { Name = c.Name });
+                        }
+                    }
+                    return retVal;
+                }
+            }
+        }
 
         public class TIAOpennessPlcDatatypeFolder : TIAOpennessProjectFolder, IBlocksFolder
         {
@@ -495,6 +604,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             parent.PlcDatatypeFolder = fld2;
             parent.SubItems.Add(fld2);
             LoadSubPlcDatatypeFoldersViaOpennessDlls(fld2, controller.ControllerDatatypeFolder);
+
+            var fld3 = new TIAVarTabFolder(this, parent)
+            {
+                TiaPortalItem = controller.ControllerTagFolder,
+                Name = "PLC data types",
+                Parent = parent,
+            };
+            parent.VarTabFolder = fld3;
+            parent.SubItems.Add(fld3);
+            LoadSubVartabFoldersViaOpennessDlls(fld3, controller.ControllerDatatypeFolder);
         }
 
         internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, Siemens.Engineering.SW.ProgramblockSystemFolder blockFolder)
@@ -551,6 +670,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 };
                 parent.SubItems.Add(fld);
                 LoadSubPlcDatatypeFoldersViaOpennessDlls(fld, e);
+            }
+        }
+
+        internal void LoadSubVartabFoldersViaOpennessDlls(TIAVarTabFolder parent, Siemens.Engineering.SW.ControllerDatatypeSystemFolder blockFolder)
+        {
+            foreach (var e in blockFolder.Folders)
+            {
+                var fld = new TIAVarTabFolder(this, parent.ControllerFolder)
+                {
+                    TiaPortalItem = e,
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubVartabFoldersViaOpennessDlls(fld, e);
+            }
+        }
+
+        internal void LoadSubVartabFoldersViaOpennessDlls(TIAVarTabFolder parent, Siemens.Engineering.SW.ControllerDatatypeUserFolder blockFolder)
+        {
+            foreach (var e in blockFolder.Folders)
+            {
+                var fld = new TIAVarTabFolder(this, parent.ControllerFolder)
+                {
+                    TiaPortalItem = e,
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubVartabFoldersViaOpennessDlls(fld, e);
             }
         }
 
@@ -664,8 +813,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         foreach (string array in arrays)
                         {
                             string[] akar = array.Split(new string[] {".."}, StringSplitOptions.RemoveEmptyEntries);
-                            arrayStart.Add(Convert.ToInt32(akar[0].Trim()));
-                            arrayStop.Add(Convert.ToInt32(akar[1].Trim()));
+                            int start = 0;
+                            if (akar[0].StartsWith("\""))
+                            {
+                                start = (int)controllerFolder.VarTabFolder.FindConstant(akar[0].Substring(1, akar[0].Length - 2)).Value;
+                            }
+                            else
+                            {
+                                start = Convert.ToInt32(akar[0].Trim());
+                            }
+
+                            int stop = 0;
+                            if (akar[1].StartsWith("\""))
+                            {
+                                stop = (int)controllerFolder.VarTabFolder.FindConstant(akar[1].Substring(1, akar[1].Length - 2)).Value;
+                            }
+                            else
+                            {
+                                stop = Convert.ToInt32(akar[1].Trim());
+                            }
+
+                            arrayStart.Add(start);
+                            arrayStop.Add(stop);
                         }
 
                         row.ArrayStart = arrayStart;
