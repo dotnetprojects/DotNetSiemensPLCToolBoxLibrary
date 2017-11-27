@@ -318,6 +318,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                         return size;
                     case S7DataRowType.BOOL:
                     case S7DataRowType.BYTE:
+                    case S7DataRowType.SINT:
+                    case S7DataRowType.USINT:
                     case S7DataRowType.CHAR:
                         len = 1;
                         break;
@@ -326,12 +328,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.DWORD:
                     case S7DataRowType.TIME:
                     case S7DataRowType.REAL:
+                    case S7DataRowType.UDINT:
                         len = 4;
                         break;
                     case S7DataRowType.POINTER:
                         len = 6;
                         break;
                     case S7DataRowType.DATE_AND_TIME:
+                    case S7DataRowType.LREAL:
+                    case S7DataRowType.ULINT:
+                    case S7DataRowType.LINT:
                         len = 8;
                         break;
                     case S7DataRowType.S5TIME:
@@ -344,6 +350,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.COUNTER:
                     case S7DataRowType.TIMER:
                     case S7DataRowType.DATE:
+                    case S7DataRowType.UINT:
                         len = 2;
                         break;
                     case S7DataRowType.S5_KH:

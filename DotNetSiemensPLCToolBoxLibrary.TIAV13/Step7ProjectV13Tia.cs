@@ -883,13 +883,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 row.DataType = S7DataRowType.INT;
                                 break;
                             case "uint":
-                                row.DataType = S7DataRowType.WORD;
+                                row.DataType = S7DataRowType.UINT;
                                 break;
                             case "dint":
                                 row.DataType = S7DataRowType.DINT;
                                 break;
                             case "udint":
-                                row.DataType = S7DataRowType.DWORD;
+                                row.DataType = S7DataRowType.UDINT;
                                 break;
                             case "word":
                                 row.DataType = S7DataRowType.WORD;
@@ -920,6 +920,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 break;
                             case "time":
                                 row.DataType = S7DataRowType.TIME;
+                                break;
+                            case "sint":
+                                row.DataType = S7DataRowType.SINT;
+                                break;
+                            case "usint":
+                                row.DataType = S7DataRowType.USINT;
+                                break;
+                            case "ulint":
+                                row.DataType = S7DataRowType.ULINT;
+                                break;
+                            case "lint":
+                                row.DataType = S7DataRowType.LINT;
+                                break;
+                            case "lreal":
+                                row.DataType = S7DataRowType.LREAL;
                                 break;
                             default:
                                 row.DataType = S7DataRowType.UNKNOWN;
