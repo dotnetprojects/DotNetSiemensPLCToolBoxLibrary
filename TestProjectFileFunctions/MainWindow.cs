@@ -877,6 +877,16 @@ namespace JFK_VarTab
                     nd = (myTreeNode) nd.Parent;
                 }
                 treeStep7Project.Nodes.Remove(nd);
+
+                var fld = nd.myObject as IProjectFolder;
+                if (fld != null)
+                {
+                    var dp = fld.Project as IDisposable;
+                    if (dp != null)
+                    {
+                        dp.Dispose();
+                    }
+                }
             }
 
             List<string> projects = new List<string>();
