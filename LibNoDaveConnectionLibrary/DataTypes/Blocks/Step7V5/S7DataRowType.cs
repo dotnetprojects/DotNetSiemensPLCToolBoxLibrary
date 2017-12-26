@@ -86,6 +86,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         S5_KY = 0xf03,
         S5_KC = 0xf04,
         S5_C = 0xf0c,
+
+        SINT = 0x101,
+        USINT = 0x102,
+        LINT = 0x103,
+        ULINT = 0x104,
+        LREAL = 0x105,
+        UINT = 0x106,
+        UDINT = 0x107,
     }
 
 
