@@ -73,6 +73,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbfReader", "DbfReader\DbfReader.csproj", "{A7D1B64C-7045-4B32-9AD7-7649E40512C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiaExImPorter", "TiaExImPorter\TiaExImPorter.csproj", "{E2169C6E-6606-41FF-8ACB-485151574872}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61E6DB85-4280-4963-95EF-254BA1A81C04} = {61E6DB85-4280-4963-95EF-254BA1A81C04}
+		{AB0895AE-446F-4CD8-96AB-C8007D618593} = {AB0895AE-446F-4CD8-96AB-C8007D618593}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiaGitHandler", "TiaGitHandler\TiaGitHandler.csproj", "{147CD31F-F449-4568-AF62-56B987851D26}"
 EndProject
@@ -81,6 +85,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary.TIAV13", "DotNetSiemensPLCToolBoxLibrary.TIAV13\DotNetSiemensPLCToolBoxLibrary.TIAV13.csproj", "{BB3726B7-E1F9-4D3B-AEE5-06186285388C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{14BB6088-3FC3-4643-B170-0BF3F6F91028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary.TIAV15", "DotNetSiemensPLCToolBoxLibrary.TIAV15\DotNetSiemensPLCToolBoxLibrary.TIAV15.csproj", "{61E6DB85-4280-4963-95EF-254BA1A81C04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -532,6 +538,26 @@ Global
 		{BB3726B7-E1F9-4D3B-AEE5-06186285388C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BB3726B7-E1F9-4D3B-AEE5-06186285388C}.Release|x86.ActiveCfg = Release|Any CPU
 		{BB3726B7-E1F9-4D3B-AEE5-06186285388C}.Release|x86.Build.0 = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Debug|x86.Build.0 = Debug|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|iPhone.Build.0 = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|x86.ActiveCfg = Release|Any CPU
+		{61E6DB85-4280-4963-95EF-254BA1A81C04}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

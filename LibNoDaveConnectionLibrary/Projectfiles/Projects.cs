@@ -24,9 +24,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV13ProjectInstance == null)
                         {
-                            if (_createV14SP1ProjectInstance != null)
+                            if (_createV14SP1ProjectInstance != null || _createV15ProjectInstance == null)
                             {
-                                throw new Exception("You can not open a V13 Project when you already have had opened a V14 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V13 Project when you already have had opened a V14/V15 Project. You need to close the Application!");
                             }
                             var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV13.dll");
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.Step7ProjectV13");
@@ -50,9 +50,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV14SP1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV15ProjectInstance == null)
                             {
-                                throw new Exception("You can not open a V14 SP1 Project when you already have had opened a V14 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15 Project. You need to close the Application!");
                             }
                             var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll");
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1.Step7ProjectV14SP1");
@@ -61,6 +61,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
                 return _createV14SP1ProjectInstance;
+            }
+        }
+
+        private static Func<string, Project> _createV15ProjectInstance;
+
+        private static Func<string, Project> createV15ProjectInstance
+        {
+            get
+            {
+                if (_createV15ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_createV15ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance == null)
+                            {
+                                throw new Exception("You can not open a V15 Project when you already have had opened a V13/V14 Project. You need to close the Application!");
+                            }
+                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV15.dll");
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15.Step7ProjectV15");
+                            _createV15ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
+                        }
+                    }
+                }
+                return _createV15ProjectInstance;
             }
         }
 
@@ -111,6 +137,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
 
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap14");
+                        if (fls.Length > 0)
+                            retVal.Add(createV14SP1ProjectInstance(fls[0]));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap15");
+                        if (fls.Length > 0)
+                            retVal.Add(createV15ProjectInstance(fls[0]));
+
                         fls = System.IO.Directory.GetFiles(subd, "*.al11");
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
@@ -122,6 +156,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         fls = System.IO.Directory.GetFiles(subd, "*.al13");
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.al14");
+                        if (fls.Length > 0)
+                            retVal.Add(createV14SP1ProjectInstance(fls[0]));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.al15");
+                        if (fls.Length > 0)
+                            retVal.Add(createV15ProjectInstance(fls[0]));
 
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
@@ -156,6 +198,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap14");
+                        if (entr != null)
+                            retVal.Add(createV14SP1ProjectInstance(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap15");
+                        if (entr != null)
+                            retVal.Add(createV15ProjectInstance(entr));
+
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
@@ -167,6 +217,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al13");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al14");
+                        if (entr != null)
+                            retVal.Add(createV14SP1ProjectInstance(entr));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al15");
+                        if (entr != null)
+                            retVal.Add(createV15ProjectInstance(entr));
 
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
                         if (entr != null)
@@ -196,6 +254,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".ap14"))
                 return createV14SP1ProjectInstance(file);
+            else if (file.ToLower().EndsWith(".ap15"))
+                return createV15ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al11"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al12"))
@@ -204,6 +264,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al14"))
                 return createV14SP1ProjectInstance(file);
+            else if (file.ToLower().EndsWith(".al15"))
+                return createV15ProjectInstance(file);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
                 return new Step5Project(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))
