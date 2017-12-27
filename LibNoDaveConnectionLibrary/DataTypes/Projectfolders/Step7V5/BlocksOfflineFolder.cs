@@ -147,6 +147,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public DateTime LastCodeChange;
             public DateTime LastInterfaceChange;
             public bool IsInstanceDB;
+            public bool IsSFB;
             public int FBNumber;
         }
 
@@ -336,8 +337,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             {
                                 // if ssbpart[0] == 5 this DB is normal
                                 // if ssbpart[0] == 10 this DB is instance for FB, 
-                                // I do not know what value for SFB
+                                // if ssbpart[0] == 11 this DB is instance for SFB, 
                                 myTmpBlk.IsInstanceDB = true;
+                                if (ssbpart[0] == 11)
+                                    myTmpBlk.IsSFB = true;
                                 myTmpBlk.FBNumber = (int)ssbpart[1] + 256 * (int)ssbpart[2];
                             }
                         }
@@ -498,7 +501,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     if (retVal.IsInstanceDB && myConvOpt.UseFBDeclarationForInstanceDB)
                     {
                         //load the FB data from the Project
-                        tmpBlock InstFB = GetBlockBytes("FB" + myTmpBlk.FBNumber);
+                        tmpBlock InstFB = GetBlockBytes((myTmpBlk.IsSFB ? "SFB" : "FB") + myTmpBlk.FBNumber);
 
                         //Resolve both interfaces
                         List<string> tmpPar = new List<string>();
