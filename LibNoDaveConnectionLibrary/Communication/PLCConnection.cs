@@ -2623,7 +2623,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
 
 
-            //lock (lockObj)
+            lock (lockObj)
             {
                 //Got through the list of values
                 //Order them at first with the DB, then the byte address
@@ -3327,7 +3327,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-            //lock (lockObj)
+            lock (lockObj)
             {
                 CheckConnection();
 
@@ -3433,7 +3433,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="useWriteOptimation">If set to true, write optimation is enabled, but then, the order of your written values can varry, also a 4 byte value can be splittet written to the plc!</param>
         public void WriteValues(IEnumerable<PLCTag> valueList, bool useWriteOptimation)
         {
-            //lock (lockObj)
+            lock (lockObj)
             {
                 CheckConnection();
 
