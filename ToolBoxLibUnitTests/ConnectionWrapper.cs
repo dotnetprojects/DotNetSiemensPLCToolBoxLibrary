@@ -177,6 +177,13 @@ namespace ToolBoxLibUnitTests
             return 0;
         }
 
+        public int useResultBuffer(IresultSet rs, int number, byte[] buffer)
+        {
+            IresultSets.Add(rs);
+
+            return 0;
+        }
+
         public int writeBits(int area, int DBnumber, int start, int len, byte[] buffer)
         {
             throw new NotImplementedException();

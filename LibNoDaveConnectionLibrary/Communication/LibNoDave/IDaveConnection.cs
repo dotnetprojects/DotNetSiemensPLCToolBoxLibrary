@@ -35,6 +35,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int start();
         int stop();
         int useResult(IresultSet rs, int number, byte[] buffer);
+        int useResultBuffer(IresultSet rs, int number, byte[] buffer);
         int writeBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer);

@@ -2474,7 +2474,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                 lock (lockObj)
                                 {
-                                    res = _dc.useResult(rs, akVar, myBuff);
+                                    res = _dc.useResultBuffer(rs, akVar, myBuff);
                                 }
 
                                 if (res == 10 || res == 5)
@@ -2873,7 +2873,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                 lock (lockObj)
                                 {
-                                    res = _dc.useResult(rs, akVar, myBuff);
+                                    res = _dc.useResultBuffer(rs, akVar, myBuff);
                                 }
 
                                 if (res == 10 || res == 5)
@@ -3003,7 +3003,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                             lock (lockObj)
                             {
-                                res = _dc.useResult(rs, akVar, myBuff);
+                                res = _dc.useResultBuffer(rs, akVar, myBuff);
                             }
 
                             if (res == 10 || res == 5)

@@ -1891,6 +1891,32 @@ int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * b
 	return 0;
 }
 
+int DECL2 daveUseResultBuffer(daveResultSet * rl, int n, void * buffer){
+	daveResult * dr;
+#ifdef DEBUG_CALLS
+	LOG4("daveUseResult(result set:%p, number:%d)\n", rl, n);
+#endif	    	
+	if (rl==NULL) {
+#ifdef DEBUG_CALLS
+		LOG1("invalid resultSet \n");
+		FLUSH;
+#endif
+		return daveEmptyResultSetError;
+	} 
+#ifdef DEBUG_CALLS
+	LOG2("result set has %d results\n",rl->numResults);
+	FLUSH;
+#endif        
+	if (rl->numResults==0) return daveEmptyResultSetError;
+	if (n>=rl->numResults) return daveEmptyResultSetError;
+	dr = &(rl->results[n]);
+	if (dr->error!=0) return dr->error;
+	if (dr->length<=0) return daveEmptyResultError;
+	
+	if (buffer!=NULL) memcpy(buffer,dr->bytes,dr->length);
+	return 0;
+}
+
 void DECL2 daveFreeResults(daveResultSet * rl){
 	daveResult * r;
 	int i;

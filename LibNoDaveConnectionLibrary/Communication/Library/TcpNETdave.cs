@@ -1164,6 +1164,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //dc->_resultPointer=dr->bytes;
             return 0;
         }
+
+        public int useResultBuffer(IresultSet rs, int number, byte[] buffer)
+        {
+            return useResult(rs, number, buffer);
+        }
+
         public int readManyBytes(int area, int DBnumber, int start, int len, ref byte[] buffer)
         {
             int res, readLen;

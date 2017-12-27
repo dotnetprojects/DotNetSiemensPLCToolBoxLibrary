@@ -181,6 +181,7 @@ daveSwapIed_32
 daveToBCD
 daveToPLCfloat
 daveUseResult
+daveUseResultBuffer
 daveWriteBits
 daveWriteBytes
 daveWriteManyBytes
