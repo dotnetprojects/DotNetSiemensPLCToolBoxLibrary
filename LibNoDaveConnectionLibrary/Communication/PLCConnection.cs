@@ -2622,8 +2622,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 return;
             }
 
-
-            lock (lockObj)
+            var lockObtained = false;
+            //lock (lockObj)
+            try
             {
                 //Got through the list of values
                 //Order them at first with the DB, then the byte address
@@ -2642,7 +2643,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     #region Optimize Reading List....
 
-                    if (useReadOptimization && !(valueList.Cast<PLCTag>().ToList()[0] is PLCNckTag))
+                    if (useReadOptimization && !(valueList.First() is PLCNckTag))
                     {
                         List<PLCTag> orderedList = new List<PLCTag>();
                         orderedList.AddRange(valueList);
@@ -2759,6 +2760,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     bool lastRequestWasAUnevenRequest = false;
 
+                    Monitor.Enter(lockObj, ref lockObtained);
                     var myPDU = _dc.prepareReadRequest();
 
                     var currentRead = new List<string>();
@@ -2853,10 +2855,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                             var rs = _dc.getResultSet();
                             int res;
-                            lock (lockObj)
-                            {
-                                res = _dc.execReadRequest(myPDU, rs);
-                            }
+                            //lock (lockObj)
+                            res = _dc.execReadRequest(myPDU, rs);
+                            Monitor.Exit(lockObj);
+                            lockObtained = false;
 
                             if (res == -1025)
                             {
@@ -2871,11 +2873,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             {
                                 byte[] myBuff = new byte[gesReadSize];
 
-                                lock (lockObj)
-                                {
-                                    res = _dc.useResultBuffer(rs, akVar, myBuff);
-                                }
-
+                                res = _dc.useResultBuffer(rs, akVar, myBuff);
                                 if (res == 10 || res == 5)
                                 {
                                     if (!tagWasSplitted[akVar])
@@ -2924,6 +2922,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             currentRead = new List<string>();
                             anzVar = 0;
                             gesAskSize = 0;
+                            Monitor.Enter(lockObj, ref lockObtained);
                             myPDU = _dc.prepareReadRequest();
                             gesReadSize = 0;
                             anzReadVar = 0;
@@ -2981,11 +2980,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     {
                         var rs = _dc.getResultSet();
                         int res;
-                        lock (lockObj)
-                        {
-                            res = _dc.execReadRequest(myPDU, rs);
-                        }
-
+                        res = _dc.execReadRequest(myPDU, rs);
+                        Monitor.Exit(lockObj);
+                        lockObtained = false;
                         if (res == -1025)
                         {
                             this.Disconnect();
@@ -3048,6 +3045,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                     }
 
+                    if (lockObtained)
+                        Monitor.Exit(lockObj);
+                    lockObtained = false;
+
                     int buffPos = 0;
                     int nr = 0;
                     foreach (var value in readTagList)
@@ -3065,6 +3066,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         nr++;
                     }
+                }
+            }
+            finally {
+                if (lockObtained)
+                {
+                    Monitor.Exit(lockObj);
                 }
             }
         }
@@ -3086,11 +3093,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         {
             lock (lockObj)
             {
-
-
                 if (_fetchWriteConnection != null)
                 {
-
                     IEnumerable<PLCTag> readTagList = valueList;
 
                     #region Optimize Reading List....
@@ -3127,12 +3131,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     plcTag.ByteAddress <= oldByteAddress + oldLen + 14)
                                 {
                                     //todo: test if this is correct
-                                    if (cntCombinedTags == 1) rdHlp.PLCTags.Add(lastTag, 0);
+                                    if (cntCombinedTags == 1)
+                                        rdHlp.PLCTags.Add(lastTag, 0);
 
                                     cntCombinedTags++;
                                     int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                     oldLen = oldLen < newlen ? newlen : oldLen;
-                                    if (oldLen % 2 != 0) oldLen++;
+                                    if (oldLen % 2 != 0)
+                                        oldLen++;
                                     rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                     rdHlp.ByteAddress = oldByteAddress;
                                     rdHlp.ArraySize = oldLen;
@@ -3157,15 +3163,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     oldDB = plcTag.DataBlockNumber;
                                     oldByteAddress = plcTag.ByteAddress;
                                     oldLen = plcTag._internalGetSize();
-                                    if (oldLen % 2 != 0) oldLen++;
+                                    if (oldLen % 2 != 0)
+                                        oldLen++;
                                     lastTag = plcTag;
                                     cntCombinedTags++;
                                 }
                             }
 
                         }
-                        if (cntCombinedTags > 1) intReadTagList.Add(rdHlp);
-                        else if (cntCombinedTags == 1) intReadTagList.Add(lastTag);
+                        if (cntCombinedTags > 1)
+                            intReadTagList.Add(rdHlp);
+                        else if (cntCombinedTags == 1)
+                            intReadTagList.Add(lastTag);
 
                         readTagList = intReadTagList;
                     }
@@ -3199,7 +3208,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
         /// <param name="type">The PLC data type to load and convert</param>
         /// <returns></returns>
-        public object ReadValue<T>(string address, TagDataType type)
+        public T ReadValue<T>(string address, TagDataType type)
         {
             var wrt = ReadValue(address, type);
             return (T)wrt;
@@ -3222,7 +3231,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
         /// <returns></returns>
-        public object ReadValue<T>(string address)
+        public T ReadValue<T>(string address)
         {
             var wrt = ReadValue(address);
             return (T)wrt;
