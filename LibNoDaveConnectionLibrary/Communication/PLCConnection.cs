@@ -2672,23 +2672,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             {
                                 if (oldDataSource == plcTag.TagDataSource &&
                                     (oldDataSource != MemoryArea.Datablock || oldDB == plcTag.DataBlockNumber) &&
-                                    plcTag.ByteAddress <= oldByteAddress + oldLen + 4)
+                                    plcTag.ByteAddress <= oldByteAddress + (oldLen % 2 != 0 ? oldLen +1 : oldLen) + 4)
                                 {
-                                    //todo: test if this is correct
-                                    if (cntCombinedTags == 1) rdHlp.PLCTags.Add(lastTag, 0);
+                                    if (cntCombinedTags == 1)
+                                        rdHlp.PLCTags.Add(lastTag, 0);
 
                                     cntCombinedTags++;
                                     int newlen = plcTag._internalGetSize() + (plcTag.ByteAddress - oldByteAddress);
                                     oldLen = oldLen < newlen ? newlen : oldLen;
-                                    //if (oldLen % 2 != 0)
-                                    //    oldLen++;
                                     rdHlp.PLCTags.Add(plcTag, plcTag.ByteAddress - oldByteAddress);
                                     rdHlp.ByteAddress = oldByteAddress;
                                     rdHlp.ArraySize = oldLen;
                                     rdHlp.TagDataSource = oldDataSource;
                                     rdHlp.DataBlockNumber = oldDB;
-                                    if (oldLen % 2 != 0)
-                                        oldLen++;
                                 }
                                 else
                                 {
@@ -2708,8 +2704,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     oldDB = plcTag.DataBlockNumber;
                                     oldByteAddress = plcTag.ByteAddress;
                                     oldLen = plcTag._internalGetSize();
-                                    if (oldLen % 2 != 0)
-                                        oldLen++;
                                     lastTag = plcTag;
                                     cntCombinedTags++;
                                 }
