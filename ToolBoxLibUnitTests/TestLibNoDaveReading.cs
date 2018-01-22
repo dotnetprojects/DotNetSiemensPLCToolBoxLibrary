@@ -1,6 +1,7 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
 using System;
 using System.Collections.Generic;
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using NUnit.Framework;
 
 namespace ToolBoxLibUnitTests
@@ -187,6 +188,63 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:5, Bytes:11";
             Assert.AreEqual(req, t);
+        }
+
+        class ConnectionWrapperResult : ConnectionWrapper
+        {
+            private readonly Action<int, byte[]> _fillBuffer;
+
+            public ConnectionWrapperResult(Action<int, byte[]> fillBuffer) : base(480)
+            {
+                _fillBuffer = fillBuffer;
+            }
+
+            public override int useResultBuffer(IresultSet rs, int number, byte[] buffer)
+            {
+                _fillBuffer(number, buffer);
+                return base.useResultBuffer(rs, number, buffer);
+            }
+        }
+
+
+        [Test]
+        public void TestReading7()
+        {
+           
+            var wrapper = new ConnectionWrapperResult((nr, r) =>
+            {
+                r[0] = 0;
+                r[1] = 5;
+                r[2] = 0;
+                r[3] = 1;
+                r[4] = 0;
+                r[5] = 1;
+            });
+            var conn = new PLCConnection(new PLCConnectionConfiguration(), wrapper);
+            var listTag = new List<PLCTag>();
+
+            listTag.Add(new PLCTag("DB781.DBX0.2"));
+            listTag.Add(new PLCTag("DB781.DBX1.0"));
+            listTag.Add(new PLCTag("DB781.DBX1.0"));
+            listTag.Add(new PLCTag("DB781.DBX1.0"));
+            listTag.Add(new PLCTag("DB781.DBX1.2"));
+            listTag.Add(new PLCTag("DB781.DBX1.2"));
+            listTag.Add(new PLCTag("DB781.DBX1.2"));
+            listTag.Add(new PLCTag("DB781.DBX2.2"));
+            listTag.Add(new PLCTag("DB781.DBX3.0"));
+            listTag.Add(new PLCTag("DB781.DBX3.2"));
+            listTag.Add(new PLCTag("DB781.DBX4.2"));
+            listTag.Add(new PLCTag("DB781.DBX5.0"));
+            listTag.Add(new PLCTag("DB781.DBX5.0"));
+            listTag.Add(new PLCTag("DB781.DBX5.0"));
+            listTag.Add(new PLCTag("DB781.DBX5.2"));
+
+            conn.ReadValues(listTag, true);
+            var pdus = wrapper.PDUs;
+            string req = string.Join(Environment.NewLine, pdus);
+            string t = "READ  Area:132, DBnum:781, Start:0, Bytes:6";
+            Assert.AreEqual(req, t);
+
         }
     }
 }
