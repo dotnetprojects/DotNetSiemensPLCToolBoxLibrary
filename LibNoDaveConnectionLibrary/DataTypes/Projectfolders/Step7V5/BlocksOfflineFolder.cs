@@ -505,11 +505,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                         //Resolve both interfaces
                         List<string> tmpPar = new List<string>();
-                        S7DataRow InterfaceFB = Parameter.GetInterfaceOrDBFromStep7ProjectString(InstFB.blkinterface, ref tmpPar, PLCBlockType.FB, false, this, null);
-                        S7DataRow InterfaceDB = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, PLCBlockType.DB, false, this, null);
+                        if (InstFB != null)
+                        {
+                            S7DataRow InterfaceFB =
+                                Parameter.GetInterfaceOrDBFromStep7ProjectString(InstFB.blkinterface, ref tmpPar,
+                                    PLCBlockType.FB, false, this, null);
+                            S7DataRow InterfaceDB =
+                                Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar,
+                                    PLCBlockType.DB, false, this, null);
 
-                        //Only use the FB interface Declaration if they are compatible
-                        if (Parameter.IsInterfaceCompatible(InterfaceFB, InterfaceDB)) myTmpBlk.blkinterface = InstFB.blkinterface;
+                            //Only use the FB interface Declaration if they are compatible
+                            if (Parameter.IsInterfaceCompatible(InterfaceFB, InterfaceDB))
+                                myTmpBlk.blkinterface = InstFB.blkinterface;
+                        }
                     }
 
                     if (myTmpBlk.mc7code != null) 
