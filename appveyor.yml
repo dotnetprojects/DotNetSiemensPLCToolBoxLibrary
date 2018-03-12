@@ -23,18 +23,35 @@ after_build:
   - externalDlls\libnodave\vcwinmake.bat
   - externalDlls\libnodave\vcwinmake_64.bat
   - ps: .\nuget\pack.ps1
+  - 7z a TiaGitHandler.zip %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.dll %APPVEYOR_BUILD_FOLDER%\compiled\ICSharpCode.SharpZipLib.dll %APPVEYOR_BUILD_FOLDER%\compiled\TiaGitHandler.exe
+  - 7z a S7ToolBox.zip %APPVEYOR_BUILD_FOLDER%\compiled\AvalonDock.dll %APPVEYOR_BUILD_FOLDER%\compiled\AvalonDock.Themes.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.dll %APPVEYOR_BUILD_FOLDER%\compiled\ICSharpCode.AvalonEdit.dll %APPVEYOR_BUILD_FOLDER%\compiled\ICSharpCode.SharpZipLib.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\Interop.HMIGENOBJECTSLib.dll %APPVEYOR_BUILD_FOLDER%\compiled\JFKCommonLibrary.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\libnodave_jfkmod.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\libnodave_jfkmod64.dll %APPVEYOR_BUILD_FOLDER%\compiled\System.Windows.Interactivity.dll %APPVEYOR_BUILD_FOLDER%\compiled\ToolboxForSiemensPLCs.exe %APPVEYOR_BUILD_FOLDER%\compiled\WPFToolboxForSiemensPLCs.exe
   
 artifacts:
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
     name: DotNetSiemensPLCToolBoxLibrary.dll
   - path: compiled\DotNetSiemensPLCToolBoxLibrary.pdb
     name: DotNetSiemensPLCToolBoxLibrary.pdb
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.dll
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV15.dll
+  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.pdb
+    name: DotNetSiemensPLCToolBoxLibrary.TIAV15.pdb
   - path: externalDlls\libnodave\libnodave_jfkmod.dll
     name: libnodave_jfkmod.dll
   - path: externalDlls\libnodave\libnodave_jfkmod64.dll
     name: libnodave_jfkmod64.dll
   - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg'
-
+  - path: TiaGitHandler.zip
+    name: TiaGitHandler
+  - path: S7ToolBox.zip
+    name: S7ToolBox
 #uncomment to publish to NuGet
 deploy:
   provider: NuGet

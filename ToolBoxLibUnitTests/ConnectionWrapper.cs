@@ -128,7 +128,7 @@ namespace ToolBoxLibUnitTests
             return new PDUWrapper();
         }
 
-        public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
+        public int putProgramBlock(int blockType, int number, byte[] buffer, int length)
         {
             throw new NotImplementedException();
         }
@@ -170,7 +170,14 @@ namespace ToolBoxLibUnitTests
 
         public List<IresultSet> IresultSets = new List<IresultSet>();
 
-        public int useResult(IresultSet rs, int number, byte[] buffer)
+        public virtual int useResult(IresultSet rs, int number, byte[] buffer)
+        {
+            IresultSets.Add(rs);
+
+            return 0;
+        }
+
+        public virtual int useResultBuffer(IresultSet rs, int number, byte[] buffer)
         {
             IresultSets.Add(rs);
 
@@ -195,6 +202,41 @@ namespace ToolBoxLibUnitTests
         public IresultSet getResultSet()
         {
             return new ResultSetWrapper();
+        }
+
+        public int PI_StartNC(string piservice, string[] param, int paramCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int initUploadNC(string file, ref byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int endUploadNC(byte[] uploadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int daveGetNCProgram(string filename, byte[] buffer, ref int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int daveReadPLCTime(out DateTime dateTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

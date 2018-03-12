@@ -485,6 +485,10 @@ struct _daveConnection {
     uc	packetNumber;	/* packetNumber in transport layer */
     void * hook;	/* used in CPU/CP simulation: pointer to the rest we have to send if message doesn't fit in a single packet */
     daveS5cache * cache; /* used in AS511: We cache addresses of memory areas and datablocks here */
+	
+	int TPDUsize; 		// size of TPDU for ISO over TCP
+    int partPos;  		// remember position for ISO over TCP fragmentation
+  
 	uc application_block_subsystem; /* used in S7Online */
 
 	int DestinationIsIP;
@@ -571,6 +575,21 @@ typedef struct {
     us dlen;	/* length of data which follow the parameters */
     uc result[2]; /* only present in type 2 and 3 headers. This contains error information. */
 } PDUHeader;
+
+/*
+    same as above, but made up of single bytes only, so that every single byte can be adressed separately
+*/
+typedef struct {
+    uc P;	/* allways 0x32 */
+    uc type;	/* Header type, one of 1,2,3 or 7. type 2 and 3 headers are two bytes longer. */
+    uc a,b;	/* currently unknown. Maybe it can be used for long numbers? */
+    uc numberHi,numberLo;	/* A number. This can be used to make sure a received answer */
+		/* corresponds to the request with the same number. */
+    uc plenHi,plenLo;	/* length of parameters which follow this header */
+    uc dlenHi,dlenLo;	/* length of data which follow the parameters */
+    uc result[2]; /* only present in type 2 and 3 headers. This contains error information. */
+} PDUHeader2;
+
 /*
     set up the header. Needs valid header pointer in the struct p points to.
 */
@@ -740,10 +759,15 @@ EXPORTSPEC int DECL2 daveGetCounterValueAt(daveConnection * dc,int pos);
     Functions to load blocks from PLC:
 */
 EXPORTSPEC void DECL2 _daveConstructUpload(PDU *p, char blockType, int blockNr); // char or uc,to decide
-
 EXPORTSPEC void DECL2 _daveConstructDoUpload(PDU * p, int uploadID);
-
 EXPORTSPEC void DECL2 _daveConstructEndUpload(PDU * p, int uploadID);
+
+/*
+    Functions to load files from NC:
+*/
+EXPORTSPEC void DECL2 _daveConstructUploadNC(PDU *p, const char *filename);
+EXPORTSPEC void DECL2 _daveConstructDoUploadNC(PDU * p, uc *uploadID);
+EXPORTSPEC void DECL2 _daveConstructEndUploadNC(PDU * p, uc *uploadID);
 /*
     Get the PLC's order code as ASCIIZ. Buf must provide space for
     21 characters at least.
@@ -844,6 +868,16 @@ EXPORTSPEC int DECL2 daveGetBlockInfo(daveConnection * dc, daveBlockInfo *dbi, u
 EXPORTSPEC int DECL2 initUpload(daveConnection * dc, char blockType, int blockNr, int * uploadID); // char or uc,to decide
 EXPORTSPEC int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploadID);
 EXPORTSPEC int DECL2 endUpload(daveConnection*dc, int uploadID);
+
+/*
+    NC file read functions:
+*/
+EXPORTSPEC int DECL2 initUploadNC(daveConnection *dc, const char *filename, uc *uploadID);
+EXPORTSPEC int DECL2 doUploadNC(daveConnection *dc, int *more, uc**buffer, int *len, uc *uploadID);
+EXPORTSPEC int DECL2 doSingleUploadNC(daveConnection *dc, int *more, uc *buffer, int *len, uc *uploadID);
+EXPORTSPEC int DECL2 endUploadNC(daveConnection *dc, uc *uploadID);
+
+
 /*
     PLC run/stop control functions:
 */
@@ -884,10 +918,19 @@ EXPORTSPEC void DECL2 daveAddDbRead400ToReadRequest(PDU *p, int DBnum, int offse
 EXPORTSPEC int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet * rl);
 /* Lets the functions daveGet<data type> work on the n-th result: */
 EXPORTSPEC int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * buffer);
+/* Lets the Result get into the buffer */
+EXPORTSPEC int DECL2 daveUseResultBuffer(daveResultSet * rl, int n, void * buffer);
 /* Frees the memory occupied by the result structure */
 EXPORTSPEC void DECL2 daveFreeResults(daveResultSet * rl);
 /* Adds a new bit variable to a prepared request: */
 EXPORTSPEC void DECL2 daveAddBitVarToReadRequest(PDU *p, int area, int DBnum, int start, int byteCount);
+/* Adds a new NCK read Request... (see: http://www.sps-forum.de/hochsprachen-opc/80971-dotnetsiemensplctoolboxlibrary-libnodave-zugriff-auf-dual-port-ram-fb15-post611026.html#post611026) */
+EXPORTSPEC void DECL2 daveAddNCKToReadRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount);
+/* Adds a new NCK write Request... */
+EXPORTSPEC void DECL2 daveAddNCKToWriteRequest(PDU *p, int area, int unit, int column, int line, int module, int linecount, int byteCount, void * buffer);
+
+/* use this to initialize a NC PI-Service: (see: http://www.sps-forum.de/hochsprachen-opc/80971-dotnetsiemensplctoolboxlibrary-libnodave-zugriff-auf-dual-port-ram-fb15-12.html#post619571)*/
+EXPORTSPEC int DECL2 davePIstart_nc(daveConnection *dc, const char *piservice, const char *param[], int paramCount);
 
 /* use this to initialize a multivariable write: */
 EXPORTSPEC void DECL2 davePrepareWriteRequest(daveConnection * dc, PDU *p);
@@ -984,6 +1027,9 @@ EXPORTSPEC int DECL2 _daveSendMessageMPI(daveConnection * dc, PDU * p);
 EXPORTSPEC int DECL2 _daveReadISOPacket(daveInterface * di,uc *b);
 EXPORTSPEC int DECL2 _daveGetResponseISO_TCP(daveConnection *dc);
 
+/* Sendet eine PDU, ohne auf Antwort zu warten */
+EXPORTSPEC int DECL2 _daveSendTCP(daveConnection *dc, PDU *p);
+
 
 typedef uc * (*userReadFunc) (int , int, int, int, int *);
 typedef void (*userWriteFunc) (int , int, int, int, int *,uc *);
@@ -1049,11 +1095,21 @@ EXPORTSPEC int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int
 /*
     Program Block to PLC:
 */
-EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int * length);
+EXPORTSPEC int DECL2 davePutProgramBlock(daveConnection * dc, int blockType, int number, char* buffer, int length);
 /*
     Delete Block from PLC:
 */
 EXPORTSPEC int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number);
+
+/*
+   Send Receive NC Program:
+*/
+EXPORTSPEC int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer, int *length);
+
+//DateTime ts Format: yyMMddHHmmss
+EXPORTSPEC int DECL2 davePutNCProgram(daveConnection *dc, char *filename, char *pathname, char *ts, char *buffer, int length);
+
+
 /*
     PLC realtime clock handling:
 */ 

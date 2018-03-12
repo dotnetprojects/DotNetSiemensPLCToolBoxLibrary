@@ -27,6 +27,8 @@
         LInt,
         LWord,
         LReal,
+        LTime,
+        LTimeOfDay,
 
         BCDArray,
     }

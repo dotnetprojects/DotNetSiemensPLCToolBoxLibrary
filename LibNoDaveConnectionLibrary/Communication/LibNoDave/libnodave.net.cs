@@ -466,6 +466,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             [DllImport("__Internal", EntryPoint = "daveSetTimeout")]
 #endif
             protected static extern void daveSetTimeout32(IntPtr di, int time);
+            /// <summary>
+            /// Set the default Response timeout
+            /// </summary>
+            /// <param name="time">Time in Microseconds</param>
             public void setTimeout(int time)
             {
                 if (IntPtr.Size == 8)
@@ -813,10 +817,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             {
                 int res = 0;
                 if (IntPtr.Size == 8)
-                    res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
+                    if (Data == null)
+                        res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, null,0);
+                    else
+                        res = daveBuildAndSendPDU64(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
+
                 else
-                    res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
-                //return p;
+                    if (Data == null)
+                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, null, 0);
+                    else
+                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
                 return res;
             }
 
@@ -992,6 +1002,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return daveUseResult32(pointer, rs.pointer, number, buffer);
             }
 
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveUseResultBuffer")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveUseResultBuffer")]
+#endif
+            protected static extern int daveUseResultBuffer64(IntPtr rs, int number, byte[] buffer);
+
+#if !IPHONE	
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveUseResultBuffer")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveUseResultBuffer")]
+#endif
+            protected static extern int daveUseResultBuffer32(IntPtr rs, int number, byte[] buffer);
+            public int useResultBuffer(IresultSet rs, int number, byte[] buffer)
+            {
+                if (IntPtr.Size == 8)
+                    return daveUseResultBuffer64(rs.pointer, number, buffer);
+                return daveUseResultBuffer32(rs.pointer, number, buffer);
+            }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadSZL")]
@@ -1188,20 +1217,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #else
             [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
-            protected static extern int davePutProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
+            protected static extern int davePutProgramBlock64(IntPtr dc, int blockType, int number, byte[] buffer, int length);
 
 #if !IPHONE	
             [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutProgramBlock")]
 #else
             [DllImport("__Internal", EntryPoint = "davePutProgramBlock")]
 #endif
-            protected static extern int davePutProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, ref int length);
-            public int putProgramBlock(int blockType, int number, byte[] buffer, ref int length)
+            protected static extern int davePutProgramBlock32(IntPtr dc, int blockType, int number, byte[] buffer, int length);
+            public int putProgramBlock(int blockType, int number, byte[] buffer, int length)
             {
                 if (IntPtr.Size == 8)
-                    return davePutProgramBlock64(pointer, blockType, number, buffer, ref length);
+                    return davePutProgramBlock64(pointer, blockType, number, buffer, length);
                 else
-                    return davePutProgramBlock32(pointer, blockType, number, buffer, ref length);
+                    return davePutProgramBlock32(pointer, blockType, number, buffer, length);
             }
 
 #if !IPHONE
@@ -1291,7 +1320,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             [DllImport("__Internal", EntryPoint = "daveReadPLCTime")]
 #endif
             protected static extern int daveReadPLCTime32(IntPtr dc);
-            public DateTime daveReadPLCTime()
+
+            public int daveReadPLCTime(out DateTime dateTime)
             {
                 int res = 0;
                 if (IntPtr.Size == 8)
@@ -1299,31 +1329,40 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     res = daveReadPLCTime32(pointer);
 
-                int year, month, day, hour, minute, second, millisecond;
-                getU8();
-                getU8();
-                byte[] tmp = new byte[1];
-                tmp[0] = Convert.ToByte(getU8());
-                year = getBCD8from(tmp, 0);
-                year += year >= 90 ? 1900 : 2000;
-                tmp[0] = Convert.ToByte(getU8());
-                month = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                day = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                hour = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                minute = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                second = getBCD8from(tmp, 0);
-                tmp[0] = Convert.ToByte(getU8());
-                millisecond = getBCD8from(tmp, 0) * 10;
-                tmp[0] = Convert.ToByte(getU8());
-                tmp[0] = Convert.ToByte(tmp[0] >> 4);
-                millisecond += getBCD8from(tmp, 0);
-                DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
+                if (res == 0)
+                {
+                    int year, month, day, hour, minute, second, millisecond;
+                    getU8();
+                    getU8();
+                    byte[] tmp = new byte[1];
+                    tmp[0] = Convert.ToByte(getU8());
+                    year = getBCD8from(tmp, 0);
+                    year += year >= 90 ? 1900 : 2000;
+                    tmp[0] = Convert.ToByte(getU8());
+                    month = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    day = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    hour = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    minute = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    second = getBCD8from(tmp, 0);
+                    tmp[0] = Convert.ToByte(getU8());
+                    millisecond = getBCD8from(tmp, 0) * 10;
+                    tmp[0] = Convert.ToByte(getU8());
+                    tmp[0] = Convert.ToByte(tmp[0] >> 4);
+                    millisecond += getBCD8from(tmp, 0);
+                    DateTime ret = new DateTime(year, month, day, hour, minute, second, millisecond);
 
-                return ret;
+                    dateTime = ret;
+                }
+                else
+                {
+                    dateTime = DateTime.MinValue;
+                }
+
+                return res;
             }
 
 #if !IPHONE
@@ -1380,6 +1419,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 else
                     res = daveGetResponse32(pointer);
 
+                //if there was an error getting the response, then fail fast
+                if (res != 0)
+                {
+                    data = null;
+                    param = null;
+                    return res;
+                }
+
                 PDU myPDU = new PDU();
                 if (IntPtr.Size == 8)
                     _daveSetupReceivedPDU64(pointer, myPDU.pointer);
@@ -1408,6 +1455,155 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return new libnodave.resultSet();
             }
 
+            #region PI_StartNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePIstart_nc")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePIstart_nc")]
+#endif
+            protected static extern int davePIstart_nc64(IntPtr dc, string piservice, string[] param, int paramCount);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePIstart_nc")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePIstart_nc")]
+#endif
+            protected static extern int davePIstart_nc32(IntPtr dc, string piservice, string[] param, int paramCount);
+            public int PI_StartNC(string piservice, string[] param, int paramCount)
+            {
+                if (IntPtr.Size == 8)
+                    return davePIstart_nc64(pointer, piservice, param, paramCount);
+                else
+                    return davePIstart_nc32(pointer, piservice, param, paramCount);
+            }
+            #endregion
+
+            #region NC file transfer
+            #region daveGetNCProgram
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveGetNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNCProgram")]
+#endif
+            protected static extern int daveGetNCProgram64(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveGetNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveGetNCProgram")]
+#endif
+            protected static extern int daveGetNCProgram32(IntPtr dc, string filename, byte[] buffer, ref int length);
+
+            public int daveGetNCProgram(string filename, byte[] buffer, ref int length)
+            {
+                if (IntPtr.Size == 8)
+                    return daveGetNCProgram64(pointer, filename, buffer, ref length);
+                else
+                    return daveGetNCProgram32(pointer, filename, buffer, ref length);
+            }
+            #endregion
+
+            #region davePutNCProgram
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "davePutNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePutNCProgram")]
+#endif
+            protected static extern int davePutNCProgram64(IntPtr dc, string filename, string path, string ts, byte[] buffer, int length);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "davePutNCProgram")]
+#else
+            [DllImport("__Internal", EntryPoint = "davePutNCProgram")]
+#endif
+            protected static extern int davePutNCProgram32(IntPtr dc, string filename, string path, string ts, byte[] buffer, int length);
+
+            /// <summary>
+            /// Send File to NC
+            /// </summary>
+            /// <param name="filename">Path + Filename</param>
+            /// <param name="ts">DateTime: dt.ToString("yyMMddHHmmss")</param>
+            /// <param name="buffer">Filedata to send</param>
+            /// <param name="length">buffer.Length</param>
+            /// <returns></returns>
+            public int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length)
+            {
+                if (IntPtr.Size == 8)
+                    return davePutNCProgram64(pointer, filename, path, ts, buffer, length);
+                else
+                    return davePutNCProgram32(pointer, filename, path, ts, buffer, length);
+            }
+            #endregion
+
+            #region initUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "initUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "initUploadNC")]
+#endif
+            protected static extern int initUploadNC64(IntPtr dc, string file, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "initUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "initUploadNC")]
+#endif
+            protected static extern int initUploadNC32(IntPtr dc, string file, byte[] uploadID);
+            public int initUploadNC(string file, ref byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return initUploadNC64(pointer, file, uploadID);
+                else
+                    return initUploadNC32(pointer, file, uploadID);
+            }
+            #endregion
+
+            #region doUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "doSingleUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "doSingleUploadNC")]
+#endif
+            protected static extern int doUploadNC64(IntPtr dc, out int more, byte[] buffer, out int len, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "doSingleUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "doSingleUploadNC")]
+#endif
+            protected static extern int doUploadNC32(IntPtr dc, out int more, byte[] buffer, out int len, byte[] uploadID);
+            public int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return doUploadNC64(pointer, out more, buffer, out len, uploadID);
+                else
+                    return doUploadNC32(pointer, out more, buffer, out len, uploadID);
+            }
+            #endregion
+
+            #region endUploadNC
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "endUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "endUploadNC")]
+#endif
+            protected static extern int endUploadNC64(IntPtr dc, byte[] uploadID);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "endUploadNC")]
+#else
+            [DllImport("__Internal", EntryPoint = "endUploadNC")]
+#endif
+            protected static extern int endUploadNC32(IntPtr dc, byte[] uploadID);
+            public int endUploadNC(byte[] uploadID)
+            {
+                if (IntPtr.Size == 8)
+                    return endUploadNC64(pointer, uploadID);
+                else
+                    return endUploadNC32(pointer, uploadID);
+            }
+            #endregion
+            #endregion
         }
 
         public class PDU : pseudoPointer, IPDU
@@ -1455,6 +1651,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     daveAddVarToReadRequest32(pointer, area, DBnum, start, bytes);
             }
 
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddNCKToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddNCKToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToReadRequest64(IntPtr p, int area, int unit, int column, int line, int module, int linecount);
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddNCKToReadRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToReadRequest32(IntPtr p, int area, int unit, int column, int line, int module, int linecount);
+            public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+            {
+                if (IntPtr.Size == 8)
+                    daveAddNCKToReadRequest64(pointer, area, unit, column, line, module, linecount);
+                else
+                    daveAddNCKToReadRequest32(pointer, area, unit, column, line, module, linecount);
+            }
+
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddNCKToWriteRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddNCKToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToWriteRequest64(IntPtr p, int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer);
+#if !IPHONE
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveAddNCKToWriteRequest")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveAddVarToReadRequest")]
+#endif
+            protected static extern void daveAddNCKToWriteRequest32(IntPtr p, int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer);
+            public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
+            {
+                if (IntPtr.Size == 8)
+                    daveAddNCKToWriteRequest64(pointer, area, unit, column, line, module, linecount, bytes, buffer);
+                else
+                    daveAddNCKToWriteRequest32(pointer, area, unit, column, line, module, linecount, bytes, buffer);
+            }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveAddSymbolVarToReadRequest")]
@@ -2043,10 +2279,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             putS32at(b, pos, Convert.ToInt32(value.TotalMilliseconds));
         }
 
+        public static void putLTimeat(byte[] b, int pos, TimeSpan value)
+        {
+            putS64at(b, pos, Convert.ToInt64(value.Ticks * 100));
+        }
+
         public static void putTimeOfDayat(byte[] b, int pos, DateTime value)
         {
             var tmp = new TimeSpan(0, value.Hour, value.Minute, value.Second, value.Millisecond);
             putU32at(b, pos, Convert.ToUInt32(tmp.TotalMilliseconds));
+        }
+
+        public static void putLTimeOfDayat(byte[] b, int pos, DateTime value)
+        {
+            putU64at(b, pos, Convert.ToUInt64(value.Ticks * 100));
         }
 
         public static void putDateat(byte[] b, int pos, DateTime value)
@@ -2383,10 +2629,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             return new DateTime(msval * 10000);
         }
 
+        public static DateTime getLTimeOfDayfrom(byte[] b, int pos)
+        {
+            ulong msval = getU64from(b, pos);
+            return new DateTime((long)msval / 100);
+        }
+
         public static TimeSpan getTimefrom(byte[] b, int pos)
         {
             long msval = getS32from(b, pos);
             return new TimeSpan(msval * 10000);
+        }
+
+        public static TimeSpan getLTimefrom(byte[] b, int pos)
+        {
+            long msval = getS64from(b, pos);
+            return new TimeSpan(msval / 100);
         }
 
         public static TimeSpan getS5Timefrom(byte[] b, int pos)

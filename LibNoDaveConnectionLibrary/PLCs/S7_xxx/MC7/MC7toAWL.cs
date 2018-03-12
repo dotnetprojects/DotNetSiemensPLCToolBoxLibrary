@@ -25,6 +25,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
@@ -35,6 +36,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class MC7toAWL
     {
+        static MC7toAWL()
+        {
+            numberFormat = new NumberFormatInfo();
+            numberFormat.NumberDecimalSeparator = ".";
+            numberFormat.NumberGroupSeparator = "";
+            numberFormat.CurrencyDecimalSeparator = ".";
+            numberFormat.CurrencyGroupSeparator = "";
+            numberFormat.PercentDecimalSeparator = ".";
+            numberFormat.PercentGroupSeparator = "";
+        }
+        private static NumberFormatInfo numberFormat;
+       
         internal static List<FunctionBlockRow> GetAWL(int Start, int Count, int MN, byte[] BD, int[] Networks, List<string> ParaList, S7ProgrammFolder prjBlkFld, S7FunctionBlock block)
         {
             var retVal = new List<FunctionBlockRow>();
@@ -432,7 +445,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 switch (BD[pos + 1])
                                 {
                                     case 0x01:
-                                        par = libnodave.getFloatfrom(BD, pos + 2).ToString("0.000000e+000");
+                                        par = libnodave.getFloatfrom(BD, pos + 2).ToString("0.000000e+000", numberFormat);
                                         break;
                                     case 0x02:
                                         par = "2#" +
@@ -3625,7 +3638,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         }
                                         break;
                                     case 0xD0:
-                                    case 0xD2:
+                                    case 0xD2:  //UC unconditional Call without parameters as in literal UC FBxxx
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opUC[MN];
@@ -3637,19 +3650,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3], BD[pos + 4], BD[pos + 5], BD[pos + 6], BD[pos + 7] };
 
+                                            //This OpCode does not have parameter asignments
                                             //Get Parameter Count 
-                                            int paranz = (BD[pos + 7] / 2) - 1;
-                                            List<string> tmplst = new List<string>();
-                                            for (int n = 1; n <= paranz; n++)
-                                            {
-                                                tmplst.Add(Helper.GetFCPointer(BD[pos + 8], BD[pos + 9], BD[pos + 10], BD[pos + 11]));
-                                                ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = Helper.CombineByteArray(((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7, new byte[] { BD[pos + 8], BD[pos + 9], BD[pos + 10], BD[pos + 11] });
-                                                pos += 4;
-                                            }
+                                            //int paranz = (BD[pos + 7] / 2) - 1;
+                                            //List<string> tmplst = new List<string>();
+                                            //for (int n = 1; n <= paranz; n++)
+                                            //{
+                                            //    tmplst.Add(Helper.GetFCPointer(BD[pos + 8], BD[pos + 9], BD[pos + 10], BD[pos + 11]));
+                                            //    ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = Helper.CombineByteArray(((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7, new byte[] { BD[pos + 8], BD[pos + 9], BD[pos + 10], BD[pos + 11] });
+                                            //    pos += 4;
+                                            //}
 
-                                            byte[] backup = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
-                                            ((S7FunctionBlockRow)retVal[retVal.Count - 1]).ExtParameter = tmplst;
-                                            ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = backup;
+                                            //byte[] backup = ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7;
+                                            //((S7FunctionBlockRow)retVal[retVal.Count - 1]).ExtParameter = tmplst;
+                                            //((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = backup;
 
                                             pos += 8;
                                         }

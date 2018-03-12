@@ -17,5 +17,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         VariableTableOrSymbolTable = 1030,
         
         Tag = 2001,
+        IDataBlock = 2022,
+        IDataBlocks = 2023,
     }
 }

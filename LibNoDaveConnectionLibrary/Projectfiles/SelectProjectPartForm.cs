@@ -107,9 +107,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (subitem.SubItems != null)
                     AddNodes(tmpNode, subitem.SubItems);
 
-                if (subitem is BlocksOfflineFolder  && this.SelectPart==SelectPartType.Tag)
+                if (subitem is IBlocksFolder && this.SelectPart==SelectPartType.Tag)
                 {
-                    BlocksOfflineFolder blkFld = (BlocksOfflineFolder) subitem;
+                    IBlocksFolder blkFld = (IBlocksFolder) subitem;
                     foreach (ProjectPlcBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
                     {
                         if (projectBlockInfo.BlockType == PLCBlockType.DB || projectBlockInfo.BlockType == PLCBlockType.S5_DB || projectBlockInfo.BlockType == PLCBlockType.S5_DX)
@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog op=new OpenFileDialog();
-            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13, *.al11, *.al12, *.al13, *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13, *.ap14, *.al11, *.al12, *.al13, *.al14)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14";
             var ret = op.ShowDialog();
             if (ret == DialogResult.OK)
             {
@@ -178,9 +178,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if(treeStep7Project.SelectedNode is myTreeNode)
             {
                 var tmp = (myTreeNode) treeStep7Project.SelectedNode;
-                if (tmp.myObject.GetType() == typeof (BlocksOfflineFolder))
+                if (tmp.myObject is IBlocksFolder)
                 {
-                    BlocksOfflineFolder blkFld = (BlocksOfflineFolder) tmp.myObject;
+                    IBlocksFolder blkFld = (IBlocksFolder) tmp.myObject;
                     if ((int) SelectPart > 1000)
                     {
                         List<ProjectBlockInfo> blocks = blkFld.readPlcBlocksList();
@@ -188,7 +188,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (step7ProjectBlockInfo.BlockType == PLCBlockType.VAT && SelectPart == SelectPartType.VariableTable)
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
-                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && (SelectPart == SelectPartType.DataBlock || SelectPart == SelectPartType.DataBlocks))
+                            if (step7ProjectBlockInfo.BlockType == PLCBlockType.DB && (SelectPart == SelectPartType.DataBlock || SelectPart == SelectPartType.DataBlocks || SelectPart == SelectPartType.IDataBlock || SelectPart == SelectPartType.IDataBlocks))
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
                             if (step7ProjectBlockInfo.BlockType == PLCBlockType.UDT && SelectPart == SelectPartType.DataType)
                                 lstProjectFolder.Items.Add(step7ProjectBlockInfo);
@@ -234,8 +234,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {                    
                     var tmp = (myTreeNode) treeStep7Project.SelectedNode;
-                    if (tmp.myObject.GetType() == typeof(BlocksOfflineFolder))
-                        retVal = (BlocksOfflineFolder) tmp.myObject;
+                    if (tmp.myObject.GetType() == typeof(IBlocksFolder))
+                        retVal = (IBlocksFolder) tmp.myObject;
                     else
                         retVal = null;                    
                 }
@@ -307,6 +307,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
+            else if (SelectPart == SelectPartType.IDataBlock)
+            {
+                if (lstProjectFolder.SelectedItem != null)
+                {
+                    this.Hide();
+                    ProjectBlockInfo tmp = (ProjectBlockInfo)lstProjectFolder.SelectedItem;
+                    if (tmp.BlockType == PLCBlockType.DB)
+                    {
+                        retVal = ((IBlocksFolder)tmp.ParentFolder).GetBlock(tmp);
+                        ((Block)retVal).ParentFolder = tmp.ParentFolder;
+                    }
+                }
+            }
             else if (SelectPart == SelectPartType.DataBlocks)
             {
                 if (lstProjectFolder.SelectedItems.Count > 0)
@@ -324,6 +337,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
                             blocks.Add((S7DataBlock)block);
                         }                        
+                    }
+
+                    retVal = blocks.Count > 0 ? blocks : null;
+                }
+            }
+            else if (SelectPart == SelectPartType.IDataBlocks)
+            {
+                if (lstProjectFolder.SelectedItems.Count > 0)
+                {
+                    this.Hide();
+
+                    var blocks = new List<IDataBlock>();
+
+                    foreach (ProjectBlockInfo s7ProjectBlockInfo in lstProjectFolder.SelectedItems)
+                    {
+                        if (s7ProjectBlockInfo.BlockType == PLCBlockType.DB)
+                        {
+                            var block = ((IBlocksFolder)s7ProjectBlockInfo.ParentFolder).GetBlock(s7ProjectBlockInfo);
+                            block.ParentFolder = s7ProjectBlockInfo.ParentFolder;
+
+                            blocks.Add((IDataBlock)block);
+                        }
                     }
 
                     retVal = blocks.Count > 0 ? blocks : null;
@@ -414,7 +449,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 _selectPart = value;
 
-                if (_selectPart == SelectPartType.DataBlocks)
+                if (_selectPart == SelectPartType.DataBlocks || _selectPart == SelectPartType.IDataBlocks)
                     lstProjectFolder.SelectionMode = SelectionMode.MultiExtended;
                 else
                     lstProjectFolder.SelectionMode = SelectionMode.One;

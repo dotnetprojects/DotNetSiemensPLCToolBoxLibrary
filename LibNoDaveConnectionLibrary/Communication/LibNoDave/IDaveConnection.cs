@@ -7,7 +7,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int connectPLC();
         int daveBuildAndSendPDU(IPDU myPDU, byte[] Parameter, byte[] Data);
         int daveGetPDUData(IPDU myPDU, out byte[] data, out byte[] param);
-        DateTime daveReadPLCTime();
+        int daveReadPLCTime(out DateTime dateTime);
         int daveRecieveData(out byte[] data, out byte[] param);
         int daveSetPLCTime(DateTime tm);
         int deleteProgramBlock(int blockType, int number);
@@ -26,7 +26,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         IPDU prepareReadRequest();
         IPDU prepareWriteRequest();
         IPDU createPDU();
-        int putProgramBlock(int blockType, int number, byte[] buffer, ref int length);
+        int putProgramBlock(int blockType, int number, byte[] buffer, int length);
         int readBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int readBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int readManyBytes(int area, int DBnumber, int start, int len, ref byte[] buffer);
@@ -35,9 +35,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         int start();
         int stop();
         int useResult(IresultSet rs, int number, byte[] buffer);
+        int useResultBuffer(IresultSet rs, int number, byte[] buffer);
         int writeBits(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer);
         IresultSet getResultSet();
+        int PI_StartNC(string piservice, string[] param, int paramCount);
+        int initUploadNC(string file, ref byte[] uploadID);
+        int doUploadNC(out int more, byte[] buffer, out int len, byte[] uploadID);
+        int endUploadNC(byte[] uploadID);
+        int daveGetNCProgram(string filename, byte[] buffer, ref int length);
+        int davePutNCProgram(string filename, string path, string ts, byte[] buffer, int length);
     }
 }

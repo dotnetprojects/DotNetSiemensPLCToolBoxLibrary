@@ -46,16 +46,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
-        public SymbolTableEntry SymbolTableEntry
+        public virtual SymbolTableEntry SymbolTableEntry
         {
             get
             {
-                if (ParentFolder != null)
-                {
-                    ISymbolTable tmp = ((IProgrammFolder) ParentFolder.Parent).SymbolTable;
-                    if (tmp != null)
-                        return tmp.GetEntryFromOperand(BlockName);
-                }
                 return null;
             }
         }

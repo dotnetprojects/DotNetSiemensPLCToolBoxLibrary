@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
@@ -11,6 +10,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     {
         public Dictionary<PLCTag, int> PLCTags = new Dictionary<PLCTag, int>();
 
+        public override string ValueName
+        {
+            get { return "Readhelper (" + string.Join(",", PLCTags.Select(x => x.Key.ValueName ?? "")) + ")"; }
+            set { }
+        }
+
         public override bool DontSplitValue
         {
             get { return false; }
@@ -19,13 +24,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 base.DontSplitValue = value;
             }
         }
-        
+
         internal override void _readValueFromBuffer(byte[] buff, int startpos)
         {
             foreach (KeyValuePair<PLCTag, int> keyValuePair in PLCTags)
             {
                 keyValuePair.Key._readValueFromBuffer(buff, keyValuePair.Value + startpos);
-            }            
+            }
         }
 
         internal override void _putControlValueIntoBuffer(byte[] buff, int startpos)

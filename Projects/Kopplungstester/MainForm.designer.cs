@@ -325,7 +325,7 @@ namespace Kopplungstester
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(102, 21);
             this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::Kopplungstester.Properties.Settings.Default, "Laufnummer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             // 
             // panel4
             // 

@@ -2,8 +2,8 @@
 [Bb]in/
 [Oo]bj/
 Build/
-compiled/*.pdb
-#compiled/**/*
+compiled/*.*
+compiled/**/*
 *.vshost.exe
 *.vshost.exe.config
 *.vshost.exe.manifest
@@ -114,3 +114,7 @@ Generated_Code #added for RIA/Silverlight projects
 _UpgradeReport_Files/
 Backup*/
 UpgradeLog*.XML
+/compiled/de
+/UpgradeLog2.htm
+/UpgradeLog.htm
+/.vs

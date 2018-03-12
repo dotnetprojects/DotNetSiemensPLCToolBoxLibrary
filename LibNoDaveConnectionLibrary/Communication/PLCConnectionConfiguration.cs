@@ -32,11 +32,11 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 using Microsoft.Win32;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
-{    
+{
 #if !IPHONE
     [System.ComponentModel.Editor(typeof(PLCConnectionUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
 #endif   
-    [Serializable]    
+    [Serializable]
     /// <summary>
     /// This Class stores the Connection Configuration to a PLC
     /// </summary>
@@ -51,8 +51,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
-        
+
+        #region Properties
         private string _connectionName;
+        /// <summary>
+        /// Name of the connection. This value can be freely defined by the user
+        /// </summary>
         public String ConnectionName
         {
             get { return _connectionName; }
@@ -65,6 +69,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private string _entryPoint = "S7ONLINE";
+        /// <summary>
+        /// the entry point of the Simatic NEt configuration to be used. 
+        /// Please refer to the Simatic Net documentation for details.
+        /// by default is S7ONLINE
+        /// </summary>
         public string EntryPoint
         {
             get { return _entryPoint; }
@@ -80,6 +89,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _cpuRack = 0;
+        /// <summary>
+        /// The Rack where the destination CPU is inserted. This value should be 0 in almost all cases.
+        /// Only in Multi CPU configurations this needs to be adjusted.
+        /// </summary>
         public int CpuRack
         {
             get { return _cpuRack; }
@@ -87,6 +100,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _cpuSlot = 2;
+        /// <summary>
+        /// The slot where the destination CPU is inserted in the selected Rack.
+        /// This value depends on the particular hardware configuration of the CPU.
+        /// Usually it is 2 for S7-300 CPUs and 3 for S7-400 CPUs
+        /// On Redundant H-CPU configurations this value must be set accordingly, in order for the comunication to work properly
+        /// </summary>
         public int CpuSlot
         {
             get { return _cpuSlot; }
@@ -94,6 +113,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _cpuMpi = 2;
+        /// <summary>
+        /// The MPI address of the remote CPU. this depends on the particular hardware configuration and is usually
+        /// set to 2 by default.
+        /// Only relevant for MPI connections
+        /// </summary>
         public int CpuMpi
         {
             get { return _cpuMpi; }
@@ -101,6 +125,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private string _cpuIp = "192.168.1.100";
+        /// <summary>
+        /// The IP-Adress or Hostname of the CPU's ethernet connection.
+        /// Only relevant for ISO over TCP connections.
+        /// </summary>
         public string CpuIP
         {
             get { return _cpuIp; }
@@ -108,6 +136,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _port = 102;
+        /// <summary>
+        /// The TCP Port to be used for connecting the CPU via ISO over TCP. 
+        /// This value usually should set to the default 102 (ISO Transport Service Access Point (TSAP) Class 0 protocol)
+        /// </summary>
         public int Port
         {
             get { return _port; }
@@ -122,6 +154,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _lokalMpi = 0;
+        /// <summary>
+        /// The local MPI Address to be used by the MPI adapter to comunicate with the CPU.
+        /// By convention the address 0 is reserved for Programing devices.
+        /// </summary>
         public int LokalMpi
         {
             get { return _lokalMpi; }
@@ -129,35 +165,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private string _comPort = "COM1";
+        /// <summary>
+        /// The Com port name where the MPI adapter is connected to. 
+        /// if an RS232 to USB adapter is used (such as the Siamtic USB-MPI adapter)
+        /// the Virtual com port name of the adapter must be chosen.
+        /// </summary>
         public string ComPort
         {
             get { return _comPort; }
             set { _comPort = value; NotifyPropertyChanged("ComPort"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _plcConnectionType = 1;
-        public int PLCConnectionType
+        private LibNodaveConnectionResource _plcConnectionType = LibNodaveConnectionResource.PG;
+        /// <summary>
+        /// Defines the Connection resource to be used in the PLC
+        /// </summary>
+        public LibNodaveConnectionResource PLCConnectionType
         {
             get { return _plcConnectionType; }
             set { _plcConnectionType = value; NotifyPropertyChanged("PLCConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _routingplcConnectionType = 1;
-        public int RoutingPLCConnectionType
+        private LibNodaveConnectionResource _routingplcConnectionType = LibNodaveConnectionResource.PG;
+        public LibNodaveConnectionResource RoutingPLCConnectionType
         {
             get { return _routingplcConnectionType; }
             set { _routingplcConnectionType = value; NotifyPropertyChanged("RoutingPLCConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _connectionType = 122;
-        public int ConnectionType
+        private LibNodaveConnectionTypes _connectionType = LibNodaveConnectionTypes.ISO_over_TCP;
+        /// <summary>
+        /// Defines how the connection to the PLC should be established
+        /// </summary>
+        public LibNodaveConnectionTypes ConnectionType
         {
             get { return _connectionType; }
             set { _connectionType = value; NotifyPropertyChanged("ConnectionType"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _busSpeed = 2;
-        public int BusSpeed
+        private LibNodaveConnectionBusSpeed _busSpeed = LibNodaveConnectionBusSpeed.Speed_187k;
+        /// <summary>
+        /// defines the Bus speed for the connected MPI adapter
+        /// The default MPI bus speed is 19200 bit / second
+        /// </summary>
+        public LibNodaveConnectionBusSpeed BusSpeed
         {
             get { return _busSpeed; }
             set { _busSpeed = value; NotifyPropertyChanged("BusSpeed"); NotifyPropertyChanged("ObjectAsString"); }
@@ -171,14 +222,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private string _comPortSpeed = "38400";
+        /// <summary>
+        /// defines the Bus speed for the connected MPI adapter
+        /// The default MPI bus speed is 19200 bit / second
+        /// </summary>
         public string ComPortSpeed
         {
             get { return _comPortSpeed; }
             set { _comPortSpeed = value; NotifyPropertyChanged("ComPortSpeed"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _comPortParity = 1;
-        public int ComPortParity
+        private LibNodaveConnectionBusParity _comPortParity = LibNodaveConnectionBusParity.even;
+
+        /// <summary>
+        /// Com port parity to use for MPI connection. By default MPI uses Even parity
+        /// </summary>
+        public LibNodaveConnectionBusParity ComPortParity
         {
             get { return _comPortParity; }
             set
@@ -231,18 +290,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             set { _routingSubnet2 = value; NotifyPropertyChanged("RoutingSubnet2"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _timeout = 5000000;
-        public int Timeout
+        private TimeSpan _timeout = TimeSpan.FromMilliseconds( 5000); 
+        /// <summary>
+        /// The timeout to wait for responses from the PLC
+        /// in microseconds
+        /// </summary>
+        [XmlIgnore]
+        public TimeSpan Timeout
         {
             get { return _timeout; }
             set { _timeout = value; NotifyPropertyChanged("Timeout"); NotifyPropertyChanged("ObjectAsString"); }
         }
 
-        private int _timeoutIpConnect = 5000;
-        public int TimeoutIPConnect
+        /// <summary>
+        /// Used for serialization only.
+        /// </summary>
+        /// <remarks>The Problem is that the XML Serializer can not serialize Timespans. So serialize an "hidden" integer instead</remarks>
+        [XmlElement(ElementName = "Timeout"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public int TimeoutMicroseconds
+        {
+            get { return (int)Timeout.TotalMilliseconds * 1000; }
+            set { Timeout = TimeSpan.FromMilliseconds(value / 1000); }
+        }
+
+        private TimeSpan _timeoutIpConnect = TimeSpan.FromMilliseconds(5000);
+        /// <summary>
+        /// The default Timeout to be used for ISO over TCP conection
+        /// In miliseconds
+        /// </summary>
+        [XmlIgnore]
+        public TimeSpan TimeoutIPConnect
         {
             get { return _timeoutIpConnect; }
             set { _timeoutIpConnect = value; NotifyPropertyChanged("TimeoutIPConnect"); NotifyPropertyChanged("ObjectAsString"); }
+        }
+
+        /// <summary>
+        /// Used for serialization only.
+        /// </summary>
+        /// <remarks>The Problem is that the XML Serializer can not serialize Timespans. So serialize an "hidden" integer instead</remarks>
+        [XmlElement (ElementName = "TimeoutIPConnect"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public int TimeoutIPConnectMiliseconds
+        {
+            get { return (int)TimeoutIPConnect.TotalMilliseconds;}
+            set { _timeoutIpConnect = TimeSpan.FromMilliseconds (value); }
         }
 
         private bool _initDone { get; set; }
@@ -253,6 +344,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return _configurationType; }
             set { _configurationType = value; NotifyPropertyChanged("ConfigurationType"); NotifyPropertyChanged("ObjectAsString"); }
         }
+        #endregion
 
         public string ObjectAsString
         {
@@ -264,26 +356,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 #if !IPHONE
             if (File.Exists(ConfigurationPathAndFilename))
             {
-                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
                 
                 Dictionary<String, PLCConnectionConfiguration> Connections = null;
-                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
-                    Connections = ConnectionsDicSer.Deserialize(strm);
-                    //string txt = strm.ReadToEnd();
+                using (TextReader strm = new StreamReader(ConfigurationPathAndFilename))
+                {
+                    Connections = LoadConfigFile(strm);
                     strm.Close();
-                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
-                    if (Connections != null)
-                    {
-                        string[] Names = new string[Connections.Count];
-                        Connections.Keys.CopyTo(Names, 0);
-                        return Names;
-                    }
+                }
+
+                 //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                if (Connections != null)
+                {
+                    string[] Names = new string[Connections.Count];
+                    Connections.Keys.CopyTo(Names, 0);
+                    return Names;
+                }
             }
             return new string[0];
 
-            RegistryKey myConnectionKey =
-                Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
-            return myConnectionKey.GetSubKeyNames();
+            //RegistryKey myConnectionKey =
+            //    Registry.CurrentUser.CreateSubKey("Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections");
+            //return myConnectionKey.GetSubKeyNames();
 #else
 			return null;
 #endif
@@ -372,13 +465,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 if (File.Exists(ConfigurationPathAndFilename))
                 {
-                    DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
 
                     Dictionary<String, PLCConnectionConfiguration> Connections = null;
-                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
-                    Connections = ConnectionsDicSer.Deserialize(strm);
-                    //string txt = strm.ReadToEnd();
-                    strm.Close();
+                    using (TextReader strm = new StreamReader(ConfigurationPathAndFilename))
+                    {
+                        Connections = LoadConfigFile(strm);
+                        strm.Close();
+                    }
+
                     //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
                     if (Connections != null && Connections.ContainsKey(ConnectionName))
                     {
@@ -414,76 +508,165 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 return;
 
+                //RegistryKey myConnectionKey =
+                //    Registry.CurrentUser.CreateSubKey(
+                //        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
+                //if (myConnectionKey != null)
+                //{
+                //    this.EntryPoint = (String)myConnectionKey.GetValue("EntryPoint", "S7ONLINE");
+                //    this.CpuRack = Convert.ToInt32(myConnectionKey.GetValue("CpuRack", "0"));
+                //    this.CpuSlot = Convert.ToInt32(myConnectionKey.GetValue("CpuSlot", "2"));
+                //    this.CpuMpi = Convert.ToInt32(myConnectionKey.GetValue("CpuMpi", "2"));
+                //    this.CpuIP = (String)myConnectionKey.GetValue("CpuIP", "192.168.1.1");
+                //    this.LokalMpi = Convert.ToInt32(myConnectionKey.GetValue("LokalMpi", "0"));
+                //    this.ComPort = (String)myConnectionKey.GetValue("ComPort", "");
+                //    this.ConnectionType = (LibNodaveConnectionTypes)Convert.ToInt32(myConnectionKey.GetValue("ConnectionType", "1"));
+                //    this.BusSpeed = (LibNodaveConnectionBusSpeed)Convert.ToInt32(myConnectionKey.GetValue("BusSpeed", "2"));
+                //    this.NetLinkReset = Convert.ToBoolean(myConnectionKey.GetValue("NetLinkReset", "false"));
+                //    this.ComPortSpeed = (String)myConnectionKey.GetValue("ComPortSpeed", "38400");
+                //    this.ComPortParity = (LibNodaveConnectionBusParity)Convert.ToInt32(myConnectionKey.GetValue("ComPortParity", "1"));
+                //    this.Routing = Convert.ToBoolean(myConnectionKey.GetValue("Routing", "false"));
+                //    this.RoutingDestinationRack =
+                //        Convert.ToInt32(myConnectionKey.GetValue("RoutingDestinationRack", "0"));
+                //    this.RoutingDestinationSlot =
+                //        Convert.ToInt32(myConnectionKey.GetValue("RoutingDestinationSlot", "2"));
+                //    this.RoutingSubnet1 = Convert.ToInt32(myConnectionKey.GetValue("RoutingSubnet1", "0"));
+                //    this.RoutingSubnet2 = Convert.ToInt32(myConnectionKey.GetValue("RoutingSubnet2", "0"));
+                //    this.RoutingDestination = Convert.ToString(myConnectionKey.GetValue("RoutingDestination", "2"));
+                //    this.Port = Convert.ToInt32(myConnectionKey.GetValue("Port", "102"));
+                //    this.WritePort = Convert.ToInt32(myConnectionKey.GetValue("WritePort", "30501"));
 
-                RegistryKey myConnectionKey =
-                    Registry.CurrentUser.CreateSubKey(
-                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
-                if (myConnectionKey != null)
-                {
-                    this.EntryPoint = (String)myConnectionKey.GetValue("EntryPoint", "S7ONLINE");
-                    this.CpuRack = Convert.ToInt32(myConnectionKey.GetValue("CpuRack", "0"));
-                    this.CpuSlot = Convert.ToInt32(myConnectionKey.GetValue("CpuSlot", "2"));
-                    this.CpuMpi = Convert.ToInt32(myConnectionKey.GetValue("CpuMpi", "2"));
-                    this.CpuIP = (String)myConnectionKey.GetValue("CpuIP", "192.168.1.1");
-                    this.LokalMpi = Convert.ToInt32(myConnectionKey.GetValue("LokalMpi", "0"));
-                    this.ComPort = (String)myConnectionKey.GetValue("ComPort", "");
-                    this.ConnectionType = Convert.ToInt32(myConnectionKey.GetValue("ConnectionType", "1"));
-                    this.BusSpeed = Convert.ToInt32(myConnectionKey.GetValue("BusSpeed", "2"));
-                    this.NetLinkReset = Convert.ToBoolean(myConnectionKey.GetValue("NetLinkReset", "false"));
-                    this.ComPortSpeed = (String)myConnectionKey.GetValue("ComPortSpeed", "38400");
-                    this.ComPortParity = Convert.ToInt32(myConnectionKey.GetValue("ComPortParity", "1"));
-                    this.Routing = Convert.ToBoolean(myConnectionKey.GetValue("Routing", "false"));
-                    this.RoutingDestinationRack =
-                        Convert.ToInt32(myConnectionKey.GetValue("RoutingDestinationRack", "0"));
-                    this.RoutingDestinationSlot =
-                        Convert.ToInt32(myConnectionKey.GetValue("RoutingDestinationSlot", "2"));
-                    this.RoutingSubnet1 = Convert.ToInt32(myConnectionKey.GetValue("RoutingSubnet1", "0"));
-                    this.RoutingSubnet2 = Convert.ToInt32(myConnectionKey.GetValue("RoutingSubnet2", "0"));
-                    this.RoutingDestination = Convert.ToString(myConnectionKey.GetValue("RoutingDestination", "2"));
-                    this.Port = Convert.ToInt32(myConnectionKey.GetValue("Port", "102"));
-                    this.WritePort = Convert.ToInt32(myConnectionKey.GetValue("WritePort", "30501"));
+                //    this.PLCConnectionType = (LibNodaveConnectionResource)Convert.ToInt32(myConnectionKey.GetValue("PLCConnectionType", "1"));
+                //    this.RoutingPLCConnectionType = (LibNodaveConnectionResource)Convert.ToInt32(myConnectionKey.GetValue("RoutingPLCConnectionType", "1"));
 
-                    this.PLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("PLCConnectionType", "1"));
-                    this.RoutingPLCConnectionType = Convert.ToInt32(myConnectionKey.GetValue("RoutingPLCConnectionType", "1"));
-
-                    this.Timeout = Convert.ToInt32(myConnectionKey.GetValue("Timeout", "5000000"));
-                    this.TimeoutIPConnect = Convert.ToInt32(myConnectionKey.GetValue("TimeoutIPConnect", "5000"));
-                }
+                //    this.Timeout = Convert.ToInt32(myConnectionKey.GetValue("Timeout", "5000000"));
+                //    this.TimeoutIPConnect =  TimeSpan.FromMilliseconds( Convert.ToInt32(myConnectionKey.GetValue("TimeoutIPConnect", "5000")));
+                //}
 #endif
             }
             else
             {
                 if (!_initDone)
                 {
-                    this.ConnectionType = 122;
+                    this.ConnectionType = LibNodaveConnectionTypes.ISO_over_TCP;
                     this.CpuMpi = 2;
                     this.EntryPoint = "S7ONLINE";
                     this.CpuIP = "192.168.1.1";
                     this.CpuRack = 0;
                     this.CpuSlot = 2;
                     this.Port = 102;
-                    this.TimeoutIPConnect = 5000;
-                    this.Timeout = 5000000;
+                    this.TimeoutIPConnect = TimeSpan.FromMilliseconds (5000);
+                    this.Timeout = TimeSpan.FromMilliseconds(5000);
                     _initDone = true;
                 }
             }
         }
+
+        #region Load and Repair Config File
+        /// <summary>
+        /// Reads the configuration from an Stream
+        /// </summary>
+        /// <param name="strm"></param>
+        /// <returns></returns>
+        private static Dictionary<String, PLCConnectionConfiguration> LoadConfigFile(TextReader strm)
+        {
+            Dictionary<String, PLCConnectionConfiguration> Connections;
+            DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
+
+            //the idea here is, to try to deserialize the data once, and if it fails,
+            //Try to repair it. If it fails also the second time, then give up an throw
+            //This is neede to maintain Backwards compatibility with config files that do not use
+            //Enumerations.
+            try
+            {
+                Connections = ConnectionsDicSer.Deserialize(strm);
+
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    strm.Close(); //Close old stream
+                    strm = new StreamReader(ConfigurationPathAndFilename); //Reopen temporary stream
+                    string repaired = repairConfig(strm.ReadToEnd());
+                    strm.Close(); //Close temporary stream
+                    strm = new StringReader(repaired);
+                    Connections = ConnectionsDicSer.Deserialize(strm);
+                }
+                catch
+                {
+                    throw ex; //Throw orignial Exception
+                }
+            }
+            return Connections;
+        }
+
+        /// <summary>
+        /// Try to repair the configuration file if an error is encoutnerd
+        /// </summary>
+        /// <param name="original"></param>
+        /// <returns></returns>
+        private static string repairConfig(string original)
+        {
+            string config = original;
+            config = fixEnum(config, "ConnectionType", typeof(LibNodaveConnectionTypes));
+            config = fixEnum(config, "PLCConnectionType", typeof(LibNodaveConnectionResource));
+            config = fixEnum(config, "RoutingPLCConnectionType", typeof(LibNodaveConnectionResource));
+            config = fixEnum(config, "BusSpeed", typeof(LibNodaveConnectionBusSpeed));
+            config = fixEnum(config, "ComPortParity", typeof(LibNodaveConnectionBusParity));
+
+            return config;
+        }
+
+        /// <summary>
+        /// Replace the numerical enumeration value with its textual Value
+        /// </summary>
+        /// <param name="original">The original Config file content to search in</param>
+        /// <param name="PropertyName">The Name of the property to replace the value on</param>
+        /// <param name="PropertyEnumType">The type of Enumeration of the property in question</param>
+        /// <returns></returns>
+        private static string fixEnum(string original, string PropertyName, Type PropertyEnumType)
+        {
+            string New = original;
+
+            int idx = original.IndexOf("<" + PropertyName + ">", 0, StringComparison.Ordinal);
+
+            while (idx >= 0)
+            {
+                idx = idx + PropertyName.Length + 2;
+
+                //Find next "Closing" tag and extract the current numerical value
+                int Eidx = New.IndexOf("</", idx, StringComparison.Ordinal);
+                string Value = New.Substring(idx, Eidx-idx);
+
+                //Convert to enumeration and replace in file
+                string EnumValue = Enum.Parse(PropertyEnumType, Value).ToString();
+                if (Value == EnumValue) EnumValue = Enum.GetNames (PropertyEnumType)[0]; //parsing failed, the Value was invalid
+
+                New = New.Remove(idx, Eidx - idx);
+                New = New.Insert(idx, EnumValue.ToString());
+
+                idx = New.IndexOf("<" + PropertyName + ">", idx, StringComparison.Ordinal);
+            }
+
+            return New;
+        }
+        #endregion
 
         public static void DeleteConfiguration(string ConnectionName)
         {
 #if !IPHONE
             try
             {
-                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
-
                 Dictionary<String, PLCConnectionConfiguration> Connections = null;
+
                 if (File.Exists(ConfigurationPathAndFilename))
                 {
-                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
-                    Connections = ConnectionsDicSer.Deserialize(strm);
-                    //string txt = strm.ReadToEnd();
-                    strm.Close();
-                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                    using (TextReader strm = new StreamReader(ConfigurationPathAndFilename))
+                    {
+                        Connections = LoadConfigFile(strm);
+                        strm.Close();
+                    }
                 }
                 if (Connections == null)
                     Connections = new Dictionary<string, PLCConnectionConfiguration>();
@@ -493,6 +676,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 Directory.CreateDirectory(Path.GetDirectoryName(ConfigurationPathAndFilename));
                 StreamWriter sstrm = new StreamWriter(ConfigurationPathAndFilename, false);
+                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
                 ConnectionsDicSer.Serialize(Connections, sstrm);
                 //sstrm.Write(stxt);
                 //sstrm.Flush();
@@ -500,8 +684,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 return;
 
-                Registry.CurrentUser.DeleteSubKeyTree(
-                    "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
+                //Registry.CurrentUser.DeleteSubKeyTree(
+                //    "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
             }
             catch (Exception)
             { }
@@ -514,16 +698,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
 #if !IPHONE
 
-                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();
-                    
+                DictionarySerializer<String, PLCConnectionConfiguration> ConnectionsDicSer = new DictionarySerializer<string, PLCConnectionConfiguration>();                   
                 Dictionary<String, PLCConnectionConfiguration> Connections = null;
+
                 if (File.Exists(ConfigurationPathAndFilename))
                 {
-                    StreamReader strm = new StreamReader(ConfigurationPathAndFilename);
-                    Connections = ConnectionsDicSer.Deserialize(strm);
-                    //string txt = strm.ReadToEnd();
-                    strm.Close();
-                    //Connections = General.SerializeToString<Dictionary<String, PLCConnectionConfiguration>>.DeSerialize(txt);                    
+                    using (TextReader strm = new StreamReader(ConfigurationPathAndFilename))
+                    {
+                        Connections = LoadConfigFile(strm);
+                        strm.Close();
+                    }
+
                 }
                 if (Connections == null)
                     Connections = new Dictionary<string, PLCConnectionConfiguration>();
@@ -542,36 +727,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 return;
 
-                RegistryKey myConnectionKey =
-                    Registry.CurrentUser.CreateSubKey(
-                        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
-                if (myConnectionKey != null)
-                {
-                    myConnectionKey.SetValue("EntryPoint", this.EntryPoint);
-                    myConnectionKey.SetValue("CpuRack", this.CpuRack);
-                    myConnectionKey.SetValue("CpuSlot", this.CpuSlot);
-                    myConnectionKey.SetValue("CpuMpi", this.CpuMpi);
-                    myConnectionKey.SetValue("CpuIP", this.CpuIP);
-                    myConnectionKey.SetValue("LokalMpi", this.LokalMpi);
-                    myConnectionKey.SetValue("ComPort", this.ComPort);
-                    myConnectionKey.SetValue("ConnectionType", this.ConnectionType);
-                    myConnectionKey.SetValue("BusSpeed", this.BusSpeed);
-                    myConnectionKey.SetValue("NetLinkReset", this.NetLinkReset);
-                    myConnectionKey.SetValue("ComPortSpeed", this.ComPortSpeed);
-                    myConnectionKey.SetValue("ComPortParity", this.ComPortParity);
-                    myConnectionKey.SetValue("Routing", this.Routing);
-                    myConnectionKey.SetValue("RoutingDestinationRack", this.RoutingDestinationRack);
-                    myConnectionKey.SetValue("RoutingDestinationSlot", this.RoutingDestinationSlot);
-                    myConnectionKey.SetValue("RoutingSubnet1", this.RoutingSubnet1);
-                    myConnectionKey.SetValue("RoutingSubnet2", this.RoutingSubnet2);
-                    myConnectionKey.SetValue("RoutingDestination", this.RoutingDestination);
-                    myConnectionKey.SetValue("Port", this.Port);
-                    myConnectionKey.SetValue("WritePort", this.WritePort);
-                    myConnectionKey.SetValue("PLCConnectionType", this.PLCConnectionType);
-                    myConnectionKey.SetValue("RoutingPLCConnectionType", this.RoutingPLCConnectionType);
-                    myConnectionKey.SetValue("Timeout", this.Timeout);
-                    myConnectionKey.SetValue("TimeoutIPConnect", this.TimeoutIPConnect);
-                }
+                //RegistryKey myConnectionKey =
+                //    Registry.CurrentUser.CreateSubKey(
+                //        "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
+                //if (myConnectionKey != null)
+                //{
+                //    myConnectionKey.SetValue("EntryPoint", this.EntryPoint);
+                //    myConnectionKey.SetValue("CpuRack", this.CpuRack);
+                //    myConnectionKey.SetValue("CpuSlot", this.CpuSlot);
+                //    myConnectionKey.SetValue("CpuMpi", this.CpuMpi);
+                //    myConnectionKey.SetValue("CpuIP", this.CpuIP);
+                //    myConnectionKey.SetValue("LokalMpi", this.LokalMpi);
+                //    myConnectionKey.SetValue("ComPort", this.ComPort);
+                //    myConnectionKey.SetValue("ConnectionType", (int)this.ConnectionType);
+                //    myConnectionKey.SetValue("BusSpeed", (int)this.BusSpeed);
+                //    myConnectionKey.SetValue("NetLinkReset", this.NetLinkReset);
+                //    myConnectionKey.SetValue("ComPortSpeed", this.ComPortSpeed);
+                //    myConnectionKey.SetValue("ComPortParity", (int)this.ComPortParity);
+                //    myConnectionKey.SetValue("Routing", this.Routing);
+                //    myConnectionKey.SetValue("RoutingDestinationRack", this.RoutingDestinationRack);
+                //    myConnectionKey.SetValue("RoutingDestinationSlot", this.RoutingDestinationSlot);
+                //    myConnectionKey.SetValue("RoutingSubnet1", this.RoutingSubnet1);
+                //    myConnectionKey.SetValue("RoutingSubnet2", this.RoutingSubnet2);
+                //    myConnectionKey.SetValue("RoutingDestination", this.RoutingDestination);
+                //    myConnectionKey.SetValue("Port", this.Port);
+                //    myConnectionKey.SetValue("WritePort", this.WritePort);
+                //    myConnectionKey.SetValue("PLCConnectionType", (int)this.PLCConnectionType);
+                //    myConnectionKey.SetValue("RoutingPLCConnectionType", (int)this.RoutingPLCConnectionType);
+                //    myConnectionKey.SetValue("Timeout", this.Timeout);
+                //    myConnectionKey.SetValue("TimeoutIPConnect", this.TimeoutIPConnect);
+                //}
 #endif
             }
         }
@@ -582,46 +767,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             switch (ConnectionType)
             {
 
-                case 1:
+                case LibNodaveConnectionTypes.MPI_über_Serial_Adapter:
                     retVal = "MPI über seriell" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
-                case 2:
+                case LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Andrews_Version_without_STX:
                     retVal = "MPI über seriell (Andrews Version)" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
-                case 3:
+                case  LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Step_7_Version:
                     retVal = "MPI über seriell (Step7 Version)" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
-                case 4:
+                case  LibNodaveConnectionTypes.MPI_über_Serial_Adapter_Adrews_Version_with_STX:
                     retVal = "MPI über seriell" + " (Port: " + ComPort + ", MPI: " + CpuMpi.ToString() + ")";
                     break;
-                case 10:
+                case  LibNodaveConnectionTypes.PPI_über_Serial_Adapter:
                     retVal = "PPI über seriell";
                     break;
-                case 20:
+                case  LibNodaveConnectionTypes.AS_511:
                     retVal = "AS 511";
                     break;
-                case 50:
+                case  LibNodaveConnectionTypes.Use_Step7_DLL:
                     retVal = "Step7 DLL" + " (" + EntryPoint + ")";
                     break;
-                case 122:
+                case  LibNodaveConnectionTypes.ISO_over_TCP:
                     retVal = "ISO over TCP" + " (IP:" + CpuIP.ToString() + ",Rack:" + CpuRack.ToString() + ",Slot:" + CpuSlot.ToString() + ")";
                     break;
-                case 123:
+                case  LibNodaveConnectionTypes.ISO_over_TCP_CP_243:
                     retVal = "ISO over TCP (CP243)" + " (IP:" + CpuIP.ToString() + ",Rack:" + CpuRack.ToString() + ",Slot:" + CpuSlot.ToString() + ")";
                     break;
-                case 223:
+                case LibNodaveConnectionTypes.Netlink_lite:
                     retVal = "Netlink lite" + " (IP:" + CpuIP.ToString() + ")";
                     break;
-                case 224:
+                case LibNodaveConnectionTypes.Netlink_lite_PPI:
                     retVal = "Netlink lite PPI" + " (IP:" + CpuIP.ToString() + ")";
                     break;
-                case 230:
+                case LibNodaveConnectionTypes.Netlink_Pro:
                     retVal = "Netlink PRO" + " (IP:" + CpuIP.ToString() + ")";
                     break;
-                case 500:
+                case LibNodaveConnectionTypes.Fetch_Write_Active:
                     retVal = "Fetch/Write (Active)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ", WritePort:" + WritePort + ")";
                     break;
-                case 501:
+                case LibNodaveConnectionTypes.Fetch_Write_Passive:
                     retVal = "Fetch/Write (Passive)" + " (IP:" + CpuIP.ToString() + ", Port:" + Port + ", WritePort:" + WritePort + ")";
                     break;
             }
@@ -633,7 +818,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     retVal += " (Routing: IP:" + RoutingDestination + ",Rack:" + RoutingDestinationRack.ToString() + ",Slot:" + RoutingDestinationSlot.ToString() + ",Netz:" + RoutingSubnet1.ToString("X") + "-" + RoutingSubnet2.ToString("X") + ")";
             return retVal;
         }
-
 
         public void SaveConfigToFile(string filename)
         {
@@ -655,41 +839,182 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
     public enum LibNodaveConnectionConfigurationType
     {
+        [XmlEnum("RegistrySavedConfiguration")]
         RegistrySavedConfiguration = 1,
+        [XmlEnum("ObjectSavedConfiguration")]
         ObjectSavedConfiguration = 2
     }
 
     public enum LibNodaveConnectionTypes
     {
         // ReSharper disable InconsistentNaming
+        [XmlEnum("0")]
+        None = 0,
+
+        /// <summary>
+        /// Connection via MPI adapter connected to an Serial Com Port
+        /// </summary>
+        [XmlEnum("1")]
         MPI_über_Serial_Adapter = 1,
+        [XmlEnum("2")]
         MPI_über_Serial_Adapter_Andrews_Version_without_STX = 2,
+        [XmlEnum("3")]
         MPI_über_Serial_Adapter_Step_7_Version = 3,
+        [XmlEnum("4")]
         MPI_über_Serial_Adapter_Adrews_Version_with_STX = 4,
+
+        /// <summary>
+        /// Connection via PPI protocoll of an MPI/PB adapter. This is usually used for S7-200 family
+        /// </summary>
+        [XmlEnum("10")]
         PPI_über_Serial_Adapter = 10,
+
+        /// <summary>
+        /// Connection via the AS511 Protocoll used by S5 series PLCs
+        /// </summary>
+        [XmlEnum("20")]
         AS_511 = 20,
+
+        /// <summary>
+        /// Connection via the Simatic Net libraries. Simatic Net must be installed
+        /// </summary>
+        [XmlEnum("50")]
         Use_Step7_DLL = 50,
+
+        /// <summary>
+        /// Connections via the TCP/IP protocoll
+        /// </summary>
+        [XmlEnum("122")]
         ISO_over_TCP = 122,
+
+        /// <summary>
+        /// Connections via TCP/IP to an CP243 for S7-200 series PLCs
+        /// </summary>
+        [XmlEnum("123")]
         ISO_over_TCP_CP_243 = 123,
+        [XmlEnum("223")]
         Netlink_lite = 223,
+        [XmlEnum("224")]
         Netlink_lite_PPI = 224,
+        [XmlEnum("230")]
         Netlink_Pro = 230,
+        [XmlEnum("9122")]
         ISO_over_TCP_Managed = 9122,
+        [XmlEnum("500")]
         Fetch_Write_Active = 500,
+        [XmlEnum("501")]
         Fetch_Write_Passive = 501,
         // ReSharper restore InconsistentNaming
     }
 
+    /// <summary>
+    /// Communication Speeds for Profibus and MPI bus connection Adapters.
+    /// The possible speeds can not be chosen freely, but are rather defined by the ProfiBus Standard
+    /// </summary>
     public enum LibNodaveConnectionBusSpeed
     {
         // ReSharper disable InconsistentNaming
+        /// <summary>
+        /// 9.6 kbps
+        /// </summary>
+        [XmlEnum("0")]
         Speed_9k = 0,
+
+        /// <summary>
+        /// 19.2 kbps
+        /// </summary>
+        [XmlEnum("1")]
         Speed_19k = 1,
+
+        /// <summary>
+        /// 187,5 kbps
+        /// </summary>
+        [XmlEnum("2")]
         Speed_187k = 2,
+
+        /// <summary>
+        /// 0,5 Mbps
+        /// </summary>
+        [XmlEnum("3")]
         Speed_500k = 3,
+
+        /// <summary>
+        /// 1.5 Mbps
+        /// </summary>
+        [XmlEnum("4")]
         Speed_1500k = 4,
+
+        /// <summary>
+        /// 45.45 kbps
+        /// </summary>
+        [XmlEnum("5")]
         Speed_45k = 5,
+
+        /// <summary>
+        /// 93.75 kbps
+        /// </summary>
+        [XmlEnum("6")]
         Speed_93k = 6
         // ReSharper restore InconsistentNaming
+    }
+
+    public enum LibNodaveConnectionBusParity
+    {
+        [XmlEnum("101")]
+        even = 'e',
+        [XmlEnum("111")]
+        odd = 'o',
+        [XmlEnum("110")]
+        none = 'n'
+    }
+
+    /// <summary>
+    /// Defines the type of connection resource to use for communiction with the PLC
+    /// Depending on the connection partner and connection type, the range of values is automatically limited to valid values or the value of the connection resource is assigned permanently. 
+    /// </summary>
+    public enum LibNodaveConnectionResource
+    {
+        /// <summary>
+        ///Unknown connection resource
+        /// </summary>
+        [XmlEnum("0")]
+        unknown = 0,
+
+        /// <summary>
+        /// Programming device connection
+        /// Free connection (not configured)
+        /// At least one resource per CPU is reserved for programming device connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+        /// S7 connections that are typically set up from a programming device or from a PC (with ES functionality). This type of connection is used to configure and program the addressed station/module as well as to test and commission it;
+        /// afterwards, the connection is typically cleared again. This connection resource allows both read and write access (e.g., monitoring and loading). 
+        /// </summary>
+        [XmlEnum("1")]
+        PG = 1,
+
+        /// <summary>
+        /// OP connection
+        /// Free connection (not configured)
+        /// At least one resource per CPU is reserved for OP connections. However, for certain S7-300 CPUs it is possible to reserve multiple resources in the CPU properties.
+        /// S7 connections that are typically set up from an OP or from a PC (with OS functionality). This type of connection is used to monitor the addressed station/module with regard to the process that is being controlled.
+        /// </summary>
+        [XmlEnum("2")]
+        OP = 2,
+
+        /// <summary>
+        /// Other
+        /// Free connection (configured, unspecified connection)
+        /// This connection resource can operate multiple connections. Use: Connection configured at one end with unspecified connection partner! The connection partner does not have to be configured if the connection resource 0x03 is addressed.
+        /// Use is not specified. For example, this resource is used automatically when an S7 connection configured at both ends is configured from an S7-400 to an S7-300.
+        /// </summary>
+        [XmlEnum("3")]
+        Other = 3,
+
+        /// <summary>
+        /// CPU
+        /// Connections that are typically set up from a CPU to another module (CPU, FM, etc.) within a subnet. The connection setup is initiated by the application program,
+        /// in which a connection configuration does not exist. This type of connection allows process data to be exchanged between the modules. For certain S7-300 CPUs, it is possible to reserve resources for S7 basic communication. 
+        /// </summary>
+        [XmlEnum("253")]
+        CPU = 253
+
     }
 }

@@ -148,6 +148,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             get
             {
                 string retVal = "";
+
+                //For arrays add the Declared dimension
                 if (IsArray)
                 {
                     retVal += "ARRAY [";
@@ -159,10 +161,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     }
                     retVal += "] OF ";
                 }
-                retVal += DataType.ToString();
 
+                //if the row is an MultiInstance Static FB or SFB, then mention only the Block Number
+                //in this case omit the Datatype entirely and just write the referenced Block number
+                if (DataType == S7DataRowType.MultiInst_FB)
+                    retVal += "FB" + DataTypeBlockNumber.ToString();
+                else if (DataType == S7DataRowType.MultiInst_SFB)
+                    retVal += "SFB" + DataTypeBlockNumber.ToString();
+                else
+                    retVal += DataType.ToString(); 
+
+                //in case of Block types, add the actual Block number as well
                 if (DataType == S7DataRowType.FB || DataType == S7DataRowType.UDT || DataType == S7DataRowType.SFB)
                     retVal += DataTypeBlockNumber.ToString();
+
+                //for strings mention the String Declaration size
                 if (DataType == S7DataRowType.STRING)
                     retVal += "[" + StringSize.ToString() + "]";
 

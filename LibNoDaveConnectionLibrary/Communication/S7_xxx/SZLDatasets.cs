@@ -1404,6 +1404,158 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public class xy32_8Dataset : SZLDataset
+    {
+        [Endian(Endianness.BigEndian)]
+        private ushort _index;
+        public UInt16 Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _zykl;
+        public UInt16 zykl
+        {
+            get { return _zykl; }
+            set { _zykl = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _korr;
+        public UInt16 korr
+        {
+            get { return _korr; }
+            set { _korr = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_0;
+        public UInt16 clock_0
+        {
+            get { return _clock_0; }
+            set { _clock_0 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_1;
+        public UInt16 clock_1
+        {
+            get { return _clock_1; }
+            set { _clock_1 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_2;
+        public UInt16 clock_2
+        {
+            get { return _clock_2; }
+            set { _clock_2 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_3;
+        public UInt16 clock_3
+        {
+            get { return _clock_3; }
+            set { _clock_3 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_4;
+        public UInt16 clock_4
+        {
+            get { return _clock_4; }
+            set { _clock_4 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_5;
+        public UInt16 clock_5
+        {
+            get { return _clock_5; }
+            set { _clock_5 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_6;
+        public UInt16 clock_6
+        {
+            get { return _clock_6; }
+            set { _clock_6 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _clock_7;
+        public UInt16 clock_7
+        {
+            get { return _clock_7; }
+            set { _clock_7 = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        private ushort[] _time;
+        public UInt16[] time
+        {
+            get { return _time; }
+            set { _time = value; }
+        }
+
+        private byte _bszl_0;
+        public byte bszl_0
+        {
+            get { return _bszl_0; }
+            set { _bszl_0 = value; }
+        }
+
+        private byte _bszl_1;
+        public byte bszl_1
+        {
+            get { return _bszl_1; }
+            set { _bszl_1 = value; }
+        }
+
+        private byte _bszü_0;
+        public byte bszü_0
+        {
+            get { return _bszü_0; }
+            set { _bszü_0 = value; }
+        }
+
+        //reserviert
+        private byte _bszü_1;
+        public byte bszü_1
+        {
+            get { return _bszü_1; }
+            set { _bszü_1 = value; }
+        }
+
+        [Endian(Endianness.BigEndian)]
+        private ushort _status;
+        public UInt16 status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        private byte[] _res;
+        public byte[] res
+        {
+            get { return _res; }
+            set { _res = value; }
+        }
+
+        private byte _status_valid;
+        public byte status_valid
+        {
+            get { return _status_valid; }
+            set { _status_valid = value; }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy71Dataset : SZLDataset
     {
         [Endian(Endianness.BigEndian)]

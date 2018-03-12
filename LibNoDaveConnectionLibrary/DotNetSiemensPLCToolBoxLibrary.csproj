@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetSiemensPLCToolBoxLibrary</RootNamespace>
     <AssemblyName>DotNetSiemensPLCToolBoxLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -39,19 +39,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Siemens.Engineering, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d29ec89bac048f84, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\externalDlls\siemens\Siemens.Engineering.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Siemens.Engineering.Hmi, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37b6e3a80df0900f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\externalDlls\siemens\Siemens.Engineering.Hmi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -59,12 +50,17 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="zlibnet, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\externalDlls\zlib\zlibnet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\Discovery\IPScanner.cs" />
+    <Compile Include="Communication\Discovery\S7ReachablePLCDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Communication\Discovery\S7ReachablePLCDialog.designer.cs">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\Discovery\S7ReachablePLCScanner.cs" />
+    <Compile Include="Communication\Editors\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\FetchWrite\OperationCode.cs" />
@@ -81,8 +77,17 @@
     <Compile Include="Communication\Library\Pdus\daveConst.cs" />
     <Compile Include="Communication\Library\Pdus\PduRequest.cs" />
     <Compile Include="Communication\Library\TcpNETdave.cs" />
+    <Compile Include="Communication\Editors\NckTagEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Communication\Editors\NckTagEditor.Designer.cs">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\Editors\NckTagUITypeEditor.cs" />
     <Compile Include="Communication\Networking\SocketExtensions.cs" />
     <Compile Include="Communication\Networking\TCPFunctionsAsync.cs" />
+    <Compile Include="Communication\PLCException.cs" />
+    <Compile Include="Communication\PLCNckTag.cs" />
     <Compile Include="Communication\PLCTagGeneric.cs" />
     <Compile Include="Communication\Configuration.cs" />
     <Compile Include="Communication\Library\ByteFunctions.cs" />
@@ -129,9 +134,11 @@
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNode.cs" />
     <Compile Include="DataTypes\MultiLanguangeString.cs" />
     <Compile Include="DataTypes\Network\MpiProfiBusNetworkInterface.cs" />
+    <Compile Include="DataTypes\PLCBlockName.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
     <Compile Include="DataTypes\MnemonicLanguage.cs" />
     <Compile Include="DataTypes\Network\EthernetNetworkInterface.cs" />
+    <Compile Include="DataTypes\Projectfolders\ExportFormat.cs" />
     <Compile Include="DataTypes\Projectfolders\IHardwareFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IRootProgrammFolder.cs" />
     <Compile Include="DataTypes\Projectfolders\IProjectFolder.cs" />
@@ -233,24 +240,24 @@
     <Compile Include="General\SingleExtensions.cs" />
     <Compile Include="General\StringExtensions.cs" />
     <Compile Include="General\StringLogicalComparer.cs" />
-    <Compile Include="General\TiaCrcHelper.cs" />
+    <Compile Include="General\CrcHelper.cs" />
     <Compile Include="General\ZipHelper.cs" />
     <Compile Include="General\InputBox.cs" />
-    <Compile Include="Communication\PLCTagUITypeEditor.cs" />
+    <Compile Include="Communication\Editors\PLCTagUITypeEditor.cs" />
     <Compile Include="General\EnumListBoxExtensions.cs" />
     <Compile Include="Communication\PLCConnection.cs" />
-    <Compile Include="Communication\ConnectionEditor.cs">
+    <Compile Include="Communication\Editors\ConnectionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Communication\ConnectionEditor.Designer.cs">
+    <Compile Include="Communication\Editors\ConnectionEditor.Designer.cs">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Communication\PLCConnectionConfiguration.cs" />
-    <Compile Include="Communication\PLCConnectionUITypeEditor.cs" />
-    <Compile Include="Communication\PLCTagEditor.cs">
+    <Compile Include="Communication\Editors\PLCConnectionUITypeEditor.cs" />
+    <Compile Include="Communication\Editors\PLCTagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Communication\PLCTagEditor.Designer.cs">
+    <Compile Include="Communication\Editors\PLCTagEditor.Designer.cs">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PLCs\S5\MC5\MC5toComment.cs" />
@@ -290,7 +297,6 @@
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.designer.cs">
       <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Projectfiles\Step7ProjectV11Tia.cs" />
     <Compile Include="Projectfiles\TIA\AttribSets\CoreAttributes.cs" />
     <Compile Include="Projectfiles\TIA\BinaryReaderExtensions.cs" />
     <Compile Include="Projectfiles\TIA\Enums\TiaObjectStatesLegacy.cs" />
@@ -334,32 +340,52 @@
     <Compile Include="Projectfiles\Project.cs" />
     <Compile Include="Projectfiles\Step7ProjectV5.cs" />
     <Compile Include="Projectfiles\Projects.cs" />
-    <Compile Include="Projectfiles\Step7ProjectV11.cs" />
     <Compile Include="Simulator\Simulator.cs" />
     <Compile Include="Source\AWLSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Communication\ConnectionEditor.en.resx">
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.de.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.es.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Discovery\S7ReachablePLCDialog.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.en.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\ConnectionEditor.es.resx">
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.es.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\ConnectionEditor.resx">
+    <EmbeddedResource Include="Communication\Editors\ConnectionEditor.resx">
       <DependentUpon>ConnectionEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.en.resx">
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.en.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.es.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Editors\NckTagEditor.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.en.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.es.resx">
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.es.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Communication\PLCTagEditor.resx">
+    <EmbeddedResource Include="Communication\Editors\PLCTagEditor.resx">
       <DependentUpon>PLCTagEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.en.resx">
+      <DependentUpon>DiagnosticEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataTypes\DiagnosticEntry.es.resx">
       <DependentUpon>DiagnosticEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataTypes\DiagnosticEntry.resx">
@@ -374,11 +400,14 @@
     <Folder Include="DBF\Index\NDX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\DB Interface Example.txt" />
     <Content Include="Documentation\DBFsInBlocksOfflineFolder.txt" />
     <Content Include="Documentation\Licence.txt" />
     <Content Include="Documentation\MC5CodeOfParameterAndDBinProjectFileAndOnline.txt" />
+    <Content Include="Documentation\MC7 Block Format.txt" />
     <Content Include="Documentation\PDUs.txt" />
     <Content Include="Documentation\S5D-Baustein1.bmp" />
+    <Content Include="Documentation\S7 TSAP.txt" />
     <Content Include="Documentation\SDBs.txt" />
     <Content Include="Documentation\StatusOfPLCBlock.txt" />
     <Content Include="Documentation\Step5ProjectInfo.txt" />
@@ -404,6 +433,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Documentation\System Software for S7-300 and S7-400 System and Standard Functions.pdf" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,8 +16,8 @@
     <Grid>
         <GroupBox Header="Read Config" Height="136" HorizontalAlignment="Left" Margin="7,5,0,0" Name="groupBox1" VerticalAlignment="Top" Width="193">
             <Grid>
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool4}, Mode=TwoWay}" Content="Use Visu Read F. (with S. Check)" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
-                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool0}, Mode=TwoWay}" Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool0}, Mode=TwoWay}" Content="Use Visu Read Functions" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
+                <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool4}, Mode=TwoWay}" Content="Use Visu ... (with Check)" HorizontalAlignment="Left" Margin="6,29,0,0" VerticalAlignment="Top" />
                 <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool1}, Mode=TwoWay}" Content="Trigger Begin of Cycle" HorizontalAlignment="Left" Margin="6,52,0,0" VerticalAlignment="Top" />
                 <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool2}, Mode=TwoWay}" Content="Trigger End of Cycle" HorizontalAlignment="Left" Margin="6,75,0,0" VerticalAlignment="Top" />
                 <RadioButton IsChecked="{Binding MainWindow.ReadTagsConfig, Converter={StaticResource intToBool3}, Mode=TwoWay}" Content="Trigger Transition to Stop" HorizontalAlignment="Left" Margin="6,98,0,0" VerticalAlignment="Top" />

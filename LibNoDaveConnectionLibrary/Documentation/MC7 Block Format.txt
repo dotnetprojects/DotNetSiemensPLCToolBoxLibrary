@@ -1,0 +1,184 @@
+This is an small description to consolidate the most important layouts that 
+I know for parsing Step 7 Code and Data blocks. Feel free to correct me.
+
+Stefan Hasensperling
+
+-------------------------------------------------------------------------------
+Every S7 code block is built up with roughly the same structure
+
+-Header
+-MC7 code/Current data
+-Interface
+-Segment table/Initial Values
+-Footer
+
+-----------------------------------------------------------------------------------
+Block Header
+------------------------------------------------------------------------------
+The header is always 36 bytes long and is located at the very start of an Block
+
+	0,1     = Signature ('pp')
+	2       = Block Version
+	4       = Block Language, see "S7BlockAtributes"
+	5       = Block Type, see "PLCBlockType"
+	6,7     = Block Number
+	8-11    = Block Length
+	12-15   = Block Password
+	16-21   = Last Modified
+	22-27   = Last Interface Change
+	28,29   = Interface length or DB Body (actual Values Part) length
+	30,31   = Segment Table Length?  (Normaly 0 on a DB) (Length of networks!)
+	32,33   = Local Data Length? (Normaly 0 on a DB)
+	34,35   = MC7-Length or DB Body (definitions/initial values)
+
+-----------------------------------------------------------------------------------
+MC7 Code or DB current values
+---------------------------------------------------------------------------------
+Work in progress
+	36 - xx		The lenght of the MC7 or Current values is given by Byte 34 and 35
+
+-----------------------------------------------------------------------------------
+Interface
+---------------------------------------------------------------------------------
+	The interface starts immediatly after the MC7 code part at 
+	IntfStrt = Header-length (36 bytes) + MC7-Length (given in Byte 34 + 35)
+
+	Interface header.
+	The Header has an fixed length of 7 byte. This means the first Interface line starts at byte 7:
+	-----------------------------------------------
+	IntfStrt + 0	Block Type: 0x05 = DB 0x10 = DI
+	IntfStrt + 1-2	Block Number
+	IntfStrt + 3-4 	Interface length. Length of the interface - the interface header (7 bytes)
+	IntfStrt + 5-6 	Start Value length in Byte. May be 0 if no Start values are defined
+	
+	after the header follows the interface description lines. These descriptors 
+	have variable length, depending on the type if Declaration. 
+	
+	Currently there are the following types of descriptors known (at least by me):
+	x = the length of all previous interface lines
+	
+	1. Elementary types: fixed length 2 bytes
+	------------------------------------------
+	This descriptor line is used for all basic elementary datatypes such as bool, Int, and so on
+	it is also used for complex types such as DateAndTime. But not for collection types such as 
+	Structures or arrays
+
+		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration
+		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
+		
+	2. Structures: fixed length 3, 4 or 5 bytes
+	------------------------------------
+	This descriptor intem is only used for Structures. Be aware that UDT's get converted to structures
+	during downloading of an Block. So Structures may also be UDT´s.
+	
+		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration: Structures always have 0x11
+		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
+		IntfStrt + IntfHeader + x + 2	Child count. Decalares how many of the following lines
+										belong to this particular starcture
+
+	There is an Special Case when the Child amount is greater than 255 Children. 
+	in that case the original childcount on InterfacePos + 2 is set to FF and the next two bytes contain the real Child count
+
+		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration: Structures always have 0x11
+		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
+		IntfStrt + IntfHeader + x + 2	Child count. Always 255
+		IntfStrt + IntfHeader + x + 3	Child count LSB
+		IntfStrt + IntfHeader + x + 4	Child count MSB
+
+	There is another special case, when the ParameterType is 0x14. In that case the layout is similar to the special case with more than 255 children,
+	Except that the value InterfacePos + 2 has seemingly random Values. At the moment i do not know what these values mean
+
+		IntfStrt + IntfHeader + x + 0     = Datatype: 0x11 for struct
+		IntfStrt + IntfHeader + x + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
+		IntfStrt + IntfHeader + x +2     = Seemingly Random values, with unknown meaning
+		IntfStrt + IntfHeader + x +3     = Child count
+									
+	3. Arrays: Variable length 3 + (Dimensions * 4) bytes
+	------------------------------------
+	This descriptor intem is only used for Structures. Be aware that UDT's get converted to structures
+	during downloading of an Block. So Structures may also be UDT´s.
+	
+		IntfStrt + IntfHeader + x + 0		Data Type: see S7DataRowType enumeration: Arrays always have 0x10
+		IntfStrt + IntfHeader + x + 1		Parameter Type: see ParameterType enumeration
+		IntfStrt + IntfHeader + x + 2		Array Dimension Count: This defines the amount of dimension that are
+											defined on this array. This also tells you how many following Bytes
+											must be parsed from the interface
+		IntfStrt + IntfHeader + x + 3-4   	Lower Bound of 1st Dimension
+		IntfStrt + IntfHeader + x + 5-6   	Upper Bound of 1st Dimension
+		IntfStrt + IntfHeader + x + 7-8   	Lower Bound of 2nd Dimension if any
+		IntfStrt + IntfHeader + x + 9-10  	Upper Bound of 2nd Dimensino if any
+		...
+
+	4. MultiInstance BLOCK Paraemters: fixed length 3 bytes
+	------------------------------------
+	This descriptor intem is only used for MultiInstance FB or SFB references Parameters. It is only valid for STATIC areas 
+	Be aware that these items are usually followed by an structure corresponging to the Interface of the Referenced BLOCK.
+	
+		IntfStrt + IntfHeader + x + 0		Data Type: see S7DataRowType enumeration
+		IntfStrt + IntfHeader + x + 1		Block Number LSB
+		IntfStrt + IntfHeader + x + 2		Block Number MSB
+
+	These are often seen when introducing Multi instances of SFB's, such as SFB14 "GET". In this case the
+	datatype is BLOCK_SFB, the Block LSB is 14 and MSB is 0
+
+	5. Strings: Fixed length 3 bytes
+	------------------------------------
+	This descriptor intem is only used for strings, and kind of the same as an Structure
+		IntfStrt + IntfHeader + x + 0	Data Type: see S7DataRowType enumeration: Structures always have 0x11
+		IntfStrt + IntfHeader + x + 1	Parameter Type: see ParameterType enumeration
+		IntfStrt + IntfHeader + x + 2	Max String length. This tells you the maximum String length. Be aware that
+										this is not necesarily the same as the current String length. The Current 
+										length must be taken from the Current Values or Start Values
+    for example:
+    		[7]	17	byte		Struct
+            [8]	4	byte        Stat
+            [9] 37	byte		37 children
+            [10]	17	byte        Struct
+            [11]    4	byte        Stat
+            [12]    29	byte		29 Children
+            [13]	    1	byte        Bool
+            [14]        4	byte        Stat
+            [15]        1	byte        Bool
+            [16]        4	byte        Stat
+            .....
+
+-----------------------------------------------------------------------------------			
+Interface Start Values
+-----------------------------------------------------------------------------------
+The interface may be accompanied by initial values. these initial values are stored directly 
+after the Interface declaration itself. In general only Datablocks and Function blocks
+can contain Initial values. End even then they might not exist, if no inital value is defined
+
+The Initial values are encoded in an compacted manner. Meaning, if an varialbe does not have an
+Initial value, it does not appear in the start values list!
+this means the valpos must be tracked, and increased every time an Avlue was parsed from the array
+And ONLy when the Interface declaration defines them as having Inital Values. 
+If an Declaration has an Initial Value or not can be determined by looking at the "Parameter Type"
+of each Interface Declartion line. Basically the ones > 8 are with Initial Values.
+Make sure to ONLY read initial values for Variable that are declared as having such!
+
+WARNING! be aware that for somehow reason Siemens encoded the Startvalues in Little Endien format,
+completly contrary to the comon S7 format! This means one can not use the Libnodave.Getxxx funcions, 
+but rather has to use the usual Bitconverter.
+Yes, this is realy WTF?!
+
+The offset of the inital values can be calculated as. The neceary length can be read form the Block header:
+	IntfInitValueStart = Header-length (36 bytes) + MC7-Length (given in Byte 34 + 35) + Interface Length (given in Byte 28 + 29)
+
+-----------------------------------------------------------------------------------
+Block Footer
+-----------------------------------------------------------------------------------
+The block footer is also always 36 bytes wide, but it is always located at the end of 
+the block. Meaning starting at MC7.Length - 36. It mainly holds the Header text fields
+
+	0 -7 	Autor
+	8 -15	Family
+	16-23	Name
+	24		Version. Encoded as two digits where each one is 4 bits. 0.0 up to 15.15
+	25		??
+	26,27	Checksum
+	28-35	??
+
+
+
+

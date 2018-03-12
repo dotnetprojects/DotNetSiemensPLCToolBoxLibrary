@@ -877,6 +877,16 @@ namespace JFK_VarTab
                     nd = (myTreeNode) nd.Parent;
                 }
                 treeStep7Project.Nodes.Remove(nd);
+
+                var fld = nd.myObject as IProjectFolder;
+                if (fld != null)
+                {
+                    var dp = fld.Project as IDisposable;
+                    if (dp != null)
+                    {
+                        dp.Dispose();
+                    }
+                }
             }
 
             List<string> projects = new List<string>();
@@ -960,7 +970,7 @@ namespace JFK_VarTab
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Filter =
-                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.al11; *.al12; *.al13; *.zap13)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.al11;*.al12;*.al13;*.zap13";
+                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.ap14; *.al11; *.al12; *.al13; *.al14; *.zap13; *.zap14)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14";
             op.CheckFileExists = false;
             op.ValidateNames = false;
             var ret = op.ShowDialog();
@@ -1587,6 +1597,17 @@ namespace JFK_VarTab
                     outfile.Write(tx);
                 }
             }
+        }
+
+        private void reachablePLCsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DotNetSiemensPLCToolBoxLibrary.Communication.Discovery.S7ReachablePLCDialog Form = new DotNetSiemensPLCToolBoxLibrary.Communication.Discovery.S7ReachablePLCDialog();
+            if (Form.ShowDialog() == DialogResult.OK)
+            {
+                var Conf = Form.SelectedPlc.S7ConnectionSettings;
+                if (Conf == null) return;
+                myConn = new PLCConnection(Conf);
+             }
         }
     }
 

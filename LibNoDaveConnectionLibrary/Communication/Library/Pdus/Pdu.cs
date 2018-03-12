@@ -178,6 +178,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
         {
             addToReadRequest(area, DBnumber, startByteAddress * 8 + bitNumber, 1, true);
         }
+
+	    public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+        public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public void daveAddFillByteToReadRequest()
         {
             byte[] pa = {

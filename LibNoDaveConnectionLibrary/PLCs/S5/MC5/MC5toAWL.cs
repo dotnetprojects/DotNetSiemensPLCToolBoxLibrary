@@ -375,7 +375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
 
 
-                        byte[] calledfb = blkFld.GetBlockInByte("S5_" + newRow.Parameter.Replace(" ", ""));
+                        byte[] calledfb = blkFld.GetBlockInByte(/* "S5_" + */ newRow.Parameter.Replace(" ", ""));
                         if (calledfb!=null)
                         {
                             S5Parameter newPar = new S5Parameter();
