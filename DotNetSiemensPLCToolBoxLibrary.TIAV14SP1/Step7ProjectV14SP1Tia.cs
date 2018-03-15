@@ -233,7 +233,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             public List<TIAOpennessComment> Comments { get; set; }
             public bool IsExternalAccessible { get; set; }
             public bool IsExternalVisible { get; set; }
-            public bool IsExternalWritable { get; set; }
 
             internal TIAOpennessTag(PlcTag source)
             {
@@ -243,7 +242,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 Comments = source.Comment.Items.Select(c => new TIAOpennessComment() { Culture = c.Language.Culture, Text = c.Text }).ToList();
                 IsExternalAccessible = source.ExternalAccessible;
                 IsExternalVisible = source.ExternalVisible;
-                IsExternalWritable = source.ExternalWritable;
             }
         }
 
