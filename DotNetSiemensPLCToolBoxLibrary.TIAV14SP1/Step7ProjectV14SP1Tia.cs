@@ -717,6 +717,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 //TiaPortalItem = controller.ControllerTagFolder,
                 Name = "PLC data types",
                 Parent = parent,
+                TiaPortalItem = software.TagTableGroup
             };
             parent.VarTabFolder = fld3;
             parent.SubItems.Add(fld3);
