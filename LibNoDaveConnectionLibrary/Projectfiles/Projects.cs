@@ -24,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV13ProjectInstance == null)
                         {
-                            if (_createV14SP1ProjectInstance != null || _createV15ProjectInstance == null)
+                            if (_createV14SP1ProjectInstance != null || _createV15ProjectInstance != null)
                             {
                                 throw new Exception("You can not open a V13 Project when you already have had opened a V14/V15 Project. You need to close the Application!");
                             }
@@ -50,7 +50,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV14SP1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV15ProjectInstance == null)
+                            if (_createV13ProjectInstance != null || _createV15ProjectInstance != null)
                             {
                                 throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15 Project. You need to close the Application!");
                             }
@@ -76,7 +76,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV15ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance == null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null)
                             {
                                 throw new Exception("You can not open a V15 Project when you already have had opened a V13/V14 Project. You need to close the Application!");
                             }
