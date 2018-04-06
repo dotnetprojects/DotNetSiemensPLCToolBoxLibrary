@@ -1000,6 +1000,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     byte[] buffer = new byte[64];
                     int ret = _dc.readSZL(0x174, 4, buffer); //SZL 0x174 is for PLC LEDs
 
+                    if (AutoDisconnect && (ret == -1025 || ret == -128))
+                    {
+                        if (Logger != null)
+                            Logger("(1) Auto Disconnect cause of :" + libnodave.daveStrerror(ret));
+                        this.Disconnect();
+                        return DataTypes.PLCState.Unkown; ;
+                    }
+
                     if (ret == 54273)
                         return DataTypes.PLCState.NotSupported;
                     if (ret < 0)
