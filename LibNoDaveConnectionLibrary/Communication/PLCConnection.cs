@@ -86,6 +86,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return _connectionTargetPlcType; }
         }
 
+        public Action<string> Logger { get; set; }
+
+        public bool AutoDisconnect { get; set; }
+
         public PLCConnection(String name)
         {
             if (name == "")
@@ -2457,8 +2461,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 res = _dc.execReadRequest(cPDU.pdu, rs);
                             }
 
-                            if (res == -1025)
+                            if (AutoDisconnect && (res == -1025 || res == -128))
                             {
+                                if (Logger != null)
+                                    Logger("(1) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                                 this.Disconnect();
                                 return;
                             }
@@ -2854,8 +2860,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             Monitor.Exit(lockObj);
                             lockObtained = false;
 
-                            if (res == -1025)
+                            if (AutoDisconnect && (res == -1025 || res == -128))
                             {
+                                if (Logger != null)
+                                    Logger("(2) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                                 this.Disconnect();
                                 return;
                             }
@@ -2977,8 +2985,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         res = _dc.execReadRequest(myPDU, rs);
                         Monitor.Exit(lockObj);
                         lockObtained = false;
-                        if (res == -1025)
+                        if (AutoDisconnect && (res == -1025 || res == -128))
                         {
+                            if (Logger != null)
+                                Logger("(3) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                             this.Disconnect();
                             return;
                         }
@@ -3284,8 +3294,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         value._readValueFromBuffer(myBuff, buffPos);
                         value.ItemDoesNotExist = false;
                     }
-                    else if (res == -1025)
+                    else if (AutoDisconnect && (res == -1025 || res == -128))
                     {
+                        if (Logger != null)
+                            Logger("(4) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                         this.Disconnect();
                         return;
                     }
@@ -3375,8 +3387,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                     }
 
-                    if (res == -1025)
+                    if (AutoDisconnect && (res == -1025 || res == -128))
                     {
+                        if (Logger != null)
+                            Logger("(5) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                         this.Disconnect();
                         return;
                     }
@@ -3691,8 +3705,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 res = _dc.execWriteRequest(myPDU, rs);
                             }
 
-                            if (res == -1025)
+                            if (AutoDisconnect && (res == -1025 || res == -128))
                             {
+                                if (Logger != null)
+                                    Logger("(6) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                                 this.Disconnect();
                                 return;
                             }
@@ -3710,8 +3726,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             res = _dc.execWriteRequest(myPDU, rs);
                         }
 
-                        if (res == -1025)
+                        if (AutoDisconnect && (res == -1025 || res == -128))
                         {
+                            if (Logger != null)
+                                Logger("(7) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
                             this.Disconnect();
                             return;
                         }
