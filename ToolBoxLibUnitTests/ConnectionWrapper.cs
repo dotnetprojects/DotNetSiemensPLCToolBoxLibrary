@@ -170,7 +170,14 @@ namespace ToolBoxLibUnitTests
 
         public List<IresultSet> IresultSets = new List<IresultSet>();
 
-        public int useResult(IresultSet rs, int number, byte[] buffer)
+        public virtual int useResult(IresultSet rs, int number, byte[] buffer)
+        {
+            IresultSets.Add(rs);
+
+            return 0;
+        }
+
+        public virtual int useResultBuffer(IresultSet rs, int number, byte[] buffer)
         {
             IresultSets.Add(rs);
 

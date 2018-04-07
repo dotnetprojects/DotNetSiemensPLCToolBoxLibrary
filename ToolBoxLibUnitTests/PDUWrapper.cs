@@ -1,14 +1,12 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ToolBoxLibUnitTests
 {
     public class PDUWrapper : IPDU
     {
-        public IntPtr pointer { get;set; }
+        public IntPtr pointer { get; set; }
 
         public List<string> Requests = new List<string>();
 
@@ -40,10 +38,10 @@ namespace ToolBoxLibUnitTests
             Requests.Add("WRITE Area:" + area + ", DBnum:" + DBnum + ", Start:" + start + ", Bytes:" + bytes);
         }
 
-	    public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
-	    {
-			Requests.Add("Read NCK");
-		}
+        public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+        {
+            Requests.Add("Read NCK");
+        }
 
         public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
         {

@@ -37,35 +37,99 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
     {
         internal S7ConvertingOptions usedS7ConvertingOptions;
 
+        /// <summary>
+        /// The blocks version
+        /// </summary>
+        /// <remarks>This field does not correspond to the Version field in Simatic Manager</remarks>
         public string BlockVersion;
 
-        public String BlockAttribute; // .0 not unlinked, .1 standart block + know how protect, .3 know how protect, .5 not retain
+        /// <summary>
+        /// The Block Attributes that contain information about the block status and special properties
+        /// </summary>
+        public S7BlockAtributes BlockAttribute { get; set; } 
 
+        /// <summary>
+        /// The Block Attributes defined from the Simatic Manager in Attributes Tab
+        /// </summary>
         public List<Step7Attribute> Attributes { get; set; }
 
-        public double Length;
+        /// <summary>
+        /// The total lenght of the Block. Correspnds to the "Load Memory Requirement" in Simatic Manager
+        /// </summary>
+        public double Length { get; set; }
 
+        /// <summary>
+        /// The Title of the Block from the S7 Project file. it is not the online name of the block. 
+        /// </summary>
+        /// <remarks>The Header name of an online block is in the "Name" field</remarks>
         public string Title { get; set; }
 
+        /// <summary>
+        /// The Author of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public string Author { get; set; }
 
+        /// <summary>
+        /// The Family of the Block
+        /// </summary>
+        /// <remarks>Limited to 8 chars</remarks>
         public string Family { get; set; }
 
+        /// <summary>
+        /// The version of the Block
+        /// </summary>
+        /// <remarks>Limited from 0.0 to 9.9</remarks>
         public string Version { get; set; }
 
+        /// <summary>
+        /// Timestamp of the last change to the blocks MC7 code
+        /// </summary>
         public DateTime LastCodeChange { get; set; }
-
+        
+        /// <summary>
+        /// Timestamp of the last change to the interface of the blocks
+        /// </summary>
         public DateTime LastInterfaceChange { get; set; }
 
+        /// <summary>
+        /// The total size of the Interface table 
+        /// </summary>
+        /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>
         public int InterfaceSize { get; set; }
 
+        /// <summary>
+        /// The total size of the Segement table in the header
+        /// </summary>
+        /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>
         public int SegmentTableSize { get; set; }
 
+        /// <summary>
+        /// The size of the local Temp data stack. Only aplicable to OB, FC or FB blocks
+        /// </summary>
         public int LocalDataSize { get; set; }
 
+        /// <summary>
+        /// The actual MC7 code size of the block. This corresonds to the "MC7" field in Simatic Manager
+        /// </summary>
         public int CodeSize { get; set; }
 
+        /// <summary>
+        /// the Work memory requirement from Simatic Manager
+        /// </summary>
+        public int WorkMemorySize { get; set;}
+        
+        /// <summary>
+        /// The block has currently set an Password
+        /// </summary>
+        /// <remarks>be aware that the block can also be be marked as protected via the "BlockAttributes"</remarks>
         public bool KnowHowProtection { get; set; }
+        
+        /// <summary>
+        /// The checksum of the Blocks MC7 code (without the actual values of Datablocks)
+        /// This property can be used to detect Block changes
+        /// </summary>
+        public int CheckSum { get; set; }
 
         public virtual string GetSourceBlock(bool useSymbols = false)
         {
@@ -102,6 +166,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 }
                 return null;
             }
+        }
+
+        [Flags]
+        public enum S7BlockAtributes: byte
+        {
+            /// <summary>
+            /// The block exists in the controller, and is also linked into execution.
+            /// if this attribute is FALSE:
+            /// -For Code blocks such as FB or FC, this means that they are existing in the controller but not actually executed
+            /// -For data blocks this means, that they do not have any Actual values assigned to them. Any attempt to read current data from them will fail.
+            /// </summary>
+            /// <remarks>
+            /// This corresponds to the "Unlinked" attribute in the Simatic manager, which actually shows the status in reverse
+            /// This Attribute is only false when either especifically selected from simatic manager (only possible for Datablocks)
+            /// or during a breif period when an Code block is alrady downloaded, but not yet linked (usually part of the "Block Download" process
+            /// </remarks>
+            Linked = 1, //.0
+
+            /// <summary>
+            /// This is an standard block from the default library
+            /// </summary>
+            StandardBlock = 2, //.1
+
+            /// <summary>
+            /// The block is protected by an Password
+            /// </summary>
+            KnowHowProtected = 8, //.3
+
+            /// <summary>
+            /// Only applies to datablocks. if an DB is non retentive, its actual data get reset to its initial values every time the controller
+            /// restarts
+            /// </summary>
+            NonRetain = 32, //.5
+
+            /// <summary>
+            /// This is an Safety Block in an Safety PLC. 
+            /// </summary>
+            FBlock = 64 //.6
+
+            //These two Attributes somehow do not appear on online blocks, even though they are settabele in Simatic Manager
+            //Maybe some more testing is necesary
+            //WriteProtected
+            //ReadOnly
+
         }
     }
 }

@@ -41,19 +41,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         TIME = 0x0b,
         S5TIME = 0x0c,
         DATE_AND_TIME = 0x0e,
-        //ARRAY = 0x10, //I use no Extra Array Data type!
+        ARRAY = 0x10,
         STRUCT = 0x11,
         STRING = 0x13,
        
         POINTER = 0x14,
+
+        /// <summary>
+        /// an declaration for an FB as Multi instance parameter. May only occur in STATIC Block declaration
+        /// </summary>
+        MultiInst_FB = 0x15,
+
         ANY = 0x16,
 
         //The values below here are Only Legal for Parameters...
 
-        BLOCK_FB = 0x17,
-        BLOCK_FC = 0x18,
-        BLOCK_DB = 0x19,
-        BLOCK_SDB = 0x1a,
+        BLOCK_FB = 0x17,    //Only valid as IN
+        BLOCK_FC = 0x18,    //Only valid as IN
+        BLOCK_DB = 0x19,    //Only valid as IN
+        BLOCK_SDB = 0x1a,   //Only valid as IN
+
+        /// <summary>
+        /// an declaration for an System-FB as Multi instance parameter. May only occur in STATIC Block declaration
+        /// </summary>
+        MultiInst_SFB = 0x1b,
+
         COUNTER = 0x1c,
         TIMER = 0x1d,
         UNKNOWN = 0xff,
@@ -74,6 +86,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         S5_KY = 0xf03,
         S5_KC = 0xf04,
         S5_C = 0xf0c,
+
+        SINT = 0x101,
+        USINT = 0x102,
+        LINT = 0x103,
+        ULINT = 0x104,
+        LREAL = 0x105,
+        UINT = 0x106,
+        UDINT = 0x107,
     }
 
 

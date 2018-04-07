@@ -1,0 +1,62 @@
+﻿FC21 : SECNDR
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 		IN0: BLOCK_FC
+002.0: 		IN1: INT
+004.0: 		IN2: BLOCK_FB
+006.0: 	OUT: STRUCT
+006.0: 	IN_OUT: STRUCT
+006.0: 	TEMP: STRUCT
+006.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      L     0
+      T     MW208
+      T     MW210
+      T     MW212
+      L     #IN1
+      T     MW218
+      AUF   DB[MW218]
+      UC    FC22
+      L     DBW2
+      T     MW212
+      L     DBW6
+      T     MW210
+      L     DBW34
+      T     MW208
+      UN    M209.5
+      SPB   M000
+      L     DBW42
+      L     1
+      +I    
+      T     DBW42
+      L     W#16#0
+      T     DBW16
+      T     DBW18
+      T     DBW20
+      L     2
+      T     DBW10
+      T     DBW12
+      T     DBW14
+      R     M209.5
+      R     M209.4
+M000: BLD   1
+      =     L0.0
+      UC    FC20
+      BLD   2
+      UC    #IN2
+      NOP   0
+      UC    FC19
+      BLD   2
+      UC    #IN0
+      L     MW208
+      T     DBW34
+      L     MW210
+      T     DBW6
+      UC    FC23
+      L     MW212
+      T     DBW2

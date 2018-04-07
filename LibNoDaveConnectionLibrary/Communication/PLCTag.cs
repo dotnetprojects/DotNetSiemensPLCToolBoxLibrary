@@ -1251,8 +1251,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             if (plcAddress.StartsWith("%"))
                 plcAddress = plcAddress.Substring(1);
 
-            try
-            {
+            //try
+            //{
                 if (!string.IsNullOrEmpty(plcAddress))
                 {
                     plcAddress = plcAddress.Trim();
@@ -1483,16 +1483,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                if (plcAddress != null)
-                    if (plcAddress.ToLower().Contains("p#"))
-                    {
-                        this.TagDataType = TagDataType.ByteArray;
-                        this.ArraySize = 10;
-                    }
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    if (plcAddress != null)
+            //        if (plcAddress.ToLower().Contains("p#"))
+            //        {
+            //            this.TagDataType = TagDataType.ByteArray;
+            //            this.ArraySize = 10;
+            //        }
+            //}
         }
 
         public void ChangeDataTypeFromString(String datatype)

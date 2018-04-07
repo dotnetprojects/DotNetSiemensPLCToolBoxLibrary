@@ -1,0 +1,71 @@
+		[0]	5	byte	Type: DB
+		[1]	185	byte	DB Number: 3003
+		[2]	11	byte	DB Number
+		[3]	62	byte	Interface length
+		[4]	0	byte	Interface Length
+		[5]	87	byte	Start Values
+		[6]	0	byte	Start Values
+<<<End of Header, Interface elements starting from here
+
+		[7]	17	byte	Struct
+		[8]	4	byte	No Init
+		[9]	8	byte	8 Children
+		[10]	12	byte	S5Time
+		[11]	12	byte	InitVal
+		[12]	9	byte	Date
+		[13]	12	byte	InitVal
+		[14]	11	byte	Time
+		[15]	12	byte	InitVal
+		[16]	10	byte	Timeofday
+		[17]	12	byte	initval
+		[18]	14	byte	DateandTime
+		[19]	12	byte	initval
+		[20]	19	byte	String
+		[21]	12	byte	StartVal
+		[22]	254	byte	Maxlength 254
+		[23]	16	byte		Array
+		[24]	4	byte		no INit
+		[25]	1	byte		Array Dimensions
+		[26]	1	byte		Dim1 Array LBound
+		[27]	0	byte		Dim1 Array LBound
+		[28]	10	byte		Dim1 Array UBound
+		[29]	0	byte		Dim1 Array UBound
+		[30]	17	byte			Struct
+		[31]	4	byte			No Init
+		[32]	6	byte			6 Children
+		[33]	12	byte			S5 Time
+		[34]	12	byte			Init VAl
+		[35]	9	byte			Date
+		[36]	12	byte			Init VAl
+		[37]	11	byte			Time
+		[38]	12	byte			Init VAl
+		[39]	10	byte
+		[40]	12	byte			Init VAl
+		[41]	14	byte
+		[42]	12	byte			Init VAl
+		[43]	19	byte			String
+		[44]	12	byte			Init VAl
+		[45]	254	byte			STring Length
+		[46]	16	byte		Array
+		[47]	4	byte		No Init	
+		[48]	1	byte		1 Dimension
+		[49]	33	byte		LBound: 33
+		[50]	0	byte		LBound
+		[51]	38	byte		UBound: 38
+		[52]	0	byte		UBound: 38
+		[53]	17	byte			Struct
+		[54]	4	byte			No init
+		[55]	6	byte			6 Children
+		[56]	12	byte
+		[57]	12	byte
+		[58]	9	byte
+		[59]	12	byte
+		[60]	11	byte
+		[61]	12	byte
+		[62]	10	byte
+		[63]	12	byte
+		[64]	14	byte
+		[65]	12	byte
+		[66]	19	byte
+		[67]	12	byte
+		[68]	254	byte

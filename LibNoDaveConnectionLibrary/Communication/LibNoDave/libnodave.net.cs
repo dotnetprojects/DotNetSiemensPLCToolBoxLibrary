@@ -1002,6 +1002,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                 return daveUseResult32(pointer, rs.pointer, number, buffer);
             }
 
+#if !IPHONE
+            [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveUseResultBuffer")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveUseResultBuffer")]
+#endif
+            protected static extern int daveUseResultBuffer64(IntPtr rs, int number, byte[] buffer);
+
+#if !IPHONE	
+            [DllImport("libnodave_jfkmod.dll", EntryPoint = "daveUseResultBuffer")]
+#else
+            [DllImport("__Internal", EntryPoint = "daveUseResultBuffer")]
+#endif
+            protected static extern int daveUseResultBuffer32(IntPtr rs, int number, byte[] buffer);
+            public int useResultBuffer(IresultSet rs, int number, byte[] buffer)
+            {
+                if (IntPtr.Size == 8)
+                    return daveUseResultBuffer64(rs.pointer, number, buffer);
+                return daveUseResultBuffer32(rs.pointer, number, buffer);
+            }
 
 #if !IPHONE
             [DllImport("libnodave_jfkmod64.dll", EntryPoint = "daveReadSZL")]

@@ -1,0 +1,648 @@
+﻿FB80 : CrC
+
+Parameter
+000.0: ROOTNODE: STRUCT
+000.0: 	IN: STRUCT
+000.0: 		IN0: INT := 1
+002.0: 	OUT: STRUCT
+002.0: 	IN_OUT: STRUCT
+002.0: 	STATIC: STRUCT
+002.0: 		STAT0: SFB14
+002.0: 		STAT1: STRUCT
+002.0: 			STAT2: BOOL
+004.0: 			STAT3: WORD
+006.0: 			STAT4: BOOL
+006.1: 			STAT5: BOOL
+008.0: 			STAT6: WORD
+010.0: 			STAT7: ANY
+020.0: 			STAT8: ANY
+030.0: 			STAT9: ANY
+040.0: 			STAT10: ANY
+050.0: 			STAT11: ANY
+060.0: 			STAT12: ANY
+070.0: 			STAT13: ANY
+080.0: 			STAT14: ANY
+090.0: 			STAT15: WORD
+092.0: 		STAT16: BYTE
+093.0: 		STAT17: BYTE
+094.0: 		STAT18: TIME
+098.0: 		STAT19: SFB14
+098.0: 		STAT20: STRUCT
+098.0: 			STAT21: BOOL
+100.0: 			STAT22: WORD
+102.0: 			STAT23: BOOL
+102.1: 			STAT24: BOOL
+104.0: 			STAT25: WORD
+106.0: 			STAT26: ANY
+116.0: 			STAT27: ANY
+126.0: 			STAT28: ANY
+136.0: 			STAT29: ANY
+146.0: 			STAT30: ANY
+156.0: 			STAT31: ANY
+166.0: 			STAT32: ANY
+176.0: 			STAT33: ANY
+186.0: 			STAT34: WORD
+188.0: 		STAT35: BYTE
+189.0: 		STAT36: BYTE
+190.0: 		STAT37: TIME
+194.0: 		STAT38: SFB14
+194.0: 		STAT39: STRUCT
+194.0: 			STAT40: BOOL
+196.0: 			STAT41: WORD
+198.0: 			STAT42: BOOL
+198.1: 			STAT43: BOOL
+200.0: 			STAT44: WORD
+202.0: 			STAT45: ANY
+212.0: 			STAT46: ANY
+222.0: 			STAT47: ANY
+232.0: 			STAT48: ANY
+242.0: 			STAT49: ANY
+252.0: 			STAT50: ANY
+262.0: 			STAT51: ANY
+272.0: 			STAT52: ANY
+282.0: 			STAT53: WORD
+284.0: 		STAT54: BYTE
+285.0: 		STAT55: BYTE
+286.0: 		STAT56: TIME
+290.0: 		STAT57: SFB14
+290.0: 		STAT58: STRUCT
+290.0: 			STAT59: BOOL
+292.0: 			STAT60: WORD
+294.0: 			STAT61: BOOL
+294.1: 			STAT62: BOOL
+296.0: 			STAT63: WORD
+298.0: 			STAT64: ANY
+308.0: 			STAT65: ANY
+318.0: 			STAT66: ANY
+328.0: 			STAT67: ANY
+338.0: 			STAT68: ANY
+348.0: 			STAT69: ANY
+358.0: 			STAT70: ANY
+368.0: 			STAT71: ANY
+378.0: 			STAT72: WORD
+380.0: 		STAT73: BYTE
+381.0: 		STAT74: BYTE
+382.0: 		STAT75: TIME
+386.0: 		STAT76: SFB14
+386.0: 		STAT77: STRUCT
+386.0: 			STAT78: BOOL
+388.0: 			STAT79: WORD
+390.0: 			STAT80: BOOL
+390.1: 			STAT81: BOOL
+392.0: 			STAT82: WORD
+394.0: 			STAT83: ANY
+404.0: 			STAT84: ANY
+414.0: 			STAT85: ANY
+424.0: 			STAT86: ANY
+434.0: 			STAT87: ANY
+444.0: 			STAT88: ANY
+454.0: 			STAT89: ANY
+464.0: 			STAT90: ANY
+474.0: 			STAT91: WORD
+476.0: 		STAT92: BYTE
+477.0: 		STAT93: BYTE
+478.0: 		STAT94: TIME
+482.0: 		STAT95: SFB14
+482.0: 		STAT96: STRUCT
+482.0: 			STAT97: BOOL
+484.0: 			STAT98: WORD
+486.0: 			STAT99: BOOL
+486.1: 			STAT100: BOOL
+488.0: 			STAT101: WORD
+490.0: 			STAT102: ANY
+500.0: 			STAT103: ANY
+510.0: 			STAT104: ANY
+520.0: 			STAT105: ANY
+530.0: 			STAT106: ANY
+540.0: 			STAT107: ANY
+550.0: 			STAT108: ANY
+560.0: 			STAT109: ANY
+570.0: 			STAT110: WORD
+572.0: 		STAT111: BYTE
+573.0: 		STAT112: BYTE
+574.0: 		STAT113: TIME
+578.0: 		STAT114: SFB14
+578.0: 		STAT115: STRUCT
+578.0: 			STAT116: BOOL
+580.0: 			STAT117: WORD
+582.0: 			STAT118: BOOL
+582.1: 			STAT119: BOOL
+584.0: 			STAT120: WORD
+586.0: 			STAT121: ANY
+596.0: 			STAT122: ANY
+606.0: 			STAT123: ANY
+616.0: 			STAT124: ANY
+626.0: 			STAT125: ANY
+636.0: 			STAT126: ANY
+646.0: 			STAT127: ANY
+656.0: 			STAT128: ANY
+666.0: 			STAT129: WORD
+668.0: 		STAT130: BYTE
+669.0: 		STAT131: BYTE
+670.0: 		STAT132: TIME
+674.0: 		STAT133: SFB14
+674.0: 		STAT134: STRUCT
+674.0: 			STAT135: BOOL
+676.0: 			STAT136: WORD
+678.0: 			STAT137: BOOL
+678.1: 			STAT138: BOOL
+680.0: 			STAT139: WORD
+682.0: 			STAT140: ANY
+692.0: 			STAT141: ANY
+702.0: 			STAT142: ANY
+712.0: 			STAT143: ANY
+722.0: 			STAT144: ANY
+732.0: 			STAT145: ANY
+742.0: 			STAT146: ANY
+752.0: 			STAT147: ANY
+762.0: 			STAT148: WORD
+764.0: 		STAT149: BYTE
+765.0: 		STAT150: BYTE
+766.0: 		STAT151: TIME
+770.0: 		STAT152: SFB14
+770.0: 		STAT153: STRUCT
+770.0: 			STAT154: BOOL
+772.0: 			STAT155: WORD
+774.0: 			STAT156: BOOL
+774.1: 			STAT157: BOOL
+776.0: 			STAT158: WORD
+778.0: 			STAT159: ANY
+788.0: 			STAT160: ANY
+798.0: 			STAT161: ANY
+808.0: 			STAT162: ANY
+818.0: 			STAT163: ANY
+828.0: 			STAT164: ANY
+838.0: 			STAT165: ANY
+848.0: 			STAT166: ANY
+858.0: 			STAT167: WORD
+860.0: 		STAT168: BYTE
+861.0: 		STAT169: BYTE
+862.0: 		STAT170: TIME
+866.0: 		STAT171: SFB14
+866.0: 		STAT172: STRUCT
+866.0: 			STAT173: BOOL
+868.0: 			STAT174: WORD
+870.0: 			STAT175: BOOL
+870.1: 			STAT176: BOOL
+872.0: 			STAT177: WORD
+874.0: 			STAT178: ANY
+884.0: 			STAT179: ANY
+894.0: 			STAT180: ANY
+904.0: 			STAT181: ANY
+914.0: 			STAT182: ANY
+924.0: 			STAT183: ANY
+934.0: 			STAT184: ANY
+944.0: 			STAT185: ANY
+954.0: 			STAT186: WORD
+956.0: 		STAT187: BYTE
+957.0: 		STAT188: BYTE
+958.0: 		STAT189: TIME
+962.0: 		STAT190: SFB14
+962.0: 		STAT191: STRUCT
+962.0: 			STAT192: BOOL
+964.0: 			STAT193: WORD
+966.0: 			STAT194: BOOL
+966.1: 			STAT195: BOOL
+968.0: 			STAT196: WORD
+970.0: 			STAT197: ANY
+980.0: 			STAT198: ANY
+990.0: 			STAT199: ANY
+1000.0: 			STAT200: ANY
+1010.0: 			STAT201: ANY
+1020.0: 			STAT202: ANY
+1030.0: 			STAT203: ANY
+1040.0: 			STAT204: ANY
+1050.0: 			STAT205: WORD
+1052.0: 		STAT206: BYTE
+1053.0: 		STAT207: BYTE
+1054.0: 		STAT208: TIME
+1058.0: 		STAT209: SFB14
+1058.0: 		STAT210: STRUCT
+1058.0: 			STAT211: BOOL
+1060.0: 			STAT212: WORD
+1062.0: 			STAT213: BOOL
+1062.1: 			STAT214: BOOL
+1064.0: 			STAT215: WORD
+1066.0: 			STAT216: ANY
+1076.0: 			STAT217: ANY
+1086.0: 			STAT218: ANY
+1096.0: 			STAT219: ANY
+1106.0: 			STAT220: ANY
+1116.0: 			STAT221: ANY
+1126.0: 			STAT222: ANY
+1136.0: 			STAT223: ANY
+1146.0: 			STAT224: WORD
+1148.0: 		STAT225: BYTE
+1149.0: 		STAT226: BYTE
+1150.0: 		STAT227: TIME
+1154.0: 		STAT228: SFB14
+1154.0: 		STAT229: STRUCT
+1154.0: 			STAT230: BOOL
+1156.0: 			STAT231: WORD
+1158.0: 			STAT232: BOOL
+1158.1: 			STAT233: BOOL
+1160.0: 			STAT234: WORD
+1162.0: 			STAT235: ANY
+1172.0: 			STAT236: ANY
+1182.0: 			STAT237: ANY
+1192.0: 			STAT238: ANY
+1202.0: 			STAT239: ANY
+1212.0: 			STAT240: ANY
+1222.0: 			STAT241: ANY
+1232.0: 			STAT242: ANY
+1242.0: 			STAT243: WORD
+1244.0: 		STAT244: BYTE
+1245.0: 		STAT245: BYTE
+1246.0: 		STAT246: TIME
+1250.0: 		STAT247: SFB14
+1250.0: 		STAT248: STRUCT
+1250.0: 			STAT249: BOOL
+1252.0: 			STAT250: WORD
+1254.0: 			STAT251: BOOL
+1254.1: 			STAT252: BOOL
+1256.0: 			STAT253: WORD
+1258.0: 			STAT254: ANY
+1268.0: 			STAT255: ANY
+1278.0: 			STAT256: ANY
+1288.0: 			STAT257: ANY
+1298.0: 			STAT258: ANY
+1308.0: 			STAT259: ANY
+1318.0: 			STAT260: ANY
+1328.0: 			STAT261: ANY
+1338.0: 			STAT262: WORD
+1340.0: 		STAT263: BYTE
+1341.0: 		STAT264: BYTE
+1342.0: 		STAT265: TIME
+1346.0: 		STAT266: SFB14
+1346.0: 		STAT267: STRUCT
+1346.0: 			STAT268: BOOL
+1348.0: 			STAT269: WORD
+1350.0: 			STAT270: BOOL
+1350.1: 			STAT271: BOOL
+1352.0: 			STAT272: WORD
+1354.0: 			STAT273: ANY
+1364.0: 			STAT274: ANY
+1374.0: 			STAT275: ANY
+1384.0: 			STAT276: ANY
+1394.0: 			STAT277: ANY
+1404.0: 			STAT278: ANY
+1414.0: 			STAT279: ANY
+1424.0: 			STAT280: ANY
+1434.0: 			STAT281: WORD
+1436.0: 		STAT282: BYTE
+1437.0: 		STAT283: BYTE
+1438.0: 		STAT284: TIME
+1442.0: 		STAT285: SFB14
+1442.0: 		STAT286: STRUCT
+1442.0: 			STAT287: BOOL
+1444.0: 			STAT288: WORD
+1446.0: 			STAT289: BOOL
+1446.1: 			STAT290: BOOL
+1448.0: 			STAT291: WORD
+1450.0: 			STAT292: ANY
+1460.0: 			STAT293: ANY
+1470.0: 			STAT294: ANY
+1480.0: 			STAT295: ANY
+1490.0: 			STAT296: ANY
+1500.0: 			STAT297: ANY
+1510.0: 			STAT298: ANY
+1520.0: 			STAT299: ANY
+1530.0: 			STAT300: WORD
+1532.0: 		STAT301: BYTE
+1533.0: 		STAT302: BYTE
+1534.0: 		STAT303: TIME
+1538.0: 	TEMP: STRUCT
+1538.0: 		TEMP0: STRUCT
+1538.0: 			TEMP1: BOOL
+1538.1: 			TEMP2: BOOL
+1538.2: 			TEMP3: BOOL
+1538.3: 			TEMP4: BOOL
+1538.4: 			TEMP5: BOOL
+1538.5: 			TEMP6: BOOL
+1538.6: 			TEMP7: BOOL
+1538.7: 			TEMP8: BOOL
+1539.0: 			TEMP9: BOOL
+1539.1: 			TEMP10: BOOL
+1539.2: 			TEMP11: BOOL
+1539.3: 			TEMP12: BOOL
+1539.4: 			TEMP13: BOOL
+1539.5: 			TEMP14: BOOL
+1539.6: 			TEMP15: BOOL
+1539.7: 			TEMP16: BOOL
+1540.0: 			TEMP17: BOOL
+1540.1: 			TEMP18: BOOL
+1540.2: 			TEMP19: BOOL
+1540.3: 			TEMP20: BOOL
+1540.4: 			TEMP21: BOOL
+1540.5: 			TEMP22: BOOL
+1540.6: 			TEMP23: BOOL
+1540.7: 			TEMP24: BOOL
+1541.0: 			TEMP25: BOOL
+1541.1: 			TEMP26: BOOL
+1541.2: 			TEMP27: BOOL
+1541.3: 			TEMP28: BOOL
+1541.4: 			TEMP29: BOOL
+1541.5: 			TEMP30: BOOL
+1541.6: 			TEMP31: BOOL
+1541.7: 			TEMP32: BOOL
+1542.0: 			TEMP33: BOOL
+1542.1: 			TEMP34: BOOL
+1542.2: 			TEMP35: BOOL
+1542.3: 			TEMP36: BOOL
+1542.4: 			TEMP37: BOOL
+1542.5: 			TEMP38: BOOL
+1542.6: 			TEMP39: BOOL
+1542.7: 			TEMP40: BOOL
+1543.0: 			TEMP41: BOOL
+1543.1: 			TEMP42: BOOL
+1543.2: 			TEMP43: BOOL
+1543.3: 			TEMP44: BOOL
+1543.4: 			TEMP45: BOOL
+1543.5: 			TEMP46: BOOL
+1543.6: 			TEMP47: BOOL
+1543.7: 			TEMP48: BOOL
+1544.0: 			TEMP49: BOOL
+1544.1: 			TEMP50: BOOL
+1544.2: 			TEMP51: BOOL
+1544.3: 			TEMP52: BOOL
+1544.4: 			TEMP53: BOOL
+1544.5: 			TEMP54: BOOL
+1544.6: 			TEMP55: BOOL
+1544.7: 			TEMP56: BOOL
+1545.0: 			TEMP57: BOOL
+1545.1: 			TEMP58: BOOL
+1545.2: 			TEMP59: BOOL
+1545.3: 			TEMP60: BOOL
+1545.4: 			TEMP61: BOOL
+1545.5: 			TEMP62: BOOL
+1545.6: 			TEMP63: BOOL
+1545.7: 			TEMP64: BOOL
+1546.0: 			TEMP65: DWORD
+1550.0: 			TEMP66: DINT
+1554.0: 			TEMP67: DINT
+1558.0: 		TEMP68: INT
+1560.0: 		TEMP69: INT
+1562.0: 		TEMP70: BOOL
+1562.1: 		TEMP71: BOOL
+1564.0: 		TEMP72: WORD
+1566.0: 		TEMP73: INT
+1568.0: 	RET_VAL: STRUCT
+
+
+AWL-Code
+Netzwerk 1 : 
+      L     1
+      L     DIW[AR2,P#0.0]
+      >I    
+      SPB   M000
+      T     LW28
+      L     16
+      >I    
+      SPB   M000
+      AUF   DB33
+      L     DBD0
+      L     LW28
+      ==I   
+      BEB   
+      +     80
+      T     LW20
+      AUF   DB[LW20]
+      L     462
+      L     DBLG
+      <D    
+      SPB   M001
+      L     LW28
+      +     -1
+      AUF   DB79
+      L     DBW2
+      *I    
+      L     DBW4
+      +I    
+      SLD   3
+      LAR1  
+      L     DBD[AR1,P#0.0]
+      T     LD0
+      L     DBD[AR1,P#4.0]
+      T     LD4
+      L     DBD[AR1,P#8.0]
+      T     LD8
+      SPA   M002
+Netzwerk 2 : 
+M000: L     25
+      AUF   DB33
+      T     DBD80
+      L     DIW[AR2,P#0.0]
+      AUF   DB33
+      T     DBD84
+      SPA   M003
+M001: AUF   DB33
+      T     DBD84
+      L     26
+      AUF   DB33
+      T     DBD80
+      SPA   M003
+M003: L     1000
+      AUF   DB33
+      T     DBD88
+      L     1080
+      AUF   DB33
+      T     DBD92
+      BLD   1
+      =     L34.0
+      TAR2  LD30
+      AUF   DB33
+      L     DBD80
+      T     LD35
+      AUF   DB33
+      L     DBD84
+      T     LD39
+      AUF   DB33
+      L     DBD88
+      T     LD43
+      AUF   DB33
+      L     DBD92
+      T     LD47
+      AUF   DB33
+      L     DBD96
+      T     LD51
+      UC    FC13
+            P#V 35.0
+            P#V 39.0
+            P#V 43.0
+            P#V 47.0
+            P#V 51.0
+      LAR2  LD30
+      BLD   2
+      BEA   
+Netzwerk 3 : 
+M002: SET   
+      S     L 3.4
+      AUF   DB33
+      L     DBD0
+      +     80
+      T     LW22
+      L     DBB15
+      AUF   DB[LW22]
+      T     DBW0
+      L     LW28
+      +     -1
+      L     96
+      *I    
+      +     2
+      SLD   3
+      LAR2  
+      AUF   DB33
+      L     DBW198
+      L     300
+      <I    
+      SPB   M004
+      UN    DIX[AR2,P#0.0]
+      SPA   M005
+M004: U     M100.2
+M005: =     DIX[AR2,P#0.0]
+      L     LW28
+      +     20
+      ITB   
+      T     DIW[AR2,P#2.0]
+      L     16
+      T     DIB[AR2,P#8.0]
+      T     DIB[AR2,P#48.0]
+      L     2
+      T     DIB[AR2,P#9.0]
+      T     DIB[AR2,P#49.0]
+      L     0
+      L     DIW[AR2,P#10.0]
+      ==I   
+      ON    M97.6
+      L     462
+      SPB   M006
+      UN    DIX[AR2,P#0.0]
+      SPB   M007
+      AUF   DB[LW20]
+      L     DBLG
+M006: T     DIW[AR2,P#10.0]
+      T     DIW[AR2,P#50.0]
+M007: L     LW20
+      T     DIW[AR2,P#12.0]
+      T     DIW[AR2,P#52.0]
+      L     DW#16#84000000
+      T     DID[AR2,P#14.0]
+      T     DID[AR2,P#54.0]
+      UC    SFB14
+      U     DIX[AR2,P#4.0]
+      =     L24.0
+      U     DIX[AR2,P#4.1]
+      =     L24.1
+      L     DIW[AR2,P#6.0]
+      T     LW26
+      UN    L 24.1
+      SPB   M008
+      L     LW26
+      T     LD8
+M008: SET   
+      R     L 4.0
+      AUF   DB[LW20]
+      L     DIB[AR2,P#90.0]
+      L     DBB1
+      T     DIB[AR2,P#90.0]
+      ==I   
+      SPB   M009
+      L     0
+      T     DIB[AR2,P#91.0]
+      SPA   M010
+M009: L     5
+      L     DIB[AR2,P#91.0]
+      <=I   
+      =     L4.0
+      U     L 4.0
+      ON    M101.0
+      SPB   M010
+      +     1
+      T     DIB[AR2,P#91.0]
+M010: U     L 4.0
+      O     L 24.1
+      UN    L 3.2
+      =     L4.0
+      AUF   DB30
+      U     DBX 84.3
+      AUF   DB30
+      O     DBX 84.4
+      SPB   M011
+      AUF   DB30
+      UN    DBX 84.0
+      SPB   M012
+      U     L 7.0
+M011: =     L3.0
+M012: U     L 3.0
+      S     L 6.7
+      AUF   DB30
+      UN    DBX 84.0
+      UN    L 3.0
+      U     L 6.7
+      S     L 3.1
+      U     M98.1
+      O     L 3.1
+      UN    L 0.0
+      S     L 3.1
+      R     L 3.0
+      U     L 6.7
+      O     M98.1
+      R     L 0.0
+      L     0
+      L     DID[AR2,P#92.0]
+      ==D   
+      UN    L 4.0
+      SPB   M013
+      AUF   DB30
+      L     DBD80
+      L     DID[AR2,P#92.0]
+      <=D   
+      SPB   M014
+      S     L 4.0
+      AUF   DB30
+      L     DBD18
+      +D    
+      T     DID[AR2,P#92.0]
+M014: U     L 4.0
+      SPB   M013
+      L     0
+      T     DID[AR2,P#92.0]
+M013: U     L 4.0
+      UN    L 0.1
+      S     M98.2
+      U     L 3.1
+      R     L 0.1
+      U     L 4.0
+      S     L 0.0
+      S     L 0.1
+      R     L 3.1
+      UN    L 0.1
+      UN    L 3.0
+      R     L 6.7
+      U     L 0.1
+      S     M98.4
+      U     L 3.3
+      O     L 3.2
+      =     L0.3
+Netzwerk 4 : 
+      AUF   DB79
+      L     DBD[AR1,P#0.0]
+      L     LD0
+      T     DBD[AR1,P#0.0]
+      <>D   
+      AUF   DB30
+      S     DBX 150.1
+      AUF   DB79
+      L     DBD[AR1,P#4.0]
+      L     LD4
+      T     DBD[AR1,P#4.0]
+      <>D   
+      AUF   DB30
+      S     DBX 150.1
+      AUF   DB79
+      L     DBD[AR1,P#8.0]
+      L     LD8
+      T     DBD[AR1,P#8.0]
+      <>D   
+      AUF   DB30
+      S     DBX 150.1
