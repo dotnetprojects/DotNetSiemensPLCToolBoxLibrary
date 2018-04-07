@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
@@ -23,7 +24,7 @@ namespace TiaGitHandler
             if (args.Count() < 1)
             {
                 OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "TIA-Portal Project|*.ap13";
+                op.Filter = "TIA-Portal Project|*.ap13;*.ap14";
                 op.CheckFileExists = false;
                 op.ValidateNames = false;
                 var ret = op.ShowDialog();
@@ -61,9 +62,11 @@ namespace TiaGitHandler
                 file = args[0];
             }
 
-            Step7ProjectV11 prj = Projects.LoadProject(file, false) as Step7ProjectV11;
+            var prj = Projects.LoadProject(file, false);
 
             ParseFolder(prj.ProjectStructure, exportPath);
+
+            //Console.ReadLine();
         }
 
         private class EncodingStringWriter : StringWriter
@@ -91,30 +94,48 @@ namespace TiaGitHandler
                 ParseFolder(projectFolder, path);
             }
 
-            if (folder is Step7ProjectV11.TIAOpennessProgramFolder)
+            if (folder is IBlocksFolder)
             {
-                var fld = folder as Step7ProjectV11.TIAOpennessProgramFolder;
-                foreach (Step7ProjectV11.TIAOpennessProjectBlockInfo projectBlockInfo in fld.BlockInfos)
+                var blkFld = folder as IBlocksFolder;
+                
+                foreach (var projectBlockInfo in blkFld.BlockInfos)
                 {
                     try
                     {
-                        var src = projectBlockInfo.GenerateSource();
+                        var src = projectBlockInfo.Export(ExportFormat.Default);
+                        string xml = null;
                         if (src != null)
                         {
-                            var ext = projectBlockInfo.ProgrammingLanguage.ToLower();
-                            var file = Path.Combine(path, projectBlockInfo.Name + "." + ext);
-
-                            //if (projectBlockInfo.ProgrammingLanguage == "SCL" ||
-                            //    projectBlockInfo.ProgrammingLanguage == "STL")
-                            //{
-                            //    if (!string.IsNullOrEmpty(src))
-                            //    {
-                            //        Directory.CreateDirectory(path);
-                            //        File.WriteAllText(file, src);
-                            //    }
-                            //    file += "_header";
-                            //    src = projectBlockInfo.GenerateSourceXML();
-                            //}
+                            var ext = "xml";
+                            if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB)
+                            {
+                                ext = "db";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.SCL)
+                            {
+                                ext = "scl";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.KOP)
+                            {
+                                ext = "xml";
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.FUP)
+                            {
+                                ext = "xml";
+                            }
+                            else if (projectBlockInfo.BlockLanguage == PLCLanguage.AWL)
+                            {
+                                ext = "awl";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
+                            }
+                            else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
+                            {
+                                ext = "udt";
+                            }
+                            var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
+                            var xmlfile = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();
@@ -130,18 +151,102 @@ namespace TiaGitHandler
 
                             if (xmlValid)
                             {
-                                XmlNodeList nodes = xmlDoc.SelectNodes("//Created");
-                                XmlNode node = nodes[0];
-                                node.ParentNode.RemoveChild(node);
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//Created");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
 
-                                var sb = new StringBuilder();
+                                StringBuilder sb = new StringBuilder();
+                                XmlWriterSettings settings = new XmlWriterSettings
+                                {
+                                    Indent = true,
+                                    IndentChars = "  ",
+                                    NewLineChars = "\r\n",
+                                    NewLineHandling = NewLineHandling.Replace
+                                };
                                 using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
                                 {
                                     xmlDoc.Save(writer);
                                 }
                                 src = sb.ToString();
+                            }
+
+                            if (src != null && ext != "db")
+                            {
                                 Directory.CreateDirectory(path);
-                                File.WriteAllText(file, src);
+                                File.WriteAllText(file, src, new UTF8Encoding(true));
+                            }
+
+                            if (xml != null)
+                            {
+                                var xmlValid2 = false;
+                                XmlDocument xmlDoc2 = new XmlDocument();
+                                try
+                                {
+                                    xmlDoc2.LoadXml(xml);
+                                    xmlValid2 = true;
+                                }
+                                catch
+                                {
+                                    xmlValid2 = false;
+                                }
+
+                                if (xmlValid2)
+                                {
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//Created");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//DocumentInfo");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    StringBuilder sb = new StringBuilder();
+                                    XmlWriterSettings settings = new XmlWriterSettings
+                                    {
+                                        Indent = true,
+                                        IndentChars = "  ",
+                                        NewLineChars = "\r\n",
+                                        NewLineHandling = NewLineHandling.Replace
+                                    };
+                                    using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                                    {
+                                        xmlDoc2.Save(writer);
+                                    }
+
+                                    xml = sb.ToString();
+
+                                    xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
+                                }
+
+                                Directory.CreateDirectory(path);
+                                File.WriteAllText(xmlfile, xml, new UTF8Encoding(true));
+
                             }
                         }
                         else
@@ -151,7 +256,7 @@ namespace TiaGitHandler
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Skipping Block (Exception)" + projectBlockInfo.Name);
+                        Console.WriteLine("Skipping Block: \"" + projectBlockInfo.Name + "\" Exception: " + ex.Message);
                     }
                 }
             }
