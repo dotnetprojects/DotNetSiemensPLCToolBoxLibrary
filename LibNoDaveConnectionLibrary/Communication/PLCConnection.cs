@@ -29,6 +29,8 @@
  along with Libnodave; see the file COPYING.  If not, write to
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
+//#define daveDebug
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -3894,6 +3896,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             libnodave.resultSet rs = new libnodave.resultSet();
             string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
+            if (filename.ToUpper().EndsWith("WPD") || filename.ToUpper().EndsWith("DIR"))
+                return Int16.MaxValue;
+
             if (F_XFER)
                 PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
@@ -4118,6 +4123,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         }
 #endif
+        #endregion
+
+        #region Debug
+        public void SetDaveDebug(int newDebugLevel = 0)
+        {
+            libnodave.daveSetDebug(newDebugLevel);
+        }
         #endregion
 
         public void Dispose()
