@@ -78,7 +78,7 @@ void setTimeOut(daveInterface * di, int tmo) {
 #ifdef DEBUG_CALLS
 	LOG3("setTimeOut(di:%p, time:%d)\n", di, tmo);
 	FLUSH;
-#endif	
+#endif
 	//	if(di->fd.connectionType==daveSerialConnection) {
 	GetCommTimeouts(di->fd.rfd, &cto);
 	cto.ReadIntervalTimeout = 0;
@@ -164,7 +164,7 @@ daveInterface * DECL2 daveNewInterface(_daveOSserialType nfd, char * nname, int 
 	LOG7("daveNewInterface(fd.rfd:%d fd.wfd:%d name:%s local MPI:%d protocol:%d PB speed:%d)\n",
 		nfd.rfd, nfd.wfd, nname, localMPI, protocol, speed);
 	FLUSH;
-#endif	
+#endif
 	if (di) {
 		//	di->name=nname;
 		strncpy(di->realName, nname, 20);
@@ -290,7 +290,7 @@ daveInterface * DECL2 davePascalNewInterface(_daveOSserialType* nfd, char * nnam
 	LOG7("davePascalNewInterface(fd.rfd:%d fd.wfd:%d name:%s local MPI:%d protocol:%d PB speed:%d)\n",
 		nfd->rfd, nfd->wfd, nname, localMPI, protocol, speed);
 	FLUSH;
-#endif	
+#endif
 	return daveNewInterface(*nfd, nname, localMPI, protocol, speed);
 }
 
@@ -867,7 +867,7 @@ void DECL2 daveAddToWriteRequest(PDU *p, int area, int DBnum, int start, int byt
 		p, daveAreaName(area), DBnum, start, byteCount, buffer);
 	//	_daveDumpPDU(p);
 	FLUSH;
-#endif	 
+#endif
 	if ((area == daveTimer) || (area == daveCounter) || (area == daveTimer200) || (area == daveCounter200)) {
 		pa[3] = area;
 		pa[4] = ((byteCount + 1) / 2) / 0x100;
@@ -969,7 +969,7 @@ int DECL2 daveGetPDUerror(PDU * p) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetPDUerror(PDU:%p\n", p);
 	FLUSH;
-#endif			
+#endif
 	if (p->header[1] == 2 || p->header[1] == 3) {
 		return daveGetU16from(p->header + 10);
 	}
@@ -1223,7 +1223,7 @@ char * DECL2 daveBlockName(uc bn) {
 #ifdef DEBUG_CALLS
 	LOG2("daveBlockName(bn:%d)\n", bn);
 	FLUSH;
-#endif			
+#endif
 	switch (bn) {
 	case daveBlockType_OB: return "OB";
 	case daveBlockType_DB: return "DB";
@@ -1240,7 +1240,7 @@ char * DECL2 daveAreaName(uc n) {
 #ifdef DEBUG_CALLS
 	LOG2("daveAreaName(n:%d)\n", n);
 	FLUSH;
-#endif			
+#endif
 	switch (n) {
 	case daveSysInfo:	return "System info mem.area of 200 family";
 	case daveSysFlags:	return "System flags of 200 family";
@@ -1375,7 +1375,7 @@ int DECL2 daveStop(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveStop(dc:%p)\n", dc);
 	FLUSH;
-#endif	  
+#endif
 	if (dc->iface->protocol == daveProtoAS511) {
 		return daveStopS5(dc);
 	}
@@ -1398,7 +1398,7 @@ int DECL2 daveStart(daveConnection*dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveStart(dc:%p)\n", dc);
 	FLUSH;
-#endif			
+#endif
 	if (dc->iface->protocol == daveProtoAS511) {
 		return daveStartS5(dc);
 	}
@@ -1538,7 +1538,7 @@ int DECL2 daveGetOrderCode(daveConnection * dc, char * buf) {
 #ifdef DEBUG_CALLS
 	LOG3("daveGetOrderCode(dc:%p buf:%p)\n", dc, buf);
 	FLUSH;
-#endif			
+#endif
 	res = daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), da, sizeof(da));
 	if (res != daveResOK) return res; 	// bugfix from Natalie Kather
 	if (buf) {
@@ -1720,7 +1720,7 @@ int DECL2 daveReadBits(daveConnection * dc, int area, int DBnum, int start, int 
 	LOG7("daveReadBits(dc:%p area:%s area number:%d start address:%d byte count:%d buffer:%p)\n",
 		dc, daveAreaName(area), DBnum, start, len, buffer);
 	FLUSH;
-#endif			
+#endif
 	dc->resultPointer = NULL;
 	dc->_resultPointer = NULL;
 	dc->AnswLen = 0;
@@ -1864,7 +1864,7 @@ int DECL2 daveExecWriteRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 #ifdef DEBUG_CALLS
 	LOG4("daveExecWriteRequest(dc:%p, PDU:%p, rl:%p\n", dc, p, rl);
 	FLUSH;
-#endif			
+#endif
 	res = _daveExchange(dc, p);
 	if (res != daveResOK) return res;
 	res = _daveSetupReceivedPDU(dc, &p2);
@@ -1925,7 +1925,6 @@ int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * b
 		LOG2("result set has %d results\n", rl->numResults);
 		FLUSH;
 	}
-
 	if (rl->numResults == 0) return daveEmptyResultSetError;
 	if (n >= rl->numResults) return daveEmptyResultSetError;
 	dr = &(rl->results[n]);
@@ -1944,16 +1943,46 @@ int DECL2 daveUseResult(daveConnection * dc, daveResultSet * rl, int n, void * b
 	return 0;
 }
 
+int DECL2 daveUseResultBuffer(daveResultSet * rl, int n, void * buffer){
+	daveResult * dr;
+	if (daveDebug & daveDebugAll)
+	{
+		LOG2("daveUseResultBuffer(result set:%p, number:%d)\n", rl, n);
+	}
+	if (rl == NULL)
+	{
+		if (daveDebug & daveDebugUpload)
+		{
+			LOG1("invalid resultSet \n");
+			FLUSH;
+		}
+		return daveEmptyResultSetError;
+	}
+	if (daveDebug & daveDebugAll)
+	{
+		LOG2("result set has %d results\n", rl->numResults);
+		FLUSH;
+	}      
+	if (rl->numResults == 0) return daveEmptyResultSetError;
+	if (n >= rl->numResults) return daveEmptyResultSetError;
+	dr = &(rl->results[n]);
+	if (dr->error != 0) return dr->error;
+	if (dr->length <= 0) return daveEmptyResultError;
+
+	if (buffer != NULL) memcpy(buffer, dr->bytes, dr->length);
+	return 0;
+}
+
 void DECL2 daveFreeResults(daveResultSet * rl){
 	daveResult * r;
 	int i;
 #ifdef DEBUG_CALLS
 	LOG2("daveFreeResults(%p)", rl);
-#endif			
+#endif
 	if (rl == NULL) {
 #ifdef DEBUG_CALLS
 		LOG1("no Results,ready\n");
-#endif				
+#endif
 		return;	// make it NULL safe
 	}
 	/*	printf("result set: %p\n",rl); */
@@ -1964,7 +1993,7 @@ void DECL2 daveFreeResults(daveResultSet * rl){
 	}
 #ifdef DEBUG_CALLS
 	LOG2(" free'd %d results\n", rl->numResults);
-#endif			
+#endif
 	free(rl->results);	// fix from Renato Gartmann	 
 	rl->numResults = 0;
 	/*	free(rl);	*/ /* This is NOT malloc'd by library but in the application's memory space! */
@@ -2503,7 +2532,7 @@ float DECL2 daveGetKGAt(daveConnection * dc, int pos) {
 	f.b[3] = *p;
 	sign = (f.b[1] & 0x80);
 	f.b[1] &= 0x7f;
-#endif	
+#endif
 	p++;
 	LOG3("daveGetKG(dc:%p, mantissa:0x%08X)\n", dc, f.mantissa);
 	if (sign) {
@@ -2530,7 +2559,7 @@ float DECL2 daveGetKGAt(daveConnection * dc, int pos) {
 #ifdef DEBUG_CALLS
 	LOG3("daveGetKG(dc:%p, result:%0.6f)\n", dc, v.f);
 	FLUSH;
-#endif		
+#endif
 	return (v.f);
 }
 
@@ -2562,12 +2591,12 @@ float DECL2 daveGetFloat(daveConnection * dc) {
 	f.b[2] = *(dc->resultPointer);
 	dc->resultPointer++;
 	f.b[3] = *(dc->resultPointer);
-#endif	
+#endif
 	dc->resultPointer++;
 #ifdef DEBUG_CALLS
 	LOG3("daveGetFloat(dc:%p, result:%0.6f)\n", dc, f.a);
 	FLUSH;
-#endif		
+#endif
 	return (f.a);
 }
 
@@ -2588,7 +2617,7 @@ float DECL2 daveGetFloatAt(daveConnection * dc, int pos) {
 	f.b[1] = *p; p++;
 	f.b[2] = *p; p++;
 	f.b[3] = *p;
-#endif	
+#endif
 	return (f.a);
 }
 
@@ -2612,15 +2641,15 @@ float DECL2 toPLCfloat(float ff) {
 #ifdef DEBUG_CALLS
 	LOG3("toPLCfloat(%0.6f) = %0.6f\n", ff, f.a);
 	FLUSH;
-#endif		
+#endif
 	return (f.a);
 #else	
 #ifdef DEBUG_CALLS
 	LOG3("toPLCfloat(%0.6f) = %0.6f\n", ff, ff);
 	FLUSH;
-#endif		
+#endif
 	return ff;
-#endif		
+#endif
 }
 
 int DECL2 daveToPLCfloat(float ff) {
@@ -2640,11 +2669,11 @@ int DECL2 daveToPLCfloat(float ff) {
 	f.b[2] = c;
 #else	
 	f.a = ff;
-#endif	
+#endif
 #ifdef DEBUG_CALLS
 	LOG3("toPLCfloat(%0.6f) = %08x\n", ff, f.c);
 	FLUSH;
-#endif		
+#endif
 	return (f.c);
 }
 
@@ -2681,11 +2710,11 @@ int DECL2 daveToKG(float ff) {
 	f.b[3] = f2.b[3];
 	f.b[2] = f2.b[2];
 	f.b[1] = f2.b[1];
-#endif	
+#endif
 #ifdef DEBUG_CALLS
 	LOG3("daveToKG(%0.6f) = %08x\n", ff, f.c);
 	FLUSH;
-#endif		
+#endif
 	return (f.c);
 }
 
@@ -2705,7 +2734,7 @@ short DECL2 daveSwapIed_16(short ff) {
 #else
 	//	printf("Here we are in BIG ENDIAN!!!\n");
 	return (ff);
-#endif	
+#endif
 }
 
 int DECL2 daveSwapIed_32(int ff) {
@@ -2726,7 +2755,7 @@ int DECL2 daveSwapIed_32(int ff) {
 #else
 	//	printf("Here we are in BIG ENDIAN!!!\n");
 	return ff;
-#endif		
+#endif
 }
 
 /**
@@ -3861,7 +3890,7 @@ int DECL2 _daveDisconnectAdapterMPI3(daveInterface * di) {
 		printf("0x%04x , // %d\n", startTab[res], res);
 	}
 	printf("}\n\n\n\n");
-#endif	
+#endif
 	//	di->ifwrite(di, m4, 5);
 	return 0;
 }
@@ -4353,7 +4382,7 @@ int DECL2 _daveSendISOPacket(daveConnection * dc, int size) {
 		_daveDump("send packet: ", dc->msgOut + dc->partPos, size);
 #ifdef HAVE_SELECT
 	daveWriteFile(dc->iface->fd.wfd, dc->msgOut + dc->partPos, size, i);
-#endif	
+#endif
 #ifdef BCCWIN
 	res = send((SOCKET)(dc->iface->fd.wfd), dc->msgOut + dc->partPos, size, 0);
 	if (res == SOCKET_ERROR)
@@ -4854,7 +4883,7 @@ int DECL2 daveGetU16from(uc *b) {
 	u.b[0] = *b;
 	b++;
 	u.b[1] = *b;
-#endif	
+#endif
 	return u.a;
 }
 
@@ -4904,7 +4933,7 @@ unsigned int DECL2 daveGetU32from(uc *b) {
 	u.b[2] = *b;
 	b++;
 	u.b[3] = *b;
-#endif	
+#endif
 	return u.a;
 }
 
@@ -4929,7 +4958,7 @@ float DECL2 daveGetFloatfrom(uc *b) {
 	u.b[2] = *b;
 	b++;
 	u.b[3] = *b;
-#endif	
+#endif
 	return u.a;
 }
 
@@ -4943,7 +4972,7 @@ int DECL2 daveGetS8(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetS8(dc:%p)\n", dc);
 	FLUSH;
-#endif	
+#endif
 	p = (char *)dc->resultPointer;
 	dc->resultPointer++;
 	return *p;
@@ -4954,7 +4983,7 @@ int DECL2 daveGetU8(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetU8(dc:%p)\n", dc);
 	FLUSH;
-#endif	
+#endif
 	p = dc->resultPointer;
 	dc->resultPointer++;
 	return *p;
@@ -4968,7 +4997,7 @@ int DECL2 daveGetS16(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetS16(dc:%p)\n", dc);
 	FLUSH;
-#endif	
+#endif
 #ifdef DAVE_LITTLE_ENDIAN
 	u.b[1] = *(dc->resultPointer);
 	dc->resultPointer++;
@@ -4990,7 +5019,7 @@ int DECL2 daveGetU16(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetU16(dc:%p)\n", dc);
 	FLUSH;
-#endif		
+#endif
 #ifdef DAVE_LITTLE_ENDIAN
 	u.b[1] = *(dc->resultPointer);
 	dc->resultPointer++;
@@ -4999,7 +5028,7 @@ int DECL2 daveGetU16(daveConnection * dc) {
 	u.b[0] = *(dc->resultPointer);
 	dc->resultPointer++;
 	u.b[1] = *(dc->resultPointer);
-#endif	
+#endif
 	dc->resultPointer++;
 	return u.a;
 }
@@ -5012,7 +5041,7 @@ int DECL2 daveGetS32(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetS32(dc:%p)\n", dc);
 	FLUSH;
-#endif		
+#endif
 #ifdef DAVE_LITTLE_ENDIAN
 	u.b[3] = *(dc->resultPointer);
 	dc->resultPointer++;
@@ -5042,7 +5071,7 @@ unsigned int DECL2 daveGetU32(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetU32(dc:%p)\n", dc);
 	FLUSH;
-#endif		
+#endif
 
 #ifdef DAVE_LITTLE_ENDIAN
 	u.b[3] = *(dc->resultPointer);
@@ -5060,7 +5089,7 @@ unsigned int DECL2 daveGetU32(daveConnection * dc) {
 	u.b[2] = *(dc->resultPointer);
 	dc->resultPointer++;
 	u.b[3] = *(dc->resultPointer);
-#endif	
+#endif
 	dc->resultPointer++;
 	return u.a;
 }
@@ -5113,7 +5142,7 @@ int DECL2 daveGetU16At(daveConnection * dc, int pos) {
 	u.b[0] = *p;
 	p++;
 	u.b[1] = *p;
-#endif	
+#endif
 	return u.a;
 }
 
@@ -5167,7 +5196,7 @@ unsigned int DECL2 daveGetU32At(daveConnection * dc, int pos) {
 	u.b[2] = *p;
 	p++;
 	u.b[3] = *p;
-#endif	
+#endif
 	return u.a;
 }
 /*
@@ -5220,7 +5249,7 @@ uc * DECL2 davePut32(uc *b, int v) {
 	*b = u.b[2];
 	b++;
 	*b = u.b[3];
-#endif	
+#endif
 	b++;
 	return b;
 }
@@ -5277,7 +5306,7 @@ void DECL2 davePut16At(uc *b, int pos, int v) {
 	*b = u.b[0];
 	b++;
 	*b = u.b[1];
-#endif	
+#endif
 }
 
 void DECL2 davePut32At(uc *b, int pos, int v) {
@@ -5303,7 +5332,7 @@ void DECL2 davePut32At(uc *b, int pos, int v) {
 	*b = u.b[2];
 	b++;
 	*b = u.b[3];
-#endif	
+#endif
 }
 
 void DECL2 davePutFloatAt(uc *b, int pos, float v) {
@@ -5329,7 +5358,7 @@ void DECL2 davePutFloatAt(uc *b, int pos, float v) {
 	*b = u.b[2];
 	b++;
 	*b = u.b[3];
-#endif	
+#endif
 }
 /*
 "passive mode" functions. Needed to "simulate" an S7 PLC.
@@ -5410,7 +5439,7 @@ int DECL2 _daveWriteIBH(daveInterface * di, uc * buffer, int len) { //cs: let it
 	}
 #ifdef HAVE_SELECT	
 	res = write(di->fd.wfd, buffer, len);
-#endif	
+#endif
 #ifdef BCCWIN
 	//	res=send((SOCKET)(di->fd.wfd), buffer, ((len+1)/2)*2, 0);
 	res = send((SOCKET)(di->fd.wfd), buffer, len, 0);
@@ -5484,7 +5513,7 @@ int DECL2 __daveAnalyze(daveConnection * dc) {
 	PDU p1;
 #ifdef passiveMode	
 	PDU pr;
-#endif	
+#endif
 	uc resp[2000];
 
 	//	if (dc->AnswLen==0) return _davePtEmpty;
@@ -5516,7 +5545,7 @@ int DECL2 __daveAnalyze(daveConnection * dc) {
 #ifdef passiveMode
 			// construct response:		
 			pr.header = resp + sizeof(IBHpacket) + sizeof(MPIheader2);
-#endif		
+#endif
 			p2 = (IBHpacket*)resp;
 			p2->ch1 = p->ch2;
 			p2->ch2 = p->ch1;
@@ -5544,7 +5573,7 @@ int DECL2 __daveAnalyze(daveConnection * dc) {
 				_daveHandleWrite(&p1, &pr);
 				haveResp = 1;
 				m2->len = pr.hlen + pr.plen + pr.dlen + 2;
-#endif		
+#endif
 				p2->len = m2->len + 7;
 			}
 			else {
@@ -6007,7 +6036,7 @@ int DECL2 _daveDisconnectPLC_IBH(daveConnection*dc) {
 #ifdef BCCWIN	
 #else	
 	_daveReadIBHPacket(dc->iface, b);
-#endif	
+#endif
 	return 0;
 }
 
@@ -6029,7 +6058,7 @@ int DECL2 daveForceDisconnectIBH(daveInterface * di, int src, int dest, int mpi)
 #ifdef BCCWIN	
 #else	
 	_daveReadIBHPacket(di, b);
-#endif	
+#endif
 	return 0;
 }
 
@@ -6047,7 +6076,7 @@ int DECL2 daveResetIBH(daveInterface * di) {
 #ifdef BCCWIN
 #else
 	_daveReadIBHPacket(di, b);
-#endif	
+#endif
 	return 0;
 }
 
@@ -6284,7 +6313,7 @@ daveResultSet * DECL2 daveNewResultSet() {
 #ifdef DEBUG_CALLS
 	LOG2("daveNewResultSet() = %p\n", p);
 	FLUSH;
-#endif			
+#endif
 	return p;
 }
 
@@ -7109,7 +7138,7 @@ int DECL2 daveReadPLCTime(daveConnection * dc) {
 #ifdef DEBUG_CALLS
 	LOG2("daveGetTime(dc:%p)\n", dc);
 	FLUSH;
-#endif			
+#endif
 	len = 0; res = daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), NULL, 1);
 	if (res == daveResOK) {
 		dc->resultPointer = p2.udata;
@@ -7131,7 +7160,7 @@ int DECL2 daveSetPLCTime(daveConnection * dc, uc * ts) {
 #ifdef DEBUG_CALLS
 	LOG2("daveSetTime(dc:%p)\n", dc);
 	FLUSH;
-#endif			
+#endif
 	len = 0;
 	res = daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), ts, 10);
 	if (res == daveResOK) {
@@ -7182,7 +7211,7 @@ int DECL2 daveSetPLCTimeToSystime(daveConnection * dc) {
 	//	LOG2("tm.sec:  %d\n", systime.tm_sec);
 	//	LOG2("tm.min:  %d\n", systime.tm_min);
 	//	LOG2("tm.hour: %d\n", systime.tm_hour);
-#endif	
+#endif
 
 #ifdef BCCWIN
 	SYSTEMTIME t1;
@@ -7213,12 +7242,12 @@ int DECL2 daveSetPLCTimeToSystime(daveConnection * dc) {
 	//	LOG2("tm.sec:  %d\n", t1.wSecond);
 	//	LOG2("tm.min:  %d\n", t1.wMinute);
 	//	LOG2("tm.hour: %d\n", t1.wHour);
-#endif	
+#endif
 
 #ifdef DEBUG_CALLS
 	LOG2("SetPLCTimeToSystime(dc:%p)\n", dc);
 	FLUSH;
-#endif			
+#endif
 	len = 0;
 	res = daveBuildAndSendPDU(dc, &p2, pa, sizeof(pa), ts, sizeof(ts));
 	if (res == daveResOK) {
@@ -8319,7 +8348,7 @@ void DECL2 _daveSendSingleNLPro(daveInterface * di,	/* serial interface */
 	//	di->ifwrite(di, c3, 3);
 #ifdef HAVE_SELECT
 	daveWriteFile(di->fd.wfd, c3, 3, i);
-#endif	
+#endif
 #ifdef BCCWIN
 	send((unsigned int)(di->fd.wfd), c3, 3, 0);
 #endif
@@ -8348,7 +8377,7 @@ int DECL2 _daveSendWithCRCNLPro(daveInterface * di, /* serial interface */
 	//	di->ifwrite(di, target, targetSize);
 #ifdef HAVE_SELECT
 	daveWriteFile(di->fd.wfd, target, targetSize, i);
-#endif	
+#endif
 #ifdef BCCWIN
 	send((unsigned int)(di->fd.wfd), target, targetSize, 0);
 #endif
