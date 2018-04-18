@@ -405,9 +405,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         void CheckConnection()
         {
-            if (Connected) return;
-            if (AutoConnect) Connect();
-            else throw new Exception("No connection to the PLC established yet");
+            if (Connected)
+                return;
+
+            if (AutoConnect)
+                Connect();
+            else
+                throw new Exception("No connection to the PLC established yet");
         }
 
         /// <summary>
