@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
@@ -28,7 +29,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 throw new Exception("You can not open a V13 Project when you already have had opened a V14/V15 Project. You need to close the Application!");
                             }
-                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV13.dll");
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV13.dll"));
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.Step7ProjectV13");
                             _createV13ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
                         }
@@ -54,7 +56,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15 Project. You need to close the Application!");
                             }
-                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll");
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll"));
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1.Step7ProjectV14SP1");
                             _createV14SP1ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
                         }
@@ -80,7 +83,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 throw new Exception("You can not open a V15 Project when you already have had opened a V13/V14 Project. You need to close the Application!");
                             }
-                            var assembly = Assembly.LoadFrom("DotNetSiemensPLCToolBoxLibrary.TIAV15.dll");
+
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path,"DotNetSiemensPLCToolBoxLibrary.TIAV15.dll"));
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15.Step7ProjectV15");
                             _createV15ProjectInstance = (file) => (Project)Activator.CreateInstance(type, new object[] { file, null });
                         }

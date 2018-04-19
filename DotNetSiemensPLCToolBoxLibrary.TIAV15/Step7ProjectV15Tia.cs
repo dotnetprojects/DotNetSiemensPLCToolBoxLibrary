@@ -222,6 +222,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             public List<TIAOpennessConstant> Constants { get; set; }
 
+            public IEnumerable<TIAOpennessTag> Tags { get; internal set; }
+        }
+
+        public class TIAOpennessTag
+        {
+            public string Name { get; set; }
+            public string Address { get; set; }
+            public string DataTypeName { get; set; }
+            public List<TIAOpennessComment> Comments { get; set; }
+            public bool IsExternalAccessible { get; set; }
+            public bool IsExternalVisible { get; set; }
+            public bool IsExternalWritable { get; set; }
+            
+            internal TIAOpennessTag(PlcTag source)
+            {
+                Name = source.Name;
+                Address = source.LogicalAddress;
+                DataTypeName = source.DataTypeName;
+                Comments = source.Comment.Items.Select(c => new TIAOpennessComment() {Culture = c.Language.Culture, Text = c.Text}).ToList();
+                IsExternalAccessible = source.ExternalAccessible;
+                IsExternalVisible = source.ExternalVisible;
+                IsExternalWritable = source.ExternalWritable;
+            }
+        }
+
+        public class TIAOpennessComment
+        {
+            public object Culture { get; internal set; }
+            public string Text { get; internal set; }
         }
 
         public class TIAOpennessConstant
@@ -374,6 +403,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     foreach (var tagList in tags)
                     {
                         var info = new TIAOpennessTagTable() { Name = tagList.Name };
+                        info.Tags = tagList.Tags.Select(t => new TIAOpennessTag(t));
                         retVal.Add(info);
                         info.Constants = new List<TIAOpennessConstant>();
                         foreach (var c in tagList.UserConstants)
@@ -689,6 +719,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 //TiaPortalItem = controller.ControllerTagFolder,
                 Name = "PLC data types",
                 Parent = parent,
+                TiaPortalItem = software.TagTableGroup,
             };
             parent.VarTabFolder = fld3;
             parent.SubItems.Add(fld3);
