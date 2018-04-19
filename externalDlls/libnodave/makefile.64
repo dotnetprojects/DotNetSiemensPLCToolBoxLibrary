@@ -17,13 +17,20 @@ CFLAGS= -I"$(VCPATH)\include" -I"$(SDKPATH)\include" -c -DBCCWIN -DDAVE_LITTLE_E
 LFLAGS= /LIBPATH:"$(VCPATH)"\lib\x64,"$(SDKPATH)"\lib\x64
 LLFLAGS = /LIBPATH:"$(VCPATH)\lib\x64" /DEF:libnodave.DEF /MACHINE:X64
 
+PROGRAMS=testISO_TCP.exe
+# PROGRAMS=testMPI.exe testPPI.exe testAS511.exe\
+# testPPI_IBH.exe testPPI_IBHload.exe testPPIload.exe \
+# testMPIload.exe testISO_TCP.exe testISO_TCPload.exe testIBH.exe testMPI_IBHload.exe \
+# testNLpro.exe testS7online.exe
 
 LIBRARIES=libnodave_jfkmod64.dll
 
-all: $(LIBRARIES)
+all: $(PROGRAMS) $(LIBRARIES)
 
 dynamic: $(DYNAMIC_PROGRAMS)
 
+testISO_TCP.exe: nodave.obj openSocketw.obj testISO_TCP.obj
+	$(LL) $(LFLAGS) testISO_TCP.obj openSocketw.obj nodave.obj "$(SDKPATH)"\lib\x64\ws2_32.lib /OUT:testISO_TCP.exe
 libnodave_jfkmod64.dll: nodave.obj setportw.obj openSocketw.obj openS7online.obj 
 	$(LL) $(LLFLAGS) /DLL nodave.obj setportw.obj openSocketw.obj openS7online.obj "$(SDKPATH)"\lib\x64\ws2_32.lib /OUT:libnodave_jfkmod64.dll
 		
