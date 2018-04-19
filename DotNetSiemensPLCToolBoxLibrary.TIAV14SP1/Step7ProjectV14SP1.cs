@@ -95,11 +95,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
             if (filePathReg != null)
             {
-                string filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V14");
-                if (Directory.Exists(filePath) == false)
-                    filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V14 SP1");
+                string filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V14 SP1");
                 var path = Path.Combine(filePath, name);
                 var fullPath = Path.GetFullPath(path);
+                if (File.Exists(fullPath))
+                {
+                    return Assembly.LoadFrom(fullPath);
+                }
+
+                filePath = Path.Combine(filePathReg.GetValue("Path").ToString(), "PublicAPI\\V14");
+                path = Path.Combine(filePath, name);
+                fullPath = Path.GetFullPath(path);
                 if (File.Exists(fullPath))
                 {
                     return Assembly.LoadFrom(fullPath);
