@@ -25,7 +25,7 @@ namespace TiaGitHandler
             if (args.Count() < 1)
             {
                 OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "TIA-Portal Project|*.ap13;*.ap14";
+                op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15";
                 op.CheckFileExists = false;
                 op.ValidateNames = false;
                 var ret = op.ShowDialog();
@@ -70,12 +70,11 @@ namespace TiaGitHandler
 
             Console.WriteLine();
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
             skippedBlocksList.ForEach(i => Console.WriteLine("{0}", i));
-
+            Console.WriteLine();
             Console.WriteLine(skippedBlocksList.Count() + " blocks were skipped");
             Console.ReadKey();
-
-            //Console.ReadLine();
         }
 
         private class EncodingStringWriter : StringWriter
