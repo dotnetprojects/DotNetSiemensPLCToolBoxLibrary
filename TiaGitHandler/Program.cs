@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,7 +65,15 @@ namespace TiaGitHandler
 
             var prj = Projects.LoadProject(file, false);
 
-            ParseFolder(prj.ProjectStructure, exportPath);
+            List<string> skippedBlocksList = new List<string>();
+            ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
+
+            Console.WriteLine();
+            Console.WriteLine();
+            skippedBlocksList.ForEach(i => Console.WriteLine("{0}", i));
+
+            Console.WriteLine(skippedBlocksList.Count() + " blocks were skipped");
+            Console.ReadKey();
 
             //Console.ReadLine();
         }
@@ -84,14 +93,14 @@ namespace TiaGitHandler
             }
         }
 
-        private static void ParseFolder(ProjectFolder folder, string dir)
+        private static void ParseFolder(ProjectFolder folder, string dir, List<string> skippedBlocksList)
         {
             //Directory.CreateDirectory(dir);
             var path = Path.Combine(dir, NormalizeFolderName(folder.Name));
-            
+
             foreach (var projectFolder in folder.SubItems)
             {
-                ParseFolder(projectFolder, path);
+                ParseFolder(projectFolder, path, skippedBlocksList);
             }
 
             if (folder is IBlocksFolder)
@@ -257,6 +266,7 @@ namespace TiaGitHandler
                     catch (Exception ex)
                     {
                         Console.WriteLine("Skipping Block: \"" + projectBlockInfo.Name + "\" Exception: " + ex.Message);
+                        skippedBlocksList.Add(projectBlockInfo.Name);
                     }
                 }
             }
