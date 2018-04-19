@@ -9,6 +9,12 @@
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
 
+ The NCK part was written by J.Eger
+ * 
+ * Thanks go to:
+ * Jochen Kuehner -> For his nice ConnectionLibrary
+ * Thomas_v2.1    -> For the support of the telegram analyze
+
  WPFToolboxForSiemensPLCs is free software; you can redistribute it and/or modify
  it under the terms of the GNU Library General Public License as published by
  the Free Software Foundation; either version 2, or (at your option)
@@ -23,6 +29,8 @@
  along with Libnodave; see the file COPYING.  If not, write to
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
 */
+//#define daveDebug
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -227,7 +235,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         _fds.rfd = libnodave.setPort(_configuration.ComPort, _configuration.ComPortSpeed, (int)_configuration.ComPortParity);
                         break;
 
-#if !IPHONE   
+#if !IPHONE
                     case LibNodaveConnectionTypes.Use_Step7_DLL:
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
@@ -1604,6 +1612,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case 1:
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy32_1Dataset>(objBuffer));
                                         break;
+                                    case 4:
+                                        datsets.Add(EndianessMarshaler.BytesToStruct<xy32_4Dataset>(objBuffer));
+                                        break;
                                     case 8:
                                         datsets.Add(EndianessMarshaler.BytesToStruct<xy32_8Dataset>(objBuffer));
                                         break;
@@ -2822,6 +2833,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
                             if (nckT == null && !symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
                             {
+                                #region Without NCK
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
                                 //Howmany Bytes can be added to this call
                                 if (restBytes > 0)
@@ -2864,6 +2876,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                                     //useresult muss noch programmiert werden.
                                 }
+                                #endregion
                             }
                             var rs = _dc.getResultSet();
                             int res;
@@ -2965,7 +2978,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
-                            myPDU.addNCKToReadRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
+                            myPDU.addNCKToReadRequest((int)nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount);
                         }
                         else if (symbolicTag)
                         {
@@ -3047,9 +3060,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 else
                                 {
                                     NotExistedValue.Add(false);
-                                    var nckT = readTagList.ToList()[akVar] as PLCNckTag;
-                                    if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
-                                        System.Array.Reverse(myBuff, 0, myBuff.Length - 1);
                                     Array.Copy(myBuff, myBuffStart, completeData, positionInCompleteData, readenSizes[akVar]);
                                     positionInCompleteData += readenSizes[akVar];
                                 }
@@ -3248,6 +3258,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="address">An Simatic Address Identifier. see <seealso cref="PLCTag"/> for syntax</param>
         /// <returns></returns>
         public T ReadValue<T>(string address)
+        {
+            var wrt = ReadValue(address);
+            return (T)wrt;
+        }
+
+        /// <summary>
+        /// Read one single value from the NCK
+        /// </summary>
+        /// <param name="address">An Sinumerik Address Identifier. see <seealso cref="PLCNckTag"/> for syntax</param>
+        /// <returns></returns>
+        public object ReadValue(NC_Var address)
+        {
+            var tag = address.GetNckTag(0, 0);
+            this.ReadValue(tag);
+            return tag.Value;
+        }
+
+        /// <summary>
+        /// Read one single value from the NCK
+        /// </summary>
+        /// <param name="address">An Sinumerik Address Identifier. see <seealso cref="PLCNckTag"/> for syntax</param>
+        /// <returns></returns>
+        public T ReadValue<T>(NC_Var address)
         {
             var wrt = ReadValue(address);
             return (T)wrt;
@@ -3599,7 +3632,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         var currValSize = currVal._internalGetSize();
 
                         if (!(currVal is PLCNckTag) && gesWriteSize < maxWriteSize && //Maximale Byte Anzahl noch nicht erreicht
-                                                                                      /*anzWriteVar < maxWriteVar &&*/
+                            /*anzWriteVar < maxWriteVar &&*/
                             ( //maximale Variablenanzahl noch nicht erreicht                        
                                 splitPos != 0 || //Value ist schon gesplitted
                                 !currVal.DontSplitValue || //Value Kann gesplitted Werden
@@ -3686,7 +3719,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 currVal._putControlValueIntoBuffer(wrt, 0);
                                 var nckT = currVal as PLCNckTag;
                                 #region Reverse
-                                if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != 5 && nckT.NckArea != 6)
+                                if (nckT != null && nckT.TagDataType != TagDataType.String && nckT.TagDataType != TagDataType.CharArray && nckT.NckArea != NCK_Area.AreaFeedDrive && nckT.NckArea != NCK_Area.AreaMainDrive)
                                     System.Array.Reverse(wrt, 0, wrt.Length);
                                 #endregion
 
@@ -3708,7 +3741,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 //    transsize = 9;
 
                                 #endregion
-                                myPDU.addNCKToWriteRequest(nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount, wrt.Length, wrt);
+                                myPDU.addNCKToWriteRequest((int)nckT.NckArea, nckT.NckUnit, nckT.NckColumn, nckT.NckLine, nckT.NckModule, nckT.NckLinecount, wrt.Length, wrt);
                                 valueListT.Remove(currVal); //Wert erledigt... löschen....
                             }
 
@@ -3753,10 +3786,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         #region NC PI-Service
 
-        public void PI_Service(string piservice, string[] param, int paramCount)
+        public void PI_Service(string piservice, string[] param)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
-            int res = _dc.PI_StartNC(piservice, param, paramCount);
+            int res = _dc.PI_StartNC(piservice, param, param.Length);
 
             if (res == -1025)
             {
@@ -3773,15 +3806,60 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Load complete file from NC
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
         /// <returns></returns>
-        public string UploadFromNC(string fullFileName)
+        public byte[] BinaryUploadFromNC(string fullFileName, bool F_XFER = false)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            byte[] id = new byte[4];
+            List<byte> lRet = new List<byte>();
+            string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+            int res = _dc.initUploadNC(file, ref id);
+            if (res != 0)
+                throw new Exception("UploadFromNC: " + res);
+
+            int more = 0;
+            int len = 0;
+            byte[] buffer = new byte[1024];
+
+            do
+            {
+                res = _dc.doUploadNC(out more, buffer, out len, id);
+                if (res != 0)
+                    break;
+
+                for (int i = 0; i < len; i++)
+                {
+                    lRet.Add(buffer[i]);
+                }
+            } while (more != 0);
+
+            res = _dc.endUploadNC(id);
+            if (res != 0)
+                throw new Exception("BinaryUploadFromNC: " + res);
+
+            return lRet.ToArray();
+        }
+
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public string UploadFromNC(string fullFileName, bool F_XFER = true)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
             byte[] id = new byte[4];
             string ret = string.Empty;
             string file = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
-            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
             int res = _dc.initUploadNC(file, ref id);
             if (res != 0)
@@ -3811,14 +3889,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         /// <param name="fullFileName">full filename inc. path</param>
         /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
         /// <returns></returns>
-        public string UploadFromNC(string fullFileName, int size)
+        public string UploadFromNC(string fullFileName, int size, bool F_XFER = true)
         {
             libnodave.resultSet rs = new libnodave.resultSet();
             string ret = string.Empty;
             string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
 
-            PI_Service("_N_F_XFER", new string[] { "P01", fullFileName }, 2);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
 
             int length = 0;
             byte[] buffer = new byte[size];
@@ -3830,6 +3910,121 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 ret = System.Text.Encoding.Default.GetString(buffer, 0, length);
 
             return ret;
+        }
+
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public byte[] BinaryUploadNcFile(string fullFileName, int size = 0, bool F_XFER = false)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (size == 0)
+                size = UploadNcFileSize(fullFileName, F_XFER);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+            int length = 0;
+            byte[] buffer = new byte[size];
+            int res = _dc.daveGetNcFile(filename, buffer, ref length);
+
+            if (res != 0)
+                throw new Exception("BinaryUploadNcFile: " + res);
+
+            byte[] ret = new byte[length];
+            Array.Copy(buffer, ret, length);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Load complete file from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="size">size of the file (buffer)</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public string UploadNcFile(string fullFileName, int size = 0, bool F_XFER = true)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string ret = string.Empty;
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (size == 0)
+                size = UploadNcFileSize(fullFileName, F_XFER);
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+#if daveDebug
+            libnodave.daveSetDebug(0x1ffff);
+#endif
+
+            int length = 0;
+            byte[] buffer = new byte[size];
+            int res = _dc.daveGetNcFile(filename, buffer, ref length);
+
+#if daveDebug
+            var a = libnodave.daveGetDebug();
+
+            if (res != 0)
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    if (buffer[i] == 0)
+                    {
+                        length = i;
+                        break;
+                    }
+                }
+
+            libnodave.daveSetDebug(0);
+#endif
+
+            if (res != 0)
+                throw new Exception("UploadNcFile: " + res);
+            else if (length > buffer.Length)
+                throw new ArgumentOutOfRangeException("size", size, "File size: " + length);
+            else
+                ret = System.Text.Encoding.Default.GetString(buffer, 0, length);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Load file size from NC
+        /// </summary>
+        /// <param name="fullFileName">full filename inc. path</param>
+        /// <param name="F_XFER">Start PI-Service F_XFER before upload</param>
+        /// <returns></returns>
+        public int UploadNcFileSize(string fullFileName, bool F_XFER = true)
+        {
+            libnodave.resultSet rs = new libnodave.resultSet();
+            string filename = fullFileName.Remove(0, fullFileName.LastIndexOf('/') > 0 ? fullFileName.LastIndexOf('/') + 1 : 0);
+
+            if (filename.ToUpper().EndsWith("WPD") || filename.ToUpper().EndsWith("DIR"))
+                return Int16.MaxValue;
+
+            if (F_XFER)
+                PI_Service("_N_F_XFER", new string[] { "P01", fullFileName });
+
+#if daveDebug
+            libnodave.daveSetDebug(0x1ffff);
+#endif
+
+            int length = 0;
+            int res = _dc.daveGetNcFileSize(filename, ref length);
+
+#if daveDebug
+            libnodave.daveSetDebug(0);
+#endif
+
+            if (res != 0)
+                throw new Exception("UploadNcFileSize: " + res);
+            return length;
         }
 
         /// <summary>
@@ -3849,6 +4044,200 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             int res = _dc.davePutNCProgram(filename, path, ts, buffer, buffer.Length);
             if (res != 0)
                 throw new Exception("DownloadToNC: " + res);
+        }
+        #endregion
+
+        #region SPS Alarm Query
+        public int[] GetAlarmS_IDs()
+        {
+            int size = 32767;
+
+            libnodave.resultSet rs = new libnodave.resultSet();
+            List<int> lRet = new List<int>();
+
+            try
+            {
+                int alarmCount = 0;
+                byte[] buffer = new byte[size];
+                int res = _dc.alarmQueryAlarm_S(buffer, size, ref alarmCount);
+
+                if (res != 0)
+                    throw new Exception("GetSPS_AlarmQuery: " + res);
+                else
+                {
+                    byte[] dummy = new byte[System.Runtime.InteropServices.Marshal.SizeOf(typeof(alarmMessageHeader))];
+                    int index = 0;
+                    for (int i = 0; i < alarmCount; i++)
+                    {
+                        Array.Copy(buffer, index, dummy, 0, dummy.Length);
+                        var alarmHeader = EndianessMarshaler.BytesToStruct<alarmMessageHeader>(dummy);
+                        lRet.Add(alarmHeader.EventID);
+                        index += alarmHeader.Lenght + 2;
+                    }
+                }
+                //ret = System.Text.Encoding.Default.GetString(buffer, 0, alarmCount);
+            }
+            catch (Exception)
+            {
+            }
+
+            return lRet.ToArray();
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi, Pack = 1)]
+        public class alarmMessageHeader
+        {
+            //[Endian(Endianness.BigEndian)]
+            private byte _Lenght;
+            public Byte Lenght
+            {
+                get { return _Lenght; }
+                set { _Lenght = value; }
+            }
+
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst = 2)]
+            private byte[] _x;
+            public Byte[] _
+            {
+                get { return _x; }
+                set { _x = value; }
+            }
+
+            private byte _Alarmtype;
+            public Byte Alarmtype
+            {
+                get { return _Alarmtype; }
+                set { _Alarmtype = value; }
+            }
+
+            [Endian(Endianness.BigEndian)]
+            private int _EventID;
+            public Int32 EventID
+            {
+                get { return _EventID; }
+                set { _EventID = value; }
+            }
+
+#if TimestampMessageComing
+            private byte __x;
+            public Byte __
+            {
+                get { return __x; }
+                set { __x = value; }
+            }
+
+            private byte _EventState;
+            public Byte EventState
+            {
+                get { return _EventState; }
+                set { _EventState = value; }
+            }
+
+            private byte _AckState_going;
+            public Byte AckState_going
+            {
+                get { return _AckState_going; }
+                set { _AckState_going = value; }
+            }
+
+            private byte _AckState_coming;
+            public Byte AckState_coming
+            {
+                get { return _AckState_coming; }
+                set { _AckState_coming = value; }
+            }
+
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray, SizeConst = 8)]
+            private byte[] _TimestampMessageComing;
+            public DateTime TimestampMessageComing
+            {
+                get { return GetDateTimeFromByteArray(_TimestampMessageComing); }
+                set { _TimestampMessageComing = GetByteArrayFromBuffer(value); }
+            }
+#endif
+        }
+
+        private static DateTime GetDateTimeFromByteArray(byte[] buffer)
+        {
+            try
+            {
+                string[] sAr = BitConverter.ToString(buffer).Trim().Split('-');
+                return new DateTime(int.Parse(sAr[0]) >= 90 ? 1900 + int.Parse(sAr[0]) : 2000 + int.Parse(sAr[0]), int.Parse(sAr[1]), int.Parse(sAr[2]), int.Parse(sAr[3]), int.Parse(sAr[4]), int.Parse(sAr[5]), int.Parse(sAr[6] + sAr[7].Substring(0, 1)));
+            }
+            catch (Exception)
+            {
+                return new DateTime(); // DateTime(1990, 1, 1);
+            }
+        }
+
+        private static byte[] GetByteArrayFromBuffer(DateTime dt)
+        {
+            byte[] ret = new byte[8];
+            try
+            {
+                if (Equals(dt, new DateTime()))
+                    return new byte[8];
+
+                ret[0] = Convert.ToByte((dt.Year > 2000 ? dt.Year - 2000 : dt.Year - 1900).ToString(), 16);
+                ret[1] = Convert.ToByte(dt.Month.ToString(), 16);// (byte)dt.Month;
+                ret[2] = Convert.ToByte(dt.Day.ToString(), 16);
+                ret[3] = Convert.ToByte(dt.Hour.ToString(), 16);
+                ret[4] = Convert.ToByte(dt.Minute.ToString(), 16);
+                ret[5] = Convert.ToByte(dt.Second.ToString(), 16);
+                ret[6] = Convert.ToByte(dt.Millisecond.ToString("000").Substring(0, 2), 16);
+                ret[7] = Convert.ToByte(dt.Millisecond.ToString("000").Substring(2) + ((byte)dt.DayOfWeek + 1), 16);
+            }
+            catch (Exception)
+            { }
+            return ret;
+        }
+
+#if aaa
+        public class objMSG
+        {
+            objMSG() { }
+
+            objMSG(byte[] Buffer)
+            {
+                this.lenght = Buffer[0];
+                byte Alarmtype = Buffer[3];
+
+                dummy = new byte[4];
+                Array.Copy(Buffer, index + 4, dummy, 0, dummy.Length);
+                Array.Reverse(dummy);
+                var EventID = BitConverter.ToUInt32(dummy, 0);
+
+                byte EventState = Buffer[index + 9];
+                byte ActStateGoing = Buffer[index + 10];
+                byte ActStateComing = Buffer[index + 11];
+                byte[] _TimeStampMessageComming = new byte[8];
+                Array.Copy(Buffer, index + 12, _TimeStampMessageComming, 0, _TimeStampMessageComming.Length);
+                DateTime TimeStampMessageComming = getDateTimeFromDateAndTimeString(BitConverter.ToString(_TimeStampMessageComming));
+            }
+
+            [Endian(Endianness.BigEndian)]
+            private byte lenght;
+            public Byte Lenght
+            {
+                get { return lenght; }
+                set { lenght = value; }
+            }
+
+            private byte alarmtype;
+            public Byte Alarmtype
+            {
+                get { return alarmtype; }
+                set { alarmtype = value; }
+            }
+
+        }
+#endif
+        #endregion
+
+        #region Debug
+        public void SetDaveDebug(int newDebugLevel = 0)
+        {
+            libnodave.daveSetDebug(newDebugLevel);
         }
         #endregion
 

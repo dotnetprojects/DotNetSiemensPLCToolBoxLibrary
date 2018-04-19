@@ -60,7 +60,6 @@
       <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Communication\Discovery\S7ReachablePLCScanner.cs" />
-    <Compile Include="Communication\Editors\C_PropertyNck.cs" />
     <Compile Include="Communication\FetchWrite\ErrorCodes.cs" />
     <Compile Include="Communication\FetchWrite\FetchWriteConnection.cs" />
     <Compile Include="Communication\FetchWrite\OperationCode.cs" />
@@ -133,6 +132,7 @@
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNetwork.cs" />
     <Compile Include="DataTypes\Hardware\Step7V5\ProfibusNode.cs" />
     <Compile Include="DataTypes\MultiLanguangeString.cs" />
+    <Compile Include="DataTypes\NCK_Area.cs" />
     <Compile Include="DataTypes\Network\MpiProfiBusNetworkInterface.cs" />
     <Compile Include="DataTypes\PLCBlockName.cs" />
     <Compile Include="DataTypes\Pointer.cs" />
