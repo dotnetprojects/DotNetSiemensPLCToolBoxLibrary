@@ -225,11 +225,6 @@
                              Text="{Binding Name}" />
                 </Grid>
             </TabItem>
-            <CheckBox
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Log Data as Hex-Bytes"
-                IsChecked="{Binding LogDataAsHexBytes}" />
         </TabControl>
         <TextBox Width="70"
                  Margin="363,15,0,0"
