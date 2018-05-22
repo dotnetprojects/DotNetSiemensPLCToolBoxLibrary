@@ -340,11 +340,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             // && s5ProjectByteArray[n - 1] == 0x00)
             {
                 len = (s5ProjectByteArray[pos + 8] * 0x100 + s5ProjectByteArray[pos + 9]) * 2;
-                
+
                 tmpBlk.BlockType = (PLCBlockType)(s5ProjectByteArray[pos + 2] | 0xf00);
-                
+
                 tmpBlk.BlockNumber = s5ProjectByteArray[pos + 3];
 
+                var bits = s5ProjectByteArray[pos + 4]; //siehe: https://www.yumpu.com/de/document/view/5702154/3-s5-power-bios-process-informatik-entwicklungsgesellschaft-mbh/26
+
+                tmpBlk.Assembler = (bits & 0b00001000) > 0; // -> Assembler
+                var bibNumber = s5ProjectByteArray[pos + 5] * 0x10000 + s5ProjectByteArray[pos + 6] * 0x100 + s5ProjectByteArray[pos + 7];
+
+                //Console.WriteLine(tmpBlk.BlockType.ToString() + " - " + tmpBlk.BlockNumber + " - " + bibNumber);
                 //byte n+4 -> kennungen für das programiergerät
                 //byte n+5,6,7 -> bib nummer
 
@@ -359,7 +365,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (s5ProjectByteArray[pos] == 0x06) //DB - Vorkopf
             {
                 len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
-                
+
                 tmpBlk.BlockType = PLCBlockType.S5_DV;
 
                 tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
@@ -374,7 +380,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (s5ProjectByteArray[pos] == 0x11) //DX - Vorkopf
             {
                 len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
-                
+
                 tmpBlk.BlockType = PLCBlockType.S5_DVX;
 
                 tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
@@ -389,7 +395,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (s5ProjectByteArray[pos] == 0x0D) //FB - Vorkopf
             {
                 len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
-               
+
                 tmpBlk.BlockType = PLCBlockType.S5_FV;
 
                 tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
@@ -404,7 +410,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             else if (s5ProjectByteArray[pos] == 0x0A) //FX - Vorkopf
             {
                 len = (s5ProjectByteArray[pos + 4] * 0x100 + s5ProjectByteArray[pos + 5]) * 2;
-                
+
                 tmpBlk.BlockType = PLCBlockType.S5_FVX;
 
                 tmpBlk.BlockNumber = s5ProjectByteArray[pos + 1];
@@ -415,6 +421,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 tmpBlk.ParentFolder = blkFld;
 
                 //blkFld.step5BlocksinfoList.Add(tmpBlk);
+            }
+            else if (s5ProjectByteArray[pos] == 0x6E) //?????
+            {
+                len = 0x80;
+                tmpBlk = null;
             }
             else
             {
