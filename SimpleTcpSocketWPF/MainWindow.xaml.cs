@@ -165,7 +165,7 @@ namespace SimpleTcpSocketWPF
                     {
                         tcpFunc = new TCPFunctionsAsync(SynchronizationContext.Current, ip, Int32.Parse(Properties.Settings.Default.Port), Properties.Settings.Default.Active);
                     }
-
+                    tcpFunc.AllowMultipleClients = Properties.Settings.Default.MultipleConnections;
                     tcpFunc.DataRecieved += tcpFunc_DataRecieved;
                     tcpFunc.ConnectionEstablished += tcpFunc_ConnectionEstablished;
                     tcpFunc.ConnectionClosed += tcpFunc_ConnectionClosed;

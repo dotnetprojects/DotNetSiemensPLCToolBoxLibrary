@@ -175,6 +175,11 @@
                               VerticalAlignment="Top"
                               Content="Log Data as Hex-Bytes"
                               IsChecked="{Binding LogDataAsHexBytes}" />
+                    <CheckBox Margin="11,90,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Content="Multiple Connections"
+                              IsChecked="{Binding MultipleConnections}" />
                     <CheckBox x:Name="chkAnswer"
                               Margin="13,206,0,0"
                               HorizontalAlignment="Left"
