@@ -6,7 +6,7 @@
 #
 # The directory where the tools are:
 #
-VCPATH=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
+VCPATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
 SDKPATH=C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\
 
 
