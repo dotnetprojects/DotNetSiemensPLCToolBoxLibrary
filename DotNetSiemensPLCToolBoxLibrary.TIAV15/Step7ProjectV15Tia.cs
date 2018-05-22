@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -584,7 +585,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
-        internal void LoadViaOpennessDlls()
+
+        internal void LoadViaOpennessDlls(Credentials credentials)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -596,7 +598,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                         tiaPortal = null;
                     }
                     tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
-                    tiapProject = tiaPortal.Projects.Open(new FileInfo(ProjectFile));
+                    if (credentials != null)
+                    {
+                        tiapProject = tiaPortal.Projects.Open(new FileInfo(ProjectFile), c =>
+                        {
+                            c.Type = UmacUserType.Project;
+                            c.Name = credentials.Username;
+                            c.SetPassword(credentials.Password);
+                        });
+                    }
+                    else
+                    {
+                        tiapProject = tiaPortal.Projects.Open(new FileInfo(ProjectFile));
+                    }
                 }
                 catch (Siemens.Engineering.EngineeringSecurityException ex)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -21,6 +22,8 @@ namespace TiaGitHandler
 
             string file = "";
             string exportPath = "";
+            string user = null;
+            string password = null;
 
             if (args.Count() < 1)
             {
@@ -61,9 +64,22 @@ namespace TiaGitHandler
             else
             {
                 file = args[0];
+                if (args.Length > 1)
+                    user = args[1];
+                if (args.Length > 2)
+                    password = args[2];
             }
 
-            var prj = Projects.LoadProject(file, false);
+            Credentials credentials = null;
+            if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password))
+            {
+                credentials = new Credentials() {Username = user, Password = new SecureString()};
+                foreach (char c in password)
+                {
+                    credentials.Password.AppendChar(c);
+                }
+            }
+            var prj = Projects.LoadProject(file, false, credentials);
 
             List<string> skippedBlocksList = new List<string>();
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
