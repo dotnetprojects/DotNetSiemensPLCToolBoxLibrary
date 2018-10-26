@@ -2762,6 +2762,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //Get the Maximum Answer Len for One PDU
                     int maxReadSize = GetPduSize() - 32; //32 = Header
 
+                    // Die NC akzeptiert im Drive Bereich nicht die ausgehandelte PDU Größe
+                    // maximal 240 - 32 (Header) => 208
+                    if (maxReadSize > 208 && readTagList.First() is PLCNckTag && ((PLCNckTag)readTagList.First()).NckArea == NCK_Area.AreaFeedDrive)
+                        maxReadSize = 208;
+
                     //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
 
                     List<int> readenSizes = new List<int>(50);
