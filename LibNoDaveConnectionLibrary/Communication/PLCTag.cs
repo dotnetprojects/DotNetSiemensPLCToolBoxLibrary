@@ -1326,22 +1326,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 break;
                         }
 
-                        var baseS = _internalGetBaseTypeSize();
-                        if (baseS > 0)
-                            _ArraySize = _ArraySize / baseS;
-                        else
+                        if (this.TagDataType == TagDataType.Bool)
+                        {
                             _ArraySize *= 8;
+                        }
+                        else if (this.TagDataType == TagDataType.String)
+                        { }
+                        else
+                        {
+                            var baseS = _internalGetBaseTypeSize();
+                            if (baseS > 0)
+                                _ArraySize = _ArraySize / baseS;
+                            else
+                                _ArraySize *= 8;
+                        }
 
                         ArraySize = Convert.ToInt32(_ArraySize * tsize);
 
-                        //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
-                        //    this.TagDataType = TagDataType.ByteArray;
-                        //if (ArraySize != 8 && this.TagDataType == TagDataType.DateTime)
-                        //    this.TagDataType = TagDataType.ByteArray;
-
                         if (this.TagDataType == TagDataType.String)
+                        {
                             ArraySize -= 2;
-                    }
+                        }
+                    //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
+                    //    this.TagDataType = TagDataType.ByteArray;
+                    //if (ArraySize != 8 && this.TagDataType == TagDataType.DateTime)
+                    //    this.TagDataType = TagDataType.ByteArray;
+
+
+                }
                     else
                     {
                         string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
