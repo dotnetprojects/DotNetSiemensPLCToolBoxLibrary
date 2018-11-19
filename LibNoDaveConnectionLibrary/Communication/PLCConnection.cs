@@ -3032,11 +3032,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         {
                             byte[] myBuff = new byte[ /* gesReadSize */readenSizes[akVar] + 1];
 
-                            lock (lockObj)
-                            {
-                                res = _dc.useResultBuffer(rs, akVar, myBuff);
-                            }
-
+                            res = _dc.useResultBuffer(rs, akVar, myBuff);
                             if (res == 10 || res == 5)
                             {
                                 NotExistedValue.Add(true);
