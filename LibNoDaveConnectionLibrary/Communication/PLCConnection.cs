@@ -116,6 +116,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             _connected = true;
             _configuration = config;
             _dc = unittestConnection;
+            AutoDisconnect = true;
         }
 
         /// <summary>
@@ -125,6 +126,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public PLCConnection(PLCConnectionConfiguration akConfig)
         {
             _configuration = akConfig;
+            AutoDisconnect = true;
         }
 
 
