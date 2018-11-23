@@ -1253,100 +1253,100 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             //try
             //{
-                if (!string.IsNullOrEmpty(plcAddress))
+            if (!string.IsNullOrEmpty(plcAddress))
+            {
+                plcAddress = plcAddress.Trim();
+                if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
                 {
-                    plcAddress = plcAddress.Trim();
-                    if (plcAddress.Length > 1 && plcAddress.Substring(0, 2).ToLower() == "p#")
+                    if (plcAddress.Substring(2, 3).Contains(" "))
+                        plcAddress = plcAddress.Remove(plcAddress.IndexOf(" "), 1);
+                    string[] myPlcAddress = plcAddress.ToLower().Replace("p#", "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    BitAddress = 0;
+                    if (!myPlcAddress[0].Contains("db"))
                     {
-                        if (plcAddress.Substring(2, 3).Contains(" "))
-                            plcAddress = plcAddress.Remove(plcAddress.IndexOf(" "), 1);
-                        string[] myPlcAddress = plcAddress.ToLower().Replace("p#", "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        BitAddress = 0;
-                        if (!myPlcAddress[0].Contains("db"))
-                        {
-                            this.DataBlockNumber = 0;
-                            var tmp = myPlcAddress[0].Split('.')[0];
-                            if (tmp.Contains("e") || tmp.Contains("i"))
-                                this.TagDataSource = MemoryArea.Inputs;
-                            else if (tmp.Contains("a") || tmp.Contains("q"))
-                                this.TagDataSource = MemoryArea.Outputs;
-                            else if (tmp.Contains("l"))
-                                this.TagDataSource = MemoryArea.LocalData;
-                            else if (tmp.Contains("v"))
-                                this.TagDataSource = MemoryArea.PreviousLocalData;
-                            else if (tmp.Contains("m"))
-                                this.TagDataSource = MemoryArea.Flags;
-                            else if (tmp.Contains("t"))
-                                this.TagDataSource = MemoryArea.Timer;
-                            else if (tmp.Contains("z") || tmp.Contains("c"))
-                                this.TagDataSource = MemoryArea.Counter;
-                            ByteAddress = getNumberFromString(myPlcAddress[0].Split('.')[0]);
+                        this.DataBlockNumber = 0;
+                        var tmp = myPlcAddress[0].Split('.')[0];
+                        if (tmp.Contains("e") || tmp.Contains("i"))
+                            this.TagDataSource = MemoryArea.Inputs;
+                        else if (tmp.Contains("a") || tmp.Contains("q"))
+                            this.TagDataSource = MemoryArea.Outputs;
+                        else if (tmp.Contains("l"))
+                            this.TagDataSource = MemoryArea.LocalData;
+                        else if (tmp.Contains("v"))
+                            this.TagDataSource = MemoryArea.PreviousLocalData;
+                        else if (tmp.Contains("m"))
+                            this.TagDataSource = MemoryArea.Flags;
+                        else if (tmp.Contains("t"))
+                            this.TagDataSource = MemoryArea.Timer;
+                        else if (tmp.Contains("z") || tmp.Contains("c"))
+                            this.TagDataSource = MemoryArea.Counter;
+                        ByteAddress = getNumberFromString(myPlcAddress[0].Split('.')[0]);
 
-                            if (myPlcAddress[1] == "bool")
-                                BitAddress = getNumberFromString(myPlcAddress[0].Split('.')[1]);
-                        }
+                        if (myPlcAddress[1] == "bool")
+                            BitAddress = getNumberFromString(myPlcAddress[0].Split('.')[1]);
+                    }
+                    else
+                    {
+                        this.TagDataSource = MemoryArea.Datablock;
+                        this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
+                        ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
+                    }
+
+                    double _ArraySize;
+                    if (myPlcAddress.Length >= 3)
+                        _ArraySize = Convert.ToInt32(myPlcAddress[2]);
+                    else
+                    {
+                        _ArraySize = Convert.ToInt32(myPlcAddress[1].Replace("dword", "").Replace("word", "").Replace("byte", "").Replace("bool", "").Trim());
+                        myPlcAddress[1] = myPlcAddress[1].Replace(_ArraySize.ToString(), "");
+                    }
+
+                    var tsize = 1;
+                    switch (myPlcAddress[1])
+                    {
+                        case "word":
+                        case "int":
+                        case "date":
+                        case "s5time":
+                            tsize = 2;
+                            break;
+                        case "real":
+                        case "dword":
+                        case "dint":
+                        case "time":
+                        case "time_of_day":
+                            tsize = 4;
+                            break;
+                        case "lreal":
+                        case "lword":
+                        case "lint":
+                        case "ltime":
+                        case "ltime_of_day":
+                            tsize = 8;
+                            break;
+                    }
+
+                    if (this.TagDataType == TagDataType.Bool)
+                    {
+                        _ArraySize *= 8;
+                    }
+                    else if (this.TagDataType == TagDataType.String)
+                    { }
+                    else
+                    {
+                        var baseS = _internalGetBaseTypeSize();
+                        if (baseS > 0)
+                            _ArraySize = _ArraySize / baseS;
                         else
-                        {
-                            this.TagDataSource = MemoryArea.Datablock;
-                            this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Split('.')[0].Replace("db", ""));
-                            ByteAddress = Convert.ToInt32(myPlcAddress[0].Split('.')[1].Replace("dbx", ""));
-                        }
-
-                        double _ArraySize;
-                        if (myPlcAddress.Length >= 3)
-                            _ArraySize = Convert.ToInt32(myPlcAddress[2]);
-                        else
-                        {
-                            _ArraySize = Convert.ToInt32(myPlcAddress[1].Replace("dword", "").Replace("word", "").Replace("byte", "").Replace("bool", "").Trim());
-                            myPlcAddress[1] = myPlcAddress[1].Replace(_ArraySize.ToString(), "");
-                        }
-
-                        var tsize = 1;
-                        switch (myPlcAddress[1])
-                        {
-                            case "word":
-                            case "int":
-                            case "date":
-                            case "s5time":
-                                tsize = 2;
-                                break;
-                            case "real":
-                            case "dword":
-                            case "dint":
-                            case "time":
-                            case "time_of_day":
-                                tsize = 4;
-                                break;
-                            case "lreal":
-                            case "lword":
-                            case "lint":
-                            case "ltime":
-                            case "ltime_of_day":
-                                tsize = 8;
-                                break;
-                        }
-
-                        if (this.TagDataType == TagDataType.Bool)
-                        {
                             _ArraySize *= 8;
-                        }
-                        else if (this.TagDataType == TagDataType.String)
-                        { }
-                        else
-                        {
-                            var baseS = _internalGetBaseTypeSize();
-                            if (baseS > 0)
-                                _ArraySize = _ArraySize / baseS;
-                            else
-                                _ArraySize *= 8;
-                        }
+                    }
 
-                        ArraySize = Convert.ToInt32(_ArraySize * tsize);
+                    ArraySize = Convert.ToInt32(_ArraySize * tsize);
 
-                        if (this.TagDataType == TagDataType.String)
-                        {
-                            ArraySize -= 2;
-                        }
+                    if (this.TagDataType == TagDataType.String)
+                    {
+                        ArraySize -= 2;
+                    }
                     //if (this.TagDataType != TagDataType.ByteArray && this.TagDataType != TagDataType.CharArray && this.TagDataType != TagDataType.String && this.TagDataType != TagDataType.DateTime)
                     //    this.TagDataType = TagDataType.ByteArray;
                     //if (ArraySize != 8 && this.TagDataType == TagDataType.DateTime)
@@ -1354,147 +1354,147 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
 
                 }
+                else
+                {
+                    string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
+                    if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
+                    {
+                        this.TagDataSource = MemoryArea.Datablock;
+                        this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
+                        if (myPlcAddress[1].Contains("DBW"))
+                        {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 2;
+                            else
+                                ArraySize = 1;
+                            if (this._internalGetSize() != 2)
+                                this.TagDataType = TagDataType.Word;
+                        }
+                        else if (myPlcAddress[1].Contains("DBB"))
+                        {
+                            ArraySize = 1;
+                            if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                this.TagDataType = TagDataType.Byte;
+                        }
+                        else if (myPlcAddress[1].Contains("DBL"))
+                        {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 8;
+                            else
+                                ArraySize = 1;
+                            if (this._internalGetSize() != 8)
+                                this.TagDataType = TagDataType.LWord;
+                        }
+                        else if (myPlcAddress[1].Contains("DBD"))
+                        {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 4;
+                            else
+                                ArraySize = 1;
+                            if (this._internalGetSize() != 4)
+                                this.TagDataType = TagDataType.Dword;
+                        }
+                        else if (myPlcAddress[1].Contains("DBR"))
+                        {
+                            ArraySize = 1;
+                            this.TagDataType = TagDataType.Float;
+                        }
+                        else if (myPlcAddress[1].Contains("DBX"))
+                        {
+                            ArraySize = 1;
+                            this.TagDataType = TagDataType.Bool;
+                            if (myPlcAddress.Length > 2)
+                                this.BitAddress = Convert.ToInt32(myPlcAddress[2]);
+                            else
+                                this.BitAddress = 0;
+                        }
+                        this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBR", "").Replace("DBX", "").Replace("DBB", "").Replace("DBL", "").Trim());
+                    }
                     else
                     {
-                        string[] myPlcAddress = plcAddress.ToUpper().Trim().Replace(" ", "").Split('.');
-                        if (myPlcAddress.Length >= 2 && (myPlcAddress[0].Contains("DB") || myPlcAddress[0].Contains("DI")))
+                        if (myPlcAddress[0].Contains("E") || myPlcAddress[0].Contains("I"))
+                            this.TagDataSource = MemoryArea.Inputs;
+                        else if (myPlcAddress[0].Contains("A") || myPlcAddress[0].Contains("Q"))
+                            this.TagDataSource = MemoryArea.Outputs;
+                        else if (myPlcAddress[0].Contains("M"))
+                            this.TagDataSource = MemoryArea.Flags;
+                        else if (myPlcAddress[0].Contains("T"))
+                            this.TagDataSource = MemoryArea.Timer;
+                        else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
+                            this.TagDataSource = MemoryArea.Counter;
+
+                        if (myPlcAddress[0].Contains("W"))
                         {
-                            this.TagDataSource = MemoryArea.Datablock;
-                            this.DataBlockNumber = Convert.ToInt32(myPlcAddress[0].Replace("DB", "").Replace("DI", "").Trim());
-                            if (myPlcAddress[1].Contains("DBW"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 2;
-                                else
-                                    ArraySize = 1;
-                                if (this._internalGetSize() != 2)
-                                    this.TagDataType = TagDataType.Word;
-                            }
-                            else if (myPlcAddress[1].Contains("DBB"))
-                            {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 2;
+                            else
                                 ArraySize = 1;
-                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.TagDataType = TagDataType.Byte;
-                            }
-                            else if (myPlcAddress[1].Contains("DBL"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 8;
-                                else
-                                    ArraySize = 1;
-                                if (this._internalGetSize() != 8)
-                                    this.TagDataType = TagDataType.LWord;
-                            }
-                            else if (myPlcAddress[1].Contains("DBD"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 4;
-                                else
-                                    ArraySize = 1;
-                                if (this._internalGetSize() != 4)
-                                    this.TagDataType = TagDataType.Dword;
-                            }
-                            else if (myPlcAddress[1].Contains("DBR"))
-                            {
+                            if (_internalGetSize() != 2)
+                                this.TagDataType = TagDataType.Int;
+                        }
+                        else if (myPlcAddress[0].Contains("DBB"))
+                        {
+                            ArraySize = 1;
+                            if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                this.TagDataType = TagDataType.Byte;
+                        }
+                        else if (myPlcAddress[0].Contains("D"))
+                        {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 4;
+                            else
                                 ArraySize = 1;
-                                this.TagDataType = TagDataType.Float;
-                            }
-                            else if (myPlcAddress[1].Contains("DBX"))
-                            {
+                            if (_internalGetSize() != 4)
+                                this.TagDataType = TagDataType.Dint;
+                        }
+                        else if (myPlcAddress[0].Contains("L"))
+                        {
+                            if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
+                                ArraySize = 8;
+                            else
                                 ArraySize = 1;
-                                this.TagDataType = TagDataType.Bool;
-                                if (myPlcAddress.Length > 2)
-                                    this.BitAddress = Convert.ToInt32(myPlcAddress[2]);
-                                else
-                                    this.BitAddress = 0;
-                            }
-                            this.ByteAddress = Convert.ToInt32(myPlcAddress[1].Replace("DBW", "").Replace("DBD", "").Replace("DBR", "").Replace("DBX", "").Replace("DBB", "").Replace("DBL", "").Trim());
+                            if (_internalGetSize() != 8)
+                                this.TagDataType = TagDataType.LInt;
+                        }
+                        else if (myPlcAddress[0].Contains("B"))
+                        {
+                            ArraySize = 1;
+                            if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
+                                this.TagDataType = TagDataType.Byte;
+                        }
+                        else if (!myPlcAddress[0].Contains("T") && !myPlcAddress[0].Contains("Z"))
+                        {
+                            ArraySize = 1;
+                            this.TagDataType = TagDataType.Bool;
+                            if (myPlcAddress.Length >= 2)
+                                this.BitAddress = Convert.ToInt32(myPlcAddress[1]);
+                            else
+                                this.BitAddress = 0;
+                        }
+                        else if (myPlcAddress[0].Contains("T"))
+                        {
+                            ArraySize = 1;
+                            this.TagDataType = TagDataType.S5Time;
+                        }
+                        else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
+                        {
+                            ArraySize = 1;
+                            this.TagDataType = TagDataType.Int;
                         }
                         else
                         {
-                            if (myPlcAddress[0].Contains("E") || myPlcAddress[0].Contains("I"))
-                                this.TagDataSource = MemoryArea.Inputs;
-                            else if (myPlcAddress[0].Contains("A") || myPlcAddress[0].Contains("Q"))
-                                this.TagDataSource = MemoryArea.Outputs;
-                            else if (myPlcAddress[0].Contains("M"))
-                                this.TagDataSource = MemoryArea.Flags;
-                            else if (myPlcAddress[0].Contains("T"))
-                                this.TagDataSource = MemoryArea.Timer;
-                            else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
-                                this.TagDataSource = MemoryArea.Counter;
-
-                            if (myPlcAddress[0].Contains("W"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 2;
-                                else
-                                    ArraySize = 1;
-                                if (_internalGetSize() != 2)
-                                    this.TagDataType = TagDataType.Int;
-                            }
-                            else if (myPlcAddress[0].Contains("DBB"))
-                            {
-                                ArraySize = 1;
-                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.TagDataType = TagDataType.Byte;
-                            }
-                            else if (myPlcAddress[0].Contains("D"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 4;
-                                else
-                                    ArraySize = 1;
-                                if (_internalGetSize() != 4)
-                                    this.TagDataType = TagDataType.Dint;
-                            }
-                            else if (myPlcAddress[0].Contains("L"))
-                            {
-                                if (this.TagDataType == TagDataType.String || this.TagDataType == TagDataType.CharArray || this.TagDataType == TagDataType.ByteArray)
-                                    ArraySize = 8;
-                                else
-                                    ArraySize = 1;
-                                if (_internalGetSize() != 8)
-                                    this.TagDataType = TagDataType.LInt;
-                            }
-                            else if (myPlcAddress[0].Contains("B"))
-                            {
-                                ArraySize = 1;
-                                if (this.TagDataType == TagDataType.Bool || this._internalGetSize() != 1)
-                                    this.TagDataType = TagDataType.Byte;
-                            }
-                            else if (!myPlcAddress[0].Contains("T") && !myPlcAddress[0].Contains("Z"))
-                            {
-                                ArraySize = 1;
+                            ArraySize = 1;
+                            if (_internalGetSize() != 1)
                                 this.TagDataType = TagDataType.Bool;
-                                if (myPlcAddress.Length >= 2)
-                                    this.BitAddress = Convert.ToInt32(myPlcAddress[1]);
-                                else
-                                    this.BitAddress = 0;
-                            }
-                            else if (myPlcAddress[0].Contains("T"))
-                            {
-                                ArraySize = 1;
-                                this.TagDataType = TagDataType.S5Time;
-                            }
-                            else if (myPlcAddress[0].Contains("Z") || myPlcAddress[0].Contains("C"))
-                            {
-                                ArraySize = 1;
-                                this.TagDataType = TagDataType.Int;
-                            }
-                            else
-                            {
-                                ArraySize = 1;
-                                if (_internalGetSize() != 1)
-                                    this.TagDataType = TagDataType.Bool;
-                            }
-
-                            this.ByteAddress = getNumberFromString(myPlcAddress[0]);
-
-                            if (this.TagDataType == TagDataType.String)
-                                ArraySize -= 2;
                         }
+
+                        this.ByteAddress = getNumberFromString(myPlcAddress[0]);
+
+                        if (this.TagDataType == TagDataType.String)
+                            ArraySize -= 2;
                     }
                 }
+            }
             //}
             //catch (Exception)
             //{
@@ -1845,207 +1845,209 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     System.Array.Reverse(buff, startpos, length);
                 }
             }
-			
+
             try
             {
-            switch (this.TagDataType)
-            {
-                case TagDataType.String:
-                    {
-                        if (!(this is PLCNckTag))
+                switch (this.TagDataType)
+                {
+                    case TagDataType.String:
                         {
-                            int maxsize = (int)buff[startpos];
-                            int size = (int)buff[startpos + 1];
-
-                            if (ArraySize == 1 && ArraySize != maxsize)
-                                ArraySize = Math.Max(ArraySize, maxsize);
-                            else
-                                _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
-                        }
-                        else
-                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
-                    }
-                    break;
-                case TagDataType.CharArray:
-                    {
-                        //var sb = new StringBuilder();
-                        //for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
-                        //    sb.Append((char)buff[n + startpos]);
-                        //_setValueProp = sb.ToString();
-
-                        if (this is PLCNckTag) //BugFix für NCK v2.6
-                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
-                        else
-                            _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Trim('\0');
-                    }
-                    break;
-                case TagDataType.ByteArray:
-                    {
-                        var val = new Byte[ArraySize];
-                        Array.Copy(buff, startpos, val, 0, ArraySize);
-
-                        /*
-                        for (var n = 0; n < ArraySize; n++)
-                            val[n] = buff[n + startpos];
-                        */
-                        _setValueProp = val;
-                    }
-                    break;
-                case TagDataType.BCDArray:
-                    {
-                        ulong wrt = 0;
-
-                        for (int i = 0; i < ArraySize; i++)
-                        {
-                            wrt *= 10;
-                            wrt += (ulong)libnodave.getBCD8from(buff, startpos + i);
-                        }
-
-                        _setValueProp = wrt;
-                    }
-                    break;
-
-                case TagDataType.Bool:
-                case TagDataType.Byte:
-                case TagDataType.SByte:
-                case TagDataType.Time:
-                    case TagDataType.LTime:
-                case TagDataType.Date:
-                case TagDataType.TimeOfDay:
-                    case TagDataType.LTimeOfDay:
-                case TagDataType.Word:
-                case TagDataType.BCDByte:
-                case TagDataType.Int:
-                case TagDataType.S5Time:
-                case TagDataType.BCDWord:
-                case TagDataType.BCDDWord:
-                case TagDataType.Dint:
-                case TagDataType.Dword:
-                case TagDataType.Float:
-                case TagDataType.LInt:
-                case TagDataType.LWord:
-                case TagDataType.LReal:
-                case TagDataType.DateTime:
-                    {
-                        if (ArraySize < 2)
-                        {
-                            switch (this.TagDataType)
+                            if (!(this is PLCNckTag))
                             {
-                                case TagDataType.Bool:
-                                    _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
-                                    break;
-                                case TagDataType.Byte:
-                                    _setValueProp = buff[startpos];
-                                    break;
-                                case TagDataType.SByte:
-                                    _setValueProp = libnodave.getS8from(buff, startpos);
-                                    break;
-                                case TagDataType.Time:
-                                    _setValueProp = libnodave.getTimefrom(buff, startpos);
-                                    break;
+                                int maxsize = (int)buff[startpos];
+                                int size = (int)buff[startpos + 1];
+
+                                if (size > maxsize)
+                                    size = maxsize;
+                                if (size > ArraySize)
+                                    size = ArraySize;
+
+                                _setValueProp = Encoding.Default.GetString(buff, startpos + 2, size);
+                            }
+                            else
+                                _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
+                        }
+                        break;
+                    case TagDataType.CharArray:
+                        {
+                            //var sb = new StringBuilder();
+                            //for (var n = 0; n < ((buff.Length - startpos) < ArraySize ? buff.Length - startpos : ArraySize); n++)
+                            //    sb.Append((char)buff[n + startpos]);
+                            //_setValueProp = sb.ToString();
+
+                            if (this is PLCNckTag) //BugFix für NCK v2.6
+                                _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
+                            else
+                                _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Trim('\0');
+                        }
+                        break;
+                    case TagDataType.ByteArray:
+                        {
+                            var val = new Byte[ArraySize];
+                            Array.Copy(buff, startpos, val, 0, ArraySize);
+
+                            /*
+                            for (var n = 0; n < ArraySize; n++)
+                                val[n] = buff[n + startpos];
+                            */
+                            _setValueProp = val;
+                        }
+                        break;
+                    case TagDataType.BCDArray:
+                        {
+                            ulong wrt = 0;
+
+                            for (int i = 0; i < ArraySize; i++)
+                            {
+                                wrt *= 10;
+                                wrt += (ulong)libnodave.getBCD8from(buff, startpos + i);
+                            }
+
+                            _setValueProp = wrt;
+                        }
+                        break;
+
+                    case TagDataType.Bool:
+                    case TagDataType.Byte:
+                    case TagDataType.SByte:
+                    case TagDataType.Time:
+                    case TagDataType.LTime:
+                    case TagDataType.Date:
+                    case TagDataType.TimeOfDay:
+                    case TagDataType.LTimeOfDay:
+                    case TagDataType.Word:
+                    case TagDataType.BCDByte:
+                    case TagDataType.Int:
+                    case TagDataType.S5Time:
+                    case TagDataType.BCDWord:
+                    case TagDataType.BCDDWord:
+                    case TagDataType.Dint:
+                    case TagDataType.Dword:
+                    case TagDataType.Float:
+                    case TagDataType.LInt:
+                    case TagDataType.LWord:
+                    case TagDataType.LReal:
+                    case TagDataType.DateTime:
+                        {
+                            if (ArraySize < 2)
+                            {
+                                switch (this.TagDataType)
+                                {
+                                    case TagDataType.Bool:
+                                        _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
+                                        break;
+                                    case TagDataType.Byte:
+                                        _setValueProp = buff[startpos];
+                                        break;
+                                    case TagDataType.SByte:
+                                        _setValueProp = libnodave.getS8from(buff, startpos);
+                                        break;
+                                    case TagDataType.Time:
+                                        _setValueProp = libnodave.getTimefrom(buff, startpos);
+                                        break;
                                     case TagDataType.LTime:
                                         _setValueProp = libnodave.getLTimefrom(buff, startpos);
                                         break;
-                                case TagDataType.Date:
-                                    _setValueProp = libnodave.getDatefrom(buff, startpos);
-                                    break;
-                                case TagDataType.TimeOfDay:
-                                    _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
+                                    case TagDataType.Date:
+                                        _setValueProp = libnodave.getDatefrom(buff, startpos);
+                                        break;
+                                    case TagDataType.TimeOfDay:
+                                        _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
                                         break;
                                     case TagDataType.LTimeOfDay:
                                         _setValueProp = libnodave.getLTimeOfDayfrom(buff, startpos);
-                                    break;
-                                case TagDataType.Word:
-                                    _setValueProp = libnodave.getU16from(buff, startpos);
-                                    break;
-                                case TagDataType.BCDByte:
-                                    _setValueProp = libnodave.getBCD8from(buff, startpos);
-                                    break;
-                                case TagDataType.Int:
-                                    _setValueProp = libnodave.getS16from(buff, startpos);
-                                    break;
-                                case TagDataType.S5Time:
-                                    _setValueProp = libnodave.getS5Timefrom(buff, startpos);
-                                    break;
-                                case TagDataType.BCDWord:
-                                    _setValueProp = libnodave.getBCD16from(buff, startpos);
-                                    break;
-                                case TagDataType.BCDDWord:
-                                    _setValueProp = libnodave.getBCD32from(buff, startpos);
-                                    break;
-                                case TagDataType.Dint:
-                                    _setValueProp = libnodave.getS32from(buff, startpos);
-                                    break;
-                                case TagDataType.Dword:
-                                    _setValueProp = libnodave.getU32from(buff, startpos);
-                                    break;
-                                case TagDataType.LWord:
-                                    _setValueProp = libnodave.getU64from(buff, startpos);
-                                    break;
-                                case TagDataType.LInt:
-                                    _setValueProp = libnodave.getS64from(buff, startpos);
-                                    break;
-                                case TagDataType.Float:
-                                    _setValueProp = libnodave.getFloatfrom(buff, startpos);
-                                    break;
-                                case TagDataType.LReal:
-                                    _setValueProp = libnodave.getDoublefrom(buff, startpos);
-                                    break;
-                                case TagDataType.DateTime:
-                                    _setValueProp = libnodave.getDateTimefrom(buff, startpos);
-                                    break;
+                                        break;
+                                    case TagDataType.Word:
+                                        _setValueProp = libnodave.getU16from(buff, startpos);
+                                        break;
+                                    case TagDataType.BCDByte:
+                                        _setValueProp = libnodave.getBCD8from(buff, startpos);
+                                        break;
+                                    case TagDataType.Int:
+                                        _setValueProp = libnodave.getS16from(buff, startpos);
+                                        break;
+                                    case TagDataType.S5Time:
+                                        _setValueProp = libnodave.getS5Timefrom(buff, startpos);
+                                        break;
+                                    case TagDataType.BCDWord:
+                                        _setValueProp = libnodave.getBCD16from(buff, startpos);
+                                        break;
+                                    case TagDataType.BCDDWord:
+                                        _setValueProp = libnodave.getBCD32from(buff, startpos);
+                                        break;
+                                    case TagDataType.Dint:
+                                        _setValueProp = libnodave.getS32from(buff, startpos);
+                                        break;
+                                    case TagDataType.Dword:
+                                        _setValueProp = libnodave.getU32from(buff, startpos);
+                                        break;
+                                    case TagDataType.LWord:
+                                        _setValueProp = libnodave.getU64from(buff, startpos);
+                                        break;
+                                    case TagDataType.LInt:
+                                        _setValueProp = libnodave.getS64from(buff, startpos);
+                                        break;
+                                    case TagDataType.Float:
+                                        _setValueProp = libnodave.getFloatfrom(buff, startpos);
+                                        break;
+                                    case TagDataType.LReal:
+                                        _setValueProp = libnodave.getDoublefrom(buff, startpos);
+                                        break;
+                                    case TagDataType.DateTime:
+                                        _setValueProp = libnodave.getDateTimefrom(buff, startpos);
+                                        break;
+                                }
                             }
-                        }
-                        else
-                        {
-                            switch (this.TagDataType)
+                            else
                             {
-                                case TagDataType.Bool:
-                                    {
-                                        var values = new List<bool>();
-                                        var akBit = BitAddress;
-                                        var akbyte = startpos;
-                                        for (int n = 0; n < ArraySize; n++)
+                                switch (this.TagDataType)
+                                {
+                                    case TagDataType.Bool:
                                         {
-                                            values.Add(libnodave.getBit(buff[akbyte], akBit));
-                                            akBit++;
-                                            if (akBit > 7)
+                                            var values = new List<bool>();
+                                            var akBit = BitAddress;
+                                            var akbyte = startpos;
+                                            for (int n = 0; n < ArraySize; n++)
                                             {
-                                                akBit = 0;
-                                                akbyte++;
+                                                values.Add(libnodave.getBit(buff[akbyte], akBit));
+                                                akBit++;
+                                                if (akBit > 7)
+                                                {
+                                                    akBit = 0;
+                                                    akbyte++;
+                                                }
                                             }
-                                        }
 
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Byte:
-                                    {
-                                        var values = new List<Byte>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(buff[startpos + n * mSize]);
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.SByte:
-                                    {
-                                        var values = new List<SByte>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getS8from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Time:
-                                    {
-                                        var values = new List<TimeSpan>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getTimefrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Byte:
+                                        {
+                                            var values = new List<Byte>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(buff[startpos + n * mSize]);
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.SByte:
+                                        {
+                                            var values = new List<SByte>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getS8from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Time:
+                                        {
+                                            var values = new List<TimeSpan>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getTimefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
                                     case TagDataType.LTime:
                                         {
                                             var values = new List<TimeSpan>();
@@ -2055,21 +2057,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                             _setValueProp = values.ToArray();
                                             break;
                                         }
-                                case TagDataType.Date:
-                                    {
-                                        var values = new List<DateTime>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getDatefrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.TimeOfDay:
-                                    {
-                                        var values = new List<DateTime>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getTimeOfDayfrom(buff, startpos + n * mSize));
+                                    case TagDataType.Date:
+                                        {
+                                            var values = new List<DateTime>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getDatefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.TimeOfDay:
+                                        {
+                                            var values = new List<DateTime>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getTimeOfDayfrom(buff, startpos + n * mSize));
                                             _setValueProp = values.ToArray();
                                             break;
                                         }
@@ -2079,131 +2081,131 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                             var mSize = _internalGetBaseTypeSize();
                                             for (int n = 0; n < ArraySize; n++)
                                                 values.Add(libnodave.getLTimeOfDayfrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Word:
-                                    {
-                                        var values = new List<UInt16>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getU16from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.BCDByte:
-                                    {
-                                        var values = new List<int>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getBCD8from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Int:
-                                    {
-                                        var values = new List<Int16>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getS16from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.S5Time:
-                                    {
-                                        var values = new List<TimeSpan>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getS5Timefrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.BCDWord:
-                                    {
-                                        var values = new List<Int32>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getBCD16from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.BCDDWord:
-                                    {
-                                        var values = new List<Int32>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getBCD32from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Dint:
-                                    {
-                                        var values = new List<Int32>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getS32from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Dword:
-                                    {
-                                        var values = new List<UInt32>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getU32from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.Float:
-                                    {
-                                        var values = new List<float>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getFloatfrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.LInt:
-                                    {
-                                        var values = new List<Int64>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getS64from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.LWord:
-                                    {
-                                        var values = new List<UInt64>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getU64from(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.LReal:
-                                    {
-                                        var values = new List<double>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getDoublefrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
-                                case TagDataType.DateTime:
-                                    {
-                                        var values = new List<DateTime>();
-                                        var mSize = _internalGetBaseTypeSize();
-                                        for (int n = 0; n < ArraySize; n++)
-                                            values.Add(libnodave.getDateTimefrom(buff, startpos + n * mSize));
-                                        _setValueProp = values.ToArray();
-                                        break;
-                                    }
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Word:
+                                        {
+                                            var values = new List<UInt16>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getU16from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.BCDByte:
+                                        {
+                                            var values = new List<int>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getBCD8from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Int:
+                                        {
+                                            var values = new List<Int16>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getS16from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.S5Time:
+                                        {
+                                            var values = new List<TimeSpan>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getS5Timefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.BCDWord:
+                                        {
+                                            var values = new List<Int32>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getBCD16from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.BCDDWord:
+                                        {
+                                            var values = new List<Int32>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getBCD32from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Dint:
+                                        {
+                                            var values = new List<Int32>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getS32from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Dword:
+                                        {
+                                            var values = new List<UInt32>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getU32from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.Float:
+                                        {
+                                            var values = new List<float>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getFloatfrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.LInt:
+                                        {
+                                            var values = new List<Int64>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getS64from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.LWord:
+                                        {
+                                            var values = new List<UInt64>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getU64from(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.LReal:
+                                        {
+                                            var values = new List<double>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getDoublefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                    case TagDataType.DateTime:
+                                        {
+                                            var values = new List<DateTime>();
+                                            var mSize = _internalGetBaseTypeSize();
+                                            for (int n = 0; n < ArraySize; n++)
+                                                values.Add(libnodave.getDateTimefrom(buff, startpos + n * mSize));
+                                            _setValueProp = values.ToArray();
+                                            break;
+                                        }
+                                }
                             }
                         }
-                    }
-                    break;
-            }
+                        break;
+                }
             }
             catch (Exception ex)
             {
