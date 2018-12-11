@@ -154,6 +154,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         //LibNoDave used types
         private libnodave.daveOSserialType _fds;
+        private IntPtr? _socketPtr;
         private libnodave.daveInterface _di = null; //dave Interface
         public IDaveConnection _dc = null;
         private Func<int, string> _errorCodeConverter;
@@ -171,6 +172,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public void socket_Thread()
         {
+            if (_socketPtr.HasValue)
+            {
+                libnodave.closeSocket(_socketPtr.Value);
+                _socketPtr = null;
+            }
+
             _fds.rfd = new IntPtr(-999);
             string ip = null;
             try
@@ -191,10 +198,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //TcpClient sock = new TcpClient(ip, _configuration.Port);
             //_fds.rfd = sock.Client.Handle;
 
+            
             if (ip != null)
                 _fds.rfd = libnodave.openSocket(_configuration.Port, ip);
             else
                 _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
+            _socketPtr = _fds.rfd;
         }
 
         #region General
@@ -4282,6 +4291,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case LibNodaveConnectionTypes.Netlink_lite_PPI:
                         case LibNodaveConnectionTypes.Netlink_Pro:
                             libnodave.closeSocket(_fds.rfd);
+                            _socketPtr = null;
                             break;
                     }
             }
