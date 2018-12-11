@@ -60,6 +60,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             ParseGenericType();
         }
 
+        public PLCTag(string address, TagDataType type) : base(address, type)
+        { }
+
         private void ParseGenericType()
         {
             this._type = typeof(T);
