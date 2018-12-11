@@ -10,6 +10,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public class PLCTag<T> : PLCTag
     {
         private Type _type;
+        private Type _underlyingType;
         private bool _isStructType;
 
         //private T _value;
@@ -51,6 +52,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public PLCTag()
         {
             this._type = typeof(T);
+            if (this._type.IsEnum)
+                _underlyingType = Enum.GetUnderlyingType(this._type);
             this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
             ParseGenericType();
         }
@@ -58,40 +61,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public PLCTag(string initalizationString) : base(initalizationString)
         {
             this._type = typeof(T);
+            if (this._type.IsEnum)
+                _underlyingType = Enum.GetUnderlyingType(this._type);
             this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
         }
 
         public PLCTag(string address, TagDataType type) : base(address, type)
         {
             this._type = typeof(T);
+            if (this._type.IsEnum)
+                _underlyingType = Enum.GetUnderlyingType(this._type);
             this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
         }
 
         private void ParseGenericType()
         {
-            if (this._type == typeof(Int16))
+            var type = _underlyingType ?? _type;
+            
+            if (type == typeof(Int16))
                 this.TagDataType = TagDataType.Int;
-            else if (this._type == typeof(Int32))
+            else if (type == typeof(Int32))
                 this.TagDataType = TagDataType.Dint;
-            else if (this._type == typeof(Int64))
+            else if (type == typeof(Int64))
                 this.TagDataType = TagDataType.LInt;
-            else if (this._type == typeof(UInt16))
+            else if (type == typeof(UInt16))
                 this.TagDataType = TagDataType.Word;
-            else if (this._type == typeof(UInt32))
+            else if (type == typeof(UInt32))
                 this.TagDataType = TagDataType.Dword;
-            else if (this._type == typeof(UInt64))
+            else if (type == typeof(UInt64))
                 this.TagDataType = TagDataType.LWord;
-            else if (this._type == typeof(byte))
+            else if (type == typeof(byte))
                 this.TagDataType = TagDataType.Byte;
-            else if (this._type == typeof(sbyte))
+            else if (type == typeof(sbyte))
                 this.TagDataType = TagDataType.SByte;
-            else if (this._type == typeof(Single))
+            else if (type == typeof(Single))
                 this.TagDataType = TagDataType.Float;
-            else if (this._type == typeof(Double))
+            else if (type == typeof(Double))
                 this.TagDataType = TagDataType.LReal;
-            else if (this._type == typeof(string))
+            else if (type == typeof(string))
                 this.TagDataType = TagDataType.CharArray;
-            else if (this._type == typeof(byte[]))
+            else if (type == typeof(byte[]))
                 this.TagDataType = TagDataType.ByteArray;
             else
                 this.TagDataType = TagDataType.Struct;
@@ -99,11 +108,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public T GenericValue
         {
-            get { return (T)_value; }
+            get
+            {
+                if (_value == null)
+                    return default(T);
+                if (this._type.IsEnum)
+                    return (T)Convert.ChangeType(_value, _underlyingType);
+                return  (T)_value;
+            }
             set
             {
                 if (this._type.IsEnum)
-                    Value = (int) (object) value;
+                    Value = Convert.ChangeType(value, _underlyingType);
                 else
                     Value = value;
             }

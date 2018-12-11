@@ -39,6 +39,7 @@
     <Compile Include="PDUWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultSetWrapper.cs" />
+    <Compile Include="TestPLCTag.cs" />
     <Compile Include="TestDataBlockReading.cs" />
     <Compile Include="TestLibNoDaveReading.cs" />
     <Compile Include="TestMC7Converter.cs" />
