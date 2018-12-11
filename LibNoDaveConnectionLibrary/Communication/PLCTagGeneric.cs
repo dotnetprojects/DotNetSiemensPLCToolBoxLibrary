@@ -10,15 +10,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     public class PLCTag<T> : PLCTag
     {
         private Type _type;
+        private bool _isStructType;
 
         //private T _value;
         //private T _controlvalue;
         //Todo support for string and array datatypes
         internal override void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            
-            bool isStruct = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof (decimal);
-            if (isStruct)
+            if (_isStructType)
             {
                 byte[] tmp = ToBytes(_controlvalue);
                 Array.Copy(tmp, 0, buff, startpos, tmp.Length);
@@ -31,8 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal override void _readValueFromBuffer(byte[] buff, int startpos)
         {
-            bool isStruct = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
-            if (isStruct)
+            if (_isStructType)
             {
                 _value = (T)FromBytes(typeof(T), buff, startpos);
             }
@@ -52,21 +50,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
         public PLCTag()
         {
+            this._type = typeof(T);
+            this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
             ParseGenericType();
         }
 
         public PLCTag(string initalizationString) : base(initalizationString)
         {
-            ParseGenericType();
+            this._type = typeof(T);
+            this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
         }
 
         public PLCTag(string address, TagDataType type) : base(address, type)
-        { }
+        {
+            this._type = typeof(T);
+            this._isStructType = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
+        }
 
         private void ParseGenericType()
         {
-            this._type = typeof(T);
-
             if (this._type == typeof(Int16))
                 this.TagDataType = TagDataType.Int;
             else if (this._type == typeof(Int32))
@@ -108,7 +110,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
         internal override int _internalGetSize()
         {
-            return GetStructSize(typeof(T));
+            if (this._isStructType)
+                return GetStructSize(typeof(T));
+            return base._internalGetSize();
         }
 
 
