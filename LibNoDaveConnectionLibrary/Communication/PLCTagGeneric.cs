@@ -9,13 +9,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
     public class PLCTag<T> : PLCTag
     {
+        private Type _type;
+
         //private T _value;
         //private T _controlvalue;
         //Todo support for string and array datatypes
         internal override void _putControlValueIntoBuffer(byte[] buff, int startpos)
         {
-            var type = typeof (T);
-            bool isStruct = type.IsValueType && !type.IsEnum && !type.IsPrimitive && type != typeof (decimal);
+            
+            bool isStruct = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof (decimal);
             if (isStruct)
             {
                 byte[] tmp = ToBytes(_controlvalue);
@@ -29,8 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         internal override void _readValueFromBuffer(byte[] buff, int startpos)
         {
-            var type = typeof(T);
-            bool isStruct = type.IsValueType && !type.IsEnum && !type.IsPrimitive && type != typeof(decimal);
+            bool isStruct = this._type.IsValueType && !this._type.IsEnum && !this._type.IsPrimitive && this._type != typeof(decimal);
             if (isStruct)
             {
                 _value = (T)FromBytes(typeof(T), buff, startpos);
@@ -51,29 +52,41 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
         public PLCTag()
         {
-            if (typeof(T) == typeof(Int16))
+            ParseGenericType();
+        }
+
+        public PLCTag(string initalizationString) : base(initalizationString)
+        {
+            ParseGenericType();
+        }
+
+        private void ParseGenericType()
+        {
+            this._type = typeof(T);
+
+            if (this._type == typeof(Int16))
                 this.TagDataType = TagDataType.Int;
-            else if (typeof(T) == typeof(Int32))
+            else if (this._type == typeof(Int32))
                 this.TagDataType = TagDataType.Dint;
-            else if (typeof(T) == typeof(Int64))
+            else if (this._type == typeof(Int64))
                 this.TagDataType = TagDataType.LInt;
-            else if (typeof(T) == typeof(UInt16))
+            else if (this._type == typeof(UInt16))
                 this.TagDataType = TagDataType.Word;
-            else if (typeof(T) == typeof(UInt32))
+            else if (this._type == typeof(UInt32))
                 this.TagDataType = TagDataType.Dword;
-            else if (typeof(T) == typeof(UInt64))
+            else if (this._type == typeof(UInt64))
                 this.TagDataType = TagDataType.LWord;
-            else if (typeof(T) == typeof(byte))
+            else if (this._type == typeof(byte))
                 this.TagDataType = TagDataType.Byte;
-            else if (typeof(T) == typeof(sbyte))
+            else if (this._type == typeof(sbyte))
                 this.TagDataType = TagDataType.SByte;
-            else if (typeof(T) == typeof(Single))
+            else if (this._type == typeof(Single))
                 this.TagDataType = TagDataType.Float;
-            else if (typeof(T) == typeof(Double))
+            else if (this._type == typeof(Double))
                 this.TagDataType = TagDataType.LReal;
-            else if (typeof(T) == typeof(string))
+            else if (this._type == typeof(string))
                 this.TagDataType = TagDataType.CharArray;
-            else if (typeof(T) == typeof(byte[]))
+            else if (this._type == typeof(byte[]))
                 this.TagDataType = TagDataType.ByteArray;
             else
                 this.TagDataType = TagDataType.Struct;
@@ -84,10 +97,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             get { return (T)_value; }
             set
             {
-                Value = value;
-                //this._value = (T)value; 
-                //NotifyPropertyChanged("Value");
-                //NotifyPropertyChanged("GenericValue");
+                if (this._type.IsEnum)
+                    Value = (int) (object) value;
+                else
+                    Value = value;
             }
         }
         internal override int _internalGetSize()
