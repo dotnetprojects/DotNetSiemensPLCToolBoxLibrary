@@ -272,6 +272,35 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit");
+                                        var node = nodes[0];
+                                        node.InnerXml = "";
+                                        //node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+
 
                                     StringBuilder sb = new StringBuilder();
                                     XmlWriterSettings settings = new XmlWriterSettings
@@ -288,7 +317,7 @@ namespace TiaGitHandler
 
                                     xml = sb.ToString();
 
-                                    xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
+                                    //xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
                                 }
 
                                 Directory.CreateDirectory(path);
