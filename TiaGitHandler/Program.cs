@@ -8,7 +8,9 @@ using System.Windows.Forms;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using TiaGitHandler.Properties;
 
 namespace TiaGitHandler
 {
@@ -22,13 +24,13 @@ namespace TiaGitHandler
 
             string file = "";
             string exportPath = "";
-            string user = null;
-            string password = null;
+            string user = Settings.Default.DefaultUser;
+            string password = Settings.Default.DefaultPassword;
 
             if (args.Count() < 1)
             {
                 OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15";
+                op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1";
                 op.CheckFileExists = false;
                 op.ValidateNames = false;
                 var ret = op.ShowDialog();
@@ -40,6 +42,27 @@ namespace TiaGitHandler
                 {
                     Console.WriteLine("Bitte S7 projekt als Parameter angeben!");
                     return;
+                }
+
+                if (Path.GetExtension(file) == ".ap15_1")
+                {
+                    if (InputBox.Show("Credentials", "Enter Username (or cancel if not used)", ref user) != DialogResult.Cancel)
+                    {
+                        if (InputBox.Show("Credentials", "Enter Password", ref password) != DialogResult.Cancel)
+                        {
+
+                        }
+                        else
+                        {
+                            user = "";
+                            password = "";
+                        }
+                    }
+                    else
+                    {
+                        user = "";
+                        password = "";
+                    }
                 }
 
                 exportPath = Path.GetDirectoryName(file);

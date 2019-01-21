@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 rel. 3 (http://www.altova.com) by Thilo Opaterny (Siemens AG) -->
+<!-- Mit XMLSpy v2017 sp2 (x64) (http://www.altova.com) von . (Siemens AG) bearbeitet -->
+<!-- Copyright © Siemens AG 2008-2016. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AttributeList" type="AttributeList_T"/>
+  <xs:complexType name="AttributeList_T">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="BooleanAttribute"/>
+      <xs:element ref="IntegerAttribute"/>
+      <xs:element ref="RealAttribute"/>
+      <xs:element ref="StringAttribute"/>
+      <xs:element ref="DateAttribute"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:element name="Blank" type="Blank_T"/>
+  <xs:complexType name="Blank_T">
+    <xs:attribute name="Num" type="xs:positiveInteger" use="optional" default="1"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="BooleanAttribute" type="BooleanAttribute_T">
+    <xs:annotation>
+      <xs:documentation>A member attribute with a type restriction of boolean.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="BooleanAttribute_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:boolean">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+        <xs:attribute name="Informative" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
+          <xs:annotation>
+            <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="Comment" type="Comment_T">
+    <xs:annotation>
+      <xs:documentation>Not allowed in STL</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:group name="Comment_G">
+    <xs:annotation>
+      <xs:documentation>LAD/FBD: Only for Parts</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="Comment"/>
+        <xs:element ref="LineComment"/>
+        <xs:element ref="Blank"/>
+        <xs:element ref="NewLine"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Comment_T">
+    <xs:sequence>
+      <xs:element ref="IntegerAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>For NumBLs in STL. NumBLs is the count of the blank spaces before the actual text in the Comment. This is informative.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="MultiLanguageText" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="Inserted" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>Denotes if the comment is at the end of the line (using //) or inside the line (using /* */)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Informative" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="DateAttribute" type="DateAttribute_T"/>
+  <xs:complexType name="DateAttribute_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:dateTime">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+        <xs:attribute name="Informative" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
+          <xs:annotation>
+            <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="GUID_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="IntegerAttribute" type="IntegerAttribute_T">
+    <xs:annotation>
+      <xs:documentation>A member attribute with a type restriction of integer.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="IntegerAttribute_T">
+    <xs:annotation>
+      <xs:documentation>Not for LAD/FBD.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:integer">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+        <xs:attribute name="Informative" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
+          <xs:annotation>
+            <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="Lang_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z]{2}-[a-zA-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LineComment" type="LineComment_T">
+    <xs:annotation>
+      <xs:documentation>Not for LAD/FBD </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="LineComment_T">
+    <xs:sequence>
+      <xs:element ref="IntegerAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>For NumBLs in STL. NumBLs is the count of the blank spaces before the actual text in the LineComment. This is informative.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="Text">
+        <xs:annotation>
+          <xs:documentation>the value of the comment</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Inserted" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>Denotes if the comment is at the end of the line (using //) or inside the line (using /* */)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="NoClosingBracket" type="xs:boolean" default="false"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="MultiLanguageText" type="MultiLanguageText_T"/>
+  <xs:complexType name="MultiLanguageText_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Lang" type="Lang_TP" use="required"/>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="NewLine" type="NewLine_T"/>
+  <xs:complexType name="NewLine_T">
+    <xs:attribute name="Num" type="xs:positiveInteger" use="optional" default="1"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="RealAttribute" type="RealAttribute_T">
+    <xs:annotation>
+      <xs:documentation>A member attribute with a type restriction of real.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="RealAttribute_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+        <xs:attribute name="Informative" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
+          <xs:annotation>
+            <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="SectionName_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Input"/>
+      <xs:enumeration value="Return"/>
+      <xs:enumeration value="Output"/>
+      <xs:enumeration value="InOut"/>
+      <xs:enumeration value="Static"/>
+      <xs:enumeration value="Temp"/>
+      <xs:enumeration value="Constant"/>
+      <xs:enumeration value="Base"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SimaticName_TP">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="SimaticType_TE">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:element name="StringAttribute" type="StringAttribute_T">
+    <xs:annotation>
+      <xs:documentation>A member attribute with a type restriction of string.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="StringAttribute_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+        <xs:attribute name="Informative" type="xs:boolean" default="false">
+          <xs:annotation>
+            <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
+          <xs:annotation>
+            <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="Text" type="Text_T"/>
+  <xs:complexType name="Text_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="Token" type="Token_T"/>
+  <xs:group name="Token_G">
+    <xs:choice>
+      <xs:element ref="Token" minOccurs="0"/>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="Token_T">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="IntegerAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>For NumBLs. NumBLs is the count of the blank spaces at the start.This is informative.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Text" type="Token_TE" use="required"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:simpleType name="Token_TE">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="VersionString_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]+(.[0-9]+){0,3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ViewInfo" type="ViewInfo_T"/>
+  <xs:complexType name="ViewInfo_T">
+    <xs:attribute name="Start" type="xs:boolean" use="optional"/>
+    <xs:attribute name="XPos" type="xs:int" use="optional"/>
+    <xs:attribute name="YPos" type="xs:int" use="optional"/>
+    <xs:attribute name="Width" type="xs:int" use="optional"/>
+    <xs:attribute name="Height" type="xs:int" use="optional"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+</xs:schema>

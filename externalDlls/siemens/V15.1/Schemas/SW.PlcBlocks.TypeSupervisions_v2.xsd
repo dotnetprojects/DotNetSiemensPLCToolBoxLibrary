@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2016. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.Common_v2.xsd"/>
+	<xs:element name="Type">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="Action"/>
+				<xs:enumeration value="Interlock"/>
+				<xs:enumeration value="Operand"/>
+				<xs:enumeration value="Position"/>
+				<xs:enumeration value="Reaction"/>
+				<xs:enumeration value="MessageText"/>
+				<xs:enumeration value="MessageError"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="TriggeringStatus" type="xs:boolean"/>
+	<xs:element name="SupervisedStatus" type="xs:boolean"/>
+	<xs:element name="SupervisedOperand">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SubCategory2Number" type="xs:int"/>
+	<xs:element name="SubCategory1Number" type="xs:int"/>
+	<xs:element name="Number" type="xs:int"/>
+	<xs:element name="DelayOperand">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Conditions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Condition" maxOccurs="3"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConditionOperand">
+		<xs:complexType>
+			<xs:attribute name="Number" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Condition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ConditionOperand"/>
+				<xs:element ref="TriggeringStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CategoryNumber">
+		<xs:simpleType>
+			<xs:restriction base="xs:int">
+				<xs:minInclusive value="1"/>
+				<xs:maxInclusive value="8"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="BlockTypeSupervisions">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="BlockTypeSupervisionsType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BlockTypeSupervision">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SupervisedOperand"/>
+				<xs:element ref="SupervisedStatus"/>
+				<xs:element ref="DelayOperand" minOccurs="0"/>
+				<xs:element ref="Conditions" minOccurs="0"/>
+				<xs:element ref="CategoryNumber"/>
+				<xs:element ref="SubCategory1Number" minOccurs="0"/>
+				<xs:element ref="SubCategory2Number" minOccurs="0"/>
+				<xs:element ref="SpecificField" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="Number" type="xs:int" use="required"/>
+			<xs:attribute name="Type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Action"/>
+						<xs:enumeration value="Interlock"/>
+						<xs:enumeration value="Operand"/>
+						<xs:enumeration value="Position"/>
+						<xs:enumeration value="Reaction"/>
+						<xs:enumeration value="MessageText"/>
+						<xs:enumeration value="MessageError"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AssociatedValues">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="AssociatedValue" maxOccurs="3"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AssociatedValue">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="AssociatedValueOperand" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SpecificFieldText">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="MultiLanguageText"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SpecificField">
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="AssociatedValues" minOccurs="0"/>
+				<xs:element ref="SpecificFieldText" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BlockTypeSupervisionsType">
+		<xs:sequence>
+			<xs:element ref="BlockTypeSupervision" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AssociatedValueOperand">
+		<xs:complexType>
+			<xs:attribute name="Number" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

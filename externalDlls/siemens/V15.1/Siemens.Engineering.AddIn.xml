@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.AddIn</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Menu.ActionItem.DefaultLabelText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`1.OnClickDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`1.OnUpdateStatusDelegate`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TStyle"></typeparam>
+            <param name="menuSelectionProvider"></param>
+            <param name="style"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`1.OnUpdateStatusDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`2.OnClickDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`2.OnUpdateStatusDelegate`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TStyle"></typeparam>
+            <param name="menuSelectionProvider"></param>
+            <param name="style"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`2.OnUpdateStatusDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`3">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <typeparam name="TSelectedObject3"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`3.OnClickDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`3.OnUpdateStatusDelegate`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TStyle"></typeparam>
+            <param name="menuSelectionProvider"></param>
+            <param name="style"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItem`3.OnUpdateStatusDelegate">
+            <summary>
+            
+            </summary>
+            <param name="menuSelectionProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ActionItemStyle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.CheckBoxActionItemStyle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Menu.CheckBoxActionItemStyle.State">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.CheckBoxState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.CheckBoxState.Unchecked">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.CheckBoxState.Checked">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ChildItemFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddSubmenu(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="defaultLabelText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``1(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnClickDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``1(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnUpdateStatusDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithCheckBox``1(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.CheckBoxActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithRadioButton``1(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.RadioButtonActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``2(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnClickDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``2(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnUpdateStatusDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithCheckBox``2(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.CheckBoxActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithRadioButton``2(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.RadioButtonActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``3(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnClickDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <typeparam name="TSelectedObject3"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItem``3(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnUpdateStatusDelegate)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <typeparam name="TSelectedObject3"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithCheckBox``3(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.CheckBoxActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <typeparam name="TSelectedObject3"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ChildItemFactory.AddActionItemWithRadioButton``3(System.String,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnClickDelegate,Siemens.Engineering.AddIn.Menu.ActionItem{``0,``1,``2}.OnUpdateStatusDelegate{Siemens.Engineering.AddIn.Menu.RadioButtonActionItemStyle})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObject1"></typeparam>
+            <typeparam name="TSelectedObject2"></typeparam>
+            <typeparam name="TSelectedObject3"></typeparam>
+            <param name="defaultLabelText"></param>
+            <param name="clickDelegate"></param>
+            <param name="updateStatusDelegate"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.ContextMenuAddIn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ContextMenuAddIn.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="displayName"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ContextMenuAddIn.GetSubmenu">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ContextMenuAddIn.GetDisplayName">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.ContextMenuAddIn.BuildContextMenuItems(Siemens.Engineering.AddIn.Menu.Submenu)">
+            <summary>
+            
+            </summary>
+            <param name="addInRootSubmenu"></param>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.IMenuItemContainerPrivate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.IMenuItemContainerPrivate.GetContainedItems">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.ProjectTreeAddInProvider">
+            <summary>
+            %[ProjectTreeAddInProviderClassSummary]%
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.AddInProviderBase">
+            <summary>
+            %[AddInProviderBaseClassSummary]%
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.AddInProviderBase.#ctor">
+            <summary>
+            %[AddInProviderBaseSummary]%
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.AddInProviderBase.GetContextMenuAddIns">
+            <summary>
+            %[GetContextMenuAddInsSummary]%
+            </summary>
+            <returns>%[GetContextMenuAddInsReturns]%</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.ProjectTreeAddInProvider.#ctor">
+            <summary>
+            %[ProjectTreeAddInProviderSummary]%
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.RadioButtonActionItemStyle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Menu.RadioButtonActionItemStyle.State">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.RadioButtonState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.RadioButtonState.Unselected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.RadioButtonState.Selected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider.GetSelectedObjectCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider.GetSelection">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider.GetSelection``1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TRequestedType"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObjectType"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider`2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObjectType1"></typeparam>
+            <typeparam name="TSelectedObjectType2"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuSelectionProvider`3">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSelectedObjectType1"></typeparam>
+            <typeparam name="TSelectedObjectType2"></typeparam>
+            <typeparam name="TSelectedObjectType3"></typeparam>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.MenuStatus">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.MenuStatus.Enabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.MenuStatus.Disabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Menu.MenuStatus.Hidden">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Menu.Submenu">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Menu.Submenu.Items">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Menu.Submenu.DefaultLabelText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.ProjectLibraryTreeAddInProvider">
+            <summary>
+            %[LibraryTreeAddInProviderClassSummary]%
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.ProjectLibraryTreeAddInProvider.#ctor">
+            <summary>
+            %[LibraryTreeAddInProviderSummary]%
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.GlobalLibraryTreeAddInProvider">
+            <summary>
+            %[LibraryTreeAddInProviderClassSummary]%
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.GlobalLibraryTreeAddInProvider.#ctor">
+            <summary>
+            %[LibraryTreeAddInProviderSummary]%
+            </summary>
+        </member>
+    </members>
+</doc>

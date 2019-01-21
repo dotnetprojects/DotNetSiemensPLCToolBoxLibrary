@@ -15,16 +15,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
     {
         private readonly Credentials _credentials;
 
-        public enum TiaVersionTypes
-        {
-            V11 = 11,
-            V12 = 12,
-            V13 = 13,
-            V14 = 14,
-        }
-
-        public static TiaVersionTypes TiaVersion { get; private set; }
-
         private string DataFile = null;
 
         private XmlDocument tiaProject;

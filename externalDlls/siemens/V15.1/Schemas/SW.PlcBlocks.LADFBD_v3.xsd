@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2018. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.CompileUnitCommon_v3.xsd"/>
+	<xs:element name="Powerrail" type="Powerrail_T"/>
+	<xs:complexType name="Powerrail_T"/>
+	<xs:element name="Openbranch" type="Openbranch_T"/>
+	<xs:complexType name="Openbranch_T"/>
+	<xs:element name="OpenCon" type="OpenCon_T"/>
+	<xs:complexType name="OpenCon_T">
+		<xs:attribute name="UId" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:element name="Call" type="Call_T"/>
+	<xs:complexType name="Call_T">
+		<xs:sequence>
+			<xs:element ref="CallInfo"/>
+			<xs:group ref="PartSequence_G"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="PartAttribute_G"/>
+	</xs:complexType>
+	<xs:complexType name="Equation_T">
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:element name="FlgNet" type="FlgNet_T"/>
+	<xs:complexType name="FlgNet_T">
+		<xs:sequence>
+			<xs:element ref="Labels" minOccurs="0"/>
+			<xs:element ref="Parts"/>
+			<xs:element ref="Wires" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="GateName_TE">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="IdentCon" type="IdentCon_T"/>
+	<xs:complexType name="IdentCon_T">
+		<xs:attribute name="UId" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:element name="Invisible" type="Invisible_T">
+		<xs:annotation>
+			<xs:documentation>The invisible pins of this part.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Invisible_T">
+		<xs:attribute name="Name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name of the invisible pin.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Labels" type="Labels_T"/>
+	<xs:complexType name="Labels_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="LabelDeclaration"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Neg_T">
+		<xs:attribute name="Name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name of the negated pin.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Negated" type="Neg_T">
+		<xs:annotation>
+			<xs:documentation>The negated pins of this part.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="AutomaticTyped_T">
+		<xs:attribute name="Name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name of the automatic chosen template parameter. Not for InstructionRef</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="AutomaticTyped" type="AutomaticTyped_T"/>
+	<xs:element name="Part" type="Part_T"/>
+	<xs:element name="Equation" type="Equation_T"/>
+	<xs:complexType name="Part_T">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element ref="Equation" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The equation of this part. This is only used for the Calculate box.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Instance" minOccurs="0"/>
+			</xs:choice>
+			<xs:group ref="PartSequence_G"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="PartAttribute_G"/>
+		<xs:attribute name="Name" use="required">
+			<xs:simpleType>
+				<xs:restriction base="SimaticName_TP">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Version" type="VersionString_TP"/>
+		<xs:attribute name="DisabledENO" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:attributeGroup name="PartAttribute_G">
+		<xs:attribute name="UId" type="xs:int" use="required"/>
+	</xs:attributeGroup>
+	<xs:element name="NameCon" type="NameCon_T"/>
+	<xs:complexType name="NameCon_T">
+		<xs:attribute name="UId" type="xs:int" use="required"/>
+		<xs:attribute name="Name" type="PinName_TE" use="required"/>
+	</xs:complexType>
+	<xs:element name="Parts" type="Parts_T"/>
+	<xs:complexType name="Parts_T">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="Access"/>
+			<xs:element ref="Part"/>
+			<xs:element ref="Call"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:group name="PartSequence_G">
+		<xs:sequence>
+			<xs:element ref="TemplateValue" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="AutomaticTyped" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Invisible" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Negated" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="Comment" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:simpleType name="PinName_TE">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="Wire" type="Wire_T"/>
+	<xs:complexType name="Wire_T">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="Powerrail"/>
+			<xs:element ref="NameCon"/>
+			<xs:element ref="IdentCon"/>
+			<xs:element ref="Openbranch"/>
+			<xs:element ref="OpenCon"/>
+		</xs:choice>
+		<xs:attribute name="UId" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:element name="Wires" type="Wires_T"/>
+	<xs:complexType name="Wires_T">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="Wire"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

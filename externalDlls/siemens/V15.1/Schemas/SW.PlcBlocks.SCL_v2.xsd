@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2018. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.Access_v3.xsd"/>
+	<xs:element name="StructuredText" type="StructuredText_T"/>
+	<xs:complexType name="StructuredText_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:choice>
+				<xs:element ref="Access"/>
+				<xs:element ref="Token"/>
+				<xs:element ref="Parameter"/>
+				<xs:element ref="Text"/>
+				<xs:group ref="Comment_G"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="UId" type="xs:int" use="optional"/>
+	</xs:complexType>
+</xs:schema>

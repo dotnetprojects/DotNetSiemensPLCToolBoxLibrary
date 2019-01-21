@@ -16,16 +16,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public partial class Step7ProjectV13 : Project, IDisposable
     {
-        public enum TiaVersionTypes
-        {
-            V11 = 11,
-            V12 = 12,
-            V13 = 13,
-            V14 = 14,
-        }
-
-        public static TiaVersionTypes TiaVersion { get; private set; }
-
         private string DataFile = null;
 
         private XmlDocument tiaProject;
