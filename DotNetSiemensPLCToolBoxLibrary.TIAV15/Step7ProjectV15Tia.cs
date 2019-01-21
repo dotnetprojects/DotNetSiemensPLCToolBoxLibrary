@@ -224,6 +224,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             public List<TIAOpennessConstant> Constants { get; set; }
 
             public IEnumerable<TIAOpennessTag> Tags { get; internal set; }
+
+            internal PlcTagTable PlcTagTable { get; set; }
+
+            public virtual string Export(ExportFormat exportFormat)
+            {
+                var ext = "xml";
+                var tmp = Path.GetTempPath();
+                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                if (ext == "xml")
+                {
+                    PlcTagTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+                }
+                var text = File.ReadAllText(file);
+                File.Delete(file);
+
+                return text;
+            }
         }
 
         public class TIAOpennessTag
@@ -397,12 +414,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     var q = this.TiaPortalItem as PlcTagTableSystemGroup;
                     if (q != null)
                         tags = q.TagTables;
-
                     var retVal = new List<TIAOpennessTagTable>();
 
                     foreach (var tagList in tags)
                     {
-                        var info = new TIAOpennessTagTable() { Name = tagList.Name };
+                        var info = new TIAOpennessTagTable() { Name = tagList.Name, PlcTagTable = tagList };
                         retVal.Add(info);
                         info.Tags = tagList.Tags.Select(t => new TIAOpennessTag(t));
                         info.Constants = new List<TIAOpennessConstant>();
