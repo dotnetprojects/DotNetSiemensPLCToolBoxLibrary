@@ -313,7 +313,11 @@ namespace TiaGitHandler
                                         var nodes = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit");
                                         var node = nodes[0];
                                         node.InnerXml = "";
-                                        //node.ParentNode.RemoveChild(node);
+                                        var parent = node.ParentNode;
+                                        foreach (var nd in nodes.Cast<XmlNode>().Skip(1).ToList())
+                                        {
+                                            parent.RemoveChild(nd);
+                                        }
                                     }
                                     catch
                                     {
