@@ -81,33 +81,38 @@ namespace TiaGitHandler
 
                     exportPath = Path.GetDirectoryName(file);
                     exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
-                    if (Directory.Exists(exportPath))
-                    {
-                        if (
-                            MessageBox.Show(exportPath + " wird gelöscht. Möchten Sie fortfahren?",
-                                "Sicherheitsabfrage",
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            Directory.Delete(exportPath, true);
-                        }
-                        else
-                        {
-                            Environment.Exit(-1);
-                        }
 
-                    }
-
-                    Directory.CreateDirectory(exportPath);
                 }
                 else if (res != null)
                 {
                     var ver = ask.Result as string;
                     prj = Projects.AttachProject(ver);
+
+                    exportPath = Path.GetDirectoryName(prj.ProjectFile);
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
                 }
                 else
                 {
                     Environment.Exit(0);
                 }
+
+                if (Directory.Exists(exportPath))
+                {
+                    if (
+                        MessageBox.Show(exportPath + " wird gelöscht. Möchten Sie fortfahren?",
+                            "Sicherheitsabfrage",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Directory.Delete(exportPath, true);
+                    }
+                    else
+                    {
+                        Environment.Exit(-1);
+                    }
+
+                }
+
+                Directory.CreateDirectory(exportPath);
             }                       
             else
             {

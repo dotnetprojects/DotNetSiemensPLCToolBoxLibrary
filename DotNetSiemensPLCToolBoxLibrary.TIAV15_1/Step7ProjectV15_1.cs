@@ -62,6 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             tiaPortal = processes[idx].Attach();
             tiapProject = tiaPortal.Projects[0];
+            this.ProjectFile = processes[idx].ProjectPath.ToString();
         }
 
         public Step7ProjectV15_1(string projectfile, CultureInfo culture = null) : this(projectfile, culture, null)

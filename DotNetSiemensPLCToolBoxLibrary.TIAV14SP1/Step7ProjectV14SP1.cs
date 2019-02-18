@@ -58,6 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
             tiaPortal = processes[idx].Attach();
             tiapProject = tiaPortal.Projects[0];
+            this.ProjectFile = processes[idx].ProjectPath.ToString();
         }
 
         public Step7ProjectV14SP1(string projectfile, CultureInfo culture = null)
