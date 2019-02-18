@@ -23,5 +23,11 @@
             this.Result = "15.1";
             this.Close();
         }
+
+        private void CmdAttachV14SP1_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.Result = "14SP1";
+            this.Close();
+        }
     }
 }

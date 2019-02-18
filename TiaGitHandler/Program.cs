@@ -100,10 +100,7 @@ namespace TiaGitHandler
                 else if (res != null)
                 {
                     var ver = ask.Result as string;
-                    if (ver == "15.1")
-                    {
-                        prj = Projects.AttachProject("15.1");
-                    }
+                    prj = Projects.AttachProject(ver);
                 }
                 else
                 {

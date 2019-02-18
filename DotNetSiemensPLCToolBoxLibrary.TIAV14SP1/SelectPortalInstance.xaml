@@ -1,0 +1,13 @@
+﻿<Window x:Class="DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.SelectPortalInstance"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+             Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="lstInstances" Margin="10,31,10,64"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Select Portal Instance" VerticalAlignment="Top"/>
+        <Button Content="Ok" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="130" Height="49" Click="Button_Click"/>
+    </Grid>
+</Window>
