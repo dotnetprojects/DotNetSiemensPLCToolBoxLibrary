@@ -151,6 +151,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
         internal Dictionary<TiaObjectId, TiaFileObject> TiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
 
+        public override ProjectType ProjectType
+        {
+            get { return ProjectType.Tia14SP1; }
+        }
+
         protected override void LoadProject()
         {
             _projectLoaded = true;

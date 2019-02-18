@@ -209,6 +209,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             set { _blocksOfflineFolders = value; }
         }
 
+        public override ProjectType ProjectType
+        {
+            get { return ProjectType.Step7; }
+        }
+
         override protected void LoadProject()
         {
             _projectLoaded = true;

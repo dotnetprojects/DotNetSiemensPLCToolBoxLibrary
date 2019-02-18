@@ -8,6 +8,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public abstract class Project
     {
+        public abstract ProjectType ProjectType { get; }
+
         public string ProjectFile{ get; set;}
 
         public string ProjectFolder{ get; set;}

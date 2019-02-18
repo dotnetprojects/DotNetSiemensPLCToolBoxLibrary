@@ -21,6 +21,8 @@ namespace TiaGitHandler
     {
         private static string folder = "";
 
+        private static ProjectType _projectType = ProjectType.Tia15_1;
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -130,6 +132,8 @@ namespace TiaGitHandler
 
                 prj = Projects.LoadProject(file, false, credentials);
             }
+
+            _projectType = prj.ProjectType;
 
             List<string> skippedBlocksList = new List<string>();
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
@@ -344,7 +348,8 @@ namespace TiaGitHandler
 
                                     xml = sb.ToString();
 
-                                    //xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
+                                    if (_projectType == ProjectType.Tia14SP1)
+                                        xml = xml.Replace("<ProgrammingLanguage>SCL</ProgrammingLanguage>", "<ProgrammingLanguage>STL</ProgrammingLanguage>");
                                 }
 
                                 Directory.CreateDirectory(path);

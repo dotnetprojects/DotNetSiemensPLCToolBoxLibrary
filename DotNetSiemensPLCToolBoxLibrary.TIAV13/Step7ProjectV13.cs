@@ -186,6 +186,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        public override ProjectType ProjectType
+        {
+            get { return ProjectType.Tia13; }
+        }
+
         protected override void LoadProject()
         {
             _projectLoaded = true;

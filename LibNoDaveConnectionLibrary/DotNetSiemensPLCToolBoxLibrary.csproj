@@ -293,6 +293,7 @@
     <Compile Include="DBF\ParseDBF.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7VATRow.cs" />
     <Compile Include="PLCs\S7_xxx\MC7\StaticDataConverter.cs" />
+    <Compile Include="Projectfiles\ProjectType.cs" />
     <Compile Include="Projectfiles\SelectProjectPartMultiForm.cs">
       <SubType>Form</SubType>
     </Compile>
