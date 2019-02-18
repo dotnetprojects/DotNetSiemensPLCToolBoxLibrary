@@ -1,0 +1,14 @@
+﻿<Window x:Class="TiaGitHandler.AskOpen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="True" WindowStyle="ToolWindow" 
+             Height="125.75" Width="351.039">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TIA Projekt - Öffnen oder an Instanz hängen?" VerticalAlignment="Top"/>
+        <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
+        <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
+
+    </Grid>
+</Window>

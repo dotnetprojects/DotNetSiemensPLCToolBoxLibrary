@@ -11,6 +11,9 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using TiaGitHandler.Properties;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.Forms.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace TiaGitHandler
 {
@@ -27,30 +30,45 @@ namespace TiaGitHandler
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
 
+            Project prj = null;
+
             if (args.Count() < 1)
             {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1";
-                op.CheckFileExists = false;
-                op.ValidateNames = false;
-                var ret = op.ShowDialog();
-                if (ret == DialogResult.OK)
+                Application app = new Application();
+                var ask = new AskOpen();
+                app.Run(ask);
+                var res = ask.Result;
+                if (object.Equals(res, false))
                 {
-                    file = op.FileName;
-                }
-                else
-                {
-                    Console.WriteLine("Bitte S7 projekt als Parameter angeben!");
-                    return;
-                }
-
-                if (Path.GetExtension(file) == ".ap15_1")
-                {
-                    if (InputBox.Show("Credentials", "Enter Username (or cancel if not used)", ref user) != DialogResult.Cancel)
+                    OpenFileDialog op = new OpenFileDialog();
+                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1";
+                    op.CheckFileExists = false;
+                    op.ValidateNames = false;
+                    var ret = op.ShowDialog();
+                    if (ret == true)
                     {
-                        if (InputBox.Show("Credentials", "Enter Password", ref password) != DialogResult.Cancel)
-                        {
+                        file = op.FileName;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Bitte S7 projekt als Parameter angeben!");
+                        return;
+                    }
 
+                    if (Path.GetExtension(file) == ".ap15_1")
+                    {
+                        if (InputBox.Show("Credentials", "Enter Username (or cancel if not used)", ref user) !=
+                            DialogResult.Cancel)
+                        {
+                            if (InputBox.Show("Credentials", "Enter Password", ref password) != DialogResult.Cancel)
+                            {
+
+                            }
+                            else
+                            {
+                                user = "";
+                                password = "";
+                            }
                         }
                         else
                         {
@@ -58,32 +76,40 @@ namespace TiaGitHandler
                             password = "";
                         }
                     }
-                    else
-                    {
-                        user = "";
-                        password = "";
-                    }
-                }
 
-                exportPath = Path.GetDirectoryName(file);
-                exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
-                if (Directory.Exists(exportPath))
-                {
-                    if (
-                        MessageBox.Show(exportPath + " wird gelöscht. Möchten Sie fortfahren?", "Sicherheitsabfrage",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    exportPath = Path.GetDirectoryName(file);
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
+                    if (Directory.Exists(exportPath))
                     {
-                        Directory.Delete(exportPath, true);
+                        if (
+                            MessageBox.Show(exportPath + " wird gelöscht. Möchten Sie fortfahren?",
+                                "Sicherheitsabfrage",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Directory.Delete(exportPath, true);
+                        }
+                        else
+                        {
+                            Environment.Exit(-1);
+                        }
+
                     }
-                    else
-                    {
-                        Environment.Exit(-1);
-                    }
-                    
+
+                    Directory.CreateDirectory(exportPath);
                 }
-                Directory.CreateDirectory(exportPath);
-                
-            }
+                else if (res != null)
+                {
+                    var ver = ask.Result as string;
+                    if (ver == "15.1")
+                    {
+                        prj = Projects.AttachProject("15.1");
+                    }
+                }
+                else
+                {
+                    Environment.Exit(0);
+                }
+            }                       
             else
             {
                 file = args[0];
@@ -93,16 +119,20 @@ namespace TiaGitHandler
                     password = args[2];
             }
 
-            Credentials credentials = null;
-            if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password))
+            if (prj == null)
             {
-                credentials = new Credentials() {Username = user, Password = new SecureString()};
-                foreach (char c in password)
+                Credentials credentials = null;
+                if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password))
                 {
-                    credentials.Password.AppendChar(c);
+                    credentials = new Credentials() {Username = user, Password = new SecureString()};
+                    foreach (char c in password)
+                    {
+                        credentials.Password.AppendChar(c);
+                    }
                 }
+
+                prj = Projects.LoadProject(file, false, credentials);
             }
-            var prj = Projects.LoadProject(file, false, credentials);
 
             List<string> skippedBlocksList = new List<string>();
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);

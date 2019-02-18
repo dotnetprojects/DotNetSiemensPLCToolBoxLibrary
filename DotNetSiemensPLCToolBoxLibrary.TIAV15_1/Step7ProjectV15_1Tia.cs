@@ -602,7 +602,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
         }
 
-        internal void LoadViaOpennessDlls(Credentials credentials)
+        internal void OpenViaOpennessDlls(Credentials credentials)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -613,9 +613,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                         tiaPortal.Dispose();
                         tiaPortal = null;
                     }
-                    tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
+
+                    tiaPortal = new Siemens.Engineering.TiaPortal(
+                        Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
                     if (credentials != null)
                     {
+
                         tiapProject = tiaPortal.Projects.Open(new FileInfo(ProjectFile), c =>
                         {
                             c.Type = UmacUserType.Project;
@@ -637,11 +640,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                     if (i == 9)
                         throw;
                 }
+
                 if (tiapProject != null)
                     break;
             }
+        }
 
-
+        internal void LoadViaOpennessDlls()
+        {
             var main = new TIAOpennessProjectFolder(this) { Name = "Main" };
             ProjectStructure = main;
 

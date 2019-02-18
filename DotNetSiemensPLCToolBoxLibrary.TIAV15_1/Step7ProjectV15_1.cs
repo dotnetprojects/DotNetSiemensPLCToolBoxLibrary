@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA;
+using DotNetSiemensPLCToolBoxLibrary.TIAV15_1;
 using Microsoft.Win32;
+using Siemens.Engineering;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 {
@@ -22,6 +26,43 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         internal ZipHelper _ziphelper = new ZipHelper(null);
 
         public CultureInfo Culture { get; set; }
+
+        public Step7ProjectV15_1()
+        {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
+
+            AksForInstance();
+
+            LoadViaOpennessDlls();
+
+            currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;
+        }
+
+        private void AksForInstance()
+        {
+
+            tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
+
+            var processes = TiaPortal.GetProcesses().ToArray();
+            var sLst = processes.Select(x => "Projekt : " + (x.ProjectPath != null ? x.ProjectPath.ToString() : "-")).ToArray();
+            AppDomain domain = AppDomain.CreateDomain("another domain");
+            CrossAppDomainDelegate action = () =>  
+            {  
+                var app = new Application();
+                var ask = new SelectPortalInstance();
+                var p = AppDomain.CurrentDomain.GetData("processes") as string[];
+                ask.lstInstances.ItemsSource = p;
+                app.Run(ask);
+                AppDomain.CurrentDomain.SetData("idx", ask.lstInstances.SelectedIndex);
+            };  
+            domain.SetData("processes", sLst);
+            domain.DoCallBack(action);
+            var idx = (int)domain.GetData("idx");
+
+            tiaPortal = processes[idx].Attach();
+            tiapProject = tiaPortal.Projects[0];
+        }
 
         public Step7ProjectV15_1(string projectfile, CultureInfo culture = null) : this(projectfile, culture, null)
         {
@@ -72,7 +113,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             //BinaryParseTIAFile();
             //LoadProject();
-            LoadViaOpennessDlls(credentials);
+            OpenViaOpennessDlls(credentials);
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;
         }
