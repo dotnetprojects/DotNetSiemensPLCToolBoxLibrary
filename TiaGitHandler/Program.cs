@@ -140,6 +140,11 @@ namespace TiaGitHandler
 
             _projectType = prj.ProjectType;
 
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Opened Project - " + prj.ProjectType.ToString());
+            Console.WriteLine("Exporting to Folder: " + exportPath);
+            Console.WriteLine();
             List<string> skippedBlocksList = new List<string>();
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
 

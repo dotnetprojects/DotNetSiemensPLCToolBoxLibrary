@@ -629,6 +629,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 if (tiapProject != null)
                     break;
             }
+
+            LoadViaOpennessDlls();
         }
 
         internal void LoadViaOpennessDlls()
