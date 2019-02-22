@@ -23,6 +23,8 @@ namespace TiaGitHandler
 
         private static ProjectType _projectType = ProjectType.Tia15_1;
 
+        private static bool removeCodeFromXml = true;
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -31,6 +33,7 @@ namespace TiaGitHandler
             string exportPath = "";
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
+            
 
             Project prj = null;
 
@@ -40,6 +43,7 @@ namespace TiaGitHandler
                 var ask = new AskOpen();
                 app.Run(ask);
                 var res = ask.Result;
+                removeCodeFromXml = ask.chkRemoveCode.IsChecked == true;
                 if (object.Equals(res, false))
                 {
                     OpenFileDialog op = new OpenFileDialog();
@@ -302,8 +306,7 @@ namespace TiaGitHandler
                                         node.ParentNode.RemoveChild(node);
                                     }
                                     catch
-                                    {
-                                    }
+                                    { }
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//DocumentInfo");
@@ -311,22 +314,25 @@ namespace TiaGitHandler
                                         node.ParentNode.RemoveChild(node);
                                     }
                                     catch
+                                    { }
+
+                                    if (removeCodeFromXml && !xml.Contains("$$GITHANDLER-KEEPCODE$$"))
                                     {
-                                    }
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit");
-                                        var node = nodes[0];
-                                        node.InnerXml = "";
-                                        var parent = node.ParentNode;
-                                        foreach (var nd in nodes.Cast<XmlNode>().Skip(1).ToList())
+                                        try
                                         {
-                                            parent.RemoveChild(nd);
+                                            var nodes = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit");
+                                            var node = nodes[0];
+                                            node.InnerXml = "";
+                                            var parent = node.ParentNode;
+                                            foreach (var nd in nodes.Cast<XmlNode>().Skip(1).ToList())
+                                            {
+                                                parent.RemoveChild(nd);
+                                            }
                                         }
+                                        catch
+                                        { }
                                     }
-                                    catch
-                                    {
-                                    }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//MultilingualText");
@@ -334,8 +340,7 @@ namespace TiaGitHandler
                                         node.ParentNode.RemoveChild(node);
                                     }
                                     catch
-                                    {
-                                    }
+                                    { }
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//MultilingualText");
@@ -343,8 +348,7 @@ namespace TiaGitHandler
                                         node.ParentNode.RemoveChild(node);
                                     }
                                     catch
-                                    {
-                                    }
+                                    { }
 
 
                                     StringBuilder sb = new StringBuilder();

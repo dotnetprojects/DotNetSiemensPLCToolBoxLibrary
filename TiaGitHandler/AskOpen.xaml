@@ -10,6 +10,7 @@
         <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
         <Button Content="Anhängen V14SP1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV14SP1_Click"/>
         <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
+        <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="True"/>
 
     </Grid>
 </Window>
