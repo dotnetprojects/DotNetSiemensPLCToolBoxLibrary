@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
@@ -24,6 +25,9 @@ namespace TiaGitHandler
         private static ProjectType _projectType = ProjectType.Tia15_1;
 
         private static bool removeCodeFromXml = true;
+        private static bool removeAllBlanks = false;
+        private static bool removeOnlyOneBlank = true;
+        private static bool removeNoBlanks = false;
 
         [STAThread]
         static void Main(string[] args)
@@ -44,6 +48,10 @@ namespace TiaGitHandler
                 app.Run(ask);
                 var res = ask.Result;
                 removeCodeFromXml = ask.chkRemoveCode.IsChecked == true;
+                removeAllBlanks = ask.rbRemoveAllBlanks.IsChecked == true;
+                removeOnlyOneBlank = ask.rbRemoveOnlyOneBlank.IsChecked == true;
+                removeNoBlanks = ask.rbRemoveNoBlanks.IsChecked == true;
+
                 if (object.Equals(res, false))
                 {
                     OpenFileDialog op = new OpenFileDialog();
@@ -198,6 +206,49 @@ namespace TiaGitHandler
                         string xml = null;
                         if (src != null)
                         {
+                            if (!removeNoBlanks)
+                            {
+                                /*var startIndex = src.IndexOf("   VAR ");
+                                var endIndex = src.IndexOf("   END_VAR", startIndex);*/
+                                var startIndex = 0;
+                                var endIndex = src.IndexOf("BEGIN", startIndex);
+                                if (endIndex == -1) endIndex = src.IndexOf("END_TYPE", startIndex);
+
+                                if (endIndex != -1)
+                                {
+                                    var search = src;
+                                    var pattern = "   // ";
+
+                                    var indexes = Enumerable.Range(startIndex, endIndex - startIndex)
+                                        .Select(index =>
+                                        {
+                                            return new
+                                            {
+                                                Index = index,
+                                                Length = index + pattern.Length > search.Length
+                                                    ? search.Length - index
+                                                    : pattern.Length
+                                            };
+                                        })
+                                        .Where(searchbit =>
+                                            searchbit.Length == pattern.Length && pattern.Equals(
+                                                search.Substring(searchbit.Index, searchbit.Length),
+                                                StringComparison.OrdinalIgnoreCase))
+                                        .Select(searchbit => searchbit.Index);
+
+                                    var updatedSrc = src;
+
+                                    foreach (var x in indexes.Reverse())
+                                        if (removeOnlyOneBlank)
+                                            updatedSrc = updatedSrc.Remove(x + 5, 1);
+                                        else if (removeAllBlanks)
+                                            while (updatedSrc[x + 5].ToString() == " ")
+                                                updatedSrc = updatedSrc.Remove(x + 5, 1);
+
+                                    src = updatedSrc;
+                                }
+                            }
+
                             var ext = "xml";
                             if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB)
                             {
@@ -284,7 +335,7 @@ namespace TiaGitHandler
                             }
 
                             if (xml != null)
-                            {
+                            {                              
                                 var xmlValid2 = false;
                                 XmlDocument xmlDoc2 = new XmlDocument();
                                 try
@@ -299,6 +350,30 @@ namespace TiaGitHandler
 
                                 if (xmlValid2)
                                 {
+                                    if (!removeNoBlanks)
+                                    {
+                                        try
+                                        {
+                                            XmlNodeList nodes = xmlDoc2.GetElementsByTagName("MultiLanguageText");
+
+                                            var pattern = "^( *)(.*)";
+
+                                            foreach (var n in nodes.Cast<XmlNode>())
+                                            {
+                                                if (removeOnlyOneBlank)
+                                                {
+                                                    n.InnerText = Regex.Replace(n.InnerText, pattern, m => m.Groups[1].Value.Substring(0, m.Groups[1].Value.Length - 1) + m.Groups[2].Value);
+                                                }
+                                                else if (removeAllBlanks)
+                                                {
+                                                    n.InnerXml = Regex.Replace(n.InnerXml, pattern, m => "" + m.Groups[2].Value);
+                                                }
+                                            }
+                                        }
+                                        catch
+                                        { }
+                                    }
+                                    
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//Created");
@@ -307,6 +382,7 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//DocumentInfo");
@@ -341,6 +417,7 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//MultilingualText");
@@ -349,7 +426,6 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
-
 
                                     StringBuilder sb = new StringBuilder();
                                     XmlWriterSettings settings = new XmlWriterSettings
