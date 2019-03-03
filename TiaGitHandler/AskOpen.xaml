@@ -4,13 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="True" WindowStyle="ToolWindow" 
-             Height="175.635" Width="351.039">
+             Height="242.754" Width="403.689" Title="TiaGitHandler">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TIA Projekt - Öffnen oder an Instanz hängen?" VerticalAlignment="Top"/>
         <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
         <Button Content="Anhängen V14SP1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV14SP1_Click"/>
         <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
-        <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="True"/>
-
+        <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="0,0,34,90" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="True"/>
+        <StackPanel Margin="0,130,0,0">
+            <Separator></Separator>
+            <TextBlock ToolTip="dsklfaksdfh" Margin="10,0,0,0">Remove leading blanks from comment column</TextBlock>
+            <RadioButton GroupName="TiaBug" x:Name="rbRemoveOnlyOneBlank" Content="Remove only one blank" IsChecked="True" Margin="10,0,0,0"/>
+            <RadioButton GroupName="TiaBug" x:Name="rbRemoveAllBlanks" Content="Remove all blanks" Margin="10,0,0,0" />
+            <RadioButton GroupName="TiaBug" x:Name="rbRemoveNoBlanks" Content="Remove no blanks" Margin="10,0,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>
