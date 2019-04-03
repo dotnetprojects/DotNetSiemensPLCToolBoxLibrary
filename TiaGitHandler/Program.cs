@@ -312,6 +312,69 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CodeModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CompileDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CreationDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//InterfaceModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//ModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//ParameterModified");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//StructureModified");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
 
                                 StringBuilder sb = new StringBuilder();
                                 XmlWriterSettings settings = new XmlWriterSettings
@@ -391,6 +454,69 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CodeModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CompileDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CreationDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//InterfaceModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//ModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//ParameterModified");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//StructureModified");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
 
                                     if (removeCodeFromXml && !xml.Contains("$$GITHANDLER-KEEPCODE$$"))
                                     {
