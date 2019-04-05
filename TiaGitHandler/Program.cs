@@ -553,16 +553,16 @@ namespace TiaGitHandler
                                         { }
                                     }
 
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
-                                        foreach (var node in nodes.Cast<XmlNode>())
-                                        {
-                                            node.ParentNode.RemoveChild(node);                                               
-                                        }
-                                    }
-                                    catch
-                                    { }
+                                    //try
+                                    //{
+                                    //    var nodes = xmlDoc2.SelectNodes("//MultilingualText");
+                                    //    foreach (var node in nodes.Cast<XmlNode>())
+                                    //    {
+                                    //        node.ParentNode.RemoveChild(node);                                               
+                                    //    }
+                                    //}
+                                    //catch
+                                    //{ }
 
                                     try
                                     {
