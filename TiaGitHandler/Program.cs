@@ -390,6 +390,18 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns:Address", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        if (node.Attributes != null && node.Attributes["Area"].Value == "None" && node.Attributes["Informative"].Value == "true")
+                                            node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
 
                                 StringBuilder sb = new StringBuilder();
                                 XmlWriterSettings settings = new XmlWriterSettings
@@ -570,6 +582,18 @@ namespace TiaGitHandler
                                         foreach (var node in nodes.Cast<XmlNode>())
                                         {
                                             if (node.Attributes != null && node.Attributes["Name"].Value == "ParameterModifiedTS")
+                                                node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns:Address", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            if (node.Attributes != null && node.Attributes["Area"].Value == "None" && node.Attributes["Informative"].Value == "true")
                                                 node.ParentNode.RemoveChild(node);
                                         }
                                     }
