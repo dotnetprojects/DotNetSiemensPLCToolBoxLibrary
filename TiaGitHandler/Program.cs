@@ -282,6 +282,9 @@ namespace TiaGitHandler
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();
+                            XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
+                            ns.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+
                             try
                             {
                                 xmlDoc.LoadXml(src);
@@ -375,6 +378,18 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns:DateAttribute", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        if (node.Attributes != null && node.Attributes["Name"].Value == "ParameterModifiedTS")
+                                            node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
 
                                 StringBuilder sb = new StringBuilder();
                                 XmlWriterSettings settings = new XmlWriterSettings
@@ -401,6 +416,9 @@ namespace TiaGitHandler
                             {                              
                                 var xmlValid2 = false;
                                 XmlDocument xmlDoc2 = new XmlDocument();
+                                XmlNamespaceManager ns2 = new XmlNamespaceManager(xmlDoc2.NameTable);
+                                ns2.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+
                                 try
                                 {
                                     xmlDoc2.LoadXml(xml);
@@ -535,23 +553,29 @@ namespace TiaGitHandler
                                         { }
                                     }
 
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
-                                        var node = nodes[0];
-                                        node.ParentNode.RemoveChild(node);
-                                    }
-                                    catch
-                                    { }
+                                    //try
+                                    //{
+                                    //    var nodes = xmlDoc2.SelectNodes("//MultilingualText");
+                                    //    foreach (var node in nodes.Cast<XmlNode>())
+                                    //    {
+                                    //        node.ParentNode.RemoveChild(node);                                               
+                                    //    }
+                                    //}
+                                    //catch
+                                    //{ }
 
                                     try
                                     {
-                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
-                                        var node = nodes[0];
-                                        node.ParentNode.RemoveChild(node);
+                                        var nodes = xmlDoc2.SelectNodes("//smns:DateAttribute", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            if (node.Attributes != null && node.Attributes["Name"].Value == "ParameterModifiedTS")
+                                                node.ParentNode.RemoveChild(node);
+                                        }
                                     }
                                     catch
-                                    { }
+                                    {
+                                    }
 
                                     StringBuilder sb = new StringBuilder();
                                     XmlWriterSettings settings = new XmlWriterSettings
