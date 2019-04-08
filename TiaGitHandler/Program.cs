@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
@@ -115,7 +116,7 @@ namespace TiaGitHandler
                             "Sicherheitsabfrage",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        Directory.Delete(exportPath, true);
+                        DeleteDirectory(exportPath);
                     }
                     else
                     {
@@ -664,6 +665,33 @@ namespace TiaGitHandler
         private static string NormalizeFolderName(string name)
         {
             return name.Replace("-", "").Replace(".", "").Replace(" ", "");
+        }
+
+        public static void DeleteDirectory(string path)
+        {
+            foreach (string directory in Directory.GetDirectories(path))
+            {
+                Thread.Sleep(1);
+                DeleteDir(directory);
+            }
+            DeleteDir(path);
+        }
+
+        private static void DeleteDir(string dir)
+        {
+            try
+            {
+                Thread.Sleep(1);
+                Directory.Delete(dir, true);
+            }
+            catch (IOException)
+            {
+                DeleteDir(dir);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                DeleteDir(dir);
+            }
         }
     }
 }
