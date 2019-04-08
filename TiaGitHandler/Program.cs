@@ -284,6 +284,7 @@ namespace TiaGitHandler
                             XmlDocument xmlDoc = new XmlDocument();
                             XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
                             ns.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+                            ns.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
 
                             try
                             {
@@ -380,11 +381,10 @@ namespace TiaGitHandler
                                 }
                                 try
                                 {
-                                    var nodes = xmlDoc.SelectNodes("//smns:DateAttribute", ns);
+                                    var nodes = xmlDoc.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns);
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
-                                        if (node.Attributes != null && node.Attributes["Name"].Value == "ParameterModifiedTS")
-                                            node.ParentNode.RemoveChild(node);
+                                        node.ParentNode.RemoveChild(node);
                                     }
                                 }
                                 catch
@@ -392,11 +392,22 @@ namespace TiaGitHandler
                                 }
                                 try
                                 {
-                                    var nodes = xmlDoc.SelectNodes("//smns:Address", ns);
+                                    var nodes = xmlDoc.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns);
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
-                                        if (node.Attributes != null && node.Attributes["Area"].Value == "None" && node.Attributes["Informative"].Value == "true")
-                                            node.ParentNode.RemoveChild(node);
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
                                     }
                                 }
                                 catch
@@ -430,6 +441,7 @@ namespace TiaGitHandler
                                 XmlDocument xmlDoc2 = new XmlDocument();
                                 XmlNamespaceManager ns2 = new XmlNamespaceManager(xmlDoc2.NameTable);
                                 ns2.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+                                ns2.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
 
                                 try
                                 {
@@ -578,11 +590,10 @@ namespace TiaGitHandler
 
                                     try
                                     {
-                                        var nodes = xmlDoc2.SelectNodes("//smns:DateAttribute", ns2);
+                                        var nodes = xmlDoc2.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns2);
                                         foreach (var node in nodes.Cast<XmlNode>())
                                         {
-                                            if (node.Attributes != null && node.Attributes["Name"].Value == "ParameterModifiedTS")
-                                                node.ParentNode.RemoveChild(node);
+                                            node.ParentNode.RemoveChild(node);
                                         }
                                     }
                                     catch
@@ -590,11 +601,22 @@ namespace TiaGitHandler
                                     }
                                     try
                                     {
-                                        var nodes = xmlDoc2.SelectNodes("//smns:Address", ns2);
+                                        var nodes = xmlDoc2.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns2);
                                         foreach (var node in nodes.Cast<XmlNode>())
                                         {
-                                            if (node.Attributes != null && node.Attributes["Area"].Value == "None" && node.Attributes["Informative"].Value == "true")
-                                                node.ParentNode.RemoveChild(node);
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
                                         }
                                     }
                                     catch
