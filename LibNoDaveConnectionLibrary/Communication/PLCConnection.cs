@@ -418,6 +418,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 Connected = true;
 
+                if (Logger != null)
+                    Logger("PLC Connection created");
+
                 PlcConnected?.Invoke(this);
                 #endregion
             }
@@ -429,6 +432,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// </summary>
         void CheckConnection()
         {
+            if (Connected && _dc == null)
+                Connected = false;
+
             if (Connected)
                 return;
 
