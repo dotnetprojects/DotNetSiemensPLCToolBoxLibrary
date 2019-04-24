@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
@@ -115,7 +116,7 @@ namespace TiaGitHandler
                             "Sicherheitsabfrage",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        Directory.Delete(exportPath, true);
+                        DeleteDirectory(exportPath);
                     }
                     else
                     {
@@ -282,6 +283,10 @@ namespace TiaGitHandler
 
                             var xmlValid = false;
                             XmlDocument xmlDoc = new XmlDocument();
+                            XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
+                            ns.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+                            ns.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
+
                             try
                             {
                                 xmlDoc.LoadXml(src);
@@ -312,6 +317,103 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CodeModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CompileDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//CreationDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//InterfaceModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//ModifiedDate");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//ParameterModified");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//StructureModified");
+                                    var node = nodes[0];
+                                    node.ParentNode.RemoveChild(node);
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
 
                                 StringBuilder sb = new StringBuilder();
                                 XmlWriterSettings settings = new XmlWriterSettings
@@ -338,6 +440,10 @@ namespace TiaGitHandler
                             {                              
                                 var xmlValid2 = false;
                                 XmlDocument xmlDoc2 = new XmlDocument();
+                                XmlNamespaceManager ns2 = new XmlNamespaceManager(xmlDoc2.NameTable);
+                                ns2.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
+                                ns2.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
+
                                 try
                                 {
                                     xmlDoc2.LoadXml(xml);
@@ -391,6 +497,69 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CodeModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CompileDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//CreationDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//InterfaceModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//ModifiedDate");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//ParameterModified");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//StructureModified");
+                                        var node = nodes[0];
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                    catch
+                                    {
+                                    }
 
                                     if (removeCodeFromXml && !xml.Contains("$$GITHANDLER-KEEPCODE$$"))
                                     {
@@ -409,23 +578,51 @@ namespace TiaGitHandler
                                         { }
                                     }
 
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
-                                        var node = nodes[0];
-                                        node.ParentNode.RemoveChild(node);
-                                    }
-                                    catch
-                                    { }
+                                    //try
+                                    //{
+                                    //    var nodes = xmlDoc2.SelectNodes("//MultilingualText");
+                                    //    foreach (var node in nodes.Cast<XmlNode>())
+                                    //    {
+                                    //        node.ParentNode.RemoveChild(node);                                               
+                                    //    }
+                                    //}
+                                    //catch
+                                    //{ }
 
                                     try
                                     {
-                                        var nodes = xmlDoc2.SelectNodes("//MultilingualText");
-                                        var node = nodes[0];
-                                        node.ParentNode.RemoveChild(node);
+                                        var nodes = xmlDoc2.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
                                     }
                                     catch
-                                    { }
+                                    {
+                                    }
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
 
                                     StringBuilder sb = new StringBuilder();
                                     XmlWriterSettings settings = new XmlWriterSettings
@@ -468,6 +665,33 @@ namespace TiaGitHandler
         private static string NormalizeFolderName(string name)
         {
             return name.Replace("-", "").Replace(".", "").Replace(" ", "");
+        }
+
+        public static void DeleteDirectory(string path)
+        {
+            foreach (string directory in Directory.GetDirectories(path))
+            {
+                Thread.Sleep(1);
+                DeleteDir(directory);
+            }
+            DeleteDir(path);
+        }
+
+        private static void DeleteDir(string dir)
+        {
+            try
+            {
+                Thread.Sleep(1);
+                Directory.Delete(dir, true);
+            }
+            catch (IOException)
+            {
+                DeleteDir(dir);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                DeleteDir(dir);
+            }
         }
     }
 }
