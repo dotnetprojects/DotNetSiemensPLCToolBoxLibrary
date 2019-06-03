@@ -175,8 +175,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         public void socket_Thread()
         {
+            if (Logger != null)
+                Logger("socket thread created");
+
             if (_socketPtr.HasValue)
             {
+                if (Logger != null)
+                    Logger("socket thread - close old socket :" + _socketPtr.ToString());
                 libnodave.closeSocket(_socketPtr.Value);
                 _socketPtr = null;
             }
@@ -201,11 +206,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             //TcpClient sock = new TcpClient(ip, _configuration.Port);
             //_fds.rfd = sock.Client.Handle;
 
-            
+            if (Logger != null)
+                Logger("socket thread try to connect");
             if (ip != null)
                 _fds.rfd = libnodave.openSocket(_configuration.Port, ip);
             else
                 _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
+            if (Logger != null)
+                Logger("socket thread - got socket pointer:" + _socketPtr.ToString());
             _socketPtr = _fds.rfd;
         }
 
