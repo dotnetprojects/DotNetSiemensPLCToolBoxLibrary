@@ -969,8 +969,7 @@ namespace JFK_VarTab
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Filter =
-                "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.ap14; *.al11; *.al12; *.al13; *.al14; *.zap13; *.zap14)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.ap14;*.al11;*.al12;*.al13;*.al14;*.zap13;*.zap14";
+            op.Filter = "All supported types (*.zip, *.s7p, *.s5d, *.ap11, *.ap12, *.ap13; *.ap14; *.ap15; *.ap15_1; *.al11; *.al12; *.al13; *.al14; *.al15; *.al15_1; *.zap13; *.zap14; *.zap15; *.zap15_1)|*.s7p;*.zip;*.s5d;*.s7l;*.ap11;*.ap12;*.ap13;*.ap14;*.ap14;*.ap15_1;*.al11;*.al12;*.al13;*.al14;*.al15;*.al15_1;*.zap13;*.zap14;*.zap15;*.zap15_1|Step5 Project|*.s5d|Step7 V5.5 Project|*.s7p;*.s7l|Zipped Step5/Step7 Project|*.zip|TIA-Portal Project|*.ap11;*.ap12;*.ap13;*.ap14;*.ap15;*.ap15_1;*.al11;*.al12;*.al13;*.al14;*.al15;*.al15_1;*.zap13;*.zap14;*.zap15;*.zap15_1";
             op.CheckFileExists = false;
             op.ValidateNames = false;
             var ret = op.ShowDialog();
