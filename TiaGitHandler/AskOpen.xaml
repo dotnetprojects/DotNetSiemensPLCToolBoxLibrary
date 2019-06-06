@@ -10,12 +10,13 @@
         <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
         <Button Content="Anhängen V14SP1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV14SP1_Click"/>
         <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
-        <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="0,0,34,90" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsChecked="True"/>
+        <CheckBox x:Name="chkResetSetpoints" Content="Reset all setpoints" Margin="211,0,1,106" VerticalAlignment="Bottom" IsChecked="True"/>
+        <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="211,0,0,90" VerticalAlignment="Bottom" IsChecked="True" HorizontalAlignment="Left" Width="151"/>
         <StackPanel Margin="0,130,0,0">
             <Separator></Separator>
             <TextBlock ToolTip="dsklfaksdfh" Margin="10,0,0,0">Remove leading blanks from comment column</TextBlock>
-            <RadioButton GroupName="TiaBug" x:Name="rbRemoveOnlyOneBlank" Content="Remove only one blank" IsChecked="True" Margin="10,0,0,0"/>
-            <RadioButton GroupName="TiaBug" x:Name="rbRemoveAllBlanks" Content="Remove all blanks" Margin="10,0,0,0" />
+            <RadioButton GroupName="TiaBug" x:Name="rbRemoveOnlyOneBlank" Content="Remove only one blank" Margin="10,0,0,0"/>
+            <RadioButton GroupName="TiaBug" x:Name="rbRemoveAllBlanks" Content="Remove all blanks" IsChecked="True" Margin="10,0,0,0" />
             <RadioButton GroupName="TiaBug" x:Name="rbRemoveNoBlanks" Content="Remove no blanks" Margin="10,0,0,0"/>
         </StackPanel>
     </Grid>

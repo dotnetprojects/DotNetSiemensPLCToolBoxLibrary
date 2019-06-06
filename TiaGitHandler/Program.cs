@@ -25,6 +25,7 @@ namespace TiaGitHandler
 
         private static ProjectType _projectType = ProjectType.Tia15_1;
 
+        private static bool resetSetpoints = true;
         private static bool removeCodeFromXml = true;
         private static bool removeAllBlanks = false;
         private static bool removeOnlyOneBlank = true;
@@ -48,6 +49,7 @@ namespace TiaGitHandler
                 var ask = new AskOpen();
                 app.Run(ask);
                 var res = ask.Result;
+                resetSetpoints = ask.chkResetSetpoints.IsChecked == true;
                 removeCodeFromXml = ask.chkRemoveCode.IsChecked == true;
                 removeAllBlanks = ask.rbRemoveAllBlanks.IsChecked == true;
                 removeOnlyOneBlank = ask.rbRemoveOnlyOneBlank.IsChecked == true;
@@ -415,6 +417,21 @@ namespace TiaGitHandler
                                 {
                                 }
 
+                                if (resetSetpoints)
+                                {
+                                    try
+                                    {
+                                        var nodes = xmlDoc.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.InnerText = "false";
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+                                }
+
                                 StringBuilder sb = new StringBuilder();
                                 XmlWriterSettings settings = new XmlWriterSettings
                                 {
@@ -622,6 +639,21 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     {
+                                    }
+
+                                    if (resetSetpoints)
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns2);
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.InnerText = "false";
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
                                     }
 
                                     StringBuilder sb = new StringBuilder();
