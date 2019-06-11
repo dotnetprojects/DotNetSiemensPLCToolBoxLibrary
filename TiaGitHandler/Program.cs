@@ -279,6 +279,7 @@ namespace TiaGitHandler
                             else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
                             {
                                 ext = "udt";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
                             var xmlfile = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
