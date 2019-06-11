@@ -642,6 +642,21 @@ namespace TiaGitHandler
                                     {
                                     }
 
+                                    if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB && projectBlockInfo.IsInstance)
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns);
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.ParentNode.RemoveChild(node);
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
+                                    }
+
                                     if (resetSetpoints)
                                     {
                                         try
