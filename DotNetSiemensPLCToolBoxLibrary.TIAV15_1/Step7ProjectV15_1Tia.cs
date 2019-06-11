@@ -55,6 +55,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
         public class TIAOpennessProjectBlockInfo : ProjectBlockInfo, ITiaProjectBlockInfo
         {
+            public override bool IsInstance
+            {
+                get
+                {
+                    return this.plcBlock.ToString().Contains("InstanceDB");
+                }
+            }
+
             internal TIAOpennessProjectBlockInfo(PlcBlock plcBlock)
             {
                 this.plcBlock = plcBlock;

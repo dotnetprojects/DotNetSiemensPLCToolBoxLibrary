@@ -279,6 +279,7 @@ namespace TiaGitHandler
                             else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
                             {
                                 ext = "udt";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
                             var xmlfile = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
@@ -639,6 +640,21 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     {
+                                    }
+
+                                    if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB && projectBlockInfo.IsInstance)
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns);
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.ParentNode.RemoveChild(node);
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
                                     }
 
                                     if (resetSetpoints)
