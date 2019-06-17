@@ -657,6 +657,35 @@ namespace TiaGitHandler
                                         }
                                     }
 
+                                    // add setpoint node if not existing (necessary because TIA sets setpoint true if no node exists during import)
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns2:Member/*[local-name()= \"AttributeList\"]", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            var setPointAttributeExists = false;
+                                            foreach (var node2 in node.ChildNodes.Cast<XmlNode>())
+                                            {
+                                                if (node2.Attributes["Name"].Value == "SetPoint")
+                                                {
+                                                    setPointAttributeExists = true;
+                                                }
+                                            }
+
+                                            if (!setPointAttributeExists)
+                                            {
+                                                XmlElement booleanAttribute = xmlDoc2.CreateElement("BooleanAttribute", node.NamespaceURI);
+                                                booleanAttribute.SetAttribute("Name", "SetPoint");
+                                                booleanAttribute.SetAttribute("SystemDefined", "true");
+                                                booleanAttribute.InnerXml = "false";
+                                                node.AppendChild(booleanAttribute);
+                                            }
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
                                     if (resetSetpoints)
                                     {
                                         try
