@@ -25,6 +25,7 @@ namespace TiaGitHandler
 
         private static ProjectType _projectType = ProjectType.Tia15_1;
 
+        private static bool resetSetpoints = true;
         private static bool removeCodeFromXml = true;
         private static bool removeAllBlanks = false;
         private static bool removeOnlyOneBlank = true;
@@ -48,6 +49,7 @@ namespace TiaGitHandler
                 var ask = new AskOpen();
                 app.Run(ask);
                 var res = ask.Result;
+                resetSetpoints = ask.chkResetSetpoints.IsChecked == true;
                 removeCodeFromXml = ask.chkRemoveCode.IsChecked == true;
                 removeAllBlanks = ask.rbRemoveAllBlanks.IsChecked == true;
                 removeOnlyOneBlank = ask.rbRemoveOnlyOneBlank.IsChecked == true;
@@ -277,6 +279,7 @@ namespace TiaGitHandler
                             else if (projectBlockInfo.BlockType == PLCBlockType.UDT)
                             {
                                 ext = "udt";
+                                xml = projectBlockInfo.Export(ExportFormat.Xml);
                             }
                             var file = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + "." + ext);
                             var xmlfile = Path.Combine(path, projectBlockInfo.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
@@ -413,6 +416,21 @@ namespace TiaGitHandler
                                 }
                                 catch
                                 {
+                                }
+
+                                if (resetSetpoints)
+                                {
+                                    try
+                                    {
+                                        var nodes = xmlDoc.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.InnerText = "false";
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
                                 }
 
                                 StringBuilder sb = new StringBuilder();
@@ -622,6 +640,65 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     {
+                                    }
+
+                                    if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB && projectBlockInfo.IsInstance)
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns);
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.ParentNode.RemoveChild(node);
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
+                                    }
+
+                                    // add setpoint node if not existing (necessary because TIA sets setpoint true if no node exists during import)
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns2:Member/*[local-name()= \"AttributeList\"]", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            var setPointAttributeExists = false;
+                                            foreach (var node2 in node.ChildNodes.Cast<XmlNode>())
+                                            {
+                                                if (node2.Attributes["Name"].Value == "SetPoint")
+                                                {
+                                                    setPointAttributeExists = true;
+                                                }
+                                            }
+
+                                            if (!setPointAttributeExists)
+                                            {
+                                                XmlElement booleanAttribute = xmlDoc2.CreateElement("BooleanAttribute", node.NamespaceURI);
+                                                booleanAttribute.SetAttribute("Name", "SetPoint");
+                                                booleanAttribute.SetAttribute("SystemDefined", "true");
+                                                booleanAttribute.InnerXml = "false";
+                                                node.AppendChild(booleanAttribute);
+                                            }
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    if (resetSetpoints)
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//smns2:BooleanAttribute[@Name='SetPoint']", ns2);
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.InnerText = "false";
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
                                     }
 
                                     StringBuilder sb = new StringBuilder();

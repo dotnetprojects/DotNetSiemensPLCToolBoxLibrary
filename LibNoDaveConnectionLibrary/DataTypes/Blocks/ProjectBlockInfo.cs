@@ -18,7 +18,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
        public virtual PLCBlockType BlockType { get; set; }
 
-       public virtual Block GetBlock()
+        public virtual bool IsInstance
+        {
+            get { return false; }
+        }
+
+        public virtual Block GetBlock()
        {
            IBlocksFolder blkFld = (IBlocksFolder) ParentFolder;
            return blkFld.GetBlock(this);
