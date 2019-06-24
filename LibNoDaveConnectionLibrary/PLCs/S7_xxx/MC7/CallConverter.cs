@@ -297,9 +297,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             else if (akRow.DataType == S7DataRowType.REAL)
                                             {
                                                 var bt = new byte[4];
-                                                libnodave.putS32at(bt, 0, Int32.Parse(par.Substring(2)));
-                                                var real = libnodave.getFloatfrom(bt, 0);
-                                                newPar.Value = real.ToString("e6", CultureInfo.InvariantCulture);
+                                                if (par.Length>2 && int.TryParse(par.Substring(2), out var val))
+                                                {
+                                                    libnodave.putS32at(bt, 0, val);
+                                                    var real = libnodave.getFloatfrom(bt, 0);
+                                                    newPar.Value = real.ToString("e6", CultureInfo.InvariantCulture);
+                                                }
+                                                else
+                                                {
+                                                    newPar.Value = Parameters[s];
+                                                }
                                             }
                                             else
                                             {
