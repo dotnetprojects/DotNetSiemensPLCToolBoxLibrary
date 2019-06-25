@@ -280,35 +280,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         if (Parameters.ContainsKey(s))
                                         {
                                             string par = Parameters[s];
-                                            if (akRow.DataType == S7DataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
+                                            try
                                             {
-                                                newPar.Value = Helper.GetS5Time(
-                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[1],
-                                                                            BitConverter.GetBytes(Convert.ToInt32(par))[0]);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.TIME && par[0] >= '0' && par[0] <= '9')
-                                            {
-                                                newPar.Value = Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)),0);
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
-                                            {
-                                                newPar.Value = (char) Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'";
-                                            }
-                                            else if (akRow.DataType == S7DataRowType.REAL)
-                                            {
-                                                var bt = new byte[4];
-                                                if (par.Length>2 && int.TryParse(par.Substring(2), out var val))
+                                                if (akRow.DataType == S7DataRowType.S5TIME && par[0] >= '0' && par[0] <= '9')
                                                 {
-                                                    libnodave.putS32at(bt, 0, val);
-                                                    var real = libnodave.getFloatfrom(bt, 0);
-                                                    newPar.Value = real.ToString("e6", CultureInfo.InvariantCulture);
+                                                    newPar.Value = Helper.GetS5Time(
+                                                                                BitConverter.GetBytes(Convert.ToInt32(par))[1],
+                                                                                BitConverter.GetBytes(Convert.ToInt32(par))[0]);
+                                                }
+                                                else if (akRow.DataType == S7DataRowType.TIME && par[0] >= '0' && par[0] <= '9')
+                                                {
+                                                    newPar.Value = Helper.GetDTime(BitConverter.GetBytes(Convert.ToInt32(par)), 0);
+                                                }
+                                                else if (akRow.DataType == S7DataRowType.CHAR && par[0] == 'B')
+                                                {
+                                                    newPar.Value = (char)Int32.Parse(par.Substring(5), System.Globalization.NumberStyles.AllowHexSpecifier) + "'";
+                                                }
+                                                else if (akRow.DataType == S7DataRowType.REAL)
+                                                {
+                                                    var bt = new byte[4];
+                                                    if (par.Length > 2 && int.TryParse(par.Substring(2), out var val))
+                                                    {
+                                                        libnodave.putS32at(bt, 0, val);
+                                                        var real = libnodave.getFloatfrom(bt, 0);
+                                                        newPar.Value = real.ToString("e6", CultureInfo.InvariantCulture);
+                                                    }
+                                                    else
+                                                    {
+                                                        newPar.Value = Parameters[s];
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     newPar.Value = Parameters[s];
                                                 }
                                             }
-                                            else
+                                            catch(Exception ex)
                                             {
                                                 newPar.Value = Parameters[s];
                                             }
