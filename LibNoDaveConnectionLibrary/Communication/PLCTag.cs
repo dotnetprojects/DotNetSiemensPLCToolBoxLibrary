@@ -199,6 +199,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="type">The data type to be read from the Controller</param>
         public PLCTag(string address, TagDataType type)
         {
+            this.TagDataType = type;
             this.ChangeAddressFromString(address);
             this.TagDataType = type;
         }
