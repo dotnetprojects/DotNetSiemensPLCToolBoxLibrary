@@ -207,7 +207,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
                 if (ext == "xml")
                 {
-                    plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+                    plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.WithDefaults | ExportOptions.WithReadOnly);
                 }
                 else
                 {

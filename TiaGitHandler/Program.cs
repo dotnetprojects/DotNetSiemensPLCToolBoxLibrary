@@ -311,6 +311,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//DocumentInfo");
@@ -320,6 +321,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//CodeModifiedDate");
@@ -329,6 +331,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//CompileDate");
@@ -338,6 +341,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//CreationDate");
@@ -347,6 +351,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//InterfaceModifiedDate");
@@ -356,6 +361,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//ModifiedDate");
@@ -365,6 +371,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//ParameterModified");
@@ -374,6 +381,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+                                
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//StructureModified");
@@ -394,6 +402,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns);
@@ -515,6 +524,7 @@ namespace TiaGitHandler
                                     }
                                     catch
                                     { }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//CodeModifiedDate");
@@ -524,6 +534,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//CompileDate");
@@ -533,6 +544,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//CreationDate");
@@ -542,6 +554,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//InterfaceModifiedDate");
@@ -551,6 +564,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//ModifiedDate");
@@ -560,6 +574,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//ParameterModified");
@@ -569,6 +584,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//StructureModified");
@@ -618,6 +634,7 @@ namespace TiaGitHandler
                                     catch
                                     {
                                     }
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns2);
@@ -655,35 +672,6 @@ namespace TiaGitHandler
                                         catch
                                         {
                                         }
-                                    }
-
-                                    // add setpoint node if not existing (necessary because TIA sets setpoint true if no node exists during import)
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//smns2:Member/*[local-name()= \"AttributeList\"]", ns2);
-                                        foreach (var node in nodes.Cast<XmlNode>())
-                                        {
-                                            var setPointAttributeExists = false;
-                                            foreach (var node2 in node.ChildNodes.Cast<XmlNode>())
-                                            {
-                                                if (node2.Attributes["Name"].Value == "SetPoint")
-                                                {
-                                                    setPointAttributeExists = true;
-                                                }
-                                            }
-
-                                            if (!setPointAttributeExists)
-                                            {
-                                                XmlElement booleanAttribute = xmlDoc2.CreateElement("BooleanAttribute", node.NamespaceURI);
-                                                booleanAttribute.SetAttribute("Name", "SetPoint");
-                                                booleanAttribute.SetAttribute("SystemDefined", "true");
-                                                booleanAttribute.InnerXml = "false";
-                                                node.AppendChild(booleanAttribute);
-                                            }
-                                        }
-                                    }
-                                    catch
-                                    {
                                     }
 
                                     if (resetSetpoints)
