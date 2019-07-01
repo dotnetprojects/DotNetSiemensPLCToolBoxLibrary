@@ -51,6 +51,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.Project = Project;
                 this.TiaProject = Project;
             }
+
+            public virtual void ImportFile(FileInfo file, bool overwrite)
+            { }
         }
 
         public class TIAOpennessProjectBlockInfo : ProjectBlockInfo, ITiaProjectBlockInfo
@@ -328,6 +331,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.plcSoftware = plcSoftware;
             }
 
+            public override void ImportFile(FileInfo file, bool overwrite)
+            {
+                plcSoftware.BlockGroup.Blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+            }
+
             internal PlcSoftware plcSoftware;
 
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
@@ -455,6 +463,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.composition = composition;
             }
 
+            public override void ImportFile(FileInfo file, bool overwrite)
+            {
+                composition.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+            }
+
             public List<ProjectBlockInfo> readPlcBlocksList()
             {
                 if (_blockInfos != null)
@@ -532,6 +545,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.Project = Project;
                 this.TiaProject = Project;
                 this.blocks = blocks;
+            }
+
+            public override void ImportFile(FileInfo file, bool overwrite)
+            {
+                blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
             }
 
             public List<ProjectBlockInfo> readPlcBlocksList()
@@ -748,7 +766,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             LoadSubProgramBlocksFoldersViaOpennessDlls(fld, software.BlockGroup);
 
             var t = (PlcTypeGroup)software.TypeGroup;
-
+            
             var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, t.Types)
             {
                 //TiaPortalItem = controller.ControllerDatatypeFolder,

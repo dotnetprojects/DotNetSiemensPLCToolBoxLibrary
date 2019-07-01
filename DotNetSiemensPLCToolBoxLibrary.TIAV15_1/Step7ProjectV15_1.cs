@@ -32,11 +32,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
 
-            AksForInstance();
+            AksForInstance1();
 
             LoadViaOpennessDlls();
 
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;
+        }
+
+
+        private void AksForInstance1()
+        {
+
+            tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
+
+            var processes = TiaPortal.GetProcesses().ToArray();
+            
+            tiaPortal = processes[0].Attach();
+            tiapProject = tiaPortal.Projects[0];
+            this.ProjectFile = processes[0].ProjectPath.ToString();
         }
 
         private void AksForInstance()
