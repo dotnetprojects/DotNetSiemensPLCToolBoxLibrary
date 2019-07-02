@@ -450,17 +450,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
         public class TIAOpennessPlcDatatypeFolder : TIAOpennessProjectFolder, IBlocksFolder
         {
-            PlcTypeComposition composition;
+            private PlcTypeComposition composition;
+            private PlcTypeGroup plcTypeGroup;
 
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
-            public TIAOpennessPlcDatatypeFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder, PlcTypeComposition composition)
+            public TIAOpennessPlcDatatypeFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder, PlcTypeComposition composition, PlcTypeGroup plcTypeGroup)
                 : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
                 this.Project = Project;
                 this.TiaProject = Project;
                 this.composition = composition;
+                this.plcTypeGroup = plcTypeGroup;
+            }
+
+            public override ProjectFolder CreateFolder(string name)
+            {
+                var gp = plcTypeGroup.Groups.Create(name);
+                var newFld = new TIAOpennessPlcDatatypeFolder((Step7ProjectV15_1)Project, ControllerFolder, gp.Types, gp);
+                newFld.Name = gp.Name;
+                newFld.Parent = this;
+                this.SubItems.Add(newFld);
+                return newFld;
             }
 
             public override void ImportFile(FileInfo file, bool overwrite)
@@ -536,15 +548,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
-            PlcBlockComposition blocks;
+            private PlcBlockComposition blocks;
+            private PlcBlockGroup plcBlockGroup;
 
-            public TIAOpennessProgramFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder, PlcBlockComposition blocks)
+            public TIAOpennessProgramFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder, PlcBlockComposition blocks, PlcBlockGroup plcBlockGroup)
                 : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
                 this.Project = Project;
                 this.TiaProject = Project;
                 this.blocks = blocks;
+                this.plcBlockGroup = plcBlockGroup;
+            }
+
+            public override ProjectFolder CreateFolder(string name)
+            {
+                var gp = plcBlockGroup.Groups.Create(name);
+                var newFld = new TIAOpennessProgramFolder((Step7ProjectV15_1)Project, ControllerFolder, gp.Blocks, gp);
+                newFld.Name = gp.Name;
+                newFld.Parent = this;
+                this.SubItems.Add(newFld);
+                return newFld;
             }
 
             public override void ImportFile(FileInfo file, bool overwrite)
@@ -755,7 +779,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
         internal void LoadControlerFolderViaOpennessDlls(TIAOpennessControllerFolder parent, PlcSoftware software)
         {
-            var fld = new TIAOpennessProgramFolder(this, parent, software.BlockGroup.Blocks)
+            var fld = new TIAOpennessProgramFolder(this, parent, software.BlockGroup.Blocks, software.BlockGroup)
             {
                 //TiaPortalItem = controller.ProgramblockFolder,
                 Name = "software",
@@ -767,7 +791,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             var t = (PlcTypeGroup)software.TypeGroup;
             
-            var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, t.Types)
+            var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, t.Types, t)
             {
                 //TiaPortalItem = controller.ControllerDatatypeFolder,
                 Name = "data types",
@@ -792,7 +816,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             foreach (var e in plcBlockGroup.Groups)
             {
-                var fld = new TIAOpennessProgramFolder(this, parent.ControllerFolder, e.Blocks)
+                var fld = new TIAOpennessProgramFolder(this, parent.ControllerFolder, e.Blocks, e)
                 {
                     //TiaPortalItem = e,
                     Name = e.Name,
@@ -807,7 +831,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             foreach (var e in p.Groups)
             {
-                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types)
+                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types, e)
                 {
                     //TiaPortalItem = e,
                     Name = e.Name,
@@ -822,7 +846,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             foreach (var e in p.Groups)
             {
-                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types)
+                var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types, e)
                 {
                     //TiaPortalItem = e,
                     Name = e.Name,
