@@ -347,6 +347,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
             public TIAOpennessPlcDatatypeFolder PlcDatatypeFolder { get; set; }
             public TIAOpennessVariablesFolder VarTabFolder { get; set; }
+            public TIAOpennessWatchAndForceTablesFolder WatchAndForceTablesFolder { get; set; }
 
             public Block GetBlockRecursive(string name)
             {
@@ -942,6 +943,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             parent.VarTabFolder = fld3;
             parent.SubItems.Add(fld3);
             LoadSubVartabFoldersViaOpennessDlls(fld3, software.TagTableGroup);
+
+            var fld4 = new TIAOpennessWatchAndForceTablesFolder(this, parent, software.WatchAndForceTableGroup)
+            {
+                Name = "watches and forces",
+                Parent = parent,
+            };
+            parent.WatchAndForceTablesFolder = fld4;
+            parent.SubItems.Add(fld4);
+            LoadSubWatchAndForceTablesFoldersViaOpennessDlls(fld4, software.WatchAndForceTableGroup);
         }
 
         internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, PlcBlockGroup plcBlockGroup)
@@ -1012,6 +1022,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 };
                 parent.SubItems.Add(fld);
                 LoadSubVartabFoldersViaOpennessDlls(fld, e);
+            }
+        }
+
+        internal void LoadSubWatchAndForceTablesFoldersViaOpennessDlls(TIAOpennessWatchAndForceTablesFolder parent, PlcWatchAndForceTableSystemGroup blockFolder)
+        {
+            foreach (var e in blockFolder.Groups)
+            {
+                var fld = new TIAOpennessWatchAndForceTablesFolder(this, parent.ControllerFolder, e)
+                {
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubWatchAndForceTablesFoldersViaOpennessDlls(fld, e);
+            }
+        }
+
+        internal void LoadSubWatchAndForceTablesFoldersViaOpennessDlls(TIAOpennessWatchAndForceTablesFolder parent, PlcWatchAndForceTableUserGroup blockFolder)
+        {
+            foreach (var e in blockFolder.Groups)
+            {
+                var fld = new TIAOpennessWatchAndForceTablesFolder(this, parent.ControllerFolder, e)
+                {
+                    Name = e.Name,
+                    Parent = parent,
+                };
+                parent.SubItems.Add(fld);
+                LoadSubWatchAndForceTablesFoldersViaOpennessDlls(fld, e);
             }
         }
         #region Parse DB UDT XML
