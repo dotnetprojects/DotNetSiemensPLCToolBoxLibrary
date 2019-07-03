@@ -735,6 +735,23 @@ namespace TiaGitHandler
                     File.WriteAllText(file, vt, new UTF8Encoding(true));
                 }
             }
+            else if (folder is ITIAWatchAndForceTablesFolder wtfFld)
+            {
+                foreach (var varTab in wtfFld.WatchTables)
+                {
+                    var vt = varTab.Export();
+                    var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".watch");
+                    Directory.CreateDirectory(path);
+                    File.WriteAllText(file, vt, new UTF8Encoding(true));
+                }
+                foreach (var varTab in wtfFld.ForceTables)
+                {
+                    var vt = varTab.Export();
+                    var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".force");
+                    Directory.CreateDirectory(path);
+                    File.WriteAllText(file, vt, new UTF8Encoding(true));
+                }
+            }
         }
 
         private static string NormalizeFolderName(string name)
