@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1;
 
@@ -9,8 +10,6 @@ namespace TiaImporter
 {
     class Program
     {
-        private static string importExtension = "*.xml";
-
         static void Main(string[] args)
         {
             Project prj = null;
@@ -46,6 +45,17 @@ namespace TiaImporter
                 Console.WriteLine(e);
             }
 
+            var extension = "xml";
+            try
+            {
+                if (args.Length > 3)
+                    extension = args[3];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
             prj = Step7ProjectV15_1.AttachToInstanceWithFilename(file);
             var prjV151 = prj as Step7ProjectV15_1;
 
@@ -57,7 +67,7 @@ namespace TiaImporter
             }
 
             int i = 0;
-            var fileList = BuildImportFileList(folderToImport).ToList();
+            var fileList = BuildImportFileList(folderToImport, extension).ToList();
             var count = 0;
             while (count != fileList.Count() && fileList.Count() > 0)
             {
@@ -90,11 +100,11 @@ namespace TiaImporter
                         var pgFolder = importFolder as Step7ProjectV15_1.TIAOpennessProgramFolder;
                         if (dtFolder != null)
                         {
-                            dtFolder.ImportFile(new FileInfo(importFile), true);
+                            dtFolder.ImportFile(new FileInfo(importFile), true, false);
                         }
                         else if (pgFolder != null)
                         {
-                            pgFolder.ImportFile(new FileInfo(importFile), true);
+                            pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
                         }
 
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -105,7 +115,7 @@ namespace TiaImporter
                     catch (Exception ex)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Error Importing File: " + relativePath + " - " +ex.Message);
+                        Console.WriteLine("Error Importing File: " + relativePath + " - " + ex.Message);
                     }
                 }
             }
@@ -119,20 +129,23 @@ namespace TiaImporter
         }
 
 
-        public static IEnumerable<string> BuildImportFileList(string path)
+        public static IEnumerable<string> BuildImportFileList(string path, string extension)
         {
-            foreach (var file in Directory.GetFiles(path, importExtension))
+            foreach (var ext in extension.Split(';'))
             {
-                yield return file;
+                foreach (var file in Directory.GetFiles(path, "*." + ext))
+                {
+                    yield return file;
+                }
             }
 
             foreach (var dir in Directory.GetDirectories(path))
             {
-                foreach (var file in BuildImportFileList(Path.Combine(path, dir)))
+                foreach (var file in BuildImportFileList(Path.Combine(path, dir), extension))
                 {
                     yield return file;
                 }
-                
+
             }
         }
     }

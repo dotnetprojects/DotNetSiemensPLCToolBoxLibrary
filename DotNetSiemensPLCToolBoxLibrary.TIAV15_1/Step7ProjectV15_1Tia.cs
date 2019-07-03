@@ -52,7 +52,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.TiaProject = Project;
             }
 
-            public virtual void ImportFile(FileInfo file, bool overwrite)
+            public virtual void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
             { }
         }
 
@@ -331,10 +331,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.plcSoftware = plcSoftware;
             }
 
-            public override void ImportFile(FileInfo file, bool overwrite)
-            {
-                plcSoftware.BlockGroup.Blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
-            }
+            //public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
+            //{
+            //    plcSoftware.BlockGroup.Blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+            //}
 
             internal PlcSoftware plcSoftware;
 
@@ -475,7 +475,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 return newFld;
             }
 
-            public override void ImportFile(FileInfo file, bool overwrite)
+            public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
             {
                 composition.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
             }
@@ -571,9 +571,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 return newFld;
             }
 
-            public override void ImportFile(FileInfo file, bool overwrite)
+            public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
             {
-                blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+                if (!importFromSource)
+                {
+                    blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+                }
+                else
+                {
+                    var currentDestination = plcBlockGroup as IEngineeringObject;
+                    while (!(currentDestination is PlcSoftware))
+                    {
+                        currentDestination = currentDestination.Parent;
+                    }
+
+                    var col = (currentDestination as PlcSoftware).ExternalSourceGroup.ExternalSources;
+
+                    var sourceName = Path.GetRandomFileName();
+                    sourceName = Path.ChangeExtension(sourceName, ".src");
+                    var src = col.CreateFromFile(sourceName, file.FullName);
+                    try
+                    {                     
+                        src.GenerateBlocksFromSource();
+                    }
+                    finally
+                    {
+                        src.Delete();
+                    }
+                }
             }
 
             public List<ProjectBlockInfo> readPlcBlocksList()
