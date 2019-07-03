@@ -107,6 +107,10 @@
     <Compile Include="Communication\S7_xxx\SZLDatasets.cs" />
     <Compile Include="DataTypes\Blocks\IBlock.cs" />
     <Compile Include="DataTypes\Blocks\IProjectBlockInfo.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V11\ITIAConstant.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V11\ITIATag.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V11\ITIAVarTab.cs" />
+    <Compile Include="DataTypes\Blocks\Step7V11\ITIAVarTabFolder.cs" />
     <Compile Include="DataTypes\Blocks\TiaAndSTep7DataBlockRow.cs" />
     <Compile Include="DataTypes\Blocks\Step7V5\S7AnyPointer.cs" />
     <Compile Include="DataTypes\BitByteAddress.cs" />

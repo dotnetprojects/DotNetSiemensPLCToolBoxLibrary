@@ -228,13 +228,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
         }
 
-        public class TIAOpennessTagTable
+        public class TIAOpennessTagTable : ITIAVarTab
         {
             public string Name { get; set; }
 
-            public List<TIAOpennessConstant> Constants { get; set; }
+            public List<ITIAConstant> Constants { get; set; }
 
-            public IEnumerable<TIAOpennessTag> Tags { get; internal set; }
+            public List<ITIATag> Tags { get; internal set; }
 
             internal PlcTagTable PlcTagTable { get; set; }
 
@@ -252,9 +252,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
                 return text;
             }
+
+            public string Export()
+            {
+                return Export(ExportFormat.Xml);
+            }
         }
 
-        public class TIAOpennessTag
+        public class TIAOpennessTag : ITIATag
         {
             public string Name { get; set; }
             public string Address { get; set; }
@@ -281,7 +286,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             public string Text { get; internal set; }
         }
 
-        public class TIAOpennessConstant
+        public class TIAOpennessConstant : ITIAConstant
         {
             private readonly PlcUserConstant controllerConstant;
 
@@ -386,7 +391,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
         }
 
-        public class TIAVarTabFolder : TIAOpennessProjectFolder
+        public class TIAVarTabFolder : TIAOpennessProjectFolder, ITIAVarTabFolder
         {
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
@@ -405,7 +410,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 {
                     var c = t.Constants.FirstOrDefault(x => x.Name == name);
                     if (c != null)
-                        return c;
+                        return (TIAOpennessConstant)c;
                 }
                 foreach (var f in SubItems.Flatten(x => x.SubItems))
                 {
@@ -413,13 +418,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                     {
                         var c = t.Constants.FirstOrDefault(x => x.Name == name);
                         if (c != null)
-                            return c;
+                            return (TIAOpennessConstant)c;
                     }
                 }
                 return null;
             }
 
-            public List<TIAOpennessTagTable> TagTables
+            public List<ITIAVarTab> TagTables
             {
                 get
                 {
@@ -430,14 +435,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                     var q = this.TiaPortalItem as PlcTagTableSystemGroup;
                     if (q != null)
                         tags = q.TagTables;
-                    var retVal = new List<TIAOpennessTagTable>();
+                    var retVal = new List<ITIAVarTab>();
 
                     foreach (var tagList in tags)
                     {
                         var info = new TIAOpennessTagTable() { Name = tagList.Name, PlcTagTable = tagList };
                         retVal.Add(info);
-                        info.Tags = tagList.Tags.Select(t => new TIAOpennessTag(t));
-                        info.Constants = new List<TIAOpennessConstant>();
+                        info.Tags = tagList.Tags.Select(t => new TIAOpennessTag(t)).Cast<ITIATag>().ToList();
+                        info.Constants = new List<ITIAConstant>();
                         foreach (var c in tagList.UserConstants)
                         {
                             info.Constants.Add(new TIAOpennessConstant(c) { Name = c.Name });

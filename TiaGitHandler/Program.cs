@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
@@ -39,7 +40,7 @@ namespace TiaGitHandler
             string exportPath = "";
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
-            
+
 
             Project prj = null;
 
@@ -128,7 +129,7 @@ namespace TiaGitHandler
                 }
 
                 Directory.CreateDirectory(exportPath);
-            }                       
+            }
             else
             {
                 file = args[0];
@@ -143,7 +144,7 @@ namespace TiaGitHandler
                 Credentials credentials = null;
                 if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password))
                 {
-                    credentials = new Credentials() {Username = user, Password = new SecureString()};
+                    credentials = new Credentials() { Username = user, Password = new SecureString() };
                     foreach (char c in password)
                     {
                         credentials.Password.AppendChar(c);
@@ -200,7 +201,7 @@ namespace TiaGitHandler
             if (folder is IBlocksFolder)
             {
                 var blkFld = folder as IBlocksFolder;
-                
+
                 foreach (var projectBlockInfo in blkFld.BlockInfos)
                 {
                     try
@@ -464,7 +465,7 @@ namespace TiaGitHandler
                             }
 
                             if (xml != null)
-                            {                              
+                            {
                                 var xmlValid2 = false;
                                 XmlDocument xmlDoc2 = new XmlDocument();
                                 XmlNamespaceManager ns2 = new XmlNamespaceManager(xmlDoc2.NameTable);
@@ -506,7 +507,7 @@ namespace TiaGitHandler
                                         catch
                                         { }
                                     }
-                                    
+
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//Created");
@@ -710,7 +711,6 @@ namespace TiaGitHandler
 
                                 Directory.CreateDirectory(path);
                                 File.WriteAllText(xmlfile, xml, new UTF8Encoding(true));
-
                             }
                         }
                         else
@@ -723,6 +723,16 @@ namespace TiaGitHandler
                         Console.WriteLine("Skipping Block: \"" + projectBlockInfo.Name + "\" Exception: " + ex.Message);
                         skippedBlocksList.Add(projectBlockInfo.Name);
                     }
+                }
+            }
+            else if (folder is ITIAVarTabFolder varTabfld)
+            {
+                foreach (var varTab in varTabfld.TagTables)
+                {
+                    var vt = varTab.Export();
+                    var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
+                    Directory.CreateDirectory(path);
+                    File.WriteAllText(file, vt, new UTF8Encoding(true));
                 }
             }
         }
