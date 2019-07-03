@@ -395,13 +395,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
-            internal object TiaPortalItem { get; set; }
+            private PlcTagTableGroup group;
 
-            public TIAVarTabFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder) : base(Project)
+            public TIAVarTabFolder(Step7ProjectV15_1 Project, TIAOpennessControllerFolder ControllerFolder, PlcTagTableGroup group) : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
                 this.Project = Project;
                 this.TiaProject = Project;
+                this.group = group;
             }
 
             public TIAOpennessConstant FindConstant(string name)
@@ -429,10 +430,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 get
                 {
                     PlcTagTableComposition tags = null;
-                    var o = this.TiaPortalItem as PlcTagTableUserGroup;
+                    var o = this.group as PlcTagTableUserGroup;
                     if (o != null)
                         tags = o.TagTables;
-                    var q = this.TiaPortalItem as PlcTagTableSystemGroup;
+                    var q = this.group as PlcTagTableSystemGroup;
                     if (q != null)
                         tags = q.TagTables;
                     var retVal = new List<ITIAVarTab>();
@@ -831,10 +832,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             parent.SubItems.Add(fld2);
             LoadSubPlcDatatypeFoldersViaOpennessDlls(fld2, software.TypeGroup);
 
-            var fld3 = new TIAVarTabFolder(this, parent)
+            var fld3 = new TIAVarTabFolder(this, parent, software.TagTableGroup)
             {
-                //TiaPortalItem = controller.ControllerTagFolder,
-                Name = "PLC data types",
+                Name = "variables",
                 Parent = parent,
             };
             parent.VarTabFolder = fld3;
@@ -863,7 +863,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             {
                 var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types, e)
                 {
-                    //TiaPortalItem = e,
                     Name = e.Name,
                     Parent = parent,
                 };
@@ -878,7 +877,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             {
                 var fld = new TIAOpennessPlcDatatypeFolder(this, parent.ControllerFolder, e.Types, e)
                 {
-                    //TiaPortalItem = e,
                     Name = e.Name,
                     Parent = parent,
                 };
@@ -891,9 +889,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             foreach (var e in blockFolder.Groups)
             {
-                var fld = new TIAVarTabFolder(this, parent.ControllerFolder)
+                var fld = new TIAVarTabFolder(this, parent.ControllerFolder, e)
                 {
-                    TiaPortalItem = e,
                     Name = e.Name,
                     Parent = parent,
                 };
@@ -906,9 +903,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         {
             foreach (var e in blockFolder.Groups)
             {
-                var fld = new TIAVarTabFolder(this, parent.ControllerFolder)
+                var fld = new TIAVarTabFolder(this, parent.ControllerFolder, e)
                 {
-                    TiaPortalItem = e,
                     Name = e.Name,
                     Parent = parent,
                 };
