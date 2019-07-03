@@ -39,6 +39,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             currentDomain.AssemblyResolve -= currentDomain_AssemblyResolve;
         }
 
+        public static Step7ProjectV15_1 AttachToInstanceWithFilename(string filename)
+        {
+            var inst = new Step7ProjectV15_1("");
+
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.AssemblyResolve += inst.currentDomain_AssemblyResolve;
+            inst.AksForInstanceWithFilename(filename);
+            inst.LoadViaOpennessDlls();
+            currentDomain.AssemblyResolve -= inst.currentDomain_AssemblyResolve;
+
+            return inst;
+        }
+
+        private Step7ProjectV15_1(string notUsed)
+        { }
+
+
+        private void AksForInstanceWithFilename(string file)
+        {
+
+            tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
+
+            var processes = TiaPortal.GetProcesses().ToArray();
+            var process = processes.First(x => x.ProjectPath!=null && x.ProjectPath.FullName == file);
+            tiaPortal = process.Attach();
+            tiapProject = tiaPortal.Projects[0];
+            this.ProjectFile = process.ProjectPath.ToString();
+        }
+
         private void AksForInstance()
         {
 

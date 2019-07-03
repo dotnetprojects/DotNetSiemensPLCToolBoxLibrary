@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
@@ -106,6 +107,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
             if (Parent != null)
                 return Parent + "\\" + Name;
             return Name;
+        }
+
+        public virtual ProjectFolder CreateFolder(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }
