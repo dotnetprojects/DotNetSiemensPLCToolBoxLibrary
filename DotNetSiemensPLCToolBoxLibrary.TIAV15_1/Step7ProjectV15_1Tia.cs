@@ -469,7 +469,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
                 if (ext == "xml")
                 {
-                    PlcWatchTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+                    PlcWatchTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.WithDefaults);
                 }
                 var text = File.ReadAllText(file);
                 File.Delete(file);

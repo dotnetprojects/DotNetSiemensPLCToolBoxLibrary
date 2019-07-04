@@ -382,7 +382,7 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
-                                
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//StructureModified");
@@ -729,27 +729,56 @@ namespace TiaGitHandler
             {
                 foreach (var varTab in varTabfld.TagTables)
                 {
-                    var vt = varTab.Export();
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
-                    Directory.CreateDirectory(path);
-                    File.WriteAllText(file, vt, new UTF8Encoding(true));
+                    try
+                    {
+                        var vt = varTab.Export();
+                        Directory.CreateDirectory(path);
+                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(file + " could not be exported");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
             }
             else if (folder is ITIAWatchAndForceTablesFolder wtfFld)
             {
                 foreach (var varTab in wtfFld.WatchTables)
                 {
-                    var vt = varTab.Export();
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".watch");
-                    Directory.CreateDirectory(path);
-                    File.WriteAllText(file, vt, new UTF8Encoding(true));
+
+                    try
+                    {
+                        var vt = varTab.Export();
+                        Directory.CreateDirectory(path);
+                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(file + " could not be exported");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
                 foreach (var varTab in wtfFld.ForceTables)
                 {
-                    var vt = varTab.Export();
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".force");
-                    Directory.CreateDirectory(path);
-                    File.WriteAllText(file, vt, new UTF8Encoding(true));
+
+                    try
+                    {
+                        var vt = varTab.Export();
+                        Directory.CreateDirectory(path);
+                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(file + " could not be exported");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
             }
         }
