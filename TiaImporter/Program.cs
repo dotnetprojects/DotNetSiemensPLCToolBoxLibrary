@@ -109,6 +109,10 @@ namespace TiaImporter
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Imported File: " + relativePath);
+                        if (importFile.ToLower().EndsWith("awl") || importFile.ToLower().EndsWith("scl"))
+                        {
+                            File.Delete(importFile);
+                        }
 
                         fileList.Remove(importFile);
                     }
