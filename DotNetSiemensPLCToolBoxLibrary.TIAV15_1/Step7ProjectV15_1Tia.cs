@@ -18,6 +18,7 @@ using Siemens.Engineering.SW.Types;
 using Siemens.Engineering.SW.Tags;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
+using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
@@ -54,6 +55,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
 
             public virtual void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
+            { }
+
+            public virtual void CompileBlocks()
             { }
         }
 
@@ -469,7 +473,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
                 if (ext == "xml")
                 {
-                    PlcWatchTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+                    PlcWatchTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.WithDefaults);
                 }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -679,6 +683,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 this.SubItems.Add(newFld);
                 return newFld;
             }
+
+            public override void CompileBlocks()
+            {
+                CompilerResult result;
+
+                var compiler = plcBlockGroup.GetService<ICompilable>();
+                if (compiler != null)
+                    result = compiler.Compile();
+                else
+                    throw new ArgumentException("Parameter cannot be compiled.", nameof(plcBlockGroup));
+           }
 
             public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
             {
