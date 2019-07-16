@@ -741,12 +741,48 @@ namespace TiaGitHandler
             {
                 foreach (var varTab in varTabfld.TagTables)
                 {
+                    var xmlValid = false;
+                    string xml = null;
+                    XmlDocument xmlDoc = new XmlDocument();
+
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".xml");
                     try
                     {
                         var vt = varTab.Export();
+                        try
+                        {
+                            xmlDoc.LoadXml(vt);
+                            xmlValid = true;
+                        }
+                        catch
+                        {
+                            xmlValid = false;
+                        }
+
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//Created");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
+                        StringBuilder sb = new StringBuilder();
+                        XmlWriterSettings settings = new XmlWriterSettings
+                        {
+                            Indent = true,
+                            IndentChars = "  ",
+                            NewLineChars = "\r\n",
+                            NewLineHandling = NewLineHandling.Replace
+                        };
+                        using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                        {
+                            xmlDoc.Save(writer);
+                        }
+
+                        xml = sb.ToString();
+
                         Directory.CreateDirectory(path);
-                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                        File.WriteAllText(file, xml, new UTF8Encoding(true));
                     }
                     catch
                     {
@@ -760,13 +796,48 @@ namespace TiaGitHandler
             {
                 foreach (var varTab in wtfFld.WatchTables)
                 {
+                    var xmlValid = false;
+                    string xml = null;
+                    XmlDocument xmlDoc = new XmlDocument();
+
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".watch");
 
                     try
                     {
                         var vt = varTab.Export();
+                        try
+                        {
+                            xmlDoc.LoadXml(vt);
+                            xmlValid = true;
+                        }
+                        catch
+                        {
+                            xmlValid = false;
+                        }
+
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//Created");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
+                        StringBuilder sb = new StringBuilder();
+                        XmlWriterSettings settings = new XmlWriterSettings
+                        {
+                            Indent = true,
+                            IndentChars = "  ",
+                            NewLineChars = "\r\n",
+                            NewLineHandling = NewLineHandling.Replace
+                        };
+                        using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                        {
+                            xmlDoc.Save(writer);
+                        }
+
+                        xml = sb.ToString();
                         Directory.CreateDirectory(path);
-                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                        File.WriteAllText(file, xml, new UTF8Encoding(true));
                     }
                     catch
                     {
@@ -777,13 +848,49 @@ namespace TiaGitHandler
                 }
                 foreach (var varTab in wtfFld.ForceTables)
                 {
+                    var xmlValid = false;
+                    string xml = null;
+                    XmlDocument xmlDoc = new XmlDocument();
+
                     var file = Path.Combine(path, varTab.Name.Replace("\\", "_").Replace("/", "_") + ".force");
 
                     try
                     {
                         var vt = varTab.Export();
+
+                        try
+                        {
+                            xmlDoc.LoadXml(vt);
+                            xmlValid = true;
+                        }
+                        catch
+                        {
+                            xmlValid = false;
+                        }
+
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//Created");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
+                        StringBuilder sb = new StringBuilder();
+                        XmlWriterSettings settings = new XmlWriterSettings
+                        {
+                            Indent = true,
+                            IndentChars = "  ",
+                            NewLineChars = "\r\n",
+                            NewLineHandling = NewLineHandling.Replace
+                        };
+                        using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                        {
+                            xmlDoc.Save(writer);
+                        }
+
+                        xml = sb.ToString();
                         Directory.CreateDirectory(path);
-                        File.WriteAllText(file, vt, new UTF8Encoding(true));
+                        File.WriteAllText(file, xml, new UTF8Encoding(true));
                     }
                     catch (Exception e)
                     {
