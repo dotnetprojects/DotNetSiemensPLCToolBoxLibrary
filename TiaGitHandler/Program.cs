@@ -404,21 +404,33 @@ namespace TiaGitHandler
                                 {
                                 }
 
-                                try
-                                {
-                                    var nodes = xmlDoc.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns);
-                                    foreach (var node in nodes.Cast<XmlNode>())
-                                    {
-                                        node.ParentNode.RemoveChild(node);
-                                    }
-                                }
-                                catch
-                                {
-                                }
+                                //try
+                                //{
+                                //    var nodes = xmlDoc.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns);
+                                //    foreach (var node in nodes.Cast<XmlNode>())
+                                //    {
+                                //        node.ParentNode.RemoveChild(node);
+                                //    }
+                                //}
+                                //catch
+                                //{
+                                //}
+
+                                //try
+                                //{
+                                //    var nodes = xmlDoc.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns);
+                                //    foreach (var node in nodes.Cast<XmlNode>())
+                                //    {
+                                //        node.ParentNode.RemoveChild(node);
+                                //    }
+                                //}
+                                //catch
+                                //{
+                                //}
 
                                 try
                                 {
-                                    var nodes = xmlDoc.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns);
+                                    var nodes = xmlDoc.SelectNodes("//*[@Informative='true']");
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
                                         node.ParentNode.RemoveChild(node);
@@ -636,21 +648,33 @@ namespace TiaGitHandler
                                     {
                                     }
 
-                                    try
-                                    {
-                                        var nodes = xmlDoc2.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns2);
-                                        foreach (var node in nodes.Cast<XmlNode>())
-                                        {
-                                            node.ParentNode.RemoveChild(node);
-                                        }
-                                    }
-                                    catch
-                                    {
-                                    }
+                                    //try
+                                    //{
+                                    //    var nodes = xmlDoc2.SelectNodes("//smns:Address[@Area='None' and @Informative='true']", ns2);
+                                    //    foreach (var node in nodes.Cast<XmlNode>())
+                                    //    {
+                                    //        node.ParentNode.RemoveChild(node);
+                                    //    }
+                                    //}
+                                    //catch
+                                    //{
+                                    //}
+
+                                    //try
+                                    //{
+                                    //    var nodes = xmlDoc2.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns2);
+                                    //    foreach (var node in nodes.Cast<XmlNode>())
+                                    //    {
+                                    //        node.ParentNode.RemoveChild(node);
+                                    //    }
+                                    //}
+                                    //catch
+                                    //{
+                                    //}
 
                                     try
                                     {
-                                        var nodes = xmlDoc2.SelectNodes("//smns2:IntegerAttribute[@Name='Offset' and @Informative='true']", ns2);
+                                        var nodes = xmlDoc2.SelectNodes("//*[@Informative='true']");
                                         foreach (var node in nodes.Cast<XmlNode>())
                                         {
                                             node.ParentNode.RemoveChild(node);
