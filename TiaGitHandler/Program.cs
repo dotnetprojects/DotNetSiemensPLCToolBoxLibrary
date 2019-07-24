@@ -787,11 +787,27 @@ namespace TiaGitHandler
 
                         if (xmlValid)
                         {
-                            var nodes = xmlDoc.SelectNodes("//Created");
-                            var node = nodes[0];
-                            node.ParentNode.RemoveChild(node);
-                        }
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//Created");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
 
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                        
                         StringBuilder sb = new StringBuilder();
                         XmlWriterSettings settings = new XmlWriterSettings
                         {
@@ -843,9 +859,25 @@ namespace TiaGitHandler
 
                         if (xmlValid)
                         {
-                            var nodes = xmlDoc.SelectNodes("//Created");
-                            var node = nodes[0];
-                            node.ParentNode.RemoveChild(node);
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//Created");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
+
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
                         }
 
                         StringBuilder sb = new StringBuilder();
@@ -896,9 +928,25 @@ namespace TiaGitHandler
 
                         if (xmlValid)
                         {
-                            var nodes = xmlDoc.SelectNodes("//Created");
-                            var node = nodes[0];
-                            node.ParentNode.RemoveChild(node);
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//Created");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
+
+                            try
+                            {
+                                var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                                var node = nodes[0];
+                                node.ParentNode.RemoveChild(node);
+                            }
+                            catch
+                            {
+                            }
                         }
 
                         StringBuilder sb = new StringBuilder();
