@@ -791,6 +791,13 @@ namespace TiaGitHandler
                             node.ParentNode.RemoveChild(node);
                         }
 
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
                         StringBuilder sb = new StringBuilder();
                         XmlWriterSettings settings = new XmlWriterSettings
                         {
@@ -847,6 +854,13 @@ namespace TiaGitHandler
                             node.ParentNode.RemoveChild(node);
                         }
 
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//DocumentInfo");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
                         StringBuilder sb = new StringBuilder();
                         XmlWriterSettings settings = new XmlWriterSettings
                         {
@@ -896,6 +910,13 @@ namespace TiaGitHandler
                         if (xmlValid)
                         {
                             var nodes = xmlDoc.SelectNodes("//Created");
+                            var node = nodes[0];
+                            node.ParentNode.RemoveChild(node);
+                        }
+
+                        if (xmlValid)
+                        {
+                            var nodes = xmlDoc.SelectNodes("//DocumentInfo");
                             var node = nodes[0];
                             node.ParentNode.RemoveChild(node);
                         }
