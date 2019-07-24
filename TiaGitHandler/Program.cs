@@ -673,6 +673,18 @@ namespace TiaGitHandler
                                     {
                                     }
 
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//*[local-name()='LibraryConformanceStatus']");
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
                                     if (projectBlockInfo.BlockLanguage == PLCLanguage.DB && projectBlockInfo.BlockType == PLCBlockType.DB && projectBlockInfo.IsInstance)
                                     {
                                         try
@@ -699,17 +711,6 @@ namespace TiaGitHandler
                                         {
                                         }
 
-                                        try
-                                        {
-                                            var nodes = xmlDoc2.SelectNodes("//*[local-name()='LibraryConformanceStatus']");
-                                            foreach (var node in nodes.Cast<XmlNode>())
-                                            {
-                                                node.ParentNode.RemoveChild(node);
-                                            }
-                                        }
-                                        catch
-                                        {
-                                        }
                                     }
 
                                     if (resetSetpoints)
