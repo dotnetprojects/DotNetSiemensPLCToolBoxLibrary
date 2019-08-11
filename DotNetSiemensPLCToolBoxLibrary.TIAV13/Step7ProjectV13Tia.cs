@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     ext = "awl";
                 }
 
-                dynamic tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem;
+                var tiaItem = ((TIAOpennessProgramFolder)rootFolder).TiaPortalItem as ProgramblockSystemFolder;
                 var tmp = Path.GetTempPath();
                 var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
                 tiaItem.GenerateSourceFromBlocks(new[] { this.IBlock }, file);

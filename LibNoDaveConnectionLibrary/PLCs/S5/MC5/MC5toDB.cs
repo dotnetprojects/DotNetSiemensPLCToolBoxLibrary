@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
@@ -156,7 +155,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There was an error parsing the Block Comments! Maybe the Step5 project is broken? \n" + ex.Message);
+                throw new Exception("There was an error parsing the Block Comments! Maybe the Step5 project is broken? \n", ex);
             }
 
             return retVal;

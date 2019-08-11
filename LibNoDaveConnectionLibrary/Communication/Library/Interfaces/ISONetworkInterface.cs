@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
-{
+//namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
+//{
 
-    /*
-    public abstract class ISONetworkInterface:NetworkInterface
-    {
+//    /*
+//    public abstract class ISONetworkInterface:NetworkInterface
+//    {
 
-    }
-     * */
-}
+//    }
+//     * */
+//}

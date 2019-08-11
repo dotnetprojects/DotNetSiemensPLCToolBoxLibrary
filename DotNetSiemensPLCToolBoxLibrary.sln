@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary", "LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj", "{E3ED87E8-B550-46AC-9196-9688D30EFD29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary", "LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj", "{E3ED87E8-B550-46AC-9196-9688D30EFD29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary", "TestLibrary\TestLibrary.csproj", "{D5525AD8-E501-45A8-BEA5-F9BDB468B427}"
 EndProject
@@ -54,8 +54,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFK-ProtokollerLibrary", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopplungstester", "Projects\Kopplungstester\Kopplungstester.csproj", "{3DC74553-0988-4364-8F7D-D13B8FBB16D9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{FD13B0E6-B046-472D-AFEB-81B1EE2E7BFD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBoxLibUnitTests", "ToolBoxLibUnitTests\ToolBoxLibUnitTests.csproj", "{5733381B-0B75-4E91-8EBA-5FAF45010BE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPForwarder", "TCPForwarder\TCPForwarder.csproj", "{84E1F59D-29A6-4E1D-A3A8-35CD92B54488}"
@@ -93,6 +91,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary.TIAV15_1", "DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj", "{6E5B6D5D-EC1B-4C70-A4CA-6A1F7201F5A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiaImporter", "TiaImporter\TiaImporter.csproj", "{CB0E7339-773D-4BD1-B636-4BAD6B1AA367}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.WinForms", "LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj", "{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -618,6 +618,26 @@ Global
 		{CB0E7339-773D-4BD1-B636-4BAD6B1AA367}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CB0E7339-773D-4BD1-B636-4BAD6B1AA367}.Release|x86.ActiveCfg = Release|Any CPU
 		{CB0E7339-773D-4BD1-B636-4BAD6B1AA367}.Release|x86.Build.0 = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Debug|x86.Build.0 = Debug|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|iPhone.Build.0 = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
