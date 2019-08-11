@@ -1,9 +1,0 @@
-﻿<Window x:Class="TiaExImPorter.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="cmdExport" Content="Export" HorizontalAlignment="Left" Height="53" Margin="24,10,0,0" VerticalAlignment="Top" Width="214" Click="cmdExport_Click"/>
-
-    </Grid>
-</Window>
