@@ -10,6 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</PackageProjectUrl>
     <Description>DLL for Accessing S7 PLCs</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SharpZipLib" Version="1.2.0" />    
