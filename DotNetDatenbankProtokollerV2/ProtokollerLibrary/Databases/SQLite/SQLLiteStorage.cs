@@ -121,7 +121,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 }
                 catch (SQLiteException ex)
                 {
-                    if (ex.ErrorCode == SQLiteErrorCode.Error)
+                    if (ex.ResultCode == SQLiteErrorCode.Error)
                     {
                         try
                         {
@@ -321,7 +321,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.SQLite
                 }
                 catch (SQLiteException ex)
                 {
-                    if (ex.ErrorCode == SQLiteErrorCode.Busy || ex.ErrorCode == SQLiteErrorCode.Locked) //Locked || Busy
+                    if (ex.ResultCode == SQLiteErrorCode.Busy || ex.ResultCode == SQLiteErrorCode.Locked) //Locked || Busy
                     {
                         tryCounter++;
                         if (tryCounter > 20)

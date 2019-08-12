@@ -81,7 +81,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myCmd.CommandText = sql;
                 myCmd.ExecuteNonQuery();
             }
-            catch (Npgsql.NpgsqlException ex)
+            catch (Npgsql.PostgresException ex)
             {
                 if (ex.Code != "42P04")
                 {
@@ -101,7 +101,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
                 myReader = myCmd.ExecuteReader();
 
             }
-            catch (Npgsql.NpgsqlException ex)
+            catch (Npgsql.PostgresException ex)
             {
                 if (ex.Code == "42P01")
                 {

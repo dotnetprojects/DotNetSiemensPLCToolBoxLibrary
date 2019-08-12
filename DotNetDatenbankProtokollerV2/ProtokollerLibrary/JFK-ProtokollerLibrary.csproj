@@ -1,191 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D5B6CB09-2B0B-4C98-B44F-EC245C291CF8}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetSimaticDatabaseProtokollerLibrary</RootNamespace>
-    <AssemblyName>JFK-ProtokollerLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\compiled\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFramework>net462</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
-      <HintPath>..\AdditionalDlls\C5.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>..\AdditionalDlls\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus">
-      <HintPath>..\AdditionalDlls\EPPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelLibrary">
-      <HintPath>..\AdditionalDlls\ExcelLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="FirebirdSql.Data.FirebirdClient">
-      <HintPath>..\AdditionalDlls\FirebirdSql.Data.FirebirdClient.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.2.329, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="JFKCommonLibrary, Version=1.0.4721.22712, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="ExcelLibrary" Version="1.2011.7.31" />
+    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="6.7.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Npgsql" Version="4.0.8" />
+    <PackageReference Include="Quartz" Version="3.0.7" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.111" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
+    <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JFKCommonLibrary">
       <HintPath>..\..\externalDlls\JFKCommonLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\externalDlls\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="LumenWorks.Framework.IO">
-      <HintPath>..\AdditionalDlls\LumenWorks.Framework.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="mysql.data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDlls\mysql.data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDlls\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Npgsql, Version=2.0.11.91, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDlls\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Quartz">
-      <HintPath>..\AdditionalDlls\Quartz.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDlls\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="aspx\AspxException.cs" />
-    <Compile Include="aspx\AspxNetEngine.cs" />
-    <Compile Include="aspx\AspxPage.cs" />
-    <Compile Include="aspx\AspxRequestInfo.cs" />
-    <Compile Include="aspx\AspxVirtualRoot.cs" />
-    <Compile Include="Common\IpAddressConverter.cs" />
-    <Compile Include="Common\LogErrorLevel.cs" />
-    <Compile Include="Common\NetworkShare.cs" />
-    <Compile Include="Connections\DatabaseConnection.cs" />
-    <Compile Include="Databases\MultiStorage\MultiStorage.cs" />
-    <Compile Include="Databases\PLC\PLCStorage.cs" />
-    <Compile Include="Databases\Excel2007\Excel2007Storage.cs" />
-    <Compile Include="Databases\CSVFile\CSVStorage.cs" />
-    <Compile Include="Databases\Excel\ExcelStorage.cs" />
-    <Compile Include="Databases\Firebird\FirebirdStorage.cs" />
-    <Compile Include="Databases\Interfaces\DBBaseClass.cs" />
-    <Compile Include="Databases\Interfaces\IDBViewableSQL.cs" />
-    <Compile Include="Databases\MsSQL\MsSQLStorage.cs" />
-    <Compile Include="Databases\MySQL\MySQLStorage.cs" />
-    <Compile Include="Databases\PostgreSQL\PostgreSQLStorage.cs" />
-    <Compile Include="Databases\StorageHelper.cs" />
-    <Compile Include="Databases\Interfaces\IDBInterface.cs" />
-    <Compile Include="SettingsClasses\Storage\MultiStorageConfig.cs" />
-    <Compile Include="wcfService\IProtocolService.cs" />
-    <Compile Include="wcfService\PolicyServer.cs" />
-    <Compile Include="wcfService\ProtocolService.cs" />
-    <Compile Include="wcfService\ProtocolRow.cs" />
-    <None Include="Databases\ODBC\db_odbc.cs" />
-    <Compile Include="Databases\Interfaces\IDBViewable.cs" />
-    <Compile Include="Databases\SQLite\SQLLiteStorage.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\Logging.cs" />
-    <Compile Include="Protocolling\ReadData.cs" />
-    <Compile Include="Protocolling\ProtokollerInstance.cs" />
-    <Compile Include="Protocolling\Trigger\DatabaseTriggerThread.cs" />
-    <Compile Include="Protocolling\Trigger\TimeTriggerWithCheckForChangesThread.cs" />
-    <Compile Include="Protocolling\Trigger\QuartzTriggerThread.cs" />
-    <Compile Include="Protocolling\Trigger\TimeTriggerThread.cs" />
-    <Compile Include="Remoting\RemotingClientAndServerClasses.cs" />
-    <Compile Include="Remoting\RemotingClient.cs" />
-    <Compile Include="Remoting\RemotingServer.cs" />
-    <Compile Include="SettingsClasses\Connections\DatabaseConfig.cs" />
-    <Compile Include="SettingsClasses\Connections\TCPIPProxyConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\PLCConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\Excel2007Config.cs" />
-    <Compile Include="SettingsClasses\Storage\ExcelConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\FirebirdConfig.cs" />
-    <Compile Include="StaticServiceConfig.cs" />
-    <Compile Include="Protocolling\Trigger\PLCTagTriggerThread.cs" />
-    <Compile Include="ProtokollerConfiguration.cs" />
-    <Compile Include="SettingsClasses\Connections\ConnectionConfig.cs" />
-    <Compile Include="SettingsClasses\Connections\LibNoDaveConfig.cs" />
-    <Compile Include="SettingsClasses\Connections\TCPIPConfig.cs" />
-    <Compile Include="SettingsClasses\Datasets\DatasetConfig.cs" />
-    <Compile Include="SettingsClasses\Datasets\DatasetConfigRow.cs" />
-    <Compile Include="SettingsClasses\Datasets\DatasetTriggerType.cs" />
-    <Compile Include="SettingsClasses\Storage\AccessConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\CSVConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\MsSQLConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\MySQLConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\ODBCConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\PostgreSQLConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\SQLiteConfig.cs" />
-    <Compile Include="SettingsClasses\Storage\StorageConfig.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\WPF\" />
-    <Folder Include="Databases\OleDB\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
-      <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
-      <Name>DotNetSiemensPLCToolBoxLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Licence.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

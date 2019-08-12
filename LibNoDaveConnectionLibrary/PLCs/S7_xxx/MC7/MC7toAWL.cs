@@ -29,7 +29,6 @@ using System.Globalization;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
@@ -48,7 +47,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
         private static NumberFormatInfo numberFormat;
        
-        internal static List<FunctionBlockRow> GetAWL(int Start, int Count, int MN, byte[] BD, int[] Networks, List<string> ParaList, S7ProgrammFolder prjBlkFld, S7FunctionBlock block)
+        internal static List<FunctionBlockRow> GetAWL(int Start, int Count, int MN, byte[] BD, int[] Networks, List<string> ParaList, S7ProgrammFolder prjBlkFld, S7FunctionBlock block, S7DataRow blockInterface)
         {
             var retVal = new List<FunctionBlockRow>();
 
@@ -3319,7 +3318,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opU[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3334,7 +3333,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opUN[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3349,7 +3348,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opO[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3364,7 +3363,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opON[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3379,7 +3378,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opX[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3394,7 +3393,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opXN[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3408,7 +3407,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opS[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3423,7 +3422,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opR[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3436,7 +3435,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opZUW[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3449,7 +3448,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opFP[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3462,7 +3461,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opFN[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3479,10 +3478,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opL[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
-                                                par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
+                                            {
+                                                if (BD[pos + 1] == 0xc2)
+                                                {
+                                                    par = "IN" + ParaList.Count;
+                                                    if (blockInterface != null)
+                                                    {
+                                                        var inInterface = blockInterface.Children[0];
+                                                        ((S7DataRow)inInterface).Add(new S7DataRow("IN" + ParaList.Count, S7DataRowType.INT, inInterface.PlcBlock));
+                                                    }
+                                                    ParaList.Add(par);
+                                                    par = "#" + par;
+                                                }
+                                                else
+                                                    par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
+                                            }
                                             retVal.Add(new S7FunctionBlockRow() { Command = cmd, Parameter = par });
                                             ((S7FunctionBlockRow)retVal[retVal.Count - 1]).MC7 = new byte[] { BD[pos], BD[pos + 1], BD[pos + 2], BD[pos + 3] };
                                             pos += 4;
@@ -3493,7 +3506,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opFR[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3506,7 +3519,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opLC[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3520,7 +3533,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opSA[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3533,7 +3546,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opSV[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3546,7 +3559,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opSE[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3559,7 +3572,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opSS[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3572,7 +3585,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opSI[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3585,7 +3598,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opZR[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3598,7 +3611,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opZV[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3614,7 +3627,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opT[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3628,7 +3641,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opL[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "P##" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3642,7 +3655,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opUC[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";
@@ -3673,7 +3686,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         {
                                             string cmd = "", par = "";
                                             cmd = Mnemonic.opAUF[MN];
-                                            if (ParaList.Count >= (libnodave.getU16from(BD, pos + 2) / 2) - 1)
+                                            if (ParaList.Count > (libnodave.getU16from(BD, pos + 2) / 2) - 1)
                                                 par = "#" + ParaList[(libnodave.getU16from(BD, pos + 2) / 2) - 1];
                                             else
                                                 par = "unkown parameter (" + Convert.ToString(libnodave.getU16from(BD, pos + 2)) + ")";

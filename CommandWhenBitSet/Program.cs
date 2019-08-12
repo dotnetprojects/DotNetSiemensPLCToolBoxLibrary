@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-
-using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 
 namespace CommandWhenBitSet

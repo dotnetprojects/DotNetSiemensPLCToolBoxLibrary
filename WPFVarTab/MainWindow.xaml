@@ -4,13 +4,13 @@
                         xmlns:behavior="clr-namespace:JFKCommonLibrary.WPF.Converters;assembly=JFKCommonLibrary"
                         xmlns:ccl="clr-namespace:CustomChromeLibrary;assembly=CustomChromeLibrary"
                         xmlns:DataTypes="clr-namespace:DotNetSiemensPLCToolBoxLibrary.DataTypes;assembly=DotNetSiemensPLCToolBoxLibrary"
-                        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                         xmlns:Shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"
                         xmlns:System="clr-namespace:System;assembly=mscorlib"
                         xmlns:WPFVarTab="clr-namespace:WPFVarTab"
                         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                         xmlns:Properties="clr-namespace:WPFVarTab.Properties"
-                        xmlns:wpf="clr-namespace:JFKCommonLibrary.WPF;assembly=JFKCommonLibrary" Name="ThisWindow"
+                        xmlns:wpf="clr-namespace:JFKCommonLibrary.WPF;assembly=JFKCommonLibrary"
+                        xmlns:i1="http://schemas.microsoft.com/xaml/behaviors" Name="ThisWindow"
                         Title="JFK-WPF-VarTab"
                         Width="784"
                         Height="397"
@@ -481,11 +481,11 @@
                                                             Path=Connections}"
                                       SelectedItem="{Binding ConnectionName}"
                                       WPFVarTab:ComboBoxExtension.IsNullable="True">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger>
+                                <i1:Interaction.Triggers>
+                                    <i1:EventTrigger>
                                         <wpf:ResolveElementName PropertyName="ItemsSource" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                                    </i1:EventTrigger>
+                                </i1:Interaction.Triggers>
                             </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>

@@ -43,7 +43,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     /// Represents on single data Tag or data unit that can be read or written to the controller
     /// </summary>
 #if !IPHONE
-    [System.ComponentModel.Editor(typeof(PLCTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [System.ComponentModel.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif
     [Serializable]
     public class PLCTag : INotifyPropertyChanged

@@ -38,7 +38,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     using Scm = System.ComponentModel;
     using SG = System.Globalization;
     [Scm.TypeConverter(typeof(PLCNckTagTypeConverter))]
-    [Scm.Editor(typeof(NckTagUITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [Scm.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.NckTagUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif
     [Serializable]
     public class PLCNckTag : PLCTag

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
-{
-    /*
-    public class NetLinkLiteInterface:NetworkInterface
-    {
-    }
-    */
-}
+//namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
+//{
+//    /*
+//    public class NetLinkLiteInterface:NetworkInterface
+//    {
+//    }
+//    */
+//}

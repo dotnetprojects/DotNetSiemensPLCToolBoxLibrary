@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>DotNetProjects.DotNetSiemensPLCToolBoxLibrary.WinForms</PackageId>
+    <Authors>DotNetProjects</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+    <PackageReference Include="System.IO.Ports" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Communication\Discovery\S7ReachablePLCDialog.resx">
+      <DependentUpon>S7ReachablePLCDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Communication\Editors\ConnectionEditor.resx">
+      <DependentUpon>ConnectionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Communication\Editors\NckTagEditor.resx">
+      <DependentUpon>NckTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Communication\Editors\PLCTagEditor.resx">
+      <DependentUpon>PLCTagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Projectfiles\SelectProjectPartForm.resx">
+      <DependentUpon>SelectProjectPartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Projectfiles\SelectProjectPartMultiForm.resx">
+      <DependentUpon>SelectProjectPartMultiForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>  
+</Project>

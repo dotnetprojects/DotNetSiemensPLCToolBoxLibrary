@@ -53,6 +53,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
             return Convert.ToDouble(retInt);
         }
+
+#if NETSTANDARD
+        internal static Encoding DefaultEncoding = CodePagesEncodingProvider.Instance.GetEncoding(1252);
+#else
+        internal static Encoding DefaultEncoding = System.Text.Encoding.GetEncoding("Windows-1252");
+#endif
     }
 
     /// <summary>
@@ -159,11 +165,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
 
 
-#if !IPHONE
-        private static Encoding _defaultEncoding = System.Text.Encoding.GetEncoding("Windows-1252");
-#else
-        private static Encoding _defaultEncoding = System.Text.Encoding.Default; 
-#endif
         /// <summary>
         /// Converts a character byte array('C') to a string value
         /// </summary>
@@ -172,7 +173,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         public static string C_ToString(byte[] dBaseCharacterBytes, Encoding encoding = null)
         {
             if (encoding == null)
-                encoding = _defaultEncoding;
+                encoding = Util.DefaultEncoding;
 
             return encoding.GetString(dBaseCharacterBytes).TrimEnd(new char[] {' '});
         }

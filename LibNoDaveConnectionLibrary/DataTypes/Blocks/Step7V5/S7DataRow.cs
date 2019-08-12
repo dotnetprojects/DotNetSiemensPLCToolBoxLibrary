@@ -26,15 +26,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
-using DotNetSiemensPLCToolBoxLibrary.General;
-
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {

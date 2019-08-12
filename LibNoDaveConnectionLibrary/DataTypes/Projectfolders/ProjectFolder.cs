@@ -39,7 +39,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
             }
         }
 
-        public Image FolderClosedImage
+        /*public Image FolderClosedImage
         {
             get
             {
@@ -50,7 +50,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                     return null;
                 return Image.FromStream(file);
             }
-        }
+        }*/
 
         public string FolderOpenedImageName
         {
@@ -59,7 +59,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                 return "DotNetSiemensPLCToolBoxLibrary.Resources.FolderImages.opened_folder.ico";
             }
         }
-        public Image FolderOpenedImage
+        /*public Image FolderOpenedImage
         {
             get
             {
@@ -70,7 +70,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                     return null;
                 return Image.FromStream(file);
             }
-        }
+        }*/
 #endif
 
         public List<ProjectFolder> SubItems { get; set; }

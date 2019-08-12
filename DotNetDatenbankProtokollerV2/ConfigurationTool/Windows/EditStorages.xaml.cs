@@ -4,6 +4,7 @@ using System.Windows.Input;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Storage;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -196,7 +197,7 @@ namespace DotNetSimaticDatabaseProtokollerConfigurationTool.Windows
 
         private void PropertyGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (grdConfig.SelectedPropertyItem.Value is PLCConnectionConfiguration)
+            if (((PropertyItem)grdConfig.SelectedPropertyItem).Value is PLCConnectionConfiguration)
             {
                 var myConfig = (PLCConfig) grdStorages.SelectedItem;
                 myConfig.Configuration = DotNetSiemensPLCToolBoxLibrary.Communication.Configuration.ShowConfiguration(myConfig.Configuration);

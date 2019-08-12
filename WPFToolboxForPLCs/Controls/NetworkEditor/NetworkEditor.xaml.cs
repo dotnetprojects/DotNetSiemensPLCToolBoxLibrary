@@ -169,7 +169,7 @@ namespace WPFToolboxForSiemensPLCs.Controls.NetworkEditor
 
         private DispatcherTimer foldingUpdateTimer;
         FoldingManager foldingManager;
-        AbstractFoldingStrategy foldingStrategy;
+        BraceFoldingStrategy foldingStrategy;
 
         internal void InitFolding()
         {
