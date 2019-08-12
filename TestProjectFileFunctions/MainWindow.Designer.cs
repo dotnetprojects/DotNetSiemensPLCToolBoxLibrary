@@ -115,6 +115,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanelVisu = new System.Windows.Forms.TableLayoutPanel();
             this.datablockView = new System.Windows.Forms.Integration.ElementHost();
+            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.dtaPnPbList = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -1010,8 +1011,8 @@
             this.datablockView.TabIndex = 17;
             this.datablockView.Text = "wpfElementHost";
             this.datablockView.Visible = false;
-            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.datablockView.Child = null;
+            this.datablockView.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);            
+            this.datablockView.Child = this.dataBlockViewControl;
             // 
             // dtaPnPbList
             // 

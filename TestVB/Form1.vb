@@ -6,6 +6,7 @@ Imports DotNetSiemensPLCToolBoxLibrary.Projectfiles
 Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 Imports DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
+Imports System.Windows.Forms
 
 Public Class Form1
     Dim myConn As New PLCConnection("myVBExample")
@@ -93,7 +94,7 @@ Public Class Form1
         searchValue = searchValue.Substring(db.Length + 1)
         prj = New Step7ProjectV5("C:\\Users\\Jochen Kühner\\Documents\\Step7 Projekte\\Offenau\\Offenau_.s7p", False)
 
-        
+
         fld = prj.BlocksOfflineFolders(1)
 
         For Each projectBlockInfo As S7ProjectBlockInfo In fld.readPlcBlocksList()
@@ -103,7 +104,7 @@ Public Class Form1
         Next
 
         If Not blk Is Nothing Then
-            For Each s7DataRow As S7DataRow In s7DataRow.GetChildrowsAsList(blk.GetArrayExpandedStructure())
+            For Each s7DataRow As S7DataRow In S7DataRow.GetChildrowsAsList(blk.GetArrayExpandedStructure())
                 If s7DataRow.StructuredName = searchValue Then
                     tag = s7DataRow.PlcTag
                 End If
@@ -115,7 +116,7 @@ Public Class Form1
     Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
         Dim PRJ As Projectfiles.Step5Project
         Dim fld As Step5BlocksFolder
-        Dim blk As S5dataBlock
+        Dim blk As S5DataBlock
 
         PRJ = Projectfiles.Projects.LoadProject("D:\temp\_M13\M13@@@ST.S5D", False)
         fld = PRJ.BlocksFolder

@@ -25,14 +25,14 @@ namespace WPFToolboxForSiemensPLCs.AvalonEdit
 	/// <summary>
 	/// Allows producing foldings from a document based on braces.
 	/// </summary>
-	public class BraceFoldingStrategy : AbstractFoldingStrategy
+	public class BraceFoldingStrategy
 	{
 	
         
 		/// <summary>
 		/// Create <see cref="NewFolding"/>s for the specified document.
 		/// </summary>
-		public override IEnumerable<NewFolding> CreateNewFoldings(TextDocument document, out int firstErrorOffset)
+		public IEnumerable<NewFolding> CreateNewFoldings(TextDocument document, out int firstErrorOffset)
 		{
 			firstErrorOffset = -1;
 			return CreateNewFoldings(document);

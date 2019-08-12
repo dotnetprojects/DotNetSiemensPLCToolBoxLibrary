@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSimaticDatabaseProtokollerLibrary.Databases.Interfaces;
 using DotNetSimaticDatabaseProtokollerLibrary.SettingsClasses.Connections;
@@ -26,9 +27,11 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
 
         internal class QuartzJob : IJob
         {
-            public virtual void Execute(IJobExecutionContext context)
+            public virtual Task Execute(IJobExecutionContext context)
             {
                 ((Action) context.JobDetail.JobDataMap["CallbackMethod"]).Invoke();
+
+                return Task.CompletedTask;
             }
         }
 
@@ -46,7 +49,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Protocolling.Trigger
             ISchedulerFactory schedFact = new StdSchedulerFactory();
 
             // get a scheduler
-            _sched = schedFact.GetScheduler();
+            _sched = schedFact.GetScheduler().Result;
 
             // define the job and tie it to our HelloJob class
             IJobDetail job = JobBuilder.Create<QuartzJob>()

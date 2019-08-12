@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon />
-    <StartupObject>JFK_VarTab.Program</StartupObject>
+    <UseWPF>true</UseWPF>    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
@@ -17,8 +15,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="DataBlockViewControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <EmbeddedResource Update="DataBlockValueSaver.resx">
+      <DependentUpon>DataBlockValueSaver.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DBStructresizer.resx">
+      <DependentUpon>DBStructresizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DownloadBlock.resx">
+      <DependentUpon>DownloadBlock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Features.resx">
+      <DependentUpon>Features.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="TelegrammSimulator.resx">
+      <DependentUpon>TelegrammSimulator.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

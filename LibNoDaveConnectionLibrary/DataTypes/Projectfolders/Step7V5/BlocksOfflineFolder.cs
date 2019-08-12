@@ -5,6 +5,7 @@ using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DBF;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
@@ -787,7 +788,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             try
             {
                 //use Windows-1252 to get correct time because dBaseConverter uses this code page for strings
-                var bytes = Encoding.GetEncoding("Windows-1252").GetBytes(timestamp);  
+                var bytes = Util.DefaultEncoding.GetBytes(timestamp);  
                 return bytes.Length == 5
                     ? Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)0)
                     : Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)bytes[5]);

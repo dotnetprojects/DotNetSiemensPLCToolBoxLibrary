@@ -234,7 +234,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
-                    if (tmp.myObject.GetType() == typeof(IBlocksFolder))
+                    if (typeof(IBlocksFolder).IsAssignableFrom(tmp.myObject.GetType()))
                         retVal = (IBlocksFolder)tmp.myObject;
                     else
                         retVal = null;
@@ -245,7 +245,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
-                    if (tmp.myObject.GetType() == typeof(S7ProgrammFolder))
+                    if (typeof(S7ProgrammFolder).IsAssignableFrom(tmp.myObject.GetType()))
                         retVal = (S7ProgrammFolder)tmp.myObject;
                     else
                         retVal = null;
@@ -256,7 +256,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 if (treeStep7Project.SelectedNode != null)
                 {
                     var tmp = (myTreeNode)treeStep7Project.SelectedNode;
-                    if (tmp.myObject is IRootProgrammFolder)
+                    if (typeof(IRootProgrammFolder).IsAssignableFrom(tmp.myObject.GetType()))
                         retVal = (IRootProgrammFolder)tmp.myObject;
                     else
                         retVal = null;

@@ -62,7 +62,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
 
         #region Folding
         FoldingManager foldingManagerA;
-        AbstractFoldingStrategy foldingStrategyA;
+        BraceFoldingStrategy foldingStrategyA;
         
         void InitFolding()
         {
