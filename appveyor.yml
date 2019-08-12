@@ -1,18 +1,20 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 
-version: 3.0.{build}
+version: 4.0.{build}
 
 branches:
   only:
     - master
 
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
-
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+  
 configuration: Debug
 
 before_build:
@@ -30,35 +32,11 @@ after_build:
   - 7z a WPFVarTab.zip %APPVEYOR_BUILD_FOLDER%\compiled\CustomChromeLibrary.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.dll %APPVEYOR_BUILD_FOLDER%\compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.dll %APPVEYOR_BUILD_FOLDER%\compiled\ICSharpCode.SharpZipLib.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\JFKCommonLibrary.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\libnodave_jfkmod.dll %APPVEYOR_BUILD_FOLDER%\externalDlls\libnodave_jfkmod64.dll %APPVEYOR_BUILD_FOLDER%\compiled\System.Windows.Interactivity.dll %APPVEYOR_BUILD_FOLDER%\compiled\WPFToolkit.Extended.dll %APPVEYOR_BUILD_FOLDER%\compiled\WPFVarTab.exe %APPVEYOR_BUILD_FOLDER%\compiled\Microsoft.Windows.Shell.dll
   
 artifacts:
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.dll
-    name: DotNetSiemensPLCToolBoxLibrary.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV13.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.dll
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV15.dll
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV15.pdb
-  - path: compiled\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.pdb
-    name: DotNetSiemensPLCToolBoxLibrary.TIAV15_1.pdb
   - path: externalDlls\libnodave\libnodave_jfkmod.dll
     name: libnodave_jfkmod.dll
   - path: externalDlls\libnodave\libnodave_jfkmod64.dll
     name: libnodave_jfkmod64.dll
-  - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg'
-  - path: TiaGitHandler.zip
-    name: TiaGitHandler
-  - path: S7ToolBox.zip
-    name: S7ToolBox
-  - path: WPFVarTab.zip
-    name: WPFVarTab    
+  - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg' 
 #uncomment to publish to NuGet
 deploy:
   provider: NuGet

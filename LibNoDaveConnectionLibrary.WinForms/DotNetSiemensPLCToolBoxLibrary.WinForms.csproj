@@ -4,6 +4,12 @@
     <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>DotNetProjects.DotNetSiemensPLCToolBoxLibrary.WinForms</PackageId>
+    <Authors>DotNetProjects</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</PackageProjectUrl>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
   </ItemGroup>
