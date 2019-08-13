@@ -21,8 +21,8 @@ install:
   - cmd: choco install dotnetcore-sdk --pre
   
 before_build:
-  - externalDlls\libnodave\vcwinmake_64.bat
-  - externalDlls\libnodave\vcwinmake.bat
+  - cmd.exe /c externalDlls\libnodave\vcwinmake_64.bat
+  - cmd.exe /c externalDlls\libnodave\vcwinmake.bat
   - externalDlls\copydlls.bat
   - nuget restore
   
