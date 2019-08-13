@@ -17,6 +17,16 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="..\externalDlls\libnodave_jfkmod.dll">
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="..\externalDlls\libnodave_jfkmod64.dll">
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="SharpZipLib" Version="1.2.0" />    
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

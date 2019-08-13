@@ -21,14 +21,13 @@ install:
   - cmd: choco install dotnetcore-sdk --pre
   
 before_build:
+  - externalDlls\libnodave\vcwinmake.bat
+  - externalDlls\libnodave\vcwinmake_64.bat
+  - externalDlls\copydlls.bat
   - nuget restore
   
 build:
   project: DotNetSiemensPLCToolBoxLibrary.sln
-
-after_build:
-  - externalDlls\libnodave\vcwinmake.bat
-  - externalDlls\libnodave\vcwinmake_64.bat
 
 artifacts:
   - path: externalDlls\libnodave\libnodave_jfkmod.dll
