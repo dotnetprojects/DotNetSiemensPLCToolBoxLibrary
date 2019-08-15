@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
+    <TargetFramework>net461</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
