@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
-using DotNetSiemensPLCToolBoxLibrary;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
@@ -20,10 +16,8 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-//using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.General;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using TestProjectFileFunctions;
 
@@ -45,6 +39,8 @@ namespace JFK_VarTab
         public Form1()
         {
             InitializeComponent();
+            this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
+            this.datablockView.Child = this.dataBlockViewControl;
         }
 
         private Step7ProjectV5 tmp;
@@ -118,6 +114,8 @@ namespace JFK_VarTab
             }
         }
 
+        Credentials credentials;
+
         private void loadPrj(string fnm)
         {
             if (fnm != "")
@@ -132,24 +130,43 @@ namespace JFK_VarTab
                 txtUndeleteName.Visible = false;
                 */
                 //treeStep7Project.Nodes.Clear();
-                Project tmp = Projects.LoadProject(fnm, chkShowDeleted.Checked);
+
+                Project tmp = Projects.LoadProject(fnm, chkShowDeleted.Checked, credentials);
+                LoadProject(tmp);
                 //tmp = new Step7ProjectV5(fnm, chkShowDeleted.Checked);
 
                 //listBox1.Items.AddRange(tmp.PrgProjectFolders.ToArray());
                 //lblProjectName.Text = tmp.ProjectName;
                 //lblProjectInfo.Text = tmp.ProjectDescription;
 
-                if (tmp != null)
-                {
-                    myTreeNode trnd = new myTreeNode();
-                    trnd.myObject = tmp.ProjectStructure;
-                    trnd.Text = tmp.ToString();
-                    if (chkShowDeleted.Checked) trnd.Text += "(show deleted)";
-                    if (tmp.ProjectStructure != null) AddNodes(trnd, tmp.ProjectStructure.SubItems);
-                    treeStep7Project.Nodes.Add(trnd);
-                }
 
 
+
+            }
+        }
+
+        private void attachV14_Click(object sender, EventArgs e)
+        {
+            var prj = Projects.AttachProject("14SP1");
+            LoadProject(prj);
+        }
+
+        private void attachV15_1_Click(object sender, EventArgs e)
+        {
+            var prj = Projects.AttachProject("15.1");
+            LoadProject(prj);
+        }
+
+        private void LoadProject(Project prj)
+        {
+            if (prj != null)
+            {
+                myTreeNode trnd = new myTreeNode();
+                trnd.myObject = prj.ProjectStructure;
+                trnd.Text = prj.ToString();
+                if (chkShowDeleted.Checked) trnd.Text += "(show deleted)";
+                if (prj.ProjectStructure != null) AddNodes(trnd, prj.ProjectStructure.SubItems);
+                treeStep7Project.Nodes.Add(trnd);
             }
         }
 
@@ -964,6 +981,24 @@ namespace JFK_VarTab
         private void featuresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             (new Features()).ShowDialog();
+        }
+
+        private void openUsernameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string username = "";
+            string password = "";
+            if (InputBox.Show("Username", "Username", ref username) == DialogResult.OK)
+            {
+                if (InputBox.Show("Passwort", "Passwort", ref password) == DialogResult.OK)
+                {
+                    this.credentials = new Credentials() { Username = username, Password = new System.Security.SecureString() };
+                    foreach (char c in password)
+                    {
+                        credentials.Password.AppendChar(c);
+                    }
+                    openToolStripMenuItem_Click(sender, e);
+                }
+            }       
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)

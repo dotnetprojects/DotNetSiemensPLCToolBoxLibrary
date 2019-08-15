@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFramework>net461</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -22,9 +22,13 @@
   <ItemGroup>
     <Reference Include="Siemens.Engineering">
       <HintPath>..\externalDlls\siemens\V15.1\Siemens.Engineering.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
     </Reference>
     <Reference Include="Siemens.Engineering.Hmi">
       <HintPath>..\externalDlls\siemens\V15.1\Siemens.Engineering.Hmi.dll</HintPath>
+      <Private>false</Private>
+      <SpecificVersion>false</SpecificVersion>
     </Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
