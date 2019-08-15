@@ -35,7 +35,7 @@ namespace TiaGitHandler
         [STAThread]
         static void Main(string[] args)
         {
-
+            bool hasArgs = args.Count() > 0;
             string file = "";
             string exportPath = "";
             string user = Settings.Default.DefaultUser;
@@ -44,7 +44,7 @@ namespace TiaGitHandler
 
             Project prj = null;
 
-            if (args.Count() < 1)
+            if (!hasArgs)
             {
                 Application app = new Application();
                 var ask = new AskOpen();
@@ -170,7 +170,8 @@ namespace TiaGitHandler
             skippedBlocksList.ForEach(i => Console.WriteLine("{0}", i));
             Console.WriteLine();
             Console.WriteLine(skippedBlocksList.Count() + " blocks were skipped");
-            Console.ReadKey();
+            if (!hasArgs)
+                Console.ReadKey();
         }
 
         private class EncodingStringWriter : StringWriter
