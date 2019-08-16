@@ -9,6 +9,18 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV13\DotNetSiemensPLCToolBoxLibrary.TIAV13.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15\DotNetSiemensPLCToolBoxLibrary.TIAV15.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj">
+      <Private>true</Private>
+    </ProjectReference>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
