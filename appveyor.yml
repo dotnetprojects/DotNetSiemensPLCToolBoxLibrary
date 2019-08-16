@@ -31,9 +31,9 @@ build:
 
 after_build:
   - 7z a TiaGitHandler.zip %APPVEYOR_BUILD_FOLDER%\TiaGitHandler\bin\Debug\net461\*.*
-  - 7z a S7ToolBox.zip %APPVEYOR_BUILD_FOLDER%\TestProjectFileFunctions\bin\Debug\net462\*.*
   - 7z a WPFVarTab.zip %APPVEYOR_BUILD_FOLDER%\WPFVarTab\bin\Debug\net462\*.*
   - 7z a Protokoller.zip %APPVEYOR_BUILD_FOLDER%\DotNetDatenbankProtokollerV2\DotNetSimaticDatabaseProtokollerService\bin\Debug\net462\*.*
+  - 7z a S7ToolBox.zip %APPVEYOR_BUILD_FOLDER%\TestProjectFileFunctions\bin\Debug\net462\*.*
 
 artifacts:
   - path: externalDlls\libnodave\libnodave_jfkmod.dll
