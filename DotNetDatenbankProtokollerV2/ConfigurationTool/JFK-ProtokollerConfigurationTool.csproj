@@ -6,7 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <RootNamespace>DotNetSimaticDatabaseProtokollerConfigurationTool</RootNamespace>
-    
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Images\*" />
