@@ -59,17 +59,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 this._ziphelper = new ZipHelper(projectfile);
             }
 
-           
+
             try
             {
-                var xmlDoc = new XmlDocument();
-                xmlDoc.Load(_ziphelper.GetReadStream(projectfile));
+                using (var stream = _ziphelper.GetReadStream(projectfile))
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(stream);
 
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-                nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");
+                    XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                    nsmgr.AddNamespace("x", "http://www.siemens.com/2007/07/Automation/CommonServices/DataInfoValueData");
 
-                var nd = xmlDoc.SelectSingleNode("x:Data", nsmgr);
-                this.ProjectName = nd.Attributes["Name"].Value;
+                    var nd = xmlDoc.SelectSingleNode("x:Data", nsmgr);
+                    this.ProjectName = nd.Attributes["Name"].Value;
+                }
             }
             catch (Exception) 
             { }
