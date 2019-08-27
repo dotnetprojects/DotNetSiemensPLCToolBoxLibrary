@@ -465,6 +465,18 @@ namespace TiaGitHandler
                                 {
                                 }
 
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//*[local-name()='Member'][contains(@Datatype,'\"')]//*[local-name()='Sections']");
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
                                 if (resetSetpoints)
                                 {
                                     try
@@ -722,6 +734,21 @@ namespace TiaGitHandler
                                             foreach (var node in nodes.Cast<XmlNode>())
                                             {
                                                 node.InnerText = "false";
+                                            }
+                                        }
+                                        catch
+                                        {
+                                        }
+                                    }
+
+                                    if (projectBlockInfo.BlockTypeString == "Datatype")
+                                    {
+                                        try
+                                        {
+                                            var nodes = xmlDoc2.SelectNodes("//*[local-name()='Member'][contains(@Datatype,'\"')]//*[local-name()='Sections']");
+                                            foreach (var node in nodes.Cast<XmlNode>())
+                                            {
+                                                node.ParentNode.RemoveChild(node);
                                             }
                                         }
                                         catch
