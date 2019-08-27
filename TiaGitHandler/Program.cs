@@ -741,7 +741,7 @@ namespace TiaGitHandler
                                         }
                                     }
 
-                                    if (projectBlockInfo.BlockTypeString == "Datatype")
+                                    if (projectBlockInfo.BlockTypeString == "Userdatatype")
                                     {
                                         try
                                         {
