@@ -367,7 +367,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //Get S7OnlineType - To detect if is a IPConnection 
                 bool IPConnection = false;
 
-                var connectiontypeNumber = (int)_configuration.ConnectionType;
+                var connectiontypeNumber = (int)_configuration.PLCConnectionType;
                 var routingConnectiontypeNumber = (int)_configuration.RoutingPLCConnectionType;
 #if !IPHONE
                 if (_configuration.ConnectionType == LibNodaveConnectionTypes.Use_Step7_DLL)
@@ -377,7 +377,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 else if (_configuration.ConnectionType == LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP)
                 {
                     IPConnection = false;
-                    connectiontypeNumber = 50;
                 }
        
                 //Get S7OnlineType - To detect if is a IPConnection

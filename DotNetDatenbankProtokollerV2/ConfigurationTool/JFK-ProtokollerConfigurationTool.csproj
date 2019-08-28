@@ -8,6 +8,9 @@
     <RootNamespace>DotNetSimaticDatabaseProtokollerConfigurationTool</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Images\*" />
   </ItemGroup>
