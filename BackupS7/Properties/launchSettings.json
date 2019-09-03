@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BackupS7": {
+      "commandName": "Project",
+      "commandLineArgs": "Config_Example_SomeDbs.json C:\\Temp"
+    }
+  }
+}

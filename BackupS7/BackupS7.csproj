@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net45</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
+    <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JFKCommonLibrary">
+      <HintPath>..\externalDlls\JFKCommonLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Config_Example_All.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config_Example_AllDbs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config_Example_SomeDbs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+</Project>
