@@ -1673,7 +1673,9 @@ int DECL2 daveReadBytes(daveConnection * dc, int area, int DBnum, int start, int
 	FLUSH;
 #endif
 	if (dc->iface->protocol == daveProtoAS511) {
-		return daveReadS5Bytes(dc, area, DBnum, start, len/*, buffer*/);
+		res = daveReadS5Bytes(dc, area, DBnum, start, len/*, buffer*/);
+		if (buffer!=NULL) memcpy(buffer, dc->msgIn+5,len);
+		return res;
 	}
 	dc->AnswLen = 0;	// 03/12/05
 	dc->resultPointer = NULL;
