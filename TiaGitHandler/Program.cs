@@ -491,7 +491,8 @@ namespace TiaGitHandler
                                     var nodes = xmlDoc.SelectNodes("//*[local-name()='Member'][contains(@Datatype,'\"')]//*[local-name()='Sections']");
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
-                                        node.ParentNode.RemoveChild(node);
+                                        if (!node.OuterXml.Contains("Remanence=\"Retain\"") && !node.OuterXml.Contains("StartValue"))
+                                            node.ParentNode.RemoveChild(node);
                                     }
                                 }
                                 catch
@@ -726,7 +727,8 @@ namespace TiaGitHandler
                                             var nodes = xmlDoc2.SelectNodes("//*[local-name()='Interface']/*[local-name()='Sections']/*[local-name()='Section']/*[local-name()='Member']");
                                             foreach (var node in nodes.Cast<XmlNode>())
                                             {
-                                                node.ParentNode.RemoveChild(node);
+                                                if (!node.OuterXml.Contains("Remanence=\"Retain\"") && !node.OuterXml.Contains("StartValue"))
+                                                    node.ParentNode.RemoveChild(node);
                                             }
                                         }
                                         catch
@@ -769,7 +771,8 @@ namespace TiaGitHandler
                                             var nodes = xmlDoc2.SelectNodes("//*[local-name()='Member'][contains(@Datatype,'\"')]//*[local-name()='Sections']");
                                             foreach (var node in nodes.Cast<XmlNode>())
                                             {
-                                                node.ParentNode.RemoveChild(node);
+                                                if (!node.OuterXml.Contains("Remanence=\"Retain\"") && !node.OuterXml.Contains("StartValue"))
+                                                    node.ParentNode.RemoveChild(node);
                                             }
                                         }
                                         catch
