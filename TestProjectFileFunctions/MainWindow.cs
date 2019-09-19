@@ -41,6 +41,24 @@ namespace JFK_VarTab
             InitializeComponent();
             this.dataBlockViewControl = new TestProjectFileFunctions.DataBlockViewControl();
             this.datablockView.Child = this.dataBlockViewControl;
+            treeStep7Project.AllowDrop = true;
+            treeStep7Project.DragDrop += TreeStep7Project_DragDrop;
+            treeStep7Project.DragOver += TreeStep7Project_DragOver;
+        }
+
+        private void TreeStep7Project_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            e.Effect = System.Windows.Forms.DragDropEffects.All;
+        }
+
+        private void TreeStep7Project_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            var dropped = ((string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop));
+            var files = dropped.ToList();
+            foreach(var file in files)
+            {
+                loadPrj(file);
+            }
         }
 
         private Step7ProjectV5 tmp;
