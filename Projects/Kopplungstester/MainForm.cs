@@ -504,9 +504,11 @@ namespace Kopplungstester
 
             else if (col.Name == "Input")
             {
-                var awrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Replace(" ", "");
-
+                var awrt = dtaSendTabelle.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 var frmt = dtaSendTabelle.Rows[e.RowIndex].Cells["cmdFormat"].Value.ToString();
+
+                if (frmt != "Ascii")
+                    awrt = awrt.Replace(" ", "");
 
                 string wrt = "";
                 switch (frmt)
