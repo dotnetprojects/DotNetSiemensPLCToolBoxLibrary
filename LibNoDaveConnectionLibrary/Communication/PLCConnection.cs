@@ -1524,7 +1524,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="SZLNummer">The System State list Number</param>
         /// <param name="Index">The System State sub list number</param>
         /// <returns></returns>
-        public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
+        public SZLData PLCGetSZL(Int16 SZLNummer, UInt16 Index)
         {
             lock (lockObj)
             {
