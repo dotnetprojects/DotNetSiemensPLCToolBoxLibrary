@@ -1524,7 +1524,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <param name="SZLNummer">The System State list Number</param>
         /// <param name="Index">The System State sub list number</param>
         /// <returns></returns>
-        public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
+        public SZLData PLCGetSZL(UInt16 SZLNummer, UInt16 Index)
         {
             lock (lockObj)
             {
@@ -1684,6 +1684,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Upload an System State list (SZL) from the controller that hold configuration, state and capability information
+        /// For information about SZLNummbers and indexes please consult the information from SIEMENS regarding SFC51 "RDSYSST"
+        /// </summary>
+        /// <param name="SZLNummer">The System State list Number</param>
+        /// <param name="Index">The System State sub list number</param>
+        /// <returns></returns>
+        public SZLData PLCGetSZL(Int16 SZLNummer, Int16 Index)
+        {
+            return PLCGetSZL((UInt16)SZLNummer, (UInt16)Index);
         }
 
         /// <summary>
