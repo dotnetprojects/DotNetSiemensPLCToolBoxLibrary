@@ -291,7 +291,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.username = ((string)row["USERNAME"]).Replace("\0", "").Trim();
 
                             int ver = ((int)row["VERSION"]);
-                            myTmpBlk.version = (ver / 15).ToString() + "." + (ver % 15).ToString();
+			    // Calculate Block version
+			    // 0 .. 255
+			    // 0.0 .. 15.15
+                            myTmpBlk.version = (ver / 16).ToString() + "." + (ver % 16).ToString();
 
                             //Network Information in addinfo
                             myTmpBlk.nwinfo = addinfo;
@@ -670,7 +673,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                  if (cmt[n + 4] == 0xc0 && q == anzUebsprungZeilen-1)
                                                      akRw.CombineDBAccess = false;
 
-                                                //Db Zugriff zusammenfügen...
+                                                //Db Zugriff zusammenfÃ¼gen...
                                                 if (akRw.CombineDBAccess)
                                                 {
                                                     S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[akRowInAwlCode + 1];
