@@ -22,6 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         const int objectType_Simatic400 = 1314970;
         const int objectType_Simatic400H = 1315650;
         const int objectType_EternetInCPU3xx = 2364796;
+        const int objectType_EternetInCPU3xxF = 2364818;
         const int objectType_EternetInCPU4xx = 2364763;
         const int objectType_MpiDPinCPU = 1314972;
         const int objectType_MpiDP400 = 1315038;
@@ -930,7 +931,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             pnMasterSystems.Add(x);
                             _allFolders.Add(x);
                         }
-                        else if (objType == objectType_EternetInCPU3xx || objType == objectType_EternetInCPU4xx)
+                        else if (objType == objectType_EternetInCPU3xxF || objType == objectType_EternetInCPU3xx || objType == objectType_EternetInCPU4xx)
                         {
                             var cpu = CPUFolders.FirstOrDefault(x => x.ID == Convert.ToInt32(row["UNITID"]));
                             if (cpu != null) cpu.IdTobjId = Convert.ToInt32(row["ID"]);
