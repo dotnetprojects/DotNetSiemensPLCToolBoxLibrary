@@ -150,6 +150,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public bool IsInstanceDB;
             public bool IsSFB;
             public int FBNumber;
+            public int CheckSum;
         }
 
         private Dictionary<string, tmpBlock> tmpBlocks; //internal cached list of blocks already read from the S7 Project
@@ -281,6 +282,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             Array.Resize<byte>(ref ssbpart, ssbpartlen);
                         if (addinfo != null && addinfo.Length > addinfolen)
                             Array.Resize<byte>(ref addinfo, addinfolen);
+			    
+                        var tmpCheckSum = (int)row["CHECKSUM"];
+                        if (myTmpBlk.CheckSum == 0 && tmpCheckSum != 0)
+                        {
+                            if (BitConverter.IsLittleEndian)
+                            {
+                                var tmp = BitConverter.GetBytes(tmpCheckSum);
+                                Array.Reverse(tmp);
+                                var tmp2 = BitConverter.ToUInt16(tmp, 2);
+                                myTmpBlk.CheckSum = Convert.ToInt32(tmp2);
+                            }
+                            else
+                                myTmpBlk.CheckSum = tmpCheckSum;
+                        }
 
                         if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 || subblktype == 15) //FC, OB, FB, SFC, SFB
                         {
@@ -542,6 +557,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
+                    retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
                                        
                    return retVal;
@@ -764,6 +780,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
+                    retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
 
                     return retVal;
