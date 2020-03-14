@@ -150,6 +150,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public bool IsInstanceDB;
             public bool IsSFB;
             public int FBNumber;
+            public int CheckSum;
         }
 
         private Dictionary<string, tmpBlock> tmpBlocks; //internal cached list of blocks already read from the S7 Project
@@ -281,6 +282,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             Array.Resize<byte>(ref ssbpart, ssbpartlen);
                         if (addinfo != null && addinfo.Length > addinfolen)
                             Array.Resize<byte>(ref addinfo, addinfolen);
+			    
+                        var tmpCheckSum = (int)row["CHECKSUM"];
+                        if (myTmpBlk.CheckSum == 0 && tmpCheckSum != 0)
+                        {
+                            if (BitConverter.IsLittleEndian)
+                            {
+                                var tmp = BitConverter.GetBytes(tmpCheckSum);
+                                Array.Reverse(tmp);
+                                var tmp2 = BitConverter.ToUInt16(tmp, 2);
+                                myTmpBlk.CheckSum = Convert.ToInt32(tmp2);
+                            }
+                            else
+                                myTmpBlk.CheckSum = tmpCheckSum;
+                        }
 
                         if (subblktype == 12 || subblktype == 8 || subblktype == 14 || subblktype == 13 || subblktype == 15) //FC, OB, FB, SFC, SFB
                         {
@@ -291,7 +306,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.username = ((string)row["USERNAME"]).Replace("\0", "").Trim();
 
                             int ver = ((int)row["VERSION"]);
-                            myTmpBlk.version = (ver / 15).ToString() + "." + (ver % 15).ToString();
+			    // Calculate Block version
+			    // 0 .. 255
+			    // 0.0 .. 15.15
+                            myTmpBlk.version = (ver / 16).ToString() + "." + (ver % 16).ToString();
 
                             //Network Information in addinfo
                             myTmpBlk.nwinfo = addinfo;
@@ -539,6 +557,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
+                    retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
                                        
                    return retVal;
@@ -670,7 +689,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                  if (cmt[n + 4] == 0xc0 && q == anzUebsprungZeilen-1)
                                                      akRw.CombineDBAccess = false;
 
-                                                //Db Zugriff zusammenfügen...
+                                                //Db Zugriff zusammenfÃ¼gen...
                                                 if (akRw.CombineDBAccess)
                                                 {
                                                     S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[akRowInAwlCode + 1];
@@ -761,6 +780,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
+                    retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
 
                     return retVal;

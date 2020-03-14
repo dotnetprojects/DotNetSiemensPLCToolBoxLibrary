@@ -31,7 +31,7 @@ namespace WPFToolboxForSiemensPLCs.DockableWindows
             App.clientForm.lblStatus.Text = "";
             try
             {
-                SZLData szlData = App.clientForm.Connection.PLCGetSZL((short) szlid, (short) szlindex);
+                SZLData szlData = App.clientForm.Connection.PLCGetSZL((ushort) szlid, (ushort) szlindex);
 
                 myDataGrid.Columns.Clear();
 
