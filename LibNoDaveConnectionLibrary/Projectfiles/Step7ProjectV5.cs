@@ -506,6 +506,63 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
+            //Get The CPU Order number (MLFB)
+            foreach (var y in CPUFolders)
+            {
+                string filepath = ProjectFolder + "hOmSave7" + _DirSeperator + 
+                    "s7hstatx" + _DirSeperator + y.UnitID.ToString("x") + ".s7h";
+                if (!_ziphelper.FileExists(filepath))
+                    continue; //In some projects the s7h files does not exist, but is created after a HWconf recompile (v5.6 SP1 HF5).
+
+                Stream s7h = _ziphelper.GetReadStream(filepath);
+                BinaryReader rd = new BinaryReader(s7h);
+                byte[] completeBuffer = rd.ReadBytes((int)_ziphelper.GetStreamLength(filepath, s7h));
+                rd.Close();
+                s7h.Close();
+
+                // Byte sequence before information about each slot on the rack.
+                string[] checkSequences = {
+                    ASCIIEncoding.ASCII.GetString(new byte[] { 0x0a, 0x00, 0x03 }),// 319-3 (EL00/01), 317-2DP
+                    ASCIIEncoding.ASCII.GetString(new byte[] { 0x0c, 0x00, 0x03 }),// 317T-3 PN/DP
+                    ASCIIEncoding.ASCII.GetString(new byte[] { 0x09, 0x00, 0x03 }) // PLCType.SimaticRTX
+                };
+                string buffer = ASCIIEncoding.ASCII.GetString(completeBuffer);
+                List<IEnumerable<int>> hitsList = new List<IEnumerable<int>>();
+                foreach ( string checkSeq in checkSequences)
+                {
+                    //Find the indexes of the matches in the byte-buffer.
+                    var matches = System.Text.RegularExpressions.Regex.
+                        Matches(buffer, checkSeq).Cast<System.Text.
+                        RegularExpressions.Match>().Select(m => m.Index);
+                    // If the byte address i higher than 2000, it is most likely
+                    // not the CPU MLFB that is found.
+                    if (matches.Count() > 0 && matches.ElementAt(0) < 2000)
+                    {
+                        hitsList.Add(matches);
+                    }                    
+                }
+                // Sort the list by the result with most matches. 
+                hitsList.Sort((a,b) => b.Count() - a.Count());
+                // Take the result with the most matches.
+                IEnumerable<int> matchList = hitsList.First();
+
+                // The first hit has e.g. slot1, power supply etc.
+                // The second hit has the CPU information
+                if (matchList.Count() < 2)
+                    continue;      
+                
+                //The length of the text field is the byte before the text field.
+                //First two fields are seperated by bytes "03 20 20 32"
+                int descrStart = matchList.ElementAt(1);                
+                int dscr1_length = completeBuffer[descrStart + 6]; // CPU Name
+                int dscr2_length = completeBuffer[descrStart + 6 + dscr1_length + 5]; // CPU Name
+                int dscr3_length = completeBuffer[descrStart + 6 + dscr1_length + 5 + dscr2_length + 1]; // CPU MLFB
+                int dscr3_position = descrStart + 6 + dscr1_length + 5 + dscr2_length + 2;
+                string descr3 = ASCIIEncoding.ASCII.GetString(completeBuffer, dscr3_position, dscr3_length);
+
+                y.MLFB_OrderNumber = descr3;                                    
+            }
+            
             //Get The CPU(ET200S)...
             if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7hkcomx" + _DirSeperator + "HOBJECT1.DBF"))
             {
