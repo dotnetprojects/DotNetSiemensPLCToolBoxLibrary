@@ -21,9 +21,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         const int objectType_Simatic300 = 1314969;
         const int objectType_Simatic400 = 1314970;
         const int objectType_Simatic400H = 1315650;
+        const int objectType_SimaticRTX = 1315651;
         const int objectType_EternetInCPU3xx = 2364796;
+        const int objectType_EternetInCPU3xx_2 = 2364572; //Alternative type e.g. 6ES7 318-3EL00-0AB0 (Only one port).
         const int objectType_EternetInCPU3xxF = 2364818;
         const int objectType_EternetInCPU4xx = 2364763;
+        const int objectType_EternetInCPURTX = 2364315; // E.g. 6ES7 611-4SB00-0YB7
         const int objectType_MpiDPinCPU = 1314972;
         const int objectType_MpiDP400 = 1315038;
         const int objectType_MpiDP300 = 1315016;
@@ -238,7 +241,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 {
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                     {
-                        if ((int)row["OBJTYP"] == objectType_Simatic300 || (int)row["OBJTYP"] == objectType_Simatic400 || (int)row["OBJTYP"] == objectType_Simatic400H)
+                        if ((int)row["OBJTYP"] == objectType_Simatic300 || 
+                            (int)row["OBJTYP"] == objectType_Simatic400 || 
+                            (int)row["OBJTYP"] == objectType_Simatic400H || 
+                            (int)row["OBJTYP"] == objectType_SimaticRTX)
                         {
                             var x = new StationConfigurationFolder() { Project = this, Parent = ProjectStructure };
                             x.Name = ((string)row["Name"]).Replace("\0", "");
@@ -256,6 +262,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                     break;
                                 case objectType_Simatic400H:
                                     x.StationType = PLCType.Simatic400H;
+                                    break;
+                                case objectType_SimaticRTX:
+                                    x.StationType = PLCType.SimaticRTX;
                                     break;
                             }
                             x.Parent = ProjectStructure;
@@ -534,7 +543,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                         {
-                            if ((int)row["ID"] == y.ID && y.CpuType == PLCType.Simatic300)
+                            if ((int)row["ID"] == y.ID && 
+                                (y.CpuType == PLCType.Simatic300 || 
+                                y.CpuType == PLCType.SimaticRTX))
                             //if ((int)row["UNITID"] == y.UnitID && y.CpuType == PLCType.Simatic300)
                             {
                                 y.Name = ((string)row["Name"]).Replace("\0", "");
@@ -689,7 +700,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             int fldid = (int)row["TOBJID"];
                             foreach (var y in CPUFolders)
                             {
-                                if (y.ID == cpuid && y.CpuType == PLCType.Simatic300)
+                                if (y.ID == cpuid && 
+                                    (y.CpuType == PLCType.Simatic300 || 
+                                    y.CpuType == PLCType.SimaticRTX))
                                 {
                                     foreach (var z in S7ProgrammFolders)
                                     {
@@ -931,7 +944,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             pnMasterSystems.Add(x);
                             _allFolders.Add(x);
                         }
-                        else if (objType == objectType_EternetInCPU3xxF || objType == objectType_EternetInCPU3xx || objType == objectType_EternetInCPU4xx)
+                        else if (objType == objectType_EternetInCPU3xxF || 
+                            objType == objectType_EternetInCPU3xx || 
+                            objType == objectType_EternetInCPU4xx || 
+                            objType == objectType_EternetInCPU3xx_2 || 
+                            objType == objectType_EternetInCPURTX)
                         {
                             var cpu = CPUFolders.FirstOrDefault(x => x.ID == Convert.ToInt32(row["UNITID"]));
                             if (cpu != null) cpu.IdTobjId = Convert.ToInt32(row["ID"]);
