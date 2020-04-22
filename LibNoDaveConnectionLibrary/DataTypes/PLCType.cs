@@ -11,5 +11,6 @@
         SimaticET200 = 6,
         Simatic1500 = 7,
         SimaticET200SP = 8,
+        SimaticRTX = 9,
     }
 }
