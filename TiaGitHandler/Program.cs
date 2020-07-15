@@ -80,7 +80,7 @@ namespace TiaGitHandler
                 if (object.Equals(res, false))
                 {
                     OpenFileDialog op = new OpenFileDialog();
-                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1";
+                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1;*.ap16";
                     op.CheckFileExists = false;
                     op.ValidateNames = false;
                     var ret = op.ShowDialog();
@@ -94,7 +94,7 @@ namespace TiaGitHandler
                         return;
                     }
 
-                    if (Path.GetExtension(file) == ".ap15_1")
+                    if (Path.GetExtension(file) == ".ap15_1" || Path.GetExtension(file) == ".ap16")
                     {
                         if (InputBox.Show("Credentials", "Enter Username (or cancel if not used)", ref user) !=
                             DialogResult.Cancel)

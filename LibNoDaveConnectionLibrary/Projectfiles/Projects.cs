@@ -309,6 +309,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(createV15_1ProjectInstance(fls[0], credentials));
 
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap16");
+                        if (fls.Length > 0)
+                            retVal.Add(createV16ProjectInstance(fls[0], credentials));
+
                         fls = System.IO.Directory.GetFiles(subd, "*.al11");
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
@@ -332,6 +336,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         fls = System.IO.Directory.GetFiles(subd, "*.al15_1");
                         if (fls.Length > 0)
                             retVal.Add(createV15_1ProjectInstance(fls[0], credentials));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.al16");
+                        if (fls.Length > 0)
+                            retVal.Add(createV16ProjectInstance(fls[0], credentials));
 
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
@@ -378,6 +386,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV15_1ProjectInstance(entr, credentials));
 
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap16");
+                        if (entr != null)
+                            retVal.Add(createV16ProjectInstance(entr, credentials));
+
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
@@ -401,6 +413,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al15_1");
                         if (entr != null)
                             retVal.Add(createV15_1ProjectInstance(entr, credentials));
+
+                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al16");
+                        if (entr != null)
+                            retVal.Add(createV16ProjectInstance(entr, credentials));
 
                         entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
                         if (entr != null)
@@ -449,6 +465,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV15ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".ap15_1"))
                 return createV15_1ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".ap16"))
+                return createV16ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al11"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al12"))
@@ -461,6 +479,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV15ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al15_1"))
                 return createV15_1ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".al16"))
+                return createV16ProjectInstance(file, credentials);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
                 return new Step5Project(file, showDeleted);
             else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))

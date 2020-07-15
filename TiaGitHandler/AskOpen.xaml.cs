@@ -18,6 +18,11 @@
             this.Close();
         }
 
+        private void CmdAttachV16_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.Result = "16";
+            this.Close();
+        }
         private void CmdAttachV151_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             this.Result = "15.1";
