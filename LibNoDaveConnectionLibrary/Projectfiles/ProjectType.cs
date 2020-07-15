@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public enum ProjectType
     {
@@ -13,5 +8,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         Tia14SP1,
         Tia15,
         Tia15_1,
+        Tia16
     }
 }

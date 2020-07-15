@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.Common_v3.xsd"/>
+	<xs:simpleType name="Accessibility_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Public"/>
+			<xs:enumeration value="Internal"/>
+			<xs:enumeration value="Protected"/>
+			<xs:enumeration value="Private"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndexPath_TP">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="-?\d+(,-?\d+)*(;(-?\d+(,-?\d+)*))?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Member" type="Member_T"/>
+	<xs:complexType name="Member_T">
+		<xs:sequence>
+			<xs:element ref="AttributeList" minOccurs="0" maxOccurs="1"/>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Member"/>
+				<xs:element ref="Sections"/>
+				<xs:element ref="StartValue"/>
+				<xs:element ref="Comment"/>
+				<xs:element ref="Subelement"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="Datatype" type="SimaticType_TE" use="required"/>
+		<xs:attribute name="Version" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The version of the library type to use. Previous to this, the version was written inside the Datatype attribute itself, like "dtl:v1.0". Now, this is written in two separate attributes, to mitigate problems with weird names ("dtl:v1.0" could be a UDT name!).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Remanence" type="Remanence_TE" default="NonRetain"/>
+		<xs:attribute name="Accessibility" type="Accessibility_TE" default="Public"/>
+		<xs:attribute name="Informative" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:simpleType name="MemberAttributes_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CodeReadOnly">
+				<xs:annotation>
+					<xs:documentation>Write acces only inside function</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="At">
+				<xs:annotation>
+					<xs:documentation>string: Member shares offset with another member in this structure</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SetPoint">
+				<xs:annotation>
+					<xs:documentation>boolean: Member can be synchronized with work memory</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UserVisible">
+				<xs:annotation>
+					<xs:documentation>boolean: Editor does not show the member</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UserReadOnly">
+				<xs:annotation>
+					<xs:documentation>boolean: User cannot change member name</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UserDeletable">
+				<xs:annotation>
+					<xs:documentation>boolean: Editor does not allow to delete the member</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HmiAccessible">
+				<xs:annotation>
+					<xs:documentation>boolean: No HMI access, no structure item</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HmiVisible">
+				<xs:annotation>
+					<xs:documentation>boolean: Filter to reduce the number of members shown in the first place</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Offset">
+				<xs:annotation>
+					<xs:documentation>integer: </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PaddedSize">
+				<xs:annotation>
+					<xs:documentation>integer: </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HiddenAssignment">
+				<xs:annotation>
+					<xs:documentation>boolean: Hide assignement at call if matches with PredefinedAssignment</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PredefinedAssignment">
+				<xs:annotation>
+					<xs:documentation>string: Input for the paramter used when call is placed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReadOnlyAssignment">
+				<xs:annotation>
+					<xs:documentation>boolean: The user cannot change the predefined assignement at the call</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Remanence_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SetInIDB"/>
+			<xs:enumeration value="NonRetain"/>
+			<xs:enumeration value="Retain"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Section" type="Section_T"/>
+	<xs:complexType name="Section_T">
+		<xs:sequence>
+			<xs:element ref="Sections" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Base Class</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Member" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Name" type="SectionName_TE" use="required"/>
+	</xs:complexType>
+	<xs:element name="Sections" type="Sections_T"/>
+	<xs:complexType name="Sections_T">
+		<xs:sequence>
+			<xs:element ref="AttributeList" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="Section" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Datatype" type="SimaticType_TE"/>
+		<xs:attribute name="Version" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="StartValue" type="StartValue_T"/>
+	<xs:complexType name="StartValue_T">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="ConstantName" type="SimaticName_TP"/>
+				<xs:attribute name="IsBulkValue" type="xs:boolean" default="false"/>
+				<xs:attribute name="Informative" type="xs:boolean" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:element name="Subelement" type="Subelement_T"/>
+    <xs:complexType name="Subelement_T">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="StartValue"/>
+                <xs:element ref="Comment"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Path" type="IndexPath_TP"/>
+    </xs:complexType>
+</xs:schema>

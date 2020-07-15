@@ -1,6 +1,7 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

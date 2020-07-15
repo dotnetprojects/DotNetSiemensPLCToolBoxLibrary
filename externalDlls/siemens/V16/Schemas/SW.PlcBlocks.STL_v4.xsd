@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.CompileUnitCommon_v4.xsd"/>
+	<xs:element name="StlStatement" type="StlStatement_T"/>
+	<xs:complexType name="StlStatement_T">
+		<xs:sequence>
+			<xs:group ref="Comment_G" minOccurs="0"/>
+			<xs:element ref="LabelDeclaration" minOccurs="0"/>
+			<xs:sequence>
+				<xs:element ref="StlToken">
+					<xs:annotation>
+						<xs:documentation>missing for empty lines</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:group ref="Comment_G" minOccurs="0"/>
+			</xs:sequence>
+			<xs:element ref="Access" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="UId" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>Not allowed in STL</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="StlToken" type="StlToken_T"/>
+	<xs:complexType name="StlToken_T">
+		<xs:sequence>
+			<xs:element ref="IntegerAttribute" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>for NumBLs. NumBLs is informative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0">
+				<xs:group ref="Comment_G" minOccurs="0"/>
+				<xs:element ref="Token">
+					<xs:annotation>
+						<xs:documentation>e.g 0 1 for NOP 0, NOP 1; STW for L STW or DILG for L DILG; only if separated by comment</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="UId" type="xs:int" use="optional">
+			<xs:annotation>
+				<xs:documentation>Not allowed in STL</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Text" type="STL_TE" use="required"/>
+		<!--<xs:attribute name="NumBLs" type="xs:int" default="0"/>-->
+	</xs:complexType>
+	<xs:element name="StatementList" type="StatementList_T"/>
+	<xs:complexType name="StatementList_T">
+		<xs:sequence>
+			<xs:element ref="StlStatement" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="STL_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="AN"/>
+			<xs:enumeration value="O"/>
+			<xs:enumeration value="ON"/>
+			<xs:enumeration value="X"/>
+			<xs:enumeration value="XN"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="Assign"/>
+			<xs:enumeration value="Rise"/>
+			<xs:enumeration value="Fall"/>
+			<xs:enumeration value="L"/>
+			<xs:enumeration value="T"/>
+			<xs:enumeration value="LAR1"/>
+			<xs:enumeration value="LAR2"/>
+			<xs:enumeration value="TAR1"/>
+			<xs:enumeration value="TAR2"/>
+			<xs:enumeration value="Extend">
+				<xs:annotation>
+					<xs:documentation>SE, SV</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Free"/>
+			<xs:enumeration value="LC"/>
+			<xs:enumeration value="OffDelay">
+				<xs:annotation>
+					<xs:documentation>SF, SA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Retentive">
+				<xs:annotation>
+					<xs:documentation>SS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OnDelay">
+				<xs:annotation>
+					<xs:documentation>SD, SE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pulse">
+				<xs:annotation>
+					<xs:documentation>SP, SI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CD"/>
+			<xs:enumeration value="CU"/>
+			<xs:enumeration value="CALL"/>
+			<xs:enumeration value="CC"/>
+			<xs:enumeration value="UC"/>
+			<xs:enumeration value="OPEN_DB">
+				<xs:annotation>
+					<xs:documentation>AUF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OPEN_DI">
+				<xs:annotation>
+					<xs:documentation>AUF DI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LT_I"/>
+			<xs:enumeration value="LT_R"/>
+			<xs:enumeration value="LT_D"/>
+			<xs:enumeration value="LE_I"/>
+			<xs:enumeration value="LE_R"/>
+			<xs:enumeration value="LE_D"/>
+			<xs:enumeration value="EQ_I"/>
+			<xs:enumeration value="EQ_R"/>
+			<xs:enumeration value="EQ_D"/>
+			<xs:enumeration value="GE_I"/>
+			<xs:enumeration value="GE_R"/>
+			<xs:enumeration value="GE_D"/>
+			<xs:enumeration value="GT_I"/>
+			<xs:enumeration value="GT_R"/>
+			<xs:enumeration value="GT_D"/>
+			<xs:enumeration value="NE_I"/>
+			<xs:enumeration value="NE_R"/>
+			<xs:enumeration value="NE_D"/>
+			<xs:enumeration value="JU">
+				<xs:annotation>
+					<xs:documentation>SPA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JC">
+				<xs:annotation>
+					<xs:documentation>SPB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JO">
+				<xs:annotation>
+					<xs:documentation>SPO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JZ">
+				<xs:annotation>
+					<xs:documentation>SPZ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JP">
+				<xs:annotation>
+					<xs:documentation>SPP</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JM">
+				<xs:annotation>
+					<xs:documentation>SPM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JN">
+				<xs:annotation>
+					<xs:documentation>SPN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JCN">
+				<xs:annotation>
+					<xs:documentation>SPBN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JCB">
+				<xs:annotation>
+					<xs:documentation>SPBB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JNB">
+				<xs:annotation>
+					<xs:documentation>SPBNB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JBI">
+				<xs:annotation>
+					<xs:documentation>SPBI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JNBI">
+				<xs:annotation>
+					<xs:documentation>SPBNI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JOS">
+				<xs:annotation>
+					<xs:documentation>SPS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JUN">
+				<xs:annotation>
+					<xs:documentation>SPU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JMZ">
+				<xs:annotation>
+					<xs:documentation>SPMZ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JPZ">
+				<xs:annotation>
+					<xs:documentation>SPZ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LOOP"/>
+			<xs:enumeration value="JL"/>
+			<xs:enumeration value="ADD"/>
+			<xs:enumeration value="SLD"/>
+			<xs:enumeration value="SLW"/>
+			<xs:enumeration value="SRD"/>
+			<xs:enumeration value="SRW"/>
+			<xs:enumeration value="SRSD">
+				<xs:annotation>
+					<xs:documentation>SSD, SVD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SRSW">
+				<xs:annotation>
+					<xs:documentation>SSW, SVW</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RLD"/>
+			<xs:enumeration value="RRD"/>
+			<xs:enumeration value="BLD"/>
+			<xs:enumeration value="ADDAR1"/>
+			<xs:enumeration value="ADDAR2"/>
+			<xs:enumeration value="INC"/>
+			<xs:enumeration value="DEC"/>
+			<xs:enumeration value="AW"/>
+			<xs:enumeration value="OW"/>
+			<xs:enumeration value="XW"/>
+			<xs:enumeration value="AD"/>
+			<xs:enumeration value="OD"/>
+			<xs:enumeration value="XD"/>
+			<xs:enumeration value="A_BRACK"/>
+			<xs:enumeration value="AN_BRACK"/>
+			<xs:enumeration value="O_BRACK"/>
+			<xs:enumeration value="ON_BRACK"/>
+			<xs:enumeration value="X_BRACK"/>
+			<xs:enumeration value="XN_BRACK"/>
+			<xs:enumeration value="INV_I">
+				<xs:annotation>
+					<xs:documentation>KEW, INV_F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NEG_I">
+				<xs:annotation>
+					<xs:documentation>KZW, NEG_F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INV_D">
+				<xs:annotation>
+					<xs:documentation>KED</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NEG_D">
+				<xs:annotation>
+					<xs:documentation>KZD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NEG_R">
+				<xs:annotation>
+					<xs:documentation>NEG_G, ND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ABS_R">
+				<xs:annotation>
+					<xs:documentation>ABS_G</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SQRT"/>
+			<xs:enumeration value="SQR"/>
+			<xs:enumeration value="LN"/>
+			<xs:enumeration value="EXP"/>
+			<xs:enumeration value="SIN"/>
+			<xs:enumeration value="ASIN"/>
+			<xs:enumeration value="COS"/>
+			<xs:enumeration value="ACOS"/>
+			<xs:enumeration value="TAN"/>
+			<xs:enumeration value="ATAN"/>
+			<xs:enumeration value="RLDA"/>
+			<xs:enumeration value="RRDA"/>
+			<xs:enumeration value="BTI">
+				<xs:annotation>
+					<xs:documentation>DEF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ITB">
+				<xs:annotation>
+					<xs:documentation>DUF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BTD">
+				<xs:annotation>
+					<xs:documentation>DED</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DTB">
+				<xs:annotation>
+					<xs:documentation>DUD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DTR">
+				<xs:annotation>
+					<xs:documentation>FDG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RND">
+				<xs:annotation>
+					<xs:documentation>GFDN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RND_M">
+				<xs:annotation>
+					<xs:documentation>GFDM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RND_P">
+				<xs:annotation>
+					<xs:documentation>GFDP</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TRUNC"/>
+			<xs:enumeration value="ITD">
+				<xs:annotation>
+					<xs:documentation>FD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CAW">
+				<xs:annotation>
+					<xs:documentation>TAW</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CAD">
+				<xs:annotation>
+					<xs:documentation>TAD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TAR1_ACCU1"/>
+			<xs:enumeration value="TAR2_ACCU1"/>
+			<xs:enumeration value="ADD_I">
+				<xs:annotation>
+					<xs:documentation>+F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SUB_I">
+				<xs:annotation>
+					<xs:documentation>-F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUL_I">
+				<xs:annotation>
+					<xs:documentation>xF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DIV_I">
+				<xs:annotation>
+					<xs:documentation>:F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ADD_D">
+				<xs:annotation>
+					<xs:documentation>+D</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SUB_D">
+				<xs:annotation>
+					<xs:documentation>-D</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUL_D">
+				<xs:annotation>
+					<xs:documentation>xD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DIV_D">
+				<xs:annotation>
+					<xs:documentation>:D</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MOD_D"/>
+			<xs:enumeration value="L_DBLG"/>
+			<xs:enumeration value="L_DILG"/>
+			<xs:enumeration value="L_DBNO"/>
+			<xs:enumeration value="L_DINO"/>
+			<xs:enumeration value="ADD_R">
+				<xs:annotation>
+					<xs:documentation>+G</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SUB_R">
+				<xs:annotation>
+					<xs:documentation>-G</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUL_R">
+				<xs:annotation>
+					<xs:documentation>xG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DIV_R">
+				<xs:annotation>
+					<xs:documentation>:G</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CAC">
+				<xs:annotation>
+					<xs:documentation>TAK</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LEAVE"/>
+			<xs:enumeration value="PUSH"/>
+			<xs:enumeration value="POP"/>
+			<xs:enumeration value="SET"/>
+			<xs:enumeration value="NEG"/>
+			<xs:enumeration value="CLR"/>
+			<xs:enumeration value="BEC">
+				<xs:annotation>
+					<xs:documentation>BEB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BRACKET">
+				<xs:annotation>
+					<xs:documentation>)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SAVE"/>
+			<xs:enumeration value="NOP_0"/>
+			<xs:enumeration value="NOP_1"/>
+			<xs:enumeration value="MCR_BRACK">
+				<xs:annotation>
+					<xs:documentation>MCR(</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BRACK_MCR">
+				<xs:annotation>
+					<xs:documentation>MCR)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MCRA"/>
+			<xs:enumeration value="MCRD"/>
+			<xs:enumeration value="ENT"/>
+			<xs:enumeration value="LAR1_ACCU1"/>
+			<xs:enumeration value="LAR1_AR2"/>
+			<xs:enumeration value="LAR2_ACCU1"/>
+			<xs:enumeration value="TAR1_AR2"/>
+			<xs:enumeration value="CAR">
+				<xs:annotation>
+					<xs:documentation>TAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CDB">
+				<xs:annotation>
+					<xs:documentation>TDB</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="COMMENT"/>
+			<xs:enumeration value="EMPTY_LINE"/>
+			<xs:enumeration value="PSEUDO"/>
+			<xs:enumeration value="MOVE"/>
+			<xs:enumeration value="MOVE_BLOCK"/>
+			<xs:enumeration value="BE">
+				<xs:annotation>
+					<xs:documentation>BEA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BEU"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
