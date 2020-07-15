@@ -107,7 +107,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DINT)
                 return Int32.Parse(Value.Replace("L#", ""));
             else if (DataType == S7DataRowType.REAL) 
-                return double.Parse(Value.Replace('.',','));
+                return float.Parse(Value.Replace('.',','));
             else if (DataType == S7DataRowType.S5TIME)
                 return Helper.GetTimespanFromS5TimeorTime(Value);
             else if (DataType == S7DataRowType.TIME)
@@ -145,7 +145,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DINT)
                 return (Int32)0;
             else if (DataType == S7DataRowType.REAL)
-                return (double)0;
+                return (float)0;
             else if (DataType == S7DataRowType.S5TIME)
                 return new TimeSpan();
             else if (DataType == S7DataRowType.TIME)
@@ -194,7 +194,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DWORD) return "DW#16#" + ((UInt32)Value).ToString("X", NumberFormatInfo.CurrentInfo);
             else if (DataType == S7DataRowType.INT) return ((Int16)Value).ToString();
             else if (DataType == S7DataRowType.DINT) return "L#" + ((Int32)Value).ToString();
-            else if (DataType == S7DataRowType.REAL) return ((Double)Value).ToString("0.000000e+000", CultureInfo.InvariantCulture);
+            else if (DataType == S7DataRowType.REAL) return ((Single)Value).ToString("0.000000e+000", CultureInfo.InvariantCulture);
             else if (DataType == S7DataRowType.S5TIME)
             {
                 var bt = new byte[2];
@@ -733,7 +733,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             int Month, Day, Hour, Minute, Second;
             bool Wrong;
 
-
             Wrong = false;
 
             tYear[0] = (b1[3]/16)*10; //  Jahr
@@ -793,8 +792,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             return Result;
         }
-
-
 
         public static bool steuerZ(byte val)
         {
@@ -1076,38 +1073,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             return Result;
         }
-
-        /*
-        public static double GetDWord(byte b1, byte b2, byte b3, byte b4)
-        {
-
-            double Result;
-
-            Result = (b1 * 0x1000000) + (b2 * 0x10000) + (b3 * 0x100) + b4;
-
-            return Result;
-        }*/
-
-        /*public static long GetDInt(byte b1, byte b2, byte b3, byte b4)
-        {
-
-            long Result;
-
-            Result = (b1 * 0x1000000) + (b2 * 0x10000) + (b3 * 0x100) + b4; ;
-
-            return Result;
-        }*/
-
-        /*public static string GetReal(byte b1, byte b2, byte b3, byte b4)
-        {
-            string Result;
-
-
-            double tmp = GetDWord(b1, b2, b3, b4);
-            Result = Convert.ToDouble(tmp).ToString("0.000000e+000");
-
-            return Result;
-        }*/
 
         public static string GetPointer(byte[] BD, int pos, int language)
         //public static string GetPointer(byte b1, byte b2, byte b3, byte b4)
