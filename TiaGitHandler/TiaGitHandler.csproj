@@ -21,6 +21,7 @@
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj">
       <Private>true</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV16\DotNetSiemensPLCToolBoxLibrary.TIAV16.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
