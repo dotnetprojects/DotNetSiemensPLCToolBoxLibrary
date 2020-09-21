@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
@@ -23,6 +24,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 return _step7SymbolTableEntrys;
             }
             set { _step7SymbolTableEntrys = value; }
+        }
+
+        /// <summary>
+        /// Returns the symbol list as a string that
+        /// is formatted in the same way as an export from
+        /// the Simatic Symbol Editor when saving it as .SDF
+        /// (System Data Format) type.
+        /// </summary>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        public string GetSymbolTableAsSdf()
+        {            
+            var symbolTable = new System.Text.StringBuilder();
+            foreach (var entry in SymbolTableEntrys)
+            {
+                //Remove control words from the symbol string.
+                //string sym = new string(entry.Symbol.Where(c => !char.IsControl(c)).ToArray());
+                symbolTable.Append("\"" + entry.Symbol.PadRight(24) + "\",");
+                if(Project.ProjectLanguage == MnemonicLanguage.English)
+                    symbolTable.Append("\"" + entry.OperandIEC.PadRight(12) + "\",");
+                else
+                    symbolTable.Append("\"" + entry.Operand.PadRight(12) + "\",");
+                symbolTable.Append("\"" + entry.DataType.PadRight(10) + "\",");
+                symbolTable.AppendLine("\"" + entry.Comment.PadRight(80) + "\"");                
+            }
+            return symbolTable.ToString();
         }
 
         internal bool showDeleted { get; set; }
