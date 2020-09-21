@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
-                name = SymbolTableEntry.Symbol;
+                name = "\"" + SymbolTableEntry.Symbol + "\"";
             }
 
             if (this.BlockType == PLCBlockType.UDT)
@@ -121,16 +121,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (this.Structure.Children != null && !this.IsInstanceDB)
             {
                 retVal.AppendLine("  STRUCT");
-                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
+                string lines = AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    ");
+                if (useSymbols)
+                {
+                    foreach (string dependency in Dependencies)
+                    {
+                        if (dependency.Contains("SFC") || dependency.Contains("SFB"))
+                            continue;
+                        try
+                        {
+                            //string depSymbol = "\"" + SymbolTable.GetEntryFromOperand(dependency).Symbol + "\"";
+                            //lines = lines.Replace(dependency, SymbolTable.GetEntryFromOperand(dependency).Symbol);
+                        }
+                        catch { }
+                    }
+                }
+                retVal.Append(lines);
                 retVal.AppendLine("  END_STRUCT ;");
 
             }
             else if (this.IsInstanceDB)
-            {
+            {                
                 if (useSymbols)
                 {
                     if (SymbolTable.GetEntryFromOperand("FB" + this.FBNumber) != null)
-                        retVal.AppendLine(" " + SymbolTable.GetEntryFromOperand("FB" + this.FBNumber).Symbol);
+                        retVal.AppendLine("\"" + SymbolTable.GetEntryFromOperand("FB" + this.FBNumber).Symbol + "\"");
                     else retVal.AppendLine(" FB " + this.FBNumber);
                 }
                 else
