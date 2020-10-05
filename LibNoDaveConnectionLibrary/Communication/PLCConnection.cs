@@ -48,6 +48,8 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using Microsoft.Win32;
 using ThreadState = System.Threading.ThreadState;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 /*
  * Todo: List Online Partners
@@ -157,36 +159,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         //LibNoDave used types
         private libnodave.daveOSserialType _fds;
-        private IntPtr? _socketPtr;
+        private TcpClient _tcpClient;
         private libnodave.daveInterface _di = null; //dave Interface
         public IDaveConnection _dc = null;
         private Func<int, string> _errorCodeConverter;
 
-        private System.Timers.Timer socketTimer;
-        private Thread socketThread;
-
         private FetchWriteConnection _fetchWriteConnection;
 
-        void socketTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private async Task ConnectAsync(TimeSpan connectTimeout)
         {
-            if (socketThread != null)
-                socketThread.Abort();
-        }
+            _fds.rfd = IntPtr.Zero;
 
-        public void socket_Thread()
-        {
-            if (Logger != null)
-                Logger("socket thread created");
-
-            if (_socketPtr.HasValue)
+            if (_tcpClient != null)
             {
-                if (Logger != null)
-                    Logger("socket thread - close old socket :" + _socketPtr.ToString());
-                libnodave.closeSocket(_socketPtr.Value);
-                _socketPtr = null;
+                var ptr = _tcpClient?.Client?.Handle;
+                Logger?.Invoke("socket thread - close old socket :" + (ptr.HasValue ? ptr.ToString() : ""));
+                _tcpClient.Close();
+                _tcpClient = null;
             }
 
-            _fds.rfd = new IntPtr(-999);
             string ip = null;
             try
             {
@@ -200,21 +191,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             { }
 
-            //TcpClient sock = new TcpClient(ip, _configuration.Port);
-            //_fds.rfd = sock.Client.Handle;
+            Logger?.Invoke("socket thread try to connect");
 
-            if (Logger != null)
-                Logger("socket thread try to connect");
-            if (ip != null)
-                _fds.rfd = libnodave.openSocket(_configuration.Port, ip);
-            else
-                _fds.rfd = libnodave.openSocket(_configuration.Port, _configuration.CpuIP);
-            if (Logger != null)
-                Logger("socket thread - got socket pointer:" + _socketPtr.ToString());
-            _socketPtr = _fds.rfd;
+            if (ip == null)
+                ip = _configuration.CpuIP;
+
+            _tcpClient = new TcpClient();
+            var cancelTask = Task.Delay(connectTimeout);
+            var connectTask = _tcpClient.ConnectAsync(IPAddress.Parse(ip), _configuration.Port);
+
+            //double await so if cancelTask throws exception, this throws it
+            await await Task.WhenAny(connectTask, cancelTask).ConfigureAwait(false);
+
+            if (cancelTask.IsCompleted)
+            {
+                throw new Exception("Timed out");
+            }
+
+            Logger?.Invoke("socket thread - got socket pointer:" + _tcpClient.Client.Handle.ToString());
+
+            _fds.rfd = _tcpClient.Client.Handle;
         }
 
         #region General
@@ -276,30 +275,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case LibNodaveConnectionTypes.Netlink_lite_PPI:
                     case LibNodaveConnectionTypes.Netlink_Pro:
                         _errorCodeConverter = libnodave.daveStrerror;
-                        socketTimer = new System.Timers.Timer(_configuration.TimeoutIPConnect.TotalMilliseconds);
-                        socketTimer.AutoReset = true;
-                        socketTimer.Elapsed += socketTimer_Elapsed;
-                        socketTimer.Start();
-                        socketThread = new Thread(this.socket_Thread);
-                        socketThread.Start();
-                        try
-                        {
-                            while (socketThread.ThreadState != ThreadState.AbortRequested &&
-                                   socketThread.ThreadState != ThreadState.Aborted &&
-                                   socketThread.ThreadState != ThreadState.Stopped)
-                            {
-                                Thread.Sleep(50);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        if (socketTimer != null)
-                            socketTimer.Stop();
-                        if (socketThread != null)
-                            socketThread.Abort();
-                        socketTimer = null;
-                        socketThread = null;
+                        ConnectAsync(TimeSpan.FromMilliseconds(_configuration.TimeoutIPConnect.TotalMilliseconds)).Wait();
                         break;
 
                     case LibNodaveConnectionTypes.Fetch_Write_Active:
@@ -324,7 +300,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //if the socket handle still has its default value after connection
                     //this means it was an IP connection type, and it did not succed
-                    if (_fds.rfd.ToInt32() == -999)
+                    if (_fds.rfd == IntPtr.Zero)
                     {
                         _NeedDispose = false;
                         throw new Exception("Error: Timeout Connecting the IP (" + _configuration.CpuIP + ":" +
@@ -4325,8 +4301,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case LibNodaveConnectionTypes.Netlink_lite:
                         case LibNodaveConnectionTypes.Netlink_lite_PPI:
                         case LibNodaveConnectionTypes.Netlink_Pro:
-                            libnodave.closeSocket(_fds.rfd);
-                            _socketPtr = null;
+                            _tcpClient.Close();
+                            _tcpClient = null;
+                            _fds.rfd = IntPtr.Zero;
                             break;
                     }
             }
