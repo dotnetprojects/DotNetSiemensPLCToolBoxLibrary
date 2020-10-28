@@ -16,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal bool _showDeleted = false;
 
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
-        internal ZipHelper _ziphelper = new ZipHelper(null);
+        internal ZipHelper _ziphelper = new ZipHelper((string)null);
 
         public Step5BlocksFolder BlocksFolder { get; set; }
 

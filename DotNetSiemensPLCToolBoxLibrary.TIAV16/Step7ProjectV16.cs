@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
         private XmlDocument tiaProject;
 
-        internal ZipHelper _ziphelper = new ZipHelper(null);
+        internal ZipHelper _ziphelper = new ZipHelper((string)null);
 
         public CultureInfo Culture { get; set; }
 

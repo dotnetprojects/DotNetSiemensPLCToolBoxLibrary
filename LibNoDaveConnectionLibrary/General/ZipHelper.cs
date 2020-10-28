@@ -45,6 +45,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #endif
         }
 
+        public static string GetFirstZipEntryWithEnding(Stream zipfile, string ending)
+        {
+#if SHARPZIPLIB
+            if (zipfile == null)
+                return null;
+
+            ZipFile zf = null;
+            try
+            {
+                zf = new ZipFile(zipfile);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            string name = null;
+            foreach (ZipEntry zipEntry in zf)
+            {
+                if (zipEntry.Name.ToLower().EndsWith(ending))
+                {
+                    name = zipEntry.Name;
+                    break;
+                }
+            }
+            zf.Close();
+            return name;
+#else
+            return null;
+#endif
+        }
+
         public ZipHelper(string file)
         {
 #if SHARPZIPLIB
@@ -58,6 +90,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                 catch(Exception)
                 { }
             }               
+#endif
+        }
+
+        public ZipHelper(Stream file)
+        {
+#if SHARPZIPLIB
+            if (file != null)
+            {
+                try
+                {
+                    this._zipFile = new ZipFile(file);
+                }
+                catch (Exception)
+                { }
+            }
 #endif
         }
 
