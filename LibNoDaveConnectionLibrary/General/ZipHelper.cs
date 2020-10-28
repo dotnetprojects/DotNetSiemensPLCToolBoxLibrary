@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 #if SHARPZIPLIB
 using ICSharpCode.SharpZipLib.Zip;
 #endif
@@ -13,69 +14,59 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #endif
         private string _zipFileName;
 
-        public static string GetFirstZipEntryWithEnding(string zipfile, string ending)
+        public string GetFirstZipEntryWithEnding(string ending)
         {
 #if SHARPZIPLIB
-            if (string.IsNullOrEmpty(zipfile))
-                return null;
-
-            ZipFile zf = null;
-            try
-            {
-                zf = new ZipFile(zipfile);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
             
+
             string name = null;
-            foreach (ZipEntry zipEntry in zf)
+            foreach (ZipEntry zipEntry in this._zipFile)
             {
                 if (zipEntry.Name.ToLower().EndsWith(ending))
                 {
                     name = zipEntry.Name;
                     break;
                 }
-            }            
-            zf.Close();
+            }
             return name;
 #else
             return null;
 #endif
         }
 
-        public static string GetFirstZipEntryWithEnding(Stream zipfile, string ending)
+        public static ZipHelper GetZipHelper(string zipfile)
         {
 #if SHARPZIPLIB
             if (zipfile == null)
                 return null;
-
-            ZipFile zf = null;
             try
             {
-                zf = new ZipFile(zipfile);
+                var zipHelper = new ZipHelper(zipfile);
+                return zipHelper;
             }
             catch (Exception)
-            {
-                return null;
-            }
-
-            string name = null;
-            foreach (ZipEntry zipEntry in zf)
-            {
-                if (zipEntry.Name.ToLower().EndsWith(ending))
-                {
-                    name = zipEntry.Name;
-                    break;
-                }
-            }
-            zf.Close();
-            return name;
-#else
-            return null;
+            { }
 #endif
+            return null;
         }
+
+        public static ZipHelper GetZipHelper(Stream zipfile)
+        {
+#if SHARPZIPLIB
+            if (zipfile == null)
+                return null;
+            try
+            {
+                var zipHelper = new ZipHelper(zipfile);
+                return zipHelper;
+            }
+            catch (Exception)
+            { }
+#endif
+            return null;
+        }
+
+        public bool IsZipFile { get { return this._zipFile != null; } }
 
         public ZipHelper(string file)
         {
@@ -85,6 +76,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             {
                 try
                 {
+                    this._zipFile = null;
                     this._zipFile = new ZipFile(file);
                 }
                 catch(Exception)
@@ -93,17 +85,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #endif
         }
 
-        public ZipHelper(Stream file)
+        private ZipHelper(Stream file)
         {
 #if SHARPZIPLIB
             if (file != null)
             {
-                try
-                {
-                    this._zipFile = new ZipFile(file);
-                }
-                catch (Exception)
-                { }
+                this._zipFile = new ZipFile(file);                
             }
 #endif
         }

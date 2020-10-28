@@ -20,7 +20,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         private XmlDocument tiaProject;
 
-        internal ZipHelper _ziphelper = new ZipHelper((string)null);
+        internal ZipHelper _ziphelper = new ZipHelper(null);
 
         public CultureInfo Culture { get; set; }
 
@@ -38,25 +38,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap13") || ProjectFile.ToLower().EndsWith("zap14"))
             {
-                ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap11");
-                if (string.IsNullOrEmpty(ProjectFile))               
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap12");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap13");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap14");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al11");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al12");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al13");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al14");
-
-                if (string.IsNullOrEmpty(projectfile))
-                    throw new Exception("Zip-File contains no valid TIA Project !");
                 this._ziphelper = new ZipHelper(projectfile);
+                ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".ap11");
+                if (string.IsNullOrEmpty(ProjectFile))               
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".ap12");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".ap13");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".ap14");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al11");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al12");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al13");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al14");
+                if (string.IsNullOrEmpty(projectfile))
+                    throw new Exception("Zip-File contains no valid TIA Project !");                
             }
 
 

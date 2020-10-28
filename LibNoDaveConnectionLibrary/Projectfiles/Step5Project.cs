@@ -16,7 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal bool _showDeleted = false;
 
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
-        internal ZipHelper _ziphelper = new ZipHelper((string)null);
+        internal ZipHelper _ziphelper = null;
 
         public Step5BlocksFolder BlocksFolder { get; set; }
 
@@ -28,12 +28,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             if (filename.ToLower().EndsWith("zip"))
             {
-                _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(filename, ".s5d");
-                if (string.IsNullOrEmpty(_projectfilename))
-                    throw new Exception("Zip-File contains no valid Step5 Project !");
                 this._ziphelper = new ZipHelper(filename);
+                _projectfilename = _ziphelper.GetFirstZipEntryWithEnding(".s5d");
+                if (string.IsNullOrEmpty(_projectfilename))
+                    throw new Exception("Zip-File contains no valid Step5 Project !");                
             }
 
+            ProjectFile = filename;
+
+            LoadProject();
+        }
+
+        internal Step5Project(ZipHelper _ziphelper, string filename, bool showDeleted)
+        {
+            _showDeleted = showDeleted;
+            this._ziphelper = _ziphelper;
+            
+            _projectfilename = _ziphelper.GetFirstZipEntryWithEnding(".s5d");
+                if (string.IsNullOrEmpty(_projectfilename))
+                    throw new Exception("Zip-File contains no valid Step5 Project !");
+           
             ProjectFile = filename;
 
             LoadProject();

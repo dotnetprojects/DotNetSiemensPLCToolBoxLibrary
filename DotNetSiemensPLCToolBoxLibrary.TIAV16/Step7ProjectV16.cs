@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
         private XmlDocument tiaProject;
 
-        internal ZipHelper _ziphelper = new ZipHelper((string)null);
+        internal ZipHelper _ziphelper = new ZipHelper(null);
 
         public CultureInfo Culture { get; set; }
 
@@ -113,14 +113,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
             if (ProjectFile.ToLower().EndsWith("zip") || ProjectFile.ToLower().EndsWith("zap16"))
             {
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".ap16");
-                if (string.IsNullOrEmpty(ProjectFile))
-                    ProjectFile = ZipHelper.GetFirstZipEntryWithEnding(ProjectFile, ".al16");
-
-                if (string.IsNullOrEmpty(projectfile))
-                    throw new Exception("Zip-File contains no valid TIA Project !");
                 this._ziphelper = new ZipHelper(projectfile);
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".ap16");
+                if (string.IsNullOrEmpty(ProjectFile))
+                    ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al16");
+                if (string.IsNullOrEmpty(projectfile))
+                    throw new Exception("Zip-File contains no valid TIA Project !");                
             }
 
             try

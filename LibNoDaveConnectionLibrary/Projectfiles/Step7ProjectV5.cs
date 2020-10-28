@@ -36,7 +36,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         internal bool _showDeleted = false;
 
         //Zipfile is used as Object, because SharpZipLib is not available on every platform!
-        internal ZipHelper _ziphelper = new ZipHelper((string)null);
+        internal ZipHelper _ziphelper = new ZipHelper(null);
 
         //When a Zip File is used, here is the s7p name!
         internal string _projectfilename;
@@ -62,15 +62,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             if (projectfile.ToLower().EndsWith("zip"))
             {
-                _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7p");
-
-                if (string.IsNullOrEmpty(_projectfilename))
-                    _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7l");
-
+                this._ziphelper = new ZipHelper(projectfile);
+                if (this._ziphelper.IsZipFile)
+                {
+                    _projectfilename = this._ziphelper.GetFirstZipEntryWithEnding(".s7p");
+                    if (string.IsNullOrEmpty(_projectfilename))
+                        _projectfilename = this._ziphelper.GetFirstZipEntryWithEnding(".s7l");
+                }
                 if (string.IsNullOrEmpty(_projectfilename))
                     throw new Exception("Zip-File contains no valid Step7 Project !");
-                this._ziphelper = new ZipHelper(projectfile);
-
             }
 
             ProjectFile = projectfile;
@@ -105,18 +105,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
         public Step7ProjectV5(Stream projectfile, bool showDeleted, Encoding prEn)
         {
-            
-           
-            _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7p");
-
+            this._ziphelper = ZipHelper.GetZipHelper(projectfile);            
+            _projectfilename = this._ziphelper.GetFirstZipEntryWithEnding(".s7p");
             if (string.IsNullOrEmpty(_projectfilename))
-                _projectfilename = ZipHelper.GetFirstZipEntryWithEnding(projectfile, ".s7l");
-
+                _projectfilename = this._ziphelper.GetFirstZipEntryWithEnding(".s7l");
             if (string.IsNullOrEmpty(_projectfilename))
                 throw new Exception("Zip-File contains no valid Step7 Project !");
-            this._ziphelper = new ZipHelper(projectfile);
-
-            
 
             ProjectFile = _projectfilename;
             ProjectFolder = _projectfilename.Substring(0, _projectfilename.LastIndexOf(_DirSeperator)) + _DirSeperator;

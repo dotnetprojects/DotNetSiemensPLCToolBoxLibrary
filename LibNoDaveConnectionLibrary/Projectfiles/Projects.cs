@@ -354,73 +354,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     string[] zips = System.IO.Directory.GetFiles(dirname, ending);
                     foreach (string zip in zips)
                     {
-                        string entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7p");
+                        var zipfile = ZipHelper.GetZipHelper(zip);
+                        string entr = zipfile.GetFirstZipEntryWithEnding(".s7p");
                         if (entr != null)
                             retVal.Add(new Step7ProjectV5(zip, false));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s7l");
+                        entr = zipfile.GetFirstZipEntryWithEnding(".s7l");
                         if (entr != null)
                             retVal.Add(new Step7ProjectV5(zip, false));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap11");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap12");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap12");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap13");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap13");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap14");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap14");
                         if (entr != null)
                             retVal.Add(createV14SP1ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap15");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap15");
                         if (entr != null)
                             retVal.Add(createV15ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap15_1");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap15_1");
                         if (entr != null)
                             retVal.Add(createV15_1ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.ap16");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap16");
                         if (entr != null)
                             retVal.Add(createV16ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al11");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al12");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al12");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al13");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al13");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al14");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al14");
                         if (entr != null)
                             retVal.Add(createV14SP1ProjectInstance(entr));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al15");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al15");
                         if (entr != null)
                             retVal.Add(createV15ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al15_1");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al15_1");
                         if (entr != null)
                             retVal.Add(createV15_1ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, "*.al16");
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al16");
                         if (entr != null)
                             retVal.Add(createV16ProjectInstance(entr, credentials));
 
-                        entr = ZipHelper.GetFirstZipEntryWithEnding(zip, ".s5d");
+                        entr = zipfile.GetFirstZipEntryWithEnding(".s5d");
                         if (entr != null)
-                            retVal.Add(new Step5Project(zip, false));
+                            retVal.Add(new Step5Project(zipfile, zip, false));
                     }
                 }
             }
@@ -481,12 +482,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV15_1ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al16"))
                 return createV16ProjectInstance(file, credentials);
-            else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s5d")))
-                return new Step5Project(file, showDeleted);
-            else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7p")))
-                return new Step7ProjectV5(file, showDeleted);
-            else if (!string.IsNullOrEmpty(ZipHelper.GetFirstZipEntryWithEnding(file, ".s7l")))
-                return new Step7ProjectV5(file, showDeleted);
+            else
+            {
+                var zh = ZipHelper.GetZipHelper(file);
+                if (!string.IsNullOrEmpty(zh.GetFirstZipEntryWithEnding(".s5d")))
+                    return new Step5Project(file, showDeleted);
+                else if (!string.IsNullOrEmpty(zh.GetFirstZipEntryWithEnding(".s7p")))
+                    return new Step7ProjectV5(file, showDeleted);
+                else if (!string.IsNullOrEmpty(zh.GetFirstZipEntryWithEnding(".s7l")))
+                    return new Step7ProjectV5(file, showDeleted);
+            }
             return null;
         }
 
