@@ -601,7 +601,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             if (pRow != null) newPar.Value = ((S7DataRow)pRow).StructuredName.Substring(((S7DataRow)pRow).StructuredName.IndexOf('.') + 1);
 
                                         }
-                                        else
+                                        else if (par != null)
                                         {
                                             switch (((S7DataRow)s7DataRow).DataType)
                                             {
