@@ -835,7 +835,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 //use Windows-1252 to get correct time because dBaseConverter uses this code page for strings
                 var bytes = Util.DefaultEncoding.GetBytes(timestamp);  
                 return bytes.Length == 5
-                    ? Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)0)
+                    ? Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)0x20)
                     : Helper.GetDT((byte)bytes[0], (byte)bytes[1], (byte)bytes[2], (byte)bytes[3], (byte)bytes[4], (byte)bytes[5]);
             }
             catch
