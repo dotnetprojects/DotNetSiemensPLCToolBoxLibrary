@@ -119,6 +119,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             if ((int)row["PASSWORD"] == 3)
                                 step7ProjectBlockInfo.KnowHowProtection = true;
                         }
+                        if ((int)row["OBJECTID"] == step7ProjectBlockInfo.id && (subblktyp == 13 || subblktyp == 12 || subblktyp == 8 || subblktyp == 14))
+                        {
+                            var nm = row["BLOCKNAME"] as string;
+                            step7ProjectBlockInfo.Name = nm?.Replace("\0","");
+                            var nm2 = row["BLOCKFNAME"] as string;
+                            step7ProjectBlockInfo.Family = nm2?.Replace("\0", "");
+                        }
                     }
                 }
             }
@@ -151,6 +158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public bool IsSFB;
             public int FBNumber;
             public int CheckSum;
+            public PLCLanguage BlockLanguage;
         }
 
         private Dictionary<string, tmpBlock> tmpBlocks; //internal cached list of blocks already read from the S7 Project
@@ -318,6 +326,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
                             myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
 
+                            var lngS = row["BLKLANG"] as string;
+                            if (lngS != null && int.TryParse(lngS, out var lng))
+                            {
+                                myTmpBlk.BlockLanguage = (PLCLanguage)lng;
+                            }
+
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 || subblktype == 9) //FC, OB, FB, SFC, SFB
                         {
@@ -343,6 +357,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                         Project.ProjectEncoding.GetString(mc5code);
                             //Maybe compiled DB Structure?
                             myTmpBlk.addinfo = addinfo;
+
+                            myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
+                            myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
                         }
                         else if (subblktype == 10) //DB
                         {
@@ -503,6 +520,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retValBlock.usedS7ConvertingOptions = myConvOpt;
                     blkInfo._Block = retValBlock;
 
+                    retValBlock.BlockLanguage = myTmpBlk.BlockLanguage;
+
                     return retValBlock;
                 }
                 else if (blkInfo.BlockType == PLCBlockType.DB || blkInfo.BlockType == PLCBlockType.UDT)
@@ -549,6 +568,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         //retVal.StructureFromMC7 = Parameter.GetInterface(myTmpBlk.blkinterfaceInMC5, myTmpBlk.mc7code, ref tmp, blkInfo.BlockType, myTmpBlk.IsInstanceDB, retVal);
                     }                        
                     retVal.BlockNumber = plcblkifo.BlockNumber;
+                    retVal.Name = plcblkifo.Name;
+                    retVal.Family = ((S7ProjectBlockInfo)plcblkifo).Family;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
 
@@ -559,8 +580,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.usedS7ConvertingOptions = myConvOpt;
                     retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
-                                       
-                   return retVal;
+
+                    return retVal;
 
                 }
                 else if (blkInfo.BlockType == PLCBlockType.FC || blkInfo.BlockType == PLCBlockType.FB || blkInfo.BlockType == PLCBlockType.OB || blkInfo.BlockType == PLCBlockType.SFB || blkInfo.BlockType == PLCBlockType.SFC)
@@ -573,6 +594,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
 
                     retVal.BlockNumber = plcblkifo.BlockNumber;
+                    retVal.Name = plcblkifo.Name;
+                    retVal.Family = ((S7ProjectBlockInfo)plcblkifo).Family;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
                     retVal.KnowHowProtection = myTmpBlk.knowHowProtection;
@@ -782,6 +805,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.usedS7ConvertingOptions = myConvOpt;
                     retVal.CheckSum = myTmpBlk.CheckSum;
                     blkInfo._Block = retVal;
+
+                    retVal.BlockLanguage = myTmpBlk.BlockLanguage;
 
                     return retVal;
                 }

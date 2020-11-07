@@ -740,7 +740,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 }
                 par += ", " + nm;               
             }
-            else if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
+            else if (useDataBlocksSymbolic && Parameter.StartsWith("DB") && Parameter.Length > 2 && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
             {
                 var paras = Parameter.Split(new[] { '.' });
                 var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
