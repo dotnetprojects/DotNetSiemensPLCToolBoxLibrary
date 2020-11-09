@@ -122,26 +122,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 retVal.AppendLine("  STRUCT");
                 string lines = AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    ");
-                if (useSymbols)
-                {
-                    foreach (string dependency in Dependencies)
-                    {
-                        if (dependency.Contains("SFC") || dependency.Contains("SFB"))
-                            continue;
-                        try
-                        {
-                            //string depSymbol = "\"" + SymbolTable.GetEntryFromOperand(dependency).Symbol + "\"";
-                            //lines = lines.Replace(dependency, SymbolTable.GetEntryFromOperand(dependency).Symbol);
-                        }
-                        catch { }
-                    }
-                }
                 retVal.Append(lines);
                 retVal.AppendLine("  END_STRUCT ;");
 
             }
             else if (this.IsInstanceDB)
-            {                
+            {
                 if (useSymbols)
                 {
                     if (SymbolTable.GetEntryFromOperand("FB" + this.FBNumber) != null)

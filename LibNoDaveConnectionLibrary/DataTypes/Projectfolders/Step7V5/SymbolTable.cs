@@ -39,8 +39,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             var symbolTable = new System.Text.StringBuilder();
             foreach (var entry in SymbolTableEntrys)
             {
-                //Remove control words from the symbol string.
-                //string sym = new string(entry.Symbol.Where(c => !char.IsControl(c)).ToArray());
                 symbolTable.Append("\"" + entry.Symbol.PadRight(24) + "\",");
                 if(Project.ProjectLanguage == MnemonicLanguage.English)
                     symbolTable.Append("\"" + entry.OperandIEC.PadRight(12) + "\",");
