@@ -136,11 +136,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
-                name = SymbolTableEntry.Symbol;
+                name = "\"" + SymbolTableEntry.Symbol + "\"";
             }
 
             if (this.BlockType == PLCBlockType.FC)
                 retVal.AppendLine("FUNCTION " + name + " : VOID");
+            else if (this.BlockType == PLCBlockType.OB)
+                retVal.AppendLine("ORGANIZATION_BLOCK " + name);
             else
                 retVal.AppendLine("FUNCTION_BLOCK " + name);
 
@@ -173,7 +175,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         else if (parnm == "STATIC")
                             ber = "VAR";
                         retVal.AppendLine(ber);
-                        retVal.Append(AWLToSource.DataRowToSource(s7DataRow, "  ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP")));
+                        string vars = AWLToSource.DataRowToSource(s7DataRow, "  ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP"));
+                        if (useSymbols) {
+                            foreach (string dependency in Dependencies)
+                            {
+                                if (dependency.Contains("SFC") || dependency.Contains("SFB"))
+                                    continue;
+                                try
+                                {
+                                    string depSymbol = "\"" + SymbolTable.GetEntryFromOperand(dependency).Symbol + "\"";
+                                    vars = vars.Replace(dependency, SymbolTable.GetEntryFromOperand(dependency).Symbol);
+                                }
+                                catch { }
+                            }
+                        }                        
+                        retVal.Append(vars);
                         retVal.AppendLine("END_VAR");
                     }
                 }
@@ -202,6 +218,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             if (this.BlockType == PLCBlockType.FC)
                 retVal.Append("END_FUNCTION");
+            else if (this.BlockType == PLCBlockType.OB)
+                retVal.AppendLine("END_ORGANIZATION_BLOCK");
             else
                 retVal.Append("END_FUNCTION_BLOCK");
             //retVal.Append("END_FUNCTION");

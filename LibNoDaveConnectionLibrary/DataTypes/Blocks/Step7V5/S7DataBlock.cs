@@ -99,7 +99,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             string name = this.BlockName;
             if (useSymbols && SymbolTableEntry != null)
             {
-                name = SymbolTableEntry.Symbol;
+                name = "\"" + SymbolTableEntry.Symbol + "\"";
             }
 
             if (this.BlockType == PLCBlockType.UDT)
@@ -121,7 +121,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             if (this.Structure.Children != null && !this.IsInstanceDB)
             {
                 retVal.AppendLine("  STRUCT");
-                retVal.Append(AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    "));
+                string lines = AWLToSource.DataRowToSource(((S7DataRow)this.Structure), "    ");
+                retVal.Append(lines);
                 retVal.AppendLine("  END_STRUCT ;");
 
             }
@@ -130,7 +131,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if (useSymbols)
                 {
                     if (SymbolTable.GetEntryFromOperand("FB" + this.FBNumber) != null)
-                        retVal.AppendLine(" " + SymbolTable.GetEntryFromOperand("FB" + this.FBNumber).Symbol);
+                        retVal.AppendLine("\"" + SymbolTable.GetEntryFromOperand("FB" + this.FBNumber).Symbol + "\"");
                     else retVal.AppendLine(" FB " + this.FBNumber);
                 }
                 else
