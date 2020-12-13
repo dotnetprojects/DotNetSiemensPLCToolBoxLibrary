@@ -2857,7 +2857,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if ((readSizeWithHeader + gesReadSize > maxReadSize || gesAskSize + currentAskSize > maxReadSize))
                         {
                             //If there is space for a tag left.... Then look how much Bytes we can put into this PDU
-                            if (nckT == null && !symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSize > maxReadSize))
+                            if (nckT == null && !symbolicTag && gesAskSize + currentAskSize <= maxReadSize && (!libNoDaveValue.DontSplitValue || readSizeWithHeader > maxReadSize))
                             {
                                 #region Without NCK
                                 int restBytes = maxReadSize - gesReadSize - HeaderTagSize;
