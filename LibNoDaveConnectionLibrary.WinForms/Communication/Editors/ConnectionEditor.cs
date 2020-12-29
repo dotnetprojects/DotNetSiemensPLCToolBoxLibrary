@@ -319,6 +319,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         FillEntryPointsList();
                         EnableDestinationWithEntryPointType();
                         chkRouting.Enabled = true;
+                        lblLIBNODAVECPUIP.Enabled = true;
+                        txtLIBNODAVECPUIP.Enabled = true;
+                        break;
+                    case 51:
+                        cmdTest.Enabled = true;
+                        lblLIBNODAVEEntryPoint.Enabled = true;
+                        lstListEntryPoints.Enabled = true;
+                        btnConfigEntryPoint.Enabled = true;
+                        lblLIBNODAVECPUMPI.Enabled = true;
+                        txtLIBNODAVECPUMPI.Enabled = true;
+                        FillEntryPointsList();
+                        EnableDestinationWithEntryPointType();
+                        chkRouting.Enabled = true;
                         break;
 
                     case 122: //ISO TCP
