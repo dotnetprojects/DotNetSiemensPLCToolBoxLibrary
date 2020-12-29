@@ -300,7 +300,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //if the socket handle still has its default value after connection
                     //this means it was an IP connection type, and it did not succed
-                    if (_fds.rfd == IntPtr.Zero)
+                    if (_fds.rfd == IntPtr.Zero && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP)
                     {
                         _NeedDispose = false;
                         throw new Exception("Error: Timeout Connecting the IP (" + _configuration.CpuIP + ":" +
