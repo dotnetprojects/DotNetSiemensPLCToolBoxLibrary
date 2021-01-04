@@ -2010,14 +2010,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         }
 
 #if !IPHONE
-        [DllImport("libnodave_jfkmod.dll"/*, PreserveSig=false */ )]
-        public static extern IntPtr openS7online(
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "openS7online")]
+        public static extern IntPtr openS7online64(
             [MarshalAs(UnmanagedType.LPStr)] string portName,
             int hwnd
             );
 #else
-        public static int openS7online(string portName, int hwnd) { return 0; }
+        public static IntPtr openS7online(string portName, int hwnd) { return IntPtr.Zero; }
 #endif
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "openS7online")]
+        public static extern IntPtr openS7online32(
+            [MarshalAs(UnmanagedType.LPStr)] string portName,
+            int hwnd
+            );
+#else
+        public static IntPtr openS7online(string portName, int hwnd) { return IntPtr.Zero; }
+#endif
+
+        public static IntPtr openS7online(string portName, int hwnd)
+        {
+            if (IntPtr.Size == 8)
+                return openS7online64(portName, hwnd);
+            return openS7online32(portName, hwnd);
+        }
 
 #if !IPHONE
         [DllImport("S7onlinx.dll" /*, PreserveSig=false */ )]
@@ -2070,11 +2087,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         }
 
 #if !IPHONE
-        [DllImport("libnodave_jfkmod.dll" /*, PreserveSig=false */)]
-        public static extern int closeS7online(IntPtr port);
+        [DllImport("libnodave_jfkmod64.dll", EntryPoint = "closeS7online")]
+        public static extern int closeS7online64(IntPtr port);
 #else
         public static int closeS7online(IntPtr port) { return 0; }
 #endif
+
+#if !IPHONE
+        [DllImport("libnodave_jfkmod.dll", EntryPoint = "closeS7online")]
+        public static extern int closeS7online32(IntPtr port);
+#else
+        public static int closeS7online(IntPtr port) { return 0; }
+#endif
+
+        public static int closeS7online(IntPtr port)
+        {
+            if (IntPtr.Size == 8)
+                return closeS7online64(port);
+            return closeS7online32(port);
+        }
 
         public static byte getU8from(byte[] b, int pos)
         {

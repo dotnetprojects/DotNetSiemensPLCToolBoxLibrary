@@ -310,6 +310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         lstLIBNODAVELokalComParity.Enabled = true;
                         break;
                     case 50:
+                    case 52:
                         cmdTest.Enabled = true;
                         lblLIBNODAVEEntryPoint.Enabled = true;
                         lstListEntryPoints.Enabled = true;
