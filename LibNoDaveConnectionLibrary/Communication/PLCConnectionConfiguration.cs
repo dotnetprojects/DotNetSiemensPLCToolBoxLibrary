@@ -880,6 +880,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         Use_Step7_DLL = 50,
         [XmlEnum("51")]
         Use_Step7_DLL_Without_TCP = 51,
+        [XmlEnum("52")]
+        Use_Step7_DLL_Automatic_TCP_Detection = 52,
 
         /// <summary>
         /// Connections via the TCP/IP protocoll
