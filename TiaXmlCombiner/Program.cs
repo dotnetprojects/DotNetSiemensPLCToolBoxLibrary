@@ -22,7 +22,10 @@ namespace TiaImporter
                 if (File.Exists(f2))
                 {
                     var combined = CombineFiles(f, f2);
-                    File.WriteAllText(f, combined, new UTF8Encoding(true));
+                    if (combined == null)
+                        File.Delete(f);
+                    else
+                        File.WriteAllText(f, combined, new UTF8Encoding(true));
                 }
             }
 
@@ -61,25 +64,29 @@ namespace TiaImporter
             //insertNode.AppendChild(xmlDoc1.ImportNode(codeNode, true));
 
             var oldCodeNode = xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[0];
-            oldCodeNode.InnerXml = codeNode.InnerXml;
+            if (codeNode != null)
+            {
+                oldCodeNode.InnerXml = codeNode.InnerXml;
 
 
-            StringBuilder sb = new StringBuilder();
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "  ",
-                NewLineChars = "\r\n",
-                NewLineHandling = NewLineHandling.Replace
-            };
-            using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
-            {
-                xmlDoc1.Save(writer);
+                StringBuilder sb = new StringBuilder();
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    IndentChars = "  ",
+                    NewLineChars = "\r\n",
+                    NewLineHandling = NewLineHandling.Replace
+                };
+                using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+                {
+                    xmlDoc1.Save(writer);
+                }
+                var code = sb.ToString();
+
+
+                return code;
             }
-            var code = sb.ToString();
-
-
-            return code;
+            return null;
         }
     }
 
