@@ -2,12 +2,13 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.0;net461</TargetFrameworks>    
+    <TargetFrameworks>net461</TargetFrameworks>    
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj" />
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV16\DotNetSiemensPLCToolBoxLibrary.TIAV16.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
 </Project>

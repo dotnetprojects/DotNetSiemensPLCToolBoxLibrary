@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 
 namespace TiaImporter
 {
@@ -55,10 +56,13 @@ namespace TiaImporter
                 Console.WriteLine(e);
             }
 
-            prj = Step7ProjectV15_1.AttachToInstanceWithFilename(file);
-            var prjV151 = prj as Step7ProjectV15_1;
+            if (file.EndsWith("16"))
+                prj = Projects.AttachToInstanceWithFilename("16", file);
+            else
+                prj = Projects.AttachToInstanceWithFilename("15.1", file);
+            //var prjV151 = prj as Step7ProjectV15_1;
 
-            var projectFolder = prjV151.ProjectStructure;
+            var projectFolder = prj.ProjectStructure;
             var flds = baseTiaFld.Split('/');
             foreach (var s in flds)
             {
@@ -66,7 +70,7 @@ namespace TiaImporter
             }
 
             var programFolderToCompile = projectFolder;
-            var pgFolderToCompile = programFolderToCompile as Step7ProjectV15_1.TIAOpennessProgramFolder;
+            var pgFolderToCompile = programFolderToCompile as ITIAOpennessProgramFolder;
 
             int i = 0;
             var fileList = BuildImportFileList(folderToImport, extension).ToList();
@@ -100,11 +104,10 @@ namespace TiaImporter
                             }
                         }
 
-
                         try
                         {
-                            var dtFolder = importFolder as Step7ProjectV15_1.TIAOpennessPlcDatatypeFolder;
-                            var pgFolder = importFolder as Step7ProjectV15_1.TIAOpennessProgramFolder;
+                            var dtFolder = importFolder as ITIAOpennessPlcDatatypeFolder;
+                            var pgFolder = importFolder as ITIAOpennessProgramFolder;
 
                             if (dtFolder != null)
                             {
@@ -112,7 +115,30 @@ namespace TiaImporter
                             }
                             else if (pgFolder != null)
                             {
-                                pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
+                                //if (importFile.ToLower().EndsWith("scl"))
+                                //{
+                                //    string srcBeforeScl = null;
+                                //    var blkInfo = pgFolder.BlockInfos.FirstOrDefault(x => x.Name.ToLower() == Path.GetFileNameWithoutExtension(importFile).ToLower());
+                                //    if (blkInfo != null)
+                                //    {
+                                //        Console.WriteLine("SCL File with XML File: " + relativePath);
+                                //        Console.WriteLine("Export current XML...");
+                                //        srcBeforeScl = blkInfo.Export(ExportFormat.Xml);
+                                //        Console.WriteLine("Import SCL...");
+                                //    }
+                                //    pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
+                                //    if (blkInfo != null)
+                                //    {
+                                //        Console.WriteLine("Export new XML...");
+                                //        var blkAfter = pgFolder.BlockInfos.FirstOrDefault(x => x.Name.ToLower() == Path.GetFileNameWithoutExtension(importFile).ToLower());
+                                //        var srcAfter = blkAfter.Export(ExportFormat.Xml);
+                                //        Console.WriteLine("Import combined XML...");
+                                //    }
+                                //}
+                                //else
+                                {
+                                    pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
+                                }
                             }
 
                             Console.ForegroundColor = ConsoleColor.Green;

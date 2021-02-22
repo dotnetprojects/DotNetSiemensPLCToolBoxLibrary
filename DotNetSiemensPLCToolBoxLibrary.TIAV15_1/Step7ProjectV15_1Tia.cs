@@ -20,6 +20,7 @@ using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
 using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 {
@@ -40,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
         }
 
 
-        public class TIAOpennessProjectFolder : ProjectFolder
+        public class TIAOpennessProjectFolder : ProjectFolder, ITIAOpennessProjectFolder
         {
             internal string InstID { get; private set; }
 
@@ -561,7 +562,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
         }
 
-        public class TIAOpennessPlcDatatypeFolder : TIAOpennessProjectFolder, IBlocksFolder
+        public class TIAOpennessPlcDatatypeFolder : TIAOpennessProjectFolder, IBlocksFolder, ITIAOpennessPlcDatatypeFolder
         {
             private PlcTypeComposition composition;
             private PlcTypeGroup plcTypeGroup;
@@ -595,8 +596,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             public List<ProjectBlockInfo> readPlcBlocksList()
             {
-                if (_blockInfos != null)
-                    return _blockInfos;
+                //if (_blockInfos != null)
+                //    return _blockInfos;
 
                 _blockInfos = new List<ProjectBlockInfo>();
 
@@ -618,8 +619,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             {
                 get
                 {
-                    if (_blockInfos == null)
-                        readPlcBlocksList();
+                    //if (_blockInfos == null)
+                    readPlcBlocksList();
                     return _blockInfos;
                 }
                 private set { _blockInfos = value; }
@@ -627,8 +628,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             public Block GetBlock(string BlockName)
             {
-                if (BlockInfos == null)
-                    readPlcBlocksList();
+                //if (BlockInfos == null)
+                //    readPlcBlocksList();
 
                 var block = GetBlock(BlockInfos.FirstOrDefault(x => x.Name == BlockName));
 
@@ -657,7 +658,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             }
         }
 
-        public class TIAOpennessProgramFolder : TIAOpennessProjectFolder, IBlocksFolder
+        public class TIAOpennessProgramFolder : TIAOpennessProjectFolder, IBlocksFolder, ITIAOpennessProgramFolder
         {
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
@@ -727,8 +728,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             public List<ProjectBlockInfo> readPlcBlocksList()
             {
-                if (_blockInfos != null)
-                    return _blockInfos;
+                //if (_blockInfos != null)
+                //    return _blockInfos;
 
                 _blockInfos = new List<ProjectBlockInfo>();
 
@@ -771,8 +772,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             {
                 get
                 {
-                    if (_blockInfos == null)
-                        readPlcBlocksList();
+                    //if (_blockInfos == null)
+                    readPlcBlocksList();
                     return _blockInfos;
                 }
                 private set { _blockInfos = value; }
@@ -780,8 +781,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
             public Block GetBlock(string BlockName)
             {
-                if (BlockInfos == null)
-                    readPlcBlocksList();
+                //if (BlockInfos == null)
+                //    readPlcBlocksList();
 
                 return
                     GetBlock(

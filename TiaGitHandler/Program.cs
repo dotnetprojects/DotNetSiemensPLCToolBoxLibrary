@@ -224,7 +224,7 @@ namespace TiaGitHandler
             {
                 var blkFld = folder as IBlocksFolder;
 
-                foreach (var projectBlockInfo in blkFld.BlockInfos)
+                foreach (var projectBlockInfo in blkFld.BlockInfos.ToList())
                 {
                     try
                     {
