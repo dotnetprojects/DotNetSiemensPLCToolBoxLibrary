@@ -611,7 +611,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     }
                 }
 
-                return BlockInfos;
+                return _blockInfos;
             }
 
             private List<ProjectBlockInfo> _blockInfos;
@@ -837,6 +837,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message.Contains("Ungültige Anmeldedaten"))
+                        throw;
                     if (i == 9)
                         throw;
                 }

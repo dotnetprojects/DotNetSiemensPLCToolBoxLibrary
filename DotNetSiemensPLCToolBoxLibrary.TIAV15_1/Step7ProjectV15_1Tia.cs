@@ -611,7 +611,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                     }
                 }
 
-                return BlockInfos;
+                return _blockInfos;
             }
 
             private List<ProjectBlockInfo> _blockInfos;
