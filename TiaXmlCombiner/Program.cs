@@ -18,14 +18,21 @@ namespace TiaImporter
             var fls = Directory.GetFiles(dir1, "*.xml");
             foreach (var f in fls)
             {
-                var f2 = Path.Combine(dir2, Path.GetFileName(f));
-                if (File.Exists(f2))
+                if (!File.Exists(Path.ChangeExtension(f, ".scl")))
                 {
-                    var combined = CombineFiles(f, f2);
-                    if (combined == null)
-                        File.Delete(f);
-                    else
-                        File.WriteAllText(f, combined, new UTF8Encoding(true));
+                    File.Delete(f);
+                }
+                else
+                {
+                    var f2 = Path.Combine(dir2, Path.GetFileName(f));
+                    if (File.Exists(f2))
+                    {
+                        var combined = CombineFiles(f, f2);
+                        if (combined == null)
+                            File.Delete(f);
+                        else
+                            File.WriteAllText(f, combined, new UTF8Encoding(true));
+                    }
                 }
             }
 

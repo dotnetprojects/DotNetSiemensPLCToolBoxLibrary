@@ -59,7 +59,7 @@ namespace TiaGitHandler
             string exportPath = "";
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
-
+            bool attach = false;
 
             Project prj = null;
 
@@ -155,9 +155,13 @@ namespace TiaGitHandler
             {
                 file = args[0];
                 if (args.Length > 1)
-                    user = args[1];
+                    attach = bool.Parse(args[1]);
                 if (args.Length > 2)
-                    password = args[2];
+                    removeCodeFromXml = bool.Parse(args[2]);
+                if (args.Length > 3)
+                    user = args[3];
+                if (args.Length > 4)
+                    password = args[4];
             }
 
             if (prj == null)
@@ -172,7 +176,17 @@ namespace TiaGitHandler
                     }
                 }
 
-                prj = Projects.LoadProject(file, false, credentials);
+                if (attach)
+                {
+                    if (file.EndsWith("16"))
+                        prj = Projects.AttachToInstanceWithFilename("16", file);
+                    else
+                        prj = Projects.AttachToInstanceWithFilename("15.1", file);
+                }
+                else
+                {
+                    prj = Projects.LoadProject(file, false, credentials);
+                }
             }
 
             _projectType = prj.ProjectType;
