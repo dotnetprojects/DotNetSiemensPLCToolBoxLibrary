@@ -1157,7 +1157,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             //Size of a Structure in the Link File: 512 bytes
             //Offset of Linkfile is in hrs\S7RESOFF.DBF, Filed 12 (RSRVD3_L)
             //after 0x04, 0x20, 0x11 follows the Step7ProjectBlockFolder ID (2 Bytes) or maybe the source folder id
-            //after 0x01, 0x60, 0x11 follows the Step7Programm ID (2 Bytes)
+            //after 0x01, 0x60, 0x11, 0x00 follows the Step7Programm ID (2 Bytes)
 
             //Create the Link BlocksOfflineFolder Folder with S7ProgrammFolders...
             if (_ziphelper.FileExists(ProjectFolder + "hrs" + _DirSeperator + "linkhrs.lnk"))
@@ -1177,8 +1177,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     hrsLink.Position = x._linkfileoffset;
                     hrsLink.Read(tmpLink, 0, 0x200);
 
-                    int pos1 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x01, 0x60, 0x11 }));
-                    int wrt1 = tmpLink[pos1 + 3] * 0x100 + tmpLink[pos1 + 4];
+                    int pos1 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x01, 0x60, 0x11, 0x00 }));
+                    int wrt1 = BitConverter.ToInt16(tmpLink, pos1 + 4);
 
                     int pos2 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x04, 0x20, 0x11 }));
                     int wrt2 = tmpLink[pos2 + 3] * 0x100 + tmpLink[pos2 + 4];
