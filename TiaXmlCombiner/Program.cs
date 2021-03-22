@@ -18,7 +18,7 @@ namespace TiaImporter
             var fls = Directory.GetFiles(dir1, "*.xml");
             foreach (var f in fls)
             {
-                if (!File.Exists(Path.ChangeExtension(f, ".scl")) || !File.Exists(Path.ChangeExtension(f, ".awl")))
+                if (!File.Exists(Path.ChangeExtension(f, ".scl")) && !File.Exists(Path.ChangeExtension(f, ".awl")))
                 {
                     File.Delete(f);
                 }
