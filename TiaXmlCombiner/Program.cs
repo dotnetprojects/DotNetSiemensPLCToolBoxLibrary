@@ -18,7 +18,7 @@ namespace TiaImporter
             var fls = Directory.GetFiles(dir1, "*.xml");
             foreach (var f in fls)
             {
-                if (!File.Exists(Path.ChangeExtension(f, ".scl")))
+                if (!File.Exists(Path.ChangeExtension(f, ".scl")) && !File.Exists(Path.ChangeExtension(f, ".awl")))
                 {
                     File.Delete(f);
                 }
@@ -63,37 +63,45 @@ namespace TiaImporter
             xmlDoc1.LoadXml(xml1);
             xmlDoc2.LoadXml(xml2);
 
-            var codeNode = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit")[0];
-
-            //var insertNode = xmlDoc1.SelectNodes("//SW.Blocks.FC/ObjectList")[0];
-            //var maxId = xmlDoc1.SelectNodes("//*[@ID]").Cast<XmlNode>().Select(x => int.Parse(x.Attributes["ID"].Value, System.Globalization.NumberStyles.HexNumber)).Max();
-            //codeNode.Attributes["ID"].Value = (maxId++).ToString("X");
-            //insertNode.AppendChild(xmlDoc1.ImportNode(codeNode, true));
-
-            var oldCodeNode = xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[0];
-            if (codeNode != null)
+            for (int n = 0; n < xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit").Count; n++)
             {
-                oldCodeNode.InnerXml = codeNode.InnerXml;
+                var codeNode = xmlDoc2.SelectNodes("//SW.Blocks.CompileUnit")[n];
 
+                //var insertNode = xmlDoc1.SelectNodes("//SW.Blocks.FC/ObjectList")[0];
+                //var maxId = xmlDoc1.SelectNodes("//*[@ID]").Cast<XmlNode>().Select(x => int.Parse(x.Attributes["ID"].Value, System.Globalization.NumberStyles.HexNumber)).Max();
+                //codeNode.Attributes["ID"].Value = (maxId++).ToString("X");
+                //insertNode.AppendChild(xmlDoc1.ImportNode(codeNode, true));
 
-                StringBuilder sb = new StringBuilder();
-                XmlWriterSettings settings = new XmlWriterSettings
+                if (codeNode != null)
                 {
-                    Indent = true,
-                    IndentChars = "  ",
-                    NewLineChars = "\r\n",
-                    NewLineHandling = NewLineHandling.Replace
-                };
-                using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
-                {
-                    xmlDoc1.Save(writer);
+                    if (xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[n] != null)
+                    {
+                        xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[n].InnerXml = codeNode.InnerXml;
+                    }
+                    else
+                    {
+                        var impNode = xmlDoc1.ImportNode(codeNode, true);
+                        xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[n-1].ParentNode.InsertAfter(impNode, xmlDoc1.SelectNodes("//SW.Blocks.CompileUnit")[n-1]);
+                    }
                 }
-                var code = sb.ToString();
-
-
-                return code;
             }
-            return null;
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "  ",
+                NewLineChars = "\r\n",
+                NewLineHandling = NewLineHandling.Replace
+            };
+            using (TextWriter writer = new EncodingStringWriter(sb, Encoding.UTF8))
+            {
+                xmlDoc1.Save(writer);
+            }
+
+            if (string.IsNullOrEmpty(sb.ToString())) return null;
+            var code = sb.ToString();
+            return code;
+
         }
     }
 
