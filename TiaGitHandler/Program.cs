@@ -794,6 +794,18 @@ namespace TiaGitHandler
                                         }
                                     }
 
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//*[@ReadOnly='true']");
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
                                     StringBuilder sb = new StringBuilder();
                                     XmlWriterSettings settings = new XmlWriterSettings
                                     {
