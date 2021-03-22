@@ -1043,7 +1043,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// <returns>the parsed value acording to the given datatyep and adress. If the datatype is invalid (such as struct) it returns Null</returns>
         internal static object GetVarCurrentValue(S7DataRowType dataType, byte[] data, ByteBitAddress valpos)
         {
-            if (data == null) return null;
+            if (data == null || valpos.ByteAddress > data.Length) return null;
 
             //Parse Value from data depending on its interface type
             object Result;
