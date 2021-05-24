@@ -237,7 +237,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                 //This Jump mark is used when the Netlink Reset is activated!
                 NLAgain:
-
+                var connectionType = (int)_configuration.ConnectionType;
                 #region Setup Port/Adapter
                 //LibNodave Verbindung aufbauen
                 switch (_configuration.ConnectionType)
@@ -260,6 +260,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case LibNodaveConnectionTypes.Use_Step7_DLL:
                     case LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP:
                     case LibNodaveConnectionTypes.Use_Step7_DLL_Automatic_TCP_Detection:
+                        connectionType = 50;
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
                         if (_fds.rfd.ToInt32() == -1)
@@ -330,7 +331,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if ((int)_configuration.ConnectionType < 9000) //Enums > 9000 are Managed implemntations
                 {
                     //Dave Interface Erzeugen
-                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, (int)_configuration.ConnectionType, (int)_configuration.BusSpeed);
+                    _di = new libnodave.daveInterface(_fds, _configuration.ConnectionName, _configuration.LokalMpi, connectionType, (int)_configuration.BusSpeed);
 
                     //Timeout setzen...
                     _di.setTimeout((int)_configuration.TimeoutMicroseconds); //WARNING! setTimeout needs value in Microseconds
