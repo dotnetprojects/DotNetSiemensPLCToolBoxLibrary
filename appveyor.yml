@@ -40,7 +40,7 @@ artifacts:
     name: libnodave_jfkmod.dll
   - path: externalDlls\libnodave\libnodave_jfkmod64.dll
     name: libnodave_jfkmod64.dll
-  - path: '**\DotNetSiemensPLCToolBoxLibrary*.nupkg' 
+  - path: '**\DotNetSiemensPLCToolBoxLibrary*.*nupkg' 
   - path: TiaGitHandler.zip
     name: TiaGitHandler
   - path: S7ToolBox.zip
@@ -54,7 +54,7 @@ deploy:
   provider: NuGet
   api_key:
     secure: 88aMSx9ONm6ZEyZHiWughpXbF3QGPuYy7yjQxQSt69pDc89aKMBYm8KPOaCIUX9s
-  artifact: /.*\.nupkg/
+  artifact: /.*DotNetProjects\.DotNetSiemensPLCToolBoxLibrary.*nupkg/
   
   
   
