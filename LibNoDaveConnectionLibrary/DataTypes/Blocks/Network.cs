@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class Network
     {
         public Network()
         {
             AWLCode = new List<FunctionBlockRow>();
         }
-
+        [JsonProperty]
         public virtual string Name { get; set; }
+        [JsonProperty]
         public string Comment { get; set; }
+        [JsonProperty(Order = 10)]
         public List<FunctionBlockRow> AWLCode { get; set; }
 
         public Block Parent { get; set; }

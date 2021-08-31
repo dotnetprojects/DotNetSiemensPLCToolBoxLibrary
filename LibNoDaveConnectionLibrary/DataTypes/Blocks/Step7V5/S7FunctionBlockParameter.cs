@@ -30,7 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if (Parent.Parent != null)
                 {
                     var sym = Parent.Parent.SymbolTable;
-                    if (sym != null)
+                    if (sym != null && Name != "SPA")
                     {
                         var ent = sym.GetEntryFromOperand(Value);
                         if (ent != null) 

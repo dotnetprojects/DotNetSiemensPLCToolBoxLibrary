@@ -28,9 +28,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class S7DataRow : TiaAndSTep7DataBlockRow
     {
         public IEnumerable<String> Dependencies
@@ -210,7 +212,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         //Contains the Length of a Structure or UDT...
         //private int _structLength = 0;
-
         public override ByteBitAddress BlockAddress
         {
             get
@@ -222,6 +223,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 return new ByteBitAddress(_BlockAddress);
                 
             }
+
         }
         
         private ByteBitAddress _parentOldAddress;
@@ -380,6 +382,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
        
         public override IDataRow Parent { get; set; }
+
+        [JsonProperty(Order = 1000, NullValueHandling = NullValueHandling.Ignore)]
+        public List<IDataRow> Childre
+        {
+            get
+            {
+                return _children;
+            }
+            set
+            {
+                _children = value;
+            }
+        }
+
+
 
         public override List<IDataRow> Children
         {

@@ -34,10 +34,11 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.General;
-
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class DataBlockRow : IDataRow, INotifyPropertyChanged
     {
         public static List<DataBlockRow> GetChildrowsAsList(DataBlockRow akRow)
@@ -50,19 +51,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             return retVal;
         }
 
+        
         public virtual List<IDataRow> Children { get; protected set; }
 
         protected internal S7DataRowType _datatype;
+
+        
         public virtual S7DataRowType DataType
         {
             get { return _datatype; }
             set { _datatype = value; }
         }
 
-
+        [JsonProperty("symbol", Order =3)]
         public virtual string Name { get; set; }
         public virtual string FullName { get { return Parent == null ? string.Empty : (Parent.FullName + '.' + Name).Trim('.'); } }
-
+        [JsonProperty("description", Order = 4)]
         public virtual string Comment { get; set; }
         public virtual string FullComment { get { return Parent == null ? string.Empty : (Parent.FullComment + '.' + Comment).Trim('.'); } }
 
@@ -72,7 +76,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public virtual ByteBitAddress BlockAddress
         {
             get { return _BlockAddress; }
-            protected set { _BlockAddress = value; }
+            set { _BlockAddress = value; }
         }
 
         public virtual Block CurrentBlock { get; protected set; }
@@ -143,6 +147,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         public int StringSize { get; set; } //Only Relevant for String     
 
+        [JsonProperty("datatype",Order = 2)]
         public virtual string DataTypeAsString
         {
             get

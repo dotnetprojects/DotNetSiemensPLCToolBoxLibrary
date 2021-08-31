@@ -32,9 +32,12 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using DotNetSiemensPLCToolBoxLibrary.Communication;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     [Serializable()]
     public class S7FunctionBlockRow : FunctionBlockRow, INotifyPropertyChanged
     {
@@ -65,6 +68,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public List<FunctionBlockRow> CombinedCommands { get; internal set; }
 
         private string _parameter;
+        [JsonProperty]
         public string Parameter
         {
             get { return _parameter; }
@@ -562,6 +566,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
         #endregion
 
+
         public S7FunctionBlockRow()
         {
             Label = "";
@@ -773,7 +778,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             else
             {
                 var sym = SymbolTableEntry;
-                if (sym != null && useSymbol) par = "\"" + sym.Symbol + "\"";
+                if (sym != null && useSymbol && Command != "SPA") par = "\"" + sym.Symbol + "\"";
             }
 
             if (Command == "CALL")

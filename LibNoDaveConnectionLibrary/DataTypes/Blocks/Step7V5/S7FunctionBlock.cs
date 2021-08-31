@@ -7,9 +7,11 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     [Serializable()]
     public class S7FunctionBlock : S7Block, IFunctionBlock, INotifyPropertyChanged
     {
@@ -59,6 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         private S7DataRow _parameter;
+        [JsonProperty(Order = 10)]
         public S7DataRow Parameter
         {
             get { return _parameter; }
@@ -79,6 +82,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         private List<FunctionBlockRow> _awlCode;
+        
         public List<FunctionBlockRow> AWLCode
         {
             get { return _awlCode; }
@@ -88,6 +92,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         private List<Network> _networks;
+
+        [JsonProperty(Order = 11)]
         public List<Network> Networks
         {
             get { return _networks; }
@@ -97,6 +103,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         private string _description;
+        [JsonProperty(Order = 8)]
         public string Description
         {
             get { return _description; }
@@ -129,7 +136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             return ToString(true);
         }
 
-        public override string GetSourceBlock(bool useSymbols = false)
+        public override string GetSourceBlock(bool useSymbols = true)
         {
             StringBuilder retVal = new StringBuilder();
 
@@ -158,7 +165,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("VERSION : " + this.Version);
             retVal.AppendLine();
             retVal.AppendLine();
-
+            if(this.Attributes != null)
+                retVal.AppendLine(this.Attributes.First().ToString());
+            if(this.CalledBlocks.Count() > 0)
+                foreach(string called in this.CalledBlocks)
+                    retVal.AppendLine("RuntimeBlock: : " + called);
+            retVal.AppendLine();
+            retVal.AppendLine();
 
             if (this.Parameter.Children != null)
             {
@@ -175,8 +188,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         else if (parnm == "STATIC")
                             ber = "VAR";
                         retVal.AppendLine(ber);
-                        string vars = AWLToSource.DataRowToSource(s7DataRow, "  ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP"));
-                        if (useSymbols) {
+                        string vars = AWLToSource.DataRowToSource(s7DataRow, "      ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP" || parnm == "STATIC")); // || parnm == "STATIC" stop showing values in VAR
+                        if (! useSymbols) {
                             foreach (string dependency in Dependencies)
                             {
                                 if (dependency.Contains("SFC") || dependency.Contains("SFB"))
@@ -195,11 +208,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 }
 
             }
+            retVal.AppendLine();
             retVal.AppendLine("BEGIN");
-            foreach (Network network in this.Networks)
+            foreach (S7FunctionBlockNetwork network in this.Networks)
             {
                 retVal.AppendLine("NETWORK");
-                retVal.AppendLine("TITLE = " + network.Name);
+                if (string.IsNullOrEmpty(network.Name) && network.AWLCode.Count > 0 && !string.IsNullOrEmpty(network.AWLCode.First().Comment))
+                    retVal.AppendLine("TITLE = " + network.AWLCode.First().Comment);
+                else
+                    retVal.AppendLine("TITLE = " + network.Name);
+
                 if (!String.IsNullOrEmpty(network.Comment))
                     retVal.AppendLine("//" + network.Comment.Replace(Environment.NewLine, Environment.NewLine + "//"));
                 else

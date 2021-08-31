@@ -4,9 +4,11 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class SymbolTable : Step7ProjectFolder, ISymbolTable
     {
         public String Folder { get; set; }
@@ -110,6 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             sym.Symbol = (string)row["_SKZ"];
                             sym.Operand = (string)row["_OPHIST"];
                             sym.OperandIEC = (string)row["_OPIEC"];
+                            sym.Address = sym.OperandIEC.Replace(" ", "");
                             sym.DataType = (string)row["_DATATYP"];
                             sym.Comment = (string)row["_COMMENT"];
                             if ((bool)row["DELETED_FLAG"]) sym.Comment = "(deleted) " + sym.Comment;

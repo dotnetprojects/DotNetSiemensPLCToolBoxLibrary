@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     [Serializable()]
     public class S7VATRow: INotifyPropertyChanged
     {
@@ -21,6 +23,35 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         private PLCTag _libNoDaveValue;
         private string _comment;
 
+
+        [JsonProperty(Order = 1)]
+        public string address
+        {
+            get 
+            { 
+                if (_libNoDaveValue != null) 
+                {
+                    return _libNoDaveValue.S7FormatAddress;
+                }
+                return null;
+            }
+        }
+
+
+        [JsonProperty(Order = 2)]
+        public string datatype
+        {
+            get
+            {
+                if (_libNoDaveValue != null)
+                {
+                    return _libNoDaveValue.DataTypeStringFormat;
+                }
+                return null;
+            }
+        }
+
+        
         public PLCTag LibNoDaveValue
         {
             get { return _libNoDaveValue; }
@@ -96,7 +127,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         [XmlIgnore]
-        public TagDisplayDataType? DataTypeStringFormat
+        public string DataTypeStringFormat
         {
             get
             {
@@ -112,7 +143,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 {
                     if (_libNoDaveValue == null)
                         LibNoDaveValue = new PLCTag();
-                    _libNoDaveValue.DataTypeStringFormat = value.Value;
+                    _libNoDaveValue.DataTypeStringFormat = value;
                 }
                 NotifyInternalPLCTagPropertyChanges();
             }
@@ -147,6 +178,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
         #endregion
 
+        [JsonProperty("description",Order = 4)]
         public string Comment
         {
             get { return _comment; }

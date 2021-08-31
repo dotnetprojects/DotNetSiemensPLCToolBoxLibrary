@@ -35,6 +35,7 @@ using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Newtonsoft.Json;
 
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
@@ -46,6 +47,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     [System.ComponentModel.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class PLCTag : INotifyPropertyChanged
     {
         public bool RaiseValueChangedEvenWhenNoChangeHappened { get; set; }
@@ -68,6 +70,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// The byte offset or Byte address of the data in the controller. Represents the start of the data
         /// </summary>
+        
         public int ByteAddress
         {
             get { return _byteAddress; }
@@ -83,6 +86,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Represents the Bit offset of the data int the controller. Only relevant for boolean values
         /// Will be ignored for non boolean values
         /// </summary>
+        
         public int BitAddress
         {
             get { return _bitAddress; }
@@ -161,6 +165,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// Create an new PLC Tag
         /// </summary>
+        /// 
         public PLCTag()
         { }
 
@@ -197,6 +202,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Arrays and String: "P#DB25.DBX0.0 BYTE 14"; "P#M0.0 WORD 2"; "P#I0.0 DWORD 5"
         ///</param>
         /// <param name="type">The data type to be read from the Controller</param>
+
+     
         public PLCTag(string address, TagDataType type)
         {
             this.TagDataType = type;
@@ -249,6 +256,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// The Data block number of the tag. If the TagDataSource is not in an data-block this number is 0
         /// </summary>
+        /// 
+       
         public int DataBlockNumber
         {
             get
@@ -275,7 +284,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 return this.tagDataSource;
             }
-            set
+            set 
             {
                 this.tagDataSource = value;
                 if (value == MemoryArea.Timer || value == MemoryArea.Counter)
@@ -290,7 +299,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// The tats display type. Defines how the tags data should be represented
         /// </summary>
-        public TagDisplayDataType DataTypeStringFormat
+        [JsonProperty("datatype", Order = 2)]
+        public String DataTypeStringFormat
         {
             get
             {
@@ -298,30 +308,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     case TagDataType.Bool:
                         if (_dataTypeStringFormat != TagDisplayDataType.Bool && _dataTypeStringFormat != TagDisplayDataType.Binary)
-                            return TagDisplayDataType.Bool;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.Bool.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.S5Time:
                     case TagDataType.Time:
                     case TagDataType.LTime:
                         if (_dataTypeStringFormat != TagDisplayDataType.TimeSpan && _dataTypeStringFormat != TagDisplayDataType.S5Time && _dataTypeStringFormat != TagDisplayDataType.Time)
-                            return TagDisplayDataType.TimeSpan;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.TimeSpan.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.Date:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7Date)
-                            return TagDisplayDataType.S7Date;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.S7Date.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.TimeOfDay:
                     case TagDataType.LTimeOfDay:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7TimeOfDay)
-                            return TagDisplayDataType.S7TimeOfDay;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.S7TimeOfDay.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.DateTime:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7DateTime)
-                            return TagDisplayDataType.DateTime;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.DateTime.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.String:
                     case TagDataType.CharArray:
-                        return TagDisplayDataType.String;
+                        return TagDisplayDataType.String.ToString();
                     case TagDataType.Int:
                     case TagDataType.Dint:
                     case TagDataType.LInt:
@@ -334,25 +344,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.BCDWord:
                     case TagDataType.BCDDWord:
                         if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary && _dataTypeStringFormat != TagDisplayDataType.Pointer && _dataTypeStringFormat != TagDisplayDataType.String)
-                            return TagDisplayDataType.Decimal;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.Decimal.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.Float:
                     case TagDataType.LReal:
                         if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary)
-                            return TagDisplayDataType.Float;
-                        return _dataTypeStringFormat;
+                            return TagDisplayDataType.Float.ToString();
+                        return _dataTypeStringFormat.ToString();
                     case TagDataType.ByteArray:
-                        return TagDisplayDataType.ByteArray;
+                        return TagDisplayDataType.ByteArray.ToString();
                 }
-                return TagDisplayDataType.Decimal;
+                return TagDisplayDataType.Decimal.ToString();
+               
             }
-            set { _dataTypeStringFormat = value; NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
+            set { _dataTypeStringFormat = (TagDisplayDataType)Enum.Parse(typeof(TagDisplayDataType), value) ; NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
         }
 
         private TagDataType tagDataType;
         /// <summary>
         /// The type of data of the tag
         /// </summary>
+        /// 
+        
         public virtual TagDataType TagDataType
         {
             get
@@ -572,7 +585,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         #endregion
-
+        [JsonProperty("address", Order = 1)]
         [XmlIgnore]
         public string S7FormatAddress
         {
@@ -684,6 +697,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
+        
         public string GetControlValueAsString()
         {
             return GetValueAsString(this.Controlvalue);
@@ -987,7 +1001,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 {
                     case TagDataType.S5Time:
                         {
-                            if (DataTypeStringFormat == TagDisplayDataType.S5Time)
+                            if (DataTypeStringFormat == "S5Time")
                             {
                                 var bt = new byte[2];
                                 libnodave.putS5Timeat(bt, 0, (TimeSpan)myValue);
@@ -1009,7 +1023,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return ret.ToString();
                         }
                     case TagDataType.Bool:
-                        if (DataTypeStringFormat == TagDisplayDataType.Binary)
+                        if (DataTypeStringFormat == "Binary")
                         {
                             if (((bool)myValue) == true)
                                 return "1";
@@ -1020,7 +1034,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.Date:
                     case TagDataType.TimeOfDay:
                     case TagDataType.LTimeOfDay:
-                        if (DataTypeStringFormat == TagDisplayDataType.S7DateTime)
+                        if (DataTypeStringFormat == "S7DateTime")
                         {
                             DateTime ak = (DateTime)myValue;
                             StringBuilder sb = new StringBuilder();
@@ -1040,7 +1054,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             sb.Append(ak.Millisecond.ToString().PadRight(3, '0'));
                             return sb.ToString();
                         }
-                        else if (DataTypeStringFormat == TagDisplayDataType.S7Date)
+                        else if (DataTypeStringFormat == "S7Date")
                         {
                             DateTime ak = (DateTime)myValue;
                             StringBuilder sb = new StringBuilder();
@@ -1052,7 +1066,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             sb.Append(ak.Day);
                             return sb.ToString();
                         }
-                        else if (DataTypeStringFormat == TagDisplayDataType.S7TimeOfDay)
+                        else if (DataTypeStringFormat == "S7TimeOfDay")
                         {
                             DateTime ak = (DateTime)myValue;
                             StringBuilder sb = new StringBuilder();
@@ -1084,7 +1098,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         IFormattable val = myValue as IFormattable ?? 0;
                         switch (DataTypeStringFormat)
                         {
-                            case TagDisplayDataType.String:
+                            case "String":
                                 switch (this.TagDataType)
                                 {
                                     case TagDataType.Int:
@@ -1115,10 +1129,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));
                                 }
                                 break;
-                            case TagDisplayDataType.Pointer:
+                            case "Pointer":
                                 return "P#" + (Convert.ToInt32(myValue) / 8).ToString() + "." + (Convert.ToInt32(myValue) % 8).ToString();
                                 break;
-                            case TagDisplayDataType.Hexadecimal:
+                            case "Hexadecimal":
                                 string ad = "";
                                 switch (_internalGetSize())
                                 {
@@ -1136,7 +1150,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                         break;
                                 }
                                 return ad + val.ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(_internalGetSize() * 2, '0');
-                            case TagDisplayDataType.Binary:
+                            case "Binary":
                                 byte[] bt = new byte[] { };
                                 switch (this.TagDataType)
                                 {
@@ -1195,7 +1209,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             return "";
         }
-
+        
         public string GetValueAsString()
         {
             if (ItemDoesNotExist)
@@ -1668,7 +1682,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         tp = TagDisplayDataType.TimeSpan;
                         break;
                 }
-                this.DataTypeStringFormat = tp;
+                this.DataTypeStringFormat = tp.ToString();
             }
         }
 

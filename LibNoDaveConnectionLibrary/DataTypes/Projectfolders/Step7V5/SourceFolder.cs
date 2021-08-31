@@ -76,8 +76,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             retVal.Name = srcInfo.Name;
             retVal.ParentFolder = srcInfo.ParentFolder;
             retVal.Filename = srcInfo.Filename;
+            retVal.Comment = getBetween(retVal.Text, "Comment '", "'");
 
             return retVal;
+        }
+
+        public string getBetween(string strSource, string strStart, string strEnd)
+        {
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+            {
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
+
+            return "";
         }
 
         public string GetSource(S7ProjectSourceInfo blkInfo)

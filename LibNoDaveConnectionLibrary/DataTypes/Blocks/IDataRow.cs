@@ -51,7 +51,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         IDataRow Parent { get; set; }
 
-        ByteBitAddress BlockAddress { get; }
+        ByteBitAddress BlockAddress { get; set; }
 
         Block PlcBlock { get; }
 

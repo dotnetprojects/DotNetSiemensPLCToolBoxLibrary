@@ -28,9 +28,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     [Serializable()]
     public class S7DataBlock : S7Block, IDataBlock
     {
@@ -49,6 +51,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public int FBNumber { get; set;}  //If it is a Instance DB
         public bool IsInstanceDB { get; set; }
 
+        [JsonProperty(Order = 10)]
         public IDataRow Structure
         {
             get

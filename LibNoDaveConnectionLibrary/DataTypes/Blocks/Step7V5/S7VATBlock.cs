@@ -2,13 +2,20 @@
 using System.Text;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.Communication;
+using Newtonsoft.Json;
+
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class S7VATBlock : S7Block
     {
+        
         public List<PLCTag> Rows{ get; set;}
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, Order = 50)]
         public List<S7VATRow> VATRows { get; set; }
+
 
         public S7VATBlock(byte[] hexCode, byte[] comments, int blocknumber, Encoding projEncoding)
         {
@@ -148,62 +155,62 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             {
                                 //showtype = "ZAEHLER";
                                 tmp.TagDataType = TagDataType.BCDWord;
-                                tmp.DataTypeStringFormat = TagDisplayDataType.Decimal;
+                                tmp.DataTypeStringFormat = "Decimal";
                             }
                             else
                             {
                                 //showtype = "BIN";
-                                tmp.DataTypeStringFormat = TagDisplayDataType.Binary;
+                                tmp.DataTypeStringFormat = "Binary";
                             }
                             break;
                         case 0x31:
                             if (hexCode[akAddr - 1] == 0x31)
                             {
                                 //showtype = "ZEIGER";
-                                tmp.DataTypeStringFormat = TagDisplayDataType.Pointer;
+                                tmp.DataTypeStringFormat = "Pointer";
                             }
                             else
                             {
                                 //showtype = "HEX";
-                                tmp.DataTypeStringFormat = TagDisplayDataType.Hexadecimal;
+                                tmp.DataTypeStringFormat = "Hexadecimal";
                             }
                             break;
                         case 0x32:
                             //showtype = "DEZ";
-                            tmp.DataTypeStringFormat = TagDisplayDataType.Decimal;
+                            tmp.DataTypeStringFormat = "Decimal";
                             break;
                         case 0x33:
                             //showtype = "GLEITPUNKT";
                             tmp.TagDataType = TagDataType.Float;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.Float;
+                            tmp.DataTypeStringFormat = "Float";
                             break;
                         case 0x34:
                             //showtype = "ZEICHEN";
                             tmp.TagDataType = TagDataType.Byte;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.String;
+                            tmp.DataTypeStringFormat = "String";
                             break;
                         case 0x35:
                             //showtype = "BOOL";
-                            tmp.DataTypeStringFormat = TagDisplayDataType.Bool;
+                            tmp.DataTypeStringFormat = "Bool";
                             break;
                         case 0x36:
                             //showtype = "ZEIT";
                             tmp.TagDataType = TagDataType.Time;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.Time;
+                            tmp.DataTypeStringFormat = "Time";
                             break;
                         case 0x37:
                             //showtype = "DATUM";
                             tmp.TagDataType = TagDataType.Date;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.S7Date;
+                            tmp.DataTypeStringFormat = "S7Date";
                             break;
                         case 0x38:
                             tmp.TagDataType = TagDataType.S5Time;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.S5Time;
+                            tmp.DataTypeStringFormat = "S5Time";
                             //showtype = "SIMATIC_ZEIT";
                             break;
                         case 0x39:
                             tmp.TagDataType = TagDataType.TimeOfDay;
-                            tmp.DataTypeStringFormat = TagDisplayDataType.S7TimeOfDay;
+                            tmp.DataTypeStringFormat = "S7TimeOfDay";
                             //showtype = "TAGESZEIT";
                             break;
                         default:
@@ -226,7 +233,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 else
                 {
                     akAddr++;
-                    VATRows.Add(new S7VATRow() {});
+                    //VATRows.Add(new S7VATRow() {});
                 }
             }
 

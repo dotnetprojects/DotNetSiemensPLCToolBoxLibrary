@@ -34,10 +34,11 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.General;
-
+using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class TiaAndSTep7DataBlockRow : DataBlockRow
     {
         public abstract TiaAndSTep7DataBlockRow DeepCopy();
@@ -49,6 +50,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         //was a elemnt in a array
         internal bool WasArray { get; set; }
 
+        
         public string BlockAddressInDbFormat
         {
             get
@@ -69,23 +71,28 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
+        [JsonProperty("address", Order = 1)]
         public string FullBlockAddressInDbFormat
         {
             get
             {
+                string BlockType = "DB";
+                if (this.PlcBlock.BlockType == PLCBlockType.UDT)
+                    BlockType = "UDT";
                 if (this.DataType == S7DataRowType.BOOL)
-                    return "DB" + BaseBlockNumber + ".DBX" + BlockAddress.ToString();
+                    return BlockType + BaseBlockNumber + ".DBX" + BlockAddress.ToString();
                 switch (this.ByteLength)
                 {
                     case 1:
-                        return "DB" + BaseBlockNumber + ".DBB" + BlockAddress.ByteAddress.ToString();
+                        return BlockType + BaseBlockNumber + ".DBB" + BlockAddress.ByteAddress.ToString();
                     case 2:
-                        return "DB" + BaseBlockNumber + ".DBW" + BlockAddress.ByteAddress.ToString();
+                        return BlockType + BaseBlockNumber + ".DBW" + BlockAddress.ByteAddress.ToString();
                     case 4:
-                        return "DB" + BaseBlockNumber + ".DBD" + BlockAddress.ByteAddress.ToString();
+                        return BlockType + BaseBlockNumber + ".DBD" + BlockAddress.ByteAddress.ToString();
                 }
 
-                return "P#DB" + BaseBlockNumber + "DBX" + BlockAddress.ByteAddress + ".0 BYTE " + this.ByteLength;
+                //return "P#" + BlockType + BaseBlockNumber + "DBX" + BlockAddress.ByteAddress + ".0 BYTE " + this.ByteLength;
+                return BlockType + BaseBlockNumber + ".DBX" + BlockAddress.ByteAddress;
             }
         }
 
@@ -193,6 +200,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         public object StartValue { get; set; }  //Only for FB and DB not for FC
+
         public object Value { get; set; } //Only used in DBs
         public bool ReadOnly { get; set; }
 
@@ -244,6 +252,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         internal List<IDataRow> _children;
 
+        
         public override List<IDataRow> Children
         {
             get
