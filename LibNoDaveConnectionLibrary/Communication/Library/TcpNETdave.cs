@@ -246,6 +246,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             catch (Exception)
             {
+                Console.WriteLine("1 TcpNetDave.cs threw exception");
                 if (stream != null)
                 {
                     stream.Dispose();
@@ -1318,19 +1319,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                     tcpClient.Client.Shutdown(SocketShutdown.Both);
                 }
                 catch (Exception ex)
-                { }
+                {
+                    Console.WriteLine("2 TcpNetDave.cs threw exception");
+                }
                 try
                 {
                     tcpClient.Client.Disconnect(false);
                 }
                 catch (Exception ex)
-                { }
+                {
+                    Console.WriteLine("3 TcpNetDave.cs threw exception");
+                }
                 try
                 {
                     tcpClient.Close();
                 }
                 catch (Exception ex)
-                { }
+                {
+                    Console.WriteLine("4 TcpNetDave.cs threw exception");
+                }
             }
         }
         public int getAnswLen()

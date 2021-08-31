@@ -436,6 +436,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             catch (Exception ex)
             {
+                Console.WriteLine("ByteFunctions.cs threw exception");
                 return new DateTime(1900, 01, 01, 00, 00, 00);
             }
         }

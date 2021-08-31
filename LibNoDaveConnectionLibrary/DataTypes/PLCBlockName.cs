@@ -97,6 +97,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
             }
             catch
             {
+                Console.WriteLine("1 PLCBlockName.cs threw exception");
                 plcBlockName = null;
                 return false;
             }

@@ -317,6 +317,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             }
                                             catch(Exception ex)
                                             {
+                                                Console.WriteLine("1 CallConverter.cs threw exception");
                                                 newPar.Value = Parameters[s];
                                             }
                                         }

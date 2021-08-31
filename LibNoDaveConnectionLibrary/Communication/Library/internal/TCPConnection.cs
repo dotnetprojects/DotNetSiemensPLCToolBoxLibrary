@@ -120,10 +120,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 }
                 catch (ThreadAbortException)
                 {
+                    Console.WriteLine("1 TCPConnection.cs threw exception");
                     return;
                 }
                 catch
                 {
+                    Console.WriteLine("2 TCPConnection.cs threw exception");
                     Thread.Sleep(5000);
                 }
             }
@@ -158,6 +160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                     }
                     catch (Exception)
                     {
+                        Console.WriteLine("3 TCPConnection.cs threw exception");
                         if (stream != null)
                         {
                             stream.Dispose();
@@ -168,6 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             catch (ThreadAbortException) //Kill this Thread when a Exception occurs!
             {
+                Console.WriteLine("4 TCPConnection.cs threw exception");
                 if (stream != null)
                 {
                     stream.Dispose();

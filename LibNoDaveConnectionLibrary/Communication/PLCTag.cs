@@ -751,7 +751,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = Int32.Parse(myValue);
                         }
-                        catch (Exception) { }
+                        catch (Exception) 
+                        {
+                            Console.WriteLine("1 PLCTag.cs threw exception");
+                        }
                     break;
                 case TagDataType.BCDArray:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
@@ -764,7 +767,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = UInt64.Parse(myValue);
                         }
-                        catch (Exception) { }
+                        catch (Exception) 
+                        {
+                            Console.WriteLine("2 PLCTag.cs threw exception");
+                        }
                     break;
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
@@ -884,7 +890,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = DateTime.Parse(myValue);
                         }
-                        catch (Exception) { }
+                        catch (Exception) 
+                        {
+                            Console.WriteLine("3 PLCTag.cs threw exception");
+                        }
                     break;
                 case TagDataType.ByteArray:
                     {
@@ -901,7 +910,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 wrt[i++] = Convert.ToByte(val);
                             }
                             catch (Exception)
-                            { }
+                            {
+                                Console.WriteLine("4 PLCTag.cs threw exception");
+                            }
                         }
                         Controlvalue = wrt;
                     }
@@ -1766,6 +1777,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         catch (Exception)
                         {
+                            Console.WriteLine("5 PLCTag.cs threw exception");
                             tmp1 = Convert.ToBoolean(Convert.ToInt32(ctlValue));
                         }
                         buff[startpos] = Convert.ToByte(tmp1);
@@ -2224,6 +2236,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             catch (Exception ex)
             {
+                Console.WriteLine("6 PLCTag.cs threw exception");
                 throw new Exception(
                     "Could not Read value From Buffer (" + (this.ValueName ?? "") + ", BufferLength:" + buff.Length +
                     ", StartPos:" + startpos, ex);

@@ -604,7 +604,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
                     try
                     { myRoutingDestination = new byte[] { (byte)Convert.ToInt32(routingDestination) }; }
                     catch (Exception)
-                    { }
+                    {
+                        Console.WriteLine("1 lobnodave.net.cs threw exception");
+                    }
                 }
                 else
                 {
@@ -2724,6 +2726,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
             }
             catch (Exception ex)
             {
+                Console.WriteLine("2 lobnodave.net.cs threw exception");
                 return new DateTime(1900, 01, 01, 00, 00, 00);
             }
         }

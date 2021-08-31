@@ -59,7 +59,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             Step5BlocksFolder blkFld = (Step5BlocksFolder) prgFld.BlocksFolder;
             SymbolTable smyTab = (SymbolTable) prgFld.SymbolTable;
 
-            //try
+            try
             {
                 foreach (ProjectBlockInfo projectBlockInfo in blkFld.readPlcBlocksList())
                 {
@@ -131,10 +131,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                     }
                 }
             }
-            /*catch (Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("There was an error generating the Reference Data! Maybe the Step5 project is broken? \n" + ex.Message);
-            }*/
+                Console.WriteLine("There was an error generating the Reference Data! Maybe the Step5 project is broken? \n" + ex.Message);
+            }
 
             ReferenceDataLoaded = true;
         }                

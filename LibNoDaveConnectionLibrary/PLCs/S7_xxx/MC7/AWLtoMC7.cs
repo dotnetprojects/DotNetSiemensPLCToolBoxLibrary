@@ -65,6 +65,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 catch (Exception)
                 {
+                    Console.WriteLine("1 AWLtoMC7.cs threw exception");
                     return 0;
                 }
         }

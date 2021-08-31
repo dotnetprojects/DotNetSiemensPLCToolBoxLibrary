@@ -81,7 +81,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                                 symbolIndexList.Add(sym.Symbol.ToUpper().Trim(), sym);
                         }
                         catch (Exception ex)
-                        { }
+                        {
+                            Console.WriteLine("1 SymbolTable.cs threw exception");
+                        }
                     }
                 }
             }

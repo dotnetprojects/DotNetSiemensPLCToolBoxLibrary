@@ -605,7 +605,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     y.MLFB_OrderNumber = descr3;
                 }
                 catch
-                { }
+                {
+                    Console.WriteLine("1 Step7ProjectV5.cs threw exception");
+                }
             }
             
             //Get The CPU(ET200S)...
@@ -1353,7 +1355,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.Name = strName;
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("2 Step7ProjectV5.cs threw exception");
+                            }
                         }
 
                         pos = indexOfByteArray(completeBuffer, startIP, position, lenStructure);
@@ -1371,7 +1375,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.IpAddress = new System.Net.IPAddress(bIP);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("3 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startMAC, position, lenStructure);
                         if (pos > 0)
@@ -1383,7 +1389,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.Mac = System.Net.NetworkInformation.PhysicalAddress.Parse(strMAC);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("4 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startMask, position, lenStructure);
                         if (pos > 0)
@@ -1400,7 +1408,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.SubnetMask = new System.Net.IPAddress(bIP);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("5 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startRouter, position, lenStructure);
                         if (pos > 0)
@@ -1416,7 +1426,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.Router = new System.Net.IPAddress(bIP);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("6 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startUseRouter, position, lenStructure);
                         if (pos > 0)
@@ -1426,7 +1438,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.UseRouter = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("7 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startUseIP, position, lenStructure);
                         if (pos > 0)
@@ -1436,7 +1450,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.UseIp = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("8 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, startUseMac, position, lenStructure);
                         if (pos > 0)
@@ -1446,7 +1462,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 ethernet.UseIso = Convert.ToBoolean(completeBuffer[pos + 19]);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("9 Step7ProjectV5.cs threw exception");
+                            }
                         }
                     }
                     //read ProfiBus Parametrs
@@ -1477,7 +1495,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 MpiDP.Address = (int)Convert.ToByte(completeBuffer[pos + 19 + (int)Convert.ToByte(completeBuffer[pos + 8])]);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("10 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, searchName, position, lenStructure);
                         if (pos > 0)
@@ -1489,7 +1509,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 MpiDP.Name = strName;
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("11 Step7ProjectV5.cs threw exception");
+                            }
                         }
 
                     }
@@ -1522,7 +1544,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 MpiDP.Address = (int)Convert.ToByte(completeBuffer[pos + 19 + (int)Convert.ToByte(completeBuffer[pos + 8])]);
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("12 Step7ProjectV5.cs threw exception");
+                            }
                         }
                         pos = indexOfByteArray(completeBuffer, searchName, position, lenStructure);
                         if (pos > 0)
@@ -1534,12 +1558,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                                 MpiDP.Name = strName;
                             }
                             catch
-                            { }
+                            {
+                                Console.WriteLine("13 Step7ProjectV5.cs threw exception");
+                            }
                         }
                     }
                 }
             }
-            catch { }
+            catch 
+            {
+                Console.WriteLine("14 Step7ProjectV5.cs threw exception");
+            }
             //union SubModul Cp
             bool repeat;
             do

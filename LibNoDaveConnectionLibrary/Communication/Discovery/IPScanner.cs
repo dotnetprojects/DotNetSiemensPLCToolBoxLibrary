@@ -333,6 +333,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                         }
                         catch
                         {
+                            Console.WriteLine("1 IPscanner.cs threw exception");
                         }
                         Adress = _IPPortScanner.GetNextAdress();
                     }
@@ -340,6 +341,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                 }
                 catch
                 {
+                    Console.WriteLine("2 IPscanner.cs threw exception");
                 }
                 finally
                 {

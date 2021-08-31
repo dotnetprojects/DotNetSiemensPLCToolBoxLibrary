@@ -45,7 +45,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                 return zipHelper;
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("1 ZipHelper.cs threw exception");
+            }
 #endif
             return null;
         }
@@ -61,7 +63,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                 return zipHelper;
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("1 ZipHelper.cs threw exception");
+            }
 #endif
             return null;
         }
@@ -80,7 +84,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                     this._zipFile = new ZipFile(file);
                 }
                 catch(Exception)
-                { }
+                {
+                    Console.WriteLine("3 ZipHelper.cs threw exception");
+                }
             }               
 #endif
         }

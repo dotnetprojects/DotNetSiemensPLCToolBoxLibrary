@@ -192,7 +192,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("1 PLCConnection.cs threw exception");
+            }
 
             Logger?.Invoke("socket thread try to connect");
 
@@ -4120,6 +4122,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             catch (Exception)
             {
+                Console.WriteLine("2 PLCConnection.cs threw exception");
             }
 
             return lRet.ToArray();
@@ -4207,6 +4210,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             catch (Exception)
             {
+                Console.WriteLine("3 PLCConnection.cs threw exception");
                 return new DateTime(); // DateTime(1990, 1, 1);
             }
         }
@@ -4229,7 +4233,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 ret[7] = Convert.ToByte(dt.Millisecond.ToString("000").Substring(2) + ((byte)dt.DayOfWeek + 1), 16);
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("4 PLCConnection.cs threw exception");
+            }
             return ret;
         }
 

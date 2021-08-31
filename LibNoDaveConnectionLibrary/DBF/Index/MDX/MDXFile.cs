@@ -76,6 +76,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine("1 MDXFile.cs threw exception");
                     Debug.WriteLine(e.Message);
                 }
                 finally
@@ -106,7 +107,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("2 MDXFile.cs threw exception");
             }
         }
 

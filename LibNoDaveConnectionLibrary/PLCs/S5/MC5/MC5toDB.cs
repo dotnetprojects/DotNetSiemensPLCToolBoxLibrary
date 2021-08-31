@@ -127,7 +127,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                Console.WriteLine("1 MC5ToDB.cs threw exception");
+            }
 
 
             try
@@ -155,6 +157,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             }
             catch (Exception ex)
             {
+                Console.WriteLine("2 MC5ToDB.cs threw exception");
                 throw new Exception("There was an error parsing the Block Comments! Maybe the Step5 project is broken? \n", ex);
             }
 

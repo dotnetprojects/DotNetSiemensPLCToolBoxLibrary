@@ -199,7 +199,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                                     string depSymbol = "\"" + SymbolTable.GetEntryFromOperand(dependency).Symbol + "\"";
                                     vars = vars.Replace(dependency, SymbolTable.GetEntryFromOperand(dependency).Symbol);
                                 }
-                                catch { }
+                                catch 
+                                {
+                                    Console.WriteLine("1 S7FunctionBlock.cs threw exception");
+                                }
                             }
                         }                        
                         retVal.Append(vars);

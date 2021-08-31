@@ -338,6 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
             catch (Exception)
             {
+                Console.WriteLine("1 Projects.cs threw exception");
             }
             try
             {
@@ -414,7 +415,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             retVal.Add(new Step5Project(fls[0], false));
                     }
                     catch (Exception)
-                    { }
+                    {
+                        Console.WriteLine("2 Projects.cs threw exception");
+                    }
                 }
 
                 foreach (var ending in "*.zip;*.zap13".Split(';'))
@@ -494,7 +497,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("3 Projects.cs threw exception");
+            }
 
             return retVal.ToArray();
         }
@@ -531,7 +536,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (file.ToLower().EndsWith(".s5d"))
                 return new Step5Project(file, showDeleted);
             else if (file.ToLower().EndsWith(".s7p"))
+            {
+                var test = new Step7ProjectV5(file, showDeleted);
+                System.Console.WriteLine(test);
                 return new Step7ProjectV5(file, showDeleted);
+            }
             else if (file.ToLower().EndsWith(".s7l"))
                 return new Step7ProjectV5(file, showDeleted);
             else if (file.ToLower().EndsWith(".ap11"))

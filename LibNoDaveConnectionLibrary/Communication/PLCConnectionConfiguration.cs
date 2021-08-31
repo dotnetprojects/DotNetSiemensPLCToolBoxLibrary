@@ -581,6 +581,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
             catch (Exception ex)
             {
+                Console.WriteLine("1 PLCConnectionConfiguration.cs threw exception");
                 try
                 {
                     strm.Close(); //Close old stream
@@ -592,6 +593,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 catch
                 {
+                    Console.WriteLine("2 PLCConnectionConfiguration.cs threw exception");
                     throw ex; //Throw orignial Exception
                 }
             }
@@ -685,7 +687,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 //    "Software\\JFKSolutions\\WPFToolboxForSiemensPLCs\\Connections\\" + ConnectionName);
             }
             catch (Exception)
-            { }
+            {
+                Console.WriteLine("3 PLCConnectionConfiguration.cs threw exception");
+            }
 #endif
         }
 

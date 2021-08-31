@@ -840,6 +840,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             }
             catch
             {
+                Console.WriteLine("1 BlocksOfflineFOlder.cs threw exception");
                 return DateTime.MinValue;
             }
         }
