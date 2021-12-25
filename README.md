@@ -18,6 +18,7 @@ This Library also works under Mono/MonoTouch
 Features
 ==============================
 - Support for Connecting to Siemens S7-300/400 and S5 PLCs
+- Support for for TIA Portal Projects via the Openness API
 - Support for reading als S7 DataTypes and Converting them to DotNet ones
 - Support for combining multiple different Tags to one Read-Request 
 - Support for reading Step5 Projects (*.S5D)
