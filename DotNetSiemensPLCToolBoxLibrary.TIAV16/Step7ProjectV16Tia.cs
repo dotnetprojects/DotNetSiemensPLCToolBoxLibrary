@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
+using System.Globalization;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 {
@@ -348,6 +349,47 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             //}
 
             internal PlcSoftware plcSoftware;
+
+
+            public override void ExportTextList()
+            {
+                Siemens.Engineering.Project prj = (Siemens.Engineering.Project)plcSoftware.Parent.Parent.Parent.Parent;
+
+                //foreach (Device device in prj.Devices)
+                //{
+                //    foreach (DeviceItem item in device.Items)
+                //    {
+
+                //    }
+
+                //}
+
+                //prj.ExportProjectTexts(new FileInfo(@"C:\Users\Guilherme.Geske\Desktop\test\ProjectTexts.xlsx"), new CultureInfo("en-US"), new CultureInfo("de-DE"));
+
+            }
+
+
+            public override void ExportSystemBlocks()
+            {
+
+                foreach (PlcSystemBlockGroup sbSystemGroup in plcSoftware.BlockGroup.SystemBlockGroups)
+                {
+                    foreach (PlcSystemBlockGroup group in sbSystemGroup.Groups)
+                    {
+                        foreach (PlcBlock block in group.Blocks)
+                        {
+                            try
+                            {
+                                block.Export(new FileInfo(string.Format(@"C:\Users\Guilherme.Geske\Desktop\test\{0}\{1}.xml", plcSoftware.Name, block.Name)), ExportOptions.WithDefaults);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
 
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
             public TIAOpennessPlcDatatypeFolder PlcDatatypeFolder { get; set; }

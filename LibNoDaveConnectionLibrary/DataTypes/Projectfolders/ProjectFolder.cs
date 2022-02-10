@@ -96,7 +96,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
         //Only for internal use.
         internal int ID;
 
-        
+        public virtual void ExportSystemBlocks() { }
+        public virtual void ExportTextList() { }
+
         public ProjectFolder()
         {
             SubItems = new List<ProjectFolder>();

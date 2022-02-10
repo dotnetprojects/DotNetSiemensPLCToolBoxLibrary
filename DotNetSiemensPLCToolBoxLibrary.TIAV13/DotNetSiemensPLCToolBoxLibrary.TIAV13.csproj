@@ -22,15 +22,14 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Siemens.Engineering">
-      <HintPath>..\externalDlls\siemens\V13\Siemens.Engineering.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>..\externalDlls\siemens\V16\Siemens.Engineering.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
