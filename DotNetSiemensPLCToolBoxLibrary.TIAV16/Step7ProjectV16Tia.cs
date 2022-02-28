@@ -335,6 +335,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
         public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
+
+
             internal TIAOpennessControllerFolder(Step7ProjectV16 Project, PlcSoftware plcSoftware)
                 : base(Project)
             {
@@ -350,6 +352,44 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
             internal PlcSoftware plcSoftware;
 
+            public override void CompileBlocks()
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("  Compiling started");
+                CompilerResult result;
+
+                var compiler = plcSoftware.GetService<ICompilable>();
+                if (compiler != null)
+                {
+                    result = compiler.Compile();
+                    foreach (CompilerResultMessage message in result.Messages)
+                        PrintMessages(message, "  ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    //Console.WriteLine(result.Messages);
+                }
+                else
+                    throw new ArgumentException("Parameter cannot be compiled.", nameof(plcSoftware));
+            }
+
+
+            public void PrintMessages(CompilerResultMessage message, string tab)
+            {
+                if (message.State == CompilerResultState.Error)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else if (message.State == CompilerResultState.Success)
+                    Console.ForegroundColor = ConsoleColor.Green;
+                else if (message.State == CompilerResultState.Warning)
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                else if (message.State == CompilerResultState.Information)
+                    Console.ForegroundColor = ConsoleColor.Blue;
+
+                string path = "";
+                if (message.Path != null && message.Path != "")
+                    path = message.Path + ": ";
+                Console.WriteLine(tab + path + message.Description);
+                foreach (CompilerResultMessage msg in message.Messages)
+                    PrintMessages(msg, tab + "  ");
+            }
 
             public override void ExportTextList()
             {
@@ -390,6 +430,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     }
                 }
             }
+
 
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
             public TIAOpennessPlcDatatypeFolder PlcDatatypeFolder { get; set; }
@@ -486,7 +527,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     if (q != null)
                         tags = q.TagTables;
                     var retVal = new List<ITIAVarTab>();
-                    
+
                     foreach (var tagList in tags)
                     {
                         var info = new TIAOpennessTagTable() { Name = tagList.Name, PlcTagTable = tagList };
@@ -557,7 +598,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             }
         }
 
-        
+
 
         public class TIAOpennessWatchAndForceTablesFolder : TIAOpennessProjectFolder, ITIAWatchAndForceTablesFolder
         {
@@ -578,7 +619,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 get
                 {
                     var retVal = new List<ITIAWatchTable>();
-                    
+
                     foreach (var wt in group.WatchTables)
                     {
                         var info = new TIAOpennessWatchTable() { Name = wt.Name, PlcWatchTable = wt };
@@ -692,7 +733,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             {
                 if (blkInfo == null)
                     return null;
-                
+
                 var iv = blkInfo as TIAOpennessProjectDataTypeInfo;
                 var text = iv.Export(ExportFormat.Xml);
 
@@ -736,7 +777,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     result = compiler.Compile();
                 else
                     throw new ArgumentException("Parameter cannot be compiled.", nameof(plcBlockGroup));
-           }
+            }
 
             public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
             {
@@ -758,7 +799,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     sourceName = Path.ChangeExtension(sourceName, ".src");
                     var src = col.CreateFromFile(sourceName, file.FullName);
                     try
-                    {                     
+                    {
                         src.GenerateBlocksFromSource();
                     }
                     finally
@@ -839,7 +880,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                 var iv = blkInfo as TIAOpennessProjectBlockInfo;
                 var text = iv.Export(ExportFormat.Xml);
-                  
+
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
@@ -910,17 +951,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                         var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
                         if (target != null && target.Software is PlcSoftware)
                         {
-                            var software =(PlcSoftware)target.Software;
-                                var fld = new TIAOpennessControllerFolder(this, software)
-                                {
-                                    Name = software.Name,
-                                    //TiaPortalItem = software,
-                                    //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                                };
-                                main.SubItems.Add(fld);
+                            var software = (PlcSoftware)target.Software;
+                            var fld = new TIAOpennessControllerFolder(this, software)
+                            {
+                                Name = software.Name,
+                                //TiaPortalItem = software,
+                                //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                            };
+                            main.SubItems.Add(fld);
 
-                                LoadControlerFolderViaOpennessDlls(fld, software);
-                           
+                            LoadControlerFolderViaOpennessDlls(fld, software);
+
                         }
                     }
 
@@ -984,7 +1025,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             LoadSubProgramBlocksFoldersViaOpennessDlls(fld, software.BlockGroup);
 
             var t = (PlcTypeGroup)software.TypeGroup;
-            
+
             var fld2 = new TIAOpennessPlcDatatypeFolder(this, parent, t.Types, t)
             {
                 //TiaPortalItem = controller.ControllerDatatypeFolder,
@@ -1131,18 +1172,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             block.Name = projectBlockInfo.Name;
 
             if (projectBlockInfo is TIAOpennessProjectBlockInfo)
-                block.BlockNumber = ((TIAOpennessProjectBlockInfo) projectBlockInfo).BlockNumber;
+                block.BlockNumber = ((TIAOpennessProjectBlockInfo)projectBlockInfo).BlockNumber;
 
             if (parseType == ParseType.DataType)
                 block.BlockType = DataTypes.PLCBlockType.UDT;
             else if (parseType == ParseType.Programm)
                 block.BlockType = DataTypes.PLCBlockType.DB;
-            
+
             var parameterRoot = ParseTiaDbUdtSections(sections, block, controllerFolder);
 
             block.BlockType = DataTypes.PLCBlockType.DB;
             block.Structure = parameterRoot;
-            
+
             return block;
         }
 

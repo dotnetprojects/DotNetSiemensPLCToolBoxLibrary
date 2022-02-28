@@ -62,7 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
 
             var processes = TiaPortal.GetProcesses().ToArray();
-            var process = processes.First(x => x.ProjectPath!=null && x.ProjectPath.FullName == file);
+            var process = processes.First(x => x.ProjectPath != null && x.ProjectPath.FullName == file);
             tiaPortal = process.Attach();
             tiapProject = tiaPortal.Projects[0];
             this.ProjectFile = process.ProjectPath.ToString();
@@ -76,15 +76,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             var processes = TiaPortal.GetProcesses().ToArray();
             var sLst = processes.Select(x => "Projekt : " + (x.ProjectPath != null ? x.ProjectPath.ToString() : "-")).ToArray();
             AppDomain domain = AppDomain.CreateDomain("another domain");
-            CrossAppDomainDelegate action = () =>  
-            {  
+            CrossAppDomainDelegate action = () =>
+            {
                 var app = new Application();
                 var ask = new SelectPortalInstance();
                 var p = AppDomain.CurrentDomain.GetData("processes") as string[];
                 ask.lstInstances.ItemsSource = p;
                 app.Run(ask);
                 AppDomain.CurrentDomain.SetData("idx", ask.lstInstances.SelectedIndex);
-            };  
+            };
             domain.SetData("processes", sLst);
             domain.DoCallBack(action);
             var idx = (int)domain.GetData("idx");
@@ -119,7 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 if (string.IsNullOrEmpty(ProjectFile))
                     ProjectFile = _ziphelper.GetFirstZipEntryWithEnding(".al16");
                 if (string.IsNullOrEmpty(projectfile))
-                    throw new Exception("Zip-File contains no valid TIA Project !");                
+                    throw new Exception("Zip-File contains no valid TIA Project !");
             }
 
             try
@@ -134,7 +134,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                     var nd = xmlDoc.SelectSingleNode("x:Data", nsmgr);
                     this.ProjectName = nd.Attributes["Name"].Value;
-                }                
+                }
             }
             catch (Exception)
             { }
