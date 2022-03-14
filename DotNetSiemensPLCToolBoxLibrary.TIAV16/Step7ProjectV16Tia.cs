@@ -391,21 +391,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     PrintMessages(msg, tab + "  ");
             }
 
-            public override void ExportTextList()
+            public void ExportTextList(string path)
             {
                 Siemens.Engineering.Project prj = (Siemens.Engineering.Project)plcSoftware.Parent.Parent.Parent.Parent;
 
-                //foreach (Device device in prj.Devices)
-                //{
-                //    foreach (DeviceItem item in device.Items)
-                //    {
-
-                //    }
-
-                //}
-
-                //prj.ExportProjectTexts(new FileInfo(@"C:\Users\Guilherme.Geske\Desktop\test\ProjectTexts.xlsx"), new CultureInfo("en-US"), new CultureInfo("de-DE"));
-
+                prj.ExportProjectTexts(new FileInfo(@path), new CultureInfo("en-US"), new CultureInfo("de-DE"));
             }
 
 
