@@ -393,7 +393,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
             public void ExportTextList(string path)
             {
-                Siemens.Engineering.Project prj = (Siemens.Engineering.Project)plcSoftware.Parent.Parent.Parent.Parent;
+                Siemens.Engineering.Project prj;
+                var parent = plcSoftware.Parent.Parent.Parent.Parent;
+                if (parent is Siemens.Engineering.HW.DeviceUserGroup)
+                    prj = (Siemens.Engineering.Project)parent.Parent;
+                else
+                    prj = (Siemens.Engineering.Project)parent;
+
 
                 prj.ExportProjectTexts(new FileInfo(@path), new CultureInfo("en-US"), new CultureInfo("de-DE"));
             }
@@ -980,6 +986,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                     //    //LoadControlerFolderViaOpennessDlls(fld, controller);
                     //}
+                }
+            }
+
+            foreach (var group in tiapProject.DeviceGroups)
+            {
+                foreach (var d in group.Devices)
+                {
+                    if (d.TypeIdentifier != null && d.TypeIdentifier.EndsWith(".S71500"))
+                    {
+                        foreach (DeviceItem deviceItem in d.DeviceItems)
+                        {
+                            var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
+                            if (target != null && target.Software is PlcSoftware)
+                            {
+                                var software = (PlcSoftware)target.Software;
+                                var fld = new TIAOpennessControllerFolder(this, software)
+                                {
+                                    Name = software.Name,
+                                    //TiaPortalItem = software,
+                                    //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                                };
+                                main.SubItems.Add(fld);
+
+                                LoadControlerFolderViaOpennessDlls(fld, software);
+
+                            }
+                        }
+                    }
                 }
             }
         }
