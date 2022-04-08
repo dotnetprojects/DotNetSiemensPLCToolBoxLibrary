@@ -50,6 +50,7 @@ using Microsoft.Win32;
 using ThreadState = System.Threading.ThreadState;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Text;
 
 /*
  * Todo: List Online Partners
@@ -165,6 +166,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private Func<int, string> _errorCodeConverter;
 
         private FetchWriteConnection _fetchWriteConnection;
+
+        public bool VerboseLogging { get; set; }
 
         private async Task ConnectAsync(TimeSpan connectTimeout)
         {
@@ -2808,11 +2811,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     if (maxReadSize > 208 && readTagList.First() is PLCNckTag && ((PLCNckTag)readTagList.First()).NckArea == NCK_Area.AreaFeedDrive)
                         maxReadSize = 208;
 
-                    //int maxReadVar = maxReadSize / 12; //12 Header Größe Variablenanfrage
-
-                    List<int> readenSizes = new List<int>(50);
-                    List<bool> usedShortRequest = new List<bool>(50);
-                    List<bool> tagWasSplitted = new List<bool>(50);
+                    int maxReadVar = (maxReadSize / (this.Configuration.UseShortDataBlockRequest ? 7 : 12)) + 1; //12 Header Größe Variablenanfrage
+                    List<int> readenSizes = new List<int>(maxReadVar);
+                    List<bool> usedShortRequest = new List<bool>(maxReadVar);
+                    List<bool> tagWasSplitted = new List<bool>(maxReadVar);
                     //normaly on a 400 CPU, max 38 Tags fit into a PDU, so this List as a Start would be enough
                     //With Short Request this could be a little more so we use 50
 
@@ -2832,7 +2834,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     Monitor.Enter(lockObj, ref lockObtained);
                     var myPDU = _dc.prepareReadRequest();
 
-                    var currentRead = new List<string>();
+                    var currentRead = new StringBuilder();
 
                     foreach (var libNoDaveValue in readTagList)
                     {
@@ -2895,13 +2897,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     {
                                         usedShortRequest.Add(true);
                                         lastRequestWasAUnevenRequest = true;
-                                        currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        if (VerboseLogging)
+                                            currentRead.AppendFormat("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                                         myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
                                     else
                                     {
                                         usedShortRequest.Add(false);
-                                        currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                                        if (VerboseLogging)
+                                            currentRead.AppendFormat("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                                         myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, restBytes);
                                     }
 
@@ -2934,7 +2938,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (AutoDisconnect && (res == -1025 || res == -128))
                             {
                                 if (Logger != null)
-                                    Logger("(2) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
+                                {
+                                    var details = Environment.NewLine + Environment.NewLine + "AnzVar " +
+                                                   anzVar.ToString() + "; " +
+                                                   Environment.NewLine;
+
+                                    details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
+                                    details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
+                                    details += Environment.NewLine + Environment.NewLine +
+                                               currentRead.ToString() + Environment.NewLine +
+                                               Environment.NewLine;
+
+                                    Logger("(2) Auto Disconnect cause of :" + libnodave.daveStrerror(res) + details);
+                                }
                                 this.autoDisconnect();
                                 return;
                             }
@@ -2961,7 +2977,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
                                     details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
                                     details += Environment.NewLine + Environment.NewLine +
-                                               string.Join(Environment.NewLine, currentRead) + Environment.NewLine +
+                                               currentRead.ToString() + Environment.NewLine +
                                                Environment.NewLine;
 
                                     throw new PLCException("Error (2): " + _errorCodeConverter(res) + details, res);
@@ -2992,7 +3008,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                             //rs = null;
                             //myPDU = null;
-                            currentRead = new List<string>();
+                            if (currentRead.Length > 0)
+                                currentRead.Clear();
                             anzVar = 0;
                             gesAskSize = 0;
                             Monitor.Enter(lockObj, ref lockObtained);
@@ -3037,14 +3054,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             usedShortRequest.Add(true);
                             tagWasSplitted.Add(false);
                             lastRequestWasAUnevenRequest = true;
-                            currentRead.Add(string.Format("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            if (VerboseLogging)
+                                currentRead.AppendFormat("shortDbRequest, db:{0}, byte:{1}, size{2}", libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                             myPDU.addDbRead400ToReadRequest(libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                         else
                         {
                             usedShortRequest.Add(false);
                             tagWasSplitted.Add(false);
-                            currentRead.Add(string.Format("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize));
+                            if (VerboseLogging)
+                                currentRead.AppendFormat("addVarToReadRequest, source:{0}, db:{1}, byte:{2}, size{3}", libNoDaveValue.TagDataSource, libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                             myPDU.addVarToReadRequest(Convert.ToInt32(libNoDaveValue.TagDataSource), libNoDaveValue.DataBlockNumber, akByteAddress, readSize);
                         }
                     }
@@ -3059,7 +3078,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if (AutoDisconnect && (res == -1025 || res == -128))
                         {
                             if (Logger != null)
-                                Logger("(3) Auto Disconnect cause of :" + libnodave.daveStrerror(res));
+                            {
+                                var details = Environment.NewLine + Environment.NewLine + "AnzVar " +
+                                                   anzVar.ToString() + "; " +
+                                                   Environment.NewLine;
+
+                                details += "variables " + string.Join(";", readTagList.Select(x => x.ValueName ?? "")) + Environment.NewLine;
+                                details += "readsizes " + string.Join(";", readenSizes) + Environment.NewLine;
+                                details += "usedShortRequest " + string.Join(";", usedShortRequest) + Environment.NewLine;
+
+                                Logger("(3) Auto Disconnect cause of :" + libnodave.daveStrerror(res) + details);
+                            }
                             this.autoDisconnect();
                             return;
                         }
