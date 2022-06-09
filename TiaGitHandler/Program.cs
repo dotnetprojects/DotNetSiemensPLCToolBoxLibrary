@@ -326,6 +326,8 @@ namespace TiaGitHandler
                             XmlNamespaceManager ns = new XmlNamespaceManager(xmlDoc.NameTable);
                             ns.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
                             ns.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
+                            ns.AddNamespace("smns3", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StatementList/v3");
+                            ns.AddNamespace("smns4", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v2");
 
                             try
                             {
@@ -428,9 +430,34 @@ namespace TiaGitHandler
                                 catch
                                 {
                                 }
+
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns3:DateAttribute[@Name='ParameterModifiedTS']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns4:DateAttribute[@Name='ParameterModifiedTS']", ns);
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
                                         node.ParentNode.RemoveChild(node);
@@ -568,6 +595,8 @@ namespace TiaGitHandler
                                 XmlNamespaceManager ns2 = new XmlNamespaceManager(xmlDoc2.NameTable);
                                 ns2.AddNamespace("smns", "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v3");
                                 ns2.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
+                                ns2.AddNamespace("smns3", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StatementList/v3");
+                                ns2.AddNamespace("smns4", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v2");
 
                                 try
                                 {
@@ -713,6 +742,30 @@ namespace TiaGitHandler
                                     try
                                     {
                                         var nodes = xmlDoc2.SelectNodes("//smns:DateAttribute[@Name='ParameterModifiedTS']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns3:DateAttribute[@Name='ParameterModifiedTS']", ns2);
+                                        foreach (var node in nodes.Cast<XmlNode>())
+                                        {
+                                            node.ParentNode.RemoveChild(node);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+
+                                    try
+                                    {
+                                        var nodes = xmlDoc2.SelectNodes("//smns4:DateAttribute[@Name='ParameterModifiedTS']", ns2);
                                         foreach (var node in nodes.Cast<XmlNode>())
                                         {
                                             node.ParentNode.RemoveChild(node);
