@@ -1,0 +1,8 @@
+GSD Files im Step 7 Projekt:
+
+ h0mSave7\s7hstatx\HATTREME1.DBT
+ in Spalte
+ MEMOARRAYM
+
+ infos:
+ https://www.sps-forum.de/threads/ordnerstruktur-s7-projekt.23737/page-3#post-847472

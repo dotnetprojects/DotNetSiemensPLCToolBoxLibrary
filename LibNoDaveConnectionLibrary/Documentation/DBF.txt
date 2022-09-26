@@ -1,0 +1,3 @@
+Infos zum DBF Format
+
+http://independent-software.com/dbase-dbf-dbt-file-format.html
