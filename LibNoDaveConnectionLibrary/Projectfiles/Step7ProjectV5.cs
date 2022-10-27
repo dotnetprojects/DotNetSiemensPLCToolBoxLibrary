@@ -187,7 +187,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 hasChanges = false;
                 //ZipHelper.SaveZip(_zipfile);
             }
-            _ziphelper.Close();
+            if (_ziphelper != null)
+                _ziphelper.Close();
         }
 
         /*

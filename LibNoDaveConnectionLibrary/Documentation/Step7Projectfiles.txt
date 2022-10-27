@@ -8,6 +8,7 @@ GLOBAL		=
 Hmies		= wincc flexible Projekte
 Homsave7	= hardwareconfig
 				Homsave7\s7hstatx\hobject1.dbf  Stationen
+				h0mSave7\s7hstatx\HATTREME1.DBF - GSD files
 hrs			= Programmaufbau?
 				hrs\S7RESOFF.DBF: (s7 Programmordner)
 				hrs\GNRESOFF.DBF: (Programmordner der CP’s)
