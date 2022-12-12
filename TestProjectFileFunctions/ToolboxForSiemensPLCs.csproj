@@ -2,12 +2,11 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net481</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>    
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV13\DotNetSiemensPLCToolBoxLibrary.TIAV13.csproj" />
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1\DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.csproj" />
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15\DotNetSiemensPLCToolBoxLibrary.TIAV15.csproj" />
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj" />

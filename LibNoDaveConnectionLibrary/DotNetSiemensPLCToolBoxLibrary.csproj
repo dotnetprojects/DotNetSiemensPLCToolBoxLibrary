@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netstandard2.1;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net481</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>SHARPZIPLIB</DefineConstants>

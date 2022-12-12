@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net5</TargetFrameworks>    
+    <TargetFrameworks>net7</TargetFrameworks>    
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
