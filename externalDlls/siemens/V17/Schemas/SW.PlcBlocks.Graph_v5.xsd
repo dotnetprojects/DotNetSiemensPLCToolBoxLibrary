@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.Access_v4.xsd"/>
+	<xs:include schemaLocation="SW.PlcBlocks.LADFBD_v4.xsd"/>
+	<xs:complexType name="Action_T">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="Access"/>
+			<xs:element ref="Token"/>
+			<xs:group ref="Comment_G" minOccurs="0"/>
+		</xs:choice>
+		<xs:attribute name="Event" type="Event_TE"/>
+		<xs:attribute name="Interlock" type="xs:boolean"/>
+		<xs:attribute name="Qualifier" type="Qualifier_TE"/>
+	</xs:complexType>
+	<xs:simpleType name="Event_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="A1"/>
+			<xs:enumeration value="L0"/>
+			<xs:enumeration value="L1"/>
+			<xs:enumeration value="R1"/>
+			<xs:enumeration value="S0"/>
+			<xs:enumeration value="S1"/>
+			<xs:enumeration value="V0"/>
+			<xs:enumeration value="V1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Qualifier_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="CD"/>
+			<xs:enumeration value="CR"/>
+			<xs:enumeration value="CS"/>
+			<xs:enumeration value="CU"/>
+			<xs:enumeration value="D"/>
+			<xs:enumeration value="L"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="ON"/>
+			<xs:enumeration value="OFF"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="TD"/>
+			<xs:enumeration value="TF"/>
+			<xs:enumeration value="TL"/>
+			<xs:enumeration value="TR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Actions" type="Actions_T"/>
+	<xs:complexType name="Actions_T">
+		<xs:sequence>
+			<xs:element ref="Title" minOccurs="0"/>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Action"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlarmSupportingLanguageModule_T">
+		<xs:sequence>
+			<xs:element ref="Title" minOccurs="0"/>
+			<xs:element ref="AlarmText" minOccurs="0"/>
+			<xs:element ref="FlgNet"/>
+		</xs:sequence>
+		<xs:attribute name="ProgrammingLanguage" type="ProgrammingLanguage_TE" use="required"/>
+	</xs:complexType>
+	<xs:element name="AlarmText" type="AlarmText_T"/>
+	<xs:complexType name="AlarmText_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:documentation>Temporary change for enable of empty alarm text because of the graph alarm handling reconstruction.</xs:documentation>
+			</xs:annotation>
+			<xs:element ref="MultiLanguageText"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Branch_T">
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+		<xs:attribute name="Type" type="Branch_TE" use="required"/>
+		<xs:attribute name="Cardinality" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="Branch_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SimBegin"/>
+			<xs:enumeration value="SimEnd"/>
+			<xs:enumeration value="AltBegin"/>
+			<xs:enumeration value="AltEnd"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Branches" type="Branches_T"/>
+	<xs:complexType name="Branches_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="Branch"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="BranchRef" type="BranchRef_T"/>
+	<xs:complexType name="BranchRef_T">
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+		<xs:attribute name="In" type="xs:int"/>
+		<xs:attribute name="Out" type="xs:int"/>
+	</xs:complexType>
+	<xs:element name="Connection" type="Connection_T"/>
+	<xs:complexType name="Connection_T">
+		<xs:sequence>
+			<xs:element ref="NodeFrom"/>
+			<xs:element ref="NodeTo"/>
+			<xs:element ref="LinkType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EndConnection"/>
+	<xs:element name="Graph" type="Graph_T"/>
+	<xs:complexType name="AlarmsSettings_T">
+		<xs:sequence>
+			<xs:element ref="AlarmSupervisionCategories"/>
+			<xs:element ref="AlarmInterlockCategory"/>
+      <xs:element ref="AlarmSubcategory1Interlock"/>
+      <xs:element ref="AlarmSubcategory2Interlock"/>
+      <xs:element ref="AlarmCategorySupervision"/>
+      <xs:element ref="AlarmSubcategory1Supervision"/>
+      <xs:element ref="AlarmSubcategory2Supervision"/>
+      <xs:element ref="AlarmWarningCategory"/>
+      <xs:element ref="AlarmSubcategory1Warning"/>
+      <xs:element ref="AlarmSubcategory2Warning"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AlarmsSettings" type="AlarmsSettings_T"/>
+	<xs:complexType name="Graph_T">
+		<xs:sequence>
+			<xs:element ref="PreOperations"/>
+			<xs:element ref="Sequence" maxOccurs="unbounded"/>
+			<xs:element ref="PostOperations"/>
+			<xs:element ref="AlarmsSettings"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="IdentRef" type="IdentRef_T"/>
+	<xs:complexType name="IdentRef_T">
+		<xs:sequence>
+			<xs:element ref="Comment" minOccurs="0"/>
+			<xs:element ref="ViewInfo" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="PartAttribute_G"/>
+	</xs:complexType>
+	<xs:element name="Interlock" type="AlarmSupportingLanguageModule_T"/>
+	<xs:element name="Interlocks" type="Interlocks_T"/>
+	<xs:complexType name="Interlocks_T">
+		<xs:sequence>
+			<xs:element ref="Interlock"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Link_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Direct"/>
+			<xs:enumeration value="Jump"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Node_T">
+		<xs:choice>
+			<xs:element ref="StepRef"/>
+			<xs:element ref="TransitionRef"/>
+			<xs:element ref="BranchRef"/>
+			<xs:element ref="EndConnection"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="NodeFrom" type="Node_T"/>
+	<xs:element name="NodeTo" type="Node_T"/>
+	<xs:element name="LinkType" type="Link_TE"/>
+	<xs:element name="PermanentOperation" type="PermanentOperation_T"/>
+	<xs:complexType name="PermanentOperation_T">
+		<xs:sequence>
+			<xs:element ref="Title" minOccurs="0"/>
+			<xs:element ref="FlgNet" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="ProgrammingLanguage" type="ProgrammingLanguage_TE" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="PermanentOperations_T">
+		<xs:sequence>
+			<xs:element ref="Title" minOccurs="0"/>
+			<xs:element ref="Comment" minOccurs="0"/>
+			<xs:element ref="PermanentOperation" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PostOperations" type="PermanentOperations_T"/>
+	<xs:element name="PreOperations" type="PermanentOperations_T"/>
+	<xs:simpleType name="ProgrammingContext_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Plain"/>
+			<xs:enumeration value="GraphTransition"/>
+			<xs:enumeration value="GraphSupervision"/>
+			<xs:enumeration value="GraphInterlock"/>
+			<xs:enumeration value="GraphActions"/>
+			<xs:enumeration value="PreOperation"/>
+			<xs:enumeration value="PostOperation"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProgrammingLanguage_TE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="STL"/>
+			<xs:enumeration value="FBD"/>
+			<xs:enumeration value="LAD"/>
+			<xs:enumeration value="FBD_IEC"/>
+			<xs:enumeration value="LAD_IEC"/>
+			<xs:enumeration value="GRAPH"/>
+			<xs:enumeration value="DB"/>
+			<xs:enumeration value="SDB"/>
+			<xs:enumeration value="DB_CPU"/>
+			<xs:enumeration value="FB_IDB"/>
+			<xs:enumeration value="SFB_IDB"/>
+			<xs:enumeration value="DT_DB"/>
+			<xs:enumeration value="SCL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Sequence" type="Sequence_T"/>
+	<xs:complexType name="Sequence_T">
+		<xs:sequence>
+			<xs:element ref="Title" minOccurs="0"/>
+			<xs:element ref="Comment" minOccurs="0"/>
+			<xs:element ref="Steps"/>
+			<xs:element ref="Transitions"/>
+			<xs:element ref="Branches"/>
+			<xs:element ref="Connections"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Step">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="Step_T"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Step_T">
+		<xs:sequence>
+			<xs:element ref="StepName" minOccurs="0"/>
+			<xs:element ref="Comment" minOccurs="0"/>
+			<xs:element ref="Actions"/>
+			<xs:element ref="Supervisions"/>
+			<xs:element ref="Interlocks"/>
+		</xs:sequence>
+		<xs:attribute name="IsMissing" type="xs:boolean" default="false"/>
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+		<xs:attribute name="Init" type="xs:boolean" default="false"/>
+		<xs:attribute name="Name" use="required"/>
+		<xs:attribute name="MaximumStepTime" type="xs:string" use="optional"/>
+		<xs:attribute name="WarningTime" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="StepRef" type="StepRef_T"/>
+	<xs:complexType name="StepRef_T">
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:element name="Steps" type="Steps_T"/>
+	<xs:complexType name="Steps_T">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="Step"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Connections" type="Connections_T"/>
+	<xs:complexType name="Connections_T">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="Connection"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Supervision" type="AlarmSupportingLanguageModule_T"/>
+	<xs:element name="Supervisions" type="Supervisions_T"/>
+	<xs:complexType name="Supervisions_T">
+		<xs:sequence>
+			<xs:element ref="Supervision"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Title" type="Comment_T"/>  
+	<xs:complexType name="Transition_T">
+		<xs:sequence>
+			<xs:element ref="TransitionName" minOccurs="0"/>
+			<xs:element ref="Comment" minOccurs="0"/>
+			<xs:element ref="FlgNet"/>
+		</xs:sequence>
+		<xs:attribute name="IsMissing" type="xs:boolean" default="false"/>
+		<xs:attribute name="Name" use="required"/>
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+		<xs:attribute name="ProgrammingLanguage" type="ProgrammingLanguage_TE" use="required"/>
+	</xs:complexType>
+	<xs:element name="TransitionRef" type="TransitionRef_T"/>
+	<xs:complexType name="TransitionRef_T">
+		<xs:attribute name="Number" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:element name="Transitions" type="Transitions_T"/>
+	<xs:complexType name="Transitions_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="Transition"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Action" type="Action_T"/>
+	<xs:element name="Transition" type="Transition_T"/>
+	<xs:element name="Branch" type="Branch_T"/>
+	<xs:element name="AlarmSupervisionCategories" type="AlarmSupervisionCategories_T"/>
+	<xs:complexType name="AlarmSupervisionCategories_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="AlarmSupervisionCategory"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AlarmSupervisionCategory" type="AlarmSupervisionCategory_T"/>
+	<xs:complexType name="AlarmSupervisionCategory_T">
+		<xs:sequence>
+			<xs:element ref="Token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Enabler token</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:unsignedShort" use="required"/>
+		<xs:attribute name="DisplayClass" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedShort">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="16"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="AlarmInterlockCategory" type="AlarmCategory_T"/>
+  <xs:element name="AlarmSubcategory1Interlock" type="AlarmSubcategory_T"/>
+  <xs:element name="AlarmSubcategory2Interlock" type="AlarmSubcategory_T"/>
+  <xs:element name="AlarmCategorySupervision" type="AlarmCategory_T"/>
+  <xs:element name="AlarmSubcategory1Supervision" type="AlarmSubcategory_T"/>
+  <xs:element name="AlarmSubcategory2Supervision" type="AlarmSubcategory_T"/>
+  <xs:element name="AlarmWarningCategory" type="AlarmCategory_T"/>
+  <xs:element name="AlarmSubcategory1Warning" type="AlarmSubcategory_T"/>
+  <xs:element name="AlarmSubcategory2Warning" type="AlarmSubcategory_T"/>
+  <xs:complexType name="AlarmCategory_T">
+		<xs:attribute name="Id" type="xs:unsignedShort" use="required"/>
+	</xs:complexType>
+	<xs:element name="TransitionName" type="TransitionName_T"/>
+	<xs:complexType name="TransitionName_T">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>For translated transiton names</xs:documentation>
+			</xs:annotation>
+			<xs:element ref="MultiLanguageText" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="StepName" type="StepName_T"/>
+	<xs:complexType name="StepName_T">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>For translated step names</xs:documentation>
+			</xs:annotation>
+			<xs:element ref="MultiLanguageText" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlarmSubcategory_T">
+		<xs:attribute name="Id" type="xs:unsignedShort" use="required"/>
+	</xs:complexType>  	
+</xs:schema>

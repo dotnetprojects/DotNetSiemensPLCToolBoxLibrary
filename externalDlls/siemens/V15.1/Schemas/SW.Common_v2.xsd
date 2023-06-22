@@ -32,7 +32,7 @@
             <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SystemDefined" type="xs:boolean" default="false">
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
           <xs:annotation>
             <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
           </xs:annotation>
@@ -90,7 +90,7 @@
             <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SystemDefined" type="xs:boolean" default="false">
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
           <xs:annotation>
             <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
           </xs:annotation>
@@ -121,7 +121,7 @@
             <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SystemDefined" type="xs:boolean" default="false">
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
           <xs:annotation>
             <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
           </xs:annotation>
@@ -189,7 +189,7 @@
             <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SystemDefined" type="xs:boolean" default="false">
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
           <xs:annotation>
             <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
           </xs:annotation>
@@ -231,7 +231,7 @@
             <xs:documentation>Exported only with ReadOnly option, ignored during import.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SystemDefined" type="xs:boolean" default="false">
+        <xs:attribute name="SystemDefined" type="xs:boolean" default="true">
           <xs:annotation>
             <xs:documentation>An attribute of attribute, denotes if it is defined by a user or the system itself. In V14, if exists it is always true.</xs:documentation>
           </xs:annotation>

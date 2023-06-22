@@ -63,7 +63,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         {
             get
             {
-                if (ParentFolder != null)
+                if (ParentFolder != null && ParentFolder.Parent != null)
                 {
                     return ((IProgrammFolder)ParentFolder.Parent).SymbolTable;                    
                 }

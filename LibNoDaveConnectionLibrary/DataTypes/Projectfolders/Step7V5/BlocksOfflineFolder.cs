@@ -690,6 +690,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                 }
                                                 akRowInAwlCode++;
                                             }
+                                            if (akRowInAwlCode > retVal.AWLCode.Count - 1) 
+                                            { 
+                                                akRowInAwlCode = retVal.AWLCode.Count - 1; 
+                                            } 
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).Comment = tx2;
                                             newAwlCode.Add(retVal.AWLCode[akRowInAwlCode]);

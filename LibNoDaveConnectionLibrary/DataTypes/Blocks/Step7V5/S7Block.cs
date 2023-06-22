@@ -158,7 +158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         {
             get
             {
-                if (ParentFolder != null)
+                if (ParentFolder != null && ParentFolder.Parent != null)
                 {
                     ISymbolTable tmp = ((IProgrammFolder)ParentFolder.Parent).SymbolTable;
                     if (tmp != null)

@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net481</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup>

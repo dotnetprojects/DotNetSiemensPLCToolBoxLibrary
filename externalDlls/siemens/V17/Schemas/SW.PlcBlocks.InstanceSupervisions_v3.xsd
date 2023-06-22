@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--	<xs:include schemaLocation="SW.Common_v3.xsd"/>-->
+	<xs:element name="SupervisionFB">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="StateStruct">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Number" type="xs:int"/>
+	<xs:element name="Multiinstance">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BlockTypeSupervisionNumber" type="xs:int"/>
+	<xs:element name="BlockInstSupervisionGroups" type="BlockInstSupervisionGroupsType"/>
+	<xs:element name="BlockInstSupervisionGroup">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Multiinstance" minOccurs="0"/>
+				<xs:element ref="BlockInstSupervision" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BlockInstSupervision">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Number"/>
+				<xs:element ref="StateStruct"/>
+				<xs:element ref="BlockTypeSupervisionNumber"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BlockInstSupervisionGroupsType">
+		<xs:sequence>
+			<xs:element ref="BlockInstSupervisionGroup" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
