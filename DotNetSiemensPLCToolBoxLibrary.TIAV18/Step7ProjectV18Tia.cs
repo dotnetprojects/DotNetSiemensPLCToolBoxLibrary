@@ -22,6 +22,8 @@ using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 using System.Globalization;
+using Siemens.Engineering.SW.Alarm;
+using Siemens.Engineering.SW.Supervision;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
 {
@@ -361,11 +363,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                 var compiler = plcSoftware.GetService<ICompilable>();
                 if (compiler != null)
                 {
-                    result = compiler.Compile();
-                    foreach (CompilerResultMessage message in result.Messages)
-                        PrintMessages(message, "  ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    //Console.WriteLine(result.Messages);
+                    try
+                    {
+                        result = compiler.Compile();
+                        foreach (CompilerResultMessage message in result.Messages)
+                            PrintMessages(message, "  ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        //Console.WriteLine(result.Messages);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
                 else
                     throw new ArgumentException("Parameter cannot be compiled.", nameof(plcSoftware));
@@ -391,6 +400,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                     PrintMessages(msg, tab + "  ");
             }
 
+
             public void ExportTextList(string path)
             {
                 Siemens.Engineering.Project prj;
@@ -400,8 +410,32 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                 else
                     prj = (Siemens.Engineering.Project)parent;
 
-
                 prj.ExportProjectTexts(new FileInfo(@path), new CultureInfo("en-US"), new CultureInfo("de-DE"));
+            }
+
+
+            public void ExportAlarmText(string path)
+            {
+                FileInfo fileInfo = new FileInfo(path);
+                PlcAlarmTextListProvider textListProvider = plcSoftware.GetService<PlcAlarmTextListProvider>();
+                textListProvider.ExportToXlsx(fileInfo);
+            }
+
+
+            public void ExportAlarmInstance(string path)
+            {
+                FileInfo fileInfo = new FileInfo(path);
+                List<Language> cultureInfos = new List<Language>();
+                PlcAlarmTextProvider alarmTextsProvider = plcSoftware.GetService<PlcAlarmTextProvider>();
+                alarmTextsProvider.ExportInstanceTextsToXlsx(fileInfo, cultureInfos, PlcAlarmTextXlsxExportOption.All);
+            }
+
+
+            public void ExportSupervisions(string path)
+            {
+                FileInfo fileInfo = new FileInfo(path);
+                SupervisionProvider supervisionProvider = plcSoftware.GetService<SupervisionProvider>();
+                supervisionProvider.ExportSupervisionsToXlsx(fileInfo);
             }
 
 
