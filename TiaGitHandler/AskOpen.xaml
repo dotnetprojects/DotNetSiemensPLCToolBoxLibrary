@@ -20,5 +20,6 @@
             <RadioButton GroupName="TiaBug" x:Name="rbRemoveAllBlanks" Content="Remove all blanks" IsChecked="True" Margin="10,0,0,0" />
             <RadioButton GroupName="TiaBug" x:Name="rbRemoveNoBlanks" Content="Remove no blanks" Margin="10,0,0,0"/>
         </StackPanel>
+        <Button Content="Anhängen V17" HorizontalAlignment="Left" Margin="188,88,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV17_Click"/>
     </Grid>
 </Window>
