@@ -9,6 +9,7 @@
         Tia15,
         Tia15_1,
         Tia16,
-        Tia17
+        Tia17,
+        Tia18
     }
 }

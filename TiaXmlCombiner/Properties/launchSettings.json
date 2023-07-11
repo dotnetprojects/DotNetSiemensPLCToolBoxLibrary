@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TiaImporter": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\csharp\\git\\conveyorsystem\\Programme_Parameter\\_Build\\S7\\MlogConveyorSystem\\Export\\Main\\PLC_1\\software\" \"D:\\Automation\\newexport\\Main\\PLC_1\\software\""
+    }
+  }
+}

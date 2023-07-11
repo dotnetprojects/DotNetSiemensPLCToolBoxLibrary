@@ -2,7 +2,7 @@
   <PropertyGroup><GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks></PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -23,9 +23,6 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <Page Include="SelectPortalInstance.xaml" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
@@ -34,10 +31,14 @@
   <ItemGroup>
     <Reference Include="Siemens.Engineering">
       <HintPath>..\externalDlls\siemens\V17\Siemens.Engineering.dll</HintPath>
-    </Reference>
+	  <Private>false</Private>
+	  <SpecificVersion>false</SpecificVersion>
+	</Reference>
     <Reference Include="Siemens.Engineering.Hmi">
       <HintPath>..\externalDlls\siemens\V17\Siemens.Engineering.Hmi.dll</HintPath>
-    </Reference>
+	  <Private>false</Private>
+	  <SpecificVersion>false</SpecificVersion>
+	</Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

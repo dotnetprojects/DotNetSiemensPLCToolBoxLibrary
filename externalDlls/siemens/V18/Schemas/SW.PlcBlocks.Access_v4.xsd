@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="SW.Common_v3.xsd"/>
+  <xs:element name="AbsoluteOffset" type="AbsoluteOffset_T"/>
+  <xs:complexType name="AbsoluteOffset_T">
+    <xs:attribute name="BitOffset" type="xs:int" use="required">
+      <xs:annotation>
+        <xs:documentation>Byte * 8 + Bit</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Type" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:element name="Access" type="Access_T"/>
+  <xs:group name="Access_G">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="Access"/>
+        <xs:element ref="Token"/>
+        <xs:group ref="Comment_G"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Access_T">
+    <xs:sequence>
+      <xs:element ref="IntegerAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>for NumBLs. NumBLs is informative. Not for LAD/FBD.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:element ref="Label"/>
+        <xs:element ref="Constant"/>
+        <xs:element ref="CallInfo">
+          <xs:annotation>
+            <xs:documentation>call of a user block. Not in Graph ActionList.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Instruction">
+          <xs:annotation>
+            <xs:documentation>call of an instruction. Not for LAD/FBD, Graph ActionList.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Indirect">
+          <xs:annotation>
+            <xs:documentation>STL specific</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Statusword"/>
+        <xs:element ref="PredefinedVariable">
+          <xs:annotation>
+            <xs:documentation>Only in SCL</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Expression">
+          <xs:annotation>
+            <xs:documentation>SCL specific</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Symbol"/>
+        <xs:element ref="Address">
+          <xs:annotation>
+            <xs:documentation>for absolute addresses</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="DataType"/>
+        <xs:element ref="Reference"/>
+      </xs:choice>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="Scope" use="required">
+      <xs:simpleType>
+        <xs:restriction base="Scope_TE"/>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="UId" type="xs:int" use="optional">
+      <xs:annotation>
+        <xs:documentation>Not allowed in STL</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:simpleType name="AccessModifier_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Array"/>
+      <xs:enumeration value="Reference"/>
+      <xs:enumeration value="ReferenceToArray"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Address" type="Address_T"/>
+  <xs:complexType name="Address_T">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="BooleanAttribute"/>
+    </xs:choice>
+    <xs:attribute name="Area" type="Area_TE" use="required"/>
+    <xs:attribute name="Type" type="SimaticName_TP" use="optional"/>
+    <xs:attribute name="BlockNumber" type="xs:int" use="optional">
+      <xs:annotation>
+        <xs:documentation>for DB access</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="BitOffset" type="xs:int" use="optional">
+      <xs:annotation>
+        <xs:documentation>In general it is Byte * 8 + Bit. But if it is used for addressing a DB we will find the number of the DB here (e.g. "DB12" ->12).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Informative" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>if true, the import unnoted it</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:simpleType name="Area_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="PeripheryInput"/>
+      <xs:enumeration value="PeripheryOutput"/>
+      <xs:enumeration value="Input"/>
+      <xs:enumeration value="Output"/>
+      <xs:enumeration value="Memory"/>
+      <xs:enumeration value="FB"/>
+      <xs:enumeration value="FC"/>
+      <xs:enumeration value="DB">
+        <xs:annotation>
+          <xs:documentation>partly qualified access with DB register</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DI">
+        <xs:annotation>
+          <xs:documentation>partly qualified access with DI register</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Timer"/>
+      <xs:enumeration value="Counter"/>
+      <xs:enumeration value="Local">
+        <xs:annotation>
+          <xs:documentation>Classic Local Stack</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="BlockType_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DB"/>
+      <xs:enumeration value="FB"/>
+      <xs:enumeration value="FC"/>
+      <xs:enumeration value="OB"/>
+      <xs:enumeration value="UDT"/>
+      <xs:enumeration value="FBT"/>
+      <xs:enumeration value="FCT"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CallInfo" type="CallInfo_T"/>
+  <xs:complexType name="CallInfo_T">
+    <xs:annotation>
+      <xs:documentation>Not for LAD/FBD. </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="IntegerAttribute">
+        <xs:annotation>
+          <xs:documentation>for BlockNumber. BlockNumber is informative.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="DateAttribute">
+        <xs:annotation>
+          <xs:documentation>for ParameterModifiedTS. ParameterModifiedTS is informative</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="Instance"/>
+      <xs:element ref="NamelessParameter" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:group ref="Token_G" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="Name" type="SimaticName_TP" use="optional"/>
+    <xs:attribute name="BlockType" type="BlockType_TE" use="required"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="Component" type="Component_T"/>
+  <xs:complexType name="Component_T">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="Comment_G" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>SCL</xs:documentation>
+        </xs:annotation>
+      </xs:group>
+      <xs:element ref="Token" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>SCL</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="Access">
+        <xs:annotation>
+          <xs:documentation>For the indices of an array</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="BooleanAttribute" minOccurs="0"/>
+    </xs:choice>
+    <xs:attribute name="Name" type="xs:string" use="required"/>
+    <xs:attribute name="SliceAccessModifier" type="SliceAccessModifier_TP" default="undef"/>
+    <xs:attribute name="SimpleAccessModifier" type="SimpleAccessModifier_TP" default="None"/>
+    <xs:attribute name="AccessModifier" type="AccessModifier_TE" default="None">
+      <xs:annotation>
+        <xs:documentation>If component has child AccessModifier is Array else AccessModifier is None</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="Constant" type="Constant_T"/>
+  <xs:complexType name="Constant_T">
+    <xs:sequence>
+      <xs:element ref="ConstantType" minOccurs="0"/>
+      <xs:element ref="ConstantValue" minOccurs="0"/>
+      <xs:element ref="StringAttribute" minOccurs="0" maxOccurs="2">
+        <xs:annotation>
+          <xs:documentation>for Format and FormatFlags. They are informative..</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="BooleanAttribute" minOccurs="0" maxOccurs="2"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="SimaticName_TP"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="ConstantType" type="ConstantType_T"/>
+  <xs:complexType name="ConstantType_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Informative" type="xs:boolean" use="optional"/>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="ConstantValue" type="ConstantValue_T"/>
+  <xs:complexType name="ConstantValue_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Informative" type="xs:boolean" use="optional"/>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="Expression" type="Expression_T"/>
+  <xs:complexType name="Expression_T">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element ref="Access"/>
+        <xs:element ref="Token"/>
+      </xs:choice>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="UId" type="xs:int"/>
+  </xs:complexType>
+  <xs:element name="DataType" type="DataType_T"/>
+  <xs:complexType name="DataType_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Informative" type="xs:boolean" use="optional"/>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="Format_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Real"/>
+      <xs:enumeration value="Bin"/>
+      <xs:enumeration value="DecSigned"/>
+      <xs:enumeration value="DecUnsigned"/>
+      <xs:enumeration value="Pointer"/>
+      <xs:enumeration value="CharSequence"/>
+      <xs:enumeration value="DecSequence"/>
+      <xs:enumeration value="Hex"/>
+      <xs:enumeration value="S5Count"/>
+      <xs:enumeration value="Time"/>
+      <xs:enumeration value="Date"/>
+      <xs:enumeration value="TimeOfDay"/>
+      <xs:enumeration value="S5Time"/>
+      <xs:enumeration value="Bool"/>
+      <xs:enumeration value="Oct"/>
+      <xs:enumeration value="Bcd"/>
+      <xs:enumeration value="DateAndTime"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="Any"/>
+      <xs:enumeration value="Number"/>
+      <xs:enumeration value="Char"/>
+      <xs:enumeration value="HexSequence"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FormatFlags_TE">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="None"/>
+      <xs:pattern value="((Lower|Format|Size|Under|Exp|TypeQualifier)(,\s*)?)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Indirect" type="Indirect_T"/>
+  <xs:complexType name="Indirect_T">
+    <xs:sequence minOccurs="0">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Token"/>
+        <xs:group ref="Comment_G"/>
+      </xs:choice>
+      <xs:element ref="Access" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="Width" type="Width_TE" use="required"/>
+    <xs:attribute name="Area" type="Area_TE" use="optional"/>
+    <xs:attribute name="Register" type="Register_TE" use="optional"/>
+    <xs:attribute name="BitOffset" use="optional"/>
+  </xs:complexType>
+  <xs:element name="Instance" type="Instance_T"/>
+  <xs:complexType name="Instance_T">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element ref="Component"/>
+        <xs:element ref="AbsoluteOffset"/>
+        <xs:element ref="Token">
+          <xs:annotation>
+            <xs:documentation>the DOT; only if separated. Not in Graph ActionList, not in LAD/FBD.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="Address"/>
+      </xs:choice>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="UId" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>Not allowed in STL</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Scope" type="Scope_TE" use="required"/>
+  </xs:complexType>
+  <xs:element name="Instruction" type="Instruction_T"/>
+  <xs:complexType name="Instruction_T">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="Token_G"/>
+        <xs:element ref="TemplateValue"/>
+      
+        <xs:element ref="Instance"/>
+        <xs:element ref="NamelessParameter" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Name" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="SimaticName_TP">
+          <xs:minLength value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Version" type="VersionString_TP"/>
+    <xs:attribute name="Informative" type="xs:boolean" default="false"/>
+    <xs:attribute name="UId" type="xs:int"/>
+  </xs:complexType>
+  <xs:simpleType name="InterfaceFlags_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="None"/>
+      <xs:pattern value="((Mandatory|S7_Visible)(,\s*)?)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Label" type="Label_T"/>
+  <xs:complexType name="Label_T">
+    <xs:sequence minOccurs="0">
+      <xs:annotation>
+        <xs:documentation>SCL only</xs:documentation>
+      </xs:annotation>
+      <xs:element ref="BooleanAttribute" minOccurs="0"/>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+      <xs:element ref="Token" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="SimaticName_TP" use="required"/>
+    <xs:attribute name="UId" type="xs:int" use="optional"/>
+  </xs:complexType>
+  <xs:element name="NamelessParameter" type="NamelessParameter_T"/>
+  <xs:complexType name="NamelessParameter_T">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element ref="StringAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>for InterfaceFlags. InterfaceFlags is informative</xs:documentation>
+          <xs:documentation>The type of the value should be InterfaceFlags_TP</xs:documentation>
+          <xs:documentation>The default value is "S7_Visible"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:group ref="Access_G"/>
+    </xs:sequence>
+    <xs:attribute name="UId" type="xs:int"/>
+  </xs:complexType>
+  <xs:element name="Parameter" type="Parameter_T"/>
+  
+  <xs:complexType name="Parameter_T">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="IntegerAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>for NumBLs. NumBLs is informative</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="StringAttribute" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>for InterfaceFlags. InterfaceFlags is informative</xs:documentation>
+          <xs:documentation>The type of the value should be InterfaceFlags_TP</xs:documentation>
+          <xs:documentation>The default value is "S7_Visible"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="BooleanAttribute" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:group ref="Access_G" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="SimaticName_TP" use="required"/>
+    <xs:attribute name="Section" type="SectionName_TE" use="optional"/>
+    <xs:attribute name="Type" type="SimaticType_TE"/>
+    <xs:attribute name="TemplateReference" type="xs:string"/>
+    <xs:attribute name="Informative" type="xs:boolean" default="false"/>
+    <xs:attribute name="UId" type="xs:int"/>
+  </xs:complexType>
+  <xs:element name="PredefinedVariable" type="PredefinedVariable_T"/>
+  <xs:complexType name="PredefinedVariable_T">
+    <xs:attribute name="Name" type="PredefinedVariable_TE" use="required"/>
+    <xs:attribute name="UId" type="xs:int" use="required"/>
+  </xs:complexType>
+  <xs:simpleType name="PredefinedVariable_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ENO"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Reference" type="Reference_T"/>
+  <xs:complexType name="Reference_T">
+    <xs:sequence>
+      <xs:sequence minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>SCL</xs:documentation>
+        </xs:annotation>
+        <xs:group ref="Comment_G" minOccurs="0"/>
+        <xs:element ref="Token"/>
+        <xs:group ref="Comment_G" minOccurs="0"/>
+      </xs:sequence>
+      <xs:element ref="Access"/>
+      <xs:sequence minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>SCL</xs:documentation>
+        </xs:annotation>
+        <xs:group ref="Comment_G" minOccurs="0"/>
+        <xs:element ref="Token"/>
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Register_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AR1"/>
+      <xs:enumeration value="AR2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Scope_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Undef">
+        <xs:annotation>
+          <xs:documentation>Symbols we do not know what they are</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GlobalConstant"/>
+      <xs:enumeration value="LocalConstant"/>
+      <xs:enumeration value="GlobalVariable"/>
+      <xs:enumeration value="LocalVariable"/>
+      <xs:enumeration value="Instruction"/>
+      <xs:enumeration value="Label"/>
+      <xs:enumeration value="TypedConstant"/>
+      <xs:enumeration value="AddressConstant"/>
+      <xs:enumeration value="LiteralConstant"/>
+      <xs:enumeration value="AlarmConstant"/>
+      <xs:enumeration value="Address"/>
+      <xs:enumeration value="Statusword"/>
+      <xs:enumeration value="Expression"/>
+      <xs:enumeration value="Unnamed"/>
+      <xs:enumeration value="Call"/>
+      <xs:enumeration value="CallWithType"/>
+      <xs:enumeration value="UserType"/>
+      <xs:enumeration value="SystemType"/>
+      <xs:enumeration value="Reference"/>
+      <xs:enumeration value="PredefinedVariable"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SimpleAccessModifier_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="None|((Periphery|QualityInformation)(,\s*)?)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SimpleType_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="undef"/>
+      <xs:enumeration value="Bool"/>
+      <xs:enumeration value="Byte"/>
+      <xs:enumeration value="Char"/>
+      <xs:enumeration value="Word"/>
+      <xs:enumeration value="Int"/>
+      <xs:enumeration value="DWord"/>
+      <xs:enumeration value="DInt"/>
+      <xs:enumeration value="Real"/>
+      <xs:enumeration value="LReal"/>
+      <xs:enumeration value="Timer"/>
+      <xs:enumeration value="S5Time"/>
+      <xs:enumeration value="ARef"/>
+      <xs:enumeration value="Any"/>
+      <xs:enumeration value="Time"/>
+      <xs:enumeration value="S5Count"/>
+      <xs:enumeration value="Counter"/>
+      <xs:enumeration value="Block_DB"/>
+      <xs:enumeration value="Block_FB"/>
+      <xs:enumeration value="Block_FC"/>
+      <xs:enumeration value="Block_SFB"/>
+      <xs:enumeration value="Block_UDT"/>
+      <xs:enumeration value="Multi_FB"/>
+      <xs:enumeration value="Multi_SFB"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SliceAccessModifier_TP">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([xbwdXBWD]\d+)|undef"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Statusword" type="Statusword_T">
+    <xs:annotation>
+      <xs:documentation>Only for S7-300/400/WinAC</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="Statusword_T">
+    <xs:attribute name="Combination" type="Statusword_TE" use="required"/>
+  </xs:complexType>
+  <xs:simpleType name="Statusword_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BR"/>
+      <xs:enumeration value="OV"/>
+      <xs:enumeration value="OS"/>
+      <xs:enumeration value="EQ"/>
+      <xs:enumeration value="NE"/>
+      <xs:enumeration value="GT"/>
+      <xs:enumeration value="LT"/>
+      <xs:enumeration value="GE"/>
+      <xs:enumeration value="LE"/>
+      <xs:enumeration value="UO"/>
+      <xs:enumeration value="NU"/>
+      <xs:enumeration value="STW"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Symbol" type="Symbol_T"/>
+  <xs:complexType name="Symbol_T">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element ref="Component"/>
+      <xs:element ref="Address"/>
+      <xs:element ref="AbsoluteOffset"/>
+      <xs:element ref="Token">
+        <xs:annotation>
+          <xs:documentation>SCL.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element ref="Access"/>
+      <xs:group ref="Comment_G" minOccurs="0"/>
+    </xs:choice>
+    <xs:attribute name="UId" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>Not allowed in STL</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Scope" type="Scope_TE"/>
+  </xs:complexType>
+  <xs:simpleType name="TemplateType_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cardinality"/>
+      <xs:enumeration value="Type"/>
+      <xs:enumeration value="Operation"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TemplateValue" type="TemplateValue_T"/>
+  <xs:complexType name="TemplateValue_T">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Name" type="SimaticName_TP" use="required"/>
+        <xs:attribute name="Type" type="TemplateType_TE" use="required"/>
+        <xs:attribute name="UId" type="xs:int" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="Width_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Bit"/>
+      <xs:enumeration value="Byte"/>
+      <xs:enumeration value="Word"/>
+      <xs:enumeration value="Offset"/>
+      <xs:enumeration value="Double"/>
+      <xs:enumeration value="Pointer"/>
+      <xs:enumeration value="Long"/>
+      <xs:enumeration value="Any"/>
+      <xs:enumeration value="Block"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
