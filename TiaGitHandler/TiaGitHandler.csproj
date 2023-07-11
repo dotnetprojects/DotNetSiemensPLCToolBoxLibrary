@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
@@ -26,6 +26,12 @@
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV16\DotNetSiemensPLCToolBoxLibrary.TIAV16.csproj">
       <Private>true</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV17\DotNetSiemensPLCToolBoxLibrary.TIAV17.csproj">
+      <Private>True</Private>
+    </ProjectReference>
+	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV18\DotNetSiemensPLCToolBoxLibrary.TIAV18.csproj">
+		<Private>True</Private>
+	</ProjectReference>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
