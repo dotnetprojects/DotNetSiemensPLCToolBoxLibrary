@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "TiaGitHandler": {
-      "commandName": "Project",
-      "commandLineArgs": "\"D:\\Automation\\Mlog_HRL2_FAOld\\Mlog_HRL2_FA.ap15_1\" Admin admin@mlogES1",
-      "workingDirectory": "D:\\Automation"
-    }
-  }
-}
