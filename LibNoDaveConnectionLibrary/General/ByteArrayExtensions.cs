@@ -8,7 +8,7 @@
             int endIndex = array.Length;
             int fidx = 0;
 
-            while (i++ < endIndex)
+            while (i++ < endIndex - pattern.Length)
             {
                 fidx = (array[i] == pattern[fidx]) ? ++fidx : 0;
                 if (fidx == pattern.Length)
