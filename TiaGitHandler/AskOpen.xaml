@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="True" WindowStyle="ToolWindow" 
-             Height="298.34" Width="403.689" Title="TiaGitHandler">
+             Height="389" Width="403.689" Title="TiaGitHandler">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TIA Projekt - Öffnen oder an Instanz hängen?" VerticalAlignment="Top"/>
         <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
         <Button Content="Anhängen V14SP1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV14SP1_Click"/>
         <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
         <Button Content="Anhängen V16" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV16_Click"/>
+        <Button Content="Anhängen V17" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV17_Click"/>
+        <Button Content="Anhängen V18" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV18_Click"/>
         <CheckBox x:Name="chkResetSetpoints" Content="Reset all setpoints" Margin="211,0,1,106" VerticalAlignment="Bottom" IsChecked="True"/>
         <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="211,0,0,90" VerticalAlignment="Bottom" IsChecked="True" HorizontalAlignment="Left" Width="151"/>
         <StackPanel Height="83" VerticalAlignment="Bottom">
@@ -20,6 +22,5 @@
             <RadioButton GroupName="TiaBug" x:Name="rbRemoveAllBlanks" Content="Remove all blanks" IsChecked="True" Margin="10,0,0,0" />
             <RadioButton GroupName="TiaBug" x:Name="rbRemoveNoBlanks" Content="Remove no blanks" Margin="10,0,0,0"/>
         </StackPanel>
-        <Button Content="Anhängen V17" HorizontalAlignment="Left" Margin="188,88,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV17_Click"/>
     </Grid>
 </Window>
