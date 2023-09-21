@@ -688,7 +688,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                     if (!newAwlCode.Contains(akRw))
                                                         newAwlCode.Add(akRw);
                                                 }
-                                                akRowInAwlCode++;
+
+                                                if (akRowInAwlCode < retVal.AWLCode.Count - 1)
+                                                {
+                                                    akRowInAwlCode++;
+                                                }
                                             }
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).NetworkName = tx1;
                                             ((S7FunctionBlockRow)retVal.AWLCode[akRowInAwlCode]).Comment = tx2;
@@ -713,7 +717,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                                                      akRw.CombineDBAccess = false;
 
                                                 //Db Zugriff zusammenfügen...
-                                                if (akRw.CombineDBAccess)
+                                                if (akRowInAwlCode < retVal.AWLCode.Count - 1 && akRw.CombineDBAccess)
                                                 {
                                                     S7FunctionBlockRow nRw = (S7FunctionBlockRow) retVal.AWLCode[akRowInAwlCode + 1];
                                                     nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
