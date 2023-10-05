@@ -334,6 +334,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
         public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
             internal PlcSoftware plcSoftware;
+<<<<<<< HEAD
+=======
+
+            internal Device device;
+>>>>>>> localbrancht
 
             internal TIAOpennessControllerFolder(Step7ProjectV18 Project, PlcSoftware plcSoftware)
                 : base(Project)
@@ -341,6 +346,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                 this.Project = Project;
                 this.TiaProject = Project;
                 this.plcSoftware = plcSoftware;
+                this.device = plcSoftware.Parent.Parent.Parent as Device;
             }
 
             //public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
@@ -496,6 +502,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
             /// Get PLC data from Tia project instance and store in plc object then return object to export
             /// </summary>
             /// <param name="plc">plc object.</param>           
+<<<<<<< HEAD
             public Plc GetPlcData(Plc plc)
             {
                 try
@@ -547,6 +554,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
             public Plc GetDataFromPlc(Device device, Plc plc)
             {
                 foreach (var deviceItem in device.DeviceItems)
+=======
+            public Plc GetPlcData()
+            {
+                Plc plc = new Plc();
+
+                foreach (var deviceItem in this.device.DeviceItems)
+>>>>>>> localbrancht
                 {
                     if (GetPlcAttribute(deviceItem, "TypeName") == "Rack")
                     {
@@ -554,7 +568,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                     }
 
                     //Find current PLC data
+<<<<<<< HEAD
                     if (deviceItem.Name == this.Name && deviceItem.Classification is DeviceItemClassifications.CPU)
+=======
+                    if (deviceItem.Classification is DeviceItemClassifications.CPU)
+>>>>>>> localbrancht
                     {
                         plc.Status = true;
                         plc.Id = this.Name;
@@ -615,8 +633,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V18
                                 }
                             }
                         }
+<<<<<<< HEAD
                     }
                 }
+=======
+                        return plc;
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Could not find " + this.Name + " PLC data");
+>>>>>>> localbrancht
                 return plc;
             }
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
