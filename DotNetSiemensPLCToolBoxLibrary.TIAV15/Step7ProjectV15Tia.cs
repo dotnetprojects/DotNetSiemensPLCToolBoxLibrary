@@ -18,6 +18,7 @@ using Siemens.Engineering.SW.Types;
 using Siemens.Engineering.SW.Tags;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
+using PLC;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 {
@@ -312,15 +313,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
         public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
+            internal PlcSoftware plcSoftware;
+
+            internal Device device;
+
             internal TIAOpennessControllerFolder(Step7ProjectV15 Project, PlcSoftware plcSoftware)
                 : base(Project)
             {
                 this.Project = Project;
                 this.TiaProject = Project;
                 this.plcSoftware = plcSoftware;
+                this.device = plcSoftware.Parent.Parent.Parent as Device;
             }
-
-            internal PlcSoftware plcSoftware;
 
             public TIAOpennessProgramFolder ProgramFolder { get; set; }
             public TIAOpennessPlcDatatypeFolder PlcDatatypeFolder { get; set; }
@@ -336,7 +340,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 return block;
             }
-
             private Block GetBlockRecursive(TIAOpennessProgramFolder folder, string name)
             {
                 var block = folder.GetBlock(name);
@@ -352,7 +355,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 return block;
             }
-
             private Block GetBlockRecursive(TIAOpennessPlcDatatypeFolder folder, string name)
             {
                 var block = folder.GetBlock(name);
@@ -367,6 +369,103 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 }
 
                 return block;
+            }
+
+            /// <summary>
+            /// Get PLC data from Tia project instance and store in plc object then return object to export
+            /// </summary>
+            /// <param name="plc">plc object.</param>           
+            public Plc GetPlcData()
+            {
+                Plc plc = new Plc();
+
+                foreach (var deviceItem in this.device.DeviceItems)
+                {
+                    if (GetPlcAttribute(deviceItem, "TypeName") == "Rack")
+                    {
+                        plc.Rack = deviceItem.PositionNumber.ToString();
+                    }
+
+                    //Find current PLC data
+                    if (deviceItem.Classification is DeviceItemClassifications.CPU)
+                    {
+                        plc.Status = true;
+                        plc.Id = this.Name;
+                        plc.Slot = deviceItem.PositionNumber.ToString();
+                        plc.Type = GetPlcAttribute(deviceItem, "TypeName");
+                        plc.FirmwareVersion = GetPlcAttribute(deviceItem, "FirmwareVersion");
+                        plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
+                        plc.PlcNetwork = new List<PlcSubnet>();
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("---> PLC: " + this.Name + ":" + plc.Type);
+
+                        foreach (DeviceItem item in deviceItem.Items)
+                        {
+                            var nwService = item.GetService<NetworkInterface>();
+
+                            if (nwService != null)
+                            {
+                                PlcSubnet plcSubnet = new PlcSubnet();
+                                plcSubnet.PlcNodes = new List<PlcNode>();
+                                plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
+                                object nodeAddress = null;
+
+                                foreach (Node node in nwService.Nodes)
+                                {
+                                    IEnumerable<EngineeringAttributeInfo> nodeAttributes = ((IEngineeringObject)node).GetAttributeInfos();
+
+                                    if (nodeAttributes.Any(nodeAttribute => nodeAttribute.Name == "Address"))
+                                    {
+                                        nodeAddress = ((IEngineeringObject)node).GetAttribute("Address");
+
+                                        if (nodeAddress.ToString() != "Not Valid" && node.ConnectedSubnet != null)
+                                        {
+                                            plcSubnet.PlcNodes.Add(new PlcNode(node.NodeId, node.Name, node.ConnectedSubnet.Name, node.NodeType.ToString(), nodeAddress.ToString()));
+
+                                            //More then 1 Port
+                                            if (item.Items.Count > 1)
+                                            {
+                                                plc.Address = nodeAddress.ToString();
+
+                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                            }
+                                            else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
+                                            {
+                                                plc.Address = nodeAddress.ToString();
+
+                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (plcSubnet.PlcNodes.Count > 0)
+                                {
+                                    plc.PlcNetwork.Add(plcSubnet);
+                                }
+                            }
+                        }
+                        return plc;
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Could not find " + this.Name + " PLC data");
+                return plc;
+            }
+            public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
+            {
+                IEnumerable<EngineeringAttributeInfo> deviceItemsAttributes = ((IEngineeringObject)deviceItems).GetAttributeInfos();
+
+                if (deviceItemsAttributes.Any(deviceItemsAttribute => deviceItemsAttribute.Name == attributeName))
+                {
+                    object attributeValue = deviceItems.GetAttribute(attributeName);
+                    return attributeValue.ToString();
+                }
+
+                return "";
             }
         }
 
