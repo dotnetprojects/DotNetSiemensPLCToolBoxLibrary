@@ -102,23 +102,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                         addr += hexCode[akAddr] - 0x30;
                         akAddr++;
                     }
-                    tmp.ByteAddress = Convert.ToInt32(addr);
-                    akAddr++;
-                    if (bit == true)
+                    if (addr != "")
                     {
-                        tmp.BitAddress = Convert.ToInt32(hexCode[akAddr] - 0x30);
-                    }
-                    akAddr++;
-                    akAddr++;
-                    if (db != "")
-                    {
-                        addr = "";
-                        while (hexCode[akAddr] != 0x20)
+                        tmp.ByteAddress = Convert.ToInt32(addr);
+                        akAddr++;
+                        if (bit == true)
                         {
-                            addr += hexCode[akAddr] - 0x30;
-                            akAddr++;
+                            tmp.BitAddress = Convert.ToInt32(hexCode[akAddr] - 0x30);
                         }
-                        tmp.DataBlockNumber = Convert.ToInt32(addr);
+                        akAddr++;
+                        akAddr++;
+                        if (db != "")
+                        {
+                            addr = "";
+                            while (hexCode[akAddr] != 0x20)
+                            {
+                                addr += hexCode[akAddr] - 0x30;
+                                akAddr++;
+                            }
+                            tmp.DataBlockNumber = Convert.ToInt32(addr);
+                        }
                     }
                     akAddr++;
                     akAddr++;
