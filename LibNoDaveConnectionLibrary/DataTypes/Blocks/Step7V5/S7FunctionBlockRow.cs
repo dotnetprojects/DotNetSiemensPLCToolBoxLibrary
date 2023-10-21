@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
@@ -621,27 +622,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 }
                 else if (Command == Mnemonic.opCALL[(int)MnemonicLanguage])
                 {
+                    var deps = new List<String>();
+
                     if (!String.IsNullOrEmpty(DiName))
                     {
-                        /*Block blk1, blk2;
-                        var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
-                        if (fld != null && !Parameter.StartsWith("#"))
-                        {
-                            var blk1 = fld.GetBlock(Parameter);                           
-                        }
+                        var db = DiName.Replace("DI", "DB");
 
-                        return new List<Block>() { blk1, blk2 };*/
+                        deps.Add(db);
                     }
-                    else
+
+                    var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
+
+                    if (fld != null && !Parameter.StartsWith("#"))
                     {
-                        var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
-                        if (fld != null && !Parameter.StartsWith("#"))
-                        {
-                            //var blk = fld.GetBlock(Parameter);
-
-                            return new List<String>() { Parameter };
-                        }
+                        deps.Add(Parameter);
                     }
+
+                    return deps;
                 }
                 else if (Parameter.StartsWith("DB") && Parameter[2] != '[' && Parameter[2] != 'D' && Parameter[2] != 'W' && Parameter[2] != 'B' && Parameter[2] != 'X' && this.Parent != null)
                 {
@@ -649,12 +646,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
                     if (fld != null)
                     {
-                        if (paras.Length > 1)
+                        if (paras.Length > 0)
                         {
-                            var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBB", "").Replace("DBW", "").Replace("DBD", ""));
+                            // var byteAdr = int.Parse(paras[1].Replace("DBX", "").Replace("DBB", "").Replace("DBW", "").Replace("DBD", ""));
 
-                            var bitAdr = 0;
-                            if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
+                            // var bitAdr = 0;
+                            // if (paras.Length > 2) bitAdr = int.Parse(paras[2]);
 
                             //var dbBlk = fld.GetBlock(paras[0]) as S7DataBlock;
 
