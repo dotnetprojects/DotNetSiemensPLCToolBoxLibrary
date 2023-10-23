@@ -156,8 +156,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             fsProject.Read(projectFile, 0, projectFile.Length);//Convert.ToInt32(fsProject.Length));
             fsProject.Close();
 
-            ProjectName = System.Text.Encoding.UTF7.GetString(projectFile, 5, projectFile[4]);
-            ProjectDescription = System.Text.Encoding.UTF7.GetString(projectFile, 5 + projectFile[4] + 2, projectFile[projectFile[4] + 6]);
+            ProjectName = Encoding.UTF7.GetString(projectFile, 5, projectFile[4]);
+
+            int descStart = 5 + projectFile[4] + 2;
+            int descCount = Math.Min(projectFile[projectFile[4] + 6], projectFile.Length - 1 - descStart);
+            ProjectDescription = Encoding.UTF7.GetString(projectFile, descStart, descCount);
             //Fertig
 
             _offlineblockdb = ProjectFolder + "ombstx" + _DirSeperator + "offline" + _DirSeperator + "BSTCNTOF.DBF";

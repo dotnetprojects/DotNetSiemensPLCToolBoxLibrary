@@ -444,7 +444,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         {
             time = time.ToLower().Replace("s5t#", "").Replace("t#", "").Replace("\t", "");
             //need another text for ms (because it could be minute)
-            time = time.Replace("ms", "a");
+            time = time.Replace("ms", "a").Trim();
 
             int d = 0, h = 0, m = 0, s = 0, ms = 0;
             int val = 0;

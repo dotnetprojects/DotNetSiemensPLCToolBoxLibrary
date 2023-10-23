@@ -137,7 +137,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// <summary>
         /// Help class, used to hold unparsed raw data read from the S7 Project files from disk
         /// </summary>
-        private class tmpBlock
+        public class TmpBlock
         {
             public byte[] mc7code;
             public byte[] uda;
@@ -161,7 +161,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public PLCLanguage BlockLanguage;
         }
 
-        private Dictionary<string, tmpBlock> tmpBlocks; //internal cached list of blocks already read from the S7 Project
+        private Dictionary<string, TmpBlock> tmpBlocks; //internal cached list of blocks already read from the S7 Project
 
         public ProjectBlockInfo GetProjectBlockInfoFromBlockName(string BlockName)
         {
@@ -176,7 +176,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public void ChangeKnowHowProtection(S7ProjectBlockInfo blkInfo, bool KnowHowProtection)
         {
-            tmpBlock myTmpBlk = new tmpBlock();
+            TmpBlock myTmpBlk = new TmpBlock();
 
             if (subblkDBF != null)
             {
@@ -207,7 +207,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public void UndeleteBlock(S7ProjectBlockInfo blkInfo, int newBlockNumber)
         {
-            tmpBlock myTmpBlk = new tmpBlock();
+            TmpBlock myTmpBlk = new TmpBlock();
 
             if (((Step7ProjectV5)Project)._ziphelper.FileExists(Folder + "BAUSTEIN.DBF"))
             {
@@ -247,11 +247,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// </summary>
         /// <param name="blkInfo">The Block info object that identifies the block to read from Disk</param>
         /// <returns></returns>
-        private tmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
+        public TmpBlock GetBlockBytes(ProjectBlockInfo blkInfo)
         {
             if (subblkDBF != null) //ZipHelper.FileExists(((Step7ProjectV5)Project)._zipfile, Folder + "SUBBLK.DBF"))
             {
-                tmpBlock myTmpBlk = new tmpBlock();
+                TmpBlock myTmpBlk = new TmpBlock();
 
                 var bstTbl = bausteinDBF;
                 DataRow[] bstRows = bstTbl.Select("ID = " + blkInfo.id);
@@ -415,7 +415,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         /// </summary>
         /// <param name="blkName">The blockname to be read from disk. eg. DB2, FB38....</param>
         /// <returns></returns>
-        private tmpBlock GetBlockBytes(string blkName)
+        private TmpBlock GetBlockBytes(string blkName)
         {
             var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
             if (blkInfo == null)
@@ -428,7 +428,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
             if (blkInfo == null)
                 return null;
-            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
+            TmpBlock myTmpBlk = GetBlockBytes(blkInfo);
             List<string> tmpPar = new List<string>();
             return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null);
         }
@@ -483,7 +483,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
 
             ProjectPlcBlockInfo plcblkifo = (ProjectPlcBlockInfo)blkInfo;
-            tmpBlock myTmpBlk = GetBlockBytes(blkInfo);
+            TmpBlock myTmpBlk = GetBlockBytes(blkInfo);
 
             List<Step7Attribute> step7Attributes = null;
 
@@ -539,7 +539,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     if (retVal.IsInstanceDB && myConvOpt.UseFBDeclarationForInstanceDB)
                     {
                         //load the FB data from the Project
-                        tmpBlock InstFB = GetBlockBytes((myTmpBlk.IsSFB ? "SFB" : "FB") + myTmpBlk.FBNumber);
+                        TmpBlock InstFB = GetBlockBytes((myTmpBlk.IsSFB ? "SFB" : "FB") + myTmpBlk.FBNumber);
 
                         //Resolve both interfaces
                         List<string> tmpPar = new List<string>();
