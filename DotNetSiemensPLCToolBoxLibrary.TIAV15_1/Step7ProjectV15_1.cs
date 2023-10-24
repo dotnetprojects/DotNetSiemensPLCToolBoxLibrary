@@ -74,7 +74,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
 
             var processes = TiaPortal.GetProcesses().ToArray();
-            var sLst = processes.Select(x => "Projekt : " + (x.ProjectPath != null ? x.ProjectPath.ToString() : "-")).ToArray();
+            var sLst = processes.Select(x => "Project : " + (x.ProjectPath != null ? x.ProjectPath.ToString() : "-")).ToArray();
             AppDomain domain = AppDomain.CreateDomain("another domain");
             CrossAppDomainDelegate action = () =>  
             {  

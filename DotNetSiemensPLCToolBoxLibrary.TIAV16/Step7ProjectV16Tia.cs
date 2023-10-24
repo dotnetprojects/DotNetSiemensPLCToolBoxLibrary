@@ -333,17 +333,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
         public class TIAOpennessControllerFolder : TIAOpennessProjectFolder, IRootProgrammFolder
         {
             internal PlcSoftware plcSoftware;
-<<<<<<< HEAD
-=======
 
             internal Device device;
->>>>>>> localbrancht
 
-            internal TIAOpennessControllerFolder(Step7ProjectV16 project, PlcSoftware plcSoftware)
-                : base(project)
+            internal TIAOpennessControllerFolder(Step7ProjectV16 Project, PlcSoftware plcSoftware)
+                : base(Project)
             {
-                this.Project = project;
-                this.TiaProject = project;
+                this.Project = Project;
+                this.TiaProject = Project;
                 this.plcSoftware = plcSoftware;
                 this.device = plcSoftware.Parent.Parent.Parent as Device;
             }
@@ -364,17 +361,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 Console.WriteLine("  Compiling started");
                 CompilerResult result;
 
-                var compiler = plcSoftware.GetService<ICompilable>();
-                if (compiler != null)
-                {
-                    result = compiler.Compile();
-                    foreach (CompilerResultMessage message in result.Messages)
-                        PrintMessages(message, "  ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    //Console.WriteLine(result.Messages);
-                }
-                else
-                    throw new ArgumentException("Parameter cannot be compiled.", nameof(plcSoftware));
+                //var compiler = plcSoftware.GetService<ICompilable>();
+                //if (compiler != null)
+                //{
+                //    result = compiler.Compile();
+                //    foreach (CompilerResultMessage message in result.Messages)
+                //        PrintMessages(message, "  ");
+                //    Console.ForegroundColor = ConsoleColor.White;
+                //    //Console.WriteLine(result.Messages);
+                //}
+                //else
+                //    throw new ArgumentException("Parameter cannot be compiled.", nameof(plcSoftware));
             }
 
             public void PrintMessages(CompilerResultMessage message, string tab)
@@ -477,69 +474,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 return block;
             }
 
-            /// <summary>
-            /// Get PLC data from Tia project instance and store in plc object then return object to export
-            /// </summary>
-            /// <param name="plc">plc object.</param>           
-<<<<<<< HEAD
-            public Plc GetPlcData(Plc plc)
-            {
-                try
-                {
-                    Siemens.Engineering.Project prj;
-                    var parent = plcSoftware.Parent.Parent.Parent.Parent;
-                    if (parent is Siemens.Engineering.HW.DeviceUserGroup)
-                        prj = (Siemens.Engineering.Project)parent.Parent;
-                    else
-                        prj = (Siemens.Engineering.Project)parent;
-
-                    foreach (var deviceGroup in prj.DeviceGroups)
-                    {
-                        foreach (var device in deviceGroup.Devices)
-                        {
-                            plc = GetDataFromPlc(device, plc);
-
-                            if (plc.Status)
-                            {
-                                return plc;
-                            }
-                        }
-                    }
-
-                    foreach (var device in prj.Devices)
-                    {
-                        plc = GetDataFromPlc(device, plc);
-
-                        if (plc.Status)
-                        {
-                            return plc;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("An exception occurred while loading PLC data:");
-                    Console.WriteLine($"Exception Type: {ex.GetType()}");
-                    Console.WriteLine($"Message: {ex.Message}");
-                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Could not find " + this.Name + " PLC data");
-
-                return plc;
-            }
-            public Plc GetDataFromPlc(Device device, Plc plc)
-            {
-                foreach (var deviceItem in device.DeviceItems)
-=======
             public Plc GetPlcData()
             {
                 Plc plc = new Plc();
 
                 foreach (var deviceItem in this.device.DeviceItems)
->>>>>>> localbrancht
                 {
                     if (GetPlcAttribute(deviceItem, "TypeName") == "Rack")
                     {
@@ -547,12 +486,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                     }
 
                     //Find current PLC data
-<<<<<<< HEAD
-                    if (deviceItem.Name == this.Name && deviceItem.Classification is DeviceItemClassifications.CPU)
-=======
                     if (deviceItem.Classification is DeviceItemClassifications.CPU)
->>>>>>> localbrancht
-                    {
+                    {                        
                         plc.Status = true;
                         plc.Id = this.Name;
                         plc.Slot = deviceItem.PositionNumber.ToString();
@@ -570,11 +505,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                             if (nwService != null)
                             {
-<<<<<<< HEAD
                                 PlcSubnet plcSubnet= new PlcSubnet();
-=======
-                                PlcSubnet plcSubnet = new PlcSubnet();
->>>>>>> localbrancht
                                 plcSubnet.PlcNodes = new List<PlcNode>();
                                 plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
                                 object nodeAddress = null;
@@ -616,16 +547,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                                 }
                             }
                         }
-<<<<<<< HEAD
-                    }
-                }
-=======
                         return plc;
                     }
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Could not find " + this.Name + " PLC data");
->>>>>>> localbrancht
                 return plc;
             }
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
