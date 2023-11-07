@@ -423,14 +423,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
            return GetBlockBytes(blkInfo);
         }
 
-        public S7DataRow GetInterface(string blkName)
+        public S7DataRow GetInterface(string blkName, S7ConvertingOptions myConvOpt)
         {
             var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
             if (blkInfo == null)
                 return null;
             TmpBlock myTmpBlk = GetBlockBytes(blkInfo);
             List<string> tmpPar = new List<string>();
-            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null);
+            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null, myConvOpt);
         }
 
         /// <summary>
@@ -547,10 +547,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         {
                             S7DataRow InterfaceFB =
                                 Parameter.GetInterfaceOrDBFromStep7ProjectString(InstFB.blkinterface, ref tmpPar,
-                                    PLCBlockType.FB, false, this, null);
+                                    PLCBlockType.FB, false, this, null, myConvOpt);
                             S7DataRow InterfaceDB =
                                 Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar,
-                                    PLCBlockType.DB, false, this, null);
+                                    PLCBlockType.DB, false, this, null, myConvOpt);
 
                             //Only use the FB interface Declaration if they are compatible
                             if (Parameter.IsInterfaceCompatible(InterfaceFB, InterfaceDB))
@@ -561,7 +561,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     if (myTmpBlk.mc7code != null) 
                         retVal.CodeSize = myTmpBlk.mc7code.Length;
 
-                    retVal.StructureFromString = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal, myTmpBlk.mc7code);
+                    retVal.StructureFromString = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal, myConvOpt, myTmpBlk.mc7code);
                     if (myTmpBlk.blkinterfaceInMC5 != null)
                     {
                         //List<string> tmp = new List<string>();
@@ -604,7 +604,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
 
-                    retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal);
+                    retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal, myConvOpt);
                 
                     if (myTmpBlk.blockdescription != null)
                     {

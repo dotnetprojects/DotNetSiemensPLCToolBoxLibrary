@@ -33,6 +33,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -167,7 +168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// <param name="myBlk">The Block where the Parsed Step7 code belongs to</param>
         /// <param name="actualValues">the current values of the DB, if it is an DB</param>
         /// <returns></returns>
-        internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk, byte[] actualValues = null)
+        internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk, S7ConvertingOptions myConvOpt, byte[] actualValues = null)
         {
             S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
             S7DataRow parameterRootWithoutTemp = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
@@ -585,10 +586,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 parameterRoot.Add(parameterTEMP);
             }
 
-            if (actualValues != null)
+            if (myConvOpt.UseDBActualValues && actualValues != null)
             {
-                int vPos = 0, bPos = 0;
-                //FillActualValuesInDataBlock(parameterRoot, actualValues, ref vPos, ref bPos);
+                FillActualValuesInDataBlock(parameterRoot, actualValues);
             }
 
             return parameterRoot;
