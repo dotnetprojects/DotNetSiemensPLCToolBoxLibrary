@@ -53,12 +53,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
             this.UseInFCStoredFCsForCalls = true; //todo implement the reading of them in the step7 project
             this.UseComments = true;
             this.UseFBDeclarationForInstanceDB = true; //Default to Simatic Mamager Behavior
+            this.UseDBActualValues = false;
         }
 
         public bool UseComments { get; set; }
         public MnemonicLanguage Mnemonic { get; set; }
         public bool CombineDBOpenAndDBAccess { get; set; }
         public bool ReplaceDBAccessesWithSymbolNames { get; set; }
+        public bool UseDBActualValues { get; set; }
 
         public bool ReplaceLokalDataAddressesWithSymbolNames { get; set; }
         public bool ReplaceDIAccessesWithSymbolNames { get; set; } 
