@@ -1119,9 +1119,86 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = Helper.GetS7String(valpos.ByteAddress, -1, data);
                     }
                     break;
+                case S7DataRowType.TIMER:
+                    {
+                        Result = "T " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.COUNTER:
+                    {
+                        Result = "Z " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.POINTER:
+                    {
+                        var dbNumber = libnodave.getU16from(data, valpos.ByteAddress);
+
+                        var pointer = Helper.GetFCPointer(
+                            data[valpos.ByteAddress + 2],
+                            data[valpos.ByteAddress + 3],
+                            data[valpos.ByteAddress + 4],
+                            data[valpos.ByteAddress + 5]);
+
+                        if (dbNumber != 0)
+                        {
+                            pointer = pointer.Insert(2, "DB" + dbNumber + ".");
+                        }
+
+                        Result = pointer;
+                    }
+                    break;
+                case S7DataRowType.ANY:
+                    {
+                        var pointerDataType = (S7DataRowType)data[valpos.ByteAddress + 1];
+
+                        var repeatFactor = libnodave.getU16from(data, valpos.ByteAddress + 2);
+
+                        var dbNumber = libnodave.getU16from(data, valpos.ByteAddress + 4);
+
+                        var pointer = Helper.GetFCPointer(
+                            data[valpos.ByteAddress + 6],
+                            data[valpos.ByteAddress + 7],
+                            data[valpos.ByteAddress + 8],
+                            data[valpos.ByteAddress + 9]);
+
+                        if (dbNumber != 0)
+                        {
+                            pointer = pointer.Insert(2, "DB" + dbNumber + ".");
+                        }
+
+                        pointer += " " + pointerDataType + " " + repeatFactor;
+
+                        Result = pointer;
+                    }
+                    break;
                 case S7DataRowType.SFB: //unclear, needs to be checked
                     { // 'SFB??';
-                        Result = "SFB??";
+                        Result = null;
+                    }
+                    break;
+                case S7DataRowType.BLOCK_FB:
+                    {
+                        Result = "FB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_DB:
+                    {
+                        Result = "DB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_FC:
+                    {
+                        Result = "FC " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_SDB:
+                    {
+                        Result = "SDB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.UDT:
+                    {
+                        Result = "UDT " + libnodave.getU16from(data, valpos.ByteAddress);
                     }
                     break;
                 default:
