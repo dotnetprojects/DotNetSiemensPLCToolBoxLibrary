@@ -108,7 +108,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             {
                 List<TiaAndSTep7DataBlockRow> arrAsList = new List<TiaAndSTep7DataBlockRow>();
 
-                var startValues = StartValue.ToString().Split(',');
+                var startValues = StartValue?.ToString().Split(',') ?? new string[] { };
 
                 var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
 

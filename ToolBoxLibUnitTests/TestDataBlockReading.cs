@@ -23,7 +23,7 @@ namespace ToolBoxLibUnitTests
 																											   PLCBlockType
 																													.DB,
 																												false,
-																												fld, blk);
+																												fld, blk, new S7ConvertingOptions());
 			Assert.AreEqual(test.Children[0].Name, "DB_VAR");
 			Assert.AreEqual(test.Children[1].Name, "aa");
 			Assert.AreEqual(test.Children[2].Name, "bb");
@@ -47,7 +47,7 @@ namespace ToolBoxLibUnitTests
 																											   PLCBlockType
 																													.DB,
 																												false,
-																												fld, blk);
+																												fld, blk, new S7ConvertingOptions());
 			Assert.AreEqual(test.Children[0].Name, "Fachkoordinate");
 			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
 			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 1);
@@ -69,7 +69,7 @@ namespace ToolBoxLibUnitTests
 																											   PLCBlockType
 																													.DB,
 																												false,
-																												fld, blk);
+																												fld, blk, new S7ConvertingOptions());
 			Assert.AreEqual(test.Children[0].Name, "X_KOORDINATE");
 			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
 			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 0);
@@ -93,7 +93,7 @@ namespace ToolBoxLibUnitTests
 																											   PLCBlockType
 																													.DB,
 																												false,
-																												fld, blk);
+																												fld, blk, new S7ConvertingOptions());
 			var rw = test.Children[0] as S7DataRow;
 			var callStr = rw.GetCallingString();
 		}
