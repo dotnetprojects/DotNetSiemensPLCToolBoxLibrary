@@ -551,6 +551,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             //    addRW.Value = GetVarTypeVal((byte)addRW.DataType, actualValues, ref Valpos);
                             //}
 
+                            if (myConvOpt.ExpandArrays && blkTP == PLCBlockType.DB && addRW.IsArray)
+                            {
+                                var arrayMembers = addRW._GetExpandedChlidren(new S7DataBlockExpandOptions());
+
+                                addRW.AddRange(arrayMembers);
+                            }
+
                             akDataRow.Add(addRW);
                             ParaList.Add(tmpName);
 
@@ -581,12 +588,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                 }
             }
+
             if (blkTP != PLCBlockType.DB && blkTP != PLCBlockType.UDT && tempAdded == false)
             {
                 parameterRoot.Add(parameterTEMP);
             }
 
-            if (myConvOpt.UseDBActualValues && actualValues != null)
+            // Only get actual values for DBs
+            if (myConvOpt.UseDBActualValues && blkTP == PLCBlockType.DB && actualValues != null)
             {
                 FillActualValuesInDataBlock(parameterRoot, actualValues);
             }

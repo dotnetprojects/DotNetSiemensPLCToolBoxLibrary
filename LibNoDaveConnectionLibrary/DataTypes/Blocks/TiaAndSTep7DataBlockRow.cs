@@ -108,6 +108,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             {
                 List<TiaAndSTep7DataBlockRow> arrAsList = new List<TiaAndSTep7DataBlockRow>();
 
+                var startValues = StartValue.ToString().Split(',');
+
                 var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
 
                 int[] arrAk = ArrayStart.ToArray();
@@ -129,6 +131,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     tmp.WasArray = retVal.IsArray;
                     tmp.IsArray = false;
                     tmp.WasNextHigherIndex = frst; // arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
+                    if (i < startValues.Length)
+                    {
+                        tmp.StartValue = startValues[i];
+                    }
+                    else
+                    {
+                        tmp.StartValue = Helper.DefaultValueForType(DataType);
+                    }
                     arrAsList.Add(tmp);
 
                     for (int n = arrAk.Length - 1; n >= 0; n--)

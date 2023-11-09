@@ -54,6 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
             this.UseComments = true;
             this.UseFBDeclarationForInstanceDB = true; //Default to Simatic Mamager Behavior
             this.UseDBActualValues = false;
+            this.ExpandArrays = false;
         }
 
         public bool UseComments { get; set; }
@@ -61,6 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
         public bool CombineDBOpenAndDBAccess { get; set; }
         public bool ReplaceDBAccessesWithSymbolNames { get; set; }
         public bool UseDBActualValues { get; set; }
+        public bool ExpandArrays { get; set; }
 
         public bool ReplaceLokalDataAddressesWithSymbolNames { get; set; }
         public bool ReplaceDIAccessesWithSymbolNames { get; set; } 
