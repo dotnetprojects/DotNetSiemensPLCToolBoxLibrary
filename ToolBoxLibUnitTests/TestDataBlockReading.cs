@@ -2,6 +2,7 @@
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using NUnit.Framework;
 
 namespace ToolBoxLibUnitTests
