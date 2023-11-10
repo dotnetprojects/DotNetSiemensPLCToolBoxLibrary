@@ -472,6 +472,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 return block;
             }
 
+            /// <summary>
+            /// Get PLC data from Tia project instance and store in plc object then return object to export
+            /// </summary>
+            /// <param name="plc">plc object.</param>           
             public Plc GetPlcData()
             {
                 Plc plc = new Plc();
