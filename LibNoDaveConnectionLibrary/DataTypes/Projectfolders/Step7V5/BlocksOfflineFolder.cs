@@ -423,6 +423,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
            return GetBlockBytes(blkInfo);
         }
 
+        public S7DataRow GetInterface(string blkName)
+        {
+            var myConvOpt = new S7ConvertingOptions(Project.ProjectLanguage);
+
+            return GetInterface(blkName, myConvOpt);
+        }
+
         public S7DataRow GetInterface(string blkName, S7ConvertingOptions myConvOpt)
         {
             var blkInfo = GetProjectBlockInfoFromBlockName(blkName);
