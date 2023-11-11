@@ -174,7 +174,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "2" || row.Parameter == "8"))
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
-                            S7DataRow para = myblkFld.GetInterface(callRow.Parameter);
+                            S7DataRow para = myblkFld.GetInterface(callRow.Parameter, myOpt);
 
                             newRow = new S7FunctionBlockRow();
                             newRow.Command = Mnemonic.opCALL[(int)myOpt.Mnemonic];
@@ -545,7 +545,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && (row.Parameter == "4" || row.Parameter == "17" || row.Parameter == "15" || row.Parameter == "10"))
                         {
                             //Block Interface auslesen (von FC oder vom Programm)
-                            S7DataRow para = myblkFld.GetInterface(callRow.Parameter);
+                            S7DataRow para = myblkFld.GetInterface(callRow.Parameter, myOpt);
 
                             newRow = new S7FunctionBlockRow();
                             newRow.Parent = callRow.Parent;

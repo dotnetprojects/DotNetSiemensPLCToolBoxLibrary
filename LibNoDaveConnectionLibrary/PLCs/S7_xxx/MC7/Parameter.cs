@@ -33,6 +33,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -167,7 +168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// <param name="myBlk">The Block where the Parsed Step7 code belongs to</param>
         /// <param name="actualValues">the current values of the DB, if it is an DB</param>
         /// <returns></returns>
-        internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk, byte[] actualValues = null)
+        internal static S7DataRow GetInterfaceOrDBFromStep7ProjectString(string txt, ref List<String> ParaList, PLCBlockType blkTP, bool isInstanceDB, BlocksOfflineFolder myFld, S7Block myBlk, S7ConvertingOptions myConvOpt, byte[] actualValues = null)
         {
             S7DataRow parameterRoot = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
             S7DataRow parameterRootWithoutTemp = new S7DataRow("ROOTNODE", S7DataRowType.STRUCT, myBlk);
@@ -550,6 +551,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             //    addRW.Value = GetVarTypeVal((byte)addRW.DataType, actualValues, ref Valpos);
                             //}
 
+                            if (myConvOpt.ExpandArrays && blkTP == PLCBlockType.DB && addRW.IsArray)
+                            {
+                                var arrayMembers = addRW._GetExpandedChlidren(new S7DataBlockExpandOptions());
+
+                                addRW.AddRange(arrayMembers);
+                            }
+
                             akDataRow.Add(addRW);
                             ParaList.Add(tmpName);
 
@@ -580,15 +588,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     }
                 }
             }
+
             if (blkTP != PLCBlockType.DB && blkTP != PLCBlockType.UDT && tempAdded == false)
             {
                 parameterRoot.Add(parameterTEMP);
             }
 
-            if (actualValues != null)
+            // Only get actual values for DBs
+            if (myConvOpt.UseDBActualValues && blkTP == PLCBlockType.DB && actualValues != null)
             {
-                int vPos = 0, bPos = 0;
-                //FillActualValuesInDataBlock(parameterRoot, actualValues, ref vPos, ref bPos);
+                FillActualValuesInDataBlock(parameterRoot, actualValues);
             }
 
             return parameterRoot;
@@ -1119,9 +1128,86 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = Helper.GetS7String(valpos.ByteAddress, -1, data);
                     }
                     break;
+                case S7DataRowType.TIMER:
+                    {
+                        Result = "T " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.COUNTER:
+                    {
+                        Result = "Z " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.POINTER:
+                    {
+                        var dbNumber = libnodave.getU16from(data, valpos.ByteAddress);
+
+                        var pointer = Helper.GetFCPointer(
+                            data[valpos.ByteAddress + 2],
+                            data[valpos.ByteAddress + 3],
+                            data[valpos.ByteAddress + 4],
+                            data[valpos.ByteAddress + 5]);
+
+                        if (dbNumber != 0)
+                        {
+                            pointer = pointer.Insert(2, "DB" + dbNumber + ".");
+                        }
+
+                        Result = pointer;
+                    }
+                    break;
+                case S7DataRowType.ANY:
+                    {
+                        var pointerDataType = (S7DataRowType)data[valpos.ByteAddress + 1];
+
+                        var repeatFactor = libnodave.getU16from(data, valpos.ByteAddress + 2);
+
+                        var dbNumber = libnodave.getU16from(data, valpos.ByteAddress + 4);
+
+                        var pointer = Helper.GetFCPointer(
+                            data[valpos.ByteAddress + 6],
+                            data[valpos.ByteAddress + 7],
+                            data[valpos.ByteAddress + 8],
+                            data[valpos.ByteAddress + 9]);
+
+                        if (dbNumber != 0)
+                        {
+                            pointer = pointer.Insert(2, "DB" + dbNumber + ".");
+                        }
+
+                        pointer += " " + pointerDataType + " " + repeatFactor;
+
+                        Result = pointer;
+                    }
+                    break;
                 case S7DataRowType.SFB: //unclear, needs to be checked
                     { // 'SFB??';
-                        Result = "SFB??";
+                        Result = null;
+                    }
+                    break;
+                case S7DataRowType.BLOCK_FB:
+                    {
+                        Result = "FB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_DB:
+                    {
+                        Result = "DB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_FC:
+                    {
+                        Result = "FC " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.BLOCK_SDB:
+                    {
+                        Result = "SDB " + libnodave.getU16from(data, valpos.ByteAddress);
+                    }
+                    break;
+                case S7DataRowType.UDT:
+                    {
+                        Result = "UDT " + libnodave.getU16from(data, valpos.ByteAddress);
                     }
                     break;
                 default:

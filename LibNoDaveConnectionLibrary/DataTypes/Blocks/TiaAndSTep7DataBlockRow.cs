@@ -34,6 +34,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using System.Text.RegularExpressions;
 
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
@@ -89,6 +90,41 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
+        internal List<string> GetStartValuesArray(object startValues)
+        {
+            if (startValues == null)
+            {
+                return new List<string>();
+            }
+
+            var strStartValues = startValues.ToString();
+
+            // matches on shortened pattern like "2(3),2(3)"
+            var shortPattern = @"(\d+)\(([^)]+)\)";
+            var matches = Regex.Matches(strStartValues, shortPattern);
+
+            if (matches.Count == 0)
+            {
+                // assumes "1,2,3,4,5" format
+                return strStartValues.Split(',').ToList();
+            }
+
+            var ret = new List<string>();
+
+            foreach (Match match in matches)
+            {
+                var count = int.Parse(match.Groups[1].Value);
+                var value = match.Groups[2].Value;
+
+                for (int i = 0; i < count; i++)
+                {
+                    ret.Add(value);
+                }
+            }
+
+            return ret;
+        }
+
         internal List<TiaAndSTep7DataBlockRow> _GetExpandedChlidren(S7DataBlockExpandOptions myExpOpt)
         {
             TiaAndSTep7DataBlockRow retVal = (TiaAndSTep7DataBlockRow)this.DeepCopy();
@@ -107,6 +143,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             if (this.IsArray && (this.DataType != S7DataRowType.CHAR || myExpOpt.ExpandCharArrays))
             {
                 List<TiaAndSTep7DataBlockRow> arrAsList = new List<TiaAndSTep7DataBlockRow>();
+
+                var startValues = GetStartValuesArray(StartValue);
 
                 var lastCnt = (ArrayStop.Last() - ArrayStart.Last()) + 1;
 
@@ -129,6 +167,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     tmp.WasArray = retVal.IsArray;
                     tmp.IsArray = false;
                     tmp.WasNextHigherIndex = frst; // arrAk[ArrayStart.Count - 1] == ArrayStart[ArrayStart.Count - 1];
+                    if (i < startValues.Count)
+                    {
+                        tmp.StartValue = startValues[i];
+                    }
+                    else
+                    {
+                        tmp.StartValue = Helper.DefaultValueForType(DataType);
+                    }
                     arrAsList.Add(tmp);
 
                     for (int n = arrAk.Length - 1; n >= 0; n--)

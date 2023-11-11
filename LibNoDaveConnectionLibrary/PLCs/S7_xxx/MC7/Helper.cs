@@ -945,7 +945,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             switch (b1)
             {                
                 case 0x80:
-                    anf = "P#PE ";
+                    anf = "P#P ";
                     wrt = (b3 * 0x100 + b4) >> 3;
                     break;
                 case 0x81:
