@@ -2,7 +2,7 @@
   "profiles": {
     "TiaImporter": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\Automation\\Mlog_HRL2_FA\\Mlog_HRL2_FA.ap16\" \"D:\\csharp\\git\\conveyorsystem\\Programme_Parameter\\_Build\\S7\\MlogConveyorSystem\\Export\\Main\\PLC_1\\software\\Project\\General\" \"PLC_1/software/Project/General\" \"scl\""
+      "commandLineArgs": "\"C:\\BuildAgent\\work\\5092244bb678930\\Programme_Parameter\\_Build\\S7\\MlogConveyorSystem\\template\\Software1500.ap15_1\" \"C:\\BuildAgent\\work\\5092244bb678930\\Programme_Parameter\\_Build\\S7\\MlogConveyorSystem\\Export\\Main\\PLC_1\\software\\Project\\General\" \"PLC_1/software/Project/General\" \"scl\""
     }
   }
 }

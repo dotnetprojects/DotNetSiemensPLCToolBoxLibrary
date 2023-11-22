@@ -7,10 +7,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj" />
-    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV16\DotNetSiemensPLCToolBoxLibrary.TIAV16.csproj" />
-    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV17\DotNetSiemensPLCToolBoxLibrary.TIAV17.csproj" />
-    <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV18\DotNetSiemensPLCToolBoxLibrary.TIAV18.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\bin\Debug\net461\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
+    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV16\bin\Debug\net461\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
+    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV17\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
+    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV18\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />    
+  </Target>
 </Project>
