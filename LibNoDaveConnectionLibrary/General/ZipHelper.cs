@@ -12,7 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #if SHARPZIPLIB
         private ZipFile _zipFile;
 #endif
-        private string _zipFileName;
+        private readonly string _zipFileName;
 
         public string GetFirstZipEntryWithEnding(string ending)
         {
