@@ -32,6 +32,7 @@
 	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV18\DotNetSiemensPLCToolBoxLibrary.TIAV18.csproj">
 		<Private>True</Private>
 	</ProjectReference>
+	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV19\DotNetSiemensPLCToolBoxLibrary.TIAV19.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>

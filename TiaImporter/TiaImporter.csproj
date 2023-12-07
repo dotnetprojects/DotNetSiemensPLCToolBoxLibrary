@@ -13,6 +13,7 @@
     <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV15_1\bin\Debug\net461\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
     <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV16\bin\Debug\net461\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
     <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV17\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
-    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV18\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />    
+    <Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV18\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
+	<Exec Command="copy ..\DotNetSiemensPLCToolBoxLibrary.TIAV19\bin\Debug\net48\DotNetSiemensPLCToolBoxLibrary.TIAV*.* .\bin\Debug\net48" />
   </Target>
 </Project>

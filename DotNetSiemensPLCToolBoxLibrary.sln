@@ -77,12 +77,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV15_1", "DotNetSiemensPLCToolBoxLibrary.TIAV15_1\DotNetSiemensPLCToolBoxLibrary.TIAV15_1.csproj", "{6E5B6D5D-EC1B-4C70-A4CA-6A1F7201F5A7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiaImporter", "TiaImporter\TiaImporter.csproj", "{CB0E7339-773D-4BD1-B636-4BAD6B1AA367}"
-	ProjectSection(ProjectDependencies) = postProject
-		{205D9A9A-F31F-401B-AADA-AC52188B7352} = {205D9A9A-F31F-401B-AADA-AC52188B7352}
-		{4F69CF34-C327-4D89-9FFA-580347F7FF6D} = {4F69CF34-C327-4D89-9FFA-580347F7FF6D}
-		{6E5B6D5D-EC1B-4C70-A4CA-6A1F7201F5A7} = {6E5B6D5D-EC1B-4C70-A4CA-6A1F7201F5A7}
-		{E7ACF608-6115-4ED9-9D46-007FE59A8058} = {E7ACF608-6115-4ED9-9D46-007FE59A8058}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.WinForms", "LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj", "{ECF0B1C5-3711-4C09-8B89-178D5F2428B4}"
 EndProject
@@ -95,6 +89,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV17", "DotNetSiemensPLCToolBoxLibrary.TIAV17\DotNetSiemensPLCToolBoxLibrary.TIAV17.csproj", "{4F69CF34-C327-4D89-9FFA-580347F7FF6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV18", "DotNetSiemensPLCToolBoxLibrary.TIAV18\DotNetSiemensPLCToolBoxLibrary.TIAV18.csproj", "{205D9A9A-F31F-401B-AADA-AC52188B7352}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV19", "DotNetSiemensPLCToolBoxLibrary.TIAV19\DotNetSiemensPLCToolBoxLibrary.TIAV19.csproj", "{ADC06ADE-EB03-4422-A7B4-4291AD994D91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -756,6 +752,26 @@ Global
 		{205D9A9A-F31F-401B-AADA-AC52188B7352}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{205D9A9A-F31F-401B-AADA-AC52188B7352}.Release|x86.ActiveCfg = Release|Any CPU
 		{205D9A9A-F31F-401B-AADA-AC52188B7352}.Release|x86.Build.0 = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Debug|x86.Build.0 = Debug|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|iPhone.Build.0 = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

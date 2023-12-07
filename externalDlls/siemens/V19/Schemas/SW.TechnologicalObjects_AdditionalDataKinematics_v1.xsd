@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/Kinematics/v1"
+           xmlns:tns="http://www.siemens.com/automation/Openness/SW/Motion/Kinematics/v1"
+           elementFormDefault="qualified">
+  <!-- Root element AdditionalData-->
+  <xs:element name="AdditionalData" type="tns:AdditionalData_T"/>
+
+  <!-- Complex type AdditionalData_T-->
+  <xs:complexType name="AdditionalData_T">
+    <xs:annotation>
+      <xs:documentation>Describes additional data, such as connected axes, for Kinematics TOs.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="KinematicsAxis" type="tns:TechnologicalObjectReferenceWithIndex_T" minOccurs="0" maxOccurs="4"/>
+      <xs:element name="ConveyorTrackingLeadingValues" type="tns:ConveyorTrackingLeadingValues_T" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type TechnologicalObjectReferenceWithIndex_T-->
+  <xs:complexType name="TechnologicalObjectReferenceWithIndex_T">
+    <xs:annotation>
+      <xs:documentation>Describes a reference to a Technological Object.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Index" type="tns:Integer1to4_T" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the name of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Ref" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the name of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Type" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the type of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Simple type Integer1to4_T-->
+  <xs:simpleType name="Integer1to4_T">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Complex type ConveyorTrackingLeadingValues_T-->
+  <xs:complexType name="ConveyorTrackingLeadingValues_T">
+    <xs:annotation>
+      <xs:documentation>Contains a list of leading values for conveyor tracking.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SetPointCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a leading value TO that is coupled via set points.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualValueCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a leading value TO that is coupled via actual values.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DelayedCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a leading value TO that is coupled via delayed values.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LeadingAxisProxy" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a leading value TO of type LeadingAxisProxy.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type TechnologicalObjectReference_T-->
+  <xs:complexType name="TechnologicalObjectReference_T">
+    <xs:annotation>
+      <xs:documentation>Describes a reference to a Technological Object.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Ref" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the name of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Type" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the type of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+</xs:schema>
