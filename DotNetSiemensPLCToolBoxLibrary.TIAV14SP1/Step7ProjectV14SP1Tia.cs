@@ -369,73 +369,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                 return block;
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> localbrancht
             /// <summary>
             /// Get PLC data from Tia project instance and store in plc object then return object to export
             /// </summary>
             /// <param name="plc">plc object.</param>           
-<<<<<<< HEAD
-            public Plc GetPlcData(Plc plc)
-            {
-                try
-                {
-                    Siemens.Engineering.Project prj;
-                    var parent = plcSoftware.Parent.Parent.Parent.Parent;
-                    if (parent is Siemens.Engineering.HW.DeviceUserGroup)
-                        prj = (Siemens.Engineering.Project)parent.Parent;
-                    else
-                        prj = (Siemens.Engineering.Project)parent;
-
-                    foreach (var deviceGroup in prj.DeviceGroups)
-                    {
-                        foreach (var device in deviceGroup.Devices)
-                        {
-                            plc = GetDataFromPlc(device, plc);
-
-                            if (plc.Status)
-                            {
-                                return plc;
-                            }
-                        }
-                    }
-
-                    foreach (var device in prj.Devices)
-                    {
-                        plc = GetDataFromPlc(device, plc);
-
-                        if (plc.Status)
-                        {
-                            return plc;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("An exception occurred while loading PLC data:");
-                    Console.WriteLine($"Exception Type: {ex.GetType()}");
-                    Console.WriteLine($"Message: {ex.Message}");
-                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Could not find " + this.Name + " PLC data");
-
-                return plc;
-            }
-            public Plc GetDataFromPlc(Device device, Plc plc)
-            {
-                foreach (var deviceItem in device.DeviceItems)
-=======
             public Plc GetPlcData()
             {
                 Plc plc = new Plc();
 
                 foreach (var deviceItem in this.device.DeviceItems)
->>>>>>> localbrancht
                 {
                     if (GetPlcAttribute(deviceItem, "TypeName") == "Rack")
                     {
@@ -443,11 +386,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                     }
 
                     //Find current PLC data
-<<<<<<< HEAD
-                    if (deviceItem.Name == this.Name && deviceItem.Classification is DeviceItemClassifications.CPU)
-=======
                     if (deviceItem.Classification is DeviceItemClassifications.CPU)
->>>>>>> localbrancht
                     {
                         plc.Status = true;
                         plc.Id = this.Name;
@@ -508,18 +447,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                                 }
                             }
                         }
-<<<<<<< HEAD
-                    }
-                }
-=======
                         return plc;
                     }
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Could not find " + this.Name + " PLC data");
->>>>>>> localbrancht
                 return plc;
             }
+
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
             {
                 IEnumerable<EngineeringAttributeInfo> deviceItemsAttributes = ((IEngineeringObject)deviceItems).GetAttributeInfos();

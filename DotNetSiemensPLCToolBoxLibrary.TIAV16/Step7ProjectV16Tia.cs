@@ -474,6 +474,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 return block;
             }
 
+            /// <summary>
+            /// Get PLC data from Tia project instance and store in plc object then return object to export
+            /// </summary>
+            /// <param name="plc">plc object.</param>           
             public Plc GetPlcData()
             {
                 Plc plc = new Plc();
@@ -487,7 +491,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                     //Find current PLC data
                     if (deviceItem.Classification is DeviceItemClassifications.CPU)
-                    {                        
+                    {
                         plc.Status = true;
                         plc.Id = this.Name;
                         plc.Slot = deviceItem.PositionNumber.ToString();
@@ -505,7 +509,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
                             if (nwService != null)
                             {
-                                PlcSubnet plcSubnet= new PlcSubnet();
+                                PlcSubnet plcSubnet = new PlcSubnet();
                                 plcSubnet.PlcNodes = new List<PlcNode>();
                                 plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
                                 object nodeAddress = null;
@@ -554,6 +558,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 Console.WriteLine("Could not find " + this.Name + " PLC data");
                 return plc;
             }
+
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
             {
                 IEnumerable<EngineeringAttributeInfo> deviceItemsAttributes = ((IEngineeringObject)deviceItems).GetAttributeInfos();
