@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.Hmi</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.Hmi.ConstValue">
+            <summary>
+            Represents an constant value.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.ConstValue.#ctor(System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="value">Object</param>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.ConstValue.Value">
+            <summary>
+            Gets or sets the value of the Siemens.Engineering.Hmi.ConstValue.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.ConstValue.ToString">
+            <summary>
+            Returns a String that represents the current Object.
+            </summary>
+            <returns>A String representing the current Object.</returns>
+        </member>
+        <member name="T:Siemens.Engineering.Hmi.ILimit">
+            <summary>
+            Represents an object which can serve as a limit.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.Hmi.NullableDateTime">
+            <summary>
+            Represents an instant in time, typically expressed as a date and time
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.#ctor(System.DateTime)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="dateTime">The <c>System.DateTime</c> to wrap and make nullable.</param>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.#ctor(System.DateTime,Siemens.Engineering.Hmi.DateTimeValues)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="dateTime">The <c>System.DateTime</c> to wrap and make nullable.</param>
+            <param name="dateTimeValues">The granularity of the wrapped <c>System.DateTime</c>.</param>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.#ctor(Siemens.Engineering.Hmi.NullableDateTime)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="nullableDateTime">The <c>NullableDataTime</c> to copy.</param>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="value">The string to be parsed and converted to a <c>System.DateTime</c>.</param>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.DateTimeValues">
+            <summary>
+            The granularity of the wrapped <c>System.DateTime</c>.
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Year">
+            <summary>
+            Year
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Month">
+            <summary>
+            Month
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Day">
+            <summary>
+            Day
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Hour">
+            <summary>
+            Hour
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Minute">
+            <summary>
+            Minute
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Hmi.NullableDateTime.Second">
+            <summary>
+            Second
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.op_Explicit(Siemens.Engineering.Hmi.NullableDateTime)~System.DateTime">
+            <summary>
+            The convertion operator used to convert a <c>NullableDateTime</c> to a <c>System.DateTime</c>.
+            </summary>
+            <param name="dateTime">The <c>NullableDateTime</c> to be converted.</param>
+            <returns>A <c>System.DateTime</c> created from the <c>NullableDataTime.</c></returns>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.op_Equality(Siemens.Engineering.Hmi.NullableDateTime,Siemens.Engineering.Hmi.NullableDateTime)">
+            <summary>
+            Indicates whether this objects are equal.
+            </summary>
+            <param name="a">The left value to compare.</param>
+            <param name="b">The right value to compare.</param>
+            <returns><c>true</c> if the compared items are equalivalent; otherwise, <c>false</c>>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.op_Inequality(Siemens.Engineering.Hmi.NullableDateTime,Siemens.Engineering.Hmi.NullableDateTime)">
+            <summary>
+            Indicates whether this objects are not equal.
+            </summary>
+            <param name="a">The left value to compare.</param>
+            <param name="b">The right value to compare.</param>
+            <returns><c>false</c> if the compared items are equalivalent; otherwise, <c>true</c>>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.Equals(System.Object)">
+            <summary>
+            Indicates whether this instance and a specified object are equal.
+            </summary>
+            <param name="obj">Another object to compare to.</param>
+            <returns>true if obj and this instance are the same type and represent the same value; otherwise, false.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.GetHashCode">
+            <summary>
+            Returns the hash code for this instance.
+            </summary>
+            <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Hmi.NullableDateTime.ToString">
+            <summary>
+            Converts the value of the current NullableDateTime object to its equivalent string representation.
+            </summary>
+            <returns>A string representation of the value of the current NullableDateTime object.</returns>
+        </member>
+        <member name="T:Siemens.Engineering.Hmi.DateTimeValues">
+            <summary>
+            A value indicating the granularity of the data or time (eg. Year, Month, etc.).
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Year">
+            <summary>
+            Year
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Month">
+            <summary>
+            Month
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Day">
+            <summary>
+            Day
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Hour">
+            <summary>
+            Hour
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Minute">
+            <summary>
+            Minute
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Hmi.DateTimeValues.Second">
+            <summary>
+            Second
+            </summary>
+        </member>
+    </members>
+</doc>
