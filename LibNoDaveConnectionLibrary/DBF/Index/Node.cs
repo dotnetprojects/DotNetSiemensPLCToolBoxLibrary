@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.IO;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
-namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
+namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
+{
     public class Node : ICloneable
     {
         protected int intPosition = 0;
@@ -45,14 +46,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
 
             objPreviousNode = null;
             objNextNode = null;
-
         }
 
         public void Read(BinaryReader nfile)
         {
             int i, j, k;
             long longrecn = intRecordNumber;
-            nfile.BaseStream.Position = (longrecn*512);
+            nfile.BaseStream.Position = (longrecn * 512);
             intKeysInThisNode = nfile.ReadInt32();
             for (i = 0; i < intGeneralKeysPerNode; i++)
             {
@@ -71,7 +71,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
                     key_expression[i] = new NodeKey(dBaseConverter.C_ToString(key_buffer));
                 }
 
-                j = intKeyExpressionSize%4;
+                j = intKeyExpressionSize % 4;
                 if (j > 0) j = 4 - j;
                 for (k = 0; k < j; k++)
                     nfile.ReadByte();
@@ -83,12 +83,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
             lower_level[i] = nfile.ReadInt32();
         }
 
-
         public void set_key_expression_size(int l)
         {
             intKeyExpressionSize = l;
         }
-
 
         public int PositionUp()
         {
@@ -134,7 +132,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
         {
             get { return intPosition; }
             set { this.intPosition = value; }
-
         }
 
         public int KeyRecordNumber
@@ -172,7 +169,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
             set { this.objPreviousNode = value; }
         }
 
-        #endregion
+        #endregion SET / GET
 
         public object Clone()
         {

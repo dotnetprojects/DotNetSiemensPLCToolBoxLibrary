@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
 {
     public class S5FunctionBlockRow : FunctionBlockRow
     {
-         internal override void resetByte()
-         {
-             _MC5 = null;
-         }
+        internal override void resetByte()
+        {
+            _MC5 = null;
+        }
 
         public string CalledBlock
         {
@@ -30,6 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
         //public List<S7FunctionBlockRow> CombinedCommands { get; internal set; }
 
         private string _parameter;
+
         public string Parameter
         {
             get { return _parameter; }
@@ -43,6 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
         }
 
         private SymbolTableEntry _SymbolTableEntry;
+
         public SymbolTableEntry SymbolTableEntry
         {
             get { return _SymbolTableEntry; }
@@ -59,12 +61,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             get { return _symbol; }
             set
             {
-                _symbol = value;                
+                _symbol = value;
             }
         }
         */
 
         private List<S5Parameter> _extparameter;
+
         public List<S5Parameter> ExtParameter
         {
             get { return _extparameter; }
@@ -79,6 +82,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
         public string NetworkName { get; set; }
 
         private int _jumpwidth;
+
         internal int JumpWidth
         {
             get { return _jumpwidth; }
@@ -91,6 +95,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
         }
 
         private byte[] _MC5;
+
         public byte[] MC5
         {
             get
@@ -98,7 +103,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 if (_MC5 != null)
                     return _MC5;
                 //else
-                    //return AWLtoMC7.GetMC7(this);
+                //return AWLtoMC7.GetMC7(this);
                 return null;
             }
             internal set
@@ -140,14 +145,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
             {
                 string lbl = "";
                 if (!string.IsNullOrEmpty(Label))
-                    lbl = Label + ": ";               
+                    lbl = Label + ": ";
                 if (string.IsNullOrEmpty(Comment))
                     return lbl+"Netzwerk " + " : " + NetworkName;
                 else
                     return lbl+"Netzwerk " + " : " + NetworkName + "\r\n\t Comment : " +
                            Comment.Replace("\n", "\r\n\t           ");
             }
-            else*/ if (Command == "BLD" && Parameter == "130")
+            else*/
+            if (Command == "BLD" && Parameter == "130")
             {
                 if (!string.IsNullOrEmpty(Label))
                     return Label.PadRight(4) + ": ";
@@ -174,16 +180,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 }
             }
 
-            if (Command == "" && Parameter == "" && retVal=="")
+            if (Command == "" && Parameter == "" && retVal == "")
                 return cmt;
 
             string par = "";
             if (Parameter != null)
                 par = Parameter;
 
-	        if (_SymbolTableEntry != null && !string.IsNullOrEmpty(SymbolTableEntry.Symbol))
-		        par = "-" + SymbolTableEntry.Symbol.PadRight(10, ' ') + ("          (" + SymbolTableEntry.Operand + ")").PadRight(18, ' ') +
-		              (string.IsNullOrEmpty(SymbolTableEntry.Comment) ? "" : "     //" + SymbolTableEntry.Comment);
+            if (_SymbolTableEntry != null && !string.IsNullOrEmpty(SymbolTableEntry.Symbol))
+                par = "-" + SymbolTableEntry.Symbol.PadRight(10, ' ') + ("          (" + SymbolTableEntry.Operand + ")").PadRight(18, ' ') +
+                      (string.IsNullOrEmpty(SymbolTableEntry.Comment) ? "" : "     //" + SymbolTableEntry.Comment);
 
             return (retVal + Command.PadRight(6) + par).PadRight(35) + cmt + ext; // +"Sz:" + ByteSize.ToString();
         }

@@ -1,27 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
     public static class MC5toAWL
     {
-        const int code = 0;
-        const int code1 = 1;
-        const int codelen = 2;
-        const int parlen = 3;
-        const int cmask = 4;
-        const int pmask = 5;
-        const int operation = 6;
-        const int operand = 7;
-        const int printpar = 8;
+        private const int code = 0;
+        private const int code1 = 1;
+        private const int codelen = 2;
+        private const int parlen = 3;
+        private const int cmask = 4;
+        private const int pmask = 5;
+        private const int operation = 6;
+        private const int operand = 7;
+        private const int printpar = 8;
 
-        static object[] sym = MC5LIB_SYMTAB.symtab;
+        private static object[] sym = MC5LIB_SYMTAB.symtab;
 
         public static S5FunctionBlock GetFunctionBlock(ProjectPlcBlockInfo blkInfo, byte[] block, byte[] preHeader, byte[] commentBlock, Step5ProgrammFolder prjBlkFld)
         {
@@ -79,7 +78,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     {
                         nw.AWLCode.Add(s5FunctionBlockRow);
                     }
-
                 }
 
             if (commentBlock != null)
@@ -104,7 +102,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             int lineNr = 0;
                             foreach (S5FunctionBlockRow akRow in retVal.Networks[netzwnr - 1].AWLCode)
                             {
-
                                 commandLineNumerList.Add(lineNr, akRow);
                                 lineNr++;
 
@@ -123,7 +120,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             //Todo: Throw an error when this happens???
                             //throw new Exception("Error in Block: " + retVal.BlockName);
                         }
-
                     }
                     else
                     {
@@ -138,7 +134,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     }
                     nr += len + 3;
                 }
-
             }
 
             return retVal;
@@ -163,15 +158,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     case 2:
                         tmp.S5ParameterType = S5ParameterType.E;
                         break;
+
                     case 4:
                         tmp.S5ParameterType = S5ParameterType.D;
                         break;
+
                     case 5:
                         tmp.S5ParameterType = S5ParameterType.T;
                         break;
+
                     case 7:
                         tmp.S5ParameterType = S5ParameterType.B;
                         break;
+
                     case 8:
                         tmp.S5ParameterType = S5ParameterType.A;
                         break;
@@ -185,24 +184,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         case 1:
                             tmp.S5ParameterFormat = S5ParameterFormat.KZ;
                             break;
+
                         case 2:
                             tmp.S5ParameterFormat = S5ParameterFormat.KT;
                             break;
+
                         case 4:
                             tmp.S5ParameterFormat = S5ParameterFormat.KF;
                             break;
+
                         case 8:
                             tmp.S5ParameterFormat = S5ParameterFormat.KG;
                             break;
+
                         case 16:
                             tmp.S5ParameterFormat = S5ParameterFormat.KC;
                             break;
+
                         case 32:
                             tmp.S5ParameterFormat = S5ParameterFormat.KY;
                             break;
+
                         case 64:
                             tmp.S5ParameterFormat = S5ParameterFormat.KH;
                             break;
+
                         case 128:
                             tmp.S5ParameterFormat = S5ParameterFormat.KM;
                             break;
@@ -214,12 +220,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         case 16:
                             tmp.S5ParameterFormat = S5ParameterFormat.D;
                             break;
+
                         case 32:
                             tmp.S5ParameterFormat = S5ParameterFormat.W;
                             break;
+
                         case 64:
                             tmp.S5ParameterFormat = S5ParameterFormat.BY;
                             break;
+
                         case 128:
                             tmp.S5ParameterFormat = S5ParameterFormat.BI;
                             break;
@@ -230,7 +239,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
             return retVal;
         }
-
 
         private static bool IsCall(S5FunctionBlockRow newRow)
         {
@@ -254,13 +262,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
             while (codepos < code.Length)
             {
-
                 byte mc = code[codepos];
 
-                // finde Befehle in der Symbol Tabelle 
+                // finde Befehle in der Symbol Tabelle
                 int index = find_mc5_code(code, codepos);
-
-
 
                 S5FunctionBlockRow newRow = new S5FunctionBlockRow() { Parent = block };
 
@@ -289,18 +294,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     else
 
                     {
-
                         if (oper != null)
                             newRow.Parameter = oper;
 
                         fb = IsCall(newRow);    //false;
-                                                /*if ((newRow.Command=="SPA" && newRow.Parameter=="FB") ||
-                                                    (newRow.Command=="SPB" && newRow.Parameter=="FB") ||
-                                                    (newRow.Command=="BA" && newRow.Parameter=="FX") ||
-                                                    (newRow.Command=="BAB" && newRow.Parameter=="FX"))
-                                                {
-                                                    fb = true;
-                                                }*/
+                        /*if ((newRow.Command=="SPA" && newRow.Parameter=="FB") ||
+                            (newRow.Command=="SPB" && newRow.Parameter=="FB") ||
+                            (newRow.Command=="BA" && newRow.Parameter=="FX") ||
+                            (newRow.Command=="BAB" && newRow.Parameter=="FX"))
+                        {
+                            fb = true;
+                        }*/
 
                         int par = find_mc5_param(code, codepos, index);
 
@@ -308,6 +312,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         {
                             case null:
                                 break;
+
                             case "PrintNummer":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
@@ -316,35 +321,42 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                     newRow.Parameter += " +";
                                 newRow.Parameter += wrt.ToString();
                                 break;
+
                             case "PrintKY":
                                 newRow.Parameter += BitConverter.GetBytes(par)[1].ToString() + "," +
                                                     BitConverter.GetBytes(par)[0].ToString();
                                 break;
+
                             case "PrintChar":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
                                 newRow.Parameter += ((char)(BitConverter.GetBytes((Int16)par)[0])).ToString() + ((char)(BitConverter.GetBytes((Int16)par)[1]));
                                 break;
+
                             case "PrintHEX4":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
                                 newRow.Parameter += par.ToString("X").PadLeft(4, '0');
                                 break;
+
                             case "PrintGleitpunkt":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
                                 newRow.Parameter += "gleit";
                                 break;
+
                             case "PrintHEX8":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
                                 newRow.Parameter += par.ToString("X").PadLeft(4, '0');
                                 break;
+
                             case "PrintMerkerBit":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
                                 newRow.Parameter += (par & 0x00FF).ToString() + "." + (par >> 8).ToString();
                                 break;
+
                             case "PrintSMerkerBit":
                                 if (!string.IsNullOrEmpty(newRow.Parameter))
                                     newRow.Parameter += " ";
@@ -356,10 +368,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     int _parlen = (int)((object[])sym[index])[parlen];
                     int _codelen = (int)((object[])sym[index])[codelen];
 
-
                     int btSize = (_codelen + _parlen) / 8;
 
-                    codepos += btSize; // Schleifenzähler     
+                    codepos += btSize; // Schleifenzähler
 
                     if (fb)
                     {
@@ -372,8 +383,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         newRow.ExtParameter = new List<S5Parameter>();
 
                         //newRow.ExtParameter = new List<string>();
-
-
 
                         byte[] calledfb = blkFld.GetBlockInByte(/* "S5_" + */ newRow.Parameter.Replace(" ", ""));
                         if (calledfb != null)
@@ -389,7 +398,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                             List<S5Parameter> par = GetParameters(calledfb);
                             int j = 0;
-
 
                             foreach (var s5Parameter in par)
                             {
@@ -408,7 +416,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                         int ber = code[pos];
                                         switch (s5Parameter.S5ParameterFormat)
                                         {
-
                                             case S5ParameterFormat.BI:
                                                 switch (ber & 0xf0)
                                                 {
@@ -419,30 +426,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                                 akOper += code[pos + 1].ToString();
                                                 akOper += "." + (code[pos] & 0x0f).ToString();
                                                 break;
+
                                             case S5ParameterFormat.BY:
                                                 switch (ber)
                                                 {
                                                     case 0x0a:
                                                         akOper += "MB";
                                                         break;
+
                                                     case 0x2a:
                                                         akOper += "DR";
                                                         break;
+
                                                     case 0x22:
                                                         akOper += "DL";
                                                         break;
+
                                                     default:
                                                         akOper += "";
                                                         break;
                                                 }
                                                 akOper += code[pos + 1].ToString();
                                                 break;
+
                                             case S5ParameterFormat.W:
                                                 switch (ber)
                                                 {
                                                     case 0x12:
                                                         akOper += "MW";
                                                         break;
+
                                                     case 0x32:
                                                         akOper += "DW";
                                                         break;
@@ -450,10 +463,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                                                 akOper += code[pos + 1].ToString();
                                                 break;
+
                                             case S5ParameterFormat.D:
                                                 break;
                                         }
                                         break;
+
                                     case S5ParameterType.D:
                                         int wrt = code[pos] * 0x100 + code[pos + 1];
                                         akOper += s5Parameter.S5ParameterFormat.ToString() + " ";
@@ -464,27 +479,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                                     akOper += "+";
                                                 akOper += ((Int16)wrt).ToString();
                                                 break;
+
                                             case S5ParameterFormat.KT:
                                                 //code[pos + 1]
-                                                // Bit      4-7       0-3    4-7   0-3         
+                                                // Bit      4-7       0-3    4-7   0-3
                                                 //Format: Zeitbasis, 100er, 10er, 1er
                                                 akOper += wrt.ToString().PadLeft(3, '0') + ".0";
                                                 break;
+
                                             case S5ParameterFormat.KC:
                                                 akOper += (char)code[pos] + (char)code[pos + 1];
                                                 break;
+
                                             case S5ParameterFormat.KM:
                                                 akOper += libnodave.dec2bin(code[pos]) + " ";
                                                 akOper += libnodave.dec2bin(code[pos + 1]);
                                                 break;
+
                                             case S5ParameterFormat.KY:
                                                 akOper += code[pos].ToString() + "," + code[pos + 1].ToString();
                                                 break;
+
                                             default:
                                                 akOper += ((Int16)wrt).ToString("X").PadLeft(4, '0');
                                                 break;
                                         }
                                         break;
+
                                     case S5ParameterType.B:
                                         int bst = code[pos];
                                         switch (bst)
@@ -496,10 +517,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                         akOper += code[pos + 1].ToString();
 
                                         break;
+
                                     case S5ParameterType.T:
-                                        //int abst = code[pos];                                                                                              
+                                        //int abst = code[pos];
                                         akOper += "T " + code[pos + 1].ToString();
                                         break;
+
                                     case S5ParameterType.Z:
                                         akOper += "Z " + code[pos + 1].ToString();
                                         break;
@@ -507,7 +530,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                 newPar.Name = s5Parameter.Name;
                                 newPar.Value = akOper;
                                 //newRow.ExtParameter.Add(s5Parameter.Name.PadRight(5, ' ') + ":  " + akOper);
-
                             }
                         }
                         else
@@ -531,7 +553,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     Array.Copy(code, codepos - btSize, MC5, 0, btSize);
 
                     newRow.MC5 = MC5;
-
                 }
                 else
                 {
@@ -540,10 +561,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     //throw new Exception("Code nicht in Symtab!");
                 }
                 retVal.Add(newRow);
-
             }
 
             #region Build the Jumpsmarks....
+
             int JumpCount = 1;
             int akBytePos = 0;
             Dictionary<int, S5FunctionBlockRow> ByteAdressNumerPLCFunctionBlocks = new Dictionary<int, S5FunctionBlockRow>();
@@ -590,16 +611,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         tmp.Parameter = "Error! JumpWidth :" + tmp.JumpWidth;
                         tmp.MC5 = backup;
                     }
-
-
                 }
                 akBytePos += tmp.ByteSize;
             }
-            #endregion            
+            #endregion Build the Jumpsmarks....
+
+
 
             return retVal;
         }
-
 
         private static UInt32 swab_word(UInt32 inWrt)
         {
@@ -614,14 +634,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             if (codepos + 3 < parcode.Length)
                 C32 = (parcode[codepos] << 24) | (parcode[codepos + 1] << 16) | (parcode[codepos + 2] << 8) | (parcode[codepos + 3]);
 
-
             int P16; // Code, Parameter = 16 bit
             int P32; // Code, Parameter = 32 bit
 
             int _parlen = (int)((object[])sym[index])[parlen];
             int _codelen = (int)((object[])sym[index])[codelen];
             UInt32 _pmask = System.Convert.ToUInt32(((object[])sym[index])[pmask]);
-
 
             if (_parlen == 0)
             {
@@ -663,7 +681,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                 if ((int)((object[])sym[i])[codelen] <= 16)
                 {
-
                     int _cmask = (int)((object[])sym[i])[cmask];
                     int _code = (int)((object[])sym[i])[code];
 
@@ -674,7 +691,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 }
                 else if (C32 != 0)
                 {
-
                     //C32 = swab_word(C32);
                     int _cmask = (int)((object[])sym[i])[cmask];
                     int _code = (int)((object[])sym[i])[code];

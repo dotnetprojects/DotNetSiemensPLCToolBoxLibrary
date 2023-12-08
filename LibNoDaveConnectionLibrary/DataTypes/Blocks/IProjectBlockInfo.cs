@@ -1,6 +1,4 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -16,6 +14,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         PLCBlockType BlockType { get; set; }
 
         Block GetBlock();
-
     }
 }

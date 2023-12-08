@@ -31,12 +31,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private SynchronizationContext context;
 
         public delegate void TegramRecievedEventHandler(byte[] telegramm);
+
         public event TegramRecievedEventHandler TelegrammRecievedSend;
 
         public delegate void ConnectionEstablishedEventHandler(int Number);
+
         public event ConnectionEstablishedEventHandler ConnectionEstablished;
 
         public delegate void ConnectionClosedEventHandler(int Number);
+
         public event ConnectionClosedEventHandler ConnectionClosed;
 
         private List<Thread> Threads = new List<Thread>();
@@ -48,7 +51,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             if (context == null)
                 this.context = new SynchronizationContext();
             this.connection_port = send_connection_port;
-
         }
 
         public void Connect()
@@ -62,9 +64,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             send_wait_for_conn_thread.Name = "send_wait_for_conn_thread";
             send_wait_for_conn_thread.Start();
             Threads.Add(send_wait_for_conn_thread);
-
         }
-
 
         public void SendData(string telegramm)
         {
@@ -114,7 +114,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                         ReceiveDataSendClientThread.Start();
                         Threads.Add(ReceiveDataSendClientThread);
                         //End Thread
-
                     }
                     Thread.Sleep(1000);
                 }

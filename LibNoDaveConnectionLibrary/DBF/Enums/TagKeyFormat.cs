@@ -9,6 +9,7 @@
         /// Calculated
         /// </summary>
         Calculated = 0x00,
+
         /// <summary>
         /// DataField
         /// </summary>

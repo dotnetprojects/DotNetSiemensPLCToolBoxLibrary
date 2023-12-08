@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Source
 {
@@ -15,21 +11,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
         {
             //Header
             ReadBlockType,
+
             ReadBlockNumberOrName,
             ReadBlockRetVal,
             ReadBlockRetValType,
             ParseHeaderRow,
             ParseTitle,
-            ParseVersion,   
+            ParseVersion,
             ParseAttributes,
 
             //Struktur & Parameter
             ParseStructure,
+
             ParsePara,
 
             //Aktualwerte oder AWL-Code
             ParseAWLCode,
         }
+
         /// <summary>
         /// Parses the AWL Text and returns the S7Blocks
         /// </summary>
@@ -39,7 +38,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
         public static List<S7Block> ParseAWL(string AWL, string SymbolTable)
         {
             var retVal = new List<S7Block>();
-
 
             string txt = "";
             string blockType = "";
@@ -70,11 +68,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                     {
                         blockRetValType = "";
                         akBlock = CreateBlock(blockType, blockNumberOrName, blockRetValType);
-                                   
+
                         step = ParseStep.ParseHeaderRow;
                     }
 
-                    if (step == ParseStep.ParseTitle && (c == '\n' || c == '\r')) 
+                    if (step == ParseStep.ParseTitle && (c == '\n' || c == '\r'))
                         step = ParseStep.ParseHeaderRow;
 
                     if (txt != "")
@@ -110,7 +108,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                                     switch (txt.ToUpper())
                                     {
                                         case ("TITLE"):
-                                            {                                                                                                   
+                                            {
                                                 step = ParseStep.ParseTitle;
                                                 break;
                                             }
@@ -118,7 +116,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                                             {
                                                 step = ParseStep.ParseVersion;
                                                 break;
-                                            }  
+                                            }
                                         case ("STRUCT"):
                                             {
                                                 step = ParseStep.ParseStructure;
@@ -130,9 +128,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                                                 break;
                                             }
                                         case ("VAR_INPUT"):
-                                        case ("VAR_OUTPUT"):                                        
+                                        case ("VAR_OUTPUT"):
                                         case ("VAR_IN_OUT"):
-                                        case ("VAR_TEMP"):                                        
+                                        case ("VAR_TEMP"):
                                             {
                                                 step = ParseStep.ParsePara;
 
@@ -146,9 +144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                                                 }
                                                 break;
                                             }
-
-
-                                    }                                    
+                                    }
                                     break;
                                 }
                             case ParseStep.ParseTitle:
@@ -157,7 +153,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                                     step = ParseStep.ParseHeaderRow;
                                     break;
                                 }
-                                
+
                             case ParseStep.ParseVersion:
                                 {
                                     akBlock.Version = txt;
@@ -170,11 +166,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                 }
                 else
                 {
-                    txt = txt + c;    
+                    txt = txt + c;
                 }
-                
             }
-            
+
             return retVal;
         }
 
@@ -183,7 +178,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
             var retVal = new List<Step7Attribute>();
 
             txt = txt.Replace("{", "").Replace("}", "");
-
 
             return retVal;
         }
@@ -196,14 +190,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
             {
                 case ("TYPE"):
                     {
-                        akBlock = new S7DataBlock() { BlockType = DataTypes.PLCBlockType.UDT, BlockLanguage = PLCLanguage.DB };                        
+                        akBlock = new S7DataBlock() { BlockType = DataTypes.PLCBlockType.UDT, BlockLanguage = PLCLanguage.DB };
                     }
                     break;
+
                 case ("DATA_BLOCK"):
                     {
-                        akBlock = new S7DataBlock() { BlockType = DataTypes.PLCBlockType.DB, BlockLanguage = PLCLanguage.DB };                        
+                        akBlock = new S7DataBlock() { BlockType = DataTypes.PLCBlockType.DB, BlockLanguage = PLCLanguage.DB };
                     }
                     break;
+
                 case ("FUNCTION"):
                     {
                         akBlock = new S7FunctionBlock() { BlockType = DataTypes.PLCBlockType.FC, BlockLanguage = PLCLanguage.AWL };
@@ -221,9 +217,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                         parameterRoot.Children.Add(parameterOUT);
                         parameterRoot.Children.Add(parameterINOUT);
                         parameterRoot.Children.Add(parameterSTAT);
-                        parameterRoot.Children.Add(parameterTEMP);                        
+                        parameterRoot.Children.Add(parameterTEMP);
                     }
                     break;
+
                 case ("FUNCTION_BLOCK"):
                     {
                         akBlock = new S7FunctionBlock() { BlockType = DataTypes.PLCBlockType.FB, BlockLanguage = PLCLanguage.AWL };
@@ -241,7 +238,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                     }
                     break;
             }
-            
+
             return akBlock;
         }
     }

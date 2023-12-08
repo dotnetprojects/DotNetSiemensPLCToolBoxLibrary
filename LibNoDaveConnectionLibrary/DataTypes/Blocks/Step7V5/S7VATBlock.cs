@@ -1,21 +1,18 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
 using Newtonsoft.Json;
-
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class S7VATBlock : S7Block
     {
-        
-        public List<PLCTag> Rows{ get; set;}
+        public List<PLCTag> Rows { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, Order = 50)]
         public List<S7VATRow> VATRows { get; set; }
-
 
         public S7VATBlock(byte[] hexCode, byte[] comments, int blocknumber, Encoding projEncoding)
         {
@@ -51,27 +48,33 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             var = "E";
                             tmp.TagDataSource = MemoryArea.Inputs;
                             break;
+
                         case 0x33:
                             var = "A";
                             tmp.TagDataSource = MemoryArea.Outputs;
                             break;
+
                         case 0x34:
                             tmp.TagDataSource = MemoryArea.Flags;
                             var = "M";
                             break;
+
                         case 0x35:
                             tmp.TagDataSource = MemoryArea.Datablock;
                             var = "DB";
                             db = "DB";
                             break;
+
                         case 0x38:
                             tmp.TagDataSource = MemoryArea.Timer;
                             var = "T";
                             break;
+
                         case 0x39:
                             tmp.TagDataSource = MemoryArea.Counter;
                             var = "Z";
                             break;
+
                         default:
                             var = "  0x" + hexCode[akAddr].ToString("X") + "  ";
                             break;
@@ -86,18 +89,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             tmp.TagDataType = TagDataType.Bool;
                             bit = true;
                             break;
+
                         case 0x32:
                             var += "B";
                             tmp.TagDataType = TagDataType.Byte;
                             break;
+
                         case 0x33:
                             tmp.TagDataType = TagDataType.Word;
                             var += "W";
                             break;
+
                         case 0x34:
                             tmp.TagDataType = TagDataType.Dword;
                             var += "D";
                             break;
+
                         default:
                             var = "  0x" + hexCode[akAddr].ToString("X") + "  ";
                             break;
@@ -163,6 +170,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                                 tmp.DataTypeStringFormat = "Binary";
                             }
                             break;
+
                         case 0x31:
                             if (hexCode[akAddr - 1] == 0x31)
                             {
@@ -175,44 +183,53 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                                 tmp.DataTypeStringFormat = "Hexadecimal";
                             }
                             break;
+
                         case 0x32:
                             //showtype = "DEZ";
                             tmp.DataTypeStringFormat = "Decimal";
                             break;
+
                         case 0x33:
                             //showtype = "GLEITPUNKT";
                             tmp.TagDataType = TagDataType.Float;
                             tmp.DataTypeStringFormat = "Float";
                             break;
+
                         case 0x34:
                             //showtype = "ZEICHEN";
                             tmp.TagDataType = TagDataType.Byte;
                             tmp.DataTypeStringFormat = "String";
                             break;
+
                         case 0x35:
                             //showtype = "BOOL";
                             tmp.DataTypeStringFormat = "Bool";
                             break;
+
                         case 0x36:
                             //showtype = "ZEIT";
                             tmp.TagDataType = TagDataType.Time;
                             tmp.DataTypeStringFormat = "Time";
                             break;
+
                         case 0x37:
                             //showtype = "DATUM";
                             tmp.TagDataType = TagDataType.Date;
                             tmp.DataTypeStringFormat = "S7Date";
                             break;
+
                         case 0x38:
                             tmp.TagDataType = TagDataType.S5Time;
                             tmp.DataTypeStringFormat = "S5Time";
                             //showtype = "SIMATIC_ZEIT";
                             break;
+
                         case 0x39:
                             tmp.TagDataType = TagDataType.TimeOfDay;
                             tmp.DataTypeStringFormat = "S7TimeOfDay";
                             //showtype = "TAGESZEIT";
                             break;
+
                         default:
                             var = "  0x" + hexCode[akAddr].ToString("X") + "  ";
                             break;
@@ -228,7 +245,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                     akAddr++;
                     Rows.Add(tmp);
                     VATRows.Add(new S7VATRow() { LibNoDaveValue = tmp });
-
                 }
                 else
                 {
@@ -243,11 +259,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             int akLine = -1;
             while (commentsRow < comments.Length)
             {
-                int akLen = comments[commentsRow] + comments[commentsRow + 1]*0x100;
-                int akLinePlus = comments[commentsRow + 2] + comments[commentsRow + 3]*0x100;
+                int akLen = comments[commentsRow] + comments[commentsRow + 1] * 0x100;
+                int akLinePlus = comments[commentsRow + 2] + comments[commentsRow + 3] * 0x100;
                 akLine += akLinePlus;
 
-                if (commentsRow + 6 + akLen > comments.Length) 
+                if (commentsRow + 6 + akLen > comments.Length)
                     akLen = comments.Length - commentsRow - 6;
 
                 if (akLine < VATRows.Count)
@@ -256,7 +272,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 commentsRow += 6 + akLen;
                 akLine++;
             }
-
         }
 
         public override string ToString()

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
@@ -41,7 +39,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             }
         }
 
-        public static T BytesToStruct<T>(byte[] rawData) //where T : class 
+        public static T BytesToStruct<T>(byte[] rawData) //where T : class
         {
             T result = default(T);
 

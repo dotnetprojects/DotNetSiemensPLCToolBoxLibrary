@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -22,12 +22,13 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-using System;
-using System.Collections.Generic;
+
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -43,7 +44,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 int[] Networks = new int[BitConverter.ToUInt16(BD, Start)]; // Helper.GetWord(BD[Start + 1], BD[Start])];
                 for (i = 1; i <= BitConverter.ToUInt16(BD, Start) /*Helper.GetWord(BD[Start + 1], BD[Start])*/- 1; i++)
                 {
-                    Networks[i] = BitConverter.ToUInt16(BD, Start + (i*2)); // Helper.GetWord(BD[Start + (i * 2) + 1], BD[Start + (i * 2)]);
+                    Networks[i] = BitConverter.ToUInt16(BD, Start + (i * 2)); // Helper.GetWord(BD[Start + (i * 2) + 1], BD[Start + (i * 2)]);
                 }
 
                 return Networks;
@@ -51,14 +52,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return null;
         }
 
-
         public static void NetworkCheck(ref int[] Networks, ref List<FunctionBlockRow> myVal, ref int counter, int oldpos, int pos, ref int NNr)
         {
             counter += pos - oldpos;
 
             while (NNr <= Networks.Length && counter - Networks[NNr - 1] == 0)
             {
-                myVal.Add(new S7FunctionBlockRow() {Command = "NETWORK", Parameter = NNr.ToString()});
+                myVal.Add(new S7FunctionBlockRow() { Command = "NETWORK", Parameter = NNr.ToString() });
                 counter = 0;
                 NNr++;
             }
@@ -68,9 +68,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         public static List<Network> GetNetworksList(S7FunctionBlock blk)
         {
-
             var retVal = new List<Network>();
-            
+
             S7FunctionBlockNetwork nw = null;
             if (blk.AWLCode != null)
                 foreach (S7FunctionBlockRow s7FunctionBlockRow in blk.AWLCode)
@@ -88,14 +87,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (nw == null)
                         {
-                           nw = new S7FunctionBlockNetwork();
-                           nw.Parent = blk;
-                           nw.AWLCode = new List<FunctionBlockRow>();
-                           retVal.Add(nw);
+                            nw = new S7FunctionBlockNetwork();
+                            nw.Parent = blk;
+                            nw.AWLCode = new List<FunctionBlockRow>();
+                            retVal.Add(nw);
                         }
                         nw.AWLCode.Add(s7FunctionBlockRow);
                     }
-
                 }
 
             return retVal;

@@ -9,14 +9,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     /// </summary>
     public class ProjectBlockInfo : IProjectBlockInfo
     {
-       internal int id;
-       internal Block _Block = null;
+        internal int id;
+        internal Block _Block = null;
 
-       public ProjectFolder ParentFolder { get; set; }
+        public ProjectFolder ParentFolder { get; set; }
 
-       public virtual string Name { get; set;}
+        public virtual string Name { get; set; }
 
-       public virtual PLCBlockType BlockType { get; set; }
+        public virtual PLCBlockType BlockType { get; set; }
 
         public virtual bool IsInstance
         {
@@ -24,16 +24,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         public virtual Block GetBlock()
-       {
-           IBlocksFolder blkFld = (IBlocksFolder) ParentFolder;
-           return blkFld.GetBlock(this);
-       }
+        {
+            IBlocksFolder blkFld = (IBlocksFolder)ParentFolder;
+            return blkFld.GetBlock(this);
+        }
 
         public virtual string GetSourceBlock(bool useSymbols = false)
         {
             if (ParentFolder is BlocksOfflineFolder)
             {
-                BlocksOfflineFolder blkFld = (BlocksOfflineFolder) ParentFolder;
+                BlocksOfflineFolder blkFld = (BlocksOfflineFolder)ParentFolder;
                 return blkFld.GetSourceBlock(this, useSymbols);
             }
             if (ParentFolder is SourceFolder)
@@ -45,7 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             return null;
         }
 
-       public virtual string BlockTypeString
+        public virtual string BlockTypeString
         {
             get
             {
@@ -53,65 +53,92 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                 {
                     case PLCBlockType.DB:
                         return "Datablock";
+
                     case PLCBlockType.FB:
                         return "Functionblock";
+
                     case PLCBlockType.FC:
                         return "Function";
+
                     case PLCBlockType.OB:
                         return "Organisationblock";
+
                     case PLCBlockType.UDT:
                         return "Userdatatype";
+
                     case PLCBlockType.VAT:
                         return "Variabletable";
+
                     case PLCBlockType.SFC:
                         return "Systemfunction";
+
                     case PLCBlockType.SFB:
                         return "Systemfunctionblock";
+
                     case PLCBlockType.SDB:
                         return "Systemdatablock";
+
                     case PLCBlockType.S5_DB:
                         return "S5-Datablock";
+
                     case PLCBlockType.S5_FB:
                         return "S5-Functionblock";
+
                     case PLCBlockType.S5_PB:
                         return "S5-Programblock";
+
                     case PLCBlockType.S5_FX:
                         return "S5-ExtenedFunctionblock";
+
                     case PLCBlockType.S5_SB:
                         return "S5-Stepblock";
+
                     case PLCBlockType.S5_DV:
                         return "S5-Datablock-Preheader";
+
                     case PLCBlockType.S5_FV:
                         return "S5-Functionblock-Preheader";
+
                     case PLCBlockType.S5_FVX:
                         return "S5-Extendedfunctionblock-Preheader";
+
                     case PLCBlockType.S5_DX:
                         return "S5-Extendeddatablock";
+
                     case PLCBlockType.S5_DVX:
                         return "S5-Extendeddatablock-Preheader";
+
                     case PLCBlockType.S5_OB:
                         return "S5-Organisationblock";
+
                     case PLCBlockType.S5_PK:
                         return "S5-Programcommentblock";
+
                     case PLCBlockType.S5_FK:
                         return "S5-Functioncommentblock";
+
                     case PLCBlockType.S5_FKX:
                         return "S5-Extendedfunctioncommentblock";
+
                     case PLCBlockType.S5_SK:
                         return "S5-Stepcommentblock";
+
                     case PLCBlockType.S5_DK:
                         return "S5-Datacommentblock";
+
                     case PLCBlockType.S5_DKX:
                         return "S5-Extendeddatacommentblock";
+
                     case PLCBlockType.S5_OK:
                         return "S5-Organisationcommentblock";
+
                     case PLCBlockType.S5_BB:
                         return "S5-Variabletable";
+
                     case PLCBlockType.SourceBlock:
                         return "Sourceblock";
                 }
                 return "";
-
             }
         }
 
@@ -122,7 +149,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             string retVal = Name;
             if (Deleted)
                 retVal += "$$_";
-            
+
             return retVal;
         }
 

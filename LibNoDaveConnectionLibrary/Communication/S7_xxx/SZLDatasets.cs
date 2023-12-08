@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DotNetSiemensPLCToolBoxLibrary.General;
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 {
@@ -21,6 +19,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _szlId;
+
         public UInt16 SZL_id
         {
             get { return _szlId; }
@@ -33,6 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private short _index;
+
         public short Index
         {
             get { return _index; }
@@ -41,6 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 20)]
         private string _mlfB;
+
         public string MlfB
         {
             get { return _mlfB; }
@@ -49,6 +50,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _bgTyp;
+
         public UInt16 BGTyp
         {
             get { return _bgTyp; }
@@ -57,6 +59,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ausbg1;
+
         public UInt16 Ausbg1
         {
             get { return _ausbg1; }
@@ -65,6 +68,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ausbg2;
+
         public UInt16 Ausbg2
         {
             get { return _ausbg2; }
@@ -77,6 +81,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _feature;
+
         public UInt16 Feature
         {
             get { return _feature; }
@@ -84,12 +89,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
     }
 
-
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy13Dataset : SZLDataset
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -98,6 +103,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _code;
+
         public UInt16 Code
         {
             get { return _code; }
@@ -106,6 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _size;
+
         public UInt32 Size
         {
             get { return _size; }
@@ -114,6 +121,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _mode;
+
         public UInt16 Mode
         {
             get { return _mode; }
@@ -122,6 +130,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _granu;
+
         public UInt16 Granu
         {
             get { return _granu; }
@@ -130,6 +139,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _ber1;
+
         public UInt32 Ber1
         {
             get { return _ber1; }
@@ -138,6 +148,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _belegt1;
+
         public UInt32 Belegt1
         {
             get { return _belegt1; }
@@ -146,6 +157,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _block1;
+
         public UInt32 Block1
         {
             get { return _block1; }
@@ -154,6 +166,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _ber2;
+
         public UInt32 Ber2
         {
             get { return _ber2; }
@@ -162,6 +175,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _belegt2;
+
         public UInt32 Belegt2
         {
             get { return _belegt2; }
@@ -170,6 +184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _block2;
+
         public UInt32 Block2
         {
             get { return _block2; }
@@ -177,12 +192,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
     }
 
-
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public class xy14Dataset : SZLDataset
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -191,6 +206,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _code;
+
         public UInt16 Code
         {
             get { return _code; }
@@ -199,6 +215,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _anzahl;
+
         public UInt16 Anzahl
         {
             get { return _anzahl; }
@@ -207,6 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _reman;
+
         public UInt16 Reman
         {
             get { return _reman; }
@@ -219,6 +237,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -227,6 +246,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _maxAnz;
+
         public UInt16 MaxAnz
         {
             get { return _maxAnz; }
@@ -235,6 +255,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _maxLng;
+
         public UInt16 MaxLng
         {
             get { return _maxLng; }
@@ -243,6 +264,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _maxabl;
+
         public UInt32 Maxabl
         {
             get { return _maxabl; }
@@ -255,6 +277,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -263,6 +286,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _maxAnz;
+
         public UInt16 MaxAnz
         {
             get { return _maxAnz; }
@@ -271,6 +295,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _anzAkt;
+
         public UInt16 AnzAkt
         {
             get { return _anzAkt; }
@@ -283,6 +308,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _sdbNr;
+
         public UInt16 SDBNr
         {
             get { return _sdbNr; }
@@ -291,6 +317,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _state;
+
         public UInt16 State
         {
             get { return _state; }
@@ -302,6 +329,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     public class xy18Dataset : SZLDataset
     {
         private ushort _rackNr;
+
         public UInt16 RackNr
         {
             get { return _rackNr; }
@@ -310,6 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _anzSt;
+
         public UInt16 AnzSt
         {
             get { return _anzSt; }
@@ -322,6 +351,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -329,6 +359,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ledOn;
+
         public byte Led_On
         {
             get { return _ledOn; }
@@ -336,6 +367,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ledBlink;
+
         public byte Led_Blink
         {
             get { return _ledBlink; }
@@ -348,6 +380,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _ereig;
+
         public UInt16 ereig
         {
             get { return _ereig; }
@@ -355,6 +388,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ae;
+
         public byte Ae
         {
             get { return _ae; }
@@ -362,6 +396,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ob;
+
         public byte OB
         {
             get { return _ob; }
@@ -374,6 +409,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -382,6 +418,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         private string _text;
+
         public string Text
         {
             get { return _text; }
@@ -394,6 +431,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
         private byte[] _info;
+
         public byte[] Info
         {
             get { return _info; }
@@ -402,6 +440,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _al1;
+
         public UInt16 Al1
         {
             get { return _al1; }
@@ -410,6 +449,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _al2;
+
         public UInt16 Al2
         {
             get { return _al2; }
@@ -418,6 +458,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _al3;
+
         public UInt32 Al3
         {
             get { return _al3; }
@@ -429,6 +470,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     public class xy23Dataset : SZLDataset
     {
         private byte _ae;
+
         public byte Ae
         {
             get { return _ae; }
@@ -436,6 +478,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _aeStat;
+
         public byte AeStat
         {
             get { return _aeStat; }
@@ -444,6 +487,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _aefstat;
+
         public UInt16 Aefstat
         {
             get { return _aefstat; }
@@ -451,6 +495,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _maxBst;
+
         public byte MaxBst
         {
             get { return _maxBst; }
@@ -458,6 +503,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _maxSti;
+
         public byte MaxSti
         {
             get { return _maxSti; }
@@ -465,6 +511,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _aktSiv;
+
         public byte AktSiv
         {
             get { return _aktSiv; }
@@ -472,6 +519,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _aktSib;
+
         public byte AktSib
         {
             get { return _aktSib; }
@@ -480,6 +528,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _grld;
+
         public UInt16 Grld
         {
             get { return _grld; }
@@ -488,6 +537,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _progFm;
+
         public UInt32 ProgFm
         {
             get { return _progFm; }
@@ -496,6 +546,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _syncFm;
+
         public UInt32 SyncFm
         {
             get { return _syncFm; }
@@ -508,6 +559,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _ereig;
+
         public UInt16 Ereig
         {
             get { return _ereig; }
@@ -515,6 +567,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ae;
+
         public byte Ae
         {
             get { return _ae; }
@@ -522,6 +575,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _bzüId;
+
         public byte bzü_id
         {
             get { return _bzüId; }
@@ -530,6 +584,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _res;
+
         public UInt32 Res
         {
             get { return _res; }
@@ -537,6 +592,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anlInfo1;
+
         public byte AnlInfo1
         {
             get { return _anlInfo1; }
@@ -544,6 +600,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anlInfo2;
+
         public byte AnlInfo2
         {
             get { return _anlInfo2; }
@@ -551,6 +608,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anlInfo3;
+
         public byte AnlInfo3
         {
             get { return _anlInfo3; }
@@ -558,6 +616,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anlInfo4;
+
         public byte AnlInfo4
         {
             get { return _anlInfo4; }
@@ -566,6 +625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private byte[] _time;
+
         public byte[] Time
         {
             get { return _time; }
@@ -577,6 +637,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     public class xy25Dataset : SZLDataset
     {
         private byte _tpaNr;
+
         public byte tpa_nr
         {
             get { return _tpaNr; }
@@ -584,6 +645,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _tpaUse;
+
         public byte tpa_use
         {
             get { return _tpaUse; }
@@ -591,6 +653,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _obNr;
+
         public byte ob_nr
         {
             get { return _obNr; }
@@ -598,6 +661,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _res;
+
         public byte res
         {
             get { return _res; }
@@ -610,6 +674,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -618,6 +683,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _pdu;
+
         public UInt16 Pdu
         {
             get { return _pdu; }
@@ -626,6 +692,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _anz;
+
         public UInt16 Anz
         {
             get { return _anz; }
@@ -634,6 +701,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _mpiBps;
+
         public UInt32 Mpi_bps
         {
             get { return _mpiBps; }
@@ -642,6 +710,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private uint _kbusBps;
+
         public UInt32 Kbus_bps
         {
             get { return _kbusBps; }
@@ -650,6 +719,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -662,6 +732,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -669,6 +740,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt0;
+
         public byte funkt_0
         {
             get { return _funkt0; }
@@ -676,6 +748,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt1;
+
         public byte funkt_1
         {
             get { return _funkt1; }
@@ -683,6 +756,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt2;
+
         public byte funkt_2
         {
             get { return _funkt2; }
@@ -690,6 +764,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt3;
+
         public byte funkt_3
         {
             get { return _funkt3; }
@@ -697,6 +772,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt4;
+
         public byte funkt_4
         {
             get { return _funkt4; }
@@ -704,6 +780,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt5;
+
         public byte funkt_5
         {
             get { return _funkt5; }
@@ -712,6 +789,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         private byte[] _aseg;
+
         public byte[] aseg
         {
             get { return _aseg; }
@@ -720,6 +798,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         private byte[] _eseg;
+
         public byte[] eseg
         {
             get { return _eseg; }
@@ -727,6 +806,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _trgereig0;
+
         public byte trgereig_0
         {
             get { return _trgereig0; }
@@ -734,6 +814,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _trgereig1;
+
         public byte trgereig_1
         {
             get { return _trgereig1; }
@@ -741,6 +822,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _trgereig2;
+
         public byte trgereig_2
         {
             get { return _trgereig2; }
@@ -748,6 +830,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _trgbed;
+
         public byte trgbed
         {
             get { return _trgbed; }
@@ -755,6 +838,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _pfad;
+
         public byte pfad
         {
             get { return _pfad; }
@@ -762,6 +846,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _tiefe;
+
         public byte tiefe
         {
             get { return _tiefe; }
@@ -769,6 +854,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _systrig;
+
         public byte systrig
         {
             get { return _systrig; }
@@ -776,6 +862,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ergPar;
+
         public byte erg_par
         {
             get { return _ergPar; }
@@ -784,6 +871,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ergPat1;
+
         public UInt16 erg_pat_1
         {
             get { return _ergPat1; }
@@ -792,6 +880,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ergPat2;
+
         public UInt16 erg_pat_2
         {
             get { return _ergPat2; }
@@ -800,6 +889,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _force;
+
         public UInt16 force
         {
             get { return _force; }
@@ -808,6 +898,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _time;
+
         public UInt16 time
         {
             get { return _time; }
@@ -816,6 +907,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -828,6 +920,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -835,6 +928,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt0;
+
         public byte funkt_0
         {
             get { return _funkt0; }
@@ -842,6 +936,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt1;
+
         public byte funkt_1
         {
             get { return _funkt1; }
@@ -849,6 +944,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt2;
+
         public byte funkt_2
         {
             get { return _funkt2; }
@@ -856,6 +952,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt3;
+
         public byte funkt_3
         {
             get { return _funkt3; }
@@ -864,6 +961,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _data;
+
         public Int16 Data
         {
             get { return _data; }
@@ -872,6 +970,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _anz;
+
         public Int16 Anz
         {
             get { return _anz; }
@@ -880,6 +979,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _perMin;
+
         public Int16 Per_Min
         {
             get { return _perMin; }
@@ -888,6 +988,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _perMax;
+
         public Int16 Per_Max
         {
             get { return _perMax; }
@@ -896,6 +997,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -908,6 +1010,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -915,6 +1018,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt0;
+
         public byte funkt_0
         {
             get { return _funkt0; }
@@ -922,6 +1026,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt1;
+
         public byte funkt_1
         {
             get { return _funkt1; }
@@ -929,6 +1034,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt2;
+
         public byte funkt_2
         {
             get { return _funkt2; }
@@ -936,6 +1042,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt3;
+
         public byte funkt_3
         {
             get { return _funkt3; }
@@ -943,6 +1050,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt4;
+
         public byte funkt_4
         {
             get { return _funkt4; }
@@ -950,6 +1058,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt5;
+
         public byte funkt_5
         {
             get { return _funkt5; }
@@ -957,6 +1066,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt6;
+
         public byte funkt_6
         {
             get { return _funkt6; }
@@ -964,6 +1074,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt7;
+
         public byte funkt_7
         {
             get { return _funkt7; }
@@ -971,6 +1082,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _kop;
+
         public byte kop
         {
             get { return _kop; }
@@ -978,6 +1090,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _del;
+
         public byte del
         {
             get { return _del; }
@@ -985,6 +1098,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _kett;
+
         public byte kett
         {
             get { return _kett; }
@@ -992,6 +1106,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _hoch;
+
         public byte hoch
         {
             get { return _hoch; }
@@ -999,6 +1114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ver;
+
         public byte ver
         {
             get { return _ver; }
@@ -1007,6 +1123,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 25)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -1019,6 +1136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -1026,6 +1144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt0;
+
         public byte funkt_0
         {
             get { return _funkt0; }
@@ -1033,6 +1152,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt1;
+
         public byte funkt_1
         {
             get { return _funkt1; }
@@ -1040,6 +1160,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt2;
+
         public byte funkt_2
         {
             get { return _funkt2; }
@@ -1047,6 +1168,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt3;
+
         public byte funkt_3
         {
             get { return _funkt3; }
@@ -1054,6 +1176,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt4;
+
         public byte funkt_4
         {
             get { return _funkt4; }
@@ -1061,6 +1184,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt5;
+
         public byte funkt_5
         {
             get { return _funkt5; }
@@ -1068,6 +1192,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt6;
+
         public byte funkt_6
         {
             get { return _funkt6; }
@@ -1075,6 +1200,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt7;
+
         public byte funkt_7
         {
             get { return _funkt7; }
@@ -1082,6 +1208,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anzSen;
+
         public byte anz_sen
         {
             get { return _anzSen; }
@@ -1089,6 +1216,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anzEin;
+
         public byte anz_ein
         {
             get { return _anzEin; }
@@ -1096,6 +1224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _anzMel;
+
         public byte anz_mel
         {
             get { return _anzMel; }
@@ -1104,6 +1233,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -1116,6 +1246,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -1123,6 +1254,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt0;
+
         public byte funkt_0
         {
             get { return _funkt0; }
@@ -1130,6 +1262,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt1;
+
         public byte funkt_1
         {
             get { return _funkt1; }
@@ -1137,6 +1270,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt2;
+
         public byte funkt_2
         {
             get { return _funkt2; }
@@ -1144,6 +1278,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt3;
+
         public byte funkt_3
         {
             get { return _funkt3; }
@@ -1151,6 +1286,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt4;
+
         public byte funkt_4
         {
             get { return _funkt4; }
@@ -1158,6 +1294,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt5;
+
         public byte funkt_5
         {
             get { return _funkt5; }
@@ -1165,6 +1302,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt6;
+
         public byte funkt_6
         {
             get { return _funkt6; }
@@ -1172,6 +1310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _funkt7;
+
         public byte funkt_7
         {
             get { return _funkt7; }
@@ -1179,6 +1318,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _schnell;
+
         public byte schnell
         {
             get { return _schnell; }
@@ -1187,6 +1327,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private int _zugTyp;
+
         public Int32 zug_typ
         {
             get { return _zugTyp; }
@@ -1194,6 +1335,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp0;
+
         public byte zugtyp_0
         {
             get { return _zugtyp0; }
@@ -1201,6 +1343,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp1;
+
         public byte zugtyp_1
         {
             get { return _zugtyp1; }
@@ -1208,6 +1351,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp2;
+
         public byte zugtyp_2
         {
             get { return _zugtyp2; }
@@ -1215,6 +1359,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp3;
+
         public byte zugtyp_3
         {
             get { return _zugtyp3; }
@@ -1222,6 +1367,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp4;
+
         public byte zugtyp_4
         {
             get { return _zugtyp4; }
@@ -1229,6 +1375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp5;
+
         public byte zugtyp_5
         {
             get { return _zugtyp5; }
@@ -1236,6 +1383,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp6;
+
         public byte zugtyp_6
         {
             get { return _zugtyp6; }
@@ -1243,6 +1391,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _zugtyp7;
+
         public byte zugtyp_7
         {
             get { return _zugtyp7; }
@@ -1250,6 +1399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private short _res1;
+
         public Int16 res1
         {
             get { return _res1; }
@@ -1258,6 +1408,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _maxSdEmpf;
+
         public Int16 max_sd_empf
         {
             get { return _maxSdEmpf; }
@@ -1266,6 +1417,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _maxSdAl8P;
+
         public Int16 max_sd_al8p
         {
             get { return _maxSdAl8P; }
@@ -1274,6 +1426,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _maxInst;
+
         public Int16 max_inst
         {
             get { return _maxInst; }
@@ -1282,6 +1435,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private short _res2;
+
         public Int16 res2
         {
             get { return _res2; }
@@ -1289,6 +1443,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _verbProj;
+
         public byte verb_proj
         {
             get { return _verbProj; }
@@ -1296,6 +1451,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _verbProg;
+
         public byte verb_prog
         {
             get { return _verbProg; }
@@ -1304,6 +1460,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -1316,6 +1473,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -1324,6 +1482,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _res_pg;
+
         public UInt16 Res_pg
         {
             get { return _res_pg; }
@@ -1332,6 +1491,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _res_os;
+
         public UInt16 Res_os
         {
             get { return _res_os; }
@@ -1340,6 +1500,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _u_pg;
+
         public UInt16 U_pg
         {
             get { return _u_pg; }
@@ -1348,6 +1509,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _u_os;
+
         public UInt16 U_os
         {
             get { return _u_os; }
@@ -1356,6 +1518,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _proj;
+
         public UInt16 Proj
         {
             get { return _proj; }
@@ -1364,6 +1527,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _auf;
+
         public UInt16 Auf
         {
             get { return _auf; }
@@ -1372,6 +1536,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _free;
+
         public UInt16 Free
         {
             get { return _free; }
@@ -1380,6 +1545,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _used;
+
         public UInt16 Used
         {
             get { return _used; }
@@ -1388,6 +1554,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _last;
+
         public UInt16 Last
         {
             get { return _last; }
@@ -1396,6 +1563,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -1408,6 +1576,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         //[Endian(Endianness.BigEndian)]
         private ushort _index;
+
         /// <summary>
         /// ·	Byte 1: B#16#04: CPU-Schutzstufe, Bedienschalterstellungen und Prüfsummen
         /// ·	Byte 0:Standard-CPU: B#16#00H-CPU: Bits 0 bis 2: Baugruppenträger-Nr.Bit 3: 0 = Reserve-CPU, 1 = Master-CPUBits 4 bis 7: 1111
@@ -1420,6 +1589,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _sch_schal;
+
         /// <summary>
         /// Durch Betriebsartenschalter eingestellte Schutzstufe (1, 2, 3)
         /// </summary>
@@ -1431,6 +1601,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _sch_par;
+
         /// <summary>
         /// Parametrierte Schutzstufe (0, 1, 2, 3; 0: kein Paßword vergeben, parametrierte Schutzstufe ungültig).
         /// </summary>
@@ -1442,6 +1613,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _sch_rel;
+
         /// <summary>
         /// Gültige Schutzstufe der CPU
         /// </summary>
@@ -1453,6 +1625,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _bart_sch;
+
         /// <summary>
         /// Stellung des Betriebsartenschalters (1:RUN, 2:RUN-P, 3:STOP, 4:MRES, 0:undefiniert bzw. nicht ermittelbar)
         /// </summary>
@@ -1464,6 +1637,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _anl_sch;
+
         /// <summary>
         /// Stellung des Anlaufartenschalters (1:CRST, 2:WRST, 0:undefiniert, nicht vorhanden oder nicht ermittelbar)
         /// </summary>
@@ -1475,6 +1649,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_f;
+
         /// <summary>
         /// Reserviert
         /// </summary>
@@ -1486,6 +1661,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_rel;
+
         /// <summary>
         /// Kennung für die Gültigkeit der vier folgenden Prüfsummen (0: ungültig)
         /// </summary>
@@ -1497,6 +1673,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_ver1_hw;
+
         /// <summary>
         /// Prüfsumme 1 der Hardwarekonfiguration (Intel-Format):Exklusiv-Oder-Verknüpfung über die Längen aller Systemdatenbausteine
         /// </summary>
@@ -1508,6 +1685,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_ver2_hw;
+
         /// <summary>
         /// Prüfsumme 2 der Hardwarekonfiguration (Intel-Format):Exklusiv-Oder-Verknüpfung über die Prüfsummen aller Systemdatenbausteine
         /// </summary>
@@ -1519,6 +1697,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_ver1_awp;
+
         /// <summary>
         /// Prüfsumme 1 des Anwenderprogramms (Intel-Format):Exklusiv-Oder-Verknüpfung über die Längen der folgenden Bausteine: OBs, DBs, FBs, FCs
         /// </summary>
@@ -1530,6 +1709,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _ken_ver2_awp;
+
         /// <summary>
         /// Prüfsumme 2 des Anwenderprogramms (Intel-Format):Exklusiv-Oder-Verknüpfung über die Prüfsummen der folgenden Bausteine: OBs, DBs, FBs, FCs
         /// </summary>
@@ -1541,6 +1721,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         private ushort[] _res;
+
         /// <summary>
         /// Reserviert
         /// </summary>
@@ -1552,6 +1733,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _sfc_req;
+
         /// <summary>
         /// Anforderung von Schutzstufe 2 bzw. 3 durch SFC 109 (1: Anforderung ist erfolgt)
         /// </summary>
@@ -1563,6 +1745,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _sfc_act;
+
         /// <summary>
         /// Aktivierung von Schutzstufe 2 bzw. 3 durch SFC 109 (1: Aktivierung ist erfolgt)
         /// </summary>
@@ -1574,6 +1757,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         private ushort[] _res2;
+
         /// <summary>
         /// Reserviert
         /// </summary>
@@ -1589,6 +1773,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _index;
+
         public UInt16 Index
         {
             get { return _index; }
@@ -1597,6 +1782,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _zykl;
+
         public UInt16 zykl
         {
             get { return _zykl; }
@@ -1605,6 +1791,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _korr;
+
         public UInt16 korr
         {
             get { return _korr; }
@@ -1613,6 +1800,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_0;
+
         public UInt16 clock_0
         {
             get { return _clock_0; }
@@ -1621,6 +1809,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_1;
+
         public UInt16 clock_1
         {
             get { return _clock_1; }
@@ -1629,6 +1818,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_2;
+
         public UInt16 clock_2
         {
             get { return _clock_2; }
@@ -1637,6 +1827,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_3;
+
         public UInt16 clock_3
         {
             get { return _clock_3; }
@@ -1645,6 +1836,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_4;
+
         public UInt16 clock_4
         {
             get { return _clock_4; }
@@ -1653,6 +1845,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_5;
+
         public UInt16 clock_5
         {
             get { return _clock_5; }
@@ -1661,6 +1854,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_6;
+
         public UInt16 clock_6
         {
             get { return _clock_6; }
@@ -1669,6 +1863,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _clock_7;
+
         public UInt16 clock_7
         {
             get { return _clock_7; }
@@ -1677,6 +1872,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         private ushort[] _time;
+
         public UInt16[] time
         {
             get { return _time; }
@@ -1684,6 +1880,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _bszl_0;
+
         public byte bszl_0
         {
             get { return _bszl_0; }
@@ -1691,6 +1888,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _bszl_1;
+
         public byte bszl_1
         {
             get { return _bszl_1; }
@@ -1698,6 +1896,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _bszü_0;
+
         public byte bszü_0
         {
             get { return _bszü_0; }
@@ -1706,6 +1905,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         //reserviert
         private byte _bszü_1;
+
         public byte bszü_1
         {
             get { return _bszü_1; }
@@ -1714,6 +1914,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _status;
+
         public UInt16 status
         {
             get { return _status; }
@@ -1722,6 +1923,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         private byte[] _res;
+
         public byte[] res
         {
             get { return _res; }
@@ -1729,6 +1931,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _status_valid;
+
         public byte status_valid
         {
             get { return _status_valid; }
@@ -1741,6 +1944,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _redinf;
+
         public UInt16 redinf
         {
             get { return _redinf; }
@@ -1748,6 +1952,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _mwstat1;
+
         public byte mwstat1
         {
             get { return _mwstat1; }
@@ -1755,6 +1960,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _mwstat2;
+
         public byte mwstat2
         {
             get { return _mwstat2; }
@@ -1763,6 +1969,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _hsfcinfo;
+
         public UInt16 hsfcinfo
         {
             get { return _hsfcinfo; }
@@ -1771,6 +1978,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _samfehl;
+
         public UInt16 samfehl
         {
             get { return _samfehl; }
@@ -1779,6 +1987,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _bzCpu0;
+
         public UInt16 bz_cpu_0
         {
             get { return _bzCpu0; }
@@ -1787,6 +1996,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
 
         [Endian(Endianness.BigEndian)]
         private ushort _bzCpu1;
+
         public UInt16 bz_cpu_1
         {
             get { return _bzCpu1; }
@@ -1794,6 +2004,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _cpuValid;
+
         public byte cpu_valid
         {
             get { return _cpuValid; }
@@ -1801,6 +2012,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _hsyncF;
+
         public byte hsync_f
         {
             get { return _hsyncF; }
@@ -1813,6 +2025,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
     {
         [Endian(Endianness.BigEndian)]
         private ushort _ledKennung;
+
         public UInt16 led_kennung
         {
             get { return _ledKennung; }
@@ -1820,6 +2033,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ledOn;
+
         public byte led_on
         {
             get { return _ledOn; }
@@ -1827,6 +2041,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.S7_xxx
         }
 
         private byte _ledBlink;
+
         public byte led_blink
         {
             get { return _ledBlink; }

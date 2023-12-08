@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
@@ -28,16 +27,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 
         public void UploadBlock(Block myBlk)
         {
-
         }
 
         public List<ProjectBlockInfo> readPlcBlocksList()
         {
             SymbolTable symtab = null;
             if (((S7ProgrammFolder)Parent) != null)
-                symtab = (SymbolTable)((S7ProgrammFolder) Parent).SymbolTable;
+                symtab = (SymbolTable)((S7ProgrammFolder)Parent).SymbolTable;
 
-            List<ProjectBlockInfo> retVal=new List<ProjectBlockInfo>();
+            List<ProjectBlockInfo> retVal = new List<ProjectBlockInfo>();
 
             Connection.Connect();
             List<string> blks = Connection.PLCListBlocks(PLCBlockType.AllBlocks);
@@ -92,7 +90,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
                 */
                 retVal.Add(tmp);
             }
-
 
             return retVal;
         }

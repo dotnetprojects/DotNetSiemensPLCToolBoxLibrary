@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,21 +21,22 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class MC7toDB
-    {        
+    {
         /*
         internal static PLCDataRow GetDBInterface( int Start,int Count,int AWLSt,int ValStart, byte[] BD)
         {
             PLCDataRow dbRoot = new PLCDataRow("ROOTNODE", PLCDataRowType.STRUCT);
 
             int pos, addr;
-            string addrvalue;                        
+            string addrvalue;
             addr = 0;
-            pos = Start + 4;            
+            pos = Start + 4;
             while (pos <= (Start + Count))
             {
                 switch (BD[pos + 1])
@@ -44,21 +45,26 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     case 0x09:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "IN", ref addr, AWLSt, BD);
                         break;
+
                     case 0x02:
                     case 0x9a:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "OUT", ref addr, AWLSt, BD);
                         break;
+
                     case 0x03:
                     case 0x9b:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "IN_OUT", ref addr, AWLSt, BD);
                         break;
+
                     case 0x04:
                     case 0x9C:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "STAT", ref addr, AWLSt, BD, ref dbRoot);
                         break;
+
                     case 0x05:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "TEMP", ref addr, AWLSt, BD);
                         break;
+
                     case 0x06:
                         //GetDBVarType(BD[pos], false, false, Helper.IsWithStartVal(BD[pos + 1]), "", "RET_VAL", ref addr, AWLSt, BD);
                         break;
@@ -73,7 +79,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /*
         public static string GetAdress( byte b, byte[] BD, ref int addr, int AWLSt)
         {
-
             string Result;
 
             string addrvalue = "";
@@ -87,6 +92,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         addr = addr + 1;
                     }
                     break;
+
                 case 0x02:
                 case 0x03:
                     {
@@ -97,6 +103,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             case 0x02:
                                 addrvalue = "B#16#" + (BD[(addr/8) + AWLSt]).ToString("X");
                                 break;
+
                             case 0x03:
                                 addrvalue = Helper.GetChar(BD[(addr/8) + AWLSt]);
                                 break;
@@ -105,6 +112,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         addr = addr + 8;
                     }
                     break;
+
                 case 0x04:
                 case 0x05:
                 case 0x09:
@@ -119,13 +127,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             (Helper.GetWord(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1])).ToString(
                                                 "X");
                                 break;
+
                             case 0x05:
                                 addrvalue =
                                     Convert.ToString(Helper.GetInt(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1]));
                                 break;
+
                             case 0x09:
                                 addrvalue = Helper.GetDate(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1]);
                                 break;
+
                             case 0x0C:
                                 addrvalue = Helper.GetS5Time(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1]);
                                 break;
@@ -134,6 +145,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         addr = addr + 16;
                     }
                     break;
+
                 case 0x06:
                 case 0x07:
                 case 0x08:
@@ -150,6 +162,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                              BD[(addr/8) + AWLSt + 2], BD[(addr/8) + AWLSt + 3])).
                                                 ToString("X");
                                 break;
+
                             case 0x07:
                                 addrvalue = "L#" +
                                             Convert.ToString(Helper.GetDInt(BD[(addr/8) + AWLSt],
@@ -157,14 +170,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                                             BD[(addr/8) + AWLSt + 2],
                                                                             BD[(addr/8) + AWLSt + 3]));
                                 break;
+
                             case 0x08:
                                 addrvalue = Helper.GetReal(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1],
                                                            BD[(addr/8) + AWLSt + 2], BD[(addr/8) + AWLSt + 3]);
                                 break;
+
                             case 0x0a:
                                 addrvalue = Helper.GetTOD(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1],
                                                           BD[(addr/8) + AWLSt + 2], BD[(addr/8) + AWLSt + 3]);
                                 break;
+
                             case 0x0b:
                                 addrvalue = Helper.GetDTime(BD[(addr/8) + AWLSt], BD[(addr/8) + AWLSt + 1],
                                                             BD[(addr/8) + AWLSt + 2], BD[(addr/8) + AWLSt + 3]);
@@ -174,6 +190,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         addr = addr + 32;
                     }
                     break;
+
                 case 0x0E:
                     {
                         if ((addr%16) != 0)
@@ -188,6 +205,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         addr = addr + 64;
                     }
                     break;
+
                 case 0x10:
                     {
                         if ((addr%16) != 0)
@@ -195,6 +213,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = "";
                     }
                     break;
+
                 case 0x11:
                     {
                         if ((addr%16) != 0)
@@ -202,6 +221,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = Convert.ToString(addr/8) + "." + Convert.ToString(addr%8);
                     }
                     break;
+
                 case 0x13:
                     {
                         if ((addr%16) != 0)
@@ -255,6 +275,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 1;
                     }
                     break;
+
                 case 0x02:
                     {
                         // 'BYTE';
@@ -263,6 +284,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 1;
                     }
                     break;
+
                 case 0x03:
                     {
                         // 'CHAR';
@@ -271,6 +293,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 1;
                     }
                     break;
+
                 case 0x04:
                     {
                         // 'WORD';
@@ -279,6 +302,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 2;
                     }
                     break;
+
                 case 0x05:
                     {
                         // 'INT';
@@ -287,6 +311,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 2;
                     }
                     break;
+
                 case 0x06:
                     {
                         // 'DWORD';
@@ -296,6 +321,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 4;
                     }
                     break;
+
                 case 0x07:
                     {
                         // 'DINT';
@@ -304,6 +330,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 4;
                     }
                     break;
+
                 case 0x08:
                     {
                         // 'REAL';
@@ -312,6 +339,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 4;
                     }
                     break;
+
                 case 0x09:
                     {
                         // 'DATE';
@@ -320,6 +348,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 2;
                     }
                     break;
+
                 case 0x0a:
                     {
                         // 'TIME_OF_DAY';
@@ -328,6 +357,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 4;
                     }
                     break;
+
                 case 0x0b:
                     {
                         // 'TIME';
@@ -336,6 +366,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 4;
                     }
                     break;
+
                 case 0x0C:
                     {
                         // 'S5TIME';
@@ -344,6 +375,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 2;
                     }
                     break;
+
                 case 0x0E:
                     {
                         // 'DATE_AND_TIME';
@@ -352,6 +384,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             Valpos = Valpos + 8;
                     }
                     break;
+
                 case 0x13:
                     {
                         // 'STRING';
@@ -366,13 +399,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         }
                     }
                     break;
+
                 default:
                     Result = "UNKNOWN (" + Convert.ToString(b) + ")";
                     break;
             }
             return Result;
         }
-         * 
+         *
 
         public static string GetDBVarType( byte b, bool Struct,bool Arry,bool GetVal, string structn,string typname, ref int addr, int AWLSt, byte[] BD, ref int STATp, ref string addrvalue, ref int Valpos, ref int pos, ref PLCDataRow myRow)
 		{
@@ -472,8 +506,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 		             } break;
 		        default: AddRow(GetAdress(b, BD, ref addr, AWLSt),structn + typname + Convert.ToString( STATp ),"UNKNOWN (0x" + IntToHex(b,2) + ")","",""); break;}
 		      STATp = STATp + 1;
-		   
-		return Result; }		
+
+		return Result; }
          */
     }
 }

@@ -1,12 +1,12 @@
-﻿using System.Runtime.InteropServices;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
+﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
+using System.Runtime.InteropServices;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
-{    
+{
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public struct TiaObjectHeader
     {
-        public int Size;  
+        public int Size;
         public int TypeId;
         public long InstanceId;
         public int ClusterId;
@@ -25,5 +25,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
         {
             return new TiaObjectId(TypeId, InstanceId);
         }
-    }    
+    }
 }

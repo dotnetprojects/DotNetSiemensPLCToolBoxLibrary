@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
-using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     [JsonObject(MemberSerialization.OptIn)]
     [Serializable()]
-    public class S7VATRow: INotifyPropertyChanged
+    public class S7VATRow : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -23,20 +23,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         private PLCTag _libNoDaveValue;
         private string _comment;
 
-
         [JsonProperty(Order = 1)]
         public string address
         {
-            get 
-            { 
-                if (_libNoDaveValue != null) 
+            get
+            {
+                if (_libNoDaveValue != null)
                 {
                     return _libNoDaveValue.S7FormatAddress;
                 }
                 return null;
             }
         }
-
 
         [JsonProperty(Order = 2)]
         public string datatype
@@ -51,7 +49,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        
         public PLCTag LibNoDaveValue
         {
             get { return _libNoDaveValue; }
@@ -59,6 +56,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         #region Wrapper for PLCTag Properties...
+
         [XmlIgnore]
         public virtual string S7FormatAddress
         {
@@ -167,7 +165,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             }
         }
 
-        protected  virtual void NotifyInternalPLCTagPropertyChanges()
+        protected virtual void NotifyInternalPLCTagPropertyChanges()
         {
             NotifyPropertyChanged("S7FormatAddress");
             NotifyPropertyChanged("TagDataType");
@@ -176,9 +174,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             NotifyPropertyChanged("ArraySize");
         }
 
-        #endregion
+        #endregion Wrapper for PLCTag Properties...
 
-        [JsonProperty("description",Order = 4)]
+        [JsonProperty("description", Order = 4)]
         public string Comment
         {
             get { return _comment; }

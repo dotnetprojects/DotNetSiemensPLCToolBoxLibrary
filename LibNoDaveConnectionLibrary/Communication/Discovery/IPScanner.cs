@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Net;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
 {
@@ -13,8 +13,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
     public class IPScanner
     {
         public event EventHandler<AdressFoundEventArgs> NewAdressFound;
+
         public event EventHandler<EventArgs> ScanComplete;
+
         public event EventHandler<EventArgs> RunningThreadCountChanged;
+
         public event EventHandler<ProgressChangedEventArgs> ProgressChanged;
 
         private List<ScannerWorker> _Threads = new List<ScannerWorker>();
@@ -23,11 +26,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
         private int _CheckIndex = -1;
         private TimeSpan _Timeout = new TimeSpan(0, 0, 0, 0, 500);
         private int _RunningThreads = 0;
+
         //Object so that the workers can synclock durning their End worker operation
         private object _ThreadCountLock = new object();
 
         private int _ThreadCount = 5;
+
         #region "Properties"
+
         /// <summary>
         /// specifies the timeout to wait before canceling an adress probing
         /// </summary>
@@ -90,8 +96,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
             get { return _ThreadCount; }
             set { _ThreadCount = value; }
         }
-        #endregion
 
+        #endregion "Properties"
 
         public IPScanner()
         {
@@ -185,6 +191,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
         }
 
         #region "Callbacks form Threads"
+
         private System.Net.IPEndPoint GetNextAdress()
         {
             lock (_AdressesToCheck)
@@ -227,9 +234,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                     OnScanCompleted();
             }
         }
-        #endregion
+
+        #endregion "Callbacks form Threads"
 
         #region "Event Handlers"
+
         protected virtual void OnScanCompleted()
         {
             if (ScanComplete != null)
@@ -253,7 +262,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                 NewAdressFound(this, e);
             }
         }
-        #endregion
+
+        #endregion "Event Handlers"
 
         /// <summary>
         /// Thread wrapper to wrap the thread and its local variables
@@ -269,6 +279,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
             private bool _isAborting = false;
 
             private EventWaitHandle _WaitHandle = new EventWaitHandle(true, EventResetMode.ManualReset);
+
             public bool isRunning
             {
                 get { return _IsRunning; }
@@ -314,7 +325,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                             _TCPClient.ReceiveTimeout = (int)_IPPortScanner.CheckTimeOut.TotalMilliseconds;
                             _TCPClient.SendTimeout = (int)_IPPortScanner.CheckTimeOut.TotalMilliseconds;
 
-
                             //using Async connection, because the standard .net socket ignores the timeout for Socket connects.
                             IAsyncResult result = _TCPClient.BeginConnect(Adress.Address.ToString(), Adress.Port, null, null);
                             bool success = result.AsyncWaitHandle.WaitOne((int)_IPPortScanner.CheckTimeOut.TotalMilliseconds);
@@ -329,7 +339,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                             {
                                 break; // TODO: might not be correct. Was : Exit While
                             }
-
                         }
                         catch
                         {
@@ -337,7 +346,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                         }
                         Adress = _IPPortScanner.GetNextAdress();
                     }
-
                 }
                 catch
                 {
@@ -351,13 +359,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Discovery
                     _WaitHandle.Set();
                 }
             }
-
         }
 
         public class AdressFoundEventArgs : EventArgs
         {
-
             private IPEndPoint _Adress;
+
             public IPEndPoint Adress
             {
                 get { return _Adress; }

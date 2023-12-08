@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,15 +21,16 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-using System.Collections.Generic;
+
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     /*
-     * This class is for optimizing AWL Code! It will remove unessecary Commands like multiple opens and so on!     
+     * This class is for optimizing AWL Code! It will remove unessecary Commands like multiple opens and so on!
      */
 
     public static class AWLCodeOptimizer
@@ -63,7 +64,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         akdb = myAkVal.Parameter;
                 else if (myAkVal.Label != "" || myAkVal.Command == Mnemonic.opUC[akMemnoic] || myAkVal.Command == Mnemonic.opCC[akMemnoic]) //If there is a Jump or Call, reset the actual DB!
                     akdb = "";
-
             }
             foreach (var myAkVal in delLst)
                 myPLCBlock.AWLCode.Remove(myAkVal);

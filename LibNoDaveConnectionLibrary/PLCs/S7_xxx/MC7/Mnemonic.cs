@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,7 +21,7 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
@@ -208,6 +208,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         public static string[] opXOW = new string[] { "XOW", "XOW" };
         public static string[] opZR = new string[] { "ZR", "CD" };
         public static string[] opZV = new string[] { "ZV", "CU" };
-        public static string[] opZUW = new string[] { "=", "=" };        
+        public static string[] opZUW = new string[] { "=", "=" };
     }
 }

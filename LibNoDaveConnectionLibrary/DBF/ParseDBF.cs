@@ -2,27 +2,24 @@
  * Code from http://www.codeproject.com/KB/bugs/LoadDBF.aspx
  */
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX;
 using DotNetSiemensPLCToolBoxLibrary.DBF.Structures;
 using DotNetSiemensPLCToolBoxLibrary.DBF.Structures.DBT;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using System;
+using System.Collections;
+using System.Data;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF
 {
     // Read an entire standard DBF file into a DataTable
-    public static class ParseDBF{
-
+    public static class ParseDBF
+    {
         #region DBF-Read-Funtions
+
         // Read an entire standard DBF file into a DataTable
         public static DataTable ReadDBF(string dbfFile)
         {
@@ -68,7 +65,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 br = new BinaryReader(new MemoryStream(completeBuffer));
 
                 byte[] buffer = br.ReadBytes(Marshal.SizeOf(typeof(DBFHeader)));
-                
 
                 // Marshall the header into a DBFHeader structure
                 GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
@@ -77,7 +73,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                 // Read in all the field descriptors. Per the spec, 13 (0D) marks the end of the field descriptors
                 ArrayList fields = new ArrayList();
-                
+
                 while ((13 != br.PeekChar()))
                 {
                     buffer = br.ReadBytes(Marshal.SizeOf(typeof(FieldDescriptor)));
@@ -105,27 +101,36 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     switch (field.fieldType)
                     {
                         case dBaseType.N:
-                            if (dBaseConverter.N_IsDecimal(NumberByteArray)){
+                            if (dBaseConverter.N_IsDecimal(NumberByteArray))
+                            {
                                 col = new DataColumn(field.fieldName, typeof(decimal));
-                            }else{
+                            }
+                            else
+                            {
                                 col = new DataColumn(field.fieldName, typeof(int));
                             }
                             break;
+
                         case dBaseType.C:
                             col = new DataColumn(field.fieldName, typeof(string));
                             break;
+
                         case dBaseType.T:
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
+
                         case dBaseType.D:
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
+
                         case dBaseType.L:
                             col = new DataColumn(field.fieldName, typeof(bool));
                             break;
+
                         case dBaseType.F:
                             col = new DataColumn(field.fieldName, typeof(Double));
                             break;
+
                         case dBaseType.M:
                             //Field Type Memo...
                             col = new DataColumn(field.fieldName, typeof(byte[]));
@@ -141,7 +146,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     dt.Columns.Add(col);
                 }
 
-                // Skip past the end of the header. 
+                // Skip past the end of the header.
                 (br.BaseStream).Seek(header.headerLen, SeekOrigin.Begin);
 
                 // Read in all the records
@@ -158,7 +163,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     //	continue;
                     //}
 
-
                     // Loop through each field in a record
                     fieldIndex = 0;
                     row = dt.NewRow();
@@ -169,23 +173,25 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     else
                         row[0] = false;
 
-
                     foreach (FieldDescriptor field in fields)
                     {
                         switch (field.fieldType)
                         {
                             case dBaseType.N:  // Number
                                 byte[] NumberBytes = recReader.ReadBytes(field.fieldLen);
-                                if (dBaseConverter.N_IsDecimal(NumberBytes)) {
+                                if (dBaseConverter.N_IsDecimal(NumberBytes))
+                                {
                                     row[fieldIndex + 1] = dBaseConverter.N_ToDecimal(NumberBytes);
-                                } else {
+                                }
+                                else
+                                {
                                     row[fieldIndex + 1] = dBaseConverter.N_ToInt(NumberBytes);
                                 }
                                 break;
 
                             case dBaseType.C: // String
-							    row[fieldIndex + 1] = dBaseConverter.C_ToString( recReader.ReadBytes(field.fieldLen), encoding);
-								break;
+                                row[fieldIndex + 1] = dBaseConverter.C_ToString(recReader.ReadBytes(field.fieldLen), encoding);
+                                break;
 
                             case dBaseType.M: // Memo
                                 row[fieldIndex + 1] = ReadMemoBlock(dBaseConverter.N_ToInt(recReader.ReadBytes(field.fieldLen)));
@@ -193,9 +199,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                             case dBaseType.D: // Date (YYYYMMDD)
                                 DateTime DTFromFile = dBaseConverter.D_ToDateTime(recReader.ReadBytes(8));
-                                if (DTFromFile == DateTime.MinValue) {
+                                if (DTFromFile == DateTime.MinValue)
+                                {
                                     row[fieldIndex + 1] = System.DBNull.Value;
-                                } else {
+                                }
+                                else
+                                {
                                     row[fieldIndex] = DTFromFile;
                                 }
                                 break;
@@ -219,7 +228,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     dt.Rows.Add(row);
                 }
             }
-
             catch
             {
                 throw;
@@ -242,8 +250,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
             return dt;
         }
-        #endregion
 
+        #endregion DBF-Read-Funtions
 
         //Update to the DBF Methods:
         //Create a Class DBFFile
@@ -256,28 +264,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
         #region MDX-Functions
 
-        private static void updateMDXFile(string dbfFile){
-
+        private static void updateMDXFile(string dbfFile)
+        {
         }
 
         private static void readMDXFile(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
             string mdxFile = Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".mdx";
 
-
             //TEST MDXFile
             //MDXFile mdxFileObject = new MDXFile(dbfFile, _ziphelper, DirSeperator, true);
-
         }
 
         //This function should wite a MDX file with the specified indexes.!
-       /* private static void writeMDXFile(string dbfFile, indexes)
-        {
+        /* private static void writeMDXFile(string dbfFile, indexes)
+         {
+         }*/
 
-        }*/
-        #endregion
+        #endregion MDX-Functions
 
         #region DBF-Write-Functions
+
         /// <summary>
         /// This Function Writes directly to a DBF File.
         /// It reads the Field list, and writes to the correct position.
@@ -295,7 +302,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
             int BytesToRecordStart = 0;
             long start = DateTime.Now.Ticks;
-            
+
             // If there isn't even a file, just return an empty DataTable
             if ((false == _ziphelper.FileExists(dbfFile)))
             {
@@ -317,7 +324,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                 byte[] buffer = br.ReadBytes(Marshal.SizeOf(typeof(DBFHeader)));
 
-
                 // Marshall the header into a DBFHeader structure
                 GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                 DBFHeader header = (DBFHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DBFHeader));
@@ -332,8 +338,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     fields.Add((FieldDescriptor)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(FieldDescriptor)));
                     handle.Free();
-                }               
-
+                }
 
                 char writeFieldType = ' ';
                 int writeFieldLength = 0;
@@ -343,7 +348,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                     writeFieldLength = field.fieldLen;
                     if (field.fieldName == column)
                         break;
-                    BytesToRecordStart += field.fieldLen;   
+                    BytesToRecordStart += field.fieldLen;
                 }
 
                 br.Close();
@@ -356,7 +361,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 else
                     BytesToRecordStart = 0;
 
-                (/*(FileStream)*/ bw.BaseStream).Seek(header.headerLen + row*header.recordLen + BytesToRecordStart, SeekOrigin.Begin);
+                (/*(FileStream)*/ bw.BaseStream).Seek(header.headerLen + row * header.recordLen + BytesToRecordStart, SeekOrigin.Begin);
 
                 if (column == "DELETED_FLAG")
                     if ((bool)value == true)
@@ -365,7 +370,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                         bw.Write(Encoding.ASCII.GetBytes(" "));
                 else
                 {
-
                     /*
                     number = Encoding.ASCII.GetString(recReader.ReadBytes(field.fieldLen));
                     switch (field.fieldType)
@@ -380,23 +384,29 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                                 col = new DataColumn(field.fieldName, typeof(int));
                             }
                             break;
+
                         case (byte)'C':
                             col = new DataColumn(field.fieldName, typeof(string));
                             break;
+
                         case (byte)'T':
                             // You can uncomment this to see the time component in the grid
                             //col = new DataColumn(field.fieldName, typeof(string));
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
+
                         case (byte)'D':
                             col = new DataColumn(field.fieldName, typeof(DateTime));
                             break;
+
                         case (byte)'L':
                             col = new DataColumn(field.fieldName, typeof(bool));
                             break;
+
                         case (byte)'F':
                             col = new DataColumn(field.fieldName, typeof(Double));
                             break;
+
                         case (byte)'M':
                             //Field Type Memo...
                             col = new DataColumn(field.fieldName, typeof(byte[]));
@@ -404,15 +414,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                             break;
                     }*/
 
-
                     switch (writeFieldType)
                     {
                         case 'N':
                             bw.Write(Encoding.ASCII.GetBytes(value.ToString().PadLeft(writeFieldLength, ' ')));
                             break;
+
                         case 'C':
                             bw.Write(Encoding.ASCII.GetBytes(value.ToString().PadRight(writeFieldLength, ' ')));
                             break;
+
                         default:
                             //br.Close();
                             return false;
@@ -440,11 +451,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             throw new NotImplementedException();
         }
 
-        #endregion
+        #endregion DBF-Write-Functions
 
         #region DBT (Memo) Functions
+
         private static int memoBlockLength = 512;
         private static BinaryReader dbtReader = null;
+
         private static void openMemoFile(string dbfFile, ZipHelper _ziphelper, char DirSeperator)
         {
             string dbtFile = Path.GetDirectoryName(dbfFile) + DirSeperator + Path.GetFileNameWithoutExtension(dbfFile) + ".dbt";
@@ -468,17 +481,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
                     // Marshall the header into a DBTHeader structure
                     GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                    DBTHeader header = (DBTHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (DBTHeader));
+                    DBTHeader header = (DBTHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(DBTHeader));
                     handle.Free();
 
                     memoBlockLength = header.blockLength;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                 }
             }
         }
-        private static byte[] ReadMemoBlock(int recordnumber){
+
+        private static byte[] ReadMemoBlock(int recordnumber)
+        {
             if (recordnumber == 0 || dbtReader == null)
                 return new byte[0];
 
@@ -497,8 +512,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
 
             return dbtReader.ReadBytes(bytesToRead);
         }
-        #endregion
-    }
 
-    
+        #endregion DBT (Memo) Functions
+    }
 }

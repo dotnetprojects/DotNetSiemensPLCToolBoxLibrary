@@ -15,7 +15,7 @@
 //        internal XmlNode Node { get; private set; }
 
 //        internal XmlNodeList SubNodes { get; set; }
-        
+
 //        protected Step7ProjectV11 TiaProject;
 
 //        public override string Name

@@ -2,6 +2,6 @@
 {
     public enum WPFToolboxForSiemensPLCsExceptionType
     {
-        ErrorReadingSZL=100,
+        ErrorReadingSZL = 100,
     }
 }

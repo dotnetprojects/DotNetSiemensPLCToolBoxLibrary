@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public enum S7FunctionBlockParameterDirection
     {

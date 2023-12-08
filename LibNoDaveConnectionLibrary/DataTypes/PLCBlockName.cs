@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
-{ 
+{
     /// <summary>
     /// Represents an PLC Block type and name
     /// </summary>
@@ -13,12 +10,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         /// <summary>
         /// The type of Block
         /// </summary>
-        public PLCBlockType BlockType {get; set; }
+        public PLCBlockType BlockType { get; set; }
 
         /// <summary>
         /// The number of the Block
         /// </summary>
-        public int BlockNumber {get; set;}
+        public int BlockNumber { get; set; }
 
         public PLCBlockName(PLCBlockType blockType, int blockNumber)
         {
@@ -50,23 +47,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case "FC":
                     blk = DataTypes.PLCBlockType.FC;
                     break;
+
                 case "FB":
                     blk = DataTypes.PLCBlockType.FB;
                     break;
+
                 case "DB":
                     blk = DataTypes.PLCBlockType.DB;
                     break;
+
                 case "OB":
                     blk = DataTypes.PLCBlockType.OB;
                     break;
+
                 case "SDB":
                     blk = DataTypes.PLCBlockType.SDB;
                     break;
             }
-            if (blk  == PLCBlockType.AllBlocks) throw new NotSupportedException("Unsupported Block type!");
+            if (blk == PLCBlockType.AllBlocks) throw new NotSupportedException("Unsupported Block type!");
             if (nr < 0) throw new NotSupportedException("Unsupported Block number!");
             if (nr > 99999) throw new NotSupportedException("Unsupported Block number!"); //Maximum number for requests to S7 plcs is usually 5 digits
-            
+
             BlockNumber = nr;
             BlockType = blk;
         }
@@ -86,13 +87,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         {
             return new PLCBlockName(blockName);
         }
-       
-        //TODO: Implement better version, without exception 
+
+        //TODO: Implement better version, without exception
         public bool TryParse(string blockName, out PLCBlockName plcBlockName)
         {
             try
             {
-                plcBlockName =  new PLCBlockName(blockName);
+                plcBlockName = new PLCBlockName(blockName);
                 return true;
             }
             catch

@@ -1,13 +1,11 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
-
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
@@ -24,7 +22,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 if (AWLCode != null)
                     foreach (var row in AWLCode)
                     {
-                        retVal.AddRange(((S7FunctionBlockRow) row).Dependencies);
+                        retVal.AddRange(((S7FunctionBlockRow)row).Dependencies);
                     }
 
                 retVal.AddRange(Parameter.Dependencies);
@@ -39,10 +37,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 var retVal = new List<String>();
 
-                if (AWLCode!=null)
+                if (AWLCode != null)
                     foreach (var row in AWLCode)
                     {
-                        if (((S7FunctionBlockRow)row).CalledBlock != null) 
+                        if (((S7FunctionBlockRow)row).CalledBlock != null)
                             retVal.Add(((S7FunctionBlockRow)row).CalledBlock);
                     }
 
@@ -61,16 +59,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         private S7DataRow _parameter;
+
         [JsonProperty(Order = 10)]
         public S7DataRow Parameter
         {
             get { return _parameter; }
-            set { _parameter = value;
-            NotifyPropertyChanged("Parameter");
+            set
+            {
+                _parameter = value;
+                NotifyPropertyChanged("Parameter");
             }
         }
 
         private S7DataRow _parameterWithoutTemp;
+
         internal S7DataRow ParameterWithoutTemp
         {
             get { return _parameterWithoutTemp; }
@@ -78,16 +80,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             {
                 _parameterWithoutTemp = value;
                 NotifyPropertyChanged("ParameterWithoutTemp");
-            }          
+            }
         }
 
         private List<FunctionBlockRow> _awlCode;
-        
+
         public List<FunctionBlockRow> AWLCode
         {
             get { return _awlCode; }
-            set { _awlCode = value;
-            NotifyPropertyChanged("AWLCode");
+            set
+            {
+                _awlCode = value;
+                NotifyPropertyChanged("AWLCode");
             }
         }
 
@@ -97,26 +101,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public List<Network> Networks
         {
             get { return _networks; }
-            set { _networks = value;
-            NotifyPropertyChanged("Networks");
+            set
+            {
+                _networks = value;
+                NotifyPropertyChanged("Networks");
             }
         }
 
         private string _description;
+
         [JsonProperty(Order = 8)]
         public string Description
         {
             get { return _description; }
-            set { _description = value;
-            NotifyPropertyChanged("Description");
+            set
+            {
+                _description = value;
+                NotifyPropertyChanged("Description");
             }
         }
 
         private PLCConnection.DiagnosticData _diagnosticData;
+
         public PLCConnection.DiagnosticData DiagnosticData
         {
             get { return _diagnosticData; }
-            set { _diagnosticData = value;
+            set
+            {
+                _diagnosticData = value;
                 NotifyPropertyChanged("DiagnosticData");
             }
         }
@@ -165,10 +177,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.AppendLine("VERSION : " + this.Version);
             retVal.AppendLine();
             retVal.AppendLine();
-            if(this.Attributes != null)
+            if (this.Attributes != null)
                 retVal.AppendLine(this.Attributes.First().ToString());
-            if(this.CalledBlocks.Count() > 0)
-                foreach(string called in this.CalledBlocks)
+            if (this.CalledBlocks.Count() > 0)
+                foreach (string called in this.CalledBlocks)
                     retVal.AppendLine("RuntimeBlock: : " + called);
             retVal.AppendLine();
             retVal.AppendLine();
@@ -189,7 +201,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             ber = "VAR";
                         retVal.AppendLine(ber);
                         string vars = AWLToSource.DataRowToSource(s7DataRow, "      ", ((this.BlockType != PLCBlockType.FB && this.BlockType != PLCBlockType.SFB) || parnm == "TEMP" || parnm == "STATIC")); // || parnm == "STATIC" stop showing values in VAR
-                        if (! useSymbols) {
+                        if (!useSymbols)
+                        {
                             foreach (string dependency in Dependencies)
                             {
                                 if (dependency.Contains("SFC") || dependency.Contains("SFB"))
@@ -199,17 +212,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                                     string depSymbol = "\"" + SymbolTable.GetEntryFromOperand(dependency).Symbol + "\"";
                                     vars = vars.Replace(dependency, SymbolTable.GetEntryFromOperand(dependency).Symbol);
                                 }
-                                catch 
+                                catch
                                 {
                                     Console.WriteLine("1 S7FunctionBlock.cs threw exception");
                                 }
                             }
-                        }                        
+                        }
                         retVal.Append(vars);
                         retVal.AppendLine("END_VAR");
                     }
                 }
-
             }
             retVal.AppendLine();
             retVal.AppendLine("BEGIN");
@@ -260,7 +272,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 retVal.Append(Name);
             retVal.Append("\r\n\r\n");
 
-            if (Description!=null)
+            if (Description != null)
             {
                 retVal.Append("Description\r\n\t");
                 retVal.Append(Description.Replace("\n", "\r\n\t"));
@@ -275,7 +287,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
             retVal.Append("AWL-Code\r\n");
 
-            if (AWLCode!=null)
+            if (AWLCode != null)
                 foreach (var plcFunctionBlockRow in AWLCode)
                 {
                     plcFunctionBlockRow.MnemonicLanguage = MnemonicLanguage;

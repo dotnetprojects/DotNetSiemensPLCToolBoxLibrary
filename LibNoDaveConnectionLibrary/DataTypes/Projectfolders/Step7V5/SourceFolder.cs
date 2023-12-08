@@ -1,16 +1,14 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.General;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 {
-    public class SourceFolder : Step7ProjectFolder,IBlocksFolder
+    public class SourceFolder : Step7ProjectFolder, IBlocksFolder
     {
         public string Folder { get; set; }
 
@@ -27,7 +25,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 {
                     if (!(bool)row["DELETED_FLAG"] || showDeleted)
                     {
-
                         S7ProjectSourceInfo tmp = new S7ProjectSourceInfo();
                         tmp.Deleted = (bool)row["DELETED_FLAG"];
                         tmp.Name = (string)row["NAME"];
@@ -72,7 +69,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             S7SourceBlock retVal = new S7SourceBlock();
 
             retVal.Text = GetSource(srcInfo);
-            
+
             retVal.Name = srcInfo.Name;
             retVal.ParentFolder = srcInfo.ParentFolder;
             retVal.Filename = srcInfo.Filename;
@@ -98,7 +95,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         {
             if (((Step7ProjectV5)Project)._ziphelper.FileExists(blkInfo.Filename))
             {
-                using (Stream strm = ((Step7ProjectV5) Project)._ziphelper.GetReadStream(blkInfo.Filename))
+                using (Stream strm = ((Step7ProjectV5)Project)._ziphelper.GetReadStream(blkInfo.Filename))
                     return new System.IO.StreamReader(strm, Encoding.UTF7).ReadToEnd();
             }
 

@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -22,17 +22,16 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -47,22 +46,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     ///     1-2     Again Block Number or FB Number on a DI   (but bytes swapped)
     ///     3-4     Interface Length minus this header (7 bytes)
     ///     5-6     Start Value Length
-    ///     
+    ///
     /// Interface:
     /// 7-x     Line 1
     /// x-x     Line 2
     /// ...
-    /// 
+    ///
     /// for more information about the format of an Interface Line, please look at GetVarTypeEN
     /// </remarks>
     internal static class Parameter
     {
-
         /// <summary>
         /// Represents the Type of Parameter in an Interfacer, Not the Datatype.
         /// Basically ther are In, Out, INOUT, Static and Temp
         /// The _Init versions are the same with the above, except they have initial values that must ge parsed
-        /// the _EX_ version are slightly different, in that they include an extra parameter in the interface declaration row. 
+        /// the _EX_ version are slightly different, in that they include an extra parameter in the interface declaration row.
         /// I think this parameter is some kind of BitFiled declaring some options, but i am not sure what it is? See GetVarEn function for details
         /// </summary>
         private enum ParameterType : Byte
@@ -217,7 +215,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             S7DataRow lastrow = null;
 
-
             Dictionary<string, S7Block> blkHelpers = new Dictionary<string, S7Block>();
 
             for (int n = 0; n < rows.Length; n++) // (string row in rows)
@@ -249,19 +246,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 {
                     switch (switchrow.Trim())
                     {
-
                         case "VAR_INPUT":
                             akDataRow = parameterIN;
                             akDataRow.Comment = commnew;
                             parameterRoot.Add(parameterIN);
                             parameterRootWithoutTemp.Add(parameterIN);
                             break;
+
                         case "VAR_OUTPUT":
                             akDataRow = parameterOUT;
                             akDataRow.Comment = commnew;
                             parameterRoot.Add(parameterOUT);
                             parameterRootWithoutTemp.Add(parameterOUT);
                             break;
+
                         case "VAR_IN_OUT":
                             akDataRow = parameterINOUT;
                             akDataRow.Comment = commnew;
@@ -269,6 +267,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             parameterRoot.Add(parameterINOUT);
                             parameterRootWithoutTemp.Add(parameterINOUT);
                             break;
+
                         case "VAR_TEMP":
                             akDataRow = parameterTEMP;
                             if (blkTP != PLCBlockType.DB)
@@ -277,15 +276,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 parameterRoot.Add(parameterTEMP);
                             }
                             break;
+
                         case "VAR": //Static Data on a FB
                             akDataRow = parameterSTAT;
                             parameterRoot.Add(parameterSTAT);
                             parameterRootWithoutTemp.Add(parameterSTAT);
                             break;
+
                         case "END_STRUCT;":
                         case "END_STRUCT ;":
                             akDataRow = ((S7DataRow)akDataRow.Parent);
                             break;
+
                         case "STRUCT":
                         case "END_VAR":
                         case "":
@@ -295,6 +297,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 else
                                     akDataRow.Comment += "\r\n" + commnew;
                             break;
+
                         default:
 
                             char oldChar = ' ';
@@ -484,7 +487,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                                 if (tmpBlk != null && tmpBlk.Structure != null && tmpBlk.Structure.Children != null)
                                     addRW.AddRange(((S7DataRow)tmpBlk.Structure).DeepCopy().Children);
-
                             }
                             else if (tmpType.Contains("BLOCK_FB"))
                             {
@@ -557,12 +559,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 akDataRow = addRW;
 
                             break;
-                            /* 
+                            /*
                          * Attributname kann nicht ' und } enthalten!
                          * In Attribt Values
                          * $$ zum ausmaskieren von $
                          * $' zum ausmaskieren von '
-                         * 
+                         *
                          * Beispielzeilen....
                             // "ID { S7_co := 'agag'; S7_server1 := 'connection' }: INT ;\t// Connection ID 1..16"
                             // "LADDR { S7_co := 'agag'; S7_server1 := 'connection' }: WORD ;\t// Module address in hardware configuration"
@@ -645,7 +647,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             if (blkTP != DataTypes.PLCBlockType.DB)
                 parameterRoot.Add(parameterTEMP);//All blocks, but DB's can have Temporary Stack variables
 
-            parameterRoot.Add(parameterRETVAL);  //All blocks have an RetVal      
+            parameterRoot.Add(parameterRETVAL);  //All blocks have an RetVal
             parameterRoot.ReadOnly = true;     //lock the Root in place, so it may not be changed anymore
 
             if (blkTP == DataTypes.PLCBlockType.DB && !isInstanceDB)
@@ -684,6 +686,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterIN, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
                     case ParameterType.OUT:
                     case ParameterType.OUT_Init:
                     case ParameterType.OUT_Ex:
@@ -693,6 +696,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
                     case ParameterType.IN_OUT:
                     case ParameterType.IN_OUT_Init:
                     case ParameterType.IN_OUT_Ex:
@@ -702,6 +706,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterINOUT, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
                     case ParameterType.STATIC:
                     case ParameterType.STATIC_Init:
                     case ParameterType.STATIC_Ex:
@@ -719,6 +724,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             GetVarTypeEN(parameterTEMP, DataType, false, false, VarNameGen.GetNextVarName(), interfaceBytes, ref InterfacePos, startValueBytes, ref StartValuePos, ref ParaList, ref StackNr, VarNameGen, myBlk);
                         }
                         break;
+
                     case ParameterType.RET:
                     case ParameterType.RET_Ex:
                         {
@@ -753,7 +759,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         }
 
         /// <summary>
-        /// Parses an Interface parameter Row from the Interface of an MC7 block 
+        /// Parses an Interface parameter Row from the Interface of an MC7 block
         /// </summary>
         /// <param name="currPar">The Parent Interface Row of the rows to be parsed</param>
         /// <param name="datatype">The Interface parameter data type"/></param>
@@ -846,7 +852,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case S7DataRowType.STRING:
                     //Parse String definition from Interface
                     //Strings are a special case and have neither the format of Elementary nor the collection types or Array types
-                    //the Interface itme has an fixed length of:  3 
+                    //the Interface itme has an fixed length of:  3
                     //
                     //InterfacePos + 0     = Datatype: 0x13 for String
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration
@@ -889,7 +895,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 5-6   = Upper Bound of 1st Dimension
                     //InterfacePos + 7-8   = Lower Bound of 2nd Dimension if any
                     //InterfacePos + 9-10  = Upper Bound of 2nd Dimensino if any
-                    //....      
+                    //....
                     //
                     //Parameter Type is an EX version:
                     //InterfacePos + 0     = Datatype: 0x10 for Array
@@ -900,7 +906,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 6-7   = Upper Bound of 1st Dimension
                     //InterfacePos + 8-9   = Lower Bound of 2nd Dimension if any
                     //InterfacePos + 10-11  = Upper Bound of 2nd Dimensino if any
-                    //....      
+                    //....
 
                     //There is also an special case for "Extended" paramters. These contain an additional value
                     parameterType = (ParameterType)interfaceBytes[InterfacePos + 1];
@@ -942,7 +948,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     //InterfacePos + 1     = ParameterType: see "ParameterType" Enumeration. NOTE it is never DBInit, which means it never has Initial values
                     //InterfacePos + 2     = Children count: the amount of sub-variables declared inside the structure
                     //
-                    //There is an Special Case when the Child amount is greater than 255 Children. 
+                    //There is an Special Case when the Child amount is greater than 255 Children.
                     //in that case the original childcount on InterfacePos + 2 is set to FF and the next two bytes contain the real Child count
                     //
                     //Child count > 255:
@@ -1010,6 +1016,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case ParameterType.STATIC_Init:
                 case ParameterType.STATIC_Ex_Init:
                     return true;
+
                 default: return false;
             }
         }
@@ -1029,13 +1036,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 case ParameterType.TEMP_Ex:
                 case ParameterType.RET_Ex:
                     return true;
+
                 default: return false;
             }
         }
 
         /// <summary>
-        /// Get corresponding current value. These values essentially have the exact same layout as one is familiar with the "GetBytes" interfaces 
-        /// From the communication library. 
+        /// Get corresponding current value. These values essentially have the exact same layout as one is familiar with the "GetBytes" interfaces
+        /// From the communication library.
         /// </summary>
         /// <param name="dataType">The data-type of the interface row</param>
         /// <param name="data">Either an Array containing the Start Values or Actual Values</param>
@@ -1054,76 +1062,91 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         Result = libnodave.getBit(data[valpos.ByteAddress], valpos.BitAddress);
                     }
                     break;
+
                 case S7DataRowType.BYTE:
                     { // 'BYTE';
                         Result = data[valpos.ByteAddress];
                     }
                     break;
+
                 case S7DataRowType.CHAR:
                     { // 'CHAR';
                         Result = (char)data[valpos.ByteAddress];
                     }
                     break;
+
                 case S7DataRowType.WORD:
                     { // 'WORD';
                         Result = libnodave.getU16from(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.INT:
                     { // 'INT';
                         Result = libnodave.getS16from(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.DWORD:
                     { // 'DWORD';
                         Result = libnodave.getU32from(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.DINT:
                     { // 'DINT';
                         Result = libnodave.getS32from(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.REAL:
                     { // 'REAL';
                         Result = libnodave.getFloatfrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.DATE:
                     { // 'DATE';
                         Result = libnodave.getDatefrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.TIME_OF_DAY:
                     { // 'TIME_OF_DAY';
                         Result = libnodave.getTimeOfDayfrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.TIME:
                     { // 'TIME';
                         Result = libnodave.getTimefrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.S5TIME:
                     { // 'S5TIME';
                         Result = libnodave.getS5Timefrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.DATE_AND_TIME:
-                    { // 'DATE_AND_TIME';                        
+                    { // 'DATE_AND_TIME';
                         Result = libnodave.getDateTimefrom(data, valpos.ByteAddress);
                     }
                     break;
+
                 case S7DataRowType.STRING:
                     { // 'STRING';
                         Result = Helper.GetS7String(valpos.ByteAddress, -1, data);
                     }
                     break;
+
                 case S7DataRowType.SFB: //unclear, needs to be checked
                     { // 'SFB??';
                         Result = "SFB??";
                     }
                     break;
+
                 default:
                     Result = null;
                     break;
@@ -1143,12 +1166,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         /// The Initial values are encoded in an compacted manner. Meaning, if an varialbe does not have an
         /// Initial value, it does not appear in the start values list!
         /// this means the valpos must be tracked, and increased every time an Avlue was parsed from the array
-        /// 
+        ///
         /// WARNING! be aware that for somehow reason Siemens encoded the Startvalues in Little Endien format,
-        /// completly contrary to the comon S7 format! This means one can not use the Libnodave.Getxxx funcions, 
+        /// completly contrary to the comon S7 format! This means one can not use the Libnodave.Getxxx funcions,
         /// but rather has to use the usual Bitconverter
-        /// 
-        /// Basically the logic here uses the default libnodave.getxxx function, but with Bitconverter instead. 
+        ///
+        /// Basically the logic here uses the default libnodave.getxxx function, but with Bitconverter instead.
         /// </remarks>
         internal static object GetVarInitialValue(S7DataRowType dataType, byte[] data, ref int valpos)
         {
@@ -1162,46 +1185,54 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     Result = data[valpos] > 0;
                     valpos++;
                     break;
+
                 case S7DataRowType.BYTE:
                     Result = data[valpos];
                     valpos++;
                     break;
+
                 case S7DataRowType.CHAR:
                     { // 'CHAR';
                         Result = (char)data[valpos];
                         valpos++;
                     }
                     break;
+
                 case S7DataRowType.WORD:
                     { // 'WORD';
                         Result = BitConverter.ToInt16(data, valpos);
                         valpos += 2;
                     }
                     break;
+
                 case S7DataRowType.INT:
                     { // 'INT';
                         Result = BitConverter.ToInt16(data, valpos);
                         valpos += 2;
                     }
                     break;
+
                 case S7DataRowType.DWORD:
                     { // 'DWORD';
                         Result = BitConverter.ToInt32(data, valpos);
                         valpos += 4;
                     }
                     break;
+
                 case S7DataRowType.DINT:
                     { // 'DINT';
                         Result = BitConverter.ToInt32(data, valpos);
                         valpos += 4;
                     }
                     break;
+
                 case S7DataRowType.REAL:
                     { // 'REAL';
                         Result = BitConverter.ToSingle(data, valpos);
                         valpos += 4;
                     }
                     break;
+
                 case S7DataRowType.DATE:
                     { // 'DATE';
                         DateTime tmp = new DateTime(1990, 1, 1);
@@ -1211,6 +1242,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         valpos += 2;
                     }
                     break;
+
                 case S7DataRowType.TIME_OF_DAY:
                     { // 'TIME_OF_DAY';
                         long msval = BitConverter.ToUInt32(data, valpos);
@@ -1218,6 +1250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         valpos += 4;
                     }
                     break;
+
                 case S7DataRowType.TIME:
                     { // 'TIME';
                         long msval = BitConverter.ToInt32(data, valpos);
@@ -1225,6 +1258,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         valpos += 4;
                     }
                     break;
+
                 case S7DataRowType.S5TIME:
                     { // 'S5TIME';
                         byte[] b1 = new byte[2];
@@ -1235,12 +1269,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         valpos += 2;
                     }
                     break;
+
                 case S7DataRowType.DATE_AND_TIME:
-                    { // 'DATE_AND_TIME';                        
+                    { // 'DATE_AND_TIME';
                         Result = libnodave.getDateTimefrom(data, valpos);
                         valpos += 8;
                     }
                     break;
+
                 case S7DataRowType.STRING:
                     { // 'STRING';
                         Result = Helper.GetS7String(valpos, -1, data);

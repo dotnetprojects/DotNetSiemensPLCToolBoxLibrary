@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
-    interface IFunctionBlock
+    internal interface IFunctionBlock
     {
         List<FunctionBlockRow> AWLCode { get; set; }
 

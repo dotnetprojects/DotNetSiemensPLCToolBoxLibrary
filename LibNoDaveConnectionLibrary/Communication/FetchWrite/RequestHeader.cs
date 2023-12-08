@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public struct RequestHeader
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] 
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         public char[] system_id;
 
         public byte header_length;

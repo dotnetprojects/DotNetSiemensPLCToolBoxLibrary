@@ -2,6 +2,5 @@
 {
     public class HardwareConfigFolder : Step7ProjectFolder
     {
-
     }
 }

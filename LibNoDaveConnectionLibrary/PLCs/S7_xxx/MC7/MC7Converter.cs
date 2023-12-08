@@ -23,12 +23,13 @@
  along with Libnodave; see the file COPYING.  If not, write to
  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-using System;
-using System.Collections.Generic;
+
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -39,28 +40,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     /// </summary>
     /// <remarks>
     /// The general structure of an online block is as follows:
-    /// 0  - 35 Block header 
+    /// 0  - 35 Block header
     /// 36 - x  MC7 code for Code blocks; Current data for datablocks
     /// x  - x  Interface
     /// x  - x  Start Values (if any)
     /// x  - x  Segment table
     /// Len -36 Block footer. The footer is always located 36 bytes at the end of the block
-    /// 
+    ///
     /// all values x are depending on the blocks layout and apropiate length fields must be parsed from code
     /// </remarks>
     public static class MC7Converter
     {
-
         /// <summary>
         /// This value marks the lenght of the actual Block header, and since the MC7 code immeadiatly follows,
         /// also marks the start of the MC7 Code or Datablock body
         /// </summary>
-        const int MC7Start_or_DBBodyStart = 36;
+        private const int MC7Start_or_DBBodyStart = 36;
 
         /// <summary>
         /// This value marks the lenght of the actual Block footer which is always situatted at the end of the MC7 code data
         /// </summary>
-        const int FooterLength = 36;
+        private const int FooterLength = 36;
 
         /// <summary>
         /// Parse the Header and Footer information from an online MC7Code byte blob
@@ -143,7 +143,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.SegmentTableSize = libnodave.getU16from(MC7Code, 30); //(Length of networks?)
                 int LocalDataLength = libnodave.getU16from(MC7Code, 32);
                 int MC7Length_or_DBBodyLength = libnodave.getU16from(MC7Code, 34);
-               
+
                 retBlock.InterfaceSize = InterfaceLength_or_DBActualValuesLength;
                 retBlock.LocalDataSize = LocalDataLength;
                 retBlock.CodeSize = MC7Length_or_DBBodyLength;
@@ -162,8 +162,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 retBlock.Family = Helper.GetString(FooterStart + 8, 8, MC7Code);
                 retBlock.Name = Helper.GetString(FooterStart + 16, 8, MC7Code);
                 retBlock.Version = Helper.GetVersion(MC7Code[FooterStart + 24]);
-                retBlock.CheckSum = libnodave.getU16from(MC7Code ,FooterStart + 26);
-
+                retBlock.CheckSum = libnodave.getU16from(MC7Code, FooterStart + 26);
             }
 
             return retBlock;
@@ -175,10 +174,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             return GetAWLBlock(MC7Code, MnemoricLanguage, null);
         }
 
-        [Obsolete ("use GetAWLBlock override with proper Enumeration instead of Integer in MnemoricLanguage parameter")]
+        [Obsolete("use GetAWLBlock override with proper Enumeration instead of Integer in MnemoricLanguage parameter")]
         public static S7Block GetAWLBlock(byte[] MC7Code, int MnemoricLanguage, S7ProgrammFolder prjBlkFld)
         {
-           return GetAWLBlock(MC7Code, (MnemonicLanguage)MnemoricLanguage, prjBlkFld);
+            return GetAWLBlock(MC7Code, (MnemonicLanguage)MnemoricLanguage, prjBlkFld);
         }
 
         public static S7Block GetAWLBlock(byte[] MC7Code, MnemonicLanguage MnemoricLanguage)
@@ -190,14 +189,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         {
             var retBlock = ParseBlockHeaderAndFooterFromMC7(MC7Code, MnemoricLanguage);
 
-
             if (retBlock != null)
             {
-
                 int IntfStart = MC7Start_or_DBBodyStart + retBlock.CodeSize + 3;
                 int IntfLength = BitConverter.ToUInt16(MC7Code, IntfStart) + 4;
                 int InitialValStart = IntfStart + IntfLength;
-                
+
                 if (retBlock.BlockType == PLCBlockType.DB || retBlock.BlockType == PLCBlockType.SDB) //Block is an Data block or System Data block
                 {
                     //Instance DB??
@@ -231,7 +228,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                     //Parse the Interface from MC7 code
                     ((S7DataBlock)retBlock).StructureFromMC7 = Parameter.GetInterface(interfaceBytes, startValues, actualValues, ref tmp, retBlock.BlockType, ((S7DataBlock)retBlock).IsInstanceDB, retBlock);
-
                 }
                 else //Block is an code block (FB, FC or OB)
                 {
@@ -258,7 +254,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                     int[] Networks = null;
 
-                    //Only if there are network descriptions. This generall only happens when the Block is empty and does not contain any code. 
+                    //Only if there are network descriptions. This generall only happens when the Block is empty and does not contain any code.
                     //the Network list always starts after the Interface of the block and have the following format
 
                     if (retBlock.SegmentTableSize > 0)
@@ -269,18 +265,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                     ((S7FunctionBlock)retBlock).Networks = NetWork.GetNetworksList((S7FunctionBlock)retBlock);
                 }
-
-
             }
             return retBlock;
         }
 
-        static public byte[] GetMC7Block(S7Block myBlock)
+        public static byte[] GetMC7Block(S7Block myBlock)
         {
             byte[] retByte = AWLtoMC7.GetMC7(myBlock);
 
             return retByte;
         }
-
     }
 }

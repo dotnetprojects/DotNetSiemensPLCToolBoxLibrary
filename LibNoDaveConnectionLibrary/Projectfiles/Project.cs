@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
@@ -10,9 +10,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
     {
         public abstract ProjectType ProjectType { get; }
 
-        public string ProjectFile{ get; set;}
+        public string ProjectFile { get; set; }
 
-        public string ProjectFolder{ get; set;}
+        public string ProjectFolder { get; set; }
 
         public String ProjectName { get; set; }
 
@@ -51,10 +51,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             string retVal = ProjectName;
 
             if (ProjectName == null)
-                retVal= ProjectFile;
+                retVal = ProjectFile;
 
             return retVal;
         }
-
     }
 }

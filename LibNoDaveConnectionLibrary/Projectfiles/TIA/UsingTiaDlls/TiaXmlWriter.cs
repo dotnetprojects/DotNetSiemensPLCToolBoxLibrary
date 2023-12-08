@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
 {
-   
     internal class TiaXmlWriter : XmlWriter
     {
         internal enum WriteStepType
@@ -47,7 +43,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
             }
         }
 
-
         private void parseCurrentElementObject()
         {
             if (currentElement == "StorageObject")
@@ -60,13 +55,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
         public override void WriteEndElement()
         {
             currentElement = null;
-
-           
         }
 
         public override void WriteFullEndElement()
         {
-
         }
 
         public override void WriteStartAttribute(string prefix, string localName, string ns)
@@ -79,10 +71,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
             attributeHolder.Add(currentAttribute, currentString);
 
             currentAttribute = null;
-            currentString = null;         
+            currentString = null;
         }
-        
-       
 
         public override void WriteString(string text)
         {
@@ -97,93 +87,74 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
             }
         }
 
-       
-
         public override void WriteRaw(char[] buffer, int index, int count)
         {
-
         }
 
         #region not used
 
         public override void WriteStartDocument()
         {
-
         }
 
         public override void WriteStartDocument(bool standalone)
         {
-
         }
 
         public override void WriteEndDocument()
         {
-
         }
 
         public override void WriteDocType(string name, string pubid, string sysid, string subset)
         {
-
         }
 
         public override void WriteCData(string text)
         {
-
         }
 
         public override void WriteComment(string text)
         {
-
         }
 
         public override void WriteProcessingInstruction(string name, string text)
         {
-
         }
 
         public override void WriteEntityRef(string name)
         {
-
         }
 
         public override void WriteCharEntity(char ch)
         {
-
         }
 
         public override void WriteWhitespace(string ws)
         {
-
         }
 
         public override void WriteSurrogateCharEntity(char lowChar, char highChar)
         {
-
         }
 
         public override void WriteChars(char[] buffer, int index, int count)
         {
-
         }
-        
+
         public override void WriteRaw(string data)
         {
-
         }
 
         public override void WriteBase64(byte[] buffer, int index, int count)
         {
-
         }
 
         public override void Close()
         {
-
         }
 
         public override void Flush()
         {
-
         }
 
         public override string LookupPrefix(string ns)
@@ -196,6 +167,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
             get { return WriteState.Start; }
         }
 
-        #endregion
+        #endregion not used
     }
 }

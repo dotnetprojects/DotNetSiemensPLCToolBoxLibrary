@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
 {
@@ -10,8 +7,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
     public struct TiaMarker
     {
         public byte StartByte;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
         public string MarkerText;
+
         public long TimeStampTicks;
         public byte EndByte;
 

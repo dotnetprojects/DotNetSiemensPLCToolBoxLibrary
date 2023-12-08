@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 {
     public enum OperationCode : byte
     {

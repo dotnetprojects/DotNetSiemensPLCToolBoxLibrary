@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 {
     public enum OrgTypes : byte
     {
@@ -19,7 +14,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
         DBx = 10,  //DX
         AnalogIox = 11, //QB
         SpecialFlags = 16, //SM
-
-
     }
 }

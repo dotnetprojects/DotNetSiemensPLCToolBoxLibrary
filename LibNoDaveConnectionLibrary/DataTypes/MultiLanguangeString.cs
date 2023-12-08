@@ -15,7 +15,7 @@
 //        public MultiLanguangeString(XmlNode node)
 //        {
 //            this.node = node;
-            
+
 //        }
 
 //        public string GetText(CultureInfo cultureInfo, Step7ProjectV11 tiaProject)
@@ -29,10 +29,8 @@
 //                    return val.Value;
 //            }
 
-
 //            var lidNode = node.SelectSingleNode("attribSet[@id='" + tiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.ObjectFrame.ICoreTextExtendedData").Key + "']/attrib[@name='DefaultText']");
-               
-           
+
 //            return lidNode.InnerText;
 //        }
 //    }

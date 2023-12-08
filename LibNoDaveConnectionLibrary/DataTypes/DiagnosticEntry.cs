@@ -1,6 +1,5 @@
-﻿using System;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using System;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
@@ -13,42 +12,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 #endif
 
 #if !IPHONE
+
         private System.ComponentModel.ComponentResourceManager _MyResource
 #else
 		private System.Resources.ResourceManager _MyResource
 #endif
-		{
+        {
             get
             {
                 if (_Resources == null)
 #if !IPHONE
                     _Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
 #else
-					_Resources = new System.Resources.ResourceManager(typeof(DiagnosticEntry));			
+					_Resources = new System.Resources.ResourceManager(typeof(DiagnosticEntry));
 #endif
-				return _Resources;
+                return _Resources;
             }
         }
 
         private DateTime _TimeStamp;
-        public DateTime TimeStamp { get { return _TimeStamp; } }
+        public DateTime TimeStamp
+        { get { return _TimeStamp; } }
 
-        public string Message { get { return _MyResource.GetString("ID_0x" + _id.ToString("X")); } }
+        public string Message
+        { get { return _MyResource.GetString("ID_0x" + _id.ToString("X")); } }
 
         private int _id;
-        public int ID { get { return _id; } }
+        public int ID
+        { get { return _id; } }
 
         private int _ob;
-        
+
         private byte[] _extInfo;
 
-        
         public DiagnosticEntry(byte[] data)
         {
             //_Resources = new System.ComponentModel.ComponentResourceManager(typeof(DiagnosticEntry));
             _TimeStamp = libnodave.getDateTimefrom(data, 12);
-            _id = data[0] * 256 + data[1]; 
-            //Bytes 2-11 additional Info!        
+            _id = data[0] * 256 + data[1];
+            //Bytes 2-11 additional Info!
         }
 
         /*
@@ -85,6 +87,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x2943):
                     _ob = 121;
                     break;
+
                 case (0x3501):
                 case (0x3502):
                 case (0x3503):
@@ -97,6 +100,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x350B):
                     _ob = 80;
                     break;
+
                 case (0x3921):
                 case (0x3821):
                 case (0x3922):
@@ -117,12 +121,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x3833):
                     _ob = 81;
                     break;
+
                 case (0x3942):
                     _ob = 82;
                     break;
+
                 case (0x3842):
                     _ob = 82;
                     break;
+
                 case (0x3951):
                 case (0x3954):
                 case (0x3854):
@@ -141,6 +148,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x3968):
                     _ob = 83;
                     break;
+
                 case (0x3571):
                 case (0x3572):
                 case (0x3573):
@@ -151,10 +159,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x357A):
                     _ob = 88;
                     break;
+
                 case (0x3884):
                 case (0x3984):
                     _ob = 83;
                     break;
+
                 case (0x3981):
                 case (0x3881):
                 case (0x3582):
@@ -164,6 +174,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x3587):
                     _ob = 84;
                     break;
+
                 case (0x35A1):
                 case (0x35A2):
                 case (0x35A3):
@@ -177,6 +188,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x38B4):
                     _ob = 85;
                     break;
+
                 case (0x38C1):
                 case (0x39C1):
                 case (0x38C2):
@@ -197,6 +209,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0x39CE):
                     _ob = 86;
                     break;
+
                 case (0x35D2):
                 case (0x35D3):
                 case (0x35D4):
@@ -210,9 +223,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                     _ob = 87;
                     break;
 
-
-
                 #region VIPA Additional Errorcodes
+
                 case (0xE003):
                 case (0xE004):
                 case (0xE005):
@@ -288,9 +300,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 case (0xEA99):
                 case (0xEE00):
                     break;
-                #endregion
 
-            }         
+                #endregion VIPA Additional Errorcodes
+            }
         }*/
 
         public override string ToString()

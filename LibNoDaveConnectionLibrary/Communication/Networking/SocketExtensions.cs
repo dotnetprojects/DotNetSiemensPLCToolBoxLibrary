@@ -21,11 +21,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             {
                 // Array to hold input values.
                 var input = new[]
-            	{
-            		(time == 0 || interval == 0) ? 0UL : 1UL, // on or off
+                {
+                    (time == 0 || interval == 0) ? 0UL : 1UL, // on or off
 					time,
-					interval
-				};
+                    interval
+                };
 
                 // Pack input into byte struct.
                 byte[] inValue = new byte[3 * BytesPerLong];
@@ -39,10 +39,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
                 // Create bytestruct for result (bytes pending on server socket).
                 byte[] outValue = BitConverter.GetBytes(0);
-                
+
                 // Write SIO_VALS to Socket IOControl.
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);                
-                socket.IOControl(IOControlCode.KeepAliveValues, inValue, outValue);               
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+                socket.IOControl(IOControlCode.KeepAliveValues, inValue, outValue);
             }
             catch (SocketException e)
             {

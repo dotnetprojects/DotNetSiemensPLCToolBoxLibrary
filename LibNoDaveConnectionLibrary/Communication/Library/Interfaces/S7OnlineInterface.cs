@@ -7,7 +7,6 @@
 
 //namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces
 //{
-
 //    public class S7OnlineInterface : Interface
 //    {
 //        private enum com_class
@@ -15,7 +14,7 @@
 //            request = 0x00,
 //            confirm = 0x01,
 //            indication = 0x02
-//        }; 
+//        };
 
 //        private enum service_code
 //        {
@@ -45,7 +44,7 @@
 //            load_routing_table = 0x21,       /* only for network-connection !!!                                      */
 //            deactivate_routing_table = 0x22,       /* only for network-connection !!!                                      */
 //            get_direct_conn = 0x23,       /* gets adress of next station                                          */
-//        }; 
+//        };
 
 //        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
 //        private struct S7OexchangeBlock
@@ -74,28 +73,28 @@
 //            //End of Header
 
 //            //Application Block
-//            public byte application_block_opcode; // class of communication   (00 = request, 01=confirm, 02=indication)                                             
-//            public byte application_block_subsystem; // number of source-task (only necessary for MTK-user !!!!!)             
-//            public ushort application_block_id; // identification of FDL-USER                                            
-//            public ushort application_block_service; // identification of service (00 -> SDA, send data with acknowlege)                                         
-//            public byte application_block_local_address_station; // only for network-connection !!!                                       
-//            public byte application_block_local_address_segment; // only for network-connection !!!                                      
-//            public byte application_block_ssap; // source-service-access-point                                          
-//            public byte application_block_dsap; // destination-service-access-point                                      
-//            public byte application_block_remote_address_station; // address of the remote-station                                        
-//            public byte application_block_remote_address_segment; // only for network-connection !!!                                      
-//            public ushort application_block_service_class; // priority of service                                  
-//            public Int32 application_block_receive_l_sdu_buffer_ptr; // address and length of received netto-data, exception:                
-//            public byte application_block_receive_l_sdu_length; // address and length of received netto-data, exception:                    
-//            public byte application_block_reserved_1; // (reserved for FDL !!!!!!!!!!)                                        
-//            public byte application_block_reserved; // (reserved for FDL !!!!!!!!!!) 
-//            public Int32 application_block_send_l_sdu_buffer_ptr; // address and length of send-netto-data, exception:                    
-//            public byte application_block_send_l_sdu_length; // address and length of send-netto-data, exception:                        
-//            // 1. csrd  : length means number of POLL-elements       
-//            // 2. await_indication    : concatenation of application-blocks and   
-//            //    withdraw_indication : number of application-blocks               
-//            public ushort application_block_l_status; // link-status of service or update_state for srd-indication           
-//            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public ushort[] application_block_reserved_2; // for concatenated lists       (reserved for FDL !!!!!!!!!!)          
+//            public byte application_block_opcode; // class of communication   (00 = request, 01=confirm, 02=indication)
+//            public byte application_block_subsystem; // number of source-task (only necessary for MTK-user !!!!!)
+//            public ushort application_block_id; // identification of FDL-USER
+//            public ushort application_block_service; // identification of service (00 -> SDA, send data with acknowlege)
+//            public byte application_block_local_address_station; // only for network-connection !!!
+//            public byte application_block_local_address_segment; // only for network-connection !!!
+//            public byte application_block_ssap; // source-service-access-point
+//            public byte application_block_dsap; // destination-service-access-point
+//            public byte application_block_remote_address_station; // address of the remote-station
+//            public byte application_block_remote_address_segment; // only for network-connection !!!
+//            public ushort application_block_service_class; // priority of service
+//            public Int32 application_block_receive_l_sdu_buffer_ptr; // address and length of received netto-data, exception:
+//            public byte application_block_receive_l_sdu_length; // address and length of received netto-data, exception:
+//            public byte application_block_reserved_1; // (reserved for FDL !!!!!!!!!!)
+//            public byte application_block_reserved; // (reserved for FDL !!!!!!!!!!)
+//            public Int32 application_block_send_l_sdu_buffer_ptr; // address and length of send-netto-data, exception:
+//            public byte application_block_send_l_sdu_length; // address and length of send-netto-data, exception:
+//            // 1. csrd  : length means number of POLL-elements
+//            // 2. await_indication    : concatenation of application-blocks and
+//            //    withdraw_indication : number of application-blocks
+//            public ushort application_block_l_status; // link-status of service or update_state for srd-indication
+//            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public ushort[] application_block_reserved_2; // for concatenated lists       (reserved for FDL !!!!!!!!!!)
 //            //End Application block
 
 //            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)] public byte[] reserved;
@@ -166,7 +165,6 @@
 //        [DllImport("S7onlinx.dll")]
 //        private static extern int SetSinecHWndMsg(int handle, IntPtr hwnd, uint msg_id);
 
-
 //        [DllImport("S7onlinx.dll")]
 //        private static extern int SCP_open([MarshalAs(UnmanagedType.LPStr)] string name);
 
@@ -199,14 +197,14 @@
 //            {
 //                _connectionHandle = ConnectionHandle;
 //                this.fdrlen = fdrlen;
-                
+
 //                this.Interface = Interface;
 //            }
-            
+
 //            protected override void WndProc(ref Message m)
 //            {
 //                if (m.Msg == WM_SINEC) //WM_SINEC Message recieved, recieve Data
-//                {                   
+//                {
 //                    int[] rec_len = new int[1];
 //                    byte[] buffer = new byte[fdrlen];
 //                    SCP_receive(_connectionHandle, 0, rec_len, (ushort) fdrlen, buffer);
@@ -301,7 +299,6 @@
 
 //        #endregion
 
-
 //        private int _connectionHandle; //Handle from SCP_Open (for the Interface)
 
 //        private _intForm _myForm; //Internal used form for WinProc Messages
@@ -329,12 +326,11 @@
 
 //            S7OexchangeBlock fdr = new S7OexchangeBlock();
 
-
 //            formBackgroundThread = new Thread(new ThreadStart(createFormInOtherThread));
 //            formBackgroundThread.IsBackground = true;
 //            formBackgroundThread.Start();
-            
-//            //_myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);            
+
+//            //_myForm = new _intForm(_connectionHandle, Marshal.SizeOf(fdr), this);
 //            //SetSinecHWndMsg(_connectionHandle, _myForm.Handle, WM_SINEC);
 //            while (!WndProcReady)
 //            { }
@@ -355,7 +351,7 @@
 //            catch (ThreadAbortException)
 //            { }
 //        }
-        
+
 //        private bool Disposed = false;
 //        public void Dispose()
 //        {
@@ -363,7 +359,7 @@
 //            {
 //                Disposed = true;
 
-//                if (_myForm != null) _myForm.Invoke((MethodInvoker) (() => _myForm.Dispose()));                
+//                if (_myForm != null) _myForm.Invoke((MethodInvoker) (() => _myForm.Dispose()));
 
 //                if (formBackgroundThread != null && formBackgroundThread.IsAlive)
 //                    formBackgroundThread.Abort();
@@ -384,16 +380,14 @@
 //            set { _timeOut = value; }
 //        }
 
-
 //        private ushort connNr = 1;
 //        internal Dictionary<int, Connection> ConnectionsList = new Dictionary<int, Connection>();
 //        public Connection ConnectPlc(ConnectionConfig config)
 //        {
-
 //            //eine eindeutige connection id erzeugen
 //            //in der connection eine liste der pdus pflegen, auf welche noch gewartet wird.
 //            //für die pdu welche asynchron kommt nummer 0 verwenden!
-            
+
 //            S7OexchangeBlock fdr = new S7OexchangeBlock();
 //            S7OexchangeBlock rec = new S7OexchangeBlock();
 //            int len = Marshal.SizeOf(fdr);
@@ -403,7 +397,6 @@
 
 //            Connection retVal;
 
-
 //            while (ConnectionsList.ContainsKey(connNr))
 //            {
 //                connNr++;
@@ -411,7 +404,7 @@
 //                    connNr = 1;
 //            }
 //            retVal = new Connection(this, config, 0);
-//            retVal.ConnectionNumber = connNr;            
+//            retVal.ConnectionNumber = connNr;
 //            ConnectionsList.Add(connNr, retVal);
 
 //            //Todo:
@@ -453,7 +446,7 @@
 //            rec = RecieveData(connNr);
 
 //            retVal.application_block_opcode = rec.application_block_opcode;
-//            retVal.application_block_subsystem = rec.application_block_subsystem;            
+//            retVal.application_block_subsystem = rec.application_block_subsystem;
 //            #endregion
 
 //            #region Telegramm 4 (Ethernet 2)
@@ -515,7 +508,7 @@
 //            Marshal.Copy(ptr, fdr.user_data_1, 0, Marshal.SizeOf(ud_cfg));
 //            Marshal.FreeHGlobal(ptr);
 //            SendData(fdr);
-//            rec = RecieveData(connNr);            
+//            rec = RecieveData(connNr);
 //            if (rec.response != 0x01)
 //                throw new S7OnlineException("S7Online: Error Connection to PLC");
 
@@ -526,7 +519,7 @@
 //            Pdu pdu = new Pdu(1);
 //            pdu.Param.AddRange(new byte[] {0xF0, 0, 0, 1, 0, 1, 3, 0xc0});
 //            SendPdu(pdu, retVal);
-//            Pdu recPdu = RecievePdu(connNr);            
+//            Pdu recPdu = RecievePdu(connNr);
 //            #endregion
 
 //            #region Telegramm 6 (Ethernet 4) (get PDU size)
@@ -566,7 +559,7 @@
 //            }
 
 //            fdr = new S7OexchangeBlock();
-//            fdr.user = (ushort)conn.ConnectionNumber;            
+//            fdr.user = (ushort)conn.ConnectionNumber;
 //            fdr.subsystem = 64;
 //            fdr.opcode = 0xC;
 //            fdr.response = 255;
@@ -579,11 +572,10 @@
 //            ConnectionsList.Remove(conn.ConnectionNumber);
 //        }
 
-
 //        public List<int> ListReachablePartners()
 //        {
 //            throw new NotImplementedException();
-//        }         			
+//        }
 
 //        private void SendData(S7OexchangeBlock data)
 //        {
@@ -594,7 +586,7 @@
 
 //                data.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
 //                data.rb_type = 2; //rb_type is always 2
-//                data.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+//                data.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)
 
 //                IntPtr ptr = Marshal.AllocHGlobal(len);
 //                Marshal.StructureToPtr(data, ptr, true);
@@ -621,7 +613,7 @@
 
 //                fdr.user = (ushort) connection.ConnectionNumber;
 //                fdr.subsystem = 64;
-//                fdr.opcode = 6;  
+//                fdr.opcode = 6;
 //                fdr.response = 255;
 //                fdr.fill_length_1 = (byte) pdubytes.Length;
 //                fdr.seg_length_1 = (byte) pdubytes.Length;
@@ -629,13 +621,12 @@
 //                //if (!connection.ConnectionConfig.ConnectionToEthernet)
 //                fdr.application_block_subsystem = connection.application_block_subsystem;
 
-
 //                fdr.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
 //                fdr.rb_type = 2; //rb_type is always 2
-//                fdr.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+//                fdr.offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)
 
 //                fdr.user_data_1 = new byte[260];
-//                Array.Copy(pdubytes, fdr.user_data_1, pdubytes.Length);                          
+//                Array.Copy(pdubytes, fdr.user_data_1, pdubytes.Length);
 
 //                int len = Marshal.SizeOf(fdr);
 //                byte[] buffer = new byte[len];
@@ -666,22 +657,22 @@
 //        private void GetResponsePdu(Connection connection)
 //        {
 //            if (!Disposed)
-//            {                
+//            {
 //                S7OexchangeBlock fdr = new S7OexchangeBlock();
-                
+
 //                fdr.user = (ushort)connection.ConnectionNumber;
 //                fdr.subsystem = 64;
-//                fdr.opcode = 7; 
-                
+//                fdr.opcode = 7;
+
 //                fdr.seg_length_1 = 480;
 //                fdr.response = 16642;
-                
-//                fdr.application_block_opcode = connection.application_block_opcode;               
+
+//                fdr.application_block_opcode = connection.application_block_opcode;
 //                fdr.application_block_subsystem = connection.application_block_subsystem;
 
 //                fdr.headerlength = 80; //Length of the Header (always 80)  (but the 4 first unkown bytes are not count)
 //                fdr.rb_type = 2;       //rb_type is always 2
-//                fdr.offset_1 = 80;     //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
+//                fdr.offset_1 = 80;     //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)
 
 //                fdr.user_data_1 = new byte[260];
 
@@ -712,11 +703,11 @@
 
 //            return rec;
 //        }
-        
+
 //        private Pdu RecievePdu(ushort myConnNr)
 //        {
 //            S7OexchangeBlock rec = RecieveData(myConnNr);
 //            return new Pdu(rec.user_data_1);
-//        }        
+//        }
 //    }
 //}

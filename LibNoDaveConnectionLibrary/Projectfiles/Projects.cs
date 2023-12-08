@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-using DotNetSiemensPLCToolBoxLibrary.General;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
@@ -19,7 +19,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             get
             {
-
                 if (_createV13ProjectInstance == null)
                 {
                     lock (_lockObject)
@@ -70,7 +69,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return _createV14SP1ProjectInstance;
             }
         }
-
 
         private static Func<Project> _attachV14SP1ProjectInstance;
 
@@ -209,7 +207,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV15_1.dll"));
                             var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1.Step7ProjectV15_1");
                             var mth = type.GetMethod("AttachToInstanceWithFilename");
-                           _createV15_1ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _createV15_1ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
                             _attachV15_1ProjectInstance = () => (Project)Activator.CreateInstance(type);
                             _attachV15_1ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
                         }
@@ -494,7 +492,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         /// </summary>
         /// <param name="dirname"></param>
         /// <returns></returns>
-        static public Project[] GetStep7ProjectsFromDirectory(string dirname)
+        public static Project[] GetStep7ProjectsFromDirectory(string dirname)
         {
             return GetStep7ProjectsFromDirectory(dirname, null);
         }
@@ -504,7 +502,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         /// </summary>
         /// <param name="dirname"></param>
         /// <returns></returns>
-        static public Project[] GetStep7ProjectsFromDirectory(string dirname, Credentials credentials)
+        public static Project[] GetStep7ProjectsFromDirectory(string dirname, Credentials credentials)
         {
             List<Project> retVal = new List<Project>();
 
@@ -716,7 +714,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return retVal.ToArray();
         }
 
-        static public Project AttachProject(string tiaVersion)
+        public static Project AttachProject(string tiaVersion)
         {
             if (tiaVersion == "14SP1")
                 return attachV14SP1ProjectInstance();
@@ -732,7 +730,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return null;
         }
 
-        static public Project AttachToInstanceWithFilename(string tiaVersion, string filename)
+        public static Project AttachToInstanceWithFilename(string tiaVersion, string filename)
         {
             if (tiaVersion == "15.1")
                 return attachV15_1ProjectInstanceWithFilename(filename);
@@ -746,12 +744,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return null;
         }
 
-        static public Project LoadProject(string file, bool showDeleted)
+        public static Project LoadProject(string file, bool showDeleted)
         {
             return LoadProject(file, showDeleted, null);
         }
 
-        static public Project LoadProject(string file, bool showDeleted, Credentials credentials)
+        public static Project LoadProject(string file, bool showDeleted, Credentials credentials)
         {
             if (file.ToLower().EndsWith(".s5d"))
                 return new Step5Project(file, showDeleted);
@@ -822,6 +820,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             return prj.AllFolders.FirstOrDefault(x => x.StructuredFolderName == folder);
         }
-
     }
 }

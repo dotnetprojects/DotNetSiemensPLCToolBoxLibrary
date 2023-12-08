@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Network
 {
@@ -13,6 +9,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Network
         {
             this.NetworkInterfaceType = NetworkType.Ethernet;
         }
+
         public bool UseIso { get; set; }
         public PhysicalAddress Mac { get; set; }
         public bool UseIp { get; set; }

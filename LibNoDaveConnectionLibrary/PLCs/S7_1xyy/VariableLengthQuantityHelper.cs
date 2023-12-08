@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_1xyy
 {
@@ -65,7 +63,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_1xyy
                 anzBits -= 7;
             }
 
-
             for (int i = 1; i <= anzBytes; i++)
             {
                 byte wert = 0;
@@ -90,7 +87,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_1xyy
 
                 if (i != anzBytes)
                     wert |= 0x80;
-
 
                 retVal.Add(wert);
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public enum PLCFunctionBlockAdressType
     {
@@ -13,6 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         //2 = AR adressierung: T[ar1, p#0.0], DBX [ar1, p#0.0]
         //3 = Nur AR adressierung: [ar1, p#0.0]
         Direct = 0,
+
         Indirect = 1,
         IndirectWithAR = 2,
         CompleteIndirectWithAR = 3,

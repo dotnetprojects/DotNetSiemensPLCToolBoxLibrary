@@ -13,7 +13,7 @@
 //        public SerialInterface(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
 //        {
 //            _serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
-            
+
 //            _serialPort.Open();
 //        }
 //    }

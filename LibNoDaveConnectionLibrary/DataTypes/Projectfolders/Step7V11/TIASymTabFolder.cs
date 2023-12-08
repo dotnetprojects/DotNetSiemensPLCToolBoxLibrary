@@ -40,7 +40,7 @@
 //                        var akSymName = mySymTableEntry.SelectSingleNode("attribSet[@id='" + TiaProject.CoreAttributesId + "']/attrib[@name='Name']").InnerText;
 
 //                        string akSymAddress = "";
-                        
+
 //                        var nd = mySymTableEntry.SelectSingleNode("attribSet[@id='" + TiaProject.asId2Names.First(itm => itm.Value == "Siemens.Automation.DomainModel.ITagAddress").Key + "']/attrib[@name='LogicalAddress']");
 //                        if (nd != null) akSymAddress = nd.InnerText;
 
@@ -69,8 +69,8 @@
 //                                entry.DataSource = MemoryArea.Counter;
 
 //                            var key = TiaCrcHelper.GetAccesKeyForSymbolTabelEntry(entry.DataSource, akSymName, akLitID);
-//                            entry.TIATagAccessKey = key;                        
-//                        }                        
+//                            entry.TIATagAccessKey = key;
+//                        }
 //                    }
 //                }
 //                return this.symbolTableEntrys;

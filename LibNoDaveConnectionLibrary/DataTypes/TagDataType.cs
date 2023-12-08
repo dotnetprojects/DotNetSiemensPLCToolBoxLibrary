@@ -25,6 +25,7 @@
 
         //TIA Types
         LInt,
+
         LWord,
         LReal,
         LTime,

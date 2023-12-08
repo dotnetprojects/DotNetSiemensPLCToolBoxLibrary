@@ -21,7 +21,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         public override string ToString()
         {
             var retVal = base.ToString();
-           
+
             if (NetworkInterfaces != null)
             {
                 retVal += Environment.NewLine;

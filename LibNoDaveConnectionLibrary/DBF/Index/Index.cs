@@ -1,11 +1,10 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
 {
-
     public abstract class Index
     {
         protected int top_Node;
@@ -51,17 +50,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
         /// </summary>
         protected byte[] key_definition = new byte[488];
 
-        protected List<Field> keyControl = new List<Field> {};
+        protected List<Field> keyControl = new List<Field> { };
         protected NodeKey objActiveKey = null;
         protected int record; // the current key's record
 
         protected Node topNode = null;
         protected Node workNode;
+
         //public File file;
         //public RandomAccessFile nfile;
         //public FileChannel channel;
         //public ByteBuffer bytebuffer;
         protected String dosname = String.Empty;
+
         //public DBF database;
 
         protected String stringKey;
@@ -75,7 +76,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
 
         public Index()
         {
-
         }
 
         public bool CompareKey(String keyToCompare)
@@ -99,7 +99,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                 }
             }
             return (objActiveKey.CompareKey(tempKey) == 0);
-
         }
 
         public abstract int add_entry(NodeKey key, int recno);
@@ -140,13 +139,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                     } /* endfor */
                     dataptr = new NodeKey(new NodeFloat(doubleer));
                     break;
+
                 case dBaseType.N:
                     for (i = 0; i < keyControl.Count; i++)
                     {
                         Field = keyControl[i];
                         if (Field.get() == null || Field.get().Length == 0)
                         {
-
                         }
                         else if (Field.getType() == dBaseType.D)
                         {
@@ -159,11 +158,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                     }
                     dataptr = new NodeKey(doubleer);
                     break;
+
                 default:
                     StringBuilder sb = new StringBuilder();
                     for (i = 0; i < keyControl.Count; i++)
                     {
-                        Field = (Field) keyControl[i];
+                        Field = (Field)keyControl[i];
 
                         sb.Append(Field.get());
                     } /* endfor */
@@ -183,6 +183,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             get { return Convert.ToBoolean(this.unique_key); }
         }
 
-        #endregion
+        #endregion SET / GET
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+﻿using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using System;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
@@ -26,7 +25,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 MemoryArea = MemoryArea.Datablock;
                 address = address.Substring(3);
             }
-            
+
             if (address.Contains("."))
             {
                 ByteAddress = Convert.ToInt32(address.Split('.')[0]);
@@ -39,10 +38,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
             }
         }
 
-        public Pointer(int byteaddress, int bitaddress):base(byteaddress, bitaddress)
+        public Pointer(int byteaddress, int bitaddress) : base(byteaddress, bitaddress)
         { }
 
-        public Pointer(ByteBitAddress startAddr):base(startAddr)
+        public Pointer(ByteBitAddress startAddr) : base(startAddr)
         { }
 
         public string ToString(MnemonicLanguage language)
@@ -86,6 +85,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         public static bool operator !=(Pointer a, Pointer b)
         {
             return !(a == b);
-        }        
+        }
     }
 }

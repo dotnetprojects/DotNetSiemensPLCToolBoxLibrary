@@ -49,17 +49,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5
                 retVal.Append(Description.Replace("\n", "\r\n\t"));
                 retVal.Append("\r\n\r\n");
             }
-            
+
             if (Parameter != null)
             {
-            	retVal.Append("Parameter\r\n");
-                foreach(S5Parameter par in Parameter)
-            	{
-                	retVal.Append("\t" + par.ToString() + "\r\n");
+                retVal.Append("Parameter\r\n");
+                foreach (S5Parameter par in Parameter)
+                {
+                    retVal.Append("\t" + par.ToString() + "\r\n");
                 }
-            	retVal.Append("\r\n");            	
-            }    
-            
+                retVal.Append("\r\n");
+            }
+
             retVal.Append("AWL-Code\r\n");
 
             if (AWLCode != null)

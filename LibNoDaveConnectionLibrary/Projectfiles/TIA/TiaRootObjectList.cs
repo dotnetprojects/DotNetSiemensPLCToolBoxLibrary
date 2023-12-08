@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
 {
@@ -12,6 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
         private TiaFileObject obj;
 
         public List<TiaRootObjectEntry> TiaRootObjectEntrys { get; set; }
+
         public TiaRootObjectList(TiaFileObject obj)
         {
             this.obj = obj;
@@ -24,7 +21,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
             var cnt = b.ReadInt32();
             for (int i = 0; i < cnt; i++)
             {
-                TiaRootObjectEntrys.Add(new TiaRootObjectEntry() {ObjectId = b.ReadTiaObjectId(), Name = b.ReadString()});                
+                TiaRootObjectEntrys.Add(new TiaRootObjectEntry() { ObjectId = b.ReadTiaObjectId(), Name = b.ReadString() });
             }
         }
     }

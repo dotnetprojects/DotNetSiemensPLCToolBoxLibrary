@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
 {
@@ -12,19 +12,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
     internal struct MDX7TagTableHeader
     {
         public Int32 tagHeaderPageNumber;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
         public string tagName;
+
         public TagKeyFormat keyFormat; //0x00 = Calculated, 0x10 = Data Field
         public byte forwardTagThreadLeft;
         public byte forwardTagThreadRight;
         public byte backwardTagThread;
         public byte reserved1;
         public dBaseType keyType;  //C = Character, N = Numerical, B = Byte
+
         [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 10)]
         public string /*byte[]*/ reserved2;
 
         /// <summary>
-        /// Extracts a MDX7TagTableHeader from a Stream 
+        /// Extracts a MDX7TagTableHeader from a Stream
         /// </summary>
         /// <param name="Reader">The BinaryReader that contains the MDX7TTH structure</param>
         /// <param name="LengthOfTags">The total length of a single MDX7TTH structrue + overhead</param>

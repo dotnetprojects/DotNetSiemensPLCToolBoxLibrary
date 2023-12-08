@@ -1,4 +1,5 @@
-﻿namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index {
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
+{
     public class BTree
     {
         private BTree objLesserTree = null;
@@ -24,8 +25,6 @@
                     this.objAboveTree.SetGreater(this);
                 }
             }
-
-
         }
 
         public void SetGreater(BTree GreaterTree)
@@ -126,6 +125,6 @@
             }
         }
 
-        #endregion
+        #endregion SET / GET
     }
 }

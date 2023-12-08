@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
     public class Step5BlocksFolder : ProjectFolder, IBlocksFolder
     {
-        internal List<ProjectBlockInfo> step5BlocksinfoList =new List<ProjectBlockInfo>();
+        internal List<ProjectBlockInfo> step5BlocksinfoList = new List<ProjectBlockInfo>();
 
         public List<ProjectBlockInfo> readPlcBlocksList()
         {
@@ -66,7 +65,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             //string aa = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(((Step5ProjectBlockInfo)blkInfo)._blkByte);
             //string bb = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(((Step5ProjectBlockInfo)blkInfo)._blkHeaderByte);
             Block retVal = null;
-            
+
             if (blkInfo.BlockType == PLCBlockType.S5_DV)
                 retVal = MC5toDB.GetDB((ProjectPlcBlockInfo)plcblkInfo, null, ((S5ProjectBlockInfo)blkInfo)._blkByte, null);
             else if (blkInfo.BlockType == PLCBlockType.S5_DVX)
@@ -94,8 +93,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                 retVal.ParentFolder = this;
 
             blkInfo._Block = retVal;
-            
-            return retVal;            
+
+            return retVal;
         }
     }
 }

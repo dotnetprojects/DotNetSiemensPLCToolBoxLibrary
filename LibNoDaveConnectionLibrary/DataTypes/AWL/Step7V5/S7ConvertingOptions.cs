@@ -1,21 +1,19 @@
-﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
 {
     /// <summary>
-    /// Options that define how Step7 Project will behave when opened by this library. 
+    /// Options that define how Step7 Project will behave when opened by this library.
     /// </summary>
     public class S7ConvertingOptions
     {
         protected bool Equals(S7ConvertingOptions other)
         {
-            return this.UseComments.Equals(other.UseComments) 
-                && this.Mnemonic == other.Mnemonic 
-                && this.CombineDBOpenAndDBAccess.Equals(other.CombineDBOpenAndDBAccess) 
-                && this.ReplaceDBAccessesWithSymbolNames.Equals(other.ReplaceDBAccessesWithSymbolNames) 
-                && this.ReplaceLokalDataAddressesWithSymbolNames.Equals(other.ReplaceLokalDataAddressesWithSymbolNames) 
-                && this.ReplaceDIAccessesWithSymbolNames.Equals(other.ReplaceDIAccessesWithSymbolNames) 
-                && this.GenerateCallsfromUCs.Equals(other.GenerateCallsfromUCs) 
+            return this.UseComments.Equals(other.UseComments)
+                && this.Mnemonic == other.Mnemonic
+                && this.CombineDBOpenAndDBAccess.Equals(other.CombineDBOpenAndDBAccess)
+                && this.ReplaceDBAccessesWithSymbolNames.Equals(other.ReplaceDBAccessesWithSymbolNames)
+                && this.ReplaceLokalDataAddressesWithSymbolNames.Equals(other.ReplaceLokalDataAddressesWithSymbolNames)
+                && this.ReplaceDIAccessesWithSymbolNames.Equals(other.ReplaceDIAccessesWithSymbolNames)
+                && this.GenerateCallsfromUCs.Equals(other.GenerateCallsfromUCs)
                 && this.UseInFCStoredFCsForCalls.Equals(other.UseInFCStoredFCsForCalls)
                 && this.UseFBDeclarationForInstanceDB.Equals(other.UseFBDeclarationForInstanceDB);
         }
@@ -61,10 +59,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
         public bool ReplaceDBAccessesWithSymbolNames { get; set; }
 
         public bool ReplaceLokalDataAddressesWithSymbolNames { get; set; }
-        public bool ReplaceDIAccessesWithSymbolNames { get; set; } 
-       
+        public bool ReplaceDIAccessesWithSymbolNames { get; set; }
 
-        public bool GenerateCallsfromUCs { get; set;}
+        public bool GenerateCallsfromUCs { get; set; }
         public bool UseInFCStoredFCsForCalls { get; set; }
 
         /// <summary>
@@ -90,6 +87,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
             }
             return Equals((S7ConvertingOptions)obj);
         }
-
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
@@ -49,6 +48,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 NotifyPropertyChanged("GenericValue");
             }
         }
+
         public PLCTag()
         {
             this._type = typeof(T);
@@ -77,7 +77,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         private void ParseGenericType()
         {
             var type = _underlyingType ?? _type;
-            
+
             if (type == typeof(Int16))
                 this.TagDataType = TagDataType.Int;
             else if (type == typeof(Int32))
@@ -114,7 +114,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     return default(T);
                 if (this._type.IsEnum)
                     return (T)Convert.ChangeType(_value, _underlyingType);
-                return  (T)_value;
+                return (T)_value;
             }
             set
             {
@@ -124,13 +124,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     Value = value;
             }
         }
+
         internal override int _internalGetSize()
         {
             if (this._isStructType)
                 return GetStructSize(typeof(T));
             return base._internalGetSize();
         }
-
 
         #region Helper Functions for Structs, from S7.NET! (http://s7net.codeplex.com/)
 
@@ -169,11 +169,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             info.SetValue(structValue, false);
                         numBytes += 0.125;
                         break;
+
                     case "Byte":
                         numBytes = Math.Ceiling(numBytes);
                         info.SetValue(structValue, (byte)(bytes[(int)numBytes]));
                         numBytes++;
                         break;
+
                     case "String":
                         {
                             numBytes = Math.Ceiling(numBytes);
@@ -181,45 +183,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 numBytes++;
 
                             MarshalAsAttribute mAttr = null;
-                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            object[] attr = info.GetCustomAttributes(typeof(MarshalAsAttribute), false);
                             if (attr.Length > 0)
-                                mAttr = (MarshalAsAttribute) attr[0];
+                                mAttr = (MarshalAsAttribute)attr[0];
                             if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
                                 throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
 
                             var sb = new StringBuilder();
-                            int size = mAttr.SizeConst > bytes[((int) numBytes) + 1] ? bytes[((int) numBytes) + 1] : mAttr.SizeConst;
-                            for (var n = 2; n < size+2; n++)
-                                sb.Append((char) bytes[n + (int) numBytes]);
-                            info.SetValue(structValue, (String) sb.ToString());
+                            int size = mAttr.SizeConst > bytes[((int)numBytes) + 1] ? bytes[((int)numBytes) + 1] : mAttr.SizeConst;
+                            for (var n = 2; n < size + 2; n++)
+                                sb.Append((char)bytes[n + (int)numBytes]);
+                            info.SetValue(structValue, (String)sb.ToString());
 
                             numBytes += 2 + mAttr.SizeConst;
                         }
                         break;
+
                     case "Int16":
-                         numBytes = Math.Ceiling(numBytes);
+                        numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
-                        info.SetValue(structValue, libnodave.getS16from(bytes, (int) numBytes));
+                        info.SetValue(structValue, libnodave.getS16from(bytes, (int)numBytes));
                         numBytes += 2;
                         break;
+
                     case "UInt16":
                         numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
-                        info.SetValue(structValue, libnodave.getU16from(bytes, (int) numBytes));
+                        info.SetValue(structValue, libnodave.getU16from(bytes, (int)numBytes));
                         numBytes += 2;
                         break;
+
                     case "Int32":
-                         numBytes = Math.Ceiling(numBytes);
+                        numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
                         info.SetValue(structValue, libnodave.getS32from(bytes, (int)numBytes));
                         numBytes += 4;
                         break;
+
                     case "UInt32":
                         numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
@@ -228,6 +234,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         info.SetValue(structValue, libnodave.getU32from(bytes, (int)numBytes));
                         numBytes += 4;
                         break;
+
                     case "Double":
                         numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
@@ -258,10 +265,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "Boolean":
                         numBytes += 0.125;
                         break;
+
                     case "Byte":
                         numBytes = Math.Ceiling(numBytes);
                         numBytes++;
                         break;
+
                     case "Int16":
                     case "UInt16":
                         numBytes = Math.Ceiling(numBytes);
@@ -269,6 +278,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             numBytes++;
                         numBytes += 2;
                         break;
+
                     case "Int32":
                     case "UInt32":
                         numBytes = Math.Ceiling(numBytes);
@@ -276,6 +286,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             numBytes++;
                         numBytes += 4;
                         break;
+
                     case "Float":
                     case "Double":
                         numBytes = Math.Ceiling(numBytes);
@@ -283,12 +294,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             numBytes++;
                         numBytes += 4;
                         break;
+
                     case "String":
                         {
-                            MarshalAsAttribute mAttr=null;
-                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            MarshalAsAttribute mAttr = null;
+                            object[] attr = info.GetCustomAttributes(typeof(MarshalAsAttribute), false);
                             if (attr.Length > 0)
-                                mAttr = (MarshalAsAttribute) attr[0];
+                                mAttr = (MarshalAsAttribute)attr[0];
                             if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
                                 throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
 
@@ -297,12 +309,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         break;
                         /*
                      * Typen welche noch fehlen
-                     * 
-                     * 
+                     *
+                     *
                     case Arrays von jedem Datentyp!
                     struct of struct
                     TimeSpan
-                     * 
+                     *
                     case "DateTime":
                     case "String": //   Look for: [MarshalAs(UnmanagedType.ByValTStr , SizeConst = 7)]
                         break;
@@ -313,7 +325,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return (int)Math.Ceiling(numBytes);
         }
 
-
         /// <summary>
         /// Creates a byte array depending on the struct type.
         /// </summary>
@@ -321,7 +332,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <returns>A byte array or null if fails.</returns>
         public static byte[] ToBytes(object structValue)
         {
-            Type type = typeof (T);
+            Type type = typeof(T);
             int size = GetStructSize(type);
             byte[] bytes = new byte[size];
             byte[] bytes2 = null;
@@ -346,18 +357,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             bytes[bytePos] &= (byte)(~(byte)Math.Pow(2, bitPos));   // is false
                         numBytes += 0.125;
                         break;
+
                     case "Byte":
                         numBytes = (int)Math.Ceiling(numBytes);
                         bytePos = (int)numBytes;
                         bytes[bytePos] = (byte)info.GetValue(structValue);
                         numBytes++;
                         break;
+
                     case "String":
                         {
                             MarshalAsAttribute mAttr = null;
-                            object[] attr = info.GetCustomAttributes(typeof (MarshalAsAttribute), false);
+                            object[] attr = info.GetCustomAttributes(typeof(MarshalAsAttribute), false);
                             if (attr.Length > 0)
-                                mAttr = (MarshalAsAttribute) attr[0];
+                                mAttr = (MarshalAsAttribute)attr[0];
                             if (mAttr == null || mAttr.Value != UnmanagedType.ByValTStr || mAttr.SizeConst <= 0)
                                 throw new Exception("Strings in Structs need to be decorated with \"MarshalAs(UnmanagedType.ByValTStr, SizeConst = xx)\"");
 
@@ -366,31 +379,37 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             bytePos = (int)numBytes;
                         }
                         break;
+
                     case "Int16":
                         bytes2 = new byte[2];
-                        libnodave.putS16at(bytes2, 0, (Int16) info.GetValue(structValue));
+                        libnodave.putS16at(bytes2, 0, (Int16)info.GetValue(structValue));
                         bytePos = (int)numBytes;
                         break;
+
                     case "UInt16":
                         bytes2 = new byte[2];
-                        libnodave.putU16at(bytes2, 0, (UInt16) info.GetValue(structValue));
+                        libnodave.putU16at(bytes2, 0, (UInt16)info.GetValue(structValue));
                         bytePos = (int)numBytes;
                         break;
+
                     case "Int32":
                         bytes2 = new byte[4];
-                        libnodave.putS32at(bytes2, 0, (Int32) info.GetValue(structValue));
+                        libnodave.putS32at(bytes2, 0, (Int32)info.GetValue(structValue));
                         bytePos = (int)numBytes;
                         break;
+
                     case "UInt32":
                         bytes2 = new byte[4];
-                        libnodave.putU32at(bytes2, 0, (UInt32) info.GetValue(structValue));
+                        libnodave.putU32at(bytes2, 0, (UInt32)info.GetValue(structValue));
                         bytePos = (int)numBytes;
                         break;
+
                     case "Double":
                         bytes2 = new byte[4];
                         libnodave.putFloatat(bytes2, 0, Convert.ToSingle((double)info.GetValue(structValue)));
                         bytePos = (int)numBytes;
                         break;
+
                     case "Single":
                         bytes2 = new byte[4];
                         libnodave.putFloatat(bytes2, 0, (Single)info.GetValue(structValue));
@@ -400,7 +419,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 if (bytes2 != null)
                 {
                     // add them
-                    
+
                     for (int bCnt = 0; bCnt < bytes2.Length; bCnt++)
                         bytes[bytePos + bCnt] = bytes2[bCnt];
                     numBytes += bytes2.Length;
@@ -409,7 +428,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             return bytes;
         }
 
-        #endregion
-
+        #endregion Helper Functions for Structs, from S7.NET! (http://s7net.codeplex.com/)
     }
 }

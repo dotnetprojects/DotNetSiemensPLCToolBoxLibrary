@@ -826,9 +826,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
                 else
                     if (Data == null)
-                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, null, 0);
-                    else
-                        res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
+                    res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, null, 0);
+                else
+                    res = daveBuildAndSendPDU32(pointer, myPDU.pointer, Parameter, Parameter.Length, Data, Data.Length);
                 return res;
             }
 

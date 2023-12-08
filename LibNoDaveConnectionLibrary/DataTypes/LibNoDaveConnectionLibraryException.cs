@@ -2,7 +2,7 @@
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
 {
-    class WPFToolboxForSiemensPLCsException:Exception
+    internal class WPFToolboxForSiemensPLCsException : Exception
     {
         public WPFToolboxForSiemensPLCsExceptionType ExceptionType;
 
@@ -12,7 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         }
 
         public override string ToString()
-        {            
+        {
             return base.ToString();
         }
     }

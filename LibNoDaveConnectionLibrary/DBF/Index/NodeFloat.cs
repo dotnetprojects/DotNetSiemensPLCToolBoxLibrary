@@ -79,8 +79,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             sb.Append('e');
             sb.Append((bSize - 0x35).ToString());
             String s = sb.ToString();
-            dSaveValue = Double.Parse(s)*(neg ? -1 : 1);
-
+            dSaveValue = Double.Parse(s) * (neg ? -1 : 1);
         }
 
         /// <summary>
@@ -89,7 +88,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
         /// <param name="DoubleValue">The double value to create the float from</param>
         public NodeFloat(double DoubleValue)
         {
-
             this.bSize = 0x35;
             this.bValue = new byte[10];
 
@@ -106,11 +104,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                 return;
             }
 
-
-
-            int[] bLine = {0, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80, 0x90};
+            int[] bLine = { 0, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80, 0x90 };
             int start = 0;
-
 
             bool neg = (DoubleValue < 0.0);
             if (neg) DoubleValue *= -1.0;
@@ -135,10 +130,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             bool decfound = (t > 0);
 
             if (neg)
-                if (decfound) bSign = (byte) 0xd1;
-                else bSign = (byte) 0xa9;
-            else if (decfound) bSign = (byte) 0x51;
-            else bSign = (byte) 0x29;
+                if (decfound) bSign = (byte)0xd1;
+                else bSign = (byte)0xa9;
+            else if (decfound) bSign = (byte)0x51;
+            else bSign = (byte)0x29;
 
             if (epos > 0)
             {
@@ -182,14 +177,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                     if (top)
                     {
                         v = Convert.ToInt32(Char.GetNumericValue(c));
-                        bValue[j] = (byte) bLine[v];
+                        bValue[j] = (byte)bLine[v];
                         top = false;
                     }
                     else
                     {
                         // second nibble
                         v = Convert.ToInt32(Char.GetNumericValue(c));
-                        bValue[j] += (byte) v;
+                        bValue[j] += (byte)v;
                         top = true;
                         j++;
                     }
@@ -204,10 +199,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-
-            if (obj.GetType() == typeof (NodeFloat))
+            if (obj.GetType() == typeof(NodeFloat))
             {
-                NodeFloat nf2 = (NodeFloat) obj;
+                NodeFloat nf2 = (NodeFloat)obj;
                 if (bSign == 0x10)
                 {
                     if (nf2.bSign == 0x10) return 0;
@@ -290,7 +284,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             }
         }
 
-        #endregion
-
+        #endregion SET / GET
     }
 }

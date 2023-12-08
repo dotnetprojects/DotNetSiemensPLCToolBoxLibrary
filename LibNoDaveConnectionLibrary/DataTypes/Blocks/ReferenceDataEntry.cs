@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -8,6 +8,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         public string Operand { get; set; }
 
         private SymbolTableEntry _SymbolTableEntry;
+
         public SymbolTableEntry SymbolTableEntry
         {
             get { return _SymbolTableEntry; }
@@ -15,6 +16,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         private List<ReferencePoint> _referencePoints = new List<ReferencePoint>();
+
         public List<ReferencePoint> ReferencePoints
         {
             get { return _referencePoints; }

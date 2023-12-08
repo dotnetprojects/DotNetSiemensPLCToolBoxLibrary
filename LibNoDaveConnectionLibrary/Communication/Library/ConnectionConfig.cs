@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
@@ -9,10 +7,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
     {
         //public string EntryPoint { get; set; }
         public IPAddress IPAddress { get; set; }
+
         public bool ConnectionToEthernet { get; set; }
         public int MPIAddress { get; set; }
         public int Rack { get; set; }
         public int Slot { get; set; }
+
         /// <summary>
         /// 1 = PG Connection, 2 = OP Connection
         /// </summary>
@@ -30,7 +30,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         public ConnectionConfig()
         {
-
         }
 
         public ConnectionConfig(int MPIAddress, int Rack, int Slot)
@@ -52,6 +51,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             this.ConnectionType = 1;
             this.ConnectionToEthernet = true;
         }
-
     }
 }

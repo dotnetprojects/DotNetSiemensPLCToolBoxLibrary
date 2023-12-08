@@ -28,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 
             return r.ReadToEnd();
         }
-        
+
         public static T DeSerialize(string txt)
         {
             XmlSerializer ser = new XmlSerializer(typeof(T));
@@ -38,6 +38,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             xmlReader.Close();
             stringReader.Close();
             return retVal;
-        }        
+        }
     }
 }

@@ -1,31 +1,31 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
     //[StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct daveBlockEntry
+    internal struct daveBlockEntry
     {
-        ushort number;
-        byte type1;
-        byte type2;
+        private ushort number;
+        private byte type1;
+        private byte type2;
     }
+
     public class resultN
     {
         public int error;
         public byte[] bytes;
     }
+
     public class daveResultN : IresultSet
     {
         public List<resultN> allResults;
+
         public daveResultN()
         {
             allResults = new List<resultN>();
@@ -42,15 +42,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             throw new NotImplementedException();
         }
     }
+
     public class TcpNETdave : IDaveConnection, IDisposable
     {
         private string plc_ip;
-        int rack, slot;
+        private int rack, slot;
         private int connection_port;
         private TcpClient tcpClient;
         private int maxPDUlength;
-        PLCConnectionConfiguration config;
-        int AnswLen;	/* length of last message */
+        private PLCConnectionConfiguration config;
+        private int AnswLen;	/* length of last message */
+
         //public delegate void TegramRecievedEventHandler(byte[] telegramm);
         //public event TegramRecievedEventHandler TelegrammRecievedSend;
         //private SynchronizationContext context;
@@ -66,6 +68,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             plc_ip = conf.CpuIP;
             //context = new SynchronizationContext();
         }
+
         public int connectPLC()
         {
             //IPEndPoint ipLocalEndPoint = new IPEndPoint(plc_ip, connection_port);
@@ -76,21 +79,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //send Setup Communication
             int success, retries;
             byte[] b4 ={
-        		0x11,		//Length
+                0x11,		//Length
         		0xE0,		// TDPU Type CR = Connection Request (see RFC1006/ISO8073)
         		0x00, 0x00, // TPDU Destination Reference (unknown)
         		0x00, 0x01, // TPDU Source-Reference (my own reference, should not be zero)
-        		0x00,		// TPDU Class 0 and no Option 
+        		0x00,		// TPDU Class 0 and no Option
         		0xC1,		// Parameter Source-TSAP
-        		2,			// Length of this parameter 
+        		2,			// Length of this parameter
         		1, 			// Function (1=PG,2=OP,3=Step7Basic)
         		0,			// Rack (Bit 7-5) and Slot (Bit 4-0)
         		0xC2,		// Parameter Destination-TSAP
-        		2,			// Length of this parameter 
+        		2,			// Length of this parameter
         		1,//dc->ConnectionType, 			// Function (1=PG,2=OP,3=Step7Basic)
         		(byte)(slot + rack * 32),			// Rack (Bit 7-5) and Slot (Bit 4-0)
         		0xC0,		// Parameter requested TPDU-Size
-        		1,			// Length of this parameter 
+        		1,			// Length of this parameter
         		9			// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
 	        };
 
@@ -101,31 +104,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
            0xE0,		// TDPU Type CR = Connection Request (see RFC1006/ISO8073)
            0x00,0x00,	// TPDU Destination Reference (unknown)
            0x00,0x01,	// TPDU Source-Reference (my own reference, should not be zero)
-           0x00,		// TPDU Class 0 and no Option 
+           0x00,		// TPDU Class 0 and no Option
 
            0xC1,		// Parameter Source-TSAP
-           28,		// Length of this parameter 
+           28,		// Length of this parameter
            1,		// one block of data (???)
            0,		// Length for S7-Subnet-ID
            0,		// Length of PLC-Number
            2,		// Length of Function/Rack/Slot
-           0,0,0,0,0,0,0,0,	// empty Data 
+           0,0,0,0,0,0,0,0,	// empty Data
            0,0,0,0,0,0,0,0,
            0,0,0,0,0,0,
            (byte)config.ConnectionType,		// Function (1=PG,2=OP,3=Step7Basic)
            (byte)(slot + rack * 32),		// Rack (Bit 7-5) and Slot (Bit 4-0)
 
            0xC2,		// Parameter Destination-TSAP
-           28,		// Length of this parameter 
+           28,		// Length of this parameter
            1,		// one block of data (???)
            6,		// Length for S7-Subnet-ID
             dc->_routingDestinationSize,		// Length of PLC-Number - 04 if you use a IP as Destination!
            2,		// Length of Function/Rack/Slot
 
-           0,//(unsigned char) (dc->routingSubnetFirst >> 8), (unsigned char) dc->routingSubnetFirst,	// first part of S7-Subnet-ID 
+           0,//(unsigned char) (dc->routingSubnetFirst >> 8), (unsigned char) dc->routingSubnetFirst,	// first part of S7-Subnet-ID
            // (look into the S7Project/Network configuration)
            0x00,0x00,		// fix always 0000 (reserved for later use ?)
-           0,//(unsigned char) (dc->routingSubnetSecond >> 8), (unsigned char) dc->routingSubnetSecond,		// second part of S7-Subnet-ID 
+           0,//(unsigned char) (dc->routingSubnetSecond >> 8), (unsigned char) dc->routingSubnetSecond,		// second part of S7-Subnet-ID
            // (see S7Project/Network configuration)
 
            0,//dc->_routingDestination1,			// PLC-Number (0-126) or IP Adress (then 4 Bytes are used)
@@ -133,7 +136,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
            0,//dc->_routingDestination3,
            0,//dc->_routingDestination4,
 
-           0,0,0,0,0,	// empty 
+           0,0,0,0,0,	// empty
            0,0,0,0,0,0,0,
 
            1,//dc->routingConnectionType,		// Function (1=PG,2=OP,3=Step7Basic)
@@ -141,7 +144,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
            // 0 for slot = let select the plc itself the correct slotnumber
 
            0xC0,		// Parameter requested TPDU-Size
-           1,		// Length of this parameter 
+           1,		// Length of this parameter
            9		// requested TPDU-Size 8=256 Bytes, 9=512 Bytes , a=1024 Bytes
        };
 
@@ -206,6 +209,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             return tcpClient != null ? tcpClient.Connected : false;
         }
+
         public void SendData(byte[] telegramm)
         {
             if (tcpClient == null)
@@ -215,6 +219,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 stream.Write(telegramm, 0, telegramm.Length);
             else throw new Exception("can not send");
         }
+
         public byte[] ReceiveData()
         {
             byte[] bytes = new byte[4];
@@ -255,7 +260,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             return null;
         }
+
         private ushort pduNr = 1;
+
         private Pdu ExchangePdu(Pdu myPdu)
         {
             ushort pduNrInt;
@@ -294,8 +301,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 {
                     LOG3("%s _daveExchangeTCP res from read %d\n", dc->iface->name, res);
                 }*/
-                if (ret.Length <= daveConst.ISOTCPminPacketLength) return new Pdu(); //daveResShortPacket; 
-
+                if (ret.Length <= daveConst.ISOTCPminPacketLength) return new Pdu(); //daveResShortPacket;
 
                 //Interface.ExchangePdu(myPdu, this);
             }
@@ -309,6 +315,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //RecievedPdus.Remove(pduNrInt);
             return retVal;
         }
+
         private void sendISOPacket(byte[] message)
         {
             byte[] _message = new byte[message.Length + 4];
@@ -321,12 +328,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             SendData(_message);
         }
+
         /*private byte[] readISOPacket()
         {
             //byte[] res = readPacket();
             return ReceiveData();
         }*/
-
 
         public int resetIBH()
         {
@@ -442,10 +449,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             AnswLen = p2.UData.Count;
             return res;
         }
+
         public int daveBuildAndSendPDU(Pdu myPDU, byte[] para, byte[] data)
         {
             return _daveBuildAndSendPDU(myPDU, para, data, false);
         }
+
         public int _daveBuildAndSendPDU(Pdu myPDU, byte[] para, byte[] data, bool nullD)
         {
             //int res;
@@ -473,6 +482,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             return -1;
         }
+
         private int BuildAndSendPDU(Pdu p2, byte[] pa, byte[] ud, byte[] ud2)
         {
             //int res;
@@ -535,6 +545,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //Array.Copy(tmp2, param, ltmp2);
             //return res;
         }
+
         private int getGetResponse(out byte[] buffer)
         {
             byte[] msgIn = ReceiveData();
@@ -563,6 +574,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             return 0;
         }
+
         public int readSZL(int id, int index, byte[] buffer)
         {
             //int  daveReadSZL(daveConnection * dc, int ID, int index, void * buffer, int buflen) {
@@ -602,7 +614,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 res = _daveBuildAndSendPDU(p2, pam, null, true);
                 if (res != Connection.daveResOK) return res; 	// bugfix from Natalie Kather
             }
-
 
             if (buffer != null)
             {
@@ -648,7 +659,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 if (res != Connection.daveResOK) return res;
             }
 
-
             //if (res==daveResOK) {
             if (buffer != null) Array.Copy(p2.UData.ToArray(), 0, buffer, len, p2.UData.Count); //memcpy(buffer + len, p2.udata, p2.udlen);
             //dc->resultPointer=p2.udata;
@@ -667,6 +677,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             // }
             return res;
         }
+
         private int initUpload(byte blockType, int blockNr, ref int uploadID)
         {
             Pdu p1 = new Pdu(); ;
@@ -680,12 +691,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             uploadID = ret.Param[7];
             return 0;
         }
+
         /*
         Functions to load blocks from PLC:
         */
+
         private void _daveConstructUpload(Pdu p, byte blockType, int blockNr)
         {
-            byte[] pa =	{0x1d,
+            byte[] pa = {0x1d,
                  0,0,0,0,0,0,0,9,0x5f,0x30,0x41,48,48,48,48,49,65};
             pa[11] = blockType;
             //sprintf((char*)(pa+12),"%05d",blockNr);
@@ -713,6 +726,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //_daveAddParam(p, pa, sizeof(pa));
             p.Param.AddRange(pa);
         }
+
         private int doUpload(ref int more, byte[] buffer, ref int len, int uploadID)
         {
             Pdu p1 = new Pdu();
@@ -737,6 +751,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             len += netLen;
             return 0;
         }
+
         private int endUpload(int uploadID)
         {
             Pdu p1 = new Pdu();
@@ -746,7 +761,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             _daveConstructEndUpload(p1, uploadID);
             Pdu ret = ExchangePdu(p1);
             //res=_daveExchange(dc, &p1);
-            //if(res!=daveResOK) return res;	
+            //if(res!=daveResOK) return res;
             //res=_daveSetupReceivedPDU(dc, &p2);
             return 0;
         }
@@ -777,6 +792,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             length = totlen;
             return res;
         }
+
         private int daveGetPDUerror(Pdu p)
         {
             if (p.header.type == 2 || p.header.type == 3)
@@ -805,16 +821,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             byte[] pup = {			// Load request
             		0x1A,0,1,0,0,0,0,0,9,
-            		0x5F,0x30,0x42,0x30,0x30,0x30,0x30,0x34,0x50, // block type code and number
+                    0x5F,0x30,0x42,0x30,0x30,0x30,0x30,0x34,0x50, // block type code and number
             		//     _    0    B   0     0    0    0    4    P
-            		//		SDB		
+            		//		SDB
             		0x0D,
-            		0x31,0x30,0x30,0x30,0x32,0x30,0x38,0x30,0x30,0x30,0x31,0x31,0x30,0	// file length and netto length
+                    0x31,0x30,0x30,0x30,0x32,0x30,0x38,0x30,0x30,0x30,0x31,0x31,0x30,0	// file length and netto length
             		//     1   0     0    0    2    0    8    0    0    0    1    1    0
             	};
             byte[] paInsert = {		// sended after transmission of a complete block,
             	// I guess this makes the CPU link the block into a program.
-            	0x28,0,0,0,0,0,0,0xFD,0,0x0A,1,0,0x30,0x42,0x30,0x30,0x30,0x30,0x34,0x50, // block type code and number	
+            	0x28,0,0,0,0,0,0,0xFD,0,0x0A,1,0,0x30,0x42,0x30,0x30,0x30,0x30,0x34,0x50, // block type code and number
             	0x05,(byte)'_',(byte)'I',(byte)'N',(byte)'S',(byte)'E'
             };
 
@@ -822,7 +838,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             byte[] pablock = {	// parameters for parts of a block
             		0x1B,0
-            	};
+                };
 
             byte[] progBlock = new byte[maxPBlockLen + 4];
             progBlock[0] = 0;
@@ -838,7 +854,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             pup[14] = (number - (pup[13] * 10*10*10)) / (10*10);
             pup[15] = (number - (pup[14] * 10*10)) / (10);
             pup[16] = (number - (pup[15] * 10));
-	
+
             pup[12] = pup[12] + 0x30;
             pup[13] = pup[13] + 0x30;
             pup[14] = pup[14] + 0x30;
@@ -853,7 +869,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             progBlock[10] = (byte)(blknumber / 0x100);
             progBlock[11] = (byte)(blknumber - (progBlock[10] * 0x100));
-
 
             rawLen = ByteFunctions.getU16from(progBlock, 14);
             netLen = ByteFunctions.getU16from(progBlock, 38);
@@ -985,13 +1000,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //int DECL2 daveDeleteProgramBlock(daveConnection*dc, int blockType, int number) {
             Pdu p = new Pdu();
             byte[] paDelete = {
-                	0x28,0,0,0,0,0,0,0xFD,0,
-                	0x0a,0x01,0x00,
-                	(byte)'0',(byte)'C', //Block type in ASCII (0C = FC)
+                    0x28,0,0,0,0,0,0,0xFD,0,
+                    0x0a,0x01,0x00,
+                    (byte)'0',(byte)'C', //Block type in ASCII (0C = FC)
                 	(byte)'0',(byte)'0',(byte)'0',(byte)'0',(byte)'1', //Block Number in ASCII
                 	(byte)'B', //Direction?
                 	0x05, //Length of Command
-                	(byte)'_',(byte)'D',(byte)'E',(byte)'L',(byte)'E' //Command Delete	
+                	(byte)'_',(byte)'D',(byte)'E',(byte)'L',(byte)'E' //Command Delete
                 	};
 
             paDelete[13] = (byte)blockType;
@@ -1027,22 +1042,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             return maxPDUlength == 0 ? (maxPDUlength = NegPDUlengthRequest()) : maxPDUlength;
         }
+
         public IPDU prepareReadRequest()
         {
             return new Pdu_ReadRequest();
         }
+
         /*public IresultSet getResultSet()
         {
             return new libnodave.resultSet();
         }*/
+
         public IresultSet getResultSet()
         {
             return new daveResultN();
         }
+
         /*public int execReadRequest(IPDU p, IresultSet rl)//!!!!!!!!!!!!!!!!!! for delete
         {
             return 0;
         }*/
+
         public int execReadRequest(IPDU p, IresultSet rl)
         {
             //int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
@@ -1143,8 +1163,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 }
             }
             return res;
-
         }
+
         public int useResult(IresultSet irs, int number, byte[] buffer)
         {
             var rs = irs as daveResultN;
@@ -1195,6 +1215,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             return 0;
         }
+
         public int writeBits(int area, int DB, int start, int len, byte[] buffer)
         {
             var p1 = new Pdu_WriteRequest();
@@ -1209,6 +1230,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //if (res != 0) return res;
             return p2.testWriteResult();
         }
+
         public int writeBytes(int area, int DBnumber, int start, int len, byte[] buffer)
         {
             var p1 = new Pdu_WriteRequest();
@@ -1228,6 +1250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             //if (res != daveResOK) return res;
             return p2.testWriteResult();
         }
+
         public int writeManyBytes(int area, int DBnumber, int start, int len, byte[] buffer)
         {
             int res, pos, writeLen;
@@ -1248,6 +1271,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             }
             return res;
         }
+
         public IPDU prepareWriteRequest()
         {
             return new Pdu_WriteRequest();
@@ -1308,8 +1332,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 }
             }
             return res;
-
         }
+
         public void Dispose()
         {
             if (tcpClient != null)
@@ -1340,19 +1364,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 }
             }
         }
+
         public int getAnswLen()
         {
             return AnswLen;
         }
+
         public static ushort daveSwapIed_16(short ff)
         {
             return (ushort)ff;
         }
+
         private void sprintf(byte[] bytes, int position, int len, int vol)
         {
             string sss = string.Format("{0:D" + len + "}", vol);
             System.Buffer.BlockCopy(Encoding.ASCII.GetBytes(sss), 0, bytes, position, sss.Length);
         }
+
         public int force200(int area, int start, int val)
         {
             //int res;
@@ -1364,8 +1392,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
             byte[] pa = { 0, 1, 18, 8, 18, 72, 14, 0, 0, 0, 0, 0 };
             byte[] da ={0,1,0x10,2,
-                		0,1,
-                		0,0,
+                        0,1,
+                        0,0,
                         0,		// area
                 		0,0,0,		// start
                     	};
@@ -1389,8 +1417,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             if(isBit) {
             pa[3]=1;
             } else {
-            start*=8;			
-            }    
+            start*=8;
+            }
             }
             */
             da[8] = (byte)area;
@@ -1398,12 +1426,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             da[10] = (byte)((start / 0x100) & 0xff);
             da[11] = (byte)(start & 0xff);
 
-
             da2[4] = (byte)(val % 0x100);
             da2[5] = (byte)(val / 0x100);
             return /*res =*/ BuildAndSendPDU(p2, pa, da, da2);
             //return res;
         }
+
         public int forceDisconnectIBH(int src, int dest, int mpi)
         {// INTERFACE
             byte[] b = new byte[daveConst.daveMaxRawLen];
@@ -1415,12 +1443,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             chal31[10] = (byte)mpi;
             /*	_daveWriteIBH(di, chal31, sizeof(chal31));
                 _daveReadIBHPacket(di, b);
-            #ifdef BCCWIN    
-            #else    
+            #ifdef BCCWIN
+            #else
                 _daveReadIBHPacket(di, b);
             #endif    */
             return 0;
         }
+
         /*public int getMessage(IPDU p)
         {
             //Console.WriteLine(p);
@@ -1438,8 +1467,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         #ifdef DEBUG_CALLS
             LOG7("daveReadBits(dc:%p area:%s area number:%d start address:%d byte count:%d buffer:%p)\n",
                 dc, daveAreaName(area), DBnum, start,len,buffer);
-            FLUSH;	    
-        #endif	    	
+            FLUSH;
+        #endif
             dc->resultPointer=NULL;
             dc->_resultPointer=NULL;
             dc->AnswLen=0;
@@ -1457,21 +1486,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             res=_daveTestReadResult(&p2);
             if (daveDebug & daveDebugPDU)
                 LOG3("_daveTestReadResult() returned: %d=%s\n", res,daveStrerror(res));
-            if (res!=daveResOK) return res;	
+            if (res!=daveResOK) return res;
             if (daveDebug & daveDebugPDU)
                 LOG2("got %d bytes of data\n", p2.udlen);
             if (p2.udlen==0) {
-                return daveResCPUNoData; 
-            }	
+                return daveResCPUNoData;
+            }
             if (buffer!=NULL) {
                 if (daveDebug & daveDebugPDU)
                     LOG2("copy %d bytes to buffer\n", p2.udlen);
                 memcpy(buffer,p2.udata,p2.udlen);
-            }	
+            }
             dc->resultPointer=p2.udata;
             dc->_resultPointer=p2.udata;
             dc->AnswLen=p2.udlen;
             return res;*/
+
         // return 0;
         //}
         public int readBytes(int area, int DBnum, int start, int len, byte[] buffer)
@@ -1505,6 +1535,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             AnswLen = p2.UData.Count;
             return res;
         }
+
         /*public int resetIBH()//??????
         {
             byte[] chalReset = { 0x00, 0xff, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01 };
@@ -1516,9 +1547,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         /*void DECL2 daveAddFillByteToReadRequest(PDU *p) {
             uc pa[]=	{
-                0			// fill byte 
+                0			// fill byte
             };
-	
+
             memcpy(p->param+p->plen, pa, 1);
             p->plen+=1;
         }*/

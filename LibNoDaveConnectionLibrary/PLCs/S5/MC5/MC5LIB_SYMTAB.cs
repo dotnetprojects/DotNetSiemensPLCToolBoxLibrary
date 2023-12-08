@@ -1,9 +1,8 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
-    static class MC5LIB_SYMTAB
+    internal static class MC5LIB_SYMTAB
     {
         public static object[] symtab = new object[]
                                  {                //Code, Code1 (32Bit),codelen (16/32), ParLen (in Bits), cMask, pmask, operation, operand, printpar (funktion für parameter), ReferenceDataAccessMode (enum direction)
@@ -320,19 +319,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                      new object[] {0xBE00, 0x0000, 16, 0, 0xffff, 0x0000, "BAS", null, null,ReferenceDataAccessMode.None},
                                      new object[] {0xBF00, 0x0000, 16, 0, 0xffff, 0x0000, ")", null, null,ReferenceDataAccessMode.None},
                                      new object[] {0xC080, 0x0000, 5, 11, 0xf880, 0x077F, "U", "A", "PrintMerkerBit",ReferenceDataAccessMode.Read},
-                                     new object[] {0xC000, 0x0000, 5, 11, 0xf800, 0x077F, "U", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},                                     
+                                     new object[] {0xC000, 0x0000, 5, 11, 0xf800, 0x077F, "U", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},
                                      new object[] {0xC880, 0x0000, 5, 11, 0xf880, 0x077F, "O", "A", "PrintMerkerBit",ReferenceDataAccessMode.Read},
-                                     new object[] {0xC800, 0x0000, 5, 11, 0xf800, 0x077F, "O", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},                                     
+                                     new object[] {0xC800, 0x0000, 5, 11, 0xf800, 0x077F, "O", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},
                                      new object[] {0xD080, 0x0000, 5, 11, 0xf880, 0x077F, "S", "A", "PrintMerkerBit",ReferenceDataAccessMode.Write},
-                                     new object[] {0xD000, 0x0000, 5, 11, 0xf800, 0x077F, "S", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},                                     
+                                     new object[] {0xD000, 0x0000, 5, 11, 0xf800, 0x077F, "S", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},
                                      new object[] {0xD880, 0x0000, 5, 11, 0xf880, 0x077F, "=", "A", "PrintMerkerBit",ReferenceDataAccessMode.Write},
-                                     new object[] {0xD800, 0x0000, 5, 11, 0xf800, 0x077F, "=", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},  
+                                     new object[] {0xD800, 0x0000, 5, 11, 0xf800, 0x077F, "=", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},
                                      new object[] {0xE080, 0x0000, 5, 11, 0xf880, 0x077F, "UN", "A", "PrintMerkerBit",ReferenceDataAccessMode.Read},
                                      new object[] {0xE000, 0x0000, 5, 11, 0xf800, 0x077F, "UN", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},
-                                     new object[] {0xE880, 0x0000, 5, 11, 0xf880, 0x077F, "ON", "A", "PrintMerkerBit",ReferenceDataAccessMode.Read},                                     
+                                     new object[] {0xE880, 0x0000, 5, 11, 0xf880, 0x077F, "ON", "A", "PrintMerkerBit",ReferenceDataAccessMode.Read},
                                      new object[] {0xE800, 0x0000, 5, 11, 0xf800, 0x077F, "ON", "E", "PrintMerkerBit",ReferenceDataAccessMode.Read},
                                      new object[] {0xF080, 0x0000, 5, 11, 0xf880, 0x077F, "R", "A", "PrintMerkerBit",ReferenceDataAccessMode.Write},
-                                     new object[] {0xF000, 0x0000, 5, 11, 0xf800, 0x077F, "R", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},                                     
+                                     new object[] {0xF000, 0x0000, 5, 11, 0xf800, 0x077F, "R", "E", "PrintMerkerBit",ReferenceDataAccessMode.Write},
                                      new object[] {0xF800, 0x0000, 8, 8, 0xff00, 0x00ff, "U", "T", "PrintNummer",ReferenceDataAccessMode.Read},
                                      new object[] {0xF900, 0x0000, 8, 8, 0xff00, 0x00ff, "O", "T", "PrintNummer",ReferenceDataAccessMode.Read},
                                      new object[] {0xFA00, 0x0000, 8, 8, 0xff00, 0x00ff, "SPB=", null, "PrintNummer",ReferenceDataAccessMode.None},
@@ -343,5 +342,4 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                      new object[] {0xFFFF, 0x0000, 16, 0, 0xffff, 0x0000, "NOP1", null, null,ReferenceDataAccessMode.None},
                                  };
     }
-
 }

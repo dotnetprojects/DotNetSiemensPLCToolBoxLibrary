@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,18 +21,19 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 {
     public enum S7DataRowType
     {
-        NIL  = 0x00,
+        NIL = 0x00,
         BOOL = 0x01,
         BYTE = 0x02,
         CHAR = 0x03,
         WORD = 0x04,  //KH
-        INT =  0x05,   //KF
+        INT = 0x05,   //KF
         DWORD = 0x06,
         DINT = 0x07,
         REAL = 0x08,
@@ -44,7 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         ARRAY = 0x10,
         STRUCT = 0x11,
         STRING = 0x13,
-       
+
         POINTER = 0x14,
 
         /// <summary>
@@ -69,17 +70,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         COUNTER = 0x1c,
         TIMER = 0x1d,
         UNKNOWN = 0xff,
-        
+
         //This are also Special Values
         UDT = 0x20,
+
         SFB = 0x21,
         FB = 0x22,
 
         //The following values are for S5 Datablocks
         S5_KH = 0xf02,
+
         S5_KF = 0xf05,
         S5_KM = 0xf01,
-        S5_A = 0xf0b, 
+        S5_A = 0xf0b,
         S5_KG = 0xf08,
         S5_KT = 0xf06,
         S5_KZ = 0xf07,
@@ -95,6 +98,4 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         UINT = 0x106,
         UDINT = 0x107,
     }
-
-
 }

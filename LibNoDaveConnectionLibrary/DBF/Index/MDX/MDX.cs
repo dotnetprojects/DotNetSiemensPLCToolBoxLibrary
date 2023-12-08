@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX;
+using System;
 using System.IO;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX;
 
-namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
+namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX
+{
     /// <summary>
     /// A MDX-Structure (Part of a MDX-File)
     /// </summary>
@@ -12,7 +13,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
         private MDXTagHeader objTagHeader;
         private MDX4TagTableHeader objTagDescription;
         private MNode objNode;
-
 
         public MDX(short TagPosition)
         {
@@ -36,8 +36,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
             this.objTagDescription = MDX4TagTableHeader.Read(Reader, LengthOfTagTableHeader, StartPosition);
 
             // Read the TagHeader
-            this.objTagHeader = MDXTagHeader.Read(Reader, this.objTagDescription.tagHeaderPageNumber*512);
-
+            this.objTagHeader = MDXTagHeader.Read(Reader, this.objTagDescription.tagHeaderPageNumber * 512);
 
             //Fill Index (base) with values from the Header
             base.shortKeysPerNode = this.objTagHeader.maxNumberOfKeysPage;
@@ -45,11 +44,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
             base.objKeyType = this.objTagHeader.keyType;
             base.unique_key = this.objTagHeader.uniqueFlag;
 
-
-
-            int Index_record = (int) objTagHeader.pointerToRootPage;
+            int Index_record = (int)objTagHeader.pointerToRootPage;
             int reading = Index_record;
-
 
             //Read Nodes
             MNode llNode = null;
@@ -58,14 +54,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
                 if (topNode == null)
                 {
                     (objNode = new MNode(shortKeysPerNode, shortKeyLength, objKeyType, Index_record, false)).Read(Reader);
-
                 }
                 else
                 {
                     llNode = new MNode(shortKeysPerNode, shortKeyLength, objKeyType, Index_record, false);
                     objNode.Read(Reader);
                     objNode.PreviousNode = llNode;
-                    objNode = (MNode) llNode;
+                    objNode = (MNode)llNode;
                 } /* endif */
                 workNode = objNode;
                 objNode.Position = 0;
@@ -84,13 +79,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
                     } /* Index = 0 then it's a leaf pointer */
                 } /* reading > 0 */
                 if (topNode == null)
-                    topNode = (MNode) objNode.Clone();
-
+                    topNode = (MNode)objNode.Clone();
             }
 
             return Successfull;
         }
-
 
         public override int add_entry(NodeKey key, int recno)
         {

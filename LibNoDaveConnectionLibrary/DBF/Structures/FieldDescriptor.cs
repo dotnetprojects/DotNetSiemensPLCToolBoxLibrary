@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures
 {
@@ -14,6 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
         public string fieldName;
+
         public dBaseType fieldType;//public byte fieldType;  //char
         public Int32 address;
         public byte fieldLen;
@@ -22,8 +21,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures
         public byte workArea;
         public Int16 reserved2;
         public byte flag;
+
         [MarshalAs(UnmanagedType.ByValTStr /* Array */, SizeConst = 7)] //Changed Type to Sting, Monotouch Compiler has Problems with Bytearrays when using PtrtoStructure
         public string /* byte[] */ reserved3;
+
         public byte indexFlag;
 
         public override string ToString()

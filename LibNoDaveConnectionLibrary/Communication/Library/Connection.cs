@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Interfaces;
 using DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
@@ -104,10 +104,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 default: return "no message defined!";
             }
         }
-        delegate void AsynchronDataArrivedDelegate(ResultSet resultSet);
+
+        private delegate void AsynchronDataArrivedDelegate(ResultSet resultSet);
+
         private event AsynchronDataArrivedDelegate AsynchronDataArrived;
 
         public delegate void PDURecievedDelegate(Pdu pdu);
+
         public event PDURecievedDelegate PDURecieved;
 
         internal int ConnectionNumber { get; set; }
@@ -115,16 +118,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         internal bool ConnectionEstablished { get; set; }
 
         private ConnectionConfig _connectionConfig;
+
         public ConnectionConfig ConnectionConfig
         {
-            get { return _connectionConfig; }            
+            get { return _connectionConfig; }
         }
 
         private int _pduSize;
+
         public int PduSize
         {
             get { return _pduSize; }
-            internal set { _pduSize = value; }            
+            internal set { _pduSize = value; }
         }
 
         public void Close()
@@ -134,8 +139,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 
         //Data for S7Online!
         internal byte application_block_subsystem { get; set; }
+
         internal byte application_block_opcode { get; set; }
-        
+
         //End Data for S7Online
 
         internal Connection(Interface Interface, ConnectionConfig config, int PduSize)
@@ -146,9 +152,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         }
 
         private Interface _interface;
+
         public Interface Interface
         {
-            get { return _interface; }          
+            get { return _interface; }
         }
 
         public ResultSet ExecReadRequest(Pdu_ReadRequest myPdu)
@@ -156,11 +163,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             Pdu wrt = ExchangePdu(myPdu);
             return new ResultSet(wrt.Param[1], wrt.Data.ToArray());
         }
-        
+
         public void PLCStop()
         {
             Pdu pdu = new Pdu(1);
-            byte[] para = new byte[] {0x29, 0, 0, 0, 0, 0, 9, (byte) 'P', (byte) '_', (byte) 'P', (byte) 'R', (byte) 'O', (byte) 'G', (byte) 'R', (byte) 'A', (byte) 'M'};
+            byte[] para = new byte[] { 0x29, 0, 0, 0, 0, 0, 9, (byte)'P', (byte)'_', (byte)'P', (byte)'R', (byte)'O', (byte)'G', (byte)'R', (byte)'A', (byte)'M' };
             pdu.Param.AddRange(para);
 
             Pdu rec = ExchangePdu(pdu);
@@ -169,7 +176,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public void PLCStart()
         {
             Pdu pdu = new Pdu(1);
-            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 9, (byte) 'P', (byte) '_', (byte) 'P', (byte) 'R', (byte) 'O', (byte) 'G', (byte) 'R', (byte) 'A', (byte) 'M'};
+            byte[] para = new byte[] { 0x28, 0, 0, 0, 0, 0, 9, (byte)'P', (byte)'_', (byte)'P', (byte)'R', (byte)'O', (byte)'G', (byte)'R', (byte)'A', (byte)'M' };
             pdu.Param.AddRange(para);
 
             Pdu rec = ExchangePdu(pdu);
@@ -178,7 +185,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public void PLCCompress()
         {
             Pdu pdu = new Pdu(1);
-            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 0, 5, (byte) '_', (byte) 'G', (byte) 'A', (byte) 'R', (byte) 'B'};
+            byte[] para = new byte[] { 0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 0, 5, (byte)'_', (byte)'G', (byte)'A', (byte)'R', (byte)'B' };
             pdu.Param.AddRange(para);
 
             Pdu rec = ExchangePdu(pdu);
@@ -187,7 +194,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public void PLCCopyRamToRom()
         {
             Pdu pdu = new Pdu(1);
-            byte[] para = new byte[] {0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 2, (byte) 'E', (byte) 'P', 5, (byte) '_', (byte) 'M', (byte) 'O', (byte) 'D', (byte) 'U'};
+            byte[] para = new byte[] { 0x28, 0, 0, 0, 0, 0, 0, 0xFD, 0, 2, (byte)'E', (byte)'P', 5, (byte)'_', (byte)'M', (byte)'O', (byte)'D', (byte)'U' };
             pdu.Param.AddRange(para);
 
             Pdu rec = ExchangePdu(pdu);
@@ -196,19 +203,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         public byte[] ReadSZL(int SZL_ID, int SZL_Index)
         {
             Pdu pdu = new Pdu(1);
-            byte[] para_1 = new byte[] {0, 1, 18, 4, 17, 68, 1, 0};
+            byte[] para_1 = new byte[] { 0, 1, 18, 4, 17, 68, 1, 0 };
             pdu.Param.AddRange(para_1);
 
             byte[] user = new byte[4];
-            user[0] = (byte) (SZL_ID/0x100);
-            user[1] = (byte) (SZL_ID%0x100);
-            user[2] = (byte) (SZL_Index/0x100);
-            user[3] = (byte) (SZL_Index%0x100);
+            user[0] = (byte)(SZL_ID / 0x100);
+            user[1] = (byte)(SZL_ID % 0x100);
+            user[2] = (byte)(SZL_Index / 0x100);
+            user[3] = (byte)(SZL_Index % 0x100);
             pdu.Data.AddRange(user);
 
             Pdu rec = ExchangePdu(pdu);
 
-            byte[] para_2 = {0, 1, 18, 8, 18, 68, 1, 1, 0, 0, 0, 0};
+            byte[] para_2 = { 0, 1, 18, 8, 18, 68, 1, 1, 0, 0, 0, 0 };
             para_2[7] = rec.Param[7];
             pdu.Param.Clear();
             pdu.Param.AddRange(para_2);
@@ -230,7 +237,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             Interface.SendPdu(myPdu, this);
         }
-        
+
         #region PDU/Data Exchange with Interface
 
         internal object RecievedData = null;
@@ -238,6 +245,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         private object lockpdu = new object();
         private ushort pduNr = 1;
         internal Dictionary<int, Pdu> RecievedPdus = new Dictionary<int, Pdu>();
+
         public Pdu ExchangePdu(Pdu myPdu)
         {
             ushort pduNrInt;
@@ -281,13 +289,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
                 //Event should be used in PLC Connection!
             }
         }
-        #endregion
+
+        #endregion PDU/Data Exchange with Interface
 
         public void Dispose()
         {
             if (this._interface != null)
             {
-
                 this.Close();
                 this._interface = null;
             }

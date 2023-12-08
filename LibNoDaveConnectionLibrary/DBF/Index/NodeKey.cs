@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
 {
@@ -37,7 +37,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             {
                 if (inString[i] == '_')
                 {
-                    a[i] = (char) 31;
+                    a[i] = (char)31;
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                 return -1; // throw new xBaseJException("Node key types do not match");
             if (this.objType == dBaseType.C)
             {
-                String s = (String) this.objKey;
+                String s = (String)this.objKey;
                 s = RebuildString(s);
                 String t = keyCompareTo.ToString();
                 t = RebuildString(t);
@@ -63,11 +63,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             }
             if (this.objType == dBaseType.F)
             {
-                NodeFloat nf = (NodeFloat) this.objKey;
-                NodeFloat nft = (NodeFloat) keyCompareTo.objKey;
+                NodeFloat nf = (NodeFloat)this.objKey;
+                NodeFloat nft = (NodeFloat)keyCompareTo.objKey;
                 return nf.CompareTo(nft);
             }
-            Double d = (Double) this.objKey;
+            Double d = (Double)this.objKey;
 
             double d2 = d - keyCompareTo.GetDouble;
             if (d2 < 0.0) return -1;
@@ -87,7 +87,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             get
             {
                 if (objType == dBaseType.C)
-                    return ((String) objKey).Length;
+                    return ((String)objKey).Length;
                 if (objType == dBaseType.F)
                     return 12;
                 return 8;
@@ -102,17 +102,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
                 switch (this.objType)
                 {
                     case dBaseType.C:
-                        OutputString = (string) this.objKey;
+                        OutputString = (string)this.objKey;
                         break;
+
                     case dBaseType.N:
-                        OutputString = ((double) objKey).ToString("#");
+                        OutputString = ((double)objKey).ToString("#");
                         break;
 
                     case dBaseType.F:
-                        NodeFloat tempfloat = (NodeFloat) this.objKey;
+                        NodeFloat tempfloat = (NodeFloat)this.objKey;
                         OutputString = tempfloat.ToString();
                         break;
-
                 }
                 return OutputString;
             }
@@ -124,7 +124,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             {
                 if (this.objType == dBaseType.N)
                 {
-                    Double d = (Double) this.objKey;
+                    Double d = (Double)this.objKey;
                     return d;
                 }
                 return 0.0;
@@ -137,16 +137,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             {
                 if (objType == dBaseType.F)
                 {
-                    NodeFloat f = (NodeFloat) this.objKey;
+                    NodeFloat f = (NodeFloat)this.objKey;
                     return f;
                 }
                 return null;
             }
         }
 
-        #endregion
+        #endregion SET / GET
     }
-
 
     public class KeyList : IComparer<KeyList>
     {
@@ -166,7 +165,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index
             get { return this.intWhere; }
         }
 
-        #endregion
+        #endregion SET / GET
 
         public int Compare(KeyList x, KeyList y)
         {

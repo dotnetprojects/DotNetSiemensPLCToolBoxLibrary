@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures
 {
@@ -27,5 +25,4 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures
         public byte language;
         public Int16 reserved4;
     }
-
 }

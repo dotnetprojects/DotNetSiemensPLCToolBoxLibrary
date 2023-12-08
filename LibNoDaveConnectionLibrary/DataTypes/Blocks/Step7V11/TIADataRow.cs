@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.General;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using System.ComponentModel;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 {
@@ -25,7 +16,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
         }
 
         public bool isRootBlock { get; set; }
-        
 
         public override TiaAndSTep7DataBlockRow DeepCopy()
         {
@@ -38,7 +28,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
             newRow.WasArray = this.WasArray;
             newRow.WasNextHigherIndex = this.WasNextHigherIndex;
             newRow.DataTypeBlock = DataTypeBlock;
-            
+
             newRow.Comment = this.Comment;
             newRow.DataTypeBlockNumber = this.DataTypeBlockNumber;
             newRow.ReadOnly = this.ReadOnly;
@@ -50,7 +40,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 
             //newRow.Attributes = this.Attributes;
             //newRow.TimeStampConflict = this.TimeStampConflict;
-            
 
             if (Children != null)
                 foreach (TIADataRow plcDataRow in Children)
@@ -61,9 +50,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
                 }
 
             return newRow;
-        }      
+        }
 
         private ByteBitAddress _parentOldAddress;
+
         internal override ByteBitAddress FillBlockAddresses(ByteBitAddress startAddr)
         {
             if (isRootBlock && this.Name == "TEMP")
@@ -90,7 +80,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
                     //int structlen = 0;
                     foreach (TIADataRow plcDataRow in Children)
                     {
-
                         if (akAddr.BitAddress != 0 && plcDataRow._datatype == S7DataRowType.BOOL && plcDataRow.WasArray && !plcDataRow.WasFirstInArray && plcDataRow.WasNextHigherIndex)
                         {
                             akAddr.BitAddress = 0;
@@ -102,13 +91,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
                             akAddr.ByteAddress++;
                         }
 
-
                         if (akAddr.ByteAddress % 2 != 0 && ((plcDataRow._datatype != S7DataRowType.BOOL && plcDataRow._datatype != S7DataRowType.BYTE && plcDataRow._datatype != S7DataRowType.CHAR) || plcDataRow.IsArray || plcDataRow.WasFirstInArray || (lastRowWasArrayOrStruct && !plcDataRow.WasArray && !plcDataRow.WasFirstInArray)))
                             if (!(this.PlcBlock is Step5.S5DataBlock))
                             {
                                 akAddr.ByteAddress++;
                             }
-
 
                         if (plcDataRow.Children != null && plcDataRow.Children.Count > 0)
                         {
@@ -158,6 +145,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
             }
             return akAddr;
         }
+
         /// </summary>
         internal override void ClearBlockAddress()
         {
@@ -186,10 +174,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
                 if (this.PlcBlock is Step5.S5DataBlock && _BlockAddress != null)
                     return new ByteBitAddress(_BlockAddress.ByteAddress / 2, _BlockAddress.BitAddress);
                 return new ByteBitAddress(_BlockAddress);
-
             }
         }
-
 
         public override string DataTypeAsString
         {
@@ -231,14 +217,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
         //            }
         //        }
 
-        
         //        public string SymbolicVisuAccessKey
         //        {
         //            get
         //            {
         //                var crc = TiaCrcHelper.getcrc(Encoding.ASCII.GetBytes(Name));
-        //                return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + crc.ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');                
+        //                return "8a0e" + block.BlockNumber.ToString("X").PadLeft(4, '0') + crc.ToString("X").PadLeft(8, '0') + "4" + LocalIdentifier.ToString("X").PadLeft(7, '0');
         //            }
-        //        }       
+        //        }
     }
 }

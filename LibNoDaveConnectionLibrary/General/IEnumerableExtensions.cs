@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
@@ -14,7 +13,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         {
             return e.SelectMany(c => f(c).Flatten(f)).Concat(e);
         }
-
 
         public static int Count(this IEnumerable list)
         {
@@ -33,7 +31,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         /// Konvertiert eine allgemeine Liste in ein Array aus Objekten
         /// </summary>
         /// <param name="list">Liste</param>
-        /// <returns>Liste als Array</returns>        
+        /// <returns>Liste als Array</returns>
         public static object[] ToArray(/* this */ IEnumerable list)
         {
             return ToArray<object>(list);
@@ -44,7 +42,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         /// </summary>
         /// <typeparam name="T">Zieltyp des Rückgabearrays</typeparam>
         /// <param name="list">Liste</param>
-        /// <returns>Liste als Array</returns>        
+        /// <returns>Liste als Array</returns>
         public static T[] ToArray<T>(/* this */ IEnumerable list)
         {
             if (list is T[])
@@ -63,7 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             }
             return result.ToArray();
         }
-        #endregion
 
+        #endregion Methoden
     }
 }

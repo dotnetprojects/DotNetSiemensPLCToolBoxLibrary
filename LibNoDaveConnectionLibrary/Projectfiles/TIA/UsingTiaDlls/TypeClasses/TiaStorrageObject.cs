@@ -1,8 +1,5 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls.AttributeClasses;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls.AttributeClasses;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
 {
@@ -12,7 +9,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.UsingTiaDlls
             : base(tiaObjectStructure)
         {
             AttributeSets = new List<BaseTiaAttributeSet>();
-
         }
 
         public static TiaStorrageObject CreateStorrageObject(TiaObjectStructure tiaObjectStructure, int id, int instId,

@@ -9,7 +9,7 @@
 //        private TCPConnection _tcpConnection;
 
 //        private byte[] _recievedData;
-        
+
 //        protected NetworkInterface()
 //        {
 //        }

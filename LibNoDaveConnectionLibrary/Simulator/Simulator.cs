@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Simulator
 {
@@ -42,8 +39,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Simulator
             public Single Single;
         }
 
-
-
         public Akku Akku1;
         public UInt32 Akku2 { get; set; }
         public UInt32 Akku3 { get; set; }
@@ -62,7 +57,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Simulator
         public bool STA { get; set; }
         public bool VKE { get; set; }
         public bool _ER { get; set; }
-        
+
         public Dictionary<int, byte[]> DataBlocks { get; private set; }
         public Dictionary<int, byte[]> LocalDataStack { get; private set; }
 
@@ -72,10 +67,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Simulator
         public Simulator()
         {
             DataBlocks = new Dictionary<int, byte[]>();
-            
+
             LocalDataStack = new Dictionary<int, byte[]>();
             LocalDataStackStart = 0;
-            LocalDataStackStartQueue=new Queue<int>();
+            LocalDataStackStartQueue = new Queue<int>();
 
             Akku1.UInt32 = 0;
             Akku2 = 0;
@@ -89,7 +84,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Simulator
         {
             if (row.Command == Mnemonic.opABS[0])
             {
-                Akku1.Int32 = Math.Abs(Akku1.Int32);                    
+                Akku1.Int32 = Math.Abs(Akku1.Int32);
             }
             else if (row.Command == Mnemonic.opACOS[0])
             {
@@ -103,7 +98,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Simulator
             {
                 var sp = Akku2;
                 Akku2 = Akku1.UInt32;
-                Akku1.UInt32 = sp;                
+                Akku1.UInt32 = sp;
             }
         }
     }

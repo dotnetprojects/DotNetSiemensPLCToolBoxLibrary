@@ -11,6 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.DBT
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         public byte[] reserved;
+
         public Int16 startPosition;
         public Int32 fieldLength;
     }

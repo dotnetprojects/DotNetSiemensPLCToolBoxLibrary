@@ -7,15 +7,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
     {
         public static S5CommentBlock GetCommentBlock(ProjectBlockInfo blkInfo, byte[] commentBlock)
         {
-            S5CommentBlock retVal = new S5CommentBlock();            
+            S5CommentBlock retVal = new S5CommentBlock();
 
             if (commentBlock != null)
-            {                
+            {
                 int nr = 28;
                 int hdlen = 0x7f & commentBlock[nr];
 
                 retVal.Name = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(commentBlock, nr + 1, hdlen);
-           
+
                 nr += hdlen + 1;
                 int last = 0;
                 retVal.CommentLines = "";
@@ -29,7 +29,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     retVal.CommentLines += cmt;
                     nr += len + 3;
                 }
-
             }
             return retVal;
         }

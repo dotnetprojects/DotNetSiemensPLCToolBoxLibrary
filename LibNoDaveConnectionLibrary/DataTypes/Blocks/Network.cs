@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
-using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -13,10 +11,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         {
             AWLCode = new List<FunctionBlockRow>();
         }
+
         [JsonProperty]
         public virtual string Name { get; set; }
+
         [JsonProperty]
         public string Comment { get; set; }
+
         [JsonProperty(Order = 10)]
         public List<FunctionBlockRow> AWLCode { get; set; }
 
@@ -37,7 +38,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         public override string ToString()
-        {       
+        {
             StringBuilder retVal = new StringBuilder();
             retVal.Append(AWLCodeToString());
             return retVal.ToString();

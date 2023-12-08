@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
 {
@@ -19,8 +19,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
         public Int16 indexKeyLength;
         public Int16 maxNumberOfKeysPage;
         public Int16 secondaryKeyType; //00h: DB4: C/N; DB3: C
+
         //01h: DB4: D  ; DB3: N/D
         public Int16 indeyKeyItemLength;
+
         public Int16 version;
         public byte reserved3;
         public byte uniqueFlag;
@@ -30,7 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
         public string KeyString2;
 
         /// <summary>
-        /// Extracts a MDXTagHeader from a Stream 
+        /// Extracts a MDXTagHeader from a Stream
         /// </summary>
         /// <param name="Reader">The BinaryReader that contains the MDXTH structure</param>
         /// <param name="LengthOfTags">The total length of a single MDXTH structrue + overhead</param>
@@ -42,9 +44,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
             byte[] buffer;
 
             Reader.BaseStream.Position = StreamPosition;
-            buffer = Reader.ReadBytes(Marshal.SizeOf(typeof (MDXTagHeader)));
+            buffer = Reader.ReadBytes(Marshal.SizeOf(typeof(MDXTagHeader)));
             handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            MDXTagHeader TempObject = (MDXTagHeader) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (MDXTagHeader));
+            MDXTagHeader TempObject = (MDXTagHeader)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(MDXTagHeader));
             handle.Free();
             return TempObject;
         }
@@ -56,7 +58,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
         public void Write(BinaryWriter Writer)
         {
             GCHandle handle;
-            byte[] buffer = new byte[Marshal.SizeOf(typeof (MDXTagHeader))];
+            byte[] buffer = new byte[Marshal.SizeOf(typeof(MDXTagHeader))];
             handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             Marshal.StructureToPtr(this, handle.AddrOfPinnedObject(), true);
             Writer.Write(buffer);

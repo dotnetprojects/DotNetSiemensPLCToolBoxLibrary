@@ -7,17 +7,16 @@ using System.Collections;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
+    public class NumericComparer<T> : System.Collections.Generic.IComparer<T>
+    {
+        public NumericComparer()
+        { }
 
-	public class NumericComparer<T> : System.Collections.Generic.IComparer<T>
-	{
-		public NumericComparer()
-		{}
-				
-	    public int Compare(T x, T y)
-	    {
-            return StringLogicalComparer.Compare(x.ToString(), y.ToString());            
-	    }
-	}
+        public int Compare(T x, T y)
+        {
+            return StringLogicalComparer.Compare(x.ToString(), y.ToString());
+        }
+    }
 
     public class NumericComparer : IComparer
     {
@@ -26,7 +25,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 
         public int Compare(object x, object y)
         {
-            return StringLogicalComparer.Compare(x.ToString(), y.ToString());                
+            return StringLogicalComparer.Compare(x.ToString(), y.ToString());
         }
     }
 }

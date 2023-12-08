@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DBF
@@ -18,14 +16,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             if (year == 0)
                 return 1e100;
 
-            int[] days = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+            int[] days = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
             int month = int.Parse(s.Substring(4, 6));
             int day = int.Parse(s.Substring(6, 8));
 
             int daydif = 2378497;
 
-            if ((year/4) == 0)
+            if ((year / 4) == 0)
                 days[2] = 29;
 
             if (year > 1799)
@@ -33,9 +31,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 daydif += day - 1;
                 for (i = 2; i <= month; i++)
                     daydif += days[i - 1];
-                daydif += (year - 1800)*365;
-                daydif += ((year - 1800)/4);
-                daydif -= ((year - 1800)%100); // leap years don't occur in 00
+                daydif += (year - 1800) * 365;
+                daydif += ((year - 1800) / 4);
+                daydif -= ((year - 1800) % 100); // leap years don't occur in 00
                 // years
                 if (year > 1999) // except in 2000
                     daydif++;
@@ -45,8 +43,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
                 daydif -= (days[month] - day + 1);
                 for (i = 11; i >= month; i--)
                     daydif -= days[i + 1];
-                daydif -= (1799 - year)*365;
-                daydif -= (1799 - year)/4;
+                daydif -= (1799 - year) * 365;
+                daydif -= (1799 - year) / 4;
             }
 
             int retInt = daydif;
@@ -66,7 +64,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
     /// </summary>
     public static class dBaseConverter
     {
-
         /// <summary>
         /// Converts a logical byte ('L') to a boolean value
         /// </summary>
@@ -93,11 +90,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         {
             if (BoolToConvert)
             {
-                return (byte) 'Y';
+                return (byte)'Y';
             }
             else
             {
-                return (byte) 'N';
+                return (byte)'N';
             }
         }
 
@@ -163,8 +160,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             return new byte[0];
         }
 
-
-
         /// <summary>
         /// Converts a character byte array('C') to a string value
         /// </summary>
@@ -175,7 +170,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
             if (encoding == null)
                 encoding = Util.DefaultEncoding;
 
-            return encoding.GetString(dBaseCharacterBytes).TrimEnd(new char[] {' '});
+            return encoding.GetString(dBaseCharacterBytes).TrimEnd(new char[] { ' ' });
         }
 
         /// <summary>
@@ -310,15 +305,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF
         {
             double p = Convert.ToDouble(lJDN);
             double s1 = p + 68569;
-            double n = Math.Floor(4*s1/146097);
-            double s2 = s1 - Math.Floor((146097*n + 3)/4);
-            double i = Math.Floor(4000*(s2 + 1)/1461001);
-            double s3 = s2 - Math.Floor(1461*i/4) + 31;
-            double q = Math.Floor(80*s3/2447);
-            double d = s3 - Math.Floor(2447*q/80);
-            double s4 = Math.Floor(q/11);
-            double m = q + 2 - 12*s4;
-            double j = 100*(n - 49) + i + s4;
+            double n = Math.Floor(4 * s1 / 146097);
+            double s2 = s1 - Math.Floor((146097 * n + 3) / 4);
+            double i = Math.Floor(4000 * (s2 + 1) / 1461001);
+            double s3 = s2 - Math.Floor(1461 * i / 4) + 31;
+            double q = Math.Floor(80 * s3 / 2447);
+            double d = s3 - Math.Floor(2447 * q / 80);
+            double s4 = Math.Floor(q / 11);
+            double m = q + 2 - 12 * s4;
+            double j = 100 * (n - 49) + i + s4;
             return new DateTime(Convert.ToInt32(j), Convert.ToInt32(m), Convert.ToInt32(d));
         }
     }

@@ -1,21 +1,21 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using DotNetSiemensPLCToolBoxLibrary.General;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
 {
-    public class Pdu: IPDU
+    public class Pdu : IPDU
     {
         public Pdu() : this(1)
         { }
-        
+
         public Pdu(int Type)
-        {            
-            header=new PDUHeader();
+        {
+            header = new PDUHeader();
             header.P = 0x32;
-            header.type = (byte) Type;
+            header.type = (byte)Type;
 
             pduHeaderLen = (Type == 2 || Type == 3) ? 12 : 10;
 
@@ -34,15 +34,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
                 UData.RemoveRange(0, 4);
             }
         }
+
         public Pdu(byte[] recievedPdu)
         {
             int Type = recievedPdu[1];
             pduHeaderLen = (Type == 2 || Type == 3) ? 12 : 10;
-            
-            byte[] array=new byte[pduHeaderLen];
+
+            byte[] array = new byte[pduHeaderLen];
             Array.Copy(recievedPdu, 0, array, 0, pduHeaderLen);
             header = EndianessMarshaler.BytesToStruct<PDUHeader>(array);
-            
+
             Param = new List<byte>();
             array = new byte[header.plen];
             Array.Copy(recievedPdu, pduHeaderLen, array, 0, header.plen);
@@ -51,20 +52,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             Data = new List<byte>();
             array = new byte[header.dlen];
             header.dlen = (ushort)Math.Min(header.dlen, recievedPdu.Length - pduHeaderLen - header.plen);//for OLD PLC: recievedPdu.Length = 400, header.dlen = 448
-            
-                Array.Copy(recievedPdu, pduHeaderLen + header.plen, array, 0, header.dlen);
-                Data.AddRange(array);
-            
 
-            UData = new List<byte>();            
+            Array.Copy(recievedPdu, pduHeaderLen + header.plen, array, 0, header.dlen);
+            Data.AddRange(array);
+
+            UData = new List<byte>();
             initUData();
         }
 
         public virtual byte[] ToBytes()
         {
             //Todo byteswap within the length of the pdu headers!
-            header.plen = (ushort) Param.Count;
-            header.dlen = (ushort) Data.Count;
+            header.plen = (ushort)Param.Count;
+            header.dlen = (ushort)Data.Count;
 
             var retVal = new byte[pduHeaderLen + header.plen + header.dlen];
 
@@ -90,6 +90,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
                 for (int ii = 0; ii < len; ii++)
                     Data.Add(pa[ii]);
         }
+
         protected void addValue(byte[] data, int len)
         {
             ushort dCount;
@@ -118,7 +119,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
                 //			LOG2("unknown data type/length: %d\n", *dtype);
             }
             //if (p->udata==NULL) p->udata=p->data+4;
-            //p->udlen+=len;	
+            //p->udlen+=len;
             //if (daveDebug & daveDebugPDU)
             //	LOG2("dCount: %d\n", dCount);
             //dCount=daveSwapIed_16(dCount);
@@ -131,8 +132,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             addData(data, len);
         }
 
-
         #region For Read Request
+
         private void addToReadRequest(int area, int DBnumber, int startByteAddress, int byteCount, bool isBit)
         {
             byte readSize = 2; /* 1=single bit, 2=byte, 4=word */
@@ -179,10 +180,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             addToReadRequest(area, DBnumber, startByteAddress * 8 + bitNumber, 1, true);
         }
 
-	    public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
-	    {
-		    throw new NotImplementedException();
-	    }
+        public void addNCKToReadRequest(int area, int unit, int column, int line, int module, int linecount)
+        {
+            throw new NotImplementedException();
+        }
 
         public void addNCKToWriteRequest(int area, int unit, int column, int line, int module, int linecount, int bytes, byte[] buffer)
         {
@@ -198,6 +199,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             //p->plen+=1;
             Param.AddRange(pa);
         }
+
         public void addDbRead400ToReadRequest(int DBnum, int offset, int byteCount)
         {
             byte[] pa = {
@@ -222,7 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             //p->plen+=sizeof(pa);
             Param.AddRange(pa);
 
-            /*#ifdef ARM_FIX    
+            /*#ifdef ARM_FIX
                 tmplen=daveSwapIed_16(p->plen);
                 memcpy(&(((PDUHeader*)p->header)->plen), &tmplen, sizeof(us));
             #else
@@ -232,19 +234,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             //p->dlen=0;
             Data.Clear();
         }
+
         public void addSymbolVarToReadRequest(string completeSymbol)
         {
-
             addSymbolToReadRequest(completeSymbol);
         }
+
         private void addSymbolToReadRequest(string completeSymbol)
         {
-
             byte[] pa = { 0x12, 0x00, 0xb2, 0xff };
 
-
             pa[1] = (byte)(completeSymbol.Length + 4);
-
 
             PduVarCount++;
             //memcpy(p->param+p->plen, pa, sizeof(pa));
@@ -253,7 +253,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             Param.AddRange(completeSymbol.ToByteArray());
             //p->plen+= pa[1];
 
-            /*#ifdef ARM_FIX    
+            /*#ifdef ARM_FIX
                 tmplen=daveSwapIed_16(p->plen);
                 memcpy(&(((PDUHeader*)p->header)->plen), &tmplen, sizeof(us));
             #else
@@ -264,12 +264,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             Data.Clear();
             //	if (daveDebug & daveDebugPDU) {
             //		_daveDumpPDU(p);
-            //	}	
+            //	}
         }
 
-        #endregion
+        #endregion For Read Request
 
         #region For write request
+
         public void addBitVarToWriteRequest(int area, int DBnum, int start, int byteCount, byte[] buffer)
         {
             byte[] da = { 0, 3, 0, 0, };
@@ -284,6 +285,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
 
             addToWriteRequest(area, DBnum, start, byteCount, buffer, da, pa);
         }
+
         private void addToWriteRequest(int area, int DBnum, int start, int byteCount,
             byte[] buffer,
             byte[] da,
@@ -335,8 +337,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             addValue(buffer, byteCount);
             //if (daveDebug & daveDebugPDU) {
             //	_daveDumpPDU(p);
-            //}	
+            //}
         }
+
         public void addVarToWriteRequest(int area, int DBnum, int start, int byteCount, byte[] buffer)
         {
             byte[] da = {0, //Return Value
@@ -357,7 +360,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             addToWriteRequest(area, DBnum, 8 * start, byteCount, buffer, da, pa);
         }
 
-        #endregion
+        #endregion For write request
 
         public int testWriteResult()
         {
@@ -371,17 +374,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
                 res = Data[0];
             return res;
         }
+
         public int testReadResultMulti()
         {
             //if (p == null) return daveResNoBuffer;
             if (Param.Count == 0 || Param[0] != daveConst.daveFuncRead) return Connection.daveResUnexpectedFunc;
             return testResultDataMulti();
         }
+
         public int testReadResult()
         {
             if (Param[0] != daveConst.daveFuncRead) return Connection.daveResUnexpectedFunc;
             return testResultData();
         }
+
         public int testPGReadResult()
         {
             int pres = 0;
@@ -431,6 +437,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             }
             return res;
         }
+
         public int testResultData()
         {
             int res; /*=daveResCannotEvaluatePDU;*/
@@ -462,23 +469,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
             }
             return res;
         }
-      
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
         internal struct PDUHeader
         {
             public byte P; /* allways 0x32 */
             public byte type; /* Header type, one of 1,2,3 or 7. type 2 and 3 headers are two bytes longer. */
             public byte a, b; /* currently unknown. Maybe it can be used for long numbers? */
-            [Endian(Endianness.BigEndian)]        
+
+            [Endian(Endianness.BigEndian)]
             public ushort number; /* A number. This can be used to make sure a received answer */
+
             /* corresponds to the request with the same number. */
-            [Endian(Endianness.BigEndian)]        
+
+            [Endian(Endianness.BigEndian)]
             public ushort plen; /* length of parameters which follow this header */
-            [Endian(Endianness.BigEndian)]        
+
+            [Endian(Endianness.BigEndian)]
             public ushort dlen; /* length of data which follow the parameters */
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public byte[] result; /* only present in type 2 and 3 headers. This contains error information. */
         }
-
     }
 }

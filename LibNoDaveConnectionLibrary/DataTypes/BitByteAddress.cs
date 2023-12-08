@@ -8,7 +8,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         public int ByteAddress { get; set; }
         public int BitAddress { get; set; }
 
-
         public ByteBitAddress(string address)
         {
             if (address.StartsWith("P#")) address = address.Substring(2);
@@ -42,8 +41,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
                 ByteAddress = 0;
                 BitAddress = 0;
             }
-
         }
+
         public static bool operator <(ByteBitAddress b1, ByteBitAddress b2)
         {
             if (b1.ByteAddress * 8 + b1.BitAddress < b2.ByteAddress * 8 + b2.BitAddress)
@@ -99,6 +98,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes
         {
             return !(a == b);
         }
+
         /*
         public override bool Equals(object obj)
         {

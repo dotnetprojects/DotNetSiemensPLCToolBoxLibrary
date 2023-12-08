@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,18 +21,19 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using System;
 using System.Collections.Generic;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 
 //Todo: Finish AWL to MC7
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
     internal static class AWLtoMC7
     {
-        static public byte[] GetMC7(S7Block myCmd)
+        public static byte[] GetMC7(S7Block myCmd)
         {
             //if (myCmd.GetType() == typeof(PLCFunctionBlock))
             //    return GetMC7((PLCFunctionBlock) myCmd);
@@ -40,22 +41,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             foreach (var myLine in ((S7FunctionBlock)myCmd).AWLCode)
             {
-                if (((S7FunctionBlockRow)myLine).MC7 == null) 
+                if (((S7FunctionBlockRow)myLine).MC7 == null)
                     ((S7FunctionBlockRow)myLine).MC7 = GetMC7(((S7FunctionBlockRow)myLine));
                 retVal.AddRange(((S7FunctionBlockRow)myLine).MC7);
             }
             return retVal.ToArray();
         }
 
-
-
         public static int GetSize(S7FunctionBlockRow myCmd)
         {
-
             int MN = 0; //Memnoic still needs to be implemented!
 
             //This function is there, because for a Jump it sould not call GetMC7, because then we can get circular calls!
-            //A Jump in GetMC7 will also call this, to callculate the distance to the jump mark!            
+            //A Jump in GetMC7 will also call this, to callculate the distance to the jump mark!
             if (Helper.IsJump(myCmd, MN)) return 4;
             else
                 try
@@ -70,10 +68,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
         }
 
-        static public byte[] GetMC7(S7FunctionBlockRow myCmd)
+        public static byte[] GetMC7(S7FunctionBlockRow myCmd)
         {
-            int MN=0; //Memnoic still needs to be implemented!
-
+            int MN = 0; //Memnoic still needs to be implemented!
 
             if (myCmd.Command == "NETWORK")
                 return null;
@@ -270,8 +267,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 0xfb, 0x79  //auf di >256
                                                 0xfb, 0xd8  //auf db #par
 
-             * 
-             * 
+             *
+             *
                         public static string[] opU = new[] { "U", "U" };
                         public static string[] opFN = new[] { "FN", "FN" };
                         public static string[] opFP = new[] { "FP", "FP" };
@@ -281,24 +278,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         public static string[] opUN = new[] { "UN", "UN" };
                         public static string[] opX = new[] { "X", "X" };
                         public static string[] opXN = new[] { "XN", "XN" };
-                        public static string[] opZUW = new[] { "=", "=" }; 
+                        public static string[] opZUW = new[] { "=", "=" };
 
              */
             /*
                  * Commands still to do:
-                        public static string[] opAUF = new[] { "AUF", "OPN" };                       
+                        public static string[] opAUF = new[] { "AUF", "OPN" };
                         public static string[] opCC = new[] { "CC", "CC" };
-             * 
-                        
+             *
+
              *          public static string[] opFR = new[] { "FR", "FR" };
-             *          
+             *
                         public static string[] opL = new[] { "L", "L" };
-                        
+
              *          public static string[] opLAR1 = new[] { "LAR1", "LAR1" };
                         public static string[] opLAR2 = new[] { "LAR2", "LAR2" };
                         public static string[] opLC = new[] { "LC", "LC" };
                         public static string[] opLN = new[] { "LN", "LN" };
-                                               
+
              *          public static string[] opOD = new[] { "OD", "OD" };
                         public static string[] opON = new[] { "ON", "ON" };
                         public static string[] opOW = new[] { "OW", "OW" };
@@ -312,7 +309,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         public static string[] opSI = new[] { "SI", "SP" };
                         public static string[] opSLD = new[] { "SLD", "SLD" };
                         public static string[] opSLW = new[] { "SLW", "SLW" };
-                      
+
              *        * public static string[] opLOOP = new[] { "LOOP", "LOOP" };
                         public static string[] opSPA = new[] { "SPA", "JU" };
                         public static string[] opSPB = new[] { "SPB", "JC" };
@@ -347,11 +344,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         public static string[] opXOW = new[] { "XOW", "XOW" };
                         public static string[] opZR = new[] { "ZR", "ZR" };
                         public static string[] opZV = new[] { "ZV", "ZV" };
-                        
+
                  * End of commands list
                                 */
-
-
 
             return null;
         }

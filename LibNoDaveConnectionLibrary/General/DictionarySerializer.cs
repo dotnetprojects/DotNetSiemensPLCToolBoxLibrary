@@ -1,7 +1,7 @@
-﻿using System.Xml.Serialization;
-using System.Collections.Generic;
-using System.Xml;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
@@ -11,6 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         {
             public TKey Key;
             public TValue Value;
+
             public SerializableKeyValuePair(KeyValuePair<TKey, TValue> kvp)
             {
                 this.Key = kvp.Key;
@@ -24,10 +25,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         {
             Serializer.Serialize(serializationStream, BuildItemList(dictionary));
         }
+
         public void Serialize(Dictionary<K, V> dictionary, TextWriter serializationStream)
         {
             Serializer.Serialize(serializationStream, BuildItemList(dictionary));
         }
+
         public void Serialize(Dictionary<K, V> dictionary, Stream serializationStream)
         {
             Serializer.Serialize(serializationStream, BuildItemList(dictionary));
@@ -42,20 +45,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             }
 
             return list;
-
         }
-
 
         public Dictionary<K, V> Deserialize(XmlReader serializationStream)
         {
             List<SerializableKeyValuePair<K, V>> dictionaryItems = Serializer.Deserialize(serializationStream) as List<SerializableKeyValuePair<K, V>>;
             return BuildDictionary(dictionaryItems);
         }
+
         public Dictionary<K, V> Deserialize(TextReader serializationStream)
         {
             List<SerializableKeyValuePair<K, V>> dictionaryItems = Serializer.Deserialize(serializationStream) as List<SerializableKeyValuePair<K, V>>;
             return BuildDictionary(dictionaryItems);
         }
+
         public Dictionary<K, V> Deserialize(Stream serializationStream)
         {
             List<SerializableKeyValuePair<K, V>> dictionaryItems = Serializer.Deserialize(serializationStream) as List<SerializableKeyValuePair<K, V>>;
@@ -72,6 +75,5 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 
             return dictionary;
         }
-
     }
 }

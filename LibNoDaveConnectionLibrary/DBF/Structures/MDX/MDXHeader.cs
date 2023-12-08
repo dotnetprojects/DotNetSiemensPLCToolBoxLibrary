@@ -13,8 +13,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
         public byte creationYear;
         public byte creationMonth;
         public byte creationDay;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
         public string fileName;
+
         public Int16 blockSize;
         public Int16 blockSizeAdderN;
         public byte productionIndexflag;
@@ -30,6 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Structures.MDX
         public byte updateMonth;
         public byte updateDay;
         public byte reserved3;
+
         [MarshalAs(UnmanagedType.ByValTStr /*Array*/, SizeConst = 496)]
         public string /*byte[]*/ garbage;
     }

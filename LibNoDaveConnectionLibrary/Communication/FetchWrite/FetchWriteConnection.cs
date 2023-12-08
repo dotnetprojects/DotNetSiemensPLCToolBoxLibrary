@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.Networking;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using System;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-
-using DotNetSiemensPLCToolBoxLibrary.Communication.Networking;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 {
-    public class FetchWriteConnection:IDisposable
+    public class FetchWriteConnection : IDisposable
     {
         private TCPFunctionsAsync _tcp;
         private TCPFunctionsAsync _tcpWrite;
@@ -43,22 +38,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
             }
         }
 
-        void _tcpWrite_ConnectionClosed(System.Net.Sockets.TcpClient obj)
+        private void _tcpWrite_ConnectionClosed(System.Net.Sockets.TcpClient obj)
         {
             _connectedWrite = false;
         }
 
-        void _tcpWrite_ConnectionEstablished(System.Net.Sockets.TcpClient obj)
+        private void _tcpWrite_ConnectionEstablished(System.Net.Sockets.TcpClient obj)
         {
             _connectedWrite = true;
         }
 
-        void _tcp_ConnectionClosed(System.Net.Sockets.TcpClient obj)
+        private void _tcp_ConnectionClosed(System.Net.Sockets.TcpClient obj)
         {
             _connected = false;
         }
 
-        void _tcp_ConnectionEstablished(System.Net.Sockets.TcpClient obj)
+        private void _tcp_ConnectionEstablished(System.Net.Sockets.TcpClient obj)
         {
             _connected = true;
         }
@@ -84,54 +79,60 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                 _tcpWrite.Stop();
             }
         }
- 
+
         public void ReadValue(PLCTag tag)
         {
             if (_connected)
             {
                 var rqHeader = new RequestHeader();
-                rqHeader.system_id = new[] {'S', '5'};
-                rqHeader.header_length = (byte) Marshal.SizeOf(typeof (RequestHeader));
+                rqHeader.system_id = new[] { 'S', '5' };
+                rqHeader.header_length = (byte)Marshal.SizeOf(typeof(RequestHeader));
                 rqHeader.opcode_id = 1;
                 rqHeader.opcode_length = 3;
-                rqHeader.opcode = (byte) OperationCode.Fetch;
+                rqHeader.opcode = (byte)OperationCode.Fetch;
                 rqHeader.org = 3;
                 rqHeader.org_length = 8;
                 switch (tag.TagDataSource)
                 {
                     case MemoryArea.Datablock:
                     case MemoryArea.InstanceDatablock:
-                        rqHeader.org_id = (byte) OrgTypes.DB;
+                        rqHeader.org_id = (byte)OrgTypes.DB;
                         break;
+
                     case MemoryArea.Inputs:
-                        rqHeader.org_id = (byte) OrgTypes.Inputs;
+                        rqHeader.org_id = (byte)OrgTypes.Inputs;
                         break;
+
                     case MemoryArea.Outputs:
-                        rqHeader.org_id = (byte) OrgTypes.Outputs;
+                        rqHeader.org_id = (byte)OrgTypes.Outputs;
                         break;
+
                     case MemoryArea.S5_DX:
-                        rqHeader.org_id = (byte) OrgTypes.DBx;
+                        rqHeader.org_id = (byte)OrgTypes.DBx;
                         break;
+
                     case MemoryArea.Flags:
-                        rqHeader.org_id = (byte) OrgTypes.Flags;
+                        rqHeader.org_id = (byte)OrgTypes.Flags;
                         break;
+
                     case MemoryArea.Counter:
-                        rqHeader.org_id = (byte) OrgTypes.Counters;
+                        rqHeader.org_id = (byte)OrgTypes.Counters;
                         break;
+
                     case MemoryArea.Timer:
-                        rqHeader.org_id = (byte) OrgTypes.Timer;
+                        rqHeader.org_id = (byte)OrgTypes.Timer;
                         break;
                 }
-                rqHeader.dbnr = (byte) tag.DataBlockNumber;
-                rqHeader.start_address1 = (byte) (((tag.ByteAddress/2) & 0xff00) >> 8);
-                rqHeader.start_address2 = (byte) (((tag.ByteAddress/2) & 0x00ff));
+                rqHeader.dbnr = (byte)tag.DataBlockNumber;
+                rqHeader.start_address1 = (byte)(((tag.ByteAddress / 2) & 0xff00) >> 8);
+                rqHeader.start_address2 = (byte)(((tag.ByteAddress / 2) & 0x00ff));
 
                 var sz = tag.ReadByteSize;
-                if (sz%2 > 0)
+                if (sz % 2 > 0)
                     sz++;
 
-                rqHeader.length1 = (byte) (((sz/2) & 0xff00) >> 8);
-                rqHeader.length2 = (byte) (((sz/2) & 0x00ff));
+                rqHeader.length1 = (byte)(((sz / 2) & 0xff00) >> 8);
+                rqHeader.length2 = (byte)(((sz / 2) & 0x00ff));
                 rqHeader.req_empty = 0xff;
                 rqHeader.req_empty_length = 2;
 
@@ -139,7 +140,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
 
                 _tcp.SendData(bytes);
 
-                var header = new byte[Marshal.SizeOf(typeof (ResponseHeader))];
+                var header = new byte[Marshal.SizeOf(typeof(ResponseHeader))];
                 var readBytes = 0;
                 while (readBytes < header.Length)
                 {
@@ -154,7 +155,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                     readBytes += _tcp.NetworkStream.Read(data, readBytes, sz - readBytes);
                 }
 
-                tag.ParseValueFromByteArray(data, tag.ByteAddress%2 > 0 ? 1 : 0);
+                tag.ParseValueFromByteArray(data, tag.ByteAddress % 2 > 0 ? 1 : 0);
             }
         }
 
@@ -163,48 +164,54 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
             if (_connectedWrite)
             {
                 var rqHeader = new RequestHeader();
-                rqHeader.system_id = new[] {'S', '5'};
-                rqHeader.header_length = (byte) Marshal.SizeOf(typeof (RequestHeader));
+                rqHeader.system_id = new[] { 'S', '5' };
+                rqHeader.header_length = (byte)Marshal.SizeOf(typeof(RequestHeader));
                 rqHeader.opcode_id = 1;
                 rqHeader.opcode_length = 3;
-                rqHeader.opcode = (byte) OperationCode.Write;
+                rqHeader.opcode = (byte)OperationCode.Write;
                 rqHeader.org = 3;
                 rqHeader.org_length = 8;
                 switch (tag.TagDataSource)
                 {
                     case MemoryArea.Datablock:
                     case MemoryArea.InstanceDatablock:
-                        rqHeader.org_id = (byte) OrgTypes.DB;
+                        rqHeader.org_id = (byte)OrgTypes.DB;
                         break;
+
                     case MemoryArea.Inputs:
-                        rqHeader.org_id = (byte) OrgTypes.Inputs;
+                        rqHeader.org_id = (byte)OrgTypes.Inputs;
                         break;
+
                     case MemoryArea.Outputs:
-                        rqHeader.org_id = (byte) OrgTypes.Outputs;
+                        rqHeader.org_id = (byte)OrgTypes.Outputs;
                         break;
+
                     case MemoryArea.S5_DX:
-                        rqHeader.org_id = (byte) OrgTypes.DBx;
+                        rqHeader.org_id = (byte)OrgTypes.DBx;
                         break;
+
                     case MemoryArea.Flags:
-                        rqHeader.org_id = (byte) OrgTypes.Flags;
+                        rqHeader.org_id = (byte)OrgTypes.Flags;
                         break;
+
                     case MemoryArea.Counter:
-                        rqHeader.org_id = (byte) OrgTypes.Counters;
+                        rqHeader.org_id = (byte)OrgTypes.Counters;
                         break;
+
                     case MemoryArea.Timer:
-                        rqHeader.org_id = (byte) OrgTypes.Timer;
+                        rqHeader.org_id = (byte)OrgTypes.Timer;
                         break;
                 }
-                rqHeader.dbnr = (byte) tag.DataBlockNumber;
-                rqHeader.start_address1 = (byte) (((tag.ByteAddress/2) & 0xff00) >> 8);
-                rqHeader.start_address2 = (byte) (((tag.ByteAddress/2) & 0x00ff));
+                rqHeader.dbnr = (byte)tag.DataBlockNumber;
+                rqHeader.start_address1 = (byte)(((tag.ByteAddress / 2) & 0xff00) >> 8);
+                rqHeader.start_address2 = (byte)(((tag.ByteAddress / 2) & 0x00ff));
 
                 var sz = tag.ReadByteSize;
-                if (sz%2 > 0)
+                if (sz % 2 > 0)
                     sz++;
 
-                rqHeader.length1 = (byte) (((sz/2) & 0xff00) >> 8);
-                rqHeader.length2 = (byte) (((sz/2) & 0x00ff));
+                rqHeader.length1 = (byte)(((sz / 2) & 0xff00) >> 8);
+                rqHeader.length2 = (byte)(((sz / 2) & 0x00ff));
                 rqHeader.req_empty = 0xff;
                 rqHeader.req_empty_length = 2;
 
@@ -220,15 +227,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                 if (tag.TagDataType == TagDataType.Bool)
                 {
                     if (object.Equals(tag.Controlvalue, true))
-                        writeByte[putPos] = (byte) (Math.Pow(2,(tag.BitAddress)));
+                        writeByte[putPos] = (byte)(Math.Pow(2, (tag.BitAddress)));
                     else
                         writeByte[putPos] = 0;
                 }
                 else
                 {
-                    tag._putControlValueIntoBuffer(writeByte, putPos);    
+                    tag._putControlValueIntoBuffer(writeByte, putPos);
                 }
-                
 
                 _tcpWrite.SendData(writeByte);
                 var data = new byte[Marshal.SizeOf(typeof(ResponseHeader))];
@@ -239,11 +245,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
                 }
 
                 var response = fromBytes<ResponseHeader>(data);
-
             }
-        }       
+        }
 
-        byte[] getBytes<T>(T str) where T:struct 
+        private byte[] getBytes<T>(T str) where T : struct
         {
             int size = Marshal.SizeOf(str);
             byte[] arr = new byte[size];
@@ -256,7 +261,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.FetchWrite
             return arr;
         }
 
-        T fromBytes<T>(byte[] arr) where T:struct 
+        private T fromBytes<T>(byte[] arr) where T : struct
         {
             T str = new T();
 

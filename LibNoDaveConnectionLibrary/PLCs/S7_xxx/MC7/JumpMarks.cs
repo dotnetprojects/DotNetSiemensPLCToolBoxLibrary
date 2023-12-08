@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -23,9 +22,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 int jumpAnz = BitConverter.ToUInt16(BD, startJump);
 
                 int[] JumpPos = new int[jumpAnz];
-                for (i = 0; i < jumpAnz; i++ )
+                for (i = 0; i < jumpAnz; i++)
                 {
-                    JumpPos[i] = BitConverter.ToUInt16(BD, startJump+2 + (i * 2)); // Helper.GetWord(BD[Start + (i * 2) + 1], BD[Start + (i * 2)]);
+                    JumpPos[i] = BitConverter.ToUInt16(BD, startJump + 2 + (i * 2)); // Helper.GetWord(BD[Start + (i * 2) + 1], BD[Start + (i * 2)]);
                 }
 
                 return JumpPos;
@@ -39,9 +38,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
                 if (Helper.IsNetwork(plcFunctionBlockRow))
-                    NetworkCount++;   
+                    NetworkCount++;
             }
-
 
             int[] jpAddr = GetJumpadresses(JumpPosAndNWInfos);
             //Use the Jump-Marks from the Step7 project....
@@ -67,26 +65,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             if (JumpMarks[n + 2] != 0)
                             {
                                 aknm += ((char)JumpMarks[n + 2]);
-                                if (JumpMarks[n + 3] != 0) 
+                                if (JumpMarks[n + 3] != 0)
                                     aknm += ((char)JumpMarks[n + 3]);
                             }
                         }
                     }
 
                     jumpNames.Add(aknm);
-
-                }                               
+                }
             }
-
 
             Dictionary<string, string> ChangeLabelList = new Dictionary<string, string>();
             int pos = 0;
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
-
                 if (Helper.IsJump(plcFunctionBlockRow, (int)options.Mnemonic))
                 {
-                    int arrPos = Array.IndexOf<int>(jpAddr, pos/2);
+                    int arrPos = Array.IndexOf<int>(jpAddr, pos / 2);
                     if (arrPos != -1)
                     {
                         if (jumpNames.Count > arrPos)

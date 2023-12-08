@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
+using System;
 using System.IO;
-using DotNetSiemensPLCToolBoxLibrary.DBF.Enums;
 
-namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
+namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX
+{
     public class MNode : Node
     {
         private int prev_page = 0;
@@ -10,7 +11,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
         public MNode(int keys_in, int key_size, dBaseType keyType, int rn, bool iBranch)
             : base(keys_in, key_size, keyType, rn, iBranch)
         {
-
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
         {
             int i, j, k;
             long longrecn = intRecordNumber;
-            Reader.BaseStream.Position = (longrecn*512);
+            Reader.BaseStream.Position = (longrecn * 512);
             intKeysInThisNode = Reader.ReadInt32();
             prev_page = Reader.ReadInt32();
             boolBranch = prev_page == 0 ? false : true;
@@ -54,8 +54,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
                     key_expression[i] = new NodeKey(dBaseConverter.C_ToString(key_buffer));
                 }
 
-
-                j = intKeyExpressionSize%4;
+                j = intKeyExpressionSize % 4;
                 if (j > 0) j = 4 - j;
                 for (k = 0; k < j; k++)
                     Reader.ReadByte();
@@ -64,7 +63,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
             key_record_number[i] = Reader.ReadInt32();
 
             boolBranch = key_record_number[intKeysInThisNode] > 0 ? true : false;
-
         }
 
         #region SET / GET
@@ -103,7 +101,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DBF.Index.MDX {
             set { this.prev_page = value; }
         }
 
-        #endregion
-
+        #endregion SET / GET
     }
 }

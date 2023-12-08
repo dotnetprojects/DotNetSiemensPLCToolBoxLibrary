@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
+﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
 {
@@ -10,6 +6,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
     {
         public TiaObjectHeader Header { get; set; }
         public byte[] Data { get; set; }
+
         public TiaFileObject(TiaObjectHeader header, byte[] data)
         {
             this.Header = header;

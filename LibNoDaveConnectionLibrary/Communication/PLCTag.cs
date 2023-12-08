@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,22 +21,20 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
+using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using DotNetSiemensPLCToolBoxLibrary.General;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
-using Newtonsoft.Json;
-
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication
 {
@@ -44,6 +42,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
     /// Represents on single data Tag or data unit that can be read or written to the controller
     /// </summary>
 #if !IPHONE
+
     [System.ComponentModel.Editor("DotNetSiemensPLCToolBoxLibrary.Communication.PLCTagUITypeEditor", "System.Drawing.Design.UITypeEditor")]
 #endif
     [Serializable]
@@ -53,9 +52,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         public bool RaiseValueChangedEvenWhenNoChangeHappened { get; set; }
 
         private string _valueName;
+
         /// <summary>
         /// This is a Property which addresses the values you've read with a Name
-        /// </summary>        
+        /// </summary>
         public virtual String ValueName
         {
             get { return _valueName; }
@@ -70,7 +70,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// The byte offset or Byte address of the data in the controller. Represents the start of the data
         /// </summary>
-        
+
         public int ByteAddress
         {
             get { return _byteAddress; }
@@ -86,7 +86,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// Represents the Bit offset of the data int the controller. Only relevant for boolean values
         /// Will be ignored for non boolean values
         /// </summary>
-        
+
         public int BitAddress
         {
             get { return _bitAddress; }
@@ -101,6 +101,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private bool isSymbolicAccessKeyTag;
+
         public bool IsSymbolicAccessKeyTag
         {
             get
@@ -120,6 +121,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private string symbolicAccessKey;
+
         public string SymbolicAccessKey
         {
             get
@@ -137,12 +139,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
         public object Tag { get; set; }
 
         //For Tags used with Full Symbolic in TIA Portal
 
         private bool _itemDoesNotExist;
+
         /// <summary>
         /// The Item does not exist in the controller, or the data can not be read completely from the controller (byte size wrong,..)
         /// </summary>
@@ -165,7 +167,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// Create an new PLC Tag
         /// </summary>
-        /// 
+        ///
         public PLCTag()
         { }
 
@@ -203,14 +205,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         ///</param>
         /// <param name="type">The data type to be read from the Controller</param>
 
-     
         public PLCTag(string address, TagDataType type)
         {
             this.TagDataType = type;
             this.ChangeAddressFromString(address);
             this.TagDataType = type;
         }
-
 
         /// <summary>
         /// The initalizationString can be a PLC Address like: "DB100.DBW2" or a init String like: "User,DB100.DBW2,Word,Decimal"
@@ -256,8 +256,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         /// <summary>
         /// The Data block number of the tag. If the TagDataSource is not in an data-block this number is 0
         /// </summary>
-        /// 
-       
+        ///
+
         public int DataBlockNumber
         {
             get
@@ -275,6 +275,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private MemoryArea tagDataSource = MemoryArea.Datablock;
+
         /// <summary>
         /// Specifies the area where the PLCTags data is located in the controller
         /// </summary>
@@ -284,7 +285,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 return this.tagDataSource;
             }
-            set 
+            set
             {
                 this.tagDataSource = value;
                 if (value == MemoryArea.Timer || value == MemoryArea.Counter)
@@ -294,8 +295,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
         private TagDisplayDataType _dataTypeStringFormat = TagDisplayDataType.Bool;
+
         /// <summary>
         /// The tats display type. Defines how the tags data should be represented
         /// </summary>
@@ -310,28 +311,34 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if (_dataTypeStringFormat != TagDisplayDataType.Bool && _dataTypeStringFormat != TagDisplayDataType.Binary)
                             return TagDisplayDataType.Bool.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.S5Time:
                     case TagDataType.Time:
                     case TagDataType.LTime:
                         if (_dataTypeStringFormat != TagDisplayDataType.TimeSpan && _dataTypeStringFormat != TagDisplayDataType.S5Time && _dataTypeStringFormat != TagDisplayDataType.Time)
                             return TagDisplayDataType.TimeSpan.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.Date:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7Date)
                             return TagDisplayDataType.S7Date.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.TimeOfDay:
                     case TagDataType.LTimeOfDay:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7TimeOfDay)
                             return TagDisplayDataType.S7TimeOfDay.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.DateTime:
                         if (_dataTypeStringFormat != TagDisplayDataType.DateTime && _dataTypeStringFormat != TagDisplayDataType.S7DateTime)
                             return TagDisplayDataType.DateTime.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.String:
                     case TagDataType.CharArray:
                         return TagDisplayDataType.String.ToString();
+
                     case TagDataType.Int:
                     case TagDataType.Dint:
                     case TagDataType.LInt:
@@ -346,26 +353,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary && _dataTypeStringFormat != TagDisplayDataType.Pointer && _dataTypeStringFormat != TagDisplayDataType.String)
                             return TagDisplayDataType.Decimal.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.Float:
                     case TagDataType.LReal:
                         if (_dataTypeStringFormat != TagDisplayDataType.Decimal && _dataTypeStringFormat != TagDisplayDataType.Hexadecimal && _dataTypeStringFormat != TagDisplayDataType.Float && _dataTypeStringFormat != TagDisplayDataType.Binary)
                             return TagDisplayDataType.Float.ToString();
                         return _dataTypeStringFormat.ToString();
+
                     case TagDataType.ByteArray:
                         return TagDisplayDataType.ByteArray.ToString();
                 }
                 return TagDisplayDataType.Decimal.ToString();
-               
             }
-            set { _dataTypeStringFormat = (TagDisplayDataType)Enum.Parse(typeof(TagDisplayDataType), value) ; NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
+            set { _dataTypeStringFormat = (TagDisplayDataType)Enum.Parse(typeof(TagDisplayDataType), value); NotifyPropertyChanged("DataTypeStringFormat"); NotifyPropertyChanged("Value"); NotifyPropertyChanged("ValueAsString"); }
         }
 
         private TagDataType tagDataType;
         /// <summary>
         /// The type of data of the tag
         /// </summary>
-        /// 
-        
+        ///
+
         public virtual TagDataType TagDataType
         {
             get
@@ -391,7 +399,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         this.tagDataType = this.TagDataSource == MemoryArea.Timer ? TagDataType.S5Time : TagDataType.Int;
                     else
                         this.tagDataType = value;
-
                 }
                 else
                     this.tagDataType = value;
@@ -405,6 +412,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         //For a List of old Values...
         protected List<Object> _oldvalues;
+
         /// <summary>
         /// An list of values of the previous read requests from the controller
         /// </summary>
@@ -436,8 +444,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
         private bool _dontSplitValue = true;
+
         /// <summary>
         /// This Tag can not be splittet into more then one PDU (if there are a few rest Bytes in a PDU aviable)
         /// --> If this is set, the Tag is not allowed to be bigger!
@@ -451,8 +459,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         private int _arraySize = 1;
+
         /// <summary>
-        /// Defines the length of Array data types. Only valid (and used!) with String, CharArray and ByteArray Type! 
+        /// Defines the length of Array data types. Only valid (and used!) with String, CharArray and ByteArray Type!
         /// </summary>
         public int ArraySize
         {
@@ -472,9 +481,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
-
         #region Read Write Value of the TAG
+
         /// <summary>
         /// Helper Property to Set the Value, because the Setter of the normal Value Sets Control Value!
         /// </summary>
@@ -517,13 +525,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         NotifyPropertyChanged("OldValues");
                     }
                 }
-
-
             }
         }
 
         protected Object _value;
         private Object _oldvalue;
+
         /// <summary>
         /// Value of the Tag. The Setter of this Property sets Controlvalue, because the Tag firstly got this Value when it's written!
         /// </summary>
@@ -558,6 +565,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         protected Object _controlvalue;
+
         public virtual Object Controlvalue
         {
             get { return _controlvalue; }
@@ -584,7 +592,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        #endregion
+        #endregion Read Write Value of the TAG
+
         [JsonProperty("address", Order = 1)]
         [XmlIgnore]
         public string S7FormatAddress
@@ -618,21 +627,27 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case MemoryArea.Inputs:
                         ret.Append("E");
                         break;
+
                     case MemoryArea.Outputs:
                         ret.Append("A");
                         break;
+
                     case MemoryArea.Flags:
                         ret.Append("M");
                         break;
+
                     case MemoryArea.Timer:
                         ret.Append("T");
                         break;
+
                     case MemoryArea.Counter:
                         ret.Append("Z");
                         break;
+
                     case MemoryArea.LocalData:
                         ret.Append("L");
                         break;
+
                     case MemoryArea.PreviousLocalData:
                         ret.Append("V");
                         break;
@@ -649,7 +664,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 }
                 else if (this.TagDataSource != MemoryArea.Counter && this.TagDataSource != MemoryArea.Timer)
                 {
-
                     if (aksz == 3 || aksz > 4)
                     {
                         ret.Append(ByteAddress);
@@ -697,7 +711,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        
         public string GetControlValueAsString()
         {
             return GetValueAsString(this.Controlvalue);
@@ -722,6 +735,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.BCDWord:
                 case TagDataType.Int:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
@@ -739,6 +753,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.BCDDWord:
                 case TagDataType.Dint:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
@@ -751,11 +766,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = Int32.Parse(myValue);
                         }
-                        catch (Exception) 
+                        catch (Exception)
                         {
                             Console.WriteLine("1 PLCTag.cs threw exception");
                         }
                     break;
+
                 case TagDataType.BCDArray:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                         Controlvalue = Convert.ToUInt64(Helper.GetIntFromHexString(myValue));
@@ -767,11 +783,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = UInt64.Parse(myValue);
                         }
-                        catch (Exception) 
+                        catch (Exception)
                         {
                             Console.WriteLine("2 PLCTag.cs threw exception");
                         }
                     break;
+
                 case TagDataType.Byte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
@@ -788,6 +805,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.BCDByte:
                 case TagDataType.SByte:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
@@ -805,6 +823,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.Word:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
@@ -821,6 +840,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.Dword:
                     if (myValueStrip.Contains("w#16#") || myValueStrip.Contains("dw#16#"))
                     {
@@ -837,6 +857,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.LInt:
                     {
                         Int64 ret;
@@ -844,6 +865,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.LWord:
                     {
                         UInt64 ret;
@@ -851,6 +873,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.LReal:
                     {
                         double ret;
@@ -858,6 +881,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = ret;
                     }
                     break;
+
                 case TagDataType.Bool:
                     if (myValue == "1")
                         Controlvalue = true;
@@ -870,10 +894,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = bvalue;
                     }
                     break;
+
                 case TagDataType.String:
                 case TagDataType.CharArray:
                     Controlvalue = myValue;
                     break;
+
                 case TagDataType.DateTime:
                 case TagDataType.Date:
                 case TagDataType.TimeOfDay:
@@ -890,11 +916,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             if (!string.IsNullOrEmpty(myValue))
                                 Controlvalue = DateTime.Parse(myValue);
                         }
-                        catch (Exception) 
+                        catch (Exception)
                         {
                             Console.WriteLine("3 PLCTag.cs threw exception");
                         }
                     break;
+
                 case TagDataType.ByteArray:
                     {
                         if (myValueStrip.Length > 2 && myValueStrip[0] == '{' && myValueStrip[myValueStrip.Length - 1] == '}')
@@ -917,6 +944,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = wrt;
                     }
                     break;
+
                 case TagDataType.Float:
                     {
                         Single val;
@@ -924,8 +952,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         Controlvalue = val;
                     }
                     break;
-                    /* 
-                     *  case TagDataType.TimeOfDay:    
+                    /*
+                     *  case TagDataType.TimeOfDay:
                         case TagDataType.Float:
                         */
             }
@@ -941,6 +969,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.CharArray:
                     case TagDataType.BCDArray:
                         return myValue.ToString();
+
                     case TagDataType.ByteArray:
                         {
                             StringBuilder sb = new StringBuilder();
@@ -1041,6 +1070,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             return "0";
                         }
                         return myValue.ToString();
+
                     case TagDataType.DateTime:
                     case TagDataType.Date:
                     case TagDataType.TimeOfDay:
@@ -1114,35 +1144,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 {
                                     case TagDataType.Int:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int16)myValue));
+
                                     case TagDataType.Dint:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int32)myValue));
+
                                     case TagDataType.LInt:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Int64)myValue));
+
                                     case TagDataType.Byte:
                                         return Encoding.ASCII.GetString(new[] { (Byte)myValue });
+
                                     case TagDataType.SByte:
                                         return Encoding.ASCII.GetString(new[] { BitConverter.GetBytes((SByte)myValue)[0] });
+
                                     case TagDataType.Word:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt16)myValue));
+
                                     case TagDataType.Dword:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));
+
                                     case TagDataType.LWord:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt64)myValue));
+
                                     case TagDataType.Float:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Single)myValue));
+
                                     case TagDataType.LReal:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Double)myValue));
+
                                     case TagDataType.BCDByte:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((Byte)myValue));
+
                                     case TagDataType.BCDWord:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt16)myValue));
+
                                     case TagDataType.BCDDWord:
                                         return Encoding.ASCII.GetString(BitConverter.GetBytes((UInt32)myValue));
                                 }
                                 break;
+
                             case "Pointer":
                                 return "P#" + (Convert.ToInt32(myValue) / 8).ToString() + "." + (Convert.ToInt32(myValue) % 8).ToString();
                                 break;
+
                             case "Hexadecimal":
                                 string ad = "";
                                 switch (_internalGetSize())
@@ -1150,17 +1194,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case 1:
                                         ad = "B#16#";
                                         break;
+
                                     case 2:
                                         ad = "W#16#";
                                         break;
+
                                     case 4:
                                         ad = "DW#16#";
                                         break;
+
                                     case 8:
                                         ad = "L#16#";
                                         break;
                                 }
                                 return ad + val.ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(_internalGetSize() * 2, '0');
+
                             case "Binary":
                                 byte[] bt = new byte[] { };
                                 switch (this.TagDataType)
@@ -1168,39 +1216,51 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case TagDataType.Int:
                                         bt = BitConverter.GetBytes((Int16)myValue);
                                         break;
+
                                     case TagDataType.Dint:
                                         bt = BitConverter.GetBytes((Int32)myValue);
                                         break;
+
                                     case TagDataType.LInt:
                                         bt = BitConverter.GetBytes((Int64)myValue);
                                         break;
+
                                     case TagDataType.Byte:
                                         bt = new byte[] { (byte)myValue };
                                         break;
+
                                     case TagDataType.SByte:
                                         bt = new byte[] { (byte)myValue };
                                         break;
+
                                     case TagDataType.Word:
                                         bt = BitConverter.GetBytes((UInt16)myValue);
                                         break;
+
                                     case TagDataType.Dword:
                                         bt = BitConverter.GetBytes((UInt32)myValue);
                                         break;
+
                                     case TagDataType.LWord:
                                         bt = BitConverter.GetBytes((UInt64)myValue);
                                         break;
+
                                     case TagDataType.Float:
                                         bt = BitConverter.GetBytes((float)myValue);
                                         break;
+
                                     case TagDataType.LReal:
                                         bt = BitConverter.GetBytes((double)myValue);
                                         break;
+
                                     case TagDataType.BCDByte:
                                         bt = BitConverter.GetBytes((byte)myValue);
                                         break;
+
                                     case TagDataType.BCDWord:
                                         bt = BitConverter.GetBytes((Int16)myValue);
                                         break;
+
                                     case TagDataType.BCDDWord:
                                         bt = BitConverter.GetBytes((Int32)myValue);
                                         break;
@@ -1210,17 +1270,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 {
                                     if (ret != "") ret = "_" + ret;
                                     ret = libnodave.dec2bin(b).Substring(0, 4) + "_" + libnodave.dec2bin(b).Substring(4, 4) + ret;
-
                                 }
                                 return "2#" + ret;
-
                         }
                         return val.ToString();
                 }
             }
             return "";
         }
-        
+
         public string GetValueAsString()
         {
             if (ItemDoesNotExist)
@@ -1336,6 +1394,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case "s5time":
                             tsize = 2;
                             break;
+
                         case "real":
                         case "dword":
                         case "dint":
@@ -1343,6 +1402,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case "time_of_day":
                             tsize = 4;
                             break;
+
                         case "lreal":
                         case "lword":
                         case "lint":
@@ -1377,8 +1437,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     //    this.TagDataType = TagDataType.ByteArray;
                     //if (ArraySize != 8 && this.TagDataType == TagDataType.DateTime)
                     //    this.TagDataType = TagDataType.ByteArray;
-
-
                 }
                 else
                 {
@@ -1544,82 +1602,106 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "bool":
                         tp = TagDataType.Bool;
                         break;
+
                     case "word":
                         tp = TagDataType.Word;
                         break;
+
                     case "lword":
                     case "word64":
                         tp = TagDataType.LWord;
                         break;
+
                     case "lint":
                     case "int64":
                         tp = TagDataType.LInt;
                         break;
+
                     case "lreal":
                     case "double":
                         tp = TagDataType.LReal;
                         break;
+
                     case "int":
                     case "integer":
                         tp = TagDataType.Int;
                         break;
+
                     case "dword":
                         tp = TagDataType.Dword;
                         break;
+
                     case "dint":
                         tp = TagDataType.Dint;
                         break;
+
                     case "byte":
                         tp = TagDataType.Byte;
                         break;
+
                     case "sbyte":
                         tp = TagDataType.SByte;
                         break;
+
                     case "string":
                         tp = TagDataType.String;
                         break;
+
                     case "time":
                         tp = TagDataType.Time;
                         break;
+
                     case "ltime":
                         tp = TagDataType.LTime;
                         break;
+
                     case "s5time":
                         tp = TagDataType.S5Time;
                         break;
+
                     case "timeofday":
                         tp = TagDataType.TimeOfDay;
                         break;
+
                     case "ltimeofday":
                         tp = TagDataType.LTimeOfDay;
                         break;
+
                     case "date":
                         tp = TagDataType.Date;
                         break;
+
                     case "bcdbyte":
                     case "bcd":
                         tp = TagDataType.BCDByte;
                         break;
+
                     case "bcdword":
                         tp = TagDataType.BCDWord;
                         break;
+
                     case "bcddword":
                         tp = TagDataType.BCDDWord;
                         break;
+
                     case "bcdarray":
                         tp = TagDataType.BCDArray;
                         break;
+
                     case "datetime":
                     case "dateandtime":
                         tp = TagDataType.DateTime;
                         break;
+
                     case "char":
                     case "chararray":
                         tp = TagDataType.CharArray;
                         break;
+
                     case "bytearray":
                         tp = TagDataType.ByteArray;
                         break;
+
                     case "float":
                     case "real":
                         tp = TagDataType.Float;
@@ -1641,54 +1723,68 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case "dec":
                         tp = TagDisplayDataType.Decimal;
                         break;
+
                     case "hexadecimal":
                     case "hex":
                         tp = TagDisplayDataType.Hexadecimal;
                         break;
+
                     case "binary":
                     case "bin":
                         tp = TagDisplayDataType.Binary;
                         break;
+
                     case "pointer":
                         tp = TagDisplayDataType.Pointer;
                         break;
+
                     case "bool":
                         tp = TagDisplayDataType.Bool;
                         break;
+
                     case "byte":
                     case "bytearray":
                         tp = TagDisplayDataType.ByteArray;
                         break;
+
                     case "datetime":
                         tp = TagDisplayDataType.DateTime;
                         break;
+
                     case "date":
                     case "s7date":
                         tp = TagDisplayDataType.S7Date;
                         break;
+
                     case "s7timeofday":
                     case "timeofday":
                         tp = TagDisplayDataType.S7TimeOfDay;
                         break;
+
                     case "float":
                     case "real":
                         tp = TagDisplayDataType.Float;
                         break;
+
                     case "s5time":
                         tp = TagDisplayDataType.S5Time;
                         break;
+
                     case "s7datetime":
                     case "dateandtime":
                         tp = TagDisplayDataType.S7DateTime;
                         break;
+
                     case "string":
                     case "strg":
                         tp = TagDisplayDataType.String;
                         break;
+
                     case "time":
                     case "s7time":
                         tp = TagDisplayDataType.Time;
                         break;
+
                     case "timespan":
                         tp = TagDisplayDataType.TimeSpan;
                         break;
@@ -1724,7 +1820,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-
         internal virtual void _putControlValueIntoBuffer(byte[] buff, int startpos, object ctlValue)
         {
             if (ctlValue != null)
@@ -1733,12 +1828,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     case TagDataType.Word:
                         libnodave.putU16at(buff, startpos, Convert.ToUInt16(ctlValue));
                         break;
+
                     case TagDataType.String:
                         libnodave.putS7Stringat(buff, startpos, ctlValue.ToString(), ArraySize);
                         break;
+
                     case TagDataType.CharArray:
                         libnodave.putStringat(buff, startpos, ctlValue.ToString(), ArraySize);
                         break;
+
                     case TagDataType.ByteArray:
                         {
                             byte[] tmp = (byte[])ctlValue;
@@ -1751,6 +1849,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                         }
                         break;
+
                     case TagDataType.BCDArray:
                         {
                             var tmp = (ulong)ctlValue;
@@ -1769,6 +1868,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             }
                         }
                         break;
+
                     case TagDataType.Bool:
                         bool tmp1 = false;
                         try
@@ -1782,66 +1882,85 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         }
                         buff[startpos] = Convert.ToByte(tmp1);
                         break;
+
                     case TagDataType.Byte:
                         buff[startpos] = Convert.ToByte(ctlValue);
                         break;
+
                     case TagDataType.SByte:
                         buff[startpos] = (Byte)Convert.ToSByte(ctlValue);
                         break;
+
                     case TagDataType.Time:
                         libnodave.putTimeat(buff, startpos, (TimeSpan)ctlValue);
                         break;
+
                     case TagDataType.LTime:
                         libnodave.putLTimeat(buff, startpos, (TimeSpan)ctlValue);
                         break;
+
                     case TagDataType.TimeOfDay:
                         libnodave.putTimeOfDayat(buff, startpos, (DateTime)ctlValue);
                         break;
+
                     case TagDataType.LTimeOfDay:
                         libnodave.putLTimeOfDayat(buff, startpos, (DateTime)ctlValue);
                         break;
+
                     case TagDataType.BCDByte:
                         libnodave.putBCD8at(buff, startpos, Convert.ToInt32(ctlValue));
                         break;
+
                     case TagDataType.Int:
                         libnodave.putS16at(buff, startpos, Convert.ToInt16(ctlValue));
                         break;
+
                     case TagDataType.S5Time:
                         //if (Controlvalue.GetType() == typeof(TimeSpan))
                         libnodave.putS5Timeat(buff, startpos, (TimeSpan)ctlValue);
                         //else
                         //    libnodave.putS5Timeat(buff, startpos, TimeSpan.Parse(Controlvalue.ToString()));
                         break;
+
                     case TagDataType.BCDWord:
                         libnodave.putBCD16at(buff, startpos, Convert.ToInt32(ctlValue));
                         break;
+
                     case TagDataType.BCDDWord:
                         libnodave.putBCD32at(buff, startpos, Convert.ToInt32(ctlValue));
                         break;
+
                     case TagDataType.Dint:
                         libnodave.putS32at(buff, startpos, Convert.ToInt32(ctlValue));
                         break;
+
                     case TagDataType.Dword:
                         libnodave.putU32at(buff, startpos, Convert.ToUInt32(ctlValue));
                         break;
+
                     case TagDataType.LInt:
                         libnodave.putS64at(buff, startpos, Convert.ToInt64(ctlValue));
                         break;
+
                     case TagDataType.LWord:
                         libnodave.putU64at(buff, startpos, Convert.ToUInt64(ctlValue));
                         break;
+
                     case TagDataType.Float:
                         libnodave.putFloatat(buff, startpos, Convert.ToSingle(ctlValue));
                         break;
+
                     case TagDataType.LReal:
                         libnodave.putDoubleat(buff, startpos, Convert.ToDouble(ctlValue));
                         break;
+
                     case TagDataType.DateTime:
                         //if (Controlvalue.GetType() == typeof(DateTime))
                         libnodave.putDateTimeat(buff, startpos, (DateTime)ctlValue);
                         //else
                         //    libnodave.putDateTimeat(buff, startpos, Convert.ToDateTime(Controlvalue));
                         break;
+
                     case TagDataType.Date:
                         //if (Controlvalue.GetType() == typeof(DateTime))
                         libnodave.putDateat(buff, startpos, (DateTime)ctlValue);
@@ -1895,6 +2014,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Split('\0')[0];
                         }
                         break;
+
                     case TagDataType.CharArray:
                         {
                             //var sb = new StringBuilder();
@@ -1908,6 +2028,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                 _setValueProp = Encoding.Default.GetString(buff, startpos, Math.Min(buff.Length - startpos, ArraySize)).Trim('\0');
                         }
                         break;
+
                     case TagDataType.ByteArray:
                         {
                             var val = new Byte[ArraySize];
@@ -1920,6 +2041,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                             _setValueProp = val;
                         }
                         break;
+
                     case TagDataType.BCDArray:
                         {
                             ulong wrt = 0;
@@ -1963,63 +2085,83 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                                     case TagDataType.Bool:
                                         _setValueProp = libnodave.getBit(buff[startpos], BitAddress);
                                         break;
+
                                     case TagDataType.Byte:
                                         _setValueProp = buff[startpos];
                                         break;
+
                                     case TagDataType.SByte:
                                         _setValueProp = libnodave.getS8from(buff, startpos);
                                         break;
+
                                     case TagDataType.Time:
                                         _setValueProp = libnodave.getTimefrom(buff, startpos);
                                         break;
+
                                     case TagDataType.LTime:
                                         _setValueProp = libnodave.getLTimefrom(buff, startpos);
                                         break;
+
                                     case TagDataType.Date:
                                         _setValueProp = libnodave.getDatefrom(buff, startpos);
                                         break;
+
                                     case TagDataType.TimeOfDay:
                                         _setValueProp = libnodave.getTimeOfDayfrom(buff, startpos);
                                         break;
+
                                     case TagDataType.LTimeOfDay:
                                         _setValueProp = libnodave.getLTimeOfDayfrom(buff, startpos);
                                         break;
+
                                     case TagDataType.Word:
                                         _setValueProp = libnodave.getU16from(buff, startpos);
                                         break;
+
                                     case TagDataType.BCDByte:
                                         _setValueProp = libnodave.getBCD8from(buff, startpos);
                                         break;
+
                                     case TagDataType.Int:
                                         _setValueProp = libnodave.getS16from(buff, startpos);
                                         break;
+
                                     case TagDataType.S5Time:
                                         _setValueProp = libnodave.getS5Timefrom(buff, startpos);
                                         break;
+
                                     case TagDataType.BCDWord:
                                         _setValueProp = libnodave.getBCD16from(buff, startpos);
                                         break;
+
                                     case TagDataType.BCDDWord:
                                         _setValueProp = libnodave.getBCD32from(buff, startpos);
                                         break;
+
                                     case TagDataType.Dint:
                                         _setValueProp = libnodave.getS32from(buff, startpos);
                                         break;
+
                                     case TagDataType.Dword:
                                         _setValueProp = libnodave.getU32from(buff, startpos);
                                         break;
+
                                     case TagDataType.LWord:
                                         _setValueProp = libnodave.getU64from(buff, startpos);
                                         break;
+
                                     case TagDataType.LInt:
                                         _setValueProp = libnodave.getS64from(buff, startpos);
                                         break;
+
                                     case TagDataType.Float:
                                         _setValueProp = libnodave.getFloatfrom(buff, startpos);
                                         break;
+
                                     case TagDataType.LReal:
                                         _setValueProp = libnodave.getDoublefrom(buff, startpos);
                                         break;
+
                                     case TagDataType.DateTime:
                                         _setValueProp = libnodave.getDateTimefrom(buff, startpos);
                                         break;
@@ -2244,7 +2386,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         [XmlIgnore]
-        public int ReadByteSize { get { return _internalGetSize(); } }
+        public int ReadByteSize
+        { get { return _internalGetSize(); } }
 
         internal virtual int _internalGetSize()
         {
@@ -2252,10 +2395,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             {
                 case TagDataType.String:
                     return ArraySize + 2;
+
                 case TagDataType.CharArray:
                 case TagDataType.ByteArray:
                 case TagDataType.BCDArray:
                     return ArraySize;
+
                 case TagDataType.Byte:
                 case TagDataType.SByte:
                 case TagDataType.BCDByte:
@@ -2277,6 +2422,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.BCDDWord:
                 case TagDataType.DateTime:
                     return _internalGetBaseTypeSize() * ArraySize;
+
                 case TagDataType.Bool:
                     {
                         var akbyte = 1;
@@ -2308,12 +2454,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.CharArray:
                 case TagDataType.ByteArray:
                     return 1;
+
                 case TagDataType.Word:
                 case TagDataType.BCDWord:
                 case TagDataType.Int:
                 case TagDataType.S5Time:
                 case TagDataType.Date:
                     return 2;
+
                 case TagDataType.Dint:
                 case TagDataType.Dword:
                 case TagDataType.Time:
@@ -2321,6 +2469,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 case TagDataType.Float:
                 case TagDataType.BCDDWord:
                     return 4;
+
                 case TagDataType.LInt:
                 case TagDataType.LWord:
                 case TagDataType.LReal:
@@ -2335,6 +2484,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         #region Events for Tag Checking
 
         private bool _raiseValueChangedOnFirstRead = true;
+
         public bool RaiseValueChangedOnFirstRead
         {
             get { return _raiseValueChangedOnFirstRead; }
@@ -2342,6 +2492,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
         }
 
         public delegate void ValueChangedEventHandler(PLCTag Sender, ValueChangedEventArgs e);
+
         public class ValueChangedEventArgs
         {
             public ValueChangedEventArgs(object OldValue, object NewValue)
@@ -2349,15 +2500,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.OldValue = OldValue;
                 this.NewValue = NewValue;
             }
+
             public object OldValue;
             public object NewValue;
         }
+
         public event ValueChangedEventHandler ValueChanged;
 
         public object Maximum { get; set; }
         public object Minimum { get; set; }
 
         public delegate void LimitReachedEventHandler(PLCTag Sender, LimitReachedEventArgs e);
+
         public class LimitReachedEventArgs
         {
             public LimitReachedEventArgs(object Value, object Limit)
@@ -2365,13 +2519,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                 this.Value = Value;
                 this.Limit = Limit;
             }
+
             public object Value;
             public object Limit;
         }
+
         public event LimitReachedEventHandler MaximumReached;
+
         public event LimitReachedEventHandler MinimumReached;
 
-        #endregion
+        #endregion Events for Tag Checking
 
         #region PropertyChanged
 
@@ -2385,7 +2542,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
             }
         }
 
-        #endregion
-
+        #endregion PropertyChanged
     }
 }

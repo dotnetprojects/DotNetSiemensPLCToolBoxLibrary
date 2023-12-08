@@ -1,8 +1,8 @@
-﻿using System;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
+using System;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 {
@@ -26,22 +26,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             {
                 int akcnt = 0;
                 //S7DataRowType akRwTp = (S7DataRowType) (preHeader[9] | 0xf00);
-                int anzTypes = (((preHeader[6] * 256 + preHeader[7]) - 2)/2); //How many different Types are in the Header
+                int anzTypes = (((preHeader[6] * 256 + preHeader[7]) - 2) / 2); //How many different Types are in the Header
                 for (int n = 1; n <= anzTypes; n++)
                 {
                     int rowStart = preHeader[(n - 1) * 4 + 10] * 256 + preHeader[(n - 1) * 4 + 11];
                     int rowStop = preHeader[n * 4 + 10] * 256 + preHeader[n * 4 + 11];
                     var akRwTp = (S7DataRowType)(preHeader[9 + (n - 1) * 4] | 0xf00);
-                    
 
                     if (akRwTp == S7DataRowType.S5_C || akRwTp == S7DataRowType.S5_KC)
                     {
                         for (int j = rowStart; j < rowStop; j += 24)
                         {
                             var row = new S7DataRow(string.Empty, akRwTp, retVal);
-                            row.StringSize = rowStop - j > 12 ? 24 : (rowStop - j)*2;
+                            row.StringSize = rowStop - j > 12 ? 24 : (rowStop - j) * 2;
                             main.Add(row);
-                            for (int q = 0; q < (row.StringSize/2); q++)
+                            for (int q = 0; q < (row.StringSize / 2); q++)
                             {
                                 zeilenListe.Add(row);
                             }
@@ -65,12 +64,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                             main.Add(row);
                             zeilenListe.Add(row);
                         }
-                    }                                                           
+                    }
                 }
-
             }
 
-            
             try
             {
                 int st = 10;
@@ -78,11 +75,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                 int maxZ = (block[8] * 256 + block[9]);
                 int n = 0;
 
-                while(n < maxZ - 5)
-                    //foreach (var s7DataRow in main.Children)
+                while (n < maxZ - 5)
+                //foreach (var s7DataRow in main.Children)
                 {
                     S7DataRow s7DataRow;
-                    if (zeilenListe.Count > n) 
+                    if (zeilenListe.Count > n)
                         s7DataRow = zeilenListe[n];
                     else
                     {
@@ -95,30 +92,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                         case S7DataRowType.S5_KF:
                             s7DataRow.Value = libnodave.getS16from(block, st);
                             break;
+
                         case S7DataRowType.S5_KZ:
                             s7DataRow.Value = libnodave.getBCD16from(block, st);
                             break;
+
                         case S7DataRowType.S5_KM:
                             s7DataRow.Value = libnodave.getU16from(block, st);
                             break;
+
                         case S7DataRowType.S5_KH:
                             s7DataRow.Value = libnodave.getU16from(block, st);
                             break;
+
                         case S7DataRowType.S5_KY:
                             s7DataRow.Value = libnodave.getU16from(block, st);
                             break;
+
                         case S7DataRowType.S5_KG:
                             s7DataRow.Value = libnodave.getS5Floatfrom(block, st);
                             break;
+
                         case S7DataRowType.S5_KC:
                         case S7DataRowType.S5_C:
                             s7DataRow.Value = System.Text.ASCIIEncoding.ASCII.GetString(block, st, s7DataRow.StringSize);
                             break;
+
                         case S7DataRowType.S5_KT:
                             s7DataRow.Value = libnodave.getS5Timefrom(block, st);
                             break;
+
                         default:
-                            s7DataRow.Value = libnodave.getU16from(block, st);                        
+                            s7DataRow.Value = libnodave.getU16from(block, st);
                             break;
                     }
 
@@ -130,7 +135,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
             {
                 Console.WriteLine("1 MC5ToDB.cs threw exception");
             }
-
 
             try
             {
@@ -152,7 +156,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
 
                         nr += len + 3;
                     }
-
                 }
             }
             catch (Exception ex)

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+
 //using ZLibNet;
 using CompressionMode = System.IO.Compression.CompressionMode;
 using DeflateStream = System.IO.Compression.DeflateStream;
@@ -26,7 +24,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
         public static Stream DecompressStream(Stream compressedStream)
         {
             compressedStream.Position = 0L;
-            
+
             if (IsDeflateStream(compressedStream))
             {
                 return new DeflateStream(compressedStream, CompressionMode.Decompress, true);
@@ -36,7 +34,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
             //else
             //{
             //    return new ZLibNet.ZLibStream(compressedStream, ZLibNet.CompressionMode.Decompress, CompressionLevel.BestCompression, true);
-            //}            
+            //}
         }
     }
 }

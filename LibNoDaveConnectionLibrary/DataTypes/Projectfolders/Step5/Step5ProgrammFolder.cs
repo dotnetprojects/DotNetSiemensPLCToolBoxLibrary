@@ -1,5 +1,4 @@
-﻿using System;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 {
@@ -13,7 +12,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
                     return (ISymbolTable)SubItems[1];
                 return null;
             }
-            set {  }
+            set { }
         }
 
         public IBlocksFolder BlocksFolder
@@ -27,19 +26,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
             get
             {
                 if (SubItems.Count > 2)
-                    return (ReferenceData) SubItems[2];
+                    return (ReferenceData)SubItems[2];
                 else
-                    return (ReferenceData) SubItems[1];                
+                    return (ReferenceData)SubItems[1];
             }
-            set {  }
+            set { }
         }
 
-        public OnlineBlocksFolder OnlineBlocksFolder { get { return null; } set { } }
+        public OnlineBlocksFolder OnlineBlocksFolder
+        { get { return null; } set { } }
 
         public Block GetBlockRecursive(string name)
         {
             return BlocksFolder.GetBlock(name);
         }
-
     }
 }

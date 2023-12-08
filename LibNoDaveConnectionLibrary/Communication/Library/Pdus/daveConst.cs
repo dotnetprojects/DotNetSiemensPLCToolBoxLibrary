@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
+﻿namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
 {
     internal static class daveConst
     {
@@ -18,7 +13,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library.Pdus
         public static int daveResTimeout = -1025;
         public static int daveResShortPacket = -1024;
         public static int daveMaxRawLen = 2048;
-       
+
         public static int daveFuncOpenS7Connection = 0xF0;
         public static int daveFuncRead = 0x04;
         public static int daveFuncWrite = 0x05;

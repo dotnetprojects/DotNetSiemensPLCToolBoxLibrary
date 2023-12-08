@@ -15,5 +15,4 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums
         Trace = 0x20,
         Unsupported = 0x10
     }
-
 }

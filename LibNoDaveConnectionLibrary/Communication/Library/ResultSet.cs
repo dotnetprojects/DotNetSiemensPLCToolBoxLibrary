@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
 {
@@ -12,22 +11,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
             _count = count;
             int pos = 0;
             for (int n = 0; n < _count; n++)
-            {                
+            {
                 startAddrResult.Add(pos);
                 if (buffer[pos + 1] == 4) //Transportsize == Bits
-                    pos += (buffer[pos + 2]*0x100 + buffer[pos + 3])/8;
+                    pos += (buffer[pos + 2] * 0x100 + buffer[pos + 3]) / 8;
                 else
                     pos += buffer[pos + 2] * 0x100 + buffer[pos + 3];
-                pos += 4;                
+                pos += 4;
             }
             _bufferPos = 0;
         }
 
-        
         private List<int> startAddrResult = new List<int>();
         private byte[] buffer;
         private int _bufferPos;
-        
+
         private int akResultnumber = 0;
         private int akresultpos;
         private int _count = 0;
@@ -43,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Library
         {
             get
             {
-                int len = (buffer[akresultpos + 2]*0x100 + buffer[akresultpos + 3]);
+                int len = (buffer[akresultpos + 2] * 0x100 + buffer[akresultpos + 3]);
                 if (buffer[akresultpos + 1] == 4) //Transportsize == Bits
                     len /= 8;
                 byte[] intBuff = new byte[len];

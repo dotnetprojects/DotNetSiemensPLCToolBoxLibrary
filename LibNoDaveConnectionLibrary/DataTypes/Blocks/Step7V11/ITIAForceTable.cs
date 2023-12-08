@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11
 {
     public interface ITIAForceTable
     {

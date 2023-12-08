@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5
+﻿namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Hardware.Step7V5
 {
     public class Network
     {
-        string SubnetId { get; set; }
+        private string SubnetId { get; set; }
     }
 }

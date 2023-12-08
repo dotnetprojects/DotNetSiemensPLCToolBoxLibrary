@@ -27,8 +27,7 @@
 //            if (BlockInterfaceBaseDataSourceId == null)
 //                BlockInterfaceBaseDataSourceId = Project.relationId2Names.FirstOrDefault(itm => itm.Value == "Siemens.Simatic.PlcLanguages.Model.BlockInterfaceBaseData.Source").Key;
 
-
-//            //"Siemens.Simatic.PlcLanguages.Model.StructureItemData"   
+//            //"Siemens.Simatic.PlcLanguages.Model.StructureItemData"
 //        }
 
 //        private static byte[] StringToByteArrayFastest(string hex)
@@ -57,7 +56,7 @@
 //            //return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
 //        }
 
-//        private List<ProjectBlockInfo> blockList = null; 
+//        private List<ProjectBlockInfo> blockList = null;
 //        public List<ProjectBlockInfo> readPlcBlocksList()
 //        {
 //            if (blockList == null)
@@ -113,7 +112,7 @@
 //            readPlcBlocksList();
 
 //            var info=blockList.FirstOrDefault(itm => itm.Name == BlockName);
-            
+
 //            return GetBlock(info);
 //        }
 

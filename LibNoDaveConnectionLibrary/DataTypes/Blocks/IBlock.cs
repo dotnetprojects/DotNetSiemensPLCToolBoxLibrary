@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -11,6 +7,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
     {
         [JsonProperty(Order = -2)]
         int BlockNumber { get; }
+
         string SymbolOrName { get; }
     }
 }

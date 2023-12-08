@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
@@ -11,6 +11,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
     public class TCPFunctionsAsync : IDisposable
     {
         private bool disposed = false;
+
         public void Dispose()
         {
             disposed = true;
@@ -37,10 +38,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
         {
             /// <summary>client is not connected with the server</summary>
             DISCONNECTED = 0,
+
             /// <summary>the client try to connect the server</summary>
             LISTENING = 1,
+
             /// <summary>the client try to connect the server</summary>
             CONNECTING = 2,
+
             /// <summary>the client is connected</summary>
             CONNECTED = 3,
         }
@@ -67,6 +71,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
         public string LastMessage { get; set; }
 
         private bool _autoReConnect = true;
+
         public bool AutoReConnect
         {
             get { return _autoReConnect; }
@@ -74,18 +79,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
         }
 
         /// <summary>
-        /// On a Socket Server, allow multiple Clients 
+        /// On a Socket Server, allow multiple Clients
         /// </summary>
         public bool AllowMultipleClients { get; set; }
 
-
         public event Action<TcpClient> ConnectionEstablished;
+
         public event Action<TcpClient> ConnectionClosed;
+
         public event Action<byte[], TcpClient> DataRecieved;
 
         public event ThreadExceptionEventHandler AsynchronousExceptionOccured;
 
-        #endregion
+        #endregion Properties & Events
 
         #region Private Fields
 
@@ -100,7 +106,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         public bool UseKeepAlive { get; set; }
 
-        public bool Started { get { return State != Status.DISCONNECTED; } }
+        public bool Started
+        { get { return State != Status.DISCONNECTED; } }
         private int fixedLength = -1;
 
         private Dictionary<TcpClient, byte[]> readBytesPerCennection = new Dictionary<TcpClient, byte[]>();
@@ -110,7 +117,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         private object lockObject = new object();
 
-        #endregion
+        #endregion Private Fields
 
         #region Konstruktoren
 
@@ -138,7 +145,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             : this(context, endPoint.Address, endPoint.Port, connection_active)
         { }
 
-        #endregion
+        #endregion Konstruktoren
 
         public void StartAsync()
         {
@@ -182,15 +189,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
 
         public void Start()
         {
-           var t = new TaskCompletionSource<object>();
-            
+            var t = new TaskCompletionSource<object>();
+
             Action<TcpClient> vCHandler = null;
             vCHandler = res =>
             {
                 ConnectionEstablished -= vCHandler;
                 ConnectionClosed -= vCHandler;
                 t.TrySetResult(res);
-            };   
+            };
             this.ConnectionEstablished += vCHandler;
             this.ConnectionClosed += vCHandler;
 
@@ -205,7 +212,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                 tcpListener.Stop();
 
             tcpListener = null;
-            
+
             StopInternal();
         }
 
@@ -214,7 +221,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             if (tcpClient != null)
                 tcpClient.Close();
 
-
             foreach (var client in tcpClientsFromListener)
             {
                 client.Close();
@@ -222,7 +228,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             tcpClientsFromListener.Clear();
 
             tcpClient = null;
-            
+
             this.State = Status.DISCONNECTED;
         }
 
@@ -364,7 +370,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     }
                     catch (Exception ex)
                     {
-
                         string sMsg = DateTime.Now.ToString() + " - " +
                                       "TCPSocketClientAndServer.beginRead(TcpClient) - error: " + ex.Message;
                         this.LastErrorMessage = sMsg;
@@ -393,7 +398,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             }
         }
 
-        void DoReadCallback(IAsyncResult ar)
+        private void DoReadCallback(IAsyncResult ar)
         {
             TcpClient akTcpClient = (TcpClient)ar.AsyncState;
 
@@ -416,8 +421,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
             if (!disposed)
                 try
                 {
-
-
                     var readBytes = readBytesPerCennection[akTcpClient];
                     var readPos = readBytesCountPerCennection[akTcpClient];
 
@@ -463,11 +466,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                             beginRead(akTcpClient);
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
-
                     string sMsg = DateTime.Now.ToString() + " - " + "TCPSocketClientAndServer.DoReadCallback(IAsyncResult) - error: " + ex.Message;
                     this.LastErrorMessage = sMsg;
 
@@ -551,8 +552,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.Networking
                     if (!AllowMultipleClients || connection_active)
                         if (AutoReConnect && this.State != Status.CONNECTING) StartAsync();
                 }
-
-
             }
             return false;
         }

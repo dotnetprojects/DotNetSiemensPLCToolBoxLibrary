@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+﻿using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
-
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
-    static class CallConverter
+    internal static class CallConverter
     {
         //In this Class a UC is converted to a Call and also backwards...
         public static void ConvertUCToCall(S7FunctionBlock myFct, S7ProgrammFolder myFld, BlocksOfflineFolder myblkFld, S7ConvertingOptions myOpt, byte[] addInfoFromBlock)
@@ -26,15 +25,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 List<FunctionBlockRow> retVal = new List<FunctionBlockRow>();
                 List<FunctionBlockRow> tempList = new List<FunctionBlockRow>();
 
-
                 string registerDi = "DI";
                 string registerDb = "";
                 string registerAkku1 = "";
                 string registerAkku2 = "";
                 string registerAR1 = "";
                 string registerAR2 = "";
-
-
 
                 string diName = "";
                 string akPar = "";
@@ -44,7 +40,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 bool afterCall = false;
                 bool multiInstance = false;
                 int multiInstanceOffset = 0;
-                Pointer ar2Addr = new Pointer(0,0);
+                Pointer ar2Addr = new Pointer(0, 0);
 
                 S7FunctionBlockRow callRow = null;
 
@@ -66,16 +62,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         afterCall = false;
                         callRow = null;
                         diName = "";
-                        
+
                         multiInstance = false;
                         multiInstanceOffset = 0;
                         ar2Addr = new Pointer(0, 0);
 
                         tempList.Add(row);
-                    }                    
+                    }
                     else if (inBld == 1 || inBld == 7)
                     {
                         #region FC Aufruf
+
                         tempList.Add(row);
                         if (row.Command == "=" && n > 0 && myFct.AWLCode[n - 1].Command == Mnemonic.opBLD[(int)myOpt.Mnemonic])
                         {
@@ -97,7 +94,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             akPar = "FALSE";
                         }
-                        else if (row.Command == Mnemonic.opSET[(int)myOpt.Mnemonic] )
+                        else if (row.Command == Mnemonic.opSET[(int)myOpt.Mnemonic])
                         {
                             akPar = "TRUE";
                         }
@@ -140,15 +137,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 string key = row.Parameter.Replace("L", "").Replace("W", "").Replace("B", "").Replace("D", "");
 
-                                 //Fix for replace db accesses with symbols
-                                 if(myOpt.ReplaceDBAccessesWithSymbolNames && db != "")
-                                 {
-                                     string dbnr = db.Substring(0, db.Length - 1);
-                                     string dbSymbol = Helper.TryGetSymbolFromOperand(myblkFld, dbnr);
-                                     db = (dbSymbol != null ? "\"" + dbSymbol + "\"" : dbnr) + ".";
-                                     akPar = Helper.TryGetStructuredName(myblkFld, dbnr, akPar);
-                                 }
-                                 //end fix
+                                //Fix for replace db accesses with symbols
+                                if (myOpt.ReplaceDBAccessesWithSymbolNames && db != "")
+                                {
+                                    string dbnr = db.Substring(0, db.Length - 1);
+                                    string dbSymbol = Helper.TryGetSymbolFromOperand(myblkFld, dbnr);
+                                    db = (dbSymbol != null ? "\"" + dbSymbol + "\"" : dbnr) + ".";
+                                    akPar = Helper.TryGetStructuredName(myblkFld, dbnr, akPar);
+                                }
+                                //end fix
                                 if (!Parameters.ContainsKey(key))
                                     Parameters.Add("P#V " + key + ".0", db + akPar);
                             }
@@ -193,7 +190,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 else
                                     parnm = "$$undef";
 
-
                                 S7FunctionBlockParameter newPar = new S7FunctionBlockParameter(newRow);
                                 newPar.Name = parnm;
                                 if (akRow != null)
@@ -215,7 +211,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         ak_address = Convert.ToInt32(s.Substring(posL + 1).Split('.')[0]);
                                     else
                                     {
-                                        ak_address = Convert.ToInt32(s.Substring(2).Split('.')[0])*8 +
+                                        ak_address = Convert.ToInt32(s.Substring(2).Split('.')[0]) * 8 +
                                                      Convert.ToInt32(s.Substring(2).Split('.')[1]);
                                     }
 
@@ -231,8 +227,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                         string p2 = "";
                                         Parameters.TryGetValue("P#V " + (lokaldata_address + 0).ToString() + ".0", out p1);
                                         Parameters.TryGetValue("P#V " + (lokaldata_address + 2).ToString() + ".0", out p2);
-                                        
-                                        
+
                                         string tmp = "";
                                         if (p1 != "" && p1 != "0")
                                             tmp += "P#DB" + p1 + "." + (p2 == null ? "0" : p2.Substring(2));
@@ -255,22 +250,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             string p4 = Parameters["P#V " + (lokaldata_address + 6).ToString() + ".0"];
 
                                             //Fix for wrong construction of any pointers
-                                             var anyPtr = new S7AnyPointer(p1, p2, p3, p4);
-                                             if (myOpt.ReplaceDBAccessesWithSymbolNames)
-                                             {
-                                                 //TODO: make the any pointer symbolic.
-                                                 tmp = "" + anyPtr.ToString();
-                                             }
-                                             else
-                                                 tmp = anyPtr.ToString();
-                                             
-                                             //end fix
-                                             //tmp = "P#";
-                                             //if (p3 != "0")
-                                             //    tmp += "DB" + p3 + ".";
-                                             //tmp += p4.Substring(2);
-                                             //tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
-                                             //tmp += p2;
+                                            var anyPtr = new S7AnyPointer(p1, p2, p3, p4);
+                                            if (myOpt.ReplaceDBAccessesWithSymbolNames)
+                                            {
+                                                //TODO: make the any pointer symbolic.
+                                                tmp = "" + anyPtr.ToString();
+                                            }
+                                            else
+                                                tmp = anyPtr.ToString();
+
+                                            //end fix
+                                            //tmp = "P#";
+                                            //if (p3 != "0")
+                                            //    tmp += "DB" + p3 + ".";
+                                            //tmp += p4.Substring(2);
+                                            //tmp += " BYTE "; //Todo Parse Byte 1 if the Type is Byte!
+                                            //tmp += p2;
                                         }
                                         newPar.Value = tmp;
                                         newRow.CallParameter.Add(newPar);
@@ -315,7 +310,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                     newPar.Value = Parameters[s];
                                                 }
                                             }
-                                            catch(Exception ex)
+                                            catch (Exception ex)
                                             {
                                                 Console.WriteLine("1 CallConverter.cs threw exception");
                                                 newPar.Value = Parameters[s];
@@ -349,7 +344,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             }
                                             else if (akRow.DataType == S7DataRowType.COUNTER)
                                             {
-                                                newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + ak_address.ToString();                                            
+                                                newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + ak_address.ToString();
                                             }
                                             else
                                             {
@@ -368,17 +363,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 else if (akRow.ByteLength == 4)
                                                     ber += "D";
 
-                                                 var access = ber.Replace('V', 'L') + ak_address;
- 
-                                                 //fix for temporary area not replaced with symbolnames
-                                                 if(myOpt.ReplaceLokalDataAddressesWithSymbolNames)
-                                                 {
-                                                     var tempSymbol = S7DataRow.GetDataRowWithAddress(myFct.Parameter, new ByteBitAddress(ak_address, 0));
-                                                     if (tempSymbol != null) access = "#" + tempSymbol.StructuredName.Replace("TEMP.","");
-                                                 }
-                                                 newPar.Value = access;
-                                                
-                                            }                                    
+                                                var access = ber.Replace('V', 'L') + ak_address;
+
+                                                //fix for temporary area not replaced with symbolnames
+                                                if (myOpt.ReplaceLokalDataAddressesWithSymbolNames)
+                                                {
+                                                    var tempSymbol = S7DataRow.GetDataRowWithAddress(myFct.Parameter, new ByteBitAddress(ak_address, 0));
+                                                    if (tempSymbol != null) access = "#" + tempSymbol.StructuredName.Replace("TEMP.", "");
+                                                }
+                                                newPar.Value = access;
+                                            }
                                         }
 
                                         newRow.CallParameter.Add(newPar);
@@ -392,13 +386,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             int sz = 0;
                             foreach (var functionBlockRow in newRow.CombinedCommands)
                             {
-                                sz += ((S7FunctionBlockRow) functionBlockRow).ByteSize;
+                                sz += ((S7FunctionBlockRow)functionBlockRow).ByteSize;
                             }
-                            byte[] mcges=new byte[sz];
+                            byte[] mcges = new byte[sz];
                             sz = 0;
                             foreach (var functionBlockRow in newRow.CombinedCommands)
                             {
-                                Array.Copy(((S7FunctionBlockRow) functionBlockRow).MC7, 0, mcges, sz, ((S7FunctionBlockRow) functionBlockRow).ByteSize);
+                                Array.Copy(((S7FunctionBlockRow)functionBlockRow).MC7, 0, mcges, sz, ((S7FunctionBlockRow)functionBlockRow).ByteSize);
                                 sz += ((S7FunctionBlockRow)functionBlockRow).ByteSize;
                             }
                             newRow.MC7 = mcges;
@@ -409,19 +403,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             inBld = 0;
 
                             newRow = null;
-                        }                                              
+                        }
                         else
                         {
                             retVal.AddRange(tempList);
                             tempList.Clear();
-                     
+
                             inBld = 0;
                         }
-                        #endregion
+
+                        #endregion FC Aufruf
                     }
                     else if (inBld == 3 || inBld == 16 || inBld == 14)
-                    {                        
+                    {
                         #region FB Aufruf
+
                         tempList.Add(row);
                         if (row.Command == "=" && n > 0 && myFct.AWLCode[n - 1].Command == Mnemonic.opBLD[(int)myOpt.Mnemonic])
                         {
@@ -431,13 +427,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                         {
                             //Do nothing, but this line needs to be there!
                         }
-                        else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && row.Parameter=="11")
+                        else if (row.Command == Mnemonic.opBLD[(int)myOpt.Mnemonic] && row.Parameter == "11")
                         {
                             //whatever this BLD 11 in the FB Calls means...
                         }
                         else if (row.Command == Mnemonic.opTAR2[(int)myOpt.Mnemonic])
                         {
-                            if (ar2Addr.MemoryArea==MemoryArea.None)
+                            if (ar2Addr.MemoryArea == MemoryArea.None)
                                 akPar = "P#DIX " + ar2Addr.ToString();
                             else
                                 akPar = ar2Addr.ToString(myOpt.Mnemonic);
@@ -525,7 +521,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             {
                                 if (!Parameters.ContainsKey(row.Parameter))
                                     Parameters.Add(row.Parameter, "");
-                            }                            
+                            }
                             akPar = "";
                             db = "";
                         }
@@ -538,7 +534,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                     multiInstanceOffset += (int)double.Parse((((S7FunctionBlockRow)tempList[j]).Parameter.Substring(2)), CultureInfo.InvariantCulture);
                                 break;
                             }
-                             
+
                             //Commands after a Call --> Out-Para
                             callRow = row;
                             afterCall = true;
@@ -554,14 +550,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             newRow.Parameter = callRow.Parameter;
                             if (diName.Length > 2 && !diName.StartsWith("#"))
                                 newRow.DiName = "DI" + int.Parse(diName.Substring(2));
-                            else if (diName.StartsWith("#")) 
+                            else if (diName.StartsWith("#"))
                                 newRow.DiName = diName;
                             newRow.CallParameter = new List<S7FunctionBlockParameter>();
 
-
                             if (para != null)
-                            { 
-                            var allPar = para.Children.Where(itm => itm.Name == "IN" || itm.Name == "IN_OUT" || itm.Name == "OUT");
+                            {
+                                var allPar = para.Children.Where(itm => itm.Name == "IN" || itm.Name == "IN_OUT" || itm.Name == "OUT");
                                 foreach (var s7DataRowMain in allPar)
                                 {
                                     foreach (var s7DataRow in s7DataRowMain.Children)
@@ -600,7 +595,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                             addr = addr.Substring(0, addr.Length - 1);
                                             var pRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter.Children.Where(itm => itm.Name != "TEMP").Cast<S7DataRow>(), new ByteBitAddress(addr));
                                             if (pRow != null) newPar.Value = ((S7DataRow)pRow).StructuredName.Substring(((S7DataRow)pRow).StructuredName.IndexOf('.') + 1);
-
                                         }
                                         else if (par != null)
                                         {
@@ -609,18 +603,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                 case S7DataRowType.BLOCK_DB:
                                                     newPar.Value = "DB" + par;
                                                     break;
+
                                                 case S7DataRowType.BLOCK_FC:
                                                     newPar.Value = "FC" + par;
                                                     break;
+
                                                 case S7DataRowType.BLOCK_FB:
                                                     newPar.Value = "FB" + par;
                                                     break;
+
                                                 case S7DataRowType.TIMER:
                                                     newPar.Value = Mnemonic.adT[(int)myOpt.Mnemonic] + par.ToString();
                                                     break;
+
                                                 case S7DataRowType.COUNTER:
                                                     newPar.Value = Mnemonic.adZ[(int)myOpt.Mnemonic] + par.ToString();
                                                     break;
+
                                                 case S7DataRowType.TIME:
                                                     if (par != null && par.StartsWith("L#"))
                                                     {
@@ -633,6 +632,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                                         newPar.Value = par;
                                                     }
                                                     break;
+
                                                 default:
                                                     newPar.Value = par;
                                                     break;
@@ -644,7 +644,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 }
                             }
 
-                            
                             newRow.CombinedCommands = tempList;
                             newRow.Label = label;
 
@@ -676,13 +675,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
                             inBld = 0;
                         }
-                        #endregion
-                    } 
+
+                        #endregion FB Aufruf
+                    }
                     else
                     {
                         retVal.Add(row);
                     }
-
                 }
                 myFct.AWLCode = retVal;
             }

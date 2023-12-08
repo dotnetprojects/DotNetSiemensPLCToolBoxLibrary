@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
 {
@@ -22,7 +20,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         {
             double wrt = value * 10000000;
             return wrt.ToString("0000000E+00").Replace("E", "");
-
 
             //double wrt = value * 10000000;
             int exp = (int)(Math.Floor(Math.Log10(wrt) / 3.0) * 3.0);

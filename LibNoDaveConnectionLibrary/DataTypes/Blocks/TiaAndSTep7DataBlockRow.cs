@@ -1,10 +1,10 @@
 ﻿/*
  This implements a high level Wrapper between libnodave.dll and applications written
  in MS .Net languages.
- 
+
  This ConnectionLibrary was written by Jochen Kuehner
  * http://jfk-solutuions.de/
- * 
+ *
  * Thanks go to:
  * Steffen Krayer -> For his work on MC7 decoding and the Source for his Decoder
  * Zottel         -> For LibNoDave
@@ -21,20 +21,13 @@
 
  You should have received a copy of the GNU Library General Public License
  along with Libnodave; see the file COPYING.  If not, write to
- the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  
+ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using DotNetSiemensPLCToolBoxLibrary.Communication;
-using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
+
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7;
-using DotNetSiemensPLCToolBoxLibrary.General;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
@@ -45,12 +38,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         //Array-element was the first at a higher index (bools start with zero bit address)
         internal bool WasNextHigherIndex { get; set; }
+
         //First element in a array
         internal bool WasFirstInArray { get; set; }
+
         //was a elemnt in a array
         internal bool WasArray { get; set; }
 
-        
         public string BlockAddressInDbFormat
         {
             get
@@ -61,8 +55,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                 {
                     case 1:
                         return "DBB" + BlockAddress.ByteAddress.ToString();
+
                     case 2:
                         return "DBW" + BlockAddress.ByteAddress.ToString();
+
                     case 4:
                         return "DBD" + BlockAddress.ByteAddress.ToString();
                 }
@@ -85,8 +81,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                 {
                     case 1:
                         return BlockType + BaseBlockNumber + ".DBB" + BlockAddress.ByteAddress.ToString();
+
                     case 2:
                         return BlockType + BaseBlockNumber + ".DBW" + BlockAddress.ByteAddress.ToString();
+
                     case 4:
                         return BlockType + BaseBlockNumber + ".DBD" + BlockAddress.ByteAddress.ToString();
                 }
@@ -127,8 +125,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                         nm += arrAk[n];
                     }
 
-                    var frst = (i % lastCnt) == 0;  //Erstes Elment des letzten Index eines Arrays 
-
+                    var frst = (i % lastCnt) == 0;  //Erstes Elment des letzten Index eines Arrays
 
                     TiaAndSTep7DataBlockRow tmp = (TiaAndSTep7DataBlockRow)retVal.DeepCopy();
                     tmp.Name = tmp.Name + "[" + nm + "]";
@@ -154,7 +151,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
             return new List<TiaAndSTep7DataBlockRow>() { retVal };
         }
-
 
         public static DataBlockRow GetDataRowWithAddress(DataBlockRow startRow, ByteBitAddress address, bool dontLookInTemp = false)
         {
@@ -249,10 +245,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
             }
         }
 
-
         internal List<IDataRow> _children;
 
-        
         public override List<IDataRow> Children
         {
             get
@@ -265,12 +259,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
         internal virtual void ClearBlockAddress()
         {
-
         }
 
         public bool isInOut { get; set; }
 
         protected ByteBitAddress _NextBlockAddress;
+
         public ByteBitAddress NextBlockAddress
         {
             get
@@ -286,8 +280,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
         }
 
         internal abstract ByteBitAddress FillBlockAddresses(ByteBitAddress startAddr);
+
         //This Returns the Length in Bytes
-        
+
         public virtual int ByteLength
         {
             get
@@ -298,9 +293,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.ANY:
                         len = 10;
                         break;
+
                     case S7DataRowType.UNKNOWN:
                         len = 0;
                         break;
+
                     case S7DataRowType.FB:
                     case S7DataRowType.SFB:
                     case S7DataRowType.STRUCT:
@@ -325,6 +322,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                             }
                         }
                         return size;
+
                     case S7DataRowType.BOOL:
                     case S7DataRowType.BYTE:
                     case S7DataRowType.SINT:
@@ -332,6 +330,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.CHAR:
                         len = 1;
                         break;
+
                     case S7DataRowType.TIME_OF_DAY:
                     case S7DataRowType.DINT:
                     case S7DataRowType.DWORD:
@@ -340,15 +339,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.UDINT:
                         len = 4;
                         break;
+
                     case S7DataRowType.POINTER:
                         len = 6;
                         break;
+
                     case S7DataRowType.DATE_AND_TIME:
                     case S7DataRowType.LREAL:
                     case S7DataRowType.ULINT:
                     case S7DataRowType.LINT:
                         len = 8;
                         break;
+
                     case S7DataRowType.S5TIME:
                     case S7DataRowType.WORD:
                     case S7DataRowType.INT:
@@ -362,6 +364,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.UINT:
                         len = 2;
                         break;
+
                     case S7DataRowType.S5_KH:
                     case S7DataRowType.S5_KF:
                     case S7DataRowType.S5_KM:
@@ -371,14 +374,17 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
                     case S7DataRowType.S5_KY:
                         len = 2;
                         break;
+
                     case S7DataRowType.S5_KG:
                         len = 4;
                         break;
+
                     case S7DataRowType.S5_KC:
                     case S7DataRowType.S5_C:
                         len = StringSize;
                         //len = 2;
                         break;
+
                     case S7DataRowType.STRING:
                         len = StringSize + 2;
                         break;
@@ -396,7 +402,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 
                             if (n == ArrayStart.Count - 1)
                             {
-                                bytesize = ((end - start) + 8) / 8; //normal ((end - start) + 1); but that the division with 8 rounds down +7 to rund up!                                
+                                bytesize = ((end - start) + 8) / 8; //normal ((end - start) + 1); but that the division with 8 rounds down +7 to rund up!
                             }
                             else
                             {

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
 {
-
     public class ProjectPlcBlockInfo : ProjectBlockInfo
     {
-
         public int BlockNumber { get; set; }
 
         public string BlockName

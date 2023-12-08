@@ -1,7 +1,5 @@
-﻿using System;
+﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using System.Collections.Generic;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 
 namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
 {
