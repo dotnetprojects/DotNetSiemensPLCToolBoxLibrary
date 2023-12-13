@@ -27,6 +27,7 @@ using Siemens.Engineering.SW.WatchAndForceTables;
 using Siemens.Engineering.SW.Alarm;
 using Siemens.Engineering.SW.Supervision;
 using PLC;
+using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
 {
@@ -56,6 +57,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
 
             protected Step7ProjectV17 TiaProject;
 
+            internal static Logger logger = LogManager.GetCurrentClassLogger();
             public override string Name { get; set; }
 
             public TIAOpennessProjectFolder(Step7ProjectV17 Project)
@@ -358,11 +360,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
             //{
             //    plcSoftware.BlockGroup.Blocks.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
             //}
-           
+
             public override void CompileBlocks()
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("  Compiling started");
+                logger.Info("  Compiling started");
                 CompilerResult result;
 
                 var compiler = plcSoftware.GetService<ICompilable>();
@@ -373,12 +374,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                         result = compiler.Compile();
                         foreach (CompilerResultMessage message in result.Messages)
                             PrintMessages(message, "  ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        //Console.WriteLine(result.Messages);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        logger.Warn(e);
                     }
                 }
                 else
@@ -387,19 +386,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
 
             public void PrintMessages(CompilerResultMessage message, string tab)
             {
-                if (message.State == CompilerResultState.Error)
-                    Console.ForegroundColor = ConsoleColor.Red;
-                else if (message.State == CompilerResultState.Success)
-                    Console.ForegroundColor = ConsoleColor.Green;
-                else if (message.State == CompilerResultState.Warning)
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                else if (message.State == CompilerResultState.Information)
-                    Console.ForegroundColor = ConsoleColor.Blue;
 
                 string path = "";
                 if (message.Path != null && message.Path != "")
                     path = message.Path + ": ";
-                Console.WriteLine(tab + path + message.Description);
+
+                if (message.State == CompilerResultState.Error)
+                    logger.Warn(tab + path + message.Description);
+                else if (message.State == CompilerResultState.Success)
+                    logger.Info(tab + path + message.Description);
+                else if (message.State == CompilerResultState.Warning)
+                    logger.Warn(tab + path + message.Description);
+                else if (message.State == CompilerResultState.Information)
+                    logger.Info(tab + path + message.Description);
+
                 foreach (CompilerResultMessage msg in message.Messages)
                     PrintMessages(msg, tab + "  ");
             }
@@ -439,7 +439,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                         {
                             try
                             {
-                                block.Export(new FileInfo(string.Format(@"C:\Users\Guilherme.Geske\Desktop\test\{0}\{1}.xml", plcSoftware.Name, block.Name)), ExportOptions.WithDefaults);
+                                //block.Export(new FileInfo(string.Format(@"{path}\{0}\{1}.xml", plcSoftware.Name, block.Name)), ExportOptions.WithDefaults);
                             }
                             catch
                             {
@@ -517,8 +517,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                         plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
                         plc.PlcNetwork = new List<PlcSubnet>();
 
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("---> PLC: " + this.Name + ":" + plc.Type);
+                        logger.Info("---> PLC: " + this.Name + ":" + plc.Type);
 
                         foreach (DeviceItem item in deviceItem.Items)
                         {
@@ -548,14 +547,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
                                                 PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                             else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
                                                 PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                         }
@@ -571,8 +570,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                         return plc;
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Could not find " + this.Name + " PLC data");
+                logger.Warn("Could not find " + this.Name + " PLC data");
                 return plc;
             }
 
@@ -1509,7 +1507,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                                     row.DataType = S7DataRowType.UDT;
                                 }
 
-                                //Console.WriteLine("unkown Datatype: " + datatype);
                                 break;
                         }
                     }
@@ -1520,7 +1517,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V17
                 { }
                 else
                 {
-                    //Console.WriteLine("unkown XML Element");
                 }
             }
         }

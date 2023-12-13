@@ -18,6 +18,7 @@ using Siemens.Engineering.SW.Tags;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
 using PLC;
+using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 {
@@ -44,6 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
             protected Step7ProjectV14SP1 TiaProject;
 
+            internal static Logger logger = LogManager.GetCurrentClassLogger();
             public override string Name { get; set; }
 
             public TIAOpennessProjectFolder(Step7ProjectV14SP1 Project)
@@ -396,8 +398,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
                         plc.PlcNetwork = new List<PlcSubnet>();
 
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("---> PLC: " + this.Name + ":" + plc.Type);
+                        logger.Info("---> PLC: " + this.Name + ":" + plc.Type);
 
                         foreach (DeviceItem item in deviceItem.Items)
                         {
@@ -427,14 +428,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
                                                 PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                             else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                Console.WriteLine("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
+                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
                                                 PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                         }
@@ -450,8 +451,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         return plc;
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Could not find " + this.Name + " PLC data");
+                logger.Warn("Could not find " + this.Name + " PLC data");
                 return plc;
             }
 
@@ -1152,7 +1152,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                                     row.DataType = S7DataRowType.UDT;
                                 }
 
-                                //Console.WriteLine("unkown Datatype: " + datatype);
                                 break;
                         }
                     }
@@ -1163,7 +1162,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 { }
                 else
                 {
-                    //Console.WriteLine("unkown XML Element");
                 }
             }
         }

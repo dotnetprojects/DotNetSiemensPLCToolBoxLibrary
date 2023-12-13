@@ -22,7 +22,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="SharpZipLib" Version="1.2.0" />    
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    <PackageReference Include="NLog" Version="4.7.*" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <DefineConstants>SHARPZIPLIB;NETSTANDARD</DefineConstants>

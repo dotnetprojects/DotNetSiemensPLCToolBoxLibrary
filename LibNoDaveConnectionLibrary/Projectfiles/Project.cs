@@ -3,11 +3,14 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
     public abstract class Project
     {
+
+        internal static Logger logger = LogManager.GetCurrentClassLogger();
         public abstract ProjectType ProjectType { get; }
 
         public string ProjectFile { get; set; }

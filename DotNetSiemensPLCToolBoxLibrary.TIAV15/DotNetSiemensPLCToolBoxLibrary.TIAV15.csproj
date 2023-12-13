@@ -24,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	<PackageReference Include="NLog" Version="4.7.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Exporters\TiaPortalExporter\PLC\PLC.csproj" />

@@ -1,6 +1,7 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using NLog;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +14,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders
     {
 #if !IPHONE
 
+        internal static Logger logger = LogManager.GetCurrentClassLogger();
         public string FolderClosedImageName
         {
             get
