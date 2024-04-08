@@ -1173,7 +1173,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     hrsLink.Read(tmpLink, 0, 0x200);
 
                     int pos1 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x01, 0x60, 0x11, 0x00 }));
-                    int wrt1 = BitConverter.ToInt16(tmpLink, pos1 + 4);
+                    int wrt1 = BitConverter.ToInt16(tmpLink, pos1 + 3);
 
                     int pos2 = ASCIIEncoding.ASCII.GetString(tmpLink).IndexOf(ASCIIEncoding.ASCII.GetString(new byte[] { 0x04, 0x20, 0x11 }));
                     int wrt2 = tmpLink[pos2 + 3] * 0x100 + tmpLink[pos2 + 4];
