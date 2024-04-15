@@ -11,6 +11,7 @@ namespace PLC
         public PlcSignal() { }
 
         public string Address { get; set; }
+        public string AbsoluteAddress { get; set; }
         public string Symbol { get; set; }
         public string Description { get; set; }
 
@@ -22,6 +23,7 @@ namespace PLC
         public string ProjectName { get; set; }
         public string Station { get; set; }
         public string Offset { get; set; }
+        public string DBNumber { get; set; }
 
         private bool Readable = true;
 
