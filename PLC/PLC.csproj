@@ -4,7 +4,7 @@
     <TargetFrameworks>net5.0;netcoreapp3.1;net481</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="NLog" Version="4.7.*" />
+	<PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
 
 </Project>
