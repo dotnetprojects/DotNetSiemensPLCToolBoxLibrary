@@ -56,5 +56,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             return retVal;
         }
 
+        public virtual void ExportTextlists(ProjectFolder folder, string exportPath)
+        {
+        }
+
     }
 }

@@ -32,7 +32,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
 
-            AksForInstance();
+            AskForInstance();
 
             LoadViaOpennessDlls();
 
@@ -68,7 +68,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
             this.ProjectFile = process.ProjectPath.ToString();
         }
 
-        private void AksForInstance()
+        private void AskForInstance()
         {
 
             tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);

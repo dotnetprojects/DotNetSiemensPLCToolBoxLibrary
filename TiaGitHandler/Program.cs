@@ -198,6 +198,7 @@ namespace TiaGitHandler
             Console.WriteLine();
             List<string> skippedBlocksList = new List<string>();
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
+            prj.ExportTextlists(prj.ProjectStructure, exportPath);
 
             Console.WriteLine();
             Console.WriteLine();

@@ -19,7 +19,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             get
             {
-
                 if (_createV13ProjectInstance == null)
                 {
                     lock (_lockObject)

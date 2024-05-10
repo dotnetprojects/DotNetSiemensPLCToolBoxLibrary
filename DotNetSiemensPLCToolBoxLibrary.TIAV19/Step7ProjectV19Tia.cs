@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
+using Siemens.Engineering.SW.Alarm;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 {
@@ -30,7 +31,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 
     public partial class Step7ProjectV19
     {
-
         private Siemens.Engineering.TiaPortal tiaPortal;
 
         private Siemens.Engineering.Project tiapProject;
@@ -141,7 +141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                     {
                         fld = fld.Parent;
                     }
-                     ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
+                    ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
                 }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -802,6 +802,45 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
             }
         }
 
+        public override void ExportTextlists(ProjectFolder folder, string exportPath)
+        {         
+            foreach (var d in tiapProject.Devices)
+            {
+                if (d.TypeIdentifier != null && d.TypeIdentifier.EndsWith(".S71500"))
+                {
+                    foreach (DeviceItem deviceItem in d.DeviceItems)
+                    {
+                        var parent = deviceItem.Parent;
+                        var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
+                        if (target != null && target.Software is PlcSoftware)
+                        {
+                            var plcSoftware = (PlcSoftware)target.Software;
+                            var alarmTextListProvider = plcSoftware.GetService<PlcAlarmTextListProvider>();
+                            var PlcAlarmTextlistGroup = plcSoftware.PlcAlarmTextlistGroup;
+                            foreach (var plcAlarmUserTextlist in PlcAlarmTextlistGroup.PlcAlarmUserTextlists)
+                            {
+                                var plcAlarmUserTextlistName = plcAlarmUserTextlist.Name;
+                                var filePath = Path.Combine(exportPath, folder.Name, deviceItem.Name.Replace("-",""), "plcalarmtextlistgroup", plcAlarmUserTextlistName) + ".xlsx";
+                                var fileInfo = new FileInfo(filePath);
+
+                                if (!Directory.Exists(fileInfo.DirectoryName))
+                                {
+                                    Directory.CreateDirectory(fileInfo.DirectoryName);
+                                }
+
+                                if (fileInfo.Exists)
+                                {
+                                    fileInfo.Delete();
+                                }
+
+                                alarmTextListProvider.ExportToXlsx(fileInfo, new List<string> { plcAlarmUserTextlistName }, tiapProject.LanguageSettings.ActiveLanguages);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         internal void OpenViaOpennessDlls(Credentials credentials)
         {
             for (int i = 0; i < 10; i++)
@@ -868,66 +907,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                         var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
                         if (target != null && target.Software is PlcSoftware)
                         {
-                            var software =(PlcSoftware)target.Software;
-                                var fld = new TIAOpennessControllerFolder(this, software)
-                                {
-                                    Name = software.Name,
-                                    //TiaPortalItem = software,
-                                    //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                                };
-                                main.SubItems.Add(fld);
+                            var plcSoftware =(PlcSoftware)target.Software;
+                            var fld = new TIAOpennessControllerFolder(this, plcSoftware)
+                            {
+                                Name = plcSoftware.Name,
+                                //TiaPortalItem = software,
+                                //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                            };
+                            main.SubItems.Add(fld);
 
-                                LoadControlerFolderViaOpennessDlls(fld, software);
-                           
+                            LoadControlerFolderViaOpennessDlls(fld, plcSoftware);
                         }
                     }
-
-                    //var controller = d.DeviceItems.OfType<Siemens.Engineering.HW.ControllerTarget>().FirstOrDefault();
-                    //if (controller == null)
-                    //{
-                    //    var fld = new TIAOpennessProjectFolder(this)
-                    //    {
-                    //        Name = d.Name,
-                    //        TiaPortalItem = d,
-                    //        Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                    //    };
-                    //    main.SubItems.Add(fld);
-
-                    //    //LoadSubDevicesViaOpennessDlls(fld, d);
-                    //}
-                    //else
-                    //{
-                    //    var fld = new TIAOpennessControllerFolder(this)
-                    //    {
-                    //        Name = d.Name,
-                    //        TiaPortalItem = d,
-                    //        Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                    //    };
-                    //    main.SubItems.Add(fld);
-
-                    //    //LoadControlerFolderViaOpennessDlls(fld, controller);
-                    //}
                 }
             }
         }
-
-        //internal void LoadSubDevicesViaOpennessDlls(TIAOpennessProjectFolder parent, Siemens.Engineering.HW.IHardwareObject device)
-        //{
-        //    foreach (var e in device.DeviceItems)
-        //    {
-        //        var fld = new TIAOpennessProjectFolder(this)
-        //        {
-        //            TiaPortalItem = e,
-        //            Name = e.Name,
-        //            Parent = parent,
-        //        };
-        //        var d = e as Siemens.Engineering.HW.DeviceItem;
-        //        //d.Elements.ToList()
-
-        //        parent.SubItems.Add(fld);
-        //        LoadSubDevicesViaOpennessDlls(fld, e);
-        //    }
-        //}
 
         internal void LoadControlerFolderViaOpennessDlls(TIAOpennessControllerFolder parent, PlcSoftware software)
         {
@@ -1070,6 +1064,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                 LoadSubWatchAndForceTablesFoldersViaOpennessDlls(fld, e);
             }
         }
+
         #region Parse DB UDT XML
 
         internal enum ParseType
