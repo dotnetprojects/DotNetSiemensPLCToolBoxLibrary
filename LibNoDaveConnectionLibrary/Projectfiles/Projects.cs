@@ -25,9 +25,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV13ProjectInstance == null)
                         {
-                            if (_createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V13 Project when you already have had opened a V14/V15/V15_1/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V13 Project when you already have had opened a V14/V15/V15_1/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV13.dll"));
@@ -53,9 +53,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV14SP1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15/V15_1/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15/V15_1/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll"));
@@ -82,9 +82,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV14SP1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15/V15_1/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V14 Project when you already have had opened a V13/V15/V15_1/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV14SP1.dll"));
@@ -111,9 +111,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV15ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V15 Project when you already have had opened a V13/V14/V15_1/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V15 Project when you already have had opened a V13/V14/V15_1/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV15.dll"));
@@ -139,9 +139,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV15_1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV15_1.dll"));
@@ -169,9 +169,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV15_1ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV15_1.dll"));
@@ -199,9 +199,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV15_1ProjectInstanceWithFilename == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V15.1 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV15_1.dll"));
@@ -229,9 +229,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV16ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/17/18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV16.dll"));
@@ -259,9 +259,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV16ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV16.dll"));
@@ -289,9 +289,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV16ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/V17/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V16 Project when you already have had opened a V13/V14/V15/V17/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV16.dll"));
@@ -319,9 +319,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV17ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V17 Project when you already have had opened a V13/V14/V15/V16/V18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V17 Project when you already have had opened a V13/V14/V15/V16/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV17.dll"));
@@ -349,9 +349,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV17ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/16/18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV17.dll"));
@@ -379,9 +379,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV17ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/16/18 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V18/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV17.dll"));
@@ -409,9 +409,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_createV18ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV18.dll"));
@@ -439,9 +439,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV18ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/16/17 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV18.dll"));
@@ -469,9 +469,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     {
                         if (_attachV18ProjectInstance == null)
                         {
-                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null)
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV19ProjectInstance != null)
                             {
-                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/16/17 Project. You need to close the Application!");
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V19 Project. You need to close the Application!");
                             }
                             var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
                             var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV18.dll"));
@@ -484,6 +484,96 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
                 return _attachV18ProjectInstanceWithFilename;
+            }
+        }
+
+        private static Func<string, Credentials, Project> _createV19ProjectInstance;
+
+        private static Func<string, Credentials, Project> createV19ProjectInstance
+        {
+            get
+            {
+                if (_createV19ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_createV19ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            {
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V18 Project. You need to close the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV19.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19.Step7ProjectV19");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV19ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV19ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV19ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _createV19ProjectInstance;
+            }
+        }
+
+        private static Func<Project> _attachV19ProjectInstance;
+
+        private static Func<Project> attachV19ProjectInstance
+        {
+            get
+            {
+                if (_attachV19ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_attachV19ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            {
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V18 Project. You need to close the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV19.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19.Step7ProjectV19");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV19ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV19ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV19ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _attachV19ProjectInstance;
+            }
+        }
+
+        private static Func<string, Project> _attachV19ProjectInstanceWithFilename;
+
+        private static Func<string, Project> attachV19ProjectInstanceWithFilename
+        {
+            get
+            {
+                if (_attachV19ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_attachV19ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null || _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null)
+                            {
+                                throw new Exception("You can not open a V18 Project when you already have had opened a V13/V14/V15/V16/V17/V18 Project. You need to close the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV19.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19.Step7ProjectV19");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV19ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV19ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV19ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _attachV19ProjectInstanceWithFilename;
             }
         }
 
@@ -568,6 +658,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(createV18ProjectInstance(fls[0], credentials));
 
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap19");
+                        if (fls.Length > 0)
+                            retVal.Add(createV19ProjectInstance(fls[0], credentials));
+
                         fls = System.IO.Directory.GetFiles(subd, "*.al11");
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
@@ -603,6 +697,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         fls = System.IO.Directory.GetFiles(subd, "*.al18");
                         if (fls.Length > 0)
                             retVal.Add(createV18ProjectInstance(fls[0], credentials));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.al19");
+                        if (fls.Length > 0)
+                            retVal.Add(createV19ProjectInstance(fls[0], credentials));
 
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
@@ -664,6 +762,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV18ProjectInstance(entr, credentials));
 
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap19");
+                        if (entr != null)
+                            retVal.Add(createV19ProjectInstance(entr, credentials));
+
                         entr = zipfile.GetFirstZipEntryWithEnding("*.al11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
@@ -700,6 +802,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV18ProjectInstance(entr, credentials));
 
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al19");
+                        if (entr != null)
+                            retVal.Add(createV19ProjectInstance(entr, credentials));
+
                         entr = zipfile.GetFirstZipEntryWithEnding(".s5d");
                         if (entr != null)
                             retVal.Add(new Step5Project(zipfile, zip, false));
@@ -726,6 +832,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return attachV17ProjectInstance();
             if (tiaVersion == "18")
                 return attachV18ProjectInstance();
+            if (tiaVersion == "19")
+                return attachV19ProjectInstance();
 
             return null;
         }
@@ -740,6 +848,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return attachV17ProjectInstanceWithFilename(filename);
             if (tiaVersion == "18")
                 return attachV18ProjectInstanceWithFilename(filename);
+            if (tiaVersion == "19")
+                return attachV19ProjectInstanceWithFilename(filename);
 
             return null;
         }
@@ -779,6 +889,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV17ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".ap18"))
                 return createV18ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".ap19"))
+                return createV19ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al11"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al12"))
@@ -797,6 +909,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV17ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al18"))
                 return createV18ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".al19"))
+                return createV19ProjectInstance(file, credentials);
             else
             {
                 var zh = ZipHelper.GetZipHelper(file);

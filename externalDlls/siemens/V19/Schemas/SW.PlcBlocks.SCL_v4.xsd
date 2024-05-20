@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 rel. 3 (http://www.altova.com) by Thilo Opaterny (Siemens AG) -->
+<!-- Mit XMLSpy v2017 sp2 (x64) (http://www.altova.com) von . (Siemens AG) bearbeitet -->
+<!-- Copyright © Siemens AG 2008-2016. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.Access_v5.xsd"/>
+	<xs:element name="StructuredText" type="StructuredText_T"/>
+	<xs:complexType name="StructuredText_T">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:choice>
+				<xs:element ref="Access"/>
+				<xs:element ref="Token"/>
+				<xs:element ref="Parameter"/>
+				<xs:element ref="Text"/>
+				<xs:group ref="Comment_G"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="UId" type="xs:int" use="optional"/>
+	</xs:complexType>
+</xs:schema>
