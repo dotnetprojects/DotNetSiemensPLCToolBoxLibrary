@@ -29,6 +29,9 @@
     <DefineConstants>SHARPZIPLIB;NETSTANDARD</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Http">
+      <Version>2.2.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Win32.Registry">
       <Version>5.0.0</Version>
     </PackageReference>

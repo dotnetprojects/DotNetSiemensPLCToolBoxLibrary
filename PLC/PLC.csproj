@@ -4,6 +4,7 @@
     <TargetFrameworks>net5.0;netcoreapp3.1;net481</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 	<PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
 
