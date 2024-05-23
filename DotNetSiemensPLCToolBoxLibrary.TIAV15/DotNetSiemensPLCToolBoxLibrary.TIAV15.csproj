@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-	<PackageReference Include="NLog" Version="5.2.8" />
+	<PackageReference Include="NLog" Version="5.3.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PLC\PLC.csproj" />
