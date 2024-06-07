@@ -353,7 +353,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
                 }
             }
-            
+
             /*
             //Get The HW Folder for the Station...
             if (ZipHelper.FileExists(_zipfile,ProjectFolder + "hOmSave7" + _DirSeperator + "s7hstatx" + _DirSeperator + "HRELATI1.DBF"))
@@ -396,9 +396,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
 
             //Get The CPs...
-            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HOBJECT1.DBF"))
+            string cp300Base = ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator;
+            string cp400Base = ProjectFolder + "hOmSave7" + _DirSeperator + "s7w1105x" + _DirSeperator;
+
+            List<string> cpPaths = new List<string>();
+            string cp300 = cp300Base + "HOBJECT1.DBF";
+            if (_ziphelper.FileExists(cp300))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HOBJECT1.DBF", _ziphelper, _DirSeperator);
+                cpPaths.Add(cp300);
+            }
+            string cp400 = cp400Base + "HOBJECT1.DBF";
+            if (_ziphelper.FileExists(cp400))
+            {
+                cpPaths.Add(cp400);
+            }
+            foreach (string cpPath in cpPaths)
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(cpPath, _ziphelper, _DirSeperator);
 
                 foreach (DataRow row in dbfTbl.Rows)
                 {
@@ -426,9 +440,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
 
             //Get The CP Folders
-            if (_ziphelper.FileExists(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HRELATI1.DBF"))
+            List<string> cpFolderPaths = new List<string>();
+            string cp300Folder = cp300Base + "HRELATI1.DBF";
+            if (_ziphelper.FileExists(cp300Folder))
             {
-                var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "hOmSave7" + _DirSeperator + "s7wb53ax" + _DirSeperator + "HRELATI1.DBF", _ziphelper, _DirSeperator);
+                cpFolderPaths.Add(cp300Folder);
+            }
+            string cp400Folder = cp400Base + "HRELATI1.DBF";
+            if (_ziphelper.FileExists(cp400Folder))
+            {
+                cpFolderPaths.Add(cp400Folder);
+            }
+            foreach (string cpFolderPath in cpFolderPaths)
+            {
+                var dbfTbl = DBF.ParseDBF.ReadDBF(cpFolderPath, _ziphelper, _DirSeperator);
                 foreach(DataRow row in dbfTbl.Rows)
                 {
                     if (!(bool)row["DELETED_FLAG"] || _showDeleted)
@@ -531,7 +556,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         {
                             if (!(bool)row["DELETED_FLAG"] || _showDeleted)
                             {
-                                if ((int)row["TUNITID"] == z.ID && ((int)row["TOBJTYP"] == 1314972 || (int)row["TOBJTYP"] == 1315656 /* BackupCPU bei H Sys */))
+                                if ((int)row["TUNITID"] == z.ID && 
+                                    ((int)row["TOBJTYP"] == 1314972 || (int)row["TOBJTYP"] == 1315656 /* BackupCPU bei H Sys */) &&
+                                    CPUFolders.FirstOrDefault(folder => folder.ID == (int)row["SOBJID"]) == null)
                                 //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
                                 {
                                     var x = new CPUFolder() { Project = this };
