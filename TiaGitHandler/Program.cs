@@ -56,7 +56,7 @@ namespace TiaGitHandler
         {
             bool hasArgs = args.Count() > 0;
             string file = "";
-            string exportPath = "";
+            string exportPath = Environment.CurrentDirectory;
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
             bool attach = false;

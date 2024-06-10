@@ -185,7 +185,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 
         public override ProjectType ProjectType
         {
-            get { return ProjectType.Tia18; }
+            get { return ProjectType.Tia19; }
         }
 
         protected override void LoadProject()
