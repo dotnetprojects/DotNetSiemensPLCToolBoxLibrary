@@ -558,7 +558,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             {
                                 if ((int)row["TUNITID"] == z.ID && 
                                     ((int)row["TOBJTYP"] == 1314972 || (int)row["TOBJTYP"] == 1315656 /* BackupCPU bei H Sys */) &&
-                                    CPUFolders.FirstOrDefault(folder => folder.ID == (int)row["SOBJID"]) == null) /* skip over duplicate CPU folders */
+                                    (CPUFolders.FirstOrDefault(folder => folder.ID == (int)row["SOBJID"] && folder.CpuType == z.StationType) == null)) /* skip over duplicate CPU folders */
                                 //((int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969 || (int)row["TUNITTYP"] == 1314969))
                                 {
                                     var x = new CPUFolder() { Project = this };
