@@ -56,7 +56,7 @@ namespace TiaGitHandler
         {
             bool hasArgs = args.Count() > 0;
             string file = "";
-            string exportPath = "";
+            string exportPath = Environment.CurrentDirectory;
             string user = Settings.Default.DefaultUser;
             string password = Settings.Default.DefaultPassword;
             bool attach = false;
@@ -178,10 +178,21 @@ namespace TiaGitHandler
 
                 if (attach)
                 {
-                    if (file.EndsWith("16"))
+                    if (file.EndsWith("19"))
+                        prj = Projects.AttachToInstanceWithFilename("19", file);
+                    else if (file.EndsWith("18"))
+                        prj = Projects.AttachToInstanceWithFilename("18", file);
+                    else if (file.EndsWith("17"))
+                        prj = Projects.AttachToInstanceWithFilename("17", file);
+                    else if (file.EndsWith("16"))
                         prj = Projects.AttachToInstanceWithFilename("16", file);
-                    else
+                    else if (file.EndsWith("15.1"))
                         prj = Projects.AttachToInstanceWithFilename("15.1", file);
+                    else
+                    {
+                        Console.WriteLine("Attach to this TIA Version not supported");
+                        Environment.Exit(-1);
+                    }
                 }
                 else
                 {
