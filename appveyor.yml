@@ -53,7 +53,7 @@ artifacts:
 deploy:
   provider: NuGet
   api_key:
-    secure: oLQQ9IQge8fS8IkPzFyce3bLaY4uj4PnOghCd0u9wKBnUjNAdlU77QFmX45lBU8I
+    secure: qGLYnLmoAwOz2buRk5Nx5ouhilFDBQf8ktSQ0+EDKPKNUq/xmbfM1kWKt9c1O8YI
   artifact: /.*DotNetProjects\.DotNetSiemensPLCToolBoxLibrary.*nupkg/
   
   
