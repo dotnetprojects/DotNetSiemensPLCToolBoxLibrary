@@ -68,7 +68,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public override TiaAndSTep7DataBlockRow DeepCopy()
         {
             S7DataRow newRow = new S7DataRow(this.Name, this.DataType, this.PlcBlock);
-            newRow.Parent = this.Parent;
             newRow.ArrayStart = this.ArrayStart;
             newRow.ArrayStop = this.ArrayStop;
             newRow.IsArray = this.IsArray;
