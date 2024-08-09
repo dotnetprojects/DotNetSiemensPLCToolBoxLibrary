@@ -17,7 +17,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
                 && this.ReplaceDIAccessesWithSymbolNames.Equals(other.ReplaceDIAccessesWithSymbolNames) 
                 && this.GenerateCallsfromUCs.Equals(other.GenerateCallsfromUCs) 
                 && this.UseInFCStoredFCsForCalls.Equals(other.UseInFCStoredFCsForCalls)
-                && this.UseFBDeclarationForInstanceDB.Equals(other.UseFBDeclarationForInstanceDB);
+                && this.UseFBDeclarationForInstanceDB.Equals(other.UseFBDeclarationForInstanceDB)
+                && this.UseDBActualValues.Equals(other.UseDBActualValues)
+                && this.ExpandArrays.Equals(other.ExpandArrays)
+                && this.CheckForInterfaceTimestampConflicts.Equals(other.CheckForInterfaceTimestampConflicts);
         }
 
         public override int GetHashCode()
@@ -33,6 +36,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
                 hashCode = (hashCode * 397) ^ this.GenerateCallsfromUCs.GetHashCode();
                 hashCode = (hashCode * 397) ^ this.UseInFCStoredFCsForCalls.GetHashCode();
                 hashCode = (hashCode * 397) ^ this.UseFBDeclarationForInstanceDB.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.UseDBActualValues.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.ExpandArrays.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.CheckForInterfaceTimestampConflicts.GetHashCode();
                 return hashCode;
             }
         }
@@ -55,6 +61,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
             this.UseFBDeclarationForInstanceDB = true; //Default to Simatic Mamager Behavior
             this.UseDBActualValues = false;
             this.ExpandArrays = false;
+            this.CheckForInterfaceTimestampConflicts = false;
         }
 
         public bool UseComments { get; set; }
@@ -70,6 +77,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5
 
         public bool GenerateCallsfromUCs { get; set;}
         public bool UseInFCStoredFCsForCalls { get; set; }
+
+        public bool CheckForInterfaceTimestampConflicts { get; set; }
 
         /// <summary>
         /// use the FB instance declartion symbolics for displaying Instance DB Variables

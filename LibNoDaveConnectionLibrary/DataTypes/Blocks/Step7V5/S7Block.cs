@@ -93,6 +93,31 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public DateTime LastInterfaceChange { get; set; }
 
         /// <summary>
+        /// Timestamp of the last interface change associated with the plaintext database record
+        /// If a block is uploaded to the project with a timestamp conflict, this field contains the previous modified date of the interface before the upload
+        /// </summary>
+        public DateTime LastInterfaceChangeHistory { get; set; }
+
+        /// <summary>
+        /// Returns true if the plaintext interface timestamp is different from the MC7 interface timestamp
+        /// The default value of DateTime is DateTime.MinValue, so also check to make sure that both values are set
+        /// </summary>
+        public bool HasInterfaceTimestampConflict
+        {
+            get
+            {
+                if (!LastInterfaceChangeHistory.Equals(DateTime.MinValue) &&
+                    !LastInterfaceChange.Equals(DateTime.MinValue) &&
+                    !LastInterfaceChangeHistory.Equals(LastInterfaceChange))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// The total size of the Interface table 
         /// </summary>
         /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>

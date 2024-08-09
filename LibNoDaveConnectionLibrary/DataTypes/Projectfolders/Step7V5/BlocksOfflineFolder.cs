@@ -1,4 +1,4 @@
-	using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -154,6 +154,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
             public string version;
             public DateTime LastCodeChange;
             public DateTime LastInterfaceChange;
+            public DateTime LastInterfaceChangeHistory;
             public bool IsInstanceDB;
             public bool IsSFB;
             public int FBNumber;
@@ -323,6 +324,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.nwinfo = addinfo;
                             //This line contains Network Information, and after it the Position of the JumpMarks
 
+                            // ssbpart contains the MC7 interface from the PLC
+                            myTmpBlk.blkinterfaceInMC5 = ssbpart;
                             myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
                             myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
 
@@ -335,10 +338,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         }
                         else if (subblktype == 5 || subblktype == 3 || subblktype == 4 || subblktype == 7 || subblktype == 9) //FC, OB, FB, SFC, SFB
                         {
-                            //Interface in mc5code
+                            // Interface in plaintext
                             if (mc5code != null)
-                                myTmpBlk.blkinterface =
-                                    Project.ProjectEncoding.GetString(mc5code);
+                            {
+                                myTmpBlk.blkinterface = Project.ProjectEncoding.GetString(mc5code);
+                                myTmpBlk.LastInterfaceChangeHistory = GetTimeStamp((string)row["TIMESTAMP2"]);
+                            }
                         }
                         else if (subblktype == 19 || subblktype == 17 || subblktype == 18 || subblktype == 22 ||
                                  subblktype == 21) //FC, OB, FB, SFC, SFB
@@ -348,23 +353,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             myTmpBlk.jumpmarks = addinfo;
                             //The Text of the Jump Marks, Before the Jumpmarks there is some Network Information, but don't know what!
                         }
-
                         else if (subblktype == 6 || subblktype == 1) //DB, UDT
                         {
                             //DB Structure in Plain Text (Structure and StartValues!)
                             if (mc5code != null)
-                                    myTmpBlk.blkinterface =
-                                        Project.ProjectEncoding.GetString(mc5code);
+                            {
+                                myTmpBlk.blkinterface = Project.ProjectEncoding.GetString(mc5code);
+                                myTmpBlk.LastInterfaceChangeHistory = GetTimeStamp((string)row["TIMESTAMP2"]);
+                            }
+
+                            // DB blocks get their timestamps from the MC7 interface record (when subblktype == 10). UDT blocks can't be downloaded and don't have this same record.
+                            if (blkInfo.BlockType == PLCBlockType.UDT)
+                            {
+                                myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
+                                myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
+                            }
+
                             //Maybe compiled DB Structure?
                             myTmpBlk.addinfo = addinfo;
-
-                            myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
-                            myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
                         }
                         else if (subblktype == 10) //DB
                         {
-                            //Need to check wich Information is stored here
+                            // mc7code contains the actual values of the DB from the PLC
                             myTmpBlk.mc7code = mc5code;
+                            // ssbpart contains the MC7 interface from the PLC
                             myTmpBlk.blkinterfaceInMC5 = ssbpart;
                             myTmpBlk.LastCodeChange = GetTimeStamp((string)row["TIMESTAMP1"]);
                             myTmpBlk.LastInterfaceChange = GetTimeStamp((string)row["TIMESTAMP2"]);
@@ -552,6 +564,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                         List<string> tmpPar = new List<string>();
                         if (InstFB != null)
                         {
+                            // Set the InstanceDB's history time to the most recent change of the FB
+                            myTmpBlk.LastInterfaceChangeHistory = InstFB.LastInterfaceChange;
+
                             S7DataRow InterfaceFB =
                                 Parameter.GetInterfaceOrDBFromStep7ProjectString(InstFB.blkinterface, ref tmpPar,
                                     PLCBlockType.FB, false, this, null, myConvOpt);
@@ -568,20 +583,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     if (myTmpBlk.mc7code != null) 
                         retVal.CodeSize = myTmpBlk.mc7code.Length;
 
+                    retVal.LastCodeChange = myTmpBlk.LastCodeChange;
+                    retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
+                    retVal.LastInterfaceChangeHistory = myTmpBlk.LastInterfaceChangeHistory;
+
+                    retVal.StructureFromMC7 = GetInterfaceStructureFromMC7(blkInfo, myTmpBlk, retVal, ref tmpList);
                     retVal.StructureFromString = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpList, blkInfo.BlockType, false, this, retVal, myConvOpt, myTmpBlk.mc7code);
-                    if (myTmpBlk.blkinterfaceInMC5 != null)
-                    {
-                        //List<string> tmp = new List<string>();
-                        //retVal.StructureFromMC7 = Parameter.GetInterface(myTmpBlk.blkinterfaceInMC5, myTmpBlk.mc7code, ref tmp, blkInfo.BlockType, myTmpBlk.IsInstanceDB, retVal);
-                    }                        
+
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.Name = plcblkifo.Name;
                     retVal.Family = ((S7ProjectBlockInfo)plcblkifo).Family;
                     retVal.BlockType = blkInfo.BlockType;
                     retVal.Attributes = step7Attributes;
-
-                    retVal.LastCodeChange = myTmpBlk.LastCodeChange;
-                    retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
 
                     retVal.ParentFolder = this;
                     retVal.usedS7ConvertingOptions = myConvOpt;
@@ -599,6 +612,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                     retVal.LastCodeChange = myTmpBlk.LastCodeChange;
                     retVal.LastInterfaceChange = myTmpBlk.LastInterfaceChange;
+                    retVal.LastInterfaceChangeHistory = myTmpBlk.LastInterfaceChangeHistory;
 
                     retVal.BlockNumber = plcblkifo.BlockNumber;
                     retVal.Name = plcblkifo.Name;
@@ -611,7 +625,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
 
-                    retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal, myConvOpt);
+                    if (myConvOpt.CheckForInterfaceTimestampConflicts && retVal.HasInterfaceTimestampConflict)
+                    {
+                        retVal.Parameter = GetInterfaceStructureFromMC7(blkInfo, myTmpBlk, retVal, ref ParaList);
+                    }
+                    else
+                    {
+                        retVal.Parameter = Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref ParaList, blkInfo.BlockType, false, this, retVal, myConvOpt);
+                    }
                 
                     if (myTmpBlk.blockdescription != null)
                     {
@@ -805,7 +826,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 }
             }
             return null;
-        }     
+        }
+
+        /// <summary>
+        /// Converts the MC7 code of the block interface to S7DataRow
+        /// </summary>
+        public S7DataRow GetInterfaceStructureFromMC7(ProjectBlockInfo blkInfo, TmpBlock myTmpBlk, S7Block block, ref List<string> paramList)
+        {
+            if (myTmpBlk.blkinterfaceInMC5 == null || myTmpBlk.blkinterfaceInMC5.Length == 0)
+            {
+                return null;
+            }
+
+            try
+            {
+                // Not sure what bytes 0-2 in the header are for
+                // Bytes 3-4 are the interface length (not including header)
+                var interfaceLen = BitConverter.ToUInt16(myTmpBlk.blkinterfaceInMC5, 3);
+                var headerPlusInterfaceLen = 7 + interfaceLen;
+                var interfaceBytes = new byte[headerPlusInterfaceLen];
+                Array.Copy(myTmpBlk.blkinterfaceInMC5, 0, interfaceBytes, 0, headerPlusInterfaceLen);
+
+                // Bytes 5-6 are the start values length
+                var startValuesLen = BitConverter.ToUInt16(myTmpBlk.blkinterfaceInMC5, 5);
+                byte[] startValuesBytes = null;
+                if (startValuesLen > 0)
+                {
+                    startValuesBytes = new byte[startValuesLen];
+                    Array.Copy(myTmpBlk.blkinterfaceInMC5, headerPlusInterfaceLen, startValuesBytes, 0, startValuesLen);
+                }
+
+                // Only DB blocks have actual values
+                var actualValuesBytes = blkInfo.BlockType == PLCBlockType.DB ? myTmpBlk.mc7code : null;
+
+                return Parameter.GetInterface(interfaceBytes, startValuesBytes, actualValuesBytes, ref paramList, blkInfo.BlockType, myTmpBlk.IsInstanceDB, block);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// With this Function you get the AWL Source of a Block, so that it can be imported into Step7

@@ -642,6 +642,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             S7DataRow parameterTEMP = new S7DataRow("TEMP", S7DataRowType.STRUCT, myBlk);
             S7DataRow parameterRETVAL = new S7DataRow("RET_VAL", S7DataRowType.STRUCT, myBlk);
 
+            parameterIN.isRootBlock = true;
+            parameterOUT.isRootBlock = true;
+            parameterINOUT.isRootBlock = true;
+            parameterINOUT.isInOut = true;
+            parameterSTAT.isRootBlock = true;
+            parameterTEMP.isRootBlock = true;
+            parameterRETVAL.isRootBlock = true;
+
             //All blocks may have In, Out or In/Out parameters
             //Info: the order in which they are added to the Root is important
             parameterRoot.Add(parameterIN);
