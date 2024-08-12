@@ -99,25 +99,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         public DateTime LastInterfaceChangeHistory { get; set; }
 
         /// <summary>
-        /// Returns true if the plaintext interface timestamp is different from the MC7 interface timestamp
-        /// The default value of DateTime is DateTime.MinValue, so also check to make sure that both values are set
-        /// </summary>
-        public bool HasInterfaceTimestampConflict
-        {
-            get
-            {
-                if (!LastInterfaceChangeHistory.Equals(DateTime.MinValue) &&
-                    !LastInterfaceChange.Equals(DateTime.MinValue) &&
-                    !LastInterfaceChangeHistory.Equals(LastInterfaceChange))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        /// <summary>
         /// The total size of the Interface table 
         /// </summary>
         /// <remarks>this is an internal property, that is not shown in Simatic Manager</remarks>
@@ -235,6 +216,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             //WriteProtected
             //ReadOnly
 
+        }
+
+        /// <summary>
+        /// Returns true if dt1 and dt2 are not equal
+        /// Also checks that both values are not the default value (DateTime.MinValue)
+        /// </summary>
+        public static bool HasTimestampConflict(DateTime dt1, DateTime dt2)
+        {
+            if (!dt1.Equals(DateTime.MinValue) &&
+                !dt2.Equals(DateTime.MinValue) &&
+                !dt1.Equals(dt2))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

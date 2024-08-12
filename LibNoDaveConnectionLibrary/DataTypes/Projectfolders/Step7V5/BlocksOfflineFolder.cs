@@ -449,7 +449,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                 return null;
             TmpBlock myTmpBlk = GetBlockBytes(blkInfo);
             List<string> tmpPar = new List<string>();
-            return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null, myConvOpt);
+            if (myConvOpt.CheckForInterfaceTimestampConflicts && S7Block.HasTimestampConflict(myTmpBlk.LastInterfaceChange, myTmpBlk.LastInterfaceChangeHistory))
+            {
+                return GetInterfaceStructureFromMC7(blkInfo, myTmpBlk, null, ref tmpPar);
+            }
+            else
+            {
+                return Parameter.GetInterfaceOrDBFromStep7ProjectString(myTmpBlk.blkinterface, ref tmpPar, blkInfo.BlockType, false, this, null, myConvOpt);
+            }
         }
 
         /// <summary>
@@ -625,7 +632,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                     retVal.Author = myTmpBlk.username;
                     retVal.Version = myTmpBlk.version;
 
-                    if (myConvOpt.CheckForInterfaceTimestampConflicts && retVal.HasInterfaceTimestampConflict)
+                    if (myConvOpt.CheckForInterfaceTimestampConflicts && S7Block.HasTimestampConflict(retVal.LastInterfaceChange, retVal.LastInterfaceChangeHistory))
                     {
                         retVal.Parameter = GetInterfaceStructureFromMC7(blkInfo, myTmpBlk, retVal, ref ParaList);
                     }
