@@ -224,9 +224,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// </summary>
         public static bool HasTimestampConflict(DateTime dt1, DateTime dt2)
         {
-            if (!dt1.Equals(DateTime.MinValue) &&
-                !dt2.Equals(DateTime.MinValue) &&
-                !dt1.Equals(dt2))
+            if (!dt1.Equals(dt2))
             {
                 return true;
             }
