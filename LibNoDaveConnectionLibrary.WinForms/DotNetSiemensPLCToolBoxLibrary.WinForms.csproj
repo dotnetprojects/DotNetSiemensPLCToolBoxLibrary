@@ -5,6 +5,7 @@
     <TargetFrameworks>net6.0-windows;net461</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <GenerateResourceUsePreserializedResources>false</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>DotNetProjects.DotNetSiemensPLCToolBoxLibrary.WinForms</PackageId>
