@@ -1,5 +1,6 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace ToolBoxLibUnitTests
 {
@@ -10,28 +11,28 @@ namespace ToolBoxLibUnitTests
 		public void TestParse()
 		{
 			PLCBlockName test = new PLCBlockName("DB5");
-			Assert.AreEqual(5, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.DB, test.BlockType);
+			ClassicAssert.AreEqual(5, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.DB, test.BlockType);
 
 			test = new PLCBlockName("db 5");
-			Assert.AreEqual(5, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.DB, test.BlockType);
+			ClassicAssert.AreEqual(5, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.DB, test.BlockType);
 
 			test = new PLCBlockName("FC109");
-			Assert.AreEqual(109, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.FC, test.BlockType);
+			ClassicAssert.AreEqual(109, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.FC, test.BlockType);
 
 			test = new PLCBlockName("FB9999");
-			Assert.AreEqual(9999, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.FB, test.BlockType);
+			ClassicAssert.AreEqual(9999, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.FB, test.BlockType);
 
 			test = new PLCBlockName("SDB189");
-			Assert.AreEqual(189, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.SDB, test.BlockType);
+			ClassicAssert.AreEqual(189, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.SDB, test.BlockType);
 
 			test = new PLCBlockName("OB1");
-			Assert.AreEqual(1, test.BlockNumber);
-			Assert.AreEqual(PLCBlockType.OB, test.BlockType);
+			ClassicAssert.AreEqual(1, test.BlockNumber);
+			ClassicAssert.AreEqual(PLCBlockType.OB, test.BlockType);
 
 			try
 			{

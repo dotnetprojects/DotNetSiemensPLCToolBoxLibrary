@@ -4,6 +4,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace ToolBoxLibUnitTests
 {
@@ -25,14 +26,14 @@ namespace ToolBoxLibUnitTests
 																													.DB,
 																												false,
 																												fld, blk, new S7ConvertingOptions());
-			Assert.AreEqual(test.Children[0].Name, "DB_VAR");
-			Assert.AreEqual(test.Children[1].Name, "aa");
-			Assert.AreEqual(test.Children[2].Name, "bb");
-			Assert.AreEqual(test.Children[3].Name, "aa1");
-			Assert.AreEqual(((S7DataRow)test.Children[0]).BlockAddress.ByteAddress, 0);
-			Assert.AreEqual(((S7DataRow)test.Children[1]).BlockAddress.ByteAddress, 2);
-			Assert.AreEqual(((S7DataRow)test.Children[2]).BlockAddress.ByteAddress, 10);
-			Assert.AreEqual(((S7DataRow)test.Children[3]).BlockAddress.ByteAddress, 12);
+			ClassicAssert.AreEqual(test.Children[0].Name, "DB_VAR");
+			ClassicAssert.AreEqual(test.Children[1].Name, "aa");
+			ClassicAssert.AreEqual(test.Children[2].Name, "bb");
+			ClassicAssert.AreEqual(test.Children[3].Name, "aa1");
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).BlockAddress.ByteAddress, 0);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[1]).BlockAddress.ByteAddress, 2);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[2]).BlockAddress.ByteAddress, 10);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[3]).BlockAddress.ByteAddress, 12);
 		}
 
 		[Test]
@@ -49,12 +50,12 @@ namespace ToolBoxLibUnitTests
 																													.DB,
 																												false,
 																												fld, blk, new S7ConvertingOptions());
-			Assert.AreEqual(test.Children[0].Name, "Fachkoordinate");
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 1);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 2);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 544);
+			ClassicAssert.AreEqual(test.Children[0].Name, "Fachkoordinate");
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 1);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 2);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 544);
 		}
 
 		[Test]
@@ -71,14 +72,14 @@ namespace ToolBoxLibUnitTests
 																													.DB,
 																												false,
 																												fld, blk, new S7ConvertingOptions());
-			Assert.AreEqual(test.Children[0].Name, "X_KOORDINATE");
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 0);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[2], 1);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 16);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[2], 2);
-			Assert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 4624);
+			ClassicAssert.AreEqual(test.Children[0].Name, "X_KOORDINATE");
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[0], 0);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[1], 0);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStart[2], 1);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[0], 67);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[1], 16);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ArrayStop[2], 2);
+			ClassicAssert.AreEqual(((S7DataRow)test.Children[0]).ByteLength, 4624);
 		}
 
 		[Test]

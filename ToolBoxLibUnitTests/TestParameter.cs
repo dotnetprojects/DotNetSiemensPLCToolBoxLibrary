@@ -4,6 +4,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using System.Collections.Generic;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace ToolBoxLibUnitTests
 {
@@ -32,7 +33,7 @@ namespace ToolBoxLibUnitTests
 
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "DB3001.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(File.ReadAllText(dir + "DB3001.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Datablock with Real and Integers and some of them, not all of them, defined as having Initial Values")]
@@ -43,7 +44,7 @@ namespace ToolBoxLibUnitTests
 
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "DB3002.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(File.ReadAllText(dir + "DB3002.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Datablock with Complex data, containing Arrays with non zero Lower bounds, DateAndTime ans Strings. All of them have initial values. This is one of the most complex Block interfaces to construct")]
@@ -55,7 +56,7 @@ namespace ToolBoxLibUnitTests
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
             string AWL = File.ReadAllText(dir + "DB3003.awl").Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Datablock with multi dimensional Arrays")]
@@ -66,7 +67,7 @@ namespace ToolBoxLibUnitTests
 
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "DB3004.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(File.ReadAllText(dir + "DB3004.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Datablock with two UDT's")]
@@ -77,7 +78,7 @@ namespace ToolBoxLibUnitTests
 
             //General Structure must be the same
             string Test = DB.ToString().Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(File.ReadAllText(dir + "DB3005.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(File.ReadAllText(dir + "DB3005.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Function block with very complex Interface, using all Interface types and Initial Values")]
@@ -89,7 +90,7 @@ namespace ToolBoxLibUnitTests
             //Fix up different culture dependent Date conversion
             //this might not be optimal, but i dont have any better solution at the moment.
             string AWL = File.ReadAllText(dir + "FB3003.awl").Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Function block with Multi Instance funcionalities")]
@@ -101,7 +102,7 @@ namespace ToolBoxLibUnitTests
             //Fix up different culture dependent Date conversion
             //this might not be optimal, but i dont have any better solution at the moment.
             string AWL = File.ReadAllText(dir + "FB80.awl").Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
         [Test(Description = "Parse Function block with BLOCK_XX Parameters and some Multi Instance Parameters")]
@@ -113,7 +114,7 @@ namespace ToolBoxLibUnitTests
             //Fix up different culture dependent Date conversion
             //this might not be optimal, but i dont have any better solution at the moment.
             string AWL = File.ReadAllText(dir + "FB3004.awl").Trim().Replace("\r\n", "\n");
-            Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
         }
 
 
@@ -127,7 +128,7 @@ namespace ToolBoxLibUnitTests
 	        //Fix up different culture dependent Date conversion
 	        //this might not be optimal, but i dont have any better solution at the moment.
 	        string AWL = File.ReadAllText(dir + "DB310.awl").Trim().Replace("\r\n", "\n");
-	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+	        ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 	    }
 
 	    [Test(Description = "There are 'Extended' versions for each Parameter type. Parse these")]
@@ -139,7 +140,7 @@ namespace ToolBoxLibUnitTests
 	        //Fix up different culture dependent Date conversion
 	        //this might not be optimal, but i dont have any better solution at the moment.
 	        string AWL = File.ReadAllText(dir + "FB41.awl").Trim().Replace("\r\n", "\n");
-	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+	        ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 	    }
     }
 }
