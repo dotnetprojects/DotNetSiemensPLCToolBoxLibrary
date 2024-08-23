@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net462</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>

@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net462</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>

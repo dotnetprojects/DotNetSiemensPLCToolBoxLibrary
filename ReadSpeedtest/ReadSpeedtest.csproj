@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net461</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />

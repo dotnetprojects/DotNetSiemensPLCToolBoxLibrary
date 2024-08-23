@@ -4,7 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>    
+    <UseWPF>true</UseWPF>
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV13\DotNetSiemensPLCToolBoxLibrary.TIAV13.csproj" />

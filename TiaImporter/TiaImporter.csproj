@@ -5,6 +5,7 @@
     <TargetFrameworks>net48</TargetFrameworks>    
     <ApplicationIcon />
     <StartupObject />
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
