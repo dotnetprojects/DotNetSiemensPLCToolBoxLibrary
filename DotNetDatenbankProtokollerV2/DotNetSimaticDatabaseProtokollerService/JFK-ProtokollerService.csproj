@@ -20,6 +20,7 @@
     </EmbeddedResource>    
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 </Project>

@@ -83,7 +83,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
             }
             catch (Npgsql.PostgresException ex)
             {
-                if (ex.Code != "42P04")
+                if (ex.SqlState != "42P04")
                 {
                     Logging.LogText("Database could not be created. Storage: " + myConfig.Name, ex, Logging.LogLevel.Error);
                     throw ex;
@@ -103,7 +103,7 @@ namespace DotNetSimaticDatabaseProtokollerLibrary.Databases.PostgreSQL
             }
             catch (Npgsql.PostgresException ex)
             {
-                if (ex.Code == "42P01")
+                if (ex.SqlState == "42P01")
                 {
                     try
                     {
