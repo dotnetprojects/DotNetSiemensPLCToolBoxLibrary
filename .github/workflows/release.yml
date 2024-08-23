@@ -1,0 +1,47 @@
+name: .NET
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Fetch history
+      run: git fetch --prune --unshallow
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: |
+        dotnet restore src/S7CommPlusDriver
+        dotnet restore src/DriverTest
+        dotnet restore src/S7CommPlusGUIBrowser
+
+    - name: Update project version
+      uses: roryprimrose/set-vs-sdk-project-version@v1
+      with:
+        version: ${{ github.event.release.tag_name }}
+        assemblyVersion: ${{ github.event.release.tag_name }}
+        fileVersion: ${{ github.event.release.tag_name }}
+        informationalVersion: ${{ github.event.release.tag_name }}-${{ github.sha }}
+    
+    - name: Build
+      run: |
+        dotnet build src/S7CommPlusDriver
+        dotnet build src/DriverTest
+        dotnet build src/S7CommPlusGUIBrowser
+    
+    - name: Publish NuGet
+      # You may pin to the exact commit or the version.
+      # uses: brandedoutcast/publish-nuget@c12b8546b67672ee38ac87bea491ac94a587f7cc
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+        # Filepath of the project to be packaged, relative to root of repository
+        PROJECT_FILE_PATH: MonacoRoslynCompletionProvider/MonacoRoslynCompletionProvider/MonacoRoslynCompletionProvider.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}  
