@@ -11,17 +11,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Fetch history
+      run: git fetch --prune --unshallow
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: |
+            5.0.x
+            6.0.x
+            8.0.x
     - name: Restore dependencies
-      run: |
-        dotnet restore src/S7CommPlusDriver
-        dotnet restore src/DriverTest
-        dotnet restore src/S7CommPlusGUIBrowser
+      run: dotnet restore DotNetSiemensPLCToolBoxLibrary.sln
     - name: Build
-      run: |
-        dotnet build src/S7CommPlusDriver
-        dotnet build src/DriverTest
-        dotnet build src/S7CommPlusGUIBrowser
+      run: dotnet build DotNetSiemensPLCToolBoxLibrary.sln
