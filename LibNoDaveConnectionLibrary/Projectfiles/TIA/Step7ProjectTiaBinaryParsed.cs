@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Xml;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.General;
+using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
@@ -38,6 +40,38 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
                     {
                         var hd = TiaObjectHeader.Deserialize(rd);
                         TiaObjectsList.Add(hd);
+
+                        if (hd.TypeId == 0x70000 + 14) //localization_table
+                        {
+                            var langs = new List<int>();
+                            using var ms = new MemoryStream(hd.Data);
+                            using var br = new BinaryReader(ms);
+                            var maybe_length_including_itself = br.ReadInt32();
+                           
+                            var count = br.ReadInt32();
+                            for (int i = 0;  i < count;i++)
+                            {
+                                var lng = br.ReadInt32();
+                                langs.Add(lng);
+                                var unkown_maybe_flags = br.ReadByte();
+                            }
+                        }
+                        else if (hd.TypeId == 0x70000 + 9) //Root Object Table
+                        {
+                            var rootObjs = new List<int>();
+                            using var ms = new MemoryStream(hd.Data);
+                            using var br = new BinaryReader(ms);
+                            var maybe_length_including_itself = br.ReadInt32();
+
+                            var count = br.ReadInt32();
+                            for (int i = 0; i < count; i++)
+                            {
+                                var id = br.ReadInt32();
+                                var instId = br.ReadInt64();
+                                var ln = br.ReadByte();
+                                var nm = Encoding.UTF8.GetString(br.ReadBytes(ln));
+                            }
+                        }
                     }
                 }
                 catch (EndOfStreamException) // Zip File Stream has no length

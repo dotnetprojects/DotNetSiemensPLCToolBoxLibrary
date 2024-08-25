@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
+	  <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>SHARPZIPLIB</DefineConstants>
