@@ -1,0 +1,1539 @@
+﻿Infos in:
+DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.Hardware.DB0SystemData
+
+
+//extract of the configuration file. This file can be found in an Simatic Manager installation under:
+//C:\Program Files (x86)\Siemens\Step7\S7DATA\S7HWINFO\CPU_classdef.xml
+
+//<? xml version="1.0" encoding="ISO-8859-1" ?>
+//<prim : Document xmlns: prim="http://www.siemens.com/Industry/2002/07/Automation/Primitives" xmlns: gen="http://www.siemens.com/Industry/2002/07/Automation/Generics" xmlns: base="http://www.siemens.com/Industry/2002/07/Automation/Base" xmlns: hwk="http://www.siemens.com/Industry/2002/07/Automation/HWKonfig" xmlns: xsi="http://www.w3.org/2001/XMLSchema-instance" xsi: schemaLocation="
+
+//             http://www.siemens.com/Industry/2002/07/Automation/Base				ADBaseV1.xsd
+//http://www.siemens.com/Industry/2002/07/Automation/HWKonfig			HWKV1.xsd
+//" DefaultLanguage="de">
+//	<prim:FileInfo Version = "1.0">
+
+//        <prim:Created Timestamp = "2002-11-29T10:15:00Z" Tool="STEP7 Version V5.2" User="KM3841"/>
+//		<prim:LastModified Timestamp = "2002-11-29T10:15:00Z" Tool="Textpad" User="KM3841"/>
+//	</prim:FileInfo>
+
+//    <base:Project ID = "{D28412E0-037A-11d7-9985-0800062470B2}" Name="Class Definition for IM151-7AA10">
+//		<base:StructuralFeature>
+
+//            <base:Device ID = "1" OType="CPU">
+//				<base:SettingsFeature>
+
+//                    <hwk:DatasetList>
+
+//                        <hwk:Dataset Name = "IM151-7AA10" DSNr="0" DSLen="14" DSType="100">
+//							<hwk:Par Name = "Length_1" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "ID_1" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Interference_Frequ_Suppression" PNr="3">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>2</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Buslength" PNr="4">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>3</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Length_2" PNr="5">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "ID_2" PNr="6">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>5</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Activ" PNr="7">
+//								<hwk:datatype>FIELD6</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Module_number_Reference_junction" PNr="8" RangeType="dynamic">
+//								<hwk:datatype>FIELD6</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Channel_number_Reference_junction" PNr="9" RangeType="dynamic">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>6</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Startup" DSNr="1" DSLen="8">
+//							<hwk:Par Name = "Test_on_Complete_Restart" PNr="1">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Startup_if_Setpoint_Cfg_Not_Equal_to_Actual_Cfg" PNr="2">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Disable_Hot_restart_on_Manual_Startup" PNr="3">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>2</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Startup_after_Power_On" PNr="4">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>3</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Delete_PIQ_on_Hot_restart" PNr="5" RangeType="dynamic">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>4</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Cold_restart" PNr="6">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>5</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Timebase" PNr="7">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>6</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Transfer_of_Parameters_to_Modules" PNr="8">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Ready_Message_from_Modules" PNr="9">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Hot_restart" PNr="10" RangeType="dynamic">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Cycle" DSNr="2" DSLen="8">
+//							<hwk:Par Name = "Communication" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Update_Process_Image_Table_Cyclically" PNr="2">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Size_of_process_image" PNr="3">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Call_OB85_on_IO_Access_Error" PNr="4">
+//								<hwk:datatype>FIELD3</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>4</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Call_OB122_on_Direct_Access" PNr="5">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>7</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Scan_Cycle_Monitoring_Time" PNr="6">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Minimum_Scan_Cycle_Time" PNr="7">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Self_Test" PNr="8">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "MPI_Communication" DSNr="3" DSLen="26">
+//							<hwk:Par Name = "Total_Number_of_Connections" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_Available_Connections" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_Reserved_Connections_to_Programming_Device" PNr="3">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_Reserved_Connections_to_OI" PNr="4">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>3</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Station_Type_Passive" PNr="5">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Medium_Redundancy" PNr="6">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>5</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Highest_MPI_Address" PNr="7">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "MPI_Address" PNr="8">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>7</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Retry_Counter" PNr="9">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>8</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Transmission_Rate" PNr="10">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>9</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Physical_Layer" PNr="11">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "In_Ring_Desired" PNr="12">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>11</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Default_LSAP_ID" PNr="13">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>12</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "GAP_Update_Factor" PNr="14">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>13</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Ready_Time" PNr="15">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>15</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Transmitter_Fall_Time" PNr="16">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>16</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Slot_Time" PNr="17">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>18</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "IDLE_1" PNr="18">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>20</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "IDLE_2" PNr="19">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>22</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Factor_for_Target_Rotation_Time" PNr="20">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>24</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Local_Data_Priority_Classes" DSNr="4" DSLen="58">
+//							<hwk:Par Name = "Priority_Class_1" PNr="1">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>29</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "System_Diagnostics" DSNr="5" DSLen="2">
+//							<hwk:Par Name = "Extended_Functional_Scope" PNr="1">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Process_Control_Messaging_Active" PNr="2">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Display_Cause_of_STOP" PNr="3">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Acknowledgment_triggered_reporting_of_SFB33_35" PNr="4">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Retentivity" DSNr="6" DSLen="56">
+//							<hwk:Par Name = "Number_of_Memory_Bytes_from_MB0" PNr="1">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_S7_Timers_from_T0" PNr="2">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_S7_Counters_from_C0" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_Datamodules_from_Remanence" PNr="4">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "DB_No_Retentive_Area_1" PNr="5">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>8</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Byte_Address_Retentive_Area_1" PNr="6">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_Bytes_Retentive_Area_1" PNr="7">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>12</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Clock_Pulse_Memory" DSNr="7" DSLen="6">
+//							<hwk:Par Name = "Clock_Memory" PNr="1">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Memory_Byte" PNr="2" RangeType="dynamic">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Number_of_S7_Timers" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Hardware_Interrupts" DSNr="8" DSLen="16">
+//							<hwk:Par Name = "Priority_OB40" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Communication_Interrupts" DSNr="9" DSLen="16">
+//							<hwk:Par Name = "Priority_OB50" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Real_Time_Clock" DSNr="10" DSLen="4">
+//							<hwk:Par Name = "Time_Interval_Sync_on_MFI" PNr="1" RangeType="dynamic">
+//								<hwk:datatype>FIELD3</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Sync_Type_Sync_on_MPI" PNr="2">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>3</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Sync_Type_Sync_on_MFI" PNr="3">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>5</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Time_Interval_Sync_in_PLC" PNr="5" RangeType="dynamic">
+//								<hwk:datatype>FIELD3</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Time_Interval_Sync_on_MPI" PNr="6" RangeType="dynamic">
+//								<hwk:datatype>FIELD3</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>3</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Sync_Type_Sync_in_PLC" PNr="7">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>6</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Correction_Factor" PNr="8">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Time_Of_Day_Interrupts" DSNr="11" DSLen="80">
+//							<hwk:Par Name = "Priority_OB10" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>10</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Active_OB10" PNr="2">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>80</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Execution_OB10" PNr="3">
+//								<hwk:datatype>FIELD4</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>1</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>80</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Start_Date_OB10" PNr="5">
+//								<hwk:datatype>DATE</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>10</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Start_Time_OB10" PNr="7">
+//								<hwk:datatype>TIME</hwk:datatype>
+
+//                                <hwk:byteAddr>5</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>10</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Weekday_OB10" PNr="8">
+//								<hwk:datatype>FIELD4</hwk:datatype>
+
+//                                <hwk:byteAddr>9</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>80</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Delay_Alarms" DSNr="12" DSLen="8">
+//							<hwk:Par Name = "Priority_OB20" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Cyclic_Interrupts" DSNr="13" DSLen="54">
+//							<hwk:Par Name = "Priority_OB30" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>9</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Execution_OB30" PNr="2">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>9</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Phase_Offset_OB30" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>9</hwk:maxInstances>
+
+//                                <hwk:distance>6</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Protection" DSNr="15" DSLen="10">
+//							<hwk:Par Name = "Protection_Level" PNr="1">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Password" PNr="2">
+//								<hwk:datatype Len = "8">BYTEARRAY</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>8</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Multicomputing" DSNr="16" DSLen="2">
+//							<hwk:Par Name = "Multiprocessor_Operation" PNr="1">
+//								<hwk:datatype>FIELD2</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "CPU_Number" PNr="2">
+//								<hwk:datatype>FIELD3</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>2</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Asynchronous_Error_Interrupts" DSNr="18" DSLen="14">
+//							<hwk:Par Name = "Priority_OB81" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>7</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "CPU_Quantity_Structure" DSNr="19" DSLen="20">
+//							<hwk:Par Name = "User_Local_Data_Area" PNr="1">
+//								<hwk:datatype>LONG</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Size_of_process_image_input" PNr="2">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Size_of_process_image_output" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Reserved" PNr="4">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>8</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Messages" PNr="5">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Max_number_of_communication_jobs" PNr="6">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>12</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "FDL_connections" PNr="7">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>14</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "ALARM_S" PNr="8">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>16</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Max_number_of_S7_connections" PNr="9">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>18</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "CPU_Process_Mode" DSNr="20" DSLen="16">
+//							<hwk:Par Name = "Operation" PNr="1">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Permitted_Scan_Cycle_Time_Increase_Due_to_Debug_Functions" PNr="2">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "TIS_Functions_With_Time_Limit_In_Process_Operation" PNr="3">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>6</hwk:maxInstances>
+
+//                                <hwk:distance>1</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Allowed_TIS_Functions_In_Process_Operation" PNr="4">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>6</hwk:maxInstances>
+
+//                                <hwk:distance>1</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Identification" DSNr="21" DSLen="114">
+//							<hwk:Par Name = "AS_Name" PNr="1">
+//								<hwk:datatype Len = "24">BYTEARRAY</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>24</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "CPU_Name" PNr="2">
+//								<hwk:datatype Len = "24">BYTEARRAY</hwk:datatype>
+
+//                                <hwk:byteAddr>24</hwk:byteAddr>
+
+//                                <hwk:bitAddr>24</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Plant_Designation" PNr="3">
+//								<hwk:datatype Len = "32">BYTEARRAY</hwk:datatype>
+
+//                                <hwk:byteAddr>48</hwk:byteAddr>
+
+//                                <hwk:bitAddr>32</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Reserved_DS21" PNr="4">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>80</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "GUID_Project" PNr="5">
+//								<hwk:datatype Len = "16">BYTEARRAY</hwk:datatype>
+
+//                                <hwk:byteAddr>82</hwk:byteAddr>
+
+//                                <hwk:bitAddr>16</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "OD_CPU" PNr="6">
+//								<hwk:datatype>LONG</hwk:datatype>
+
+//                                <hwk:byteAddr>98</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>1</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Assignment_Of_Part_process_image_To_OB" DSNr="25" DSLen="64">
+//							<hwk:Par Name = "Part_process_image_inputs_OB10" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB10" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_inputs_OB20" PNr="3">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>16</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB20" PNr="4">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>17</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_inputs_OB30" PNr="5">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>24</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>9</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB30" PNr="6">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>25</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>9</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_inputs_OB40" PNr="7">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>42</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB40" PNr="8">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>43</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>8</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_inputs_OB50" PNr="9">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>58</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>2</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB50" PNr="10">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>59</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>2</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_inputs_OB60" PNr="11">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>62</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_outputs_OB60" PNr="12">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>63</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Cycle_Synchronous_OBs" DSNr="26" DSLen="12">
+//							<hwk:Par Name = "Priority_OB61" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>3</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "DP_Mastersystem_No_OB61" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>3</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Reserved_OB61" PNr="3">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>3</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Assignment_Of_OB_To_Part_process_image" DSNr="27" DSLen="120">
+//							<hwk:Par Name = "Part_process_image_1_of_inputs_OB" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>30</hwk:maxInstances>
+
+//                                <hwk:distance>4</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_1_of_inputs_DP" PNr="2">
+//								<hwk:datatype>FIELD6</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>30</hwk:maxInstances>
+
+//                                <hwk:distance>32</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_1_of_outputs_OB" PNr="3">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>30</hwk:maxInstances>
+
+//                                <hwk:distance>4</hwk:distance>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Part_process_image_1_of_outputs_DP" PNr="4">
+//								<hwk:datatype>FIELD6</hwk:datatype>
+
+//                                <hwk:byteAddr>3</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>30</hwk:maxInstances>
+
+//                                <hwk:distance>32</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "H_F_CPU" DSNr="41" DSLen="14">
+//							<hwk:Par Name = "Use_In_Safety_Application" PNr="1">
+//								<hwk:datatype>FIELD1</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Redundancy" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Test_scan_cycle_time" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Standard_DE_Discrepancy_Time" PNr="4">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Standard_Alarm_DE_Discrepancy_Time" PNr="5">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Standard_AE_Discrepancy_Time" PNr="6">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>8</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Max_Alarm_Response_Time" PNr="7">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Standard_Reread_Delay_Time" PNr="8">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>12</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "H_Parameters" DSNr="42" DSLen="2">
+//							<hwk:Par Name = "Reaction_to_RAM_PIQ_error" PNr="1">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "H_Interrupts" DSNr="44" DSLen="8">
+//							<hwk:Par Name = "Priority_OB70" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                                <hwk:maxInstances>4</hwk:maxInstances>
+
+//                                <hwk:distance>2</hwk:distance>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                        <hwk:Dataset Name = "Connect_And_Update_In_H_Systems" DSNr="46" DSLen="12">
+//							<hwk:Par Name = "Maximum_Number_of_Attempts" PNr="1">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>0</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Cyclic_Interrupt_OB_with_Special_Handling" PNr="2">
+//								<hwk:datatype>BYTE</hwk:datatype>
+
+//                                <hwk:byteAddr>1</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Waiting_Time_between_Two_Attempts" PNr="3">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>2</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Maximum_scan_cycle_time_extension" PNr="4">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>4</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Maximum_Communication_Delay" PNr="5">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>6</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Maximum_Disabling_Time_for_Priority_Classes" PNr="6">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>8</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                            <hwk:Par Name = "Minimum_IO_Retention_Time" PNr="7">
+//								<hwk:datatype>WORD</hwk:datatype>
+
+//                                <hwk:byteAddr>10</hwk:byteAddr>
+
+//                                <hwk:bitAddr>0</hwk:bitAddr>
+
+//                            </hwk:Par>
+
+//                        </hwk:Dataset>
+
+//                    </hwk:DatasetList>
+
+//                </base:SettingsFeature>
+
+//            </base:Device>
+
+//        </base:StructuralFeature>
+
+//    </base:Project>
+//</prim:Document>
