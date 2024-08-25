@@ -4,6 +4,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using System.Collections.Generic;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace ToolBoxLibUnitTests
 {
@@ -29,11 +30,11 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "DB121.bin");
 			S7DataBlock DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
-			Assert.AreEqual(121, DB.BlockNumber);
-			Assert.AreEqual(21418, DB.Length); //Load memory Size
-			Assert.AreEqual(20824, DB.CodeSize); //Data size, this is the relevant data length
-			Assert.AreEqual(File.ReadAllText(dir + "DB121.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(PLCBlockType.DB, DB.BlockType);
+			ClassicAssert.AreEqual(121, DB.BlockNumber);
+			ClassicAssert.AreEqual(21418, DB.Length); //Load memory Size
+			ClassicAssert.AreEqual(20824, DB.CodeSize); //Data size, this is the relevant data length
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "DB121.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read Data-block With long Array of Structs
@@ -41,11 +42,11 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "DB13.bin");
 			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
-			Assert.AreEqual(13, DB.BlockNumber);
-			Assert.AreEqual(64214, DB.Length); //Load memory Size
-			Assert.AreEqual(64040, DB.CodeSize); //Data size, this is the relevant data length
-			Assert.AreEqual(File.ReadAllText(dir + "DB13.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(PLCBlockType.DB, DB.BlockType);
+			ClassicAssert.AreEqual(13, DB.BlockNumber);
+			ClassicAssert.AreEqual(64214, DB.Length); //Load memory Size
+			ClassicAssert.AreEqual(64040, DB.CodeSize); //Data size, this is the relevant data length
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "DB13.awl").Trim().Replace("\r\n", "\n"), DB.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read Data-block With array and single Static Reals
@@ -53,11 +54,11 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "DB4.bin");
 			DB = (S7DataBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.DB, DB.BlockType);
-			Assert.AreEqual(4, DB.BlockNumber);
-			Assert.AreEqual(8094, DB.Length); //Load memory Size
-			Assert.AreEqual(6000, DB.CodeSize); //Data size, this is the relevant data length
-			Assert.AreEqual(File.ReadAllText(dir + "DB4.awl").Trim().Replace("\r\n", "\n"), DB.Structure.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(PLCBlockType.DB, DB.BlockType);
+			ClassicAssert.AreEqual(4, DB.BlockNumber);
+			ClassicAssert.AreEqual(8094, DB.Length); //Load memory Size
+			ClassicAssert.AreEqual(6000, DB.CodeSize); //Data size, this is the relevant data length
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "DB4.awl").Trim().Replace("\r\n", "\n"), DB.Structure.ToString().Trim().Replace("\r\n", "\n"));
 		}
 
 		[Test]
@@ -71,21 +72,21 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "FC1.bin");
 			S7FunctionBlock FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.FC, FC.BlockType);
-			Assert.AreEqual(1, FC.BlockNumber);
-			Assert.AreEqual(434, FC.Length); //Load memory Size
-			Assert.AreEqual(342, FC.CodeSize); //Code size of pure MC7
-			Assert.AreEqual(6, FC.LocalDataSize); //Actually there are no "Temp" but the local data is needed for the "Call"'s 
-			Assert.AreEqual(4, FC.Networks.Count);
+			ClassicAssert.AreEqual(PLCBlockType.FC, FC.BlockType);
+			ClassicAssert.AreEqual(1, FC.BlockNumber);
+			ClassicAssert.AreEqual(434, FC.Length); //Load memory Size
+			ClassicAssert.AreEqual(342, FC.CodeSize); //Code size of pure MC7
+			ClassicAssert.AreEqual(6, FC.LocalDataSize); //Actually there are no "Temp" but the local data is needed for the "Call"'s 
+			ClassicAssert.AreEqual(4, FC.Networks.Count);
 
 			//Some of the called functions
 			List<string> tmp = new List<string>(FC.CalledBlocks);
-			Assert.AreEqual("FC96", tmp[2]);
-			Assert.AreEqual("FC97", tmp[7]);
-			Assert.AreEqual("FC16", tmp[11]);
-			Assert.AreEqual("FC21", tmp[13]);
+			ClassicAssert.AreEqual("FC96", tmp[2]);
+			ClassicAssert.AreEqual("FC97", tmp[7]);
+			ClassicAssert.AreEqual("FC16", tmp[11]);
+			ClassicAssert.AreEqual("FC21", tmp[13]);
 
-			Assert.AreEqual(File.ReadAllText(dir + "FC1.awl").Trim().Replace("\r\n", "\n"), FC.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "FC1.awl").Trim().Replace("\r\n", "\n"), FC.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read complex Function-code 
@@ -94,21 +95,21 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "FC100.bin");
 			FC = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.FC, FC.BlockType);
-			Assert.AreEqual(100, FC.BlockNumber);
-			Assert.AreEqual(4182, FC.Length); //Load memory Size
-			Assert.AreEqual(3882, FC.CodeSize); //Code size of pure MC7
-			Assert.AreEqual(58, FC.LocalDataSize);
-			Assert.AreEqual(9, FC.Networks.Count);
+			ClassicAssert.AreEqual(PLCBlockType.FC, FC.BlockType);
+			ClassicAssert.AreEqual(100, FC.BlockNumber);
+			ClassicAssert.AreEqual(4182, FC.Length); //Load memory Size
+			ClassicAssert.AreEqual(3882, FC.CodeSize); //Code size of pure MC7
+			ClassicAssert.AreEqual(58, FC.LocalDataSize);
+			ClassicAssert.AreEqual(9, FC.Networks.Count);
 
 			//Some of the called functions
 			tmp = new List<string>(FC.CalledBlocks);
-			Assert.AreEqual("SFC20", tmp[0]);
-			Assert.AreEqual("FC6", tmp[6]);
-			Assert.AreEqual("FC[LW16]", tmp[18]);
-			Assert.AreEqual("SFC20", tmp[22]);
+			ClassicAssert.AreEqual("SFC20", tmp[0]);
+			ClassicAssert.AreEqual("FC6", tmp[6]);
+			ClassicAssert.AreEqual("FC[LW16]", tmp[18]);
+			ClassicAssert.AreEqual("SFC20", tmp[22]);
 
-			Assert.AreEqual(File.ReadAllText(dir + "FC100.awl").Trim().Replace("\r\n", "\n"), FC.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "FC100.awl").Trim().Replace("\r\n", "\n"), FC.ToString().Trim().Replace("\r\n", "\n"));
 		}
 
 		[Test]
@@ -121,33 +122,33 @@ namespace ToolBoxLibUnitTests
 			block = File.ReadAllBytes(dir + "FB101.bin");
 			S7FunctionBlock FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
-			Assert.AreEqual(101, FB.BlockNumber);
-			Assert.AreEqual(128, FB.Length); //Load memory Size
-			Assert.AreEqual(24, FB.CodeSize); //Code size of pure MC7
-			Assert.AreEqual(4, FB.LocalDataSize);
-			Assert.AreEqual(3, FB.Networks.Count);
+			ClassicAssert.AreEqual(PLCBlockType.FB, FB.BlockType);
+			ClassicAssert.AreEqual(101, FB.BlockNumber);
+			ClassicAssert.AreEqual(128, FB.Length); //Load memory Size
+			ClassicAssert.AreEqual(24, FB.CodeSize); //Code size of pure MC7
+			ClassicAssert.AreEqual(4, FB.LocalDataSize);
+			ClassicAssert.AreEqual(3, FB.Networks.Count);
 
 			//Some of the called functions
 			List<string> tmp = new List<string>(FB.CalledBlocks);
-			Assert.AreEqual("FC100", tmp[0]);
+			ClassicAssert.AreEqual("FC100", tmp[0]);
 
-			Assert.AreEqual(File.ReadAllText(dir + "FB101.awl").Trim().Replace("\r\n", "\n"), FB.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "FB101.awl").Trim().Replace("\r\n", "\n"), FB.ToString().Trim().Replace("\r\n", "\n"));
 
 			//_____________________________________________________________________________
 			//Read Function-Block with Instance data
 			block = File.ReadAllBytes(dir + "FB1001.bin");
 			FB = (S7FunctionBlock)DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.MC7Converter.GetAWLBlock(block, MnemonicLanguage.German);
 
-			Assert.AreEqual(PLCBlockType.FB, FB.BlockType);
-			Assert.AreEqual(1001, FB.BlockNumber);
-			Assert.AreEqual(126, FB.Length); //Load memory Size
-			Assert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
-			Assert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
-			Assert.AreEqual(1, FB.Networks.Count);
+			ClassicAssert.AreEqual(PLCBlockType.FB, FB.BlockType);
+			ClassicAssert.AreEqual(1001, FB.BlockNumber);
+			ClassicAssert.AreEqual(126, FB.Length); //Load memory Size
+			ClassicAssert.AreEqual(22, FB.CodeSize); //Code size of pure MC7
+			ClassicAssert.AreEqual(0, FB.LocalDataSize); //No temp data, all data is in STAT
+			ClassicAssert.AreEqual(1, FB.Networks.Count);
 
 			string t = FB.ToString();
-			Assert.AreEqual(File.ReadAllText(dir + "FB1001.awl").Trim().Replace("\r\n", "\n"), FB.ToString().Trim().Replace("\r\n", "\n"));
+			ClassicAssert.AreEqual(File.ReadAllText(dir + "FB1001.awl").Trim().Replace("\r\n", "\n"), FB.ToString().Trim().Replace("\r\n", "\n"));
 		}
 
 
@@ -160,7 +161,7 @@ namespace ToolBoxLibUnitTests
 	        //Fix up different culture dependent Date conversion
 	        //this might not be optimal, but i dont have any better solution at the moment.
 	        string AWL = File.ReadAllText(dir + "FB751.awl").Trim().Replace("\r\n", "\n");
-	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+	        ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 	    }
 
 	    [Test(Description = "This block contains an unconditional call of an IN.Block_FB parameter without Parameters 'UC #IN2'")]
@@ -172,7 +173,7 @@ namespace ToolBoxLibUnitTests
 	        //Fix up different culture dependent Date conversion
 	        //this might not be optimal, but i dont have any better solution at the moment.
 	        string AWL = File.ReadAllText(dir + "FC21.awl").Trim().Replace("\r\n", "\n");
-	        Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+	        ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 	    }
 
 		[Test(Description = "This contains a complex DB")]
@@ -184,7 +185,7 @@ namespace ToolBoxLibUnitTests
 			//Fix up different culture dependent Date conversion
 			//this might not be optimal, but i dont have any better solution at the moment.
 			//string AWL = File.ReadAllText(dir + "FC21.awl").Trim().Replace("\r\n", "\n");
-			//Assert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
+			//ClassicAssert.AreEqual(AWL, DB.ToString().Trim().Replace("\r\n", "\n"));
 		}
 	}
 }

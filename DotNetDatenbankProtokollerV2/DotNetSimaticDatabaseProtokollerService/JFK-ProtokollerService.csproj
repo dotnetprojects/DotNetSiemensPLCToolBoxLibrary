@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net462</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
+	  <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
@@ -20,6 +21,7 @@
     </EmbeddedResource>    
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 </Project>

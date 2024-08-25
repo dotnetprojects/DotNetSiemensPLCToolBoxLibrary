@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace ToolBoxLibUnitTests
 {
@@ -23,7 +24,7 @@ namespace ToolBoxLibUnitTests
             string t =
 @"READ  Area:132, DBnum:10, Start:10, Bytes:300
 READ  Area:132, DBnum:60, Start:0, Bytes:300";
-            Assert.AreEqual(req.Replace("\r\n", "\n"), t.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(req.Replace("\r\n", "\n"), t.Replace("\r\n", "\n"));
 
             //var wrapper2 = new ConnectionWrapper(480);
             //var conn2 = new PLCConnection(new PLCConnectionConfiguration(), wrapper2);
@@ -34,7 +35,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             //var pdus2 = wrapper2.PDUs;
             //string req2 = string.Join(Environment.NewLine, pdus2);
             //string t2 = "READ  Area:132, DBnum:10, Start:10, Bytes:300\r\nREAD  Area:132, DBnum:60, Start:0, Bytes:300";
-            //Assert.AreEqual(req2, t2);
+            //ClassicAssert.AreEqual(req2, t2);
 
             var wrapper3 = new ConnectionWrapper(480);
             var conn3 = new PLCConnection(new PLCConnectionConfiguration(), wrapper3);
@@ -45,7 +46,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus3 = wrapper3.PDUs;
             string req3 = string.Join(Environment.NewLine, pdus3);
             string t3 = "READ  Area:132, DBnum:10, Start:10, Bytes:300\r\nREAD  Area:132, DBnum:60, Start:0, Bytes:140\r\nREAD  Area:132, DBnum:60, Start:140, Bytes:160";
-            Assert.AreEqual(req3.Replace("\r\n", "\n"), t3.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(req3.Replace("\r\n", "\n"), t3.Replace("\r\n", "\n"));
 
             var wrapper4 = new ConnectionWrapper(480);
             var conn4 = new PLCConnection(new PLCConnectionConfiguration(), wrapper4);
@@ -60,7 +61,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus4 = wrapper4.PDUs;
             string req4 = string.Join(Environment.NewLine, pdus4);
             string t4 = "READ  Area:132, DBnum:1, Start:0, Bytes:14\r\nREAD  Area:132, DBnum:1, Start:30, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:50, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:80, Bytes:4";
-            Assert.AreEqual(req4.Replace("\r\n", "\n"), t4.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(req4.Replace("\r\n", "\n"), t4.Replace("\r\n", "\n"));
 
             var wrapper5 = new ConnectionWrapper(240);
             var conn5 = new PLCConnection(new PLCConnectionConfiguration(), wrapper5);
@@ -85,7 +86,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus5 = wrapper5.PDUs;
             string req5 = string.Join(Environment.NewLine, pdus5);
             string t5 = "READ  Area:132, DBnum:1, Start:0, Bytes:14\r\nREAD  Area:132, DBnum:1, Start:30, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:50, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:80, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:90, Bytes:30\r\nREAD  Area:132, DBnum:1, Start:140, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:160, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:180, Bytes:44\r\nREAD  Area:132, DBnum:1, Start:230, Bytes:24\r\nREAD  Area:132, DBnum:1, Start:260, Bytes:4\r\nREAD  Area:132, DBnum:1, Start:270, Bytes:4";
-            Assert.AreEqual(req5.Replace("\r\n", "\n"), t5.Replace("\r\n", "\n"));
+            ClassicAssert.AreEqual(req5.Replace("\r\n", "\n"), t5.Replace("\r\n", "\n"));
 
             //var tag=new PLCNckTag() { TagDataType = TagDataType.Float, NckArea = 0xa, NckUnit = 0x8,NckColumn = 0x23, NckLine = 0x1,NckModule = 0x1a,NckLinecount = 0x1};
         }
@@ -103,7 +104,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:2, Start:0, Bytes:3";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
         }
 
         [Test]
@@ -134,7 +135,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:3, Bytes:11";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
         }
 
         [Test]
@@ -151,7 +152,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:5, Bytes:6";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
         }
 
         [Test]
@@ -169,7 +170,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:5, Bytes:11";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
         }
 
         [Test]
@@ -187,7 +188,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:5, Bytes:11";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
         }
 
         class ConnectionWrapperResult : ConnectionWrapper
@@ -243,7 +244,7 @@ READ  Area:132, DBnum:60, Start:0, Bytes:300";
             var pdus = wrapper.PDUs;
             string req = string.Join(Environment.NewLine, pdus);
             string t = "READ  Area:132, DBnum:781, Start:0, Bytes:6";
-            Assert.AreEqual(req, t);
+            ClassicAssert.AreEqual(req, t);
 
         }
     }
