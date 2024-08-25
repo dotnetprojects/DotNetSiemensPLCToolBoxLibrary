@@ -14,15 +14,14 @@ jobs:
     - name: Fetch history
       run: git fetch --prune --unshallow
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: |
+            5.0.x
+            6.0.x
+            8.0.x
     - name: Restore dependencies
-      run: |
-        dotnet restore src/S7CommPlusDriver
-        dotnet restore src/DriverTest
-        dotnet restore src/S7CommPlusGUIBrowser
-
+      run: dotnet restore DotNetSiemensPLCToolBoxLibrary.sln
     - name: Update project version
       uses: roryprimrose/set-vs-sdk-project-version@v1
       with:
@@ -30,18 +29,7 @@ jobs:
         assemblyVersion: ${{ github.event.release.tag_name }}
         fileVersion: ${{ github.event.release.tag_name }}
         informationalVersion: ${{ github.event.release.tag_name }}-${{ github.sha }}
-    
     - name: Build
-      run: |
-        dotnet build src/S7CommPlusDriver
-        dotnet build src/DriverTest
-        dotnet build src/S7CommPlusGUIBrowser
-    
-    - name: Publish NuGet
-      # You may pin to the exact commit or the version.
-      # uses: brandedoutcast/publish-nuget@c12b8546b67672ee38ac87bea491ac94a587f7cc
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: MonacoRoslynCompletionProvider/MonacoRoslynCompletionProvider/MonacoRoslynCompletionProvider.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}  
+      run: dotnet build DotNetSiemensPLCToolBoxLibrary.sln
+#   - name: Publish Nuget
+#     run: dotnet nuget push DotNetSiemensPLCToolBoxLibrary.sln --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
