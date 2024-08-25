@@ -31,5 +31,8 @@ jobs:
         informationalVersion: ${{ github.event.release.tag_name }}-${{ github.sha }}
     - name: Build
       run: dotnet build DotNetSiemensPLCToolBoxLibrary.sln
+    - uses: actions/upload-artifact@v4
+      with:
+        path: ./**/DotNetProjects.DotNetSiemensPLCToolBoxLibrary*.nupkg
 #   - name: Publish Nuget
 #     run: dotnet nuget push DotNetSiemensPLCToolBoxLibrary.sln --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
