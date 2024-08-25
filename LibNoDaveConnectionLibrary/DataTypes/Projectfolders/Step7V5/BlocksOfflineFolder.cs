@@ -668,6 +668,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
                         FBStaticAccessConverter.ReplaceStaticAccess(retVal, prgFld, myConvOpt);                        
 
+                        for (int i = 0; i < retVal.AWLCode.Count - 1; i++)
+                        {
+                            S7FunctionBlockRow akRw = (S7FunctionBlockRow)retVal.AWLCode[i];
+
+                            if (akRw.CombineDBAccess)
+                            {
+                                S7FunctionBlockRow nRw = (S7FunctionBlockRow)retVal.AWLCode[i + 1];
+                                if (!nRw.Parameter.Contains("["))
+                                {
+                                    nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
+                                    nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
+                                    nRw.Label = akRw.Label ?? nRw.Label;
+                                    retVal.AWLCode.RemoveAt(i + 1);
+                                    retVal.AWLCode[i] = nRw;
+                                }
+                            }
+                        }
+                        
                         #region UseComments from Block
                         if (myConvOpt.UseComments)
                         {
@@ -800,24 +818,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
                             retVal.AWLCode = newAwlCode;
                         }
                         #endregion
-
-                        for (int i = 0; i < retVal.AWLCode.Count - 1; i++)
-                        {
-                            S7FunctionBlockRow akRw = (S7FunctionBlockRow)retVal.AWLCode[i];
-
-                            if (akRw.CombineDBAccess)
-                            {
-                                S7FunctionBlockRow nRw = (S7FunctionBlockRow)retVal.AWLCode[i + 1];
-                                if (!nRw.Parameter.Contains("["))
-                                {
-                                    nRw.Parameter = akRw.Parameter + "." + nRw.Parameter;
-                                    nRw.MC7 = Helper.CombineByteArray(akRw.MC7, nRw.MC7);
-                                    nRw.Label = akRw.Label ?? nRw.Label;
-                                    retVal.AWLCode.RemoveAt(i + 1);
-                                    retVal.AWLCode[i] = nRw;
-                                }
-                            }
-                        }
                     }
 
                     retVal.Networks = NetWork.GetNetworksList(retVal);
