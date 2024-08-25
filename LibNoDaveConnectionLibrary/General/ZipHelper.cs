@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+
 #if SHARPZIPLIB
 using ICSharpCode.SharpZipLib.Zip;
 #endif
@@ -17,12 +18,30 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         public string GetFirstZipEntryWithEnding(string ending)
         {
 #if SHARPZIPLIB
-            
 
             string name = null;
             foreach (ZipEntry zipEntry in this._zipFile)
             {
                 if (zipEntry.Name.ToLower().EndsWith(ending))
+                {
+                    name = zipEntry.Name;
+                    break;
+                }
+            }
+            return name;
+#else
+            return null;
+#endif
+        }
+
+        public string GetFirstZipEntryWithMatch(string pattern)
+        {
+#if SHARPZIPLIB
+
+            string name = null;
+            foreach (ZipEntry zipEntry in this._zipFile)
+            {
+                if (Regex.IsMatch(zipEntry.Name.ToLower(), pattern))
                 {
                     name = zipEntry.Name;
                     break;

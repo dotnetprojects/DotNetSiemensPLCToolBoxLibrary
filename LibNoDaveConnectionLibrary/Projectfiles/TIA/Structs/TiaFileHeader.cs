@@ -1,26 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
+using System;
+using System.IO;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
 {
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     public struct TiaFileHeader
     {
         public TiaFileType FileType;
         public TiaFileProtocol FileProtocol;
-        public int Id;
-        public Guid Key;
-        public int VersionMajor;
-        public int VersionMinor;
-        public int VersionBuild;
-        public int VersionRevision;
-        public int Res1;
+        [Obsolete]
+        public int StoreId;
+        public Guid FileId;
+        public Version Version;
+        public Version FileFormat;
         public byte Node;
-        public byte Res2;
+        public byte[] Hash;
+        public byte EndByte;
+
+        public static TiaFileHeader Deserialize(BinaryReader reader)
+        {
+
+            return new TiaFileHeader()
+            {
+                FileType = (TiaFileType)reader.ReadInt16(),
+                FileProtocol = (TiaFileProtocol)reader.ReadInt16(),
+                StoreId = reader.ReadInt32(),
+                FileId = reader.ReadGuid(),
+                Version = reader.ReadVersion(),
+                FileFormat = reader.ReadVersion(),
+                Node = reader.ReadByte(),
+                Hash = reader.ReadBytes(40),
+                EndByte = reader.ReadByte()
+            };
+        }
     }
 }

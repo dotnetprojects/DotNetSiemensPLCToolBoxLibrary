@@ -4,6 +4,7 @@
     {
         Step5,
         Step7,
+        TiaBinary,
         Tia13,
         Tia14SP1,
         Tia15,

@@ -320,7 +320,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 Stream symTabStream = _ziphelper.GetReadStream(_projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
 
                 SymbolTable symtab=new SymbolTable();
-                symtab.LoadSymboltable(symTabStream);               
+                symtab.LoadSymboltable(symTabStream);
                 symTabStream.Close();
                 symtab.Parent = ProjectStructure;
                 symtab.Project = this;

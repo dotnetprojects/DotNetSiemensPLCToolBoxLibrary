@@ -150,9 +150,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
         private object tiaExport;
         private Type tiaExportType;
-        
-
-        internal Dictionary<TiaObjectId, TiaFileObject> TiaObjects = new Dictionary<TiaObjectId, TiaFileObject>();
 
         public override ProjectType ProjectType
         {

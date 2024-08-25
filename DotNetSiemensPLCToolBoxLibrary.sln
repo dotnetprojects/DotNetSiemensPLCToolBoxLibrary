@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
@@ -91,6 +90,18 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV18", "DotNetSiemensPLCToolBoxLibrary.TIAV18\DotNetSiemensPLCToolBoxLibrary.TIAV18.csproj", "{205D9A9A-F31F-401B-AADA-AC52188B7352}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV19", "DotNetSiemensPLCToolBoxLibrary.TIAV19\DotNetSiemensPLCToolBoxLibrary.TIAV19.csproj", "{ADC06ADE-EB03-4422-A7B4-4291AD994D91}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{66A4ADD6-8EE2-49BD-B939-C5E69CAA3A9E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\FUNDING.yml = .github\FUNDING.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{5FC399A5-1C21-480A-987F-16388079F245}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\build-pull.yml = .github\workflows\build-pull.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -777,6 +788,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{5FC399A5-1C21-480A-987F-16388079F245} = {66A4ADD6-8EE2-49BD-B939-C5E69CAA3A9E}
 		{D5525AD8-E501-45A8-BEA5-F9BDB468B427} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{1182E730-FA4F-4712-8B8B-6432848C3048} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{9EB7BDB5-FDEE-466A-B2FF-63F087B160CE} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
+﻿using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
 {

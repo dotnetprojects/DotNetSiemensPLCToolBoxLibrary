@@ -1,12 +1,11 @@
 ﻿using DotNetSiemensPLCToolBoxLibrary.Communication;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
-using DotNetSiemensPLCToolBoxLibrary.General;
 using NUnit.Framework;
 
 namespace ToolBoxLibUnitTests
 {
-	[TestFixture]
-	public class TestPLCTag
+    [TestFixture]
+    public class TestPLCTag
     {
         public enum Test1
         {
@@ -19,7 +18,7 @@ namespace ToolBoxLibUnitTests
         }
 
         [Test]
-		public void TestEnumTag()
+        public void TestEnumTag()
         {
             var t = new PLCTag<Test1>();
             t.GenericValue = Test1.a;

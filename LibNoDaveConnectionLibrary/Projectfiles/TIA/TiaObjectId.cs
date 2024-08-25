@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
 {
-    public class TiaObjectId:IComparable<TiaObjectId>, IComparable, IEquatable<TiaObjectId>
+    public class TiaObjectId : IComparable<TiaObjectId>, IComparable, IEquatable<TiaObjectId>
     {
         public TiaObjectId(int typeId, long instanceId)
         {
@@ -17,12 +14,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
         public TiaObjectId(TiaFixedRootObjectInstanceIds tiaFixedRootObjectInstanceIds)
         {
             TypeId = 0;
-            InstanceId = (long) tiaFixedRootObjectInstanceIds;
+            InstanceId = (long)tiaFixedRootObjectInstanceIds;
         }
 
         public TiaObjectId(string tiaObjectId)
         {
-            var s = tiaObjectId.Split(new[] {'-'});
+            var s = tiaObjectId.Split(new[] { '-' });
             TypeId = int.Parse(s[0]);
             InstanceId = long.Parse(s[1]);
         }
@@ -33,7 +30,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
 
         public int CompareTo(object obj)
         {
-            return this.CompareTo((TiaObjectId) obj);
+            return this.CompareTo((TiaObjectId)obj);
         }
         public int CompareTo(TiaObjectId other)
         {
@@ -65,7 +62,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
         {
             return ((obj1.TypeId != obj2.TypeId) || (obj1.InstanceId != obj2.InstanceId));
         }
-        
+
         public override string ToString()
         {
             return (this.TypeId + "-" + this.InstanceId);
@@ -77,7 +74,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA
             {
                 var result = 0;
                 result = (result * 397) ^ InstanceId.GetHashCode();
-                result = (result * 397) ^ TypeId.GetHashCode();                
+                result = (result * 397) ^ TypeId.GetHashCode();
                 return result;
             }
         }
