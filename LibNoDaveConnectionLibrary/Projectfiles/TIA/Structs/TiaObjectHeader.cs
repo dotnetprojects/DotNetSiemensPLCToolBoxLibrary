@@ -2,6 +2,7 @@
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Enums;
 using System;
 using System.IO;
+using System.Text;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
 {    
@@ -19,9 +20,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Structs
         public Guid Guid;
         public byte[] Data;
 
+        public string DataAsUtf8 => Encoding.UTF8.GetString(Data);
+
         public override string ToString()
         {
-            return TypeId.ToString("x") + "-" + InstanceId.ToString("x");
+            return TypeId.ToString("x") + "-" + InstanceId.ToString("x") + "  (" + TypeId.ToString() + "-" + InstanceId.ToString() + ")";
         }
 
         public TiaObjectId GetTiaObjectId()
