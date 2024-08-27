@@ -770,9 +770,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                             }
                             else
                             {
-                                par = "\"" + sym.Symbol + "\"." + paras[1];
-                                if (hasBit)
-                                    par += "." + paras[2];
+                                if (sym != null)
+                                {
+                                    par = "\"" + sym.Symbol + "\"." + paras[1];
+                                    
+                                    if (hasBit)
+                                        par += "." + paras[2];
+                                }
                             }
                         }
                         else
