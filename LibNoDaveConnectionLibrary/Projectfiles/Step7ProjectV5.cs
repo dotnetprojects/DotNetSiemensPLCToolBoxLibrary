@@ -1643,6 +1643,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     }
             }
 
+            var dbPath = tmpId2.ToString();
             //Look fro Symlist Name
             {
                 var dbfTbl = DBF.ParseDBF.ReadDBF(ProjectFolder + "YDBs" + _DirSeperator + "SYMLISTS.DBF", _ziphelper, _DirSeperator);
@@ -1653,6 +1654,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if ((int)row["_ID"] == tmpId2)
                         {
                             retVal.Name = (string)row["_UName"];
+                            dbPath = (string)row["_DbPath"];
                             if ((bool)row["DELETED_FLAG"]) retVal.Name = "$$_" + retVal.Name;
                             break;
                         }
@@ -1660,13 +1662,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 }
             }
 
-            if (string.IsNullOrEmpty(retVal.Name) && !File.Exists(ProjectFolder + "YDBs" + _DirSeperator + tmpId2.ToString() + _DirSeperator + "SYMLIST.DBF"))
+            if (string.IsNullOrEmpty(retVal.Name) && !File.Exists(ProjectFolder + "YDBs" + _DirSeperator + dbPath + _DirSeperator + "SYMLIST.DBF"))
                 return null;
 
             retVal.showDeleted = showDeleted;
             if (tmpId2 != 0)
-                retVal.Folder = ProjectFolder + "YDBs" + _DirSeperator + tmpId2.ToString() + _DirSeperator;
-            
+                retVal.Folder = ProjectFolder + "YDBs" + _DirSeperator + dbPath + _DirSeperator;
+
             return retVal;
         }
 
