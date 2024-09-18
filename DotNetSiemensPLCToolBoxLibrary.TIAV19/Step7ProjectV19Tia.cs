@@ -26,6 +26,7 @@ using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 using PLC;
 using NLog;
+using Siemens.Engineering.HmiUnified.HmiTags;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 {
@@ -402,16 +403,24 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                     PrintMessages(msg, tab + "  ");
             }
 
-            public void ExportTextList(string path)
+            public List<string> ExportTextList(string path)
             {
+                List<string> strings = new List<string>();
                 Siemens.Engineering.Project prj;
                 var parent = plcSoftware.Parent.Parent.Parent.Parent;
                 if (parent is Siemens.Engineering.HW.DeviceUserGroup)
                     prj = (Siemens.Engineering.Project)parent.Parent;
                 else
                     prj = (Siemens.Engineering.Project)parent;
-
-                prj.ExportProjectTexts(new FileInfo(@path), new CultureInfo("en-US"), new CultureInfo("de-DE"));
+                LanguageAssociation languages = ((Siemens.Engineering.LanguageSettings)((Siemens.Engineering.IEngineeringInstance)prj.LanguageSettings.Languages).Parent).ActiveLanguages;
+                for (int i = 0; i <= languages.Count()-1; i++)
+                {
+                    var culture = languages[i].Culture;
+                    string newPath = path.Replace(".xlsx", "_" + culture.Name + ".xlsx");
+                    prj.ExportProjectTexts(new FileInfo(@newPath), new CultureInfo("en-US"), culture);
+                    strings.Add(newPath);
+                }
+                return strings;
             }
             public void ExportAlarmText(string path)
             {
