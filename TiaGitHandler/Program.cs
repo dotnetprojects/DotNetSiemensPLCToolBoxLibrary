@@ -14,6 +14,9 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
+using ICSharpCode.SharpZipLib.Core;
+using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using TiaGitHandler.Properties;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -211,6 +214,26 @@ namespace TiaGitHandler
             ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
             prj.ExportTextlists(prj.ProjectStructure, exportPath);
 
+            var xlsxFiles = Directory.GetFiles(exportPath, "*.xlsx", SearchOption.AllDirectories);
+            foreach (var xlsxFile in xlsxFiles.Where(x => x.Contains("plcalarmtextlistgroup")))
+            {
+                var fileInfo = new FileInfo(xlsxFile);
+                using (var package = new ExcelPackage(fileInfo))
+                {
+                    var worksheet1 = package.Workbook.Worksheets[1];
+                    var textlistType = worksheet1.Cells["B2"].Text; // textlist type - decimal, binary, bit
+
+                    string targetFile = Path.Combine(
+                        Path.GetDirectoryName(xlsxFile),
+                        $"{Path.GetFileNameWithoutExtension(xlsxFile)}_{textlistType}.csv"
+                    );
+
+                    ConvertPlcAlarmTextListXlsxToCsv(xlsxFile, targetFile, textlistType);
+                }
+
+                File.Delete(xlsxFile);
+            }
+            
             Console.WriteLine();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -219,6 +242,43 @@ namespace TiaGitHandler
             Console.WriteLine(skippedBlocksList.Count() + " blocks were skipped");
             if (!hasArgs)
                 Console.ReadKey();
+        }
+
+        public static void ConvertPlcAlarmTextListXlsxToCsv(string sourceFile, string targetFile, string textlistType)
+        {
+            var fileInfo = new FileInfo(sourceFile);
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets[2];
+
+                var maxColumnNumber = worksheet.Dimension.End.Column;
+                var totalRowCount = worksheet.Dimension.End.Row;
+
+                using (var writer = new StreamWriter(targetFile, false, Encoding.UTF8))
+                {
+                    for (int row = 1; row <= totalRowCount; row++)
+                    {
+                        var currentRow = new List<string>(maxColumnNumber);
+
+                        for (int col = 1; col <= maxColumnNumber; col++)
+                        {
+                            var cellValue = worksheet.Cells[row, col].Text;
+
+                            // double quotation marks (") -> ("")
+                            if (cellValue.Contains("\""))
+                                cellValue = cellValue.Replace("\"", "\"\"");
+
+                            // Add quotation marks if cell contains commas or quotation marks
+                            if (cellValue.Contains(",") || cellValue.Contains("\""))
+                                cellValue = $"\"{cellValue}\"";
+
+                            currentRow.Add(cellValue);
+                        }
+
+                        writer.WriteLine(string.Join(";", currentRow));
+                    }
+                }
+            }
         }
 
         private class EncodingStringWriter : StringWriter
@@ -340,6 +400,7 @@ namespace TiaGitHandler
                             ns.AddNamespace("smns2", "http://www.siemens.com/automation/Openness/SW/Interface/v3");
                             ns.AddNamespace("smns3", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StatementList/v3");
                             ns.AddNamespace("smns4", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v2");
+                            ns.AddNamespace("smns5", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v4");
 
                             try
                             {
@@ -470,6 +531,18 @@ namespace TiaGitHandler
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//smns4:DateAttribute[@Name='ParameterModifiedTS']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns5:DateAttribute[@Name='ParameterModifiedTS']", ns);
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
                                         node.ParentNode.RemoveChild(node);
