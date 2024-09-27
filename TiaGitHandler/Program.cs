@@ -254,7 +254,7 @@ namespace TiaGitHandler
                 var maxColumnNumber = worksheet.Dimension.End.Column;
                 var totalRowCount = worksheet.Dimension.End.Row;
 
-                using (var writer = new StreamWriter(targetFile, false, Encoding.UTF8))
+                using (var writer = new StreamWriter(targetFile, false, new UTF8Encoding(false)))
                 {
                     for (int row = 1; row <= totalRowCount; row++)
                     {
@@ -401,6 +401,7 @@ namespace TiaGitHandler
                             ns.AddNamespace("smns3", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StatementList/v3");
                             ns.AddNamespace("smns4", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v2");
                             ns.AddNamespace("smns5", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v4");
+                            ns.AddNamespace("smns6", "http://www.siemens.com/automation/Openness/SW/NetworkSource/StatementList/v5");
 
                             try
                             {
@@ -543,6 +544,18 @@ namespace TiaGitHandler
                                 try
                                 {
                                     var nodes = xmlDoc.SelectNodes("//smns5:DateAttribute[@Name='ParameterModifiedTS']", ns);
+                                    foreach (var node in nodes.Cast<XmlNode>())
+                                    {
+                                        node.ParentNode.RemoveChild(node);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+                                try
+                                {
+                                    var nodes = xmlDoc.SelectNodes("//smns6:DateAttribute[@Name='ParameterModifiedTS']", ns);
                                     foreach (var node in nodes.Cast<XmlNode>())
                                     {
                                         node.ParentNode.RemoveChild(node);
