@@ -1252,7 +1252,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 }
                 catch (Siemens.Engineering.EngineeringTargetInvocationException ex)
                 {
-                    throw;
+                    throw new Exception("Wrong Credentials.");
                 }
                 catch (Exception ex)
                 {
