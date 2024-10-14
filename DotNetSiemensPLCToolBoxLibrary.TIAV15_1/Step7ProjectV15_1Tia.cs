@@ -1250,6 +1250,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                 {
                     throw;
                 }
+                catch (Siemens.Engineering.EngineeringTargetInvocationException ex)
+                {
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (i == 9)

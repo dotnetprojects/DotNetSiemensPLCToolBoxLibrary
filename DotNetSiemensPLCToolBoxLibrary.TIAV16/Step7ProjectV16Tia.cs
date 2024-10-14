@@ -1265,6 +1265,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
                 {
                     throw;
                 }
+                catch (Siemens.Engineering.EngineeringTargetInvocationException ex)
+                {
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (ex.Message.Contains("Ungültige Anmeldedaten"))
