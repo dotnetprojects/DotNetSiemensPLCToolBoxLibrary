@@ -35,6 +35,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
     /// <summary>
     ///Load data from TIA project instance using the Siemens.Engineering.dll and create a hierarchical structure of "folders" to store and access this data safely
     /// </summary>
+    [Serializable]
     public partial class Step7ProjectV19
     {
         private Siemens.Engineering.TiaPortal tiaPortal;
@@ -43,7 +44,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 
         public virtual void Dispose()
         {
-            tiaPortal.Dispose();
+            var processes = Siemens.Engineering.TiaPortal.GetProcesses();
+            foreach (var process in processes)
+            {
+                process.Dispose();
+            }
+            tiapProject = null;
+            tiaPortal = null;
         }
 
         public class TIAOpennessProjectFolder : ProjectFolder, ITIAOpennessProjectFolder
@@ -1261,13 +1268,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                 {
                     if (tiaPortal != null)
                     {
-                        tiaPortal.Dispose();
-                        tiaPortal = null;
+                        this.Dispose();
                     }
 
-                    tiaPortal = new Siemens.Engineering.TiaPortal(
-                        Siemens.Engineering.TiaPortalMode.WithoutUserInterface
-                    );
+                    tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
                     if (credentials != null)
                     {
                         tiapProject = tiaPortal.Projects.Open(

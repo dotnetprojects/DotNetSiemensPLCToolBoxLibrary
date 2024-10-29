@@ -37,7 +37,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
         public virtual void Dispose()
         {
-            tiaPortal.Dispose();
+            var processes = TiaPortal.GetProcesses();
+            foreach (var process in processes)
+            {
+                process.Dispose();
+            }
+            tiapProject = null;
+            tiaPortal = null;
         }
 
         public class TIAOpennessProjectFolder : ProjectFolder, ITIAOpennessProjectFolder
@@ -1223,12 +1229,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                     if (tiaPortal != null)
                     {
                         tiaPortal.Dispose();
-                        tiaPortal = null;
                     }
 
-                    tiaPortal = new Siemens.Engineering.TiaPortal(
-                        Siemens.Engineering.TiaPortalMode.WithoutUserInterface
-                    );
+                    tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
                     if (credentials != null)
                     {
                         tiapProject = tiaPortal.Projects.Open(

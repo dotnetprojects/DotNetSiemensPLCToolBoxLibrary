@@ -3,42 +3,44 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.General;
+using NLog;
+using PLC;
 using Siemens.Engineering;
+using Siemens.Engineering.HW;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.SW;
-using Siemens.Engineering.HW;
 using Siemens.Engineering.SW.Blocks;
-using Siemens.Engineering.SW.Types;
 using Siemens.Engineering.SW.Tags;
-using DotNetSiemensPLCToolBoxLibrary.General;
-using System.Text.RegularExpressions;
-using PLC;
-using NLog;
+using Siemens.Engineering.SW.Types;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 {
-    public interface ITiaProjectBlockInfo : IProjectBlockInfo
-    {
-    }
+    public interface ITiaProjectBlockInfo : IProjectBlockInfo { }
 
     public partial class Step7ProjectV15
     {
-
         private Siemens.Engineering.TiaPortal tiaPortal;
 
         private Siemens.Engineering.Project tiapProject;
 
         public virtual void Dispose()
         {
-            tiaPortal.Dispose();
+            var processes = TiaPortal.GetProcesses();
+            foreach (var process in processes)
+            {
+                process.Dispose();
+            }
+            tiapProject = null;
+            tiaPortal = null;
         }
-
 
         public class TIAOpennessProjectFolder : ProjectFolder
         {
@@ -62,10 +64,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             {
                 this.plcBlock = plcBlock;
             }
+
             PlcBlock plcBlock;
 
             internal PLCLanguage SetBlockLanguage;
-            public override PLCLanguage BlockLanguage { get { return SetBlockLanguage; } }
+            public override PLCLanguage BlockLanguage
+            {
+                get { return SetBlockLanguage; }
+            }
 
             public int BlockNumber { get; set; }
 
@@ -73,7 +79,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             {
                 get
                 {
-                    string retVal = BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString();
+                    string retVal =
+                        BlockType.ToString().Replace("S5_", "") + BlockNumber.ToString();
                     return retVal;
                 }
             }
@@ -100,22 +107,46 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 var ext = "xml";
                 if (exportFormat != ExportFormat.Xml)
                 {
-                    if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.SCL)
+                    if (
+                        this.plcBlock.ProgrammingLanguage
+                        == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.SCL
+                    )
                     {
                         ext = "scl";
                     }
-                    else if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.STL || this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_STL)
+                    else if (
+                        this.plcBlock.ProgrammingLanguage
+                            == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.STL
+                        || this.plcBlock.ProgrammingLanguage
+                            == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_STL
+                    )
                     {
                         ext = "awl";
                     }
-                    else if (this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.DB || this.plcBlock.ProgrammingLanguage == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_DB)
+                    else if (
+                        this.plcBlock.ProgrammingLanguage
+                            == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.DB
+                        || this.plcBlock.ProgrammingLanguage
+                            == Siemens.Engineering.SW.Blocks.ProgrammingLanguage.F_DB
+                    )
                     {
                         ext = "db";
                     }
                 }
 
                 var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                var file = Path.Combine(
+                    tmp,
+                    "tmp_dnspt_"
+                        + Guid.NewGuid()
+                            .ToString()
+                            .Replace("{", "")
+                            .Replace("}", "")
+                            .Replace("-", "")
+                            .Replace(" ", "")
+                        + "."
+                        + ext
+                );
                 if (ext == "xml")
                 {
                     plcBlock.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
@@ -127,13 +158,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     {
                         fld = fld.Parent;
                     }
-                     ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcBlock }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
+                    (
+                        (TIAOpennessControllerFolder)fld
+                    ).plcSoftware.ExternalSourceGroup.GenerateSource(
+                        new[] { this.plcBlock },
+                        new FileInfo(file),
+                        Siemens.Engineering.SW.ExternalSources.GenerateOptions.None
+                    );
                 }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
 
                 return text;
             }
+
             private PLCBlockType? _plcBlockType;
 
             public override PLCBlockType BlockType
@@ -166,6 +204,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             {
                 this.plcType = plcType;
             }
+
             private PlcType plcType;
 
             public override string ToString()
@@ -175,19 +214,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             public override PLCBlockType BlockType
             {
-                get
-                {
-                    return PLCBlockType.UDT;
-                }
+                get { return PLCBlockType.UDT; }
                 set { }
             }
 
             public override PLCLanguage BlockLanguage
             {
-                get
-                {
-                    return PLCLanguage.DB;
-                }
+                get { return PLCLanguage.DB; }
             }
 
             public override string Export(ExportFormat exportFormat)
@@ -199,7 +232,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 }
 
                 var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                var file = Path.Combine(
+                    tmp,
+                    "tmp_dnspt_"
+                        + Guid.NewGuid()
+                            .ToString()
+                            .Replace("{", "")
+                            .Replace("}", "")
+                            .Replace("-", "")
+                            .Replace(" ", "")
+                        + "."
+                        + ext
+                );
                 if (ext == "xml")
                 {
                     plcType.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
@@ -211,7 +255,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     {
                         fld = fld.Parent;
                     }
-                     ((TIAOpennessControllerFolder)fld).plcSoftware.ExternalSourceGroup.GenerateSource(new[] { this.plcType }, new FileInfo(file), Siemens.Engineering.SW.ExternalSources.GenerateOptions.None);
+                    (
+                        (TIAOpennessControllerFolder)fld
+                    ).plcSoftware.ExternalSourceGroup.GenerateSource(
+                        new[] { this.plcType },
+                        new FileInfo(file),
+                        Siemens.Engineering.SW.ExternalSources.GenerateOptions.None
+                    );
                 }
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -234,7 +284,18 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             {
                 var ext = "xml";
                 var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + "." + ext);
+                var file = Path.Combine(
+                    tmp,
+                    "tmp_dnspt_"
+                        + Guid.NewGuid()
+                            .ToString()
+                            .Replace("{", "")
+                            .Replace("}", "")
+                            .Replace("-", "")
+                            .Replace(" ", "")
+                        + "."
+                        + ext
+                );
                 if (ext == "xml")
                 {
                     PlcTagTable.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
@@ -260,8 +321,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 Name = source.Name;
                 Address = source.LogicalAddress;
                 DataTypeName = source.DataTypeName;
-                Comments = source.Comment.Items
-                    .Select(c => new TIAOpennessComment() { Culture = c.Language.Culture, Text = c.Text }).ToList();
+                Comments = source
+                    .Comment.Items.Select(c => new TIAOpennessComment()
+                    {
+                        Culture = c.Language.Culture,
+                        Text = c.Text
+                    })
+                    .ToList();
                 IsExternalAccessible = source.ExternalAccessible;
                 IsExternalVisible = source.ExternalVisible;
             }
@@ -303,8 +369,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             private string ExportToString()
             {
                 var tmp = Path.GetTempPath();
-                var file = Path.Combine(tmp, "tmp_dnspt_" + Guid.NewGuid().ToString().Replace("{", "").Replace("}", "").Replace("-", "").Replace(" ", "") + ".tmp");
-                controllerConstant.Export(new FileInfo(file), Siemens.Engineering.ExportOptions.None);
+                var file = Path.Combine(
+                    tmp,
+                    "tmp_dnspt_"
+                        + Guid.NewGuid()
+                            .ToString()
+                            .Replace("{", "")
+                            .Replace("}", "")
+                            .Replace("-", "")
+                            .Replace(" ", "")
+                        + ".tmp"
+                );
+                controllerConstant.Export(
+                    new FileInfo(file),
+                    Siemens.Engineering.ExportOptions.None
+                );
 
                 var text = File.ReadAllText(file);
                 File.Delete(file);
@@ -342,6 +421,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 return block;
             }
+
             private Block GetBlockRecursive(TIAOpennessProgramFolder folder, string name)
             {
                 var block = folder.GetBlock(name);
@@ -357,6 +437,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 return block;
             }
+
             private Block GetBlockRecursive(TIAOpennessPlcDatatypeFolder folder, string name)
             {
                 var block = folder.GetBlock(name);
@@ -376,7 +457,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             /// <summary>
             /// Get PLC data from Tia project instance and store in plc object then return object to export
             /// </summary>
-            /// <param name="plc">plc object.</param>           
+            /// <param name="plc">plc object.</param>
             public Plc GetPlcData()
             {
                 Plc plc = new Plc();
@@ -409,35 +490,72 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                             {
                                 PlcSubnet plcSubnet = new PlcSubnet();
                                 plcSubnet.PlcNodes = new List<PlcNode>();
-                                plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
+                                plcSubnet.Interface =
+                                    item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
                                 object nodeAddress = null;
 
                                 foreach (Node node in nwService.Nodes)
                                 {
-                                    IEnumerable<EngineeringAttributeInfo> nodeAttributes = ((IEngineeringObject)node).GetAttributeInfos();
+                                    IEnumerable<EngineeringAttributeInfo> nodeAttributes = (
+                                        (IEngineeringObject)node
+                                    ).GetAttributeInfos();
 
-                                    if (nodeAttributes.Any(nodeAttribute => nodeAttribute.Name == "Address"))
+                                    if (
+                                        nodeAttributes.Any(nodeAttribute =>
+                                            nodeAttribute.Name == "Address"
+                                        )
+                                    )
                                     {
-                                        nodeAddress = ((IEngineeringObject)node).GetAttribute("Address");
+                                        nodeAddress = ((IEngineeringObject)node).GetAttribute(
+                                            "Address"
+                                        );
 
-                                        if (nodeAddress.ToString() != "Not Valid" && node.ConnectedSubnet != null)
+                                        if (
+                                            nodeAddress.ToString() != "Not Valid"
+                                            && node.ConnectedSubnet != null
+                                        )
                                         {
-                                            plcSubnet.PlcNodes.Add(new PlcNode(node.NodeId, node.Name, node.ConnectedSubnet.Name, node.NodeType.ToString(), nodeAddress.ToString()));
+                                            plcSubnet.PlcNodes.Add(
+                                                new PlcNode(
+                                                    node.NodeId,
+                                                    node.Name,
+                                                    node.ConnectedSubnet.Name,
+                                                    node.NodeType.ToString(),
+                                                    nodeAddress.ToString()
+                                                )
+                                            );
 
                                             //More then 1 Port
                                             if (item.Items.Count > 1)
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                                logger.Info(
+                                                    "Communication Device: "
+                                                        + item.Name
+                                                        + " - "
+                                                        + plcSubnet.Interface
+                                                );
+                                                PlcNode.PrintNodeData(
+                                                    plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]
+                                                );
                                             }
-                                            else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
+                                            else if (
+                                                plc.Address == null
+                                                && plcSubnet.Interface == "Ethernet"
+                                            )
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
-                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                                logger.Info(
+                                                    "Communication Device: "
+                                                        + item.Name
+                                                        + " - "
+                                                        + plcSubnet.Interface
+                                                );
+                                                PlcNode.PrintNodeData(
+                                                    plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]
+                                                );
                                             }
                                         }
                                     }
@@ -458,9 +576,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)
             {
-                IEnumerable<EngineeringAttributeInfo> deviceItemsAttributes = ((IEngineeringObject)deviceItems).GetAttributeInfos();
+                IEnumerable<EngineeringAttributeInfo> deviceItemsAttributes = (
+                    (IEngineeringObject)deviceItems
+                ).GetAttributeInfos();
 
-                if (deviceItemsAttributes.Any(deviceItemsAttribute => deviceItemsAttribute.Name == attributeName))
+                if (
+                    deviceItemsAttributes.Any(deviceItemsAttribute =>
+                        deviceItemsAttribute.Name == attributeName
+                    )
+                )
                 {
                     object attributeValue = deviceItems.GetAttribute(attributeName);
                     return attributeValue.ToString();
@@ -476,7 +600,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             internal object TiaPortalItem { get; set; }
 
-            public TIAVarTabFolder(Step7ProjectV15 Project, TIAOpennessControllerFolder ControllerFolder) : base(Project)
+            public TIAVarTabFolder(
+                Step7ProjectV15 Project,
+                TIAOpennessControllerFolder ControllerFolder
+            )
+                : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
                 this.Project = Project;
@@ -518,7 +646,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                     foreach (var tagList in tags)
                     {
-                        var info = new TIAOpennessTagTable() { Name = tagList.Name, PlcTagTable = tagList };
+                        var info = new TIAOpennessTagTable()
+                        {
+                            Name = tagList.Name,
+                            PlcTagTable = tagList
+                        };
                         retVal.Add(info);
                         info.Tags = tagList.Tags.Select(t => new TIAOpennessTag(t));
                         info.Constants = new List<TIAOpennessConstant>();
@@ -538,7 +670,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             public TIAOpennessControllerFolder ControllerFolder { get; set; }
 
-            public TIAOpennessPlcDatatypeFolder(Step7ProjectV15 Project, TIAOpennessControllerFolder ControllerFolder, PlcTypeComposition composition)
+            public TIAOpennessPlcDatatypeFolder(
+                Step7ProjectV15 Project,
+                TIAOpennessControllerFolder ControllerFolder,
+                PlcTypeComposition composition
+            )
                 : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
@@ -558,7 +694,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 {
                     foreach (var block in composition)
                     {
-                        var info = new TIAOpennessProjectDataTypeInfo(block) { Name = block.Name, ParentFolder = this };
+                        var info = new TIAOpennessProjectDataTypeInfo(block)
+                        {
+                            Name = block.Name,
+                            ParentFolder = this
+                        };
                         info.BlockType = DataTypes.PLCBlockType.UDT;
                         _blockInfos.Add(info);
                     }
@@ -603,7 +743,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             {
                 if (blkInfo == null)
                     return null;
-                
+
                 var iv = blkInfo as TIAOpennessProjectDataTypeInfo;
                 var text = iv.Export(ExportFormat.Xml);
 
@@ -617,7 +757,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
             PlcBlockComposition blocks;
 
-            public TIAOpennessProgramFolder(Step7ProjectV15 Project, TIAOpennessControllerFolder ControllerFolder, PlcBlockComposition blocks)
+            public TIAOpennessProgramFolder(
+                Step7ProjectV15 Project,
+                TIAOpennessControllerFolder ControllerFolder,
+                PlcBlockComposition blocks
+            )
                 : base(Project)
             {
                 this.ControllerFolder = ControllerFolder;
@@ -635,27 +779,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 foreach (var block in blocks)
                 {
-                    var info = new TIAOpennessProjectBlockInfo(block) { Name = block.Name, ParentFolder = this };
+                    var info = new TIAOpennessProjectBlockInfo(block)
+                    {
+                        Name = block.Name,
+                        ParentFolder = this
+                    };
                     info.BlockType = DataTypes.PLCBlockType.FB;
                     info.SetBlockLanguage = PLCLanguage.unkown;
-                    if (block.ProgrammingLanguage == ProgrammingLanguage.DB ||
-                        block.ProgrammingLanguage == ProgrammingLanguage.CPU_DB ||
-                        block.ProgrammingLanguage == ProgrammingLanguage.F_DB ||
-                        block.ProgrammingLanguage == ProgrammingLanguage.Motion_DB)
+                    if (
+                        block.ProgrammingLanguage == ProgrammingLanguage.DB
+                        || block.ProgrammingLanguage == ProgrammingLanguage.CPU_DB
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_DB
+                        || block.ProgrammingLanguage == ProgrammingLanguage.Motion_DB
+                    )
                     {
                         info.BlockType = DataTypes.PLCBlockType.DB;
                         info.SetBlockLanguage = PLCLanguage.DB;
                     }
-                    else if (block.ProgrammingLanguage == ProgrammingLanguage.LAD ||
-                             block.ProgrammingLanguage == ProgrammingLanguage.F_LAD ||
-                             block.ProgrammingLanguage == ProgrammingLanguage.F_LAD_LIB)
+                    else if (
+                        block.ProgrammingLanguage == ProgrammingLanguage.LAD
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_LAD
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_LAD_LIB
+                    )
                         info.SetBlockLanguage = PLCLanguage.KOP;
-                    else if (block.ProgrammingLanguage == ProgrammingLanguage.STL ||
-                             block.ProgrammingLanguage == ProgrammingLanguage.F_STL)
+                    else if (
+                        block.ProgrammingLanguage == ProgrammingLanguage.STL
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_STL
+                    )
                         info.SetBlockLanguage = PLCLanguage.AWL;
-                    else if (block.ProgrammingLanguage == ProgrammingLanguage.FBD ||
-                             block.ProgrammingLanguage == ProgrammingLanguage.F_FBD ||
-                             block.ProgrammingLanguage == ProgrammingLanguage.F_FBD_LIB)
+                    else if (
+                        block.ProgrammingLanguage == ProgrammingLanguage.FBD
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_FBD
+                        || block.ProgrammingLanguage == ProgrammingLanguage.F_FBD_LIB
+                    )
                         info.SetBlockLanguage = PLCLanguage.FUP;
                     else if (block.ProgrammingLanguage == ProgrammingLanguage.CFC)
                         info.SetBlockLanguage = PLCLanguage.CFC;
@@ -684,10 +840,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 if (BlockInfos == null)
                     readPlcBlocksList();
 
-                return
-                    GetBlock(
-                        BlockInfos.Cast<TIAOpennessProjectBlockInfo>()
-                            .FirstOrDefault(x => x.Name == BlockName || x.BlockName == BlockName));
+                return GetBlock(
+                    BlockInfos
+                        .Cast<TIAOpennessProjectBlockInfo>()
+                        .FirstOrDefault(x => x.Name == BlockName || x.BlockName == BlockName)
+                );
             }
 
             public Block GetBlock(ProjectBlockInfo blkInfo)
@@ -697,7 +854,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                 var iv = blkInfo as TIAOpennessProjectBlockInfo;
                 var text = iv.Export(ExportFormat.Xml);
-                  
+
                 return ParseTiaDbUdtXml(text, blkInfo, ControllerFolder, ParseType.Programm);
             }
         }
@@ -711,17 +868,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     if (tiaPortal != null)
                     {
                         tiaPortal.Dispose();
-                        tiaPortal = null;
                     }
-                    tiaPortal = new Siemens.Engineering.TiaPortal(Siemens.Engineering.TiaPortalMode.WithoutUserInterface);
+                    tiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
                     if (credentials != null)
                     {
-                        tiapProject = tiaPortal.Projects.Open(new FileInfo(ProjectFile), c =>
-                        {
-                            c.Type = UmacUserType.Project;
-                            c.Name = credentials.Username;
-                            c.SetPassword(credentials.Password);
-                        });
+                        tiapProject = tiaPortal.Projects.Open(
+                            new FileInfo(ProjectFile),
+                            c =>
+                            {
+                                c.Type = UmacUserType.Project;
+                                c.Name = credentials.Username;
+                                c.SetPassword(credentials.Password);
+                            }
+                        );
                     }
                     else
                     {
@@ -741,7 +900,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     break;
             }
 
-
             var main = new TIAOpennessProjectFolder(this) { Name = "Main" };
             ProjectStructure = main;
 
@@ -755,20 +913,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 {
                     foreach (DeviceItem deviceItem in d.DeviceItems)
                     {
-                        var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
+                        var target = (
+                            (IEngineeringServiceProvider)deviceItem
+                        ).GetService<SoftwareContainer>();
                         if (target != null && target.Software is PlcSoftware)
                         {
-                            var software =(PlcSoftware)target.Software;
-                                var fld = new TIAOpennessControllerFolder(this, software)
-                                {
-                                    Name = software.Name,
-                                    //TiaPortalItem = software,
-                                    //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
-                                };
-                                main.SubItems.Add(fld);
+                            var software = (PlcSoftware)target.Software;
+                            var fld = new TIAOpennessControllerFolder(this, software)
+                            {
+                                Name = software.Name,
+                                //TiaPortalItem = software,
+                                //Comment = d.Comment != null ? d.Comment.GetText(CultureInfo.CurrentCulture) : null
+                            };
+                            main.SubItems.Add(fld);
 
-                                LoadControlerFolderViaOpennessDlls(fld, software);
-                           
+                            LoadControlerFolderViaOpennessDlls(fld, software);
                         }
                     }
 
@@ -819,7 +978,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
         //    }
         //}
 
-        internal void LoadControlerFolderViaOpennessDlls(TIAOpennessControllerFolder parent, PlcSoftware software)
+        internal void LoadControlerFolderViaOpennessDlls(
+            TIAOpennessControllerFolder parent,
+            PlcSoftware software
+        )
         {
             var fld = new TIAOpennessProgramFolder(this, parent, software.BlockGroup.Blocks)
             {
@@ -854,7 +1016,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             LoadSubVartabFoldersViaOpennessDlls(fld3, software.TagTableGroup);
         }
 
-        internal void LoadSubProgramBlocksFoldersViaOpennessDlls(TIAOpennessProgramFolder parent, PlcBlockGroup plcBlockGroup)
+        internal void LoadSubProgramBlocksFoldersViaOpennessDlls(
+            TIAOpennessProgramFolder parent,
+            PlcBlockGroup plcBlockGroup
+        )
         {
             foreach (var e in plcBlockGroup.Groups)
             {
@@ -869,7 +1034,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             }
         }
 
-        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, PlcTypeSystemGroup p)
+        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(
+            TIAOpennessPlcDatatypeFolder parent,
+            PlcTypeSystemGroup p
+        )
         {
             foreach (var e in p.Groups)
             {
@@ -884,7 +1052,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             }
         }
 
-        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(TIAOpennessPlcDatatypeFolder parent, PlcTypeUserGroup p)
+        internal void LoadSubPlcDatatypeFoldersViaOpennessDlls(
+            TIAOpennessPlcDatatypeFolder parent,
+            PlcTypeUserGroup p
+        )
         {
             foreach (var e in p.Groups)
             {
@@ -899,7 +1070,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             }
         }
 
-        internal void LoadSubVartabFoldersViaOpennessDlls(TIAVarTabFolder parent, PlcTagTableSystemGroup blockFolder)
+        internal void LoadSubVartabFoldersViaOpennessDlls(
+            TIAVarTabFolder parent,
+            PlcTagTableSystemGroup blockFolder
+        )
         {
             foreach (var e in blockFolder.Groups)
             {
@@ -914,7 +1088,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             }
         }
 
-        internal void LoadSubVartabFoldersViaOpennessDlls(TIAVarTabFolder parent, PlcTagTableUserGroup blockFolder)
+        internal void LoadSubVartabFoldersViaOpennessDlls(
+            TIAVarTabFolder parent,
+            PlcTagTableUserGroup blockFolder
+        )
         {
             foreach (var e in blockFolder.Groups)
             {
@@ -928,6 +1105,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 LoadSubVartabFoldersViaOpennessDlls(fld, e);
             }
         }
+
         #region Parse DB UDT XML
 
         internal enum ParseType
@@ -936,33 +1114,48 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             DataType
         }
 
-        internal static Block ParseTiaDbUdtXml(string xml, ProjectBlockInfo projectBlockInfo, TIAOpennessControllerFolder controllerFolder, ParseType parseType)
+        internal static Block ParseTiaDbUdtXml(
+            string xml,
+            ProjectBlockInfo projectBlockInfo,
+            TIAOpennessControllerFolder controllerFolder,
+            ParseType parseType
+        )
         {
             XElement xelement = XElement.Parse(xml);
-            var structure = xelement.Elements().FirstOrDefault(x => x.Name.LocalName.StartsWith("SW."));
+            var structure = xelement
+                .Elements()
+                .FirstOrDefault(x => x.Name.LocalName.StartsWith("SW."));
 
-            var sections = structure.Element("AttributeList").Element("Interface").Elements().First();
+            var sections = structure
+                .Element("AttributeList")
+                .Element("Interface")
+                .Elements()
+                .First();
 
             var block = new TIADataBlock();
             block.Name = projectBlockInfo.Name;
 
             if (projectBlockInfo is TIAOpennessProjectBlockInfo)
-                block.BlockNumber = ((TIAOpennessProjectBlockInfo) projectBlockInfo).BlockNumber;
+                block.BlockNumber = ((TIAOpennessProjectBlockInfo)projectBlockInfo).BlockNumber;
 
             if (parseType == ParseType.DataType)
                 block.BlockType = DataTypes.PLCBlockType.UDT;
             else if (parseType == ParseType.Programm)
                 block.BlockType = DataTypes.PLCBlockType.DB;
-            
+
             var parameterRoot = ParseTiaDbUdtSections(sections, block, controllerFolder);
 
             block.BlockType = DataTypes.PLCBlockType.DB;
             block.Structure = parameterRoot;
-            
+
             return block;
         }
 
-        internal static TIADataRow ParseTiaDbUdtSections(XElement sections, TIADataBlock block, TIAOpennessControllerFolder controllerFolder)
+        internal static TIADataRow ParseTiaDbUdtSections(
+            XElement sections,
+            TIADataBlock block,
+            TIAOpennessControllerFolder controllerFolder
+        )
         {
             var parameterRoot = new TIADataRow("ROOTNODE", S7DataRowType.STRUCT, block);
             var parameterIN = new TIADataRow("IN", S7DataRowType.STRUCT, block);
@@ -997,13 +1190,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
             return parameterRoot;
         }
 
-        internal static void parseChildren(TIADataRow parentRow, XElement parentElement, TIAOpennessControllerFolder controllerFolder)
+        internal static void parseChildren(
+            TIADataRow parentRow,
+            XElement parentElement,
+            TIAOpennessControllerFolder controllerFolder
+        )
         {
             foreach (var xElement in parentElement.Elements())
             {
                 if (xElement.Name.LocalName == "Comment")
                 {
-                    var text = xElement.Elements().FirstOrDefault(x => x.Attribute("Lang").Value == "de-DE");
+                    var text = xElement
+                        .Elements()
+                        .FirstOrDefault(x => x.Attribute("Lang").Value == "de-DE");
                     if (text == null)
                         text = xElement.Elements().FirstOrDefault();
                     if (text != null)
@@ -1015,7 +1214,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                 }
                 else if (xElement.Name.LocalName == "Sections")
                 {
-                    var row = ParseTiaDbUdtSections(xElement, (TIADataBlock)parentRow.CurrentBlock, controllerFolder);
+                    var row = ParseTiaDbUdtSections(
+                        xElement,
+                        (TIADataBlock)parentRow.CurrentBlock,
+                        controllerFolder
+                    );
                     parentRow.AddRange(row.Children);
                 }
                 else if (xElement.Name.LocalName == "Member")
@@ -1023,7 +1226,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                     var name = xElement.Attribute("Name").Value;
                     var datatype = xElement.Attribute("Datatype").Value;
 
-                    var row = new TIADataRow(name, S7DataRowType.STRUCT, (TIABlock)parentRow.PlcBlock);
+                    var row = new TIADataRow(
+                        name,
+                        S7DataRowType.STRUCT,
+                        (TIABlock)parentRow.PlcBlock
+                    );
                     row.Parent = parentRow;
 
                     if (datatype.Contains("Array["))
@@ -1037,11 +1244,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                         foreach (string array in arrays)
                         {
-                            string[] akar = array.Split(new string[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] akar = array.Split(
+                                new string[] { ".." },
+                                StringSplitOptions.RemoveEmptyEntries
+                            );
                             int start = 0;
                             if (akar[0].StartsWith("\""))
                             {
-                                start = (int)controllerFolder.VarTabFolder.FindConstant(akar[0].Substring(1, akar[0].Length - 2)).Value;
+                                start = (int)
+                                    controllerFolder
+                                        .VarTabFolder.FindConstant(
+                                            akar[0].Substring(1, akar[0].Length - 2)
+                                        )
+                                        .Value;
                             }
                             else
                             {
@@ -1051,7 +1266,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                             int stop = 0;
                             if (akar[1].StartsWith("\""))
                             {
-                                stop = (int)controllerFolder.VarTabFolder.FindConstant(akar[1].Substring(1, akar[1].Length - 2)).Value;
+                                stop = (int)
+                                    controllerFolder
+                                        .VarTabFolder.FindConstant(
+                                            akar[1].Substring(1, akar[1].Length - 2)
+                                        )
+                                        .Value;
                             }
                             else
                             {
@@ -1074,8 +1294,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
 
                     if (datatype.StartsWith("\""))
                     {
-                        var udt =
-                            controllerFolder.PlcDatatypeFolder.GetBlock(datatype.Substring(1, datatype.Length - 2));
+                        var udt = controllerFolder.PlcDatatypeFolder.GetBlock(
+                            datatype.Substring(1, datatype.Length - 2)
+                        );
                         if (udt != null)
                         {
                             var tiaUdt = udt as TIADataBlock;
@@ -1085,10 +1306,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                         }
                         row.DataType = S7DataRowType.UDT;
                     }
-                    else if (datatype == "Struct")
-                    {
-
-                    }
+                    else if (datatype == "Struct") { }
                     else if (datatype.StartsWith("String["))
                     {
                         row.DataType = S7DataRowType.STRING;
@@ -1153,7 +1371,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                                 if (udt != null)
                                 {
                                     var tiaUdt = udt as TIADataBlock;
-                                    row.AddRange(((TIADataRow)tiaUdt.Structure).DeepCopy().Children);
+                                    row.AddRange(
+                                        ((TIADataRow)tiaUdt.Structure).DeepCopy().Children
+                                    );
 
                                     row.DataTypeBlock = udt;
                                     row.DataType = S7DataRowType.UDT;
@@ -1163,13 +1383,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15
                         }
                     }
                 }
-                else if (xElement.Name.LocalName == "AttributeList")
-                { }
+                else if (xElement.Name.LocalName == "AttributeList") { }
                 else if (xElement.Name.LocalName == "Subelement") //todo -> startwerte von arrays von UDTs
                 { }
-                else
-                {
-                }
+                else { }
             }
         }
         #endregion

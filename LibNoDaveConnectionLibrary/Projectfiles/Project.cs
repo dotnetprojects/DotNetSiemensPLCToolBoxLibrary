@@ -7,6 +7,7 @@ using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 {
+    [Serializable]
     public abstract class Project
     {
 
