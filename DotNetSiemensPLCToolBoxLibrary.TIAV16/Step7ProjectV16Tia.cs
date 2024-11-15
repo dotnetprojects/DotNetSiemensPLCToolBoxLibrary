@@ -1298,10 +1298,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
             foreach (var d in tiapProject.Devices)
             {
-                if (
-                    d.TypeIdentifier != null
-                    && d.TypeIdentifier.Contains("00")
-                    && d.TypeIdentifier.Contains("S7")
+                if (true
+                //d.TypeIdentifier != null
+                //&& d.TypeIdentifier.Contains("00")
+                //&& d.TypeIdentifier.Contains("S7")
                 )
                 {
                     foreach (DeviceItem deviceItem in d.DeviceItems)
@@ -1356,10 +1356,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
             {
                 foreach (var d in group.Devices)
                 {
-                    if (
-                        d.TypeIdentifier != null
-                        && d.TypeIdentifier.Contains("00")
-                        && d.TypeIdentifier.Contains("S7")
+                    if (true
+                    //d.TypeIdentifier != null
+                    //&& d.TypeIdentifier.Contains("00")
+                    //&& d.TypeIdentifier.Contains("S7")
                     )
                     {
                         foreach (DeviceItem deviceItem in d.DeviceItems)
