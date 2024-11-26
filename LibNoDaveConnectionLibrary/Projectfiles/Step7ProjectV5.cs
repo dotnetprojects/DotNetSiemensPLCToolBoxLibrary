@@ -1579,7 +1579,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 foreach (var cp in CPFolders.Where(x => x.SubModul != null))
                 {
                     if (cp.NetworkInterfaces == null) cp.NetworkInterfaces = new List<NetworkInterface>();
-                    cp.NetworkInterfaces.AddRange(cp.SubModul.NetworkInterfaces);
+
+                    if (cp.SubModul.NetworkInterfaces != null)
+                    {
+                        cp.NetworkInterfaces.AddRange(cp.SubModul.NetworkInterfaces);
+                    }
                     CPFolders.Remove(cp.SubModul);
                     cp.SubModul = null;
                     repeat = true;
