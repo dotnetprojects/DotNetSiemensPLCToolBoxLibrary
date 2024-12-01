@@ -52,7 +52,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             if (JumpMarks != null && JumpMarks.Length >= 5)
             {
-                int anzJ = BitConverter.ToInt16(JumpMarks, NetworkCount * 2);  //Todo: find out why it does not always contain the right amount of JumpNames
+                // Comment this out, as the variable anzJ is not used at all and it sometimes throws and IndexOutOfBounds Exception
+                // Eg. there are 68 jump marks, but the Network count is 40 => access from index 80 --> IOB Exception
+                // int anzJ = BitConverter.ToInt16(JumpMarks, NetworkCount * 2);  //Todo: find out why it does not always contain the right amount of JumpNames
 
                 for (int n = NetworkCount * 2 + 4; n < JumpMarks.Length; n += 5)
                 {

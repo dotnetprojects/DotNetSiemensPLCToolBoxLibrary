@@ -410,7 +410,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
         static public uint GetUIntFromHexString(string myString)
         {
             uint val = 0;
-            foreach (char tmp in myString.ToLower().Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", "").Replace("\t", ""))
+            foreach (char tmp in myString.ToLower().Replace("//", "").Replace("dw#16#", "").Replace("w#16#", "").Replace("b#16#", "").Replace("\t", "").Trim())
             {
                 val *= 16;
                 switch (tmp)
