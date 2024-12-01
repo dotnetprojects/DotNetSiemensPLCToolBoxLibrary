@@ -35,4 +35,4 @@ jobs:
       with:
         path: ./**/DotNetProjects.DotNetSiemensPLCToolBoxLibrary*.nupkg
     - name: Publish Nuget
-      run: dotnet nuget push DotNetSiemensPLCToolBoxLibrary.sln --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "**/DotNetProjects.DotNetSiemensPLCToolBoxLibrary*.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
