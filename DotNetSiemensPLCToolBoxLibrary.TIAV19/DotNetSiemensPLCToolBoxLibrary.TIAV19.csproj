@@ -27,8 +27,8 @@
 	<PackageReference Include="NLog" Version="5.3.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PLC\PLC.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
+    <ProjectReference Include="..\SiemensPLC\Siemens.PLC.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Siemens.Engineering">

@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using NLog;
 
-namespace PLC
+namespace Siemens.PLC
 {
-    public class PlcSubnet
+    public class SiemensPlcSubnet
     {
-        public PlcSubnet() { }
+        public SiemensPlcSubnet() { }
 
-        public PlcSubnet(string CommInterface, List<PlcNode> plcNodes)
+        public SiemensPlcSubnet(string CommInterface, List<SiemensPlcNode> plcNodes)
         {
             this.Interface = CommInterface;
             this.PlcNodes = plcNodes;
         }
 
         public string Interface { get; set; }
-        public List<PlcNode> PlcNodes { get; set; }
+        public List<SiemensPlcNode> PlcNodes { get; set; }
     }
 
-    public class PlcNode
+    public class SiemensPlcNode
     {
-        public PlcNode() { }
+        public SiemensPlcNode() { }
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public PlcNode(string id, string name, string subnet, string type, string address)
+        public SiemensPlcNode(string id, string name, string subnet, string type, string address)
         {
             this.Id = id;
             this.Name = name;
@@ -39,7 +39,7 @@ namespace PLC
         public string Type { get; set; }
         public string Address { get; set; }
 
-        public static void PrintNodeData(PlcNode node)
+        public static void PrintNodeData(SiemensPlcNode node)
         {
             logger.Info(
                 "Node: "

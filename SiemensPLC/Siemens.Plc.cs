@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataCollectorConnect.Models.PlcDriver;
+using DataCollectorConnect.Models.Base;
 
-namespace PLC
+
+namespace Siemens.PLC
 {
-    public class Plc
+    public class SiemensPlc
     {
-        public Plc() { }
+        public SiemensPlc() { }
 
-        public Plc(
+        public SiemensPlc(
             string id,
-            List<PlcSubnet> plcNetwork,
+            List<SiemensPlcSubnet> plcNetwork,
             string address,
             string type,
             string rack,
@@ -41,9 +44,10 @@ namespace PLC
         public string Rack { get; set; }
         public string Slot { get; set; }
         public bool Status { get; set; }
-        public List<PlcSubnet> PlcNetwork { get; set; }
-        public List<PlcSignal> Signals { get; set; }
-        public List<PlcMetadata> Metadatas { get; set; }
-        public List<PlcEvent> Events { get; set; }
+        public List<SiemensPlcSubnet> PlcNetwork { get; set; }
+        public List<SiemensPlcSignal> Signals { get; set; }
+        public List<SiemensPlcMetadata> Metadatas { get; set; }
+        public List<EventDTO> Events { get; set; }
+        public List<PlcHmi> Hmi { get; set; }
     }
 }

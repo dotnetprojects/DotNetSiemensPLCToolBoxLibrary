@@ -17,7 +17,7 @@ using Siemens.Engineering.SW.Types;
 using Siemens.Engineering.SW.Tags;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
-using PLC;
+using Siemens.PLC;
 using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
@@ -376,9 +376,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             /// Get PLC data from Tia project instance and store in plc object then return object to export
             /// </summary>
             /// <param name="plc">plc object.</param>           
-            public Plc GetPlcData()
+            public SiemensPlc GetPlcData()
             {
-                Plc plc = new Plc();
+                SiemensPlc plc = new SiemensPlc();
 
                 foreach (var deviceItem in this.device.DeviceItems)
                 {
@@ -396,7 +396,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         plc.Type = GetPlcAttribute(deviceItem, "TypeName");
                         plc.FirmwareVersion = GetPlcAttribute(deviceItem, "FirmwareVersion");
                         plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
-                        plc.PlcNetwork = new List<PlcSubnet>();
+                        plc.PlcNetwork = new List<SiemensPlcSubnet>();
 
                         logger.Info("---> PLC: " + this.Name + ":" + plc.Type);
 
@@ -406,8 +406,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                             if (nwService != null)
                             {
-                                PlcSubnet plcSubnet = new PlcSubnet();
-                                plcSubnet.PlcNodes = new List<PlcNode>();
+                                SiemensPlcSubnet plcSubnet = new SiemensPlcSubnet();
+                                plcSubnet.PlcNodes = new List<SiemensPlcNode>();
                                 plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
                                 object nodeAddress = null;
 
@@ -421,7 +421,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                                         if (nodeAddress.ToString() != "Not Valid" && node.ConnectedSubnet != null)
                                         {
-                                            plcSubnet.PlcNodes.Add(new PlcNode(node.NodeId, node.Name, node.ConnectedSubnet.Name, node.NodeType.ToString(), nodeAddress.ToString()));
+                                            plcSubnet.PlcNodes.Add(new SiemensPlcNode(node.NodeId, node.Name, node.ConnectedSubnet.Name, node.NodeType.ToString(), nodeAddress.ToString()));
 
                                             //More then 1 Port
                                             if (item.Items.Count > 1)
@@ -429,14 +429,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                                                 plc.Address = nodeAddress.ToString();
 
                                                 logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                                SiemensPlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                             else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
                                             {
                                                 plc.Address = nodeAddress.ToString();
 
                                                 logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
+                                                SiemensPlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
                                             }
                                         }
                                     }

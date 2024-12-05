@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLC
+namespace Siemens.PLC
 {
-    public class PlcMetadata
+    public class SiemensPlcMetadata
     {
-        public PlcMetadata() { }
+        public SiemensPlcMetadata() { }
 
-        public PlcMetadata(string name, string description, string path, string metadata)
+        public SiemensPlcMetadata(string name, string description, string path, string metadata)
         {
             this.Name = name;
             this.Description = description;
