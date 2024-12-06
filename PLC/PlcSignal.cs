@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Siemens.PLC
+namespace PLC
 {
-    public class SiemensPlcSignal
+    public class PlcSignal
     {
-        public SiemensPlcSignal() { }
+        public PlcSignal() { }
 
         public string Address { get; set; }
         public string AbsoluteAddress { get; set; }

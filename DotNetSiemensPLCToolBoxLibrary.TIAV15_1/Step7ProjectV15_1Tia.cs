@@ -14,7 +14,7 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 using NLog;
-using Siemens.PLC;
+using PLC;
 using Siemens.Engineering;
 using Siemens.Engineering.Compiler;
 using Siemens.Engineering.HW;
@@ -579,9 +579,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
             /// Get PLC data from Tia project instance and store in plc object then return object to export
             /// </summary>
             /// <param name="plc">plc object.</param>
-            public SiemensPlc GetPlcData()
+            public Plc GetPlcData()
             {
-                SiemensPlc plc = new SiemensPlc();
+                Plc plc = new Plc();
 
                 foreach (var deviceItem in this.device.DeviceItems)
                 {
@@ -599,7 +599,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                         plc.Type = GetPlcAttribute(deviceItem, "TypeName");
                         plc.FirmwareVersion = GetPlcAttribute(deviceItem, "FirmwareVersion");
                         plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
-                        plc.PlcNetwork = new List<SiemensPlcSubnet>();
+                        plc.PlcNetwork = new List<PlcSubnet>();
 
                         logger.Info("---> PLC: " + this.Name + ":" + plc.Type);
 
@@ -609,8 +609,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
 
                             if (nwService != null)
                             {
-                                SiemensPlcSubnet plcSubnet = new SiemensPlcSubnet();
-                                plcSubnet.PlcNodes = new List<SiemensPlcNode>();
+                                PlcSubnet plcSubnet = new PlcSubnet();
+                                plcSubnet.PlcNodes = new List<PlcNode>();
                                 plcSubnet.Interface =
                                     item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
                                 object nodeAddress = null;
@@ -637,7 +637,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                                         )
                                         {
                                             plcSubnet.PlcNodes.Add(
-                                                new SiemensPlcNode(
+                                                new PlcNode(
                                                     node.NodeId,
                                                     node.Name,
                                                     node.ConnectedSubnet.Name,
@@ -657,7 +657,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                                                         + " - "
                                                         + plcSubnet.Interface
                                                 );
-                                                SiemensPlcNode.PrintNodeData(
+                                                PlcNode.PrintNodeData(
                                                     plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]
                                                 );
                                             }
@@ -674,7 +674,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V15_1
                                                         + " - "
                                                         + plcSubnet.Interface
                                                 );
-                                                SiemensPlcNode.PrintNodeData(
+                                                PlcNode.PrintNodeData(
                                                     plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]
                                                 );
                                             }

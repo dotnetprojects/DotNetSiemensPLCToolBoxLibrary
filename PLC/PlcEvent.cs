@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Siemens.PLC
+namespace PLC
 {
-    public class SiemensPlcEvent
+    public class PlcEvent
     {
-        public SiemensPlcEvent() { }
+        public PlcEvent() { }
 
         public string Name { get; set; }
         public string Description { get; set; }
