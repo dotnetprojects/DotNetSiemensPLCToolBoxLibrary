@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © Siemens AG 2008-2023. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/InterpreterProgram/v1"
+           xmlns:tns      ="http://www.siemens.com/automation/Openness/SW/Motion/InterpreterProgram/v1"
+           elementFormDefault="qualified">
+  
+   
+  
+
+  <!-- Begin of our actual nodes -->
+  <xs:element name="SourceData" type="xs:string"/>
+</xs:schema>

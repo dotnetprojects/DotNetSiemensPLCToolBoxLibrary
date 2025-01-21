@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="True" WindowStyle="ToolWindow" 
-             Height="450
+             Height="500
         " Width="400" Title="TiaGitHandler">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TIA Projekt - Öffnen oder an Instanz hängen?" VerticalAlignment="Top"/>
@@ -15,6 +15,7 @@
         <Button Content="Anhängen V17" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV17_Click"/>
         <Button Content="Anhängen V18" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV18_Click"/>
         <Button Content="Anhängen V19" HorizontalAlignment="Left" Margin="10,266,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV19_Click"/>
+        <Button Content="Anhängen V20" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV20_Click"/>
         <CheckBox x:Name="chkResetSetpoints" Content="Reset all setpoints" Margin="211,0,1,106" VerticalAlignment="Bottom" IsChecked="True"/>
         <CheckBox x:Name="chkRemoveCode" Content="Remove Code From XML" Margin="211,0,0,90" VerticalAlignment="Bottom" IsChecked="True" HorizontalAlignment="Left" Width="151"/>
         <StackPanel Height="83" VerticalAlignment="Bottom">

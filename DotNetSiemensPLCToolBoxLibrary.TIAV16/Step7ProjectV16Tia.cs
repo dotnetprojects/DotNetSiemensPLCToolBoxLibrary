@@ -861,7 +861,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V16
 
             foreach (var d in tiapProject.Devices)
             {
-                if (d.TypeIdentifier != null && d.TypeIdentifier.EndsWith(".S71500"))
+                if (d.TypeIdentifier != null && (d.TypeIdentifier.EndsWith(".S71500") || d.TypeIdentifier.EndsWith("ET200SP_OC")))
                 {
                     foreach (DeviceItem deviceItem in d.DeviceItems)
                     {

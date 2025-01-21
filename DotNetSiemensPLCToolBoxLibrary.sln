@@ -98,10 +98,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{66A4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{5FC399A5-1C21-480A-987F-16388079F245}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\workflows\build-pull.yml = .github\workflows\build-pull.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV20", "DotNetSiemensPLCToolBoxLibrary.TIAV20\DotNetSiemensPLCToolBoxLibrary.TIAV20.csproj", "{47AFC1C0-C7BA-4299-9C62-17FDE1676167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -783,12 +785,31 @@ Global
 		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|x86.ActiveCfg = Release|Any CPU
 		{ADC06ADE-EB03-4422-A7B4-4291AD994D91}.Release|x86.Build.0 = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Debug|x86.Build.0 = Debug|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|iPhone.Build.0 = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|x86.ActiveCfg = Release|Any CPU
+		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5FC399A5-1C21-480A-987F-16388079F245} = {66A4ADD6-8EE2-49BD-B939-C5E69CAA3A9E}
 		{D5525AD8-E501-45A8-BEA5-F9BDB468B427} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{1182E730-FA4F-4712-8B8B-6432848C3048} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{9EB7BDB5-FDEE-466A-B2FF-63F087B160CE} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
@@ -816,6 +837,7 @@ Global
 		{CB0E7339-773D-4BD1-B636-4BAD6B1AA367} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{B2D9C814-26B4-46DF-AEAF-E82606E4E8B2} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
 		{5623A0DA-4CC8-4954-AD76-90C25E10B2D2} = {A4F11331-531B-4A7C-84B2-E319658AE2B8}
+		{5FC399A5-1C21-480A-987F-16388079F245} = {66A4ADD6-8EE2-49BD-B939-C5E69CAA3A9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {629DCEA8-C0FA-4650-97C6-ADD1E09A377D}
