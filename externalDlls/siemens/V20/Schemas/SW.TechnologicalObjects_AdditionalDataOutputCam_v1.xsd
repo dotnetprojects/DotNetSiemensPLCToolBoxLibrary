@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2018. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/OutputCam/v1"
+           xmlns:tns="http://www.siemens.com/automation/Openness/SW/Motion/OutputCam/v1"
+           elementFormDefault="qualified">
+  <!-- Root element AdditionalData-->
+  <xs:element name="AdditionalData" type="tns:AdditionalData_T"/>
+
+  <!-- Complex type AdditionalData_T-->
+  <xs:complexType name="AdditionalData_T">
+    <xs:annotation>
+      <xs:documentation>Describes additional data, such as Connections, for OutputCam and CamTrack TOs.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Connection" type="tns:Connection_T" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type Connection_T-->
+  <xs:complexType name="Connection_T">
+    <xs:annotation>
+      <xs:documentation>Describes a connection of a TO interface.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Interface" type="tns:Interface_TE" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the Interface of the TO that is connected.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OutputAddress" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation>Output bit address.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OutputTag" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Name of a connected tag.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Enumeration type Interface_TE-->
+  <xs:simpleType name="Interface_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OutputCam"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

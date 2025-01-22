@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="SW.PlcBlocks.Access_v4.xsd"/>
+	<xs:element name="LabelDeclaration" type="LabelDeclaration_T"/>
+	<xs:complexType name="LabelDeclaration_T">
+		<xs:sequence>
+			<xs:element ref="IntegerAttribute" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>for NumBLs. NumBLs is informative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Label"/>
+			<xs:group ref="Comment_G" minOccurs="0"/>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="Token">
+					<xs:annotation>
+						<xs:documentation>the COLON; only if separated</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:group ref="Comment_G" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="UId" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>Not allowed in STL</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

@@ -83,7 +83,7 @@ namespace TiaGitHandler
                 if (object.Equals(res, false))
                 {
                     OpenFileDialog op = new OpenFileDialog();
-                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1;*.ap16;*.ap17;*.ap18;*.ap19";
+                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1;*.ap16;*.ap17;*.ap18;*.ap19;*.ap20";
                     op.CheckFileExists = false;
                     op.ValidateNames = false;
                     var ret = op.ShowDialog();
@@ -181,7 +181,9 @@ namespace TiaGitHandler
 
                 if (attach)
                 {
-                    if (file.EndsWith("19"))
+                    if (file.EndsWith("20"))
+                        prj = Projects.AttachToInstanceWithFilename("20", file);
+                    else if (file.EndsWith("19"))
                         prj = Projects.AttachToInstanceWithFilename("19", file);
                     else if (file.EndsWith("18"))
                         prj = Projects.AttachToInstanceWithFilename("18", file);
