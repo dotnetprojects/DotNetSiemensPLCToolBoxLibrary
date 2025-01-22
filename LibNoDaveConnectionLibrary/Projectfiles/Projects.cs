@@ -581,7 +581,6 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
-        //NEW
         private static Func<string, Credentials, Project> _createV20ProjectInstance;
 
         private static Func<string, Credentials, Project> createV20ProjectInstance
