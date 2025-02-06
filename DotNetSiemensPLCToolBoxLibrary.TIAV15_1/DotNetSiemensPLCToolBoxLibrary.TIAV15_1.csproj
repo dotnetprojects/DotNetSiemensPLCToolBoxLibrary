@@ -27,10 +27,12 @@
 	<PackageReference Include="NLog" Version="5.3.4" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataCollectorConnect.Models\DataCollectorConnect.Models.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DataCollectorConnect.Models">
+      <HintPath>..\..\DataCollectorConnect.Models\bin\Debug\net45\DataCollectorConnect.Models.dll</HintPath>
+    </Reference>
     <Reference Include="Siemens.Engineering">
       <HintPath>..\externalDlls\siemens\V15.1\Siemens.Engineering.dll</HintPath>
     </Reference>

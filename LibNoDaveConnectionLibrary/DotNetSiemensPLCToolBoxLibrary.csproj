@@ -38,6 +38,8 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataCollectorConnect.Models\DataCollectorConnect.Models.csproj" />
+    <Reference Include="DataCollectorConnect.Models">
+      <HintPath>..\..\DataCollectorConnect.Models\bin\Debug\net45\DataCollectorConnect.Models.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
