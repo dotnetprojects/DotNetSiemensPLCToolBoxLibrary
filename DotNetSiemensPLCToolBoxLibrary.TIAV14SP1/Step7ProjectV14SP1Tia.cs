@@ -17,7 +17,8 @@ using Siemens.Engineering.SW.Types;
 using Siemens.Engineering.SW.Tags;
 using DotNetSiemensPLCToolBoxLibrary.General;
 using System.Text.RegularExpressions;
-using PLC;
+using DataCollectorConnect.Models.Standard;
+using DataCollectorConnect.Models.Standard.Siemens;
 using NLog;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
@@ -373,12 +374,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
             }
 
             /// <summary>
-            /// Get PLC data from Tia project instance and store in plc object then return object to export
+            /// Retrieves data related to the PLC from the TIA project instance, populates the provided <paramref name="plc"/> object with relevant information, 
+            /// and returns the populated PLC object for export or further processing.
             /// </summary>
-            /// <param name="plc">plc object.</param>           
-            public Plc GetPlcData()
+            /// <param name="plc">The PLC object to populate with data from the TIA project instance.</param>
+            /// <returns>A <see cref="SiemensPlc"/> object containing the PLC data retrieved from the project.</returns>
+            public SiemensPlc GetPlcData()
             {
-                Plc plc = new Plc();
+                SiemensPlc plc = new SiemensPlc();
 
                 foreach (var deviceItem in this.device.DeviceItems)
                 {
@@ -396,7 +399,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                         plc.Type = GetPlcAttribute(deviceItem, "TypeName");
                         plc.FirmwareVersion = GetPlcAttribute(deviceItem, "FirmwareVersion");
                         plc.PartNumber = GetPlcAttribute(deviceItem, "OrderNumber");
-                        plc.PlcNetwork = new List<PlcSubnet>();
+                        plc.PlcNetwork = new List<SiemensPlcSubnet>();
 
                         logger.Info("---> PLC: " + this.Name + ":" + plc.Type);
 
@@ -406,39 +409,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
 
                             if (nwService != null)
                             {
-                                PlcSubnet plcSubnet = new PlcSubnet();
-                                plcSubnet.PlcNodes = new List<PlcNode>();
+                                SiemensPlcSubnet plcSubnet = new SiemensPlcSubnet();
+                                plcSubnet.PlcNodes = new List<SiemensPlcNode>();
                                 plcSubnet.Interface = item.Name + ":" + GetPlcAttribute(item, "InterfaceType");
-                                object nodeAddress = null;
 
                                 foreach (Node node in nwService.Nodes)
                                 {
-                                    IEnumerable<EngineeringAttributeInfo> nodeAttributes = ((IEngineeringObject)node).GetAttributeInfos();
+                                    IEnumerable<EngineeringAttributeInfo> nodeAttributes = (
+                                        (IEngineeringObject)node
+                                    ).GetAttributeInfos();
 
-                                    if (nodeAttributes.Any(nodeAttribute => nodeAttribute.Name == "Address"))
+                                    if (
+                                        nodeAttributes.Any(nodeAttribute =>
+                                            nodeAttribute.Name == "Address"
+                                        )
+                                    )
                                     {
-                                        nodeAddress = ((IEngineeringObject)node).GetAttribute("Address");
-
-                                        if (nodeAddress.ToString() != "Not Valid" && node.ConnectedSubnet != null)
-                                        {
-                                            plcSubnet.PlcNodes.Add(new PlcNode(node.NodeId, node.Name, node.ConnectedSubnet.Name, node.NodeType.ToString(), nodeAddress.ToString()));
-
-                                            //More then 1 Port
-                                            if (item.Items.Count > 1)
-                                            {
-                                                plc.Address = nodeAddress.ToString();
-
-                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
-                                            }
-                                            else if (plc.Address == null && plcSubnet.Interface == "Ethernet")
-                                            {
-                                                plc.Address = nodeAddress.ToString();
-
-                                                logger.Info("Communication Device: " + item.Name + " - " + plcSubnet.Interface);
-                                                PlcNode.PrintNodeData(plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]);
-                                            }
-                                        }
+                                        GetPlcIpAddress(plc, item, node, plcSubnet);
                                     }
                                 }
 
@@ -453,6 +440,58 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V14SP1
                 }
                 logger.Warn("Could not find " + this.Name + " PLC data");
                 return plc;
+            }
+
+            /// <summary>
+            /// Retrieves and assigns the PLC address from a specified node and updates the connected subnet information.
+            /// </summary>
+            /// <param name="plc">The PLC object to update with the address.</param>
+            /// <param name="item">The device item containing communication details.</param>
+            /// <param name="node">The node to extract the address and subnet information from.</param>
+            /// <param name="plcSubnet">The PLC subnet to update with connected node details.</param>
+            /// <remarks>
+            /// This method checks if the node's address is valid and updates the PLC address.
+            /// If the node is connected to a subnet, a new <see cref="SiemensPlcNode"/> is created 
+            /// and added to the subnet's node list. Logs and debug information are generated for traceability.
+            /// </remarks>
+            private void GetPlcIpAddress(SiemensPlc plc, DeviceItem item, Node node, SiemensPlcSubnet plcSubnet)
+            {
+                object nodeAddress = ((IEngineeringObject)node).GetAttribute("Address");
+                string address = nodeAddress?.ToString();
+                var interfaceParts = plcSubnet.Interface.Split(':');
+                bool isEthernet = interfaceParts.Length > 1 && interfaceParts[1] == "Ethernet";
+
+                // Validate the address and check conditions
+                if (!string.IsNullOrEmpty(address) && address != "Not Valid" && node.ConnectedSubnet != null
+                    && (item.Items.Count > 1 || isEthernet))
+                {
+
+                    // Assign the address to the PLC
+                    plc.Address = address;
+
+                    // Add node to the subnet if connected
+                    if (node.ConnectedSubnet != null)
+                    {
+                        plcSubnet.PlcNodes.Add(new SiemensPlcNode(
+                            node.NodeId,
+                            node.Name,
+                            node.ConnectedSubnet.Name,
+                            node.NodeType.ToString(),
+                            address
+                        ));
+                    }
+
+                    logger.Info(
+                    "Communication Device: "
+                        + item.Name
+                        + " - "
+                        + plcSubnet.Interface
+                );
+                    SiemensPlcNode.PrintNodeData(
+                        plcSubnet.PlcNodes[plcSubnet.PlcNodes.Count - 1]
+                    );
+
+                }
             }
 
             public string GetPlcAttribute(DeviceItem deviceItems, string attributeName)

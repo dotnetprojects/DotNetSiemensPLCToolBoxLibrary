@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;netcoreapp3.1;net481</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+	<PackageReference Include="NLog" Version="5.3.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\TiaPortalExporter\Siemens.HMI\Siemens.HMI.csproj" />
+    <ProjectReference Include="..\..\DataCollectorConnect.Models\DataCollectorConnect.Models.csproj" /> 
+  </ItemGroup>
+
+</Project>

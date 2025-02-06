@@ -29,7 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Siemens.Engineering">
-      <HintPath>..\externalDlls\siemens\V16\Siemens.Engineering.dll</HintPath>
+      <HintPath>..\externalDlls\siemens\V13\Siemens.Engineering.dll</HintPath>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi">
+      <HintPath>..\externalDlls\siemens\V13\Siemens.Engineering.Hmi.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
