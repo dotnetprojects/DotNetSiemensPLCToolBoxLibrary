@@ -1234,6 +1234,7 @@ namespace TiaGitHandler
             DeleteDir(path);
         }
 
+        static int DeleteDirCounter = 0;
         private static void DeleteDir(string dir)
         {
             try
@@ -1243,10 +1244,16 @@ namespace TiaGitHandler
             }
             catch (IOException)
             {
+                DeleteDirCounter++;
+                if (DeleteDirCounter > 10)
+                    throw;
                 DeleteDir(dir);
             }
             catch (UnauthorizedAccessException)
             {
+                DeleteDirCounter++;
+                if (DeleteDirCounter > 10)
+                    throw;
                 DeleteDir(dir);
             }
         }
