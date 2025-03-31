@@ -459,6 +459,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V20
                     return retVal;
                 }
             }
+            public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
+            {
+                this.group.TagTables.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+            }
         }
 
         public class TIAOpennessWatchTable : ITIAWatchTable

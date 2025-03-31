@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
+using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V11;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 
@@ -116,6 +116,7 @@ namespace TiaImporter
                         {
                             var dtFolder = importFolder as ITIAOpennessPlcDatatypeFolder;
                             var pgFolder = importFolder as ITIAOpennessProgramFolder;
+                            var tagFolder = importFolder as ITIAVarTabFolder;
 
                             if (dtFolder != null)
                             {
@@ -123,30 +124,12 @@ namespace TiaImporter
                             }
                             else if (pgFolder != null)
                             {
-                                //if (importFile.ToLower().EndsWith("scl"))
-                                //{
-                                //    string srcBeforeScl = null;
-                                //    var blkInfo = pgFolder.BlockInfos.FirstOrDefault(x => x.Name.ToLower() == Path.GetFileNameWithoutExtension(importFile).ToLower());
-                                //    if (blkInfo != null)
-                                //    {
-                                //        Console.WriteLine("SCL File with XML File: " + relativePath);
-                                //        Console.WriteLine("Export current XML...");
-                                //        srcBeforeScl = blkInfo.Export(ExportFormat.Xml);
-                                //        Console.WriteLine("Import SCL...");
-                                //    }
-                                //    pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
-                                //    if (blkInfo != null)
-                                //    {
-                                //        Console.WriteLine("Export new XML...");
-                                //        var blkAfter = pgFolder.BlockInfos.FirstOrDefault(x => x.Name.ToLower() == Path.GetFileNameWithoutExtension(importFile).ToLower());
-                                //        var srcAfter = blkAfter.Export(ExportFormat.Xml);
-                                //        Console.WriteLine("Import combined XML...");
-                                //    }
-                                //}
-                                //else
-                                {
-                                    pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
-                                }
+
+                                pgFolder.ImportFile(new FileInfo(importFile), true, !importFile.ToLower().EndsWith("xml"));
+                            }
+                            else if (tagFolder != null)
+                            {
+                                tagFolder.ImportFile(new FileInfo(importFile), true, false);
                             }
 
                             Console.ForegroundColor = ConsoleColor.Green;
