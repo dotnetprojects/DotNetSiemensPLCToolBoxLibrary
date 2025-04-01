@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageId>DotNetProjects.DotNetSiemensPLCToolBoxLibrary.TIAV18</PackageId>
+    <PackageId>DotNetProjects.DotNetSiemensPLCToolBoxLibrary.TIAV19</PackageId>
     <Authors>DotNetProjects</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/jogibear9988/DotNetSiemensPLCToolBoxLibrary</PackageProjectUrl>
