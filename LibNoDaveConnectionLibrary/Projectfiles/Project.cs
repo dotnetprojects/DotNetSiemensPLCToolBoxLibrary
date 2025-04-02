@@ -60,5 +60,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
         }
 
+        public virtual void ExportAlarmTexts(ProjectFolder folder, string exportPath)
+        {
+        }
+
     }
 }

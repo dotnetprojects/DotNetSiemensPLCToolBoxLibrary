@@ -21,6 +21,7 @@ using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW.WatchAndForceTables;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles.TIA.Openness;
 using Siemens.Engineering.SW.Alarm;
+using Siemens.Engineering.SW.Alarm.TextLists;
 
 namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 {
@@ -849,6 +850,39 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
 
                                 alarmTextListProvider.ExportToXlsx(fileInfo, new List<string> { plcAlarmUserTextlistName }, tiapProject.LanguageSettings.ActiveLanguages);
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void ExportAlarmTexts(ProjectFolder folder, string exportPath)
+        {
+            foreach (var d in tiapProject.Devices)
+            {
+                if (d.TypeIdentifier != null && (d.TypeIdentifier.EndsWith(".S71500") || d.TypeIdentifier.EndsWith("ET200SP_OC")))
+                {
+                    foreach (DeviceItem deviceItem in d.DeviceItems)
+                    {
+                        var parent = deviceItem.Parent;
+                        var target = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
+                        if (target != null && target.Software is PlcSoftware)
+                        {
+                            var plcSoftware = (PlcSoftware)target.Software;
+                            var plcAarmTextsProvider = plcSoftware.GetService<PlcAlarmTextProvider>();
+                            var plcAlarmTextsName = "PLC-Meldetexte";
+                            var filePath = Path.Combine(exportPath, folder.Name, deviceItem.Name.Replace("-", ""), "plcalarms", plcAlarmTextsName) + ".xlsx";
+                            var fileInfo = new FileInfo(filePath);
+                            List<Language> cultureInfos = new List<Language>();
+                            
+                            var directory = Path.GetDirectoryName(filePath);
+                            if (!Directory.Exists(directory))
+                            {
+                                Directory.CreateDirectory(directory);
+                            }
+
+                            PlcAlarmTextXlsxResult result = plcAarmTextsProvider.ExportInstanceTextsToXlsx( fileInfo, cultureInfos, PlcAlarmTextXlsxExportOption.None);
+                            var logFilePath = (FileInfo)result.LogFilePath;
                         }
                     }
                 }

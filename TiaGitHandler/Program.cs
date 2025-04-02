@@ -213,8 +213,9 @@ namespace TiaGitHandler
             Console.WriteLine("Exporting to Folder: " + exportPath);
             Console.WriteLine();
             List<string> skippedBlocksList = new List<string>();
-            ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
-            prj.ExportTextlists(prj.ProjectStructure, exportPath);
+            //ParseFolder(prj.ProjectStructure, exportPath, skippedBlocksList);
+            //prj.ExportTextlists(prj.ProjectStructure, exportPath);
+            prj.ExportAlarmTexts(prj.ProjectStructure, exportPath);
 
             var xlsxFiles = Directory.GetFiles(exportPath, "*.xlsx", SearchOption.AllDirectories);
             foreach (var xlsxFile in xlsxFiles.Where(x => x.Contains("plcalarmtextlistgroup")))
