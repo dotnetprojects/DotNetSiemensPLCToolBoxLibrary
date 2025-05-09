@@ -120,7 +120,7 @@ namespace TiaGitHandler
                     }
 
                     exportPath = Path.GetDirectoryName(file);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
 
                 }
                 else if (res != null)
@@ -129,7 +129,7 @@ namespace TiaGitHandler
                     prj = Projects.AttachProject(ver);
 
                     exportPath = Path.GetDirectoryName(prj.ProjectFile);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
                 }
                 else
                 {
@@ -165,6 +165,9 @@ namespace TiaGitHandler
                     user = args[3];
                 if (args.Length > 4)
                     password = args[4];
+                if (args.Length > 5)
+                    exportPath = args[5];
+
             }
 
             if (prj == null)
