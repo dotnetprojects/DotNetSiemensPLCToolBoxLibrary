@@ -31,7 +31,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 this._ziphelper = new ZipHelper(filename);
                 _projectfilename = _ziphelper.GetFirstZipEntryWithEnding(".s5d");
                 if (string.IsNullOrEmpty(_projectfilename))
-                    throw new Exception("Zip-File contains no valid Step5 Project !");                
+                    throw new Exception("Zip-File contains no valid Step5 Project !");
+            }
+            else
+            {
+                this._ziphelper = new ZipHelper(filename);
             }
 
             ProjectFile = filename;
@@ -43,11 +47,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         {
             _showDeleted = showDeleted;
             this._ziphelper = _ziphelper;
-            
+
             _projectfilename = _ziphelper.GetFirstZipEntryWithEnding(".s5d");
-                if (string.IsNullOrEmpty(_projectfilename))
-                    throw new Exception("Zip-File contains no valid Step5 Project !");
-           
+            if (string.IsNullOrEmpty(_projectfilename))
+                throw new Exception("Zip-File contains no valid Step5 Project !");
+
             ProjectFile = filename;
 
             LoadProject();
@@ -76,10 +80,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             ProjectName = System.Text.Encoding.UTF7.GetString(s5ProjectByteArray, 0x08, 8);
 
             //Read the Project Size
-            Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15]*0x100;
+            Size = s5ProjectByteArray[0x14] + s5ProjectByteArray[0x15] * 0x100;
 
             //Create the main Project Folder
-            ProjectStructure = new Step5ProgrammFolder() {Project = this, Name = this.ToString()};
+            ProjectStructure = new Step5ProgrammFolder() { Project = this, Name = this.ToString() };
             _allFolders.Add(ProjectStructure);
 
             //int startpos = s5ProjectByteArray[0x12] * 0x80;
@@ -90,12 +94,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             for (int j = 0; j < anz_sections; j++)
             {
-                int pos = 0x44 + j*19;
-                sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16]*0x100);
+                int pos = 0x44 + j * 19;
+                sections_lst.Add(s5ProjectByteArray[pos + 15] + s5ProjectByteArray[pos + 16] * 0x100);
             }
 
 
-            Step5BlocksFolder blkFld = new Step5BlocksFolder() {Name = "Blocks", Project = this, Parent = ProjectStructure};
+            Step5BlocksFolder blkFld = new Step5BlocksFolder() { Name = "Blocks", Project = this, Parent = ProjectStructure };
             BlocksFolder = blkFld;
             ProjectStructure.SubItems.Add(blkFld);
 
@@ -107,7 +111,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
 
             foreach (int secpos in sections_lst)
             {
-                int section_start = secpos*0x80;
+                int section_start = secpos * 0x80;
                 /* The len for a Section is not always calculated right, so if the Section does not begin with the filename add 0x80 until it works */
                 /* But I don't know why it's wrong */
 
@@ -136,7 +140,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 for (int j = 0; j < anzbst; j++)
                 {
                     byte[] tmp = new byte[15];
-                    Array.Copy(s5ProjectByteArray, section_start + 68 + j*15, tmp, 0, 15);
+                    Array.Copy(s5ProjectByteArray, section_start + 68 + j * 15, tmp, 0, 15);
                     bstHeaders.Add(tmp);
                 }
 
@@ -154,7 +158,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 */
 
                 //Don't know wich Information is in the Section Header!
-                int section_header_size = s5ProjectByteArray[section_start + 18]*0x80;
+                int section_header_size = s5ProjectByteArray[section_start + 18] * 0x80;
 
 
 
@@ -166,7 +170,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     //    n += 0x80;
 
                     while (akanz < anzbst && n + 1 < s5ProjectByteArray.Length)
-                        //n < section_start + section_size)                       
+                    //n < section_start + section_size)                       
                     {
                         akanz++;
                         int len = 0;
@@ -294,23 +298,23 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             if (_showDeleted)
             {
                 //Read also the deleted Blocks, that means, don't use the Section Headers ...
-                int akpos = s5ProjectByteArray[0x12]*0x80;
+                int akpos = s5ProjectByteArray[0x12] * 0x80;
 
                 while (akpos <= s5ProjectByteArray.Length - 0x80)
                 {
                     while (!IsCurrentPosABlockStart(s5ProjectByteArray, akpos) &&
                            akpos <= s5ProjectByteArray.Length - 0x80)
                         akpos += 0x80;
-                    
+
                     if (akpos <= s5ProjectByteArray.Length - 0x80)
                     {
                         bool blkExists = ByteAddressOFExistingBlocks.Contains(akpos);
-                        var tmp=AddBlockInfo(s5ProjectByteArray, ref akpos, blkFld, null);
+                        var tmp = AddBlockInfo(s5ProjectByteArray, ref akpos, blkFld, null);
                         if (!blkExists)
                         {
                             tmp.Deleted = true;
                             blkFld.step5BlocksinfoList.Add(tmp);
-                        }                        
+                        }
                     }
                 }
             }
@@ -319,7 +323,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             {
                 Stream symTabStream = _ziphelper.GetReadStream(_projectfilename.ToLower().Replace("st.s5d", "z0.seq"));
 
-                SymbolTable symtab=new SymbolTable();
+                SymbolTable symtab = new SymbolTable();
                 symtab.LoadSymboltable(symTabStream);
                 symTabStream.Close();
                 symtab.Parent = ProjectStructure;
@@ -328,7 +332,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 _allFolders.Add(symtab);
             }
 
-            var refFld = new ReferenceData((Step5ProgrammFolder) ProjectStructure, this);
+            var refFld = new ReferenceData((Step5ProgrammFolder)ProjectStructure, this);
             ProjectStructure.SubItems.Add(refFld); // { Parent = ProjectStructure, Project = this });
             _allFolders.Add(refFld);
 
@@ -470,7 +474,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 retVal += "(zipped)";
             if (_showDeleted == true)
                 retVal += " (show deleted)";
-            return retVal;            
+            return retVal;
         }
-    }    
+    }
 }
