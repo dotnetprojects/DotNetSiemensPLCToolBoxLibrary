@@ -459,6 +459,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V20
                     return retVal;
                 }
             }
+
+            public override ProjectFolder CreateFolder(string name)
+            {
+                var gp = group.Groups.Create(name);
+                var newFld = new TIAOpennessVariablesFolder((Step7ProjectV20)Project, ControllerFolder, gp);
+                newFld.Name = gp.Name;
+                newFld.Parent = this;
+                this.SubItems.Add(newFld);
+                return newFld;
+            }
+
+            public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
+            {
+                this.group.TagTables.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
+            }
         }
 
         public class TIAOpennessWatchTable : ITIAWatchTable

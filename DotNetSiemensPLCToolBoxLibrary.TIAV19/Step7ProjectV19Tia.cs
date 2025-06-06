@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -458,6 +457,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles.V19
                     }
                     return retVal;
                 }
+            }
+
+            public override ProjectFolder CreateFolder(string name)
+            {
+                var gp = group.Groups.Create(name);
+                var newFld = new TIAOpennessVariablesFolder((Step7ProjectV19)Project, ControllerFolder, gp);
+                newFld.Name = gp.Name;
+                newFld.Parent = this;
+                this.SubItems.Add(newFld);
+                return newFld;
+            }
+
+            public override void ImportFile(FileInfo file, bool overwrite, bool importFromSource)
+            {
+                this.group.TagTables.Import(file, overwrite ? ImportOptions.Override : ImportOptions.None);
             }
         }
 

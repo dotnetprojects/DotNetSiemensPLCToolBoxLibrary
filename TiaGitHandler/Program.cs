@@ -242,6 +242,12 @@ namespace TiaGitHandler
             skippedBlocksList.ForEach(i => Console.WriteLine("{0}", i));
             Console.WriteLine();
             Console.WriteLine(skippedBlocksList.Count() + " blocks were skipped");
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Export finished!");
+
             if (!hasArgs)
                 Console.ReadKey();
         }
@@ -1234,6 +1240,7 @@ namespace TiaGitHandler
             DeleteDir(path);
         }
 
+        static int DeleteDirCounter = 0;
         private static void DeleteDir(string dir)
         {
             try
@@ -1243,10 +1250,16 @@ namespace TiaGitHandler
             }
             catch (IOException)
             {
+                DeleteDirCounter++;
+                if (DeleteDirCounter > 10)
+                    throw;
                 DeleteDir(dir);
             }
             catch (UnauthorizedAccessException)
             {
+                DeleteDirCounter++;
+                if (DeleteDirCounter > 10)
+                    throw;
                 DeleteDir(dir);
             }
         }
