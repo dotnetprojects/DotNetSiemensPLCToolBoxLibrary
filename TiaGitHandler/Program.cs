@@ -19,6 +19,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using TiaGitHandler.Properties;
 using Application = System.Windows.Application;
+using InvalidOperationException = System.InvalidOperationException;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -180,6 +181,17 @@ namespace TiaGitHandler
                     {
                         credentials.Password.AppendChar(c);
                     }
+                }
+
+                var version = file.Substring(file.Length - 2, 2);
+
+                try
+                {
+                    TiaOpennessWhitelist.EnsureWhitelistEntry(version);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
                 }
 
                 if (attach)
