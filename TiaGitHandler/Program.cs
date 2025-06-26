@@ -97,6 +97,23 @@ namespace TiaGitHandler
                         Console.WriteLine("Bitte S7 projekt als Parameter angeben!");
                         return;
                     }
+                    var version = file.Substring(file.Length - 2, 2) + ".0";
+                    try
+                    {
+                        TiaOpennessWhitelist.EnsureWhitelistEntry(version);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Console.WriteLine($"Security exception cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
 
                     if (Path.GetExtension(file) == ".ap15_1" || Path.GetExtension(file) == ".ap16")
                     {
@@ -127,8 +144,25 @@ namespace TiaGitHandler
                 else if (res != null)
                 {
                     var ver = ask.Result as string;
-                    prj = Projects.AttachProject(ver);
+                   
+                    try
+                    {
+                        TiaOpennessWhitelist.EnsureWhitelistEntry(ver + ".0");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Console.WriteLine($"Authorization context to low cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
 
+                    prj = Projects.AttachProject(ver);
                     exportPath = Path.GetDirectoryName(prj.ProjectFile);
                     exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
                 }
@@ -183,7 +217,7 @@ namespace TiaGitHandler
                     }
                 }
 
-                var version = file.Substring(file.Length - 2, 2);
+                var version = file.Substring(file.Length - 2, 2) + ".0";
 
                 try
                 {
@@ -193,6 +227,15 @@ namespace TiaGitHandler
                 {
                     Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
                 }
+                catch (SecurityException ex)
+                {
+                    Console.WriteLine($"Security exception cannot set TIA whitelist registry entry: {ex.Message}");
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
+                }
+
 
                 if (attach)
                 {
