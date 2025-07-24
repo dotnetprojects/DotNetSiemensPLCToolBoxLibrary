@@ -759,8 +759,8 @@ extern "C" {
 		Functions to load blocks from PLC:
 		*/
 	EXPORTSPEC void DECL2 _daveConstructUpload(PDU *p, char blockType, int blockNr); // char or uc,to decide
-	EXPORTSPEC void DECL2 _daveConstructDoUpload(PDU * p, int uploadID);
-	EXPORTSPEC void DECL2 _daveConstructEndUpload(PDU * p, int uploadID);
+	EXPORTSPEC void DECL2 _daveConstructDoUpload(PDU * p, uc *uploadID);
+	EXPORTSPEC void DECL2 _daveConstructEndUpload(PDU * p, uc *uploadID);
 
 	/*
 		Functions to load files from NC:
@@ -865,9 +865,9 @@ extern "C" {
 	/*
 		PLC program read functions:
 		*/
-	EXPORTSPEC int DECL2 initUpload(daveConnection * dc, char blockType, int blockNr, int * uploadID); // char or uc,to decide
-	EXPORTSPEC int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, int uploadID);
-	EXPORTSPEC int DECL2 endUpload(daveConnection*dc, int uploadID);
+	EXPORTSPEC int DECL2 initUpload(daveConnection * dc, char blockType, int blockNr, uc *uploadID); // char or uc,to decide
+	EXPORTSPEC int DECL2 doUpload(daveConnection*dc, int * more, uc**buffer, int*len, uc *uploadID);
+	EXPORTSPEC int DECL2 endUpload(daveConnection*dc, uc *uploadID);
 
 	/*
 		NC file read functions:

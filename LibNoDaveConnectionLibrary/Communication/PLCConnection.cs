@@ -171,7 +171,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
         private async Task ConnectAsync(TimeSpan connectTimeout)
         {
-            _fds.rfd = IntPtr.Zero;
+            _fds.rfd = 0;
 
             if (_tcpClient != null)
             {
@@ -216,7 +216,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
             Logger?.Invoke("socket thread - got socket pointer:" + _tcpClient.Client.Handle.ToString());
 
-            _fds.rfd = _tcpClient.Client.Handle;
+            _fds.rfd = _tcpClient.Client.Handle.ToInt32();
         }
 
         #region General
@@ -266,7 +266,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         connectionType = 50;
                         _errorCodeConverter = libnodave.daveStrerror;
                         _fds.rfd = libnodave.openS7online(_configuration.EntryPoint, 0);
-                        if (_fds.rfd.ToInt32() == -1)
+                        if (_fds.rfd == -1)
                         {
                             _NeedDispose = false;
                             throw new Exception("Error: " + libnodave.daveStrS7onlineError());
@@ -305,7 +305,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
 
                     //if the socket handle still has its default value after connection
                     //this means it was an IP connection type, and it did not succed
-                    if (_fds.rfd == IntPtr.Zero && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Automatic_TCP_Detection)
+                    if (_fds.rfd == 0 && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Automatic_TCP_Detection)
                     {
                         _NeedDispose = false;
                         throw new Exception("Error: Timeout Connecting the IP (" + _configuration.CpuIP + ":" +
@@ -313,7 +313,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                     }
 
                     //if the read handle is still null or even has an error code, except for Simatic NEt connectoins
-                    if ((_configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Automatic_TCP_Detection && _fds.rfd.ToInt32() == 0) || _fds.rfd.ToInt32() < 0)
+                    if ((_configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Without_TCP && _configuration.ConnectionType != LibNodaveConnectionTypes.Use_Step7_DLL_Automatic_TCP_Detection && _fds.rfd  == 0) || _fds.rfd  < 0)
                     {
                         _NeedDispose = false;
                         throw new Exception(
@@ -4023,7 +4023,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication
                         case LibNodaveConnectionTypes.Netlink_Pro:
                             _tcpClient.Close();
                             _tcpClient = null;
-                            _fds.rfd = IntPtr.Zero;
+                            _fds.rfd = 0;
                             break;
                     }
             }
