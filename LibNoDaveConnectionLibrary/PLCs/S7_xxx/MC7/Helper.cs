@@ -107,7 +107,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             else if (DataType == S7DataRowType.DINT)
                 return Int32.Parse(Value.Replace("L#", ""));
             else if (DataType == S7DataRowType.REAL) 
-                return float.Parse(Value.Replace('.',','));
+                // Handle Max/Min REAL values accordingly (e.g., "-3.402823e+038" or "3.402823e+038")
+                return float.TryParse(Value.Replace(".", ","), out float result) 
+                    ? result 
+                    : Value.StartsWith("-") ? float.MinValue : float.MaxValue;
             else if (DataType == S7DataRowType.S5TIME)
                 return Helper.GetTimespanFromS5TimeorTime(Value);
             else if (DataType == S7DataRowType.TIME)
