@@ -48,6 +48,7 @@ Library specific:
 #define DECL2
 #include <time.h>
 #include <sys/time.h>
+#include <sys/socket.h>
 #endif
 
 #ifdef HAVE_UNISTD
@@ -611,7 +612,7 @@ void DECL2 daveAddDbRead400ToReadRequest(PDU *p, int DBnum, int offset, int byte
 #endif
 
 #ifdef DEBUG_CALLS
-	LOG6("daveAddDbRead400ToReadRequest(PDU:%p db:%p offset:%p byteCount:%p)\n", p, DBnum, offset, byteCount);
+	LOG5("daveAddDbRead400ToReadRequest(PDU:%p db:%p offset:%p byteCount:%p)\n", p, DBnum, offset, byteCount);
 	FLUSH;
 #endif
 
@@ -670,7 +671,7 @@ void DECL2 daveAddSymbolToReadRequest(PDU *p, void * completeSymbol, int complet
 
 void DECL2 daveAddSymbolVarToReadRequest(PDU *p, void * completeSymbol, int completeSymbolLength) {
 #ifdef DEBUG_CALLS
-	LOG6("daveAddSymbolVarToReadRequest(PDU:%p symbol:%s)\n", p, completeSymbol);
+	LOG3("daveAddSymbolVarToReadRequest(PDU:%p symbol:%s)\n", p, completeSymbol);
 	FLUSH;
 #endif
 
@@ -1791,7 +1792,7 @@ int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 			/*		printf("result %d: %d  %d %d %d\n",i, *q,q[1],q[2],q[3]); */
 			if (daveDebug & daveDebugPDU)
 			{
-				LOG2("daveExecReadRequest result %d: %d  %d %d %d\n", i, *q, q[1], q[2], q[3]);
+				//LOG2("daveExecReadRequest result %d: %d  %d %d %d\n", i, *q, q[1], q[2], q[3]);
 				FLUSH;
 			}
 			if ((*q == 255) && (rlen>4)) {
@@ -1825,7 +1826,7 @@ int DECL2 daveExecReadRequest(daveConnection * dc, PDU *p, daveResultSet* rl){
 			/*		printf("Store result %d length:%d\n", i, len); */
 			if (daveDebug & daveDebugPDU)
 			{
-				LOG2("Store result %d length:%d\n", i, len);
+				//LOG2("Store result %d length:%d\n", i, len);
 				FLUSH;
 			}
 			c2->length = len;
@@ -1949,7 +1950,7 @@ int DECL2 daveUseResultBuffer(daveResultSet * rl, int n, void * buffer){
 	daveResult * dr;
 	if (daveDebug & daveDebugAll)
 	{
-		LOG2("daveUseResultBuffer(result set:%p, number:%d)\n", rl, n);
+		//LOG2("daveUseResultBuffer(result set:%p, number:%d)\n", rl, n);
 	}
 	if (rl == NULL)
 	{
@@ -6336,10 +6337,10 @@ int DECL2 daveGetProgramBlock(daveConnection * dc, int blockType, int number, ch
 		return daveGetS5ProgramBlock(dc, blockType, number, buffer, length);
 	}
 
-	res = initUpload(dc, blockType, number, &uploadID);
+	res = initUpload(dc, blockType, number, bb);
 	if (res != 0) return res;
 	do {
-		res = doUpload(dc, &more, &bb, &len, uploadID);
+		res = doUpload(dc, &more, &bb, &len, (uc*)uploadID);
 		totlen += len;
 		if (res != 0) return res;
 	} while (more);
@@ -6549,7 +6550,7 @@ int DECL2 daveGetNCProgram(daveConnection *dc, const char *filename, uc *buffer,
 	len = 0;
 	totlen = 0;
 
-	res = initUploadNC(dc, filename, &uploadID);
+	res = initUploadNC(dc, filename, bb);
 	if (res != 0) return res;
 	do {
 		res = doUploadNC(dc, &more, &bb, &len, uploadID);
@@ -7847,7 +7848,7 @@ int DECL2 _daveSCP_send(int fd, uc * reqBlock) {
 	fdr->offset_1 = 80; //Offset of the Begin of userdata (but the 4 first unkown bytes are not count)	
 
 	if (fdr->application_block_subsystem == 0xE4)	//Fix for PLCSim
-		Sleep(50);									//Fix for PLCSim
+		sleep(50);									//Fix for PLCSim
 
 	return SCP_send(fd, fdr->seg_length_1 + fdr->headerlength, reqBlock);
 }
@@ -7858,7 +7859,7 @@ int daveSCP_receive(int h, uc * buffer) {
 	fdr = (S7OexchangeBlock*)buffer;
 
 	if (fdr->application_block_subsystem == 0xE4)	//Fix for PLCSim
-		Sleep(50);									//Fix for PLCSim
+		sleep(50);									//Fix for PLCSim
 
 	res = SCP_receive(h, 0xFFFF, &datalen, sizeof(S7OexchangeBlock), buffer);
 	if (daveDebug & daveDebugByte) {

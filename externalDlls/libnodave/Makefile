@@ -12,11 +12,11 @@
 #
 # To test with g++ which does stricter type checking:
 #
-##CC=g++ 
-CFLAGS=-Wall -Winline -DLINUX -DDAVE_LITTLE_ENDIAN
-CTFLAGS=-Wall -Winline -fPID -DLINUX -DDAVE_LITTLE_ENDIAN
-CPPFLAGS=-Wall -Winline -DLINUX -DDAVE_LITTLE_ENDIAN
-#
+CC=gcc
+CFLAGS=-Wall -Winline -DLINUX -DDAVE_LITTLE_ENDIAN -fPIC 
+CTFLAGS=-Wall -Winline -fPID -DLINUX -DDAVE_LITTLE_ENDIAN -fPIC
+CPPFLAGS=-Wall -Winline -DLINUX -DDAVE_LITTLE_ENDIAN -fPIC 
+# 
 # The following is needed to enable workarounds for statements that do
 # not work on (some?) ARM processors:
 # It also helped on some machine running HP-UX.

@@ -34,7 +34,8 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
-
+#include "nodave.h"
+#include "log2.h"
 /* The following two lines seem to be necessary for FreeBSD and do no harm on Linux */
 
 #include <netinet/in.h>
