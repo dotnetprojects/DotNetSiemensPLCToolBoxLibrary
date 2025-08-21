@@ -46,8 +46,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         */
         public struct daveOSserialType
         {
-            public volatile IntPtr rfd;
-            public volatile IntPtr wfd;
+            public int rfd;
+            public int wfd;
         }
         /*
             Protocol types to be used with new daveInterface:
@@ -1966,16 +1966,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #else
         [DllImport("__Internal", EntryPoint = "setPort")]
 #endif
-        public static extern IntPtr setPort64([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
+        public static extern int setPort64([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "setPort")]
 #else
         [DllImport("__Internal", EntryPoint = "setPort")]
 #endif
-        public static extern IntPtr setPort32([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
+        public static extern int setPort32([MarshalAs(UnmanagedType.LPStr)] string portName, [MarshalAs(UnmanagedType.LPStr)] string baud, int parity);
 
-        public static IntPtr setPort(string portName, string baud, int parity)
+        public static int setPort(string portName, string baud, int parity)
         {
             if (IntPtr.Size == 8)
                 return setPort64(portName, baud, parity);
@@ -2011,7 +2011,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "openS7online")]
-        public static extern IntPtr openS7online64(
+        public static extern int openS7online64(
             [MarshalAs(UnmanagedType.LPStr)] string portName,
             int hwnd
             );
@@ -2021,7 +2021,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "openS7online")]
-        public static extern IntPtr openS7online32(
+        public static extern int openS7online32(
             [MarshalAs(UnmanagedType.LPStr)] string portName,
             int hwnd
             );
@@ -2029,7 +2029,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
         public static IntPtr openS7online(string portName, int hwnd) { return IntPtr.Zero; }
 #endif
 
-        public static IntPtr openS7online(string portName, int hwnd)
+        public static int openS7online(string portName, int hwnd)
         {
             if (IntPtr.Size == 8)
                 return openS7online64(portName, hwnd);
@@ -2049,16 +2049,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 #else
         [DllImport("__Internal", EntryPoint = "closePort")]
 #endif
-        protected static extern int closePort64(IntPtr port);
+        protected static extern int closePort64(int port);
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "closePort")]
 #else
         [DllImport("__Internal", EntryPoint = "closePort")]
 #endif
-        protected static extern int closePort32(IntPtr port);
+        protected static extern int closePort32(int port);
 
-        public static int closePort(IntPtr port)
+        public static int closePort(int port)
         {
             if (IntPtr.Size == 8)
                 return closePort64(port);
@@ -2088,19 +2088,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.Communication.LibNoDave
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod64.dll", EntryPoint = "closeS7online")]
-        public static extern int closeS7online64(IntPtr port);
+        public static extern int closeS7online64(int port);
 #else
         public static int closeS7online(IntPtr port) { return 0; }
 #endif
 
 #if !IPHONE
         [DllImport("libnodave_jfkmod.dll", EntryPoint = "closeS7online")]
-        public static extern int closeS7online32(IntPtr port);
+        public static extern int closeS7online32(int port);
 #else
         public static int closeS7online(IntPtr port) { return 0; }
 #endif
 
-        public static int closeS7online(IntPtr port)
+        public static int closeS7online(int port)
         {
             if (IntPtr.Size == 8)
                 return closeS7online64(port);
