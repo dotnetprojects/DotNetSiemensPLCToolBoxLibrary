@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -13,30 +15,29 @@ using DotNetSiemensPLCToolBoxLibrary.DataTypes.Network;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
-using Newtonsoft.Json;
 
 namespace SdaTest
 {
     public class DeviceInfoEthernetCommunication
     {
-        [JsonProperty("ip_address")] public string IpAddress { get; set; }
-        [JsonProperty("subnet_mask")] public string SubnetMask { get; set; }
+        [JsonPropertyName("ip_address")] public string IpAddress { get; set; }
+        [JsonPropertyName("subnet_mask")] public string SubnetMask { get; set; }
     }
 
     public class DeviceInfo
     {
-        [JsonProperty("name")] public string Name { get; set; }
-        [JsonProperty("description")] public string Description { get; set; }
-        [JsonProperty("order_number")] public string OrderNumber { get; set; }
-        [JsonProperty("device_type")] public string DeviceType { get; set; }
+        [JsonPropertyName("name")] public string Name { get; set; }
+        [JsonPropertyName("description")] public string Description { get; set; }
+        [JsonPropertyName("order_number")] public string OrderNumber { get; set; }
+        [JsonPropertyName("device_type")] public string DeviceType { get; set; }
 
-        [JsonProperty("origin_device_type")]
+        [JsonPropertyName("origin_device_type")]
         public string OriginDeviceType { get; set; }
 
-        [JsonProperty("ethernet_communication")]
+        [JsonPropertyName("ethernet_communication")]
         public List<DeviceInfoEthernetCommunication> EthernetCommunication { get; set; }
 
-        [JsonProperty("password_protected")]
+        [JsonPropertyName("password_protected")]
         public bool PasswordProtected { get; set; }
     }
 
@@ -46,8 +47,13 @@ namespace SdaTest
         private const string CpuDir = "cpu";
         private const string CpDir = "cp";
         private const string SymbolsDir = "symbols";
+        private const string InterfacesDir = "interfaces";
         private const string SourcesDir = "sources";
         private const string BlocksDir = "blocks";
+
+        // These dictionaries are storing the file paths for the symbols and interfaces for given CPUs
+        private static Dictionary<string, string> _symbolsFilePaths = new Dictionary<string, string>();
+        private static Dictionary<string, XElement> _interfacesXmls = new Dictionary<string, XElement>();
 
         private static void CreateWorkingDirectory(string directory, bool cleanup = false)
         {
@@ -59,46 +65,98 @@ namespace SdaTest
             Directory.CreateDirectory(directory);
         }
 
+        private static void FailIfAnyErrors()
+        {
+            if (_failures.Count != 0) throw new Exception("Conversion Failed");
+            
+            Console.WriteLine("Export finished successfully.");
+        }
+
+        private class ExtractionFailure
+        {
+            public string Scope { get; set; } = "";
+            public string Path { get; set; } = "";
+            public string Name { get; set; } = "";
+            public string Details { get; set; } = "";
+
+        }
+
+        private static readonly List<ExtractionFailure> _failures = new();
+
+        private static void AddFailure(string scope, string path, string name, string errorMessage)
+        {
+            
+            Console.WriteLine($"[FAIL] [{scope}] {path}/{name}: {errorMessage}");
+            _failures.Add(new ExtractionFailure
+            {
+                Scope = scope ?? "",
+                Path = path ?? "",
+                Name = name ?? "",
+                Details = errorMessage
+            });
+        }
+
         public static void Export(string projectPath, string outputPath, string? username = null,
             string? password = null)
         {
-            _outputDir = outputPath;
-            CreateWorkingDirectory(_outputDir);
-            CreateWorkingDirectory(Path.Combine(_outputDir, CpuDir), true);
-            CreateWorkingDirectory(Path.Combine(_outputDir, CpDir), true);
-            CreateWorkingDirectory(Path.Combine(_outputDir, SymbolsDir), true);
-            CreateWorkingDirectory(Path.Combine(_outputDir, SourcesDir), true);
-            CreateWorkingDirectory(Path.Combine(_outputDir, BlocksDir), true);
-
-            Credentials? credentials = null;
-
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            try
             {
-                credentials = new Credentials() { Username = username, Password = new System.Security.SecureString() };
-                foreach (var c in password)
+                _outputDir = outputPath;
+                CreateWorkingDirectory(_outputDir);
+                CreateWorkingDirectory(Path.Combine(_outputDir, CpuDir), true);
+                CreateWorkingDirectory(Path.Combine(_outputDir, CpDir), true);
+                CreateWorkingDirectory(Path.Combine(_outputDir, SymbolsDir), true);
+                CreateWorkingDirectory(Path.Combine(_outputDir, InterfacesDir), true);
+                CreateWorkingDirectory(Path.Combine(_outputDir, SourcesDir), true);
+                CreateWorkingDirectory(Path.Combine(_outputDir, BlocksDir), true);
+
+                Credentials? credentials = null;
+
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
                 {
-                    credentials.Password.AppendChar(c);
+                    credentials = new Credentials() { Username = username, Password = new System.Security.SecureString() };
+                    foreach (var c in password)
+                    {
+                        credentials.Password.AppendChar(c);
+                    }
                 }
+
+                var project = Projects.LoadProject(projectPath, false, credentials);
+                // Setting the project language here (always use English)
+
+                if (project == null)
+                {
+                    throw new Exception("ERROR: Project file invalid or corrupted. No s7p file found in the project-archive.");
+                }
+
+                project.ProjectLanguage = MnemonicLanguage.English;
+
+                var projectItem = new XElement("ProjectItem",
+                    new XAttribute("Name", "Project"),
+                    new XAttribute("Type", "Folder"));
+
+                // Parse the project and create the XML structure and write the XML files to the outputPath
+                AddXmlNodes(projectItem, project.ProjectStructure.SubItems);
+
+                // Add all interface XMLs
+                foreach (var interfaceXml in _interfacesXmls)
+                {
+                    CreateFile(interfaceXml.Value, InterfacesDir, interfaceXml.Key, "S7Interface");
+                }
+
+                var xmlDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), projectItem);
+                xmlDocument.Save(Path.Combine(outputPath, "project_tree.xml"));
+
+                var stationConfigurations = project.ProjectStructure.SubItems
+                    .FindAll(sc => sc is StationConfigurationFolder)
+                    .ConvertAll(sc => (StationConfigurationFolder)sc);
+                GenerateDeviceConnectionInfo(stationConfigurations);
+                FailIfAnyErrors();
             }
-
-            var project = Projects.LoadProject(projectPath, false, credentials);
-            // Setting the project language here (always use English)
-            project.ProjectLanguage = MnemonicLanguage.English;
-
-            var projectItem = new XElement("ProjectItem",
-                new XAttribute("Name", "Project"),
-                new XAttribute("Type", "Folder"));
-
-            // Parse the project and create the XML structure and write the XML files to the outputPath
-            AddXmlNodes(projectItem, project.ProjectStructure.SubItems);
-
-            var xmlDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), projectItem);
-            xmlDocument.Save(Path.Combine(outputPath, "project_tree.xml"));
-
-            var stationConfigurations = project.ProjectStructure.SubItems
-                .FindAll(sc => sc is StationConfigurationFolder)
-                .ConvertAll(sc => (StationConfigurationFolder)sc);
-            GenerateDeviceConnectionInfo(stationConfigurations);
+            catch
+            {
+                throw;
+            }
         }
 
         private static string HashContent(string content)
@@ -106,6 +164,71 @@ namespace SdaTest
             var sha256 = SHA256.Create();
             var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(content));
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        // New XML sanitization helpers
+        // Method to determine if a character is valid for XML
+        private static bool IsValidXmlChar(char c)
+        {
+            return (c == 0x9 ||
+                    c == 0xA ||
+                    c == 0xD ||
+                    (c >= 0x20 && c <= 0xD7FF) ||
+                    (c >= 0xE000 && c <= 0xFFFD) ||
+                    (c >= 0x10000 && c <= 0x10FFFF));
+        }
+
+        private static string SanitizeXmlString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+
+            var chars = input.ToCharArray();
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (!IsValidXmlChar(chars[i]))
+                {
+                    // Replace invalid char; you can also choose to skip it instead
+                    chars[i] = '?';
+                }
+            }
+
+            return new string(chars);
+        }
+
+        private static void SanitizeElementInPlace(XElement element)
+        {
+            // Sanitize attributes
+            foreach (var attr in element.Attributes())
+            {
+                if (!string.IsNullOrEmpty(attr.Value))
+                {
+                    attr.Value = SanitizeXmlString(attr.Value);
+                }
+            }
+
+            // Sanitize text nodes and recurse into child elements
+            foreach (var node in element.Nodes().ToList())
+            {
+                if (node is XText textNode)
+                {
+                    textNode.Value = SanitizeXmlString(textNode.Value);
+                }
+                else if (node is XElement childElement)
+                {
+                    SanitizeElementInPlace(childElement);
+                }
+            }
+        }
+
+        private static XElement SanitizeXElement(XElement element)
+        {
+            // Work on a clone so we don't mutate the original
+            var clone = new XElement(element);
+            SanitizeElementInPlace(clone);
+            return clone;
         }
 
         /**
@@ -118,10 +241,16 @@ namespace SdaTest
             var relativeFilePath = Path.Combine(subDirectory, hashedFileName);
             var absoluteFilePath = Path.Combine(_outputDir, relativeFilePath);
             var xmlRelativeFilePath = $"{subDirectory}/{hashedFileName}";
-            var newXmlDoc = new XDocument(item);
+
+            // *** IMPORTANT: sanitize the entire XElement tree before writing ***
+            var sanitizedItem = SanitizeXElement(item);
+
+            var newXmlDoc = new XDocument(sanitizedItem);
             var newXmlContent = newXmlDoc.ToString();
+
             File.WriteAllText(absoluteFilePath, newXmlContent);
             var fileHash = HashContent(newXmlContent);
+
             return new XElement("File", new XAttribute("DiffHash", fileHash),
                 new XAttribute("ContentType", contentType),
                 xmlRelativeFilePath);
@@ -218,8 +347,8 @@ namespace SdaTest
                 var interfaceColumns = new List<string> { "Type", "Module" };
                 var title = masterSystem.Name + " Interfaces";
                 var interfaceAttributes = (from networkInterface in masterSystem.Children
-                    let type = networkInterface.GetType().Name + " (" + networkInterface.NodeId + ")"
-                    select new List<string> { type, networkInterface.Name }).ToList();
+                                           let type = networkInterface.GetType().Name + " (" + networkInterface.NodeId + ")"
+                                           select new List<string> { type, networkInterface.Name }).ToList();
                 tableRoot.Add(CreateSdaAttributeListElement(interfaceAttributes, interfaceColumns, title));
             }
 
@@ -246,7 +375,7 @@ namespace SdaTest
             var tableRoot = new XElement(treeTableType);
             // Set the type of the parent item
             rootXml.SetAttributeValue("Type", treeTableType);
-            
+
             tableRoot.Add(GetNetworkInterfaceList("Network Interfaces", cpFolder.NetworkInterfaces));
             var uniqueCpName = cpFolder.StructuredFolderName;
             rootXml.Add(CreateFile(tableRoot, CpDir, uniqueCpName, treeTableType));
@@ -284,11 +413,17 @@ namespace SdaTest
             }
         }
 
-        private static void AddInterfaceParameters(XElement rootXml, IDataRow parameter)
+        private static void AddInterfaceParameters(XElement rootXml, IDataRow parameter, XElement interfaceXml = null, string blockName = null)
         {
             var interfaceItem = new XElement("interface");
 
             AddInterfaceParameters(interfaceItem, parameter.Children);
+
+            if (interfaceXml != null)
+            {
+                interfaceItem.Add(new XAttribute("Name", blockName));
+                interfaceXml.Add(interfaceItem);
+            }
 
             rootXml.Add(interfaceItem);
         }
@@ -326,16 +461,10 @@ namespace SdaTest
             }
         }
 
-        // Method to determine if a character is valid for XML
-        private static bool IsValidXmlChar(char c)
-        {
-            return (c == 0x9 || c == 0xA || c == 0xD || (c >= 0x20 && c <= 0xD7FF) || (c >= 0xE000 && c <= 0xFFFD) || (c >= 0x10000 && c <= 0x10FFFF));
-        }
-        
         private static void AddBlocks(XElement rootXml, BlocksOfflineFolder blocksOfflineFolder)
         {
             var blocks = blocksOfflineFolder.BlockInfos.Select(blockIt => blockIt.GetBlock());
-            
+
             foreach (var block in blocks)
             {
                 try
@@ -345,13 +474,21 @@ namespace SdaTest
                     var blockContent = new XElement(blockType, new XAttribute("Name", block.BlockName),
                         new XAttribute("Type", blockType));
 
-
                     switch (block)
                     {
                         case S7FunctionBlock s7FunctionBlock:
-                            // TODO: Check the mnemonic language
-                            s7FunctionBlock.MnemonicLanguage = MnemonicLanguage.English;
+                            if (s7FunctionBlock.KnowHowProtection)
+                            {
+                                Console.Error.WriteLine($"Block '{block.BlockName}' is password protected, cannot extract details");
+                                var errorFileItem = new XElement("File", new XAttribute("Protected", "True"));
+                                blockItem.Add(errorFileItem);
+                                rootXml.Add(blockItem);
+                                continue;
+                            }
                             
+                            // Set the mnemonic language to English
+                            s7FunctionBlock.MnemonicLanguage = MnemonicLanguage.English;
+
                             if (!string.IsNullOrEmpty(s7FunctionBlock.Title))
                             {
                                 blockContent.Add(new XAttribute("Title", s7FunctionBlock.Title));
@@ -362,10 +499,27 @@ namespace SdaTest
                                 blockContent.Add(new XAttribute("Description", s7FunctionBlock.Description));
                             }
 
-                            AddInterfaceParameters(blockContent, s7FunctionBlock.Parameter);
+                            var blockName = s7FunctionBlock.BlockName;
+
+                            var parentPath = block.ParentFolder.StructuredFolderName;
+                            var existing = _interfacesXmls.TryGetValue(parentPath, out var interfaceXml);
+                            if (!existing || interfaceXml == null)
+                            {
+                                interfaceXml = new XElement("S7Interface",
+                                    new XAttribute("Name", parentPath),
+                                    new XAttribute("Type", "S7Interface"));
+                                _interfacesXmls[parentPath] = interfaceXml;
+                            }
+
+                            var hashedInterfaceFileName = $"{InterfacesDir}/{HashContent(parentPath)}.xml";
+                            var attributeList = new XElement("AttributeList");
+                            attributeList.Add(new XElement("Attribute", new XAttribute("Name", "SdaS7DeviceBlockInterfaces"), new XAttribute("Value", hashedInterfaceFileName)));
+                            blockItem.Add(attributeList);
+
+                            AddInterfaceParameters(blockContent, s7FunctionBlock.Parameter, interfaceXml, blockName);
 
                             var networksItem = new XElement("Networks");
-                            
+
                             foreach (var fbNetwork in s7FunctionBlock.Networks)
                             {
                                 var networkItem = new XElement("Network", new XAttribute("Title", fbNetwork.Name));
@@ -400,19 +554,20 @@ namespace SdaTest
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(
-                        $"Error when extracting block {block.BlockName} of type {block.BlockType.ToString()} {ex.Message}");
-                    Console.Error.WriteLine(ex.StackTrace);
+                    var errorMessage = $"Error when extracting block {block.BlockName}, {block.ParentFolder.Project.ProjectStructure} of type {block.BlockType.ToString()}. (Block is password protected)";
+
+                    AddFailure("blocks", block.BlockName, block.BlockType.ToString(), errorMessage);
                 }
             }
         }
+
 
         private static void AddSymbols(XElement rootXml, SymbolTable symbolTable)
         {
             var symbolTableType = $"S7{symbolTable.GetType().Name}";
             var symbolTableContent = new XElement(symbolTableType, new XAttribute("Name", symbolTable.Name),
                 new XAttribute("Type", symbolTableType));
-            
+
             // Set the type of the parent item
             rootXml.SetAttributeValue("Type", symbolTableType);
 
@@ -532,9 +687,9 @@ namespace SdaTest
                     });
                 }
 
-
                 var deviceJsonFilePath = Path.Combine(_outputDir, "devices_connection_information.json");
-                File.WriteAllText(deviceJsonFilePath, JsonConvert.SerializeObject(deviceInformation, Formatting.Indented));
+                File.WriteAllText(deviceJsonFilePath,
+                    JsonSerializer.Serialize(deviceInformation, new JsonSerializerOptions { WriteIndented = true }));
 
                 Console.WriteLine("Device information has been written to JSON file.");
             }
