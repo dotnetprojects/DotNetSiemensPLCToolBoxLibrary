@@ -7,8 +7,8 @@ namespace SdaTest
         public static void Main(string[] args)
         {
             Console.WriteLine("Testing...");
-            var projectPath = "/Users/tom/Downloads/broken_s7.zip";
-            var exportPath = "/Users/tom/Downloads/export";
+            var projectPath = "/Users/tom/Downloads/S7/test.zip";
+            var exportPath = "/Users/tom/Downloads/S7/export";
             ProjectConversionCommandHandler.Export(projectPath, exportPath);
         }
     }
