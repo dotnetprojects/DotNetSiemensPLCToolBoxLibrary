@@ -138,7 +138,7 @@ namespace TiaGitHandler
                     }
 
                     exportPath = Path.GetDirectoryName(file);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
 
                 }
                 else if (res != null)
