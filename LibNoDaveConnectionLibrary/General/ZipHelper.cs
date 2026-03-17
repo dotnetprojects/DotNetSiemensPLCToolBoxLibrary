@@ -7,7 +7,7 @@ using ICSharpCode.SharpZipLib.Zip;
 #endif
 
 namespace DotNetSiemensPLCToolBoxLibrary.General
-{    
+{
     public class ZipHelper
     {
 #if SHARPZIPLIB
@@ -98,9 +98,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                     this._zipFile = null;
                     this._zipFile = new ZipFile(file);
                 }
-                catch(Exception)
+                catch (Exception)
                 { }
-            }               
+            }
 #endif
         }
 
@@ -109,7 +109,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #if SHARPZIPLIB
             if (file != null)
             {
-                this._zipFile = new ZipFile(file);                
+                this._zipFile = new ZipFile(file);
             }
 #endif
         }
@@ -118,7 +118,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         {
 #if SHARPZIPLIB
             if (_zipFile != null)
-            {                               
+            {
                 _zipFile.Close();
                 _zipFile = null;
             }
@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #if SHARPZIPLIB
             if (_zipFile == null)
             {
-#endif               
+#endif
                 return new FileStream(file, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite);
 #if SHARPZIPLIB
             }
@@ -141,7 +141,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
                 ZipFile zf = (ZipFile)_zipFile;
                 int fileEntry = zf.FindEntry(file.Replace("\\", "/"), true);
                 return zf.GetInputStream(fileEntry);
-                
+
             }
 #endif
         }
@@ -149,7 +149,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
         public bool IsZipped()
         {
 #if SHARPZIPLIB
-            if (_zipFile!=null)
+            if (_zipFile != null)
                 return true;
 #endif
             return false;
@@ -202,7 +202,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             if (_zipFile == null)
             {
 #endif
-             strm.Close();   
+                strm.Close();
 #if SHARPZIPLIB
             }
             else
@@ -212,9 +212,9 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 
                 int nr = _zipFile.FindEntry(file.Replace("\\", "/"), true);
                 _zipFile.Delete(_zipFile[nr]);
-                
+
                 CustomStaticDataSource sds = new CustomStaticDataSource();
-	            sds.SetStream(strm);
+                sds.SetStream(strm);
                 _zipFile.Add(sds, file.Replace("\\", "/"));
                 _zipFile.CommitUpdate();
                 _zipFile.Close();
@@ -231,7 +231,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
 #endif
         }
 
-       
+
         public long GetStreamLength(string file, Stream strm)
         {
 #if SHARPZIPLIB
@@ -262,11 +262,11 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             {
                 ZipFile zf = (ZipFile)_zipFile;
                 //return zf.ContainsEntry(file.Replace("\\", "/"));
-                int fileEntry = zf.FindEntry(file.Replace("\\","/"), true);
-                return fileEntry >= 0;                    
+                int fileEntry = zf.FindEntry(file.Replace("\\", "/"), true);
+                return fileEntry >= 0;
             }
 #endif
         }
-        
+
     }
 }

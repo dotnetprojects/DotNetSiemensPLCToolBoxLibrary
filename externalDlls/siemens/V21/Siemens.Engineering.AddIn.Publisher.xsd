@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://www.siemens.com/automation/Openness/AddIn/Publisher/V21"
+           elementFormDefault="qualified"
+           xmlns="http://www.siemens.com/automation/Openness/AddIn/Publisher/V21">
+  <xs:element name="PackageConfiguration" type="ConfigurationType"/>
+
+  <xs:complexType name="ConfigurationType">
+    <xs:all>
+      <xs:element name="Author" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="AddInVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Product" type="ProductType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="FeatureAssembly" type="AssemblyType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="AdditionalAssemblies" type="AdditionalAssembliesType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="RequiredPermissions" type="RequiredPermissionsType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Certificates" type="CertificatesType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="DisplayInMultiuser" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="AddInTimeoutConfiguration" type="AddInTimeoutConfigurationType" minOccurs="0" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="ProductType">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Name">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:choice>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Id">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:choice>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Version">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:pattern value="^(\d+\.)?(\d+\.)?(\d+\.)?(\d+)$"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AssemblyType">
+    <xs:choice minOccurs="1" maxOccurs="1">
+      <xs:element name="AssemblyInfo" type="AssemblyInfoType"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="AdditionalAssembliesType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="AssemblyInfo" type="AssemblyInfoType"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="AssemblyInfoType">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Assembly" type="xs:string"/>
+      </xs:choice>
+      <xs:choice minOccurs="0" maxOccurs="1">
+        <xs:element name="Pdb" type="xs:string"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RequiredPermissionsType">
+    <xs:sequence>
+      <xs:choice minOccurs="1">
+        <xs:element name="TIAPermissions" type="TiaPermissionsType" minOccurs="1" maxOccurs="1"/>
+      </xs:choice>
+      <xs:choice minOccurs="0">
+        <xs:element name="SecurityPermissions" type="SecurityPermissionsType" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="UnrestrictedPermissions" type="UnrestrictedPermissionsType" minOccurs="1" maxOccurs="1"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CertificatesType">
+    <xs:sequence>
+        <xs:choice>
+          <xs:element name="SigningCertificate" type="xs:string" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="SigningCertificateThumbprint" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:choice>
+      <xs:element name="AdditionalCertificates" type="AdditionalCertificatesType" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AdditionalCertificatesType">
+    <xs:choice>
+      <xs:element name="Certificate" minOccurs="0" maxOccurs="unbounded"/>
+	    <xs:element name="CertificateThumbprint" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="TiaPermissionsType">
+    <xs:choice minOccurs="1">
+      <xs:element name="TIA.ReadOnly" type="PermissionType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="TIA.ReadWrite" type="PermissionType" minOccurs="1" maxOccurs="1"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="SecurityPermissionsType">
+    <xs:all>
+      <xs:element name="System.Configuration.ConfigurationPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Data.Odbc.OdbcPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Data.OleDb.OleDbPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Data.SqlClient.SqlClientPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Diagnostics.EventLogPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Drawing.Printing.PrintingPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Net.Mail.SmtpPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Net.NetworkInformation.NetworkInformationPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Net.SocketPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Net.WebPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.EnvironmentPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.FileDialogPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.FileIOPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.IsolatedStorageFilePermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.KeyContainerPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.RegistryPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.StorePermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.UIPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.WebBrowserPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.MediaPermission" type="PermissionType" minOccurs="0"/>
+      <xs:element name="System.Security.Permissions.SecurityPermission.UnmanagedCode" type="PermissionType" minOccurs="0"/>
+      <xs:element name="Siemens.Engineering.AddIn.Permissions.ProcessStartPermission" type="PermissionType" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="UnrestrictedPermissionsType">
+    <xs:all>
+      <xs:element name="System.UnrestrictedAccess" type="UnrestrictedPermissionType" minOccurs="1" maxOccurs="1"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="PermissionType">
+    <xs:all>
+      <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="UnrestrictedPermissionType">
+    <xs:all>
+      <xs:element name="JustificationComment" minOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="10"/>
+            <xs:maxLength value="120"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="AddInTimeoutConfigurationType">
+    <xs:all>
+      <xs:element name="ActivationTimeout" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="2000"/>
+            <xs:maxInclusive value="10000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ContextMenuTimeout" minOccurs="0" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:integer">
+            <xs:minInclusive value="200"/>
+            <xs:maxInclusive value="10000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  
+</xs:schema>

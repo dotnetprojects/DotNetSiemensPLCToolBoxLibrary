@@ -66,6 +66,8 @@ namespace TiaImporter
                 prj = Projects.AttachToInstanceWithFilename("19", file);
             else if (file.EndsWith("20"))
                 prj = Projects.AttachToInstanceWithFilename("20", file);
+            else if (file.EndsWith("21"))
+                prj = Projects.AttachToInstanceWithFilename("21", file);
             else
                 prj = Projects.AttachToInstanceWithFilename("15.1", file);
             //var prjV151 = prj as Step7ProjectV15_1;

@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.AddIn.Safety</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider">
+            <summary>
+            Following is the hierarchy of Workflow as described by AddIn framework
+            CaxAddInProvider -Provides-> 
+                 CaxWorkflowAddIn -Gets->
+                     CaxExportWorkflowSupport, CaxImportWorkflowSupport -Gets->
+                       CaxPostExportWorkflowItem,
+                       CaxPreExportWorkflowItem,
+                       CaxPostImportWorkflowItem,
+                       CaxPreImportWorkflowItem  -Execute API
+            This is the starting point for the add-in author to design their workflow extensions
+            Refer to wiki: <!-- --> for more details
+            </summary>    
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider.GetSafetyCompileAddIns">
+            <summary>
+            Gets the collection of reference client AddIns
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider.System#IDisposable#Dispose">
+            <summary>
+            Calls the Dispose(Boolean) method.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider.Dispose(System.Boolean)">
+            <summary>
+            Performs the work of releasing resources.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileAddInProvider.Finalize">
+            <summary>
+            Destruction of AddIn Provider
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowAddIn">
+            <summary>
+            This class provides the base implementation to add-in author to create their Reference client AddIn
+            </summary>    
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowAddIn.SafetyCompileWorkflowSupport">
+            <summary>
+            Gets CaxImportWorkflowSupport. Workflow AddIn (AddIn author, e.g. PCT) should override this method to return
+            their implementation of CaxImportWorkflowSupport
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowAddIn.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowAddIn"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowAddIn.Siemens#Engineering#AddIn#Workflow#Internal#IWorkflowAddIn#GetWorkflowSupport(System.Type)">
+            <summary>
+            Gets WorkflowSupport based on type. It checks for the support type and
+            return the WorkflowSupport instance that matches the type. If none of them matches, return null
+            </summary>
+            <param name="support">WorkflowSupportType</param>
+            <returns>IWorkflowSupport</returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowItem">
+            <summary>
+            This class provides the base implementation to add-in author to create their WorkflowItem
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowItem"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowItem.Execute(System.Collections.Generic.IEnumerable{Siemens.Engineering.IEngineeringObject},Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext)">
+            <summary>
+            Execute method that takes IEngineeringObjects and SafetyCompileContext and has void return type.
+            This method should be overridden by add-in author to provide their implementation
+            </summary>        
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowItem.Rollback(System.Collections.Generic.IEnumerable{Siemens.Engineering.IEngineeringObject},Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext)">
+            <summary>
+            Rollback
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport">
+            <summary>
+            This class provides the base implementation to add-in author to create their log support
+            </summary>    
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.SafetyCompileWorkflowItem">
+            <summary>
+            Gets CaxPostImportWorkflowItem. Workflow AddIn (AddIn author, e.g. PCT) should override this method to return
+            their implementation of CaxPostImportWorkflowItem
+            </summary>
+            <returns>CaxPostImportWorkflowItem</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.InitializeImportSupport">
+            <summary>
+            API to add-in author to initialize the resources.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.DisposeImportSupport">
+            <summary>
+            API to add-in author to dispose the resources.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.Siemens#Engineering#AddIn#Workflow#Internal#IWorkflowSupport#GetWorkflowItem(System.Type)">
+            <summary>
+            Gets WorkflowItem based on type. It checks for the workflowItem type and
+            return the WorkflowItem instance that matches the type. If none of them matches, return null
+            </summary>
+            <param name="workflowItemType"></param>
+            <returns>IWorkflowItem</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.Siemens#Engineering#AddIn#Workflow#Internal#IWorkflowSupport#InitializeSupport">
+            <summary>
+            Mechanism to provide publicAPI to add-in author to have WorkflowSupport initialization
+            (Eg: connect to external systems). The same workflowSupport instance will be used
+            for all workflowItem execution (one session)
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowSupport.Siemens#Engineering#AddIn#Workflow#Internal#IWorkflowSupport#DisposeSupport">
+            <summary>
+            Mechanism to provide publicAPI to add-in author to dispose the resources.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext">
+            <summary>
+            This provides context for Safety compile Add-In
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext.Args">
+            <summary>
+            Returns supported Workflow Arguments associated with Safety compile
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileContext.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs">
+            <summary>
+            Workflow context Args type
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.PlcName">
+            <summary>
+            The name of PLC
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.SafetyCompile.Workflow.SafetyCompileWorkflowArgs.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+    </members>
+</doc>

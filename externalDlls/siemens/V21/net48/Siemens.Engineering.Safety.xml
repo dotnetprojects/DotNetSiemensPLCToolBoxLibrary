@@ -1,0 +1,1959 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.Safety</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.Safety.AssignmentOfBlockNumbers">
+            <summary>
+            Enables access to attributes for configuring block number ranges of system-generated safety blocks.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.FromDB">
+            <summary>
+            Gets or sets the &quot;from DB&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.FromFB">
+            <summary>
+            Gets or sets the &quot;from FB&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.FromFC">
+            <summary>
+            Gets or sets the &quot;from FC&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.ManagementMode">
+            <summary>
+            Gets or sets indicating whether block numbers are system generated or manually assigned.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.ToDB">
+            <summary>
+            Gets or sets the &quot;to DB&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.ToFB">
+            <summary>
+            Gets or sets the &quot;from FB&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.ToFC">
+            <summary>
+            Gets or sets the &quot;to FC&quot; fixed range block number.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.AssignmentOfBlockNumbers.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.BlockNumbersManagementMode">
+            <summary>
+            Defines modes for managing the number blocks of F-system blocks
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.BlockNumbersManagementMode.FSystemManaged">
+            <summary>
+            The number ranges of the generated F-system blocks are managed by the F-system.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.BlockNumbersManagementMode.FixedRange">
+            <summary>
+            The number ranges of the generated F-system blocks are managed by fixed ranges defined by you. -- Ranges can be defined via the &quot;(Db/Fb/Fc)Numbers(To/From)&quot; properties.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.GlobalSettings">
+            <summary>
+            GlobalSettings
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.GlobalSettings.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GenerationOfDefaultFailsafeProgram">
+            <summary>
+            Gets the generation of default failsafe program
+            </summary>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GenerationOfDefaultFailsafeProgram(System.Boolean)">
+            <summary>
+            Sets the generation of default failsafe program
+            </summary>
+            <param name="isGenerationOfDefaultFailsafeProgram">If true then default failsafe program will be generated</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.ManagementOfFailsafeInSoftwareUnitsEnvironment">
+            <summary>
+            Gets the management of failsafe in &apos;Software Units&apos; environment
+            </summary>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.ManagementOfFailsafeInSoftwareUnitsEnvironment(System.Boolean)">
+            <summary>
+            Sets the management of failsafe in &apos;Software Units&apos; environment
+            </summary>
+            <param name="isManagementOfFailsafeInSoftwareUnitsEnvironment">If true then SafetyUnit is supported.</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.SafetyModificationsPossible">
+            <summary>
+            Query whether SafetyModifications are possible.
+            </summary>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.SafetyModificationsPossible(System.Boolean)">
+            <summary>
+            Specify wether changes to an F-Program are possible
+            </summary>
+            <param name="safetyModificationsPossible">If true the Safety access protection is active otherwise changes to an F-program are not allowed</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.UsernameForFChangeHistory">
+            <summary>
+            Retrieves the username to be used for F-change history entries
+            </summary>
+            <returns>System.String</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.UsernameForFChangeHistory(System.String)">
+            <summary>
+            Sets the username to be used for F-change history entries
+            </summary>
+            <param name="usernameForFChangeHistory">Username to be used for F-change history entries</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.GlobalSettings.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.RuntimeGroup">
+            <summary>
+            Enables access to information and methods regarding the Runtime Groups of the Safety program.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.FOBEventClass">
+            <summary>
+            The Event class of the Fail-safe organization block
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.FOBName">
+            <summary>
+            The name of the Fail-safe organization block
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.InfoDbName">
+            <summary>
+            The name of the Runtime Groups Information DB Block
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.MainSafetyBlockIDbName">
+            <summary>
+            The name of the main safety&apos;s IDb block
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.MainSafetyBlockName">
+            <summary>
+            The name of the main safety block
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.MaximumCycleTime">
+            <summary>
+            The Maximum Cycle Time of the Runtime Group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.Name">
+            <summary>
+            The name of the Runtime Group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.PostProcessingName">
+            <summary>
+            The Post processing Block of the Runtime Group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.PreProcessingName">
+            <summary>
+            The Pre processing Block of the Runtime Group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroup.WarnCycleTime">
+            <summary>
+            The Warn Cycle Time of the Runtime Group
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GenerateGlobalFIOStatusBlock">
+            <summary>
+            Creates a global F-I/O status block or overrides it if it already exists
+            </summary>
+            <returns>Siemens.Engineering.SW.Blocks.PlcBlock</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroup.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.RuntimeGroupComposition">
+            <summary>
+            Represents a Safety Runtime Group with its associated information and actions for working with them.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroupComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroupComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroupComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.RuntimeGroupComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Contains(Siemens.Engineering.Safety.RuntimeGroup)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.IndexOf(Siemens.Engineering.Safety.RuntimeGroup)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Create(System.String)">
+            <summary>
+            Creates a new Runtime Group with the given name
+            </summary>
+            <param name="name">The name of the Runtime Group to create</param>
+            <returns>Siemens.Engineering.Safety.RuntimeGroup</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Create(System.String,Siemens.Engineering.SW.Blocks.PlcBlock)">
+            <summary>
+            Creates a new Runtime Group with the given name and MainSafety Function
+            </summary>
+            <param name="name">The name of the Runtime Group to create</param>
+            <param name="function">The Function that should be used as MainSafety</param>
+            <returns>Siemens.Engineering.Safety.RuntimeGroup</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Create(System.String,Siemens.Engineering.SW.Blocks.PlcBlock,Siemens.Engineering.SW.Blocks.PlcBlock)">
+            <summary>
+            Creates a new Runtime Group with the given name, MainSafety Function Block and Instance Data Block
+            </summary>
+            <param name="name">The name of the Runtime Group to create</param>
+            <param name="functionBlock">The Function Block that should be used as MainSafety</param>
+            <param name="instanceDataBlock">The Instance Data Block that should be used for the MainSafety Function Block</param>
+            <returns>Siemens.Engineering.Safety.RuntimeGroup</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Find(System.String)">
+            <summary>
+            Searches for a Runtime Group via the name.
+            </summary>
+            <param name="name">The name of the Runtime Group</param>
+            <returns>Siemens.Engineering.Safety.RuntimeGroup</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.RuntimeGroupComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetyAdministration">
+            <summary>
+            Provides access to Safety-related information and configuration.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.ProgramSignatures">
+            <summary>
+            Provides access to the Safety Signatures of the PLC
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.RuntimeGroups">
+            <summary>
+            Provides access to the RuntimeGroups of the Safety program.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.Settings">
+            <summary>
+            Provides access to the Settings of the Safety program.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.IsLoggedOnToSafetyOfflineProgram">
+            <summary>
+            Query whether the user is logged on
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyAdministration.IsSafetyOfflineProgramPasswordSet">
+            <summary>
+            Query whether a safety program password is set
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.LoginToSafetyOfflineProgram(System.Security.SecureString)">
+            <summary>
+            Logs into the safety program if correct password is given
+            </summary>
+            <param name="currentPassword">Current password to LoginToSafetyOfflineProgram</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.LogoffFromSafetyOfflineProgram">
+            <summary>
+            Log off from the safety program
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.RevokeSafetyOfflineProgramPassword(System.Security.SecureString)">
+            <summary>
+            Removes the safety password if it matches the current password
+            </summary>
+            <param name="currentPassword">Current password to verify</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.SetSafetyOfflineProgramPassword(System.Security.SecureString)">
+            <summary>
+            Sets the safety password if it isn&apos;t set
+            </summary>
+            <param name="newPassword">New Password to set</param>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyAdministration.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetyBaseIdProvider">
+            <summary>
+            Provides access to Safety-related BaseID configuration.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyBaseIdProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GenerateBaseId">
+            <summary>
+            Generates and assigns the FBaseID
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyBaseIdProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetyPrintout">
+            <summary>
+            Service providing Safety Printout functionality for Plus PLCs.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetyPrintout.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Print(Siemens.Engineering.Safety.SafetyPrintoutFilePrinter,System.IO.FileInfo,System.String,Siemens.Engineering.Safety.SafetyPrintoutOption)">
+            <summary>
+            Creates a Safety Printout for the current device item and prints it to a file. If the file already exists, it is overridden. - Returns true on success.
+            </summary>
+            <param name="filePrinter">Installed printer driver which supports printing to a file.</param>
+            <param name="fullOutputPath">Valid output path to a file.</param>
+            <param name="documentLayout">Document layout used for printing (eg. &quot;DocuInfo_ISO_A4_Portrait&quot; or &quot;DocuInfo_Simple_A4_Portrait_Small_Footer&quot;)</param>
+            <param name="documentationOption">Printing option for document format (&quot;All&quot;, &quot;Compact&quot;)</param>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetyPrintout.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetyPrintoutFilePrinter">
+            <summary>
+            Defines the available built-in Windows printer drivers which support printing to file.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetyPrintoutFilePrinter.MicrosoftPrintToPdf">
+            <summary>
+            Represents the &quot;Microsoft Print to PDF&quot; printer driver.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetyPrintoutFilePrinter.MicrosoftXpsDocumentWriter">
+            <summary>
+            Represents the &quot;Microsoft XPS Document Writer&quot; printer driver.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetyPrintoutOption">
+            <summary>
+            Defines the options for Safety Printout.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetyPrintoutOption.All">
+            <summary>
+            Select &quot;All&quot; to print all configuration data of the selected objects
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetyPrintoutOption.Compact">
+            <summary>
+            Select &quot;Compact&quot; to print out an abbreviated version of the project data
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySettings">
+            <summary>
+            Enables access to information and methods regarding the Settings of the Safety program.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.AssignmentOfBlockNumbers">
+            <summary>
+            Provides access to attributes for configuring block number ranges of system-generated safety blocks.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.ActivationOfFChangeHistory">
+            <summary>
+            Indicates whether logging of changes to the Safety program is activated (enabled).
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.CreateDriverInstanceDataBlocksWithoutPrefix">
+            <summary>
+            Gets or sets whether the names of the F-I/O DBs are created without prefix.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.SafetyModeCanBeDisabled">
+            <summary>
+            Gets or sets indicating whether one can prevent the Safety mode for a Safety program from being disabled.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySettings.SafetySystemVersion">
+            <summary>
+            Gets or sets the Safety system version (including version of the F-system blocks and automatically generated F-blocks).
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.CleanSystemGeneratedObjects">
+            <summary>
+            Cleans up the result of the fail-safe compilation.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetApplicableSafetySystemVersions">
+            <summary>
+            A List enumeration with the applicable Safety-System-Versions.
+            </summary>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.Safety.SafetySystemVersion&gt;</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySettings.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySignature">
+            <summary>
+            Provides the Safety Signature.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignature.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignature.Type">
+            <summary>
+            Defines the type of the SafetySignature
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignature.Value">
+            <summary>
+            Provides the safety signature value.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignature.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySignatureComposition">
+            <summary>
+            Composition of SafetySignatures
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.Contains(Siemens.Engineering.Safety.SafetySignature)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.IndexOf(Siemens.Engineering.Safety.SafetySignature)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.Find(Siemens.Engineering.Safety.SafetySignatureType)">
+            <summary>
+            Searches for a SafetySignature by a given signature type
+            </summary>
+            <param name="type">The type of a SafetySignature</param>
+            <returns>Siemens.Engineering.Safety.SafetySignature</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySignatureProvider">
+            <summary>
+            Represents the Safety Signature of an object.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySignatureProvider.Signatures">
+            <summary>
+            Provides the SafetySignatures that belongs to the Parent object.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySignatureProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySignatureType">
+            <summary>
+            Represents the SafetySignature Types
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetySignatureType.BlockOfflineSignature">
+            <summary>
+            Indicates the offline signature of a block
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetySignatureType.CollectiveOfflineSignature">
+            <summary>
+            Indicates the offline collective signature of the safety program
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetySignatureType.SoftwareOfflineSignature">
+            <summary>
+            Indicates the offline software signature of the safety program
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetySignatureType.HardwareOfflineSignature">
+            <summary>
+            Indicates the offline hardware signature of the hardware configuration
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.SafetySignatureType.CommunicationAddressOfflineSignature">
+            <summary>
+            Indicates the offline signature of the communications addresses
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.SafetySystemVersion">
+            <summary>
+            Represents a Safety system version value.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySystemVersion.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.SafetySystemVersion.Value">
+            <summary>
+            The string value of Safety system version.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.SafetySystemVersion.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram">
+            <summary>
+            Load safety program to device
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram.CurrentSelection">
+            <summary>
+            Current Selection for this Configuration.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.Safety.Download.Configurations.SafetyProgram.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.Safety.Download.Configurations.SafetyProgramSelections">
+            <summary>
+            Available Selections for Safety Program configuration.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.Safety.Download.Configurations.SafetyProgramSelections.ConsistentDownload">
+            <summary>
+            Consistent Download
+            </summary>
+        </member>
+    </members>
+</doc>

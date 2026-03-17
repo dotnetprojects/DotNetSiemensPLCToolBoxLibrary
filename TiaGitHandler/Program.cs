@@ -19,6 +19,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using TiaGitHandler.Properties;
 using Application = System.Windows.Application;
+using InvalidOperationException = System.InvalidOperationException;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -83,7 +84,7 @@ namespace TiaGitHandler
                 if (object.Equals(res, false))
                 {
                     OpenFileDialog op = new OpenFileDialog();
-                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1;*.ap16;*.ap17;*.ap18;*.ap19;*.ap20";
+                    op.Filter = "TIA-Portal Project|*.ap13;*.ap14;*.ap15;*.ap15_1;*.ap16;*.ap17;*.ap18;*.ap19;*.ap20;*.ap21";
                     op.CheckFileExists = false;
                     op.ValidateNames = false;
                     var ret = op.ShowDialog();
@@ -95,6 +96,23 @@ namespace TiaGitHandler
                     {
                         Console.WriteLine("Bitte S7 projekt als Parameter angeben!");
                         return;
+                    }
+                    var version = file.Substring(file.Length - 2, 2) + ".0";
+                    try
+                    {
+                        TiaOpennessWhitelist.EnsureWhitelistEntry(version);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Console.WriteLine($"Security exception cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
                     }
 
                     if (Path.GetExtension(file) == ".ap15_1" || Path.GetExtension(file) == ".ap16")
@@ -120,16 +138,33 @@ namespace TiaGitHandler
                     }
 
                     exportPath = Path.GetDirectoryName(file);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
 
                 }
                 else if (res != null)
                 {
                     var ver = ask.Result as string;
-                    prj = Projects.AttachProject(ver);
+                   
+                    try
+                    {
+                        TiaOpennessWhitelist.EnsureWhitelistEntry(ver + ".0");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (SecurityException ex)
+                    {
+                        Console.WriteLine($"Authorization context to low cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
+                    }
 
+                    prj = Projects.AttachProject(ver);
                     exportPath = Path.GetDirectoryName(prj.ProjectFile);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
                 }
                 else
                 {
@@ -165,6 +200,9 @@ namespace TiaGitHandler
                     user = args[3];
                 if (args.Length > 4)
                     password = args[4];
+                if (args.Length > 5)
+                    exportPath = args[5];
+
             }
 
             if (prj == null)
@@ -179,9 +217,31 @@ namespace TiaGitHandler
                     }
                 }
 
+                var version = file.Substring(file.Length - 2, 2) + ".0";
+
+                try
+                {
+                    TiaOpennessWhitelist.EnsureWhitelistEntry(version);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine($"Cannot set TIA whitelist registry entry: {ex.Message}");
+                }
+                catch (SecurityException ex)
+                {
+                    Console.WriteLine($"Security exception cannot set TIA whitelist registry entry: {ex.Message}");
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Console.WriteLine($"Unauthorized access exception cannot set TIA whitelist registry entry: {ex.Message}");
+                }
+
+
                 if (attach)
                 {
-                    if (file.EndsWith("20"))
+                    if (file.EndsWith("21"))
+                        prj = Projects.AttachToInstanceWithFilename("21", file);
+                    else if (file.EndsWith("20"))
                         prj = Projects.AttachToInstanceWithFilename("20", file);
                     else if (file.EndsWith("19"))
                         prj = Projects.AttachToInstanceWithFilename("19", file);

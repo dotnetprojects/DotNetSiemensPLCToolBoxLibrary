@@ -1,0 +1,2899 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.TestSuite</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet">
+            <summary>
+            Represents a TestSet under Application Test
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Name">
+            <summary>
+            Application Test Set name
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.ShowInEditor">
+            <summary>
+            Show the selected item in the editor
+            </summary>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition">
+            <summary>
+            Collection of Application Test Sets
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Contains(Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.IndexOf(Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Find(System.String)">
+            <summary>
+            Find the test set with specified name
+            </summary>
+            <param name="name">TestSet name</param>
+            <returns>Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSetComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup">
+            <summary>
+            Application test system folder
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.ApplicationTestSets">
+            <summary>
+            Collection of test sets
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.TestCases">
+            <summary>
+            Collection of test cases
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.LoadFromFile(System.IO.FileInfo,Siemens.Engineering.ImportOptions,Siemens.Engineering.TestSuite.ApplicationTest.TSLoadOptions)">
+            <summary>
+            Loading test sets and associated test cases into project from external textual file
+            </summary>
+            <param name="filePath">Full path of the file to be imported</param>
+            <param name="loadOptions">File load options</param>
+            <param name="tsLoadOptions">Test set load options</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.IEngineeringObject&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.ExecutionMode">
+            <summary>
+            Testcase execution mode
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.ExecutionMode.SystemManagedPLCSIMInstance">
+            <summary>
+            Execute test case with PLCSIM Advanced instance created by system
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.ExecutionMode.ExternallyManagedPLCSIMInstance">
+            <summary>
+            Execute test case with pre-configured PLCSIM Advanced instance
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">
+            <summary>
+            Thrown when simulation check is not enabled
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="detailTexts">The detail texts.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>B with information about the exception.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.TCLoadOptions">
+            <summary>
+            Test case load options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.TCLoadOptions.None">
+            <summary>
+            Throws exception if test case has invalid data in Properties or Scope
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.TCLoadOptions.IgnoreInvalidObject">
+            <summary>
+            Proceeds with Importing a test case with valid or invalid data in Properties or Scope
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.TSLoadOptions">
+            <summary>
+            Test set load options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.TSLoadOptions.None">
+            <summary>
+            Throws exception if test case imports with invalid scope
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.ApplicationTest.TSLoadOptions.IgnoreInvalidObject">
+            <summary>
+            Import the test set/test case,if the test case scope in the file is not a valid device in the project
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.TestCase">
+            <summary>
+            Represents a test case under Application test
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Name">
+            <summary>
+            Test case name
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetScope">
+            <summary>
+            Retrieves target controller of the selected test case
+            </summary>
+            <returns>System.String</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SaveToFile(System.IO.FileInfo)">
+            <summary>
+            Saves selected test case(s) to a textual file
+            </summary>
+            <param name="path">Full Path for the file to be saved</param>
+            <returns>System.Boolean</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SetScope(Siemens.Engineering.SW.PlcSoftware)">
+            <summary>
+            Set the scope for associated test case
+            </summary>
+            <param name="plcSoftware">PLC software information</param>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.SetScope(Siemens.Engineering.SW.PlcSoftware,System.String,Siemens.Engineering.TestSuite.ApplicationTest.ExecutionMode)">
+            <summary>
+            Set the scope for associated test case
+            </summary>
+            <param name="plcSoftware">PLC software information</param>
+            <param name="instanceName">Pre-configured instance name</param>
+            <param name="executionMode">Test case execution mode</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.ShowInEditor">
+            <summary>
+            Show the selected item in the editor
+            </summary>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCase.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition">
+            <summary>
+            Collection of Application test cases
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Contains(Siemens.Engineering.TestSuite.ApplicationTest.TestCase)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.IndexOf(Siemens.Engineering.TestSuite.ApplicationTest.TestCase)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.CreateFrom(Siemens.Engineering.Library.MasterCopies.MasterCopy)">
+            <summary>
+            Create test case from given master copy
+            </summary>
+            <param name="sourceMastercopy">Source Master Copy</param>
+            <returns>Siemens.Engineering.TestSuite.ApplicationTest.TestCase</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.LoadFromFile(System.IO.FileInfo,Siemens.Engineering.ImportOptions,Siemens.Engineering.TestSuite.ApplicationTest.TCLoadOptions)">
+            <summary>
+            Loading test cases into project from external textual file
+            </summary>
+            <param name="filePath">Full Path of the file to be imported</param>
+            <param name="loadOptions">File load options</param>
+            <param name="tcLoadOptions">Test case load options</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.TestSuite.ApplicationTest.TestCase&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Find(System.String)">
+            <summary>
+            Find the test case with specified name
+            </summary>
+            <param name="name">Name of the test case</param>
+            <returns>Siemens.Engineering.TestSuite.ApplicationTest.TestCase</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor">
+            <summary>
+            Provides service for test case execution
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Run(Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet)">
+            <summary>
+            Executes the selected test set
+            </summary>
+            <param name="applicationTestSet">Test set</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">Thrown when simulation check is not enabled</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Run(Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSystemGroup)">
+            <summary>
+            Executes all the available test cases in the project
+            </summary>
+            <param name="applicationTestFolder">ApplicationTestFolder</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">Thrown when simulation check is not enabled</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Run(Siemens.Engineering.TestSuite.ApplicationTest.TestCase)">
+            <summary>
+            Executes the selected test case
+            </summary>
+            <param name="testcase">Test case</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">Thrown when simulation check is not enabled</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Run(System.Collections.Generic.IEnumerable{Siemens.Engineering.TestSuite.ApplicationTest.ApplicationTestSet})">
+            <summary>
+            Executes the selected list of test sets
+            </summary>
+            <param name="testsetList">List of test set</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">Thrown when simulation check is not enabled</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Run(System.Collections.Generic.IEnumerable{Siemens.Engineering.TestSuite.ApplicationTest.TestCase})">
+            <summary>
+            Executes the selected list of  test cases
+            </summary>
+            <param name="testcaseList">List of test case</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.ApplicationTest.SupportSimulationNotEnabledException">Thrown when simulation check is not enabled</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.ApplicationTest.TestCaseExecutor.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.TestResults">
+            <summary>
+            The results of TestResult
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResults.Messages">
+            <summary>
+            Collection of output messages for the result of a given testresult scenario
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResults.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResults.ErrorCount">
+            <summary>
+            Total error messages generated by execution
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResults.State">
+            <summary>
+            Final state of the execution : Success,Warning, Error
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResults.WarningCount">
+            <summary>
+            Total warning messages generated by execution
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResults.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.TestResultsMessage">
+            <summary>
+            Test results message
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.Messages">
+            <summary>
+            Access to the test result messages for a given test result scenario
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.DateTime">
+            <summary>
+            Date and time in a test result feedback message
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.Description">
+            <summary>
+            Description or content of a test result feed back message
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.ErrorCount">
+            <summary>
+            Number of errors in a test result feedback message
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.Path">
+            <summary>
+            Path to a test result feedback message
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.State">
+            <summary>
+            Final state in a test result feedback message
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessage.WarningCount">
+            <summary>
+            Number of warnings in a test result feedback message
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessage.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.TestResultsMessageComposition">
+            <summary>
+            Composition of CompareResultMessages
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessageComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Contains(Siemens.Engineering.TestSuite.TestResultsMessage)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.IndexOf(Siemens.Engineering.TestSuite.TestResultsMessage)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestResultsMessageComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.TestResultsState">
+            <summary>
+            The list of possible test result options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.TestResultsState.Success">
+            <summary>
+            Finished successfully
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.TestResultsState.Information">
+            <summary>
+            Finished with information
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.TestResultsState.Warning">
+            <summary>
+            Finished with warning
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.TestResultsState.Error">
+            <summary>
+            Finished with error
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.TestSuiteService">
+            <summary>
+            Test Suite service
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestSuiteService.ApplicationTestGroup">
+            <summary>
+            Application test system group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestSuiteService.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestSuiteService.StyleGuideGroup">
+            <summary>
+            Style guide system group
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.TestSuiteService.SystemTestGroup">
+            <summary>
+            System test system group
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.TestSuiteService.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions">
+            <summary>
+            Rule set load options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions.None">
+            <summary>
+            No error/warning
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions.IgnorePropertyErrors">
+            <summary>
+            Import of rule set is not aborted in case of errors in the rule set properties.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions.IgnoreMissingAttributes">
+            <summary>
+            Import of rule set is not aborted in case of presence of rules with missing attributes are available in the source file. Instead, the rule with missing attributes will be imported with default attributes.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions.SkipInvalidObjects">
+            <summary>
+            Import is not aborted in case of rules with invalid attributes are available in the source file. Instead, the rule set will be imported with by skipping the rules which has invalid attributes.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.RuleSet">
+            <summary>
+            Represents a rule set under Style guide
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Name">
+            <summary>
+            Name of ruleset
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.CopyScope(Siemens.Engineering.TestSuite.StyleGuide.RuleSet)">
+            <summary>
+            Copy scope
+            </summary>
+            <param name="targetRuleSet">Target rule set information</param>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.SaveToFile(System.IO.FileInfo)">
+            <summary>
+            Saves selected rule set to a external source file
+            </summary>
+            <param name="path">Full Path for the external source file to be saved</param>
+            <returns>System.Boolean</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.SetScope(Siemens.Engineering.TestSuite.StyleGuide.UpdateOptions,System.Collections.Generic.IEnumerable{Siemens.Engineering.IEngineeringObject})">
+            <summary>
+            Set scope
+            </summary>
+            <param name="updateOptions">Update options</param>
+            <param name="selectedInformation">Selected PLC information</param>
+            <returns>System.Boolean</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.ShowInEditor">
+            <summary>
+            Show the selected item in the editor
+            </summary>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSet.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition">
+            <summary>
+            Composition of rule set
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Contains(Siemens.Engineering.TestSuite.StyleGuide.RuleSet)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.IndexOf(Siemens.Engineering.TestSuite.StyleGuide.RuleSet)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.CreateFrom(Siemens.Engineering.Library.MasterCopies.MasterCopy)">
+            <summary>
+            Create rule set from given master copy
+            </summary>
+            <param name="sourceMastercopy">Source Master copy</param>
+            <returns>Siemens.Engineering.TestSuite.StyleGuide.RuleSet</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.LoadFromFile(System.IO.FileInfo,Siemens.Engineering.ImportOptions,Siemens.Engineering.TestSuite.StyleGuide.RSLoadOptions)">
+            <summary>
+            Loading rule sets into project from external
+            </summary>
+            <param name="filePath">Full path of the external source file to be imported</param>
+            <param name="loadOptions">File import options to be used</param>
+            <param name="rsLoadOptions">Rule set load options</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.TestSuite.StyleGuide.RuleSet&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Find(System.String)">
+            <summary>
+            Find a ruleset
+            </summary>
+            <param name="name">Name of the rule set</param>
+            <returns>Siemens.Engineering.TestSuite.StyleGuide.RuleSet</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor">
+            <summary>
+            Provides service for rule set execution
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Run(Siemens.Engineering.TestSuite.StyleGuide.RuleSet)">
+            <summary>
+            Executes the selected rule set
+            </summary>
+            <param name="ruleset">ruleset</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Run(Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup)">
+            <summary>
+            Executes the selected rule set
+            </summary>
+            <param name="styleGuideFolder">StyleGuide Folder</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Run(System.Collections.Generic.IEnumerable{Siemens.Engineering.TestSuite.StyleGuide.RuleSet})">
+            <summary>
+            Executes the selected rule set
+            </summary>
+            <param name="rulesetList">List of rule set</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.RuleSetExecutor.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup">
+            <summary>
+            StyleGuide system folder
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.RuleSets">
+            <summary>
+            Rule set(s) collection
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.StyleGuide.StyleGuideSystemGroup.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.StyleGuide.UpdateOptions">
+            <summary>
+            Update options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.UpdateOptions.Add">
+            <summary>
+            Add with the existing scope
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.StyleGuide.UpdateOptions.Override">
+            <summary>
+            Override existing scope
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException">
+            <summary>
+            Thrown when OpcUa address is not valid
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="detailTexts">The detail texts.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>B with information about the exception.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces">
+            <summary>
+            OPC UA server interface options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces.UserDefined">
+            <summary>
+            User defined server interface
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces.StandardSIMATIC">
+            <summary>
+            Standard SIMATIC server interface
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces.SiOMECompanionSpecification">
+            <summary>
+            SiOME-Companion specification interface
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase">
+            <summary>
+            Represents a test case under System Test
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Name">
+            <summary>
+            System test case name
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.OPCUAServerAddress">
+            <summary>
+            OPC UA server address
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.OPCUAServerInterfaceFolderPath">
+            <summary>
+            Folder path to OPC UA server interface files
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.OPCUAServerInterfaceType">
+            <summary>
+            OPC UA server interface type
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SaveToFile(System.IO.FileInfo)">
+            <summary>
+            Saves selected test case(s) to a textual file
+            </summary>
+            <param name="path">Full Path for the file to be saved</param>
+            <returns>System.Boolean</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SetScope(System.String,Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces)">
+            <summary>
+            Set the scope for associated System test case
+            </summary>
+            <param name="opcuaServerAddress">OPC UA server address of the target PLC</param>
+            <param name="opcuaServerInterfaceType">Returns selected OPC UA server interface to write/run test case</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.SetScope(System.String,Siemens.Engineering.TestSuite.SystemTest.ServerInterfaces,System.IO.DirectoryInfo)">
+            <summary>
+            Set the scope for associated System test case
+            </summary>
+            <param name="opcuaServerAddress">OPC UA server address of the target PLC</param>
+            <param name="opcuaServerInterfaceType">Returns selected OPC UA server interface to write/run test case</param>
+            <param name="opcuaServerInterfaceFolderPath">Folder path of OPC UA server interfaces</param>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCase.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition">
+            <summary>
+            Collection of System test cases
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Contains(Siemens.Engineering.TestSuite.SystemTest.SystemTestCase)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.IndexOf(Siemens.Engineering.TestSuite.SystemTest.SystemTestCase)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.CreateFrom(Siemens.Engineering.Library.MasterCopies.MasterCopy)">
+            <summary>
+            Create System test case from given master copy
+            </summary>
+            <param name="sourceMastercopy">Source Master Copy</param>
+            <returns>Siemens.Engineering.TestSuite.SystemTest.SystemTestCase</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.LoadFromFile(System.IO.FileInfo,Siemens.Engineering.ImportOptions,Siemens.Engineering.TestSuite.SystemTest.TCLoadOptions)">
+            <summary>
+            Loading test cases into project from external textual file
+            </summary>
+            <param name="filePath">Full Path of the file to be imported</param>
+            <param name="loadOptions">File load options</param>
+            <param name="tcLoadOptions">Test case load options</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.TestSuite.SystemTest.SystemTestCase&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Find(System.String)">
+            <summary>
+            Find the test case with specified name
+            </summary>
+            <param name="name">Testcase name</param>
+            <returns>Siemens.Engineering.TestSuite.SystemTest.SystemTestCase</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor">
+            <summary>
+            Provides service for system test case execution
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Run(Siemens.Engineering.TestSuite.SystemTest.SystemTestCase)">
+            <summary>
+            Executes the selected test case
+            </summary>
+            <param name="systemtestcase">System test case</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException">Thrown when OpcUa address is not valid</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Run(Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup)">
+            <summary>
+            Executes all the available test cases in the project
+            </summary>
+            <param name="systemTestFolder">SystemTestFolder</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException">Thrown when OpcUa address is not valid</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Run(System.Collections.Generic.IEnumerable{Siemens.Engineering.TestSuite.SystemTest.SystemTestCase})">
+            <summary>
+            Executes the selected list of  test cases
+            </summary>
+            <param name="systemtestcaseList">List of system test case</param>
+            <returns>Siemens.Engineering.TestSuite.TestResults</returns>
+            <exception cref="T:Siemens.Engineering.TestSuite.SystemTest.OpcUaServerAddressNotValidException">Thrown when OpcUa address is not valid</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestCaseExecutor.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup">
+            <summary>
+            System test system folder
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.SystemTestCases">
+            <summary>
+            Collection of System test cases
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TestSuite.SystemTest.SystemTestSystemGroup.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TestSuite.SystemTest.TCLoadOptions">
+            <summary>
+            Test case load options
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.SystemTest.TCLoadOptions.None">
+            <summary>
+            Throws exception if test case has invalid data in Properties or Scope
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TestSuite.SystemTest.TCLoadOptions.IgnoreInvalidObject">
+            <summary>
+            Proceeds with Importing a test case with valid or invalid data in Properties or Scope
+            </summary>
+        </member>
+    </members>
+</doc>

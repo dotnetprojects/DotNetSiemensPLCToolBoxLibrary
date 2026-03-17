@@ -1,0 +1,2000 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.TeamcenterGateway</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.DatasetType">
+            <summary>
+            TcGateway project/library dataset type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.DatasetType.T4TiaProjectDataset">
+            <summary>
+            TcGateway TIA project dataset.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.DatasetType.T4TiaLibraryDataset">
+            <summary>
+            TcGateway TIA library dataset.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ErrorCallback">
+            <summary>
+             Delegate to handle error which are raised during API invocation/actions.
+            </summary>
+             <param name="errorMessage">Error message specifying reason for error.</param>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ItemDetails">
+            <summary>
+            Item details type for setting standard properties on TIA project/global library.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.Comment">
+            <summary>
+            The comments entered shall be defaulted to the new Revision and also to the Dataset.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.ItemId">
+            <summary>
+            ItemId of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.ItemName">
+            <summary>
+            Item name of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.RevisionId">
+            <summary>
+            RevisionId of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.TeamcenterFolder">
+            <summary>
+            Teamcenter folder where this new item shall be created.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.TeamcenterItemType">
+            <summary>
+            Teamcenter item type.(e.g. TIA project or any of its subtype, TIA Library or any of its subtype)
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemDetails.TeamcenterProject">
+            <summary>
+            Teamcenter Project(s) where this new created item will belong to.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemDetails.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ItemDetailsDelegate">
+            <summary>
+             Delegate for setting standard properties for item creation in Teamcenter on TIA project/global library.
+            </summary>
+             <param name="itemDetails">Item details type for setting standard properties on TIA project/global library.</param>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ItemInfo">
+            <summary>
+            TcGateway item information of project/Global library saved in Teamcenter.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemInfo.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemInfo.ItemId">
+            <summary>
+            ItemId of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemInfo.ItemName">
+            <summary>
+            Item name of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemInfo.ItemType">
+            <summary>
+            Item type of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.ItemInfo.RevisionId">
+            <summary>
+            RevisionId of Project/Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.ItemInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ItemType">
+            <summary>
+            TcGateway project/library item type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.ItemType.Project">
+            <summary>
+            TcGateway Project Item in Teamcenter.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.ItemType.GlobalLibrary">
+            <summary>
+            TcGateway Library Item in Teamcenter.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.ListOfValuesUsageType">
+            <summary>
+            Types for LOV usage (Exhaustive, Suggestive and Range)
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.ListOfValuesUsageType.Exhaustive">
+            <summary>
+            Exhaustive : select a value from the list
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.ListOfValuesUsageType.Suggestive">
+            <summary>
+            Suggestive : Select a value from the list or enter a value
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.ListOfValuesUsageType.Range">
+            <summary>
+            Range : Enter a value within a range as defined in LowerLimit and UpperLimit
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.LocalCacheOption">
+            <summary>
+            TcGateway LocalCacheOption to overwrite TIA project/ Global library in TC cache.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.LocalCacheOption.Overwrite">
+            <summary>
+            Overwrite local copy of TIA project/Global library available in TC cache, if last dataset version in Teamcenter is different to the local dataset version.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.LocalCacheOption.DoNotOverwrite">
+            <summary>
+            Do not overwrite local copy of TIA project/Global library available in TC cache, if last dataset version in Teamcenter is different to the local dataset version.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType">
+            <summary>
+            Supported data types for custom attributes on Teamcenter types and subtypes.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Char">
+            <summary>
+            Character property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Date">
+            <summary>
+            Date property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Double">
+            <summary>
+            Double property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Float">
+            <summary>
+            Float property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Integer">
+            <summary>
+            Integer property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Boolean">
+            <summary>
+            Boolean property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.Short">
+            <summary>
+            Short property type.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.TeamcenterGateway.MappedCustomAttributeType.String">
+            <summary>
+            String property type.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.RevisionDetails">
+            <summary>
+            Revision details type for setting standard properties on TIA project/global library.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Comment">
+            <summary>
+            The comments entered shall be defaulted to the new Revision and also to the Dataset.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.RevisionDetails.RevisionId">
+            <summary>
+            RevisionId of Project / Global Library in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.RevisionDetails.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.RevisionDetailsDelegate">
+            <summary>
+             Delegate for setting standard properties for revision creation in Teamcenter on TIA project/global library.
+            </summary>
+             <param name="revisionDetails"></param>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.SearchResult">
+            <summary>
+            Represents TIA object&apos;s ItemId and List of RevisionId in Teamcenter.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.SearchResult.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.SearchResult.ItemId">
+            <summary>
+            ItemId of the TIA object item in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.SearchResult.RevisionId">
+            <summary>
+            RevisonIds of the TIA object item in Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.SearchResult.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo">
+            <summary>
+            Response returned on successfull connection to Teamcenter. Client applications have to safegaurd the TcGatewayConnectionInfo as all other workflow related API calls require TcGatewayConnectionInfo as input parameter.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Group">
+            <summary>
+            Teamcenter user&apos;s group.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Role">
+            <summary>
+            Teamcenter user&apos;s role.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.SessionToken">
+            <summary>
+            Session token of active connection to Teamcenter.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException">
+            <summary>
+            This exception indicates that exception occured during execution of TcGateway-Openness API call
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"/> class.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="detailTexts">The detail texts.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>B with information about the exception.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider">
+            <summary>
+            Provides TcGateway dataset lock services.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.CancelCheckoutDataset(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.DatasetType,System.String)">
+            <summary>
+            Checkout on dataset is cancelled, no implicit action of discarding changes is performed on project/library.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="itemId">ItemId of Project/Library in Teamcenter.</param>
+            <param name="revisionId">RevisionId of Project/Library in Teamcenter.</param>
+            <param name="datasetType">TcGateway project/library dataset type.</param>
+            <param name="datasetName">TcGateway project/library dataset name. Typically it will be the name of Project / Library.</param>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.CheckinDataset(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.DatasetType,System.String)">
+            <summary>
+            Check-in TIA project/Library dataset saved in Teamcenter.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="itemId">ItemId of Project/Library in Teamcenter.</param>
+            <param name="revisionId">RevisionId of Project/Library in Teamcenter.</param>
+            <param name="datasetType">TcGateway project/library dataset type.</param>
+            <param name="datasetName">TcGateway project/library dataset name. Typically it will be the name of Project / Library.</param>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.CheckoutDataset(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.DatasetType,System.String)">
+            <summary>
+            Checkout TIA project/Library dataset saved in Teamcenter.
+            </summary>
+            <param name="tcGatewayConnectionInfo">TcGatewaycConnectionInfo obtained after sucessful connection.</param>
+            <param name="itemId">ItemId of Project/Library in Teamcenter.</param>
+            <param name="revisionId">RevisionId of Project/Library in Teamcenter.</param>
+            <param name="datasetType">TcGateway project/library dataset type.</param>
+            <param name="datasetName">TcGateway project/library dataset name. Typically it will be the name of Project / Library.</param>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayLockProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider">
+            <summary>
+            Search and downloads TIA Portal project/ global library from Teamcenter.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Download(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.ItemType,Siemens.Engineering.TeamcenterGateway.LocalCacheOption)">
+            <summary>
+            Download the TIA Object(Project/ Library) from Teamcenter and store it in TcCache.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="itemId">Item ID of the TIA Project / Library.</param>
+            <param name="revisionId">Revision ID of the TIA Project / Library.</param>
+            <param name="itemType">Item type of Project/Library in Teamcenter.</param>
+            <param name="localCacheOption">TcGateway LocalCacheOption to overwrite TIA project/ Global library in TC cache.</param>
+            <returns>System.IO.FileInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Search(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.ItemType,System.String,System.String,System.String,System.String)">
+            <summary>
+            Search TIA Object (Project / Global library)  from Teamcenter that only return list of ItemId with related list of RevisionId based on the search query.If no search results are found in Teamcenter an empty list is returned.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection. This is a required parameter.</param>
+            <param name="type">Item type of Project/Library in Teamcenter. This is a required parameter.</param>
+            <param name="tiaObjectName">Name of the TIA Project / Library. Provide a complete tiaObjectName or with wild card characters. [User should provide value in at least one of the fields; Item ID, Item Name, TIAObjectName]</param>
+            <param name="itemId">Item ID of the TIA Project / Library. Provide a complete itemId or with wild card characters. [User should provide value in at least one of the fields; Item ID, Item Name, TIAObjectName]</param>
+            <param name="itemName">Item name of the TIA Project / Library. Provide a complete itemName or with wild card characters. [User should provide value in at least one of the fields; Item ID, Item Name, TIAObjectName]</param>
+            <param name="revisionId">Revision ID of the TIA Project / Library. Provide a complete revisionId or with wild card characters.</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.TeamcenterGateway.SearchResult&gt;</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewaySearchAndDownloadProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider">
+            <summary>
+            TcGateway workflow service provider to save project/library in Teamcenter.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetTeamcenterCustomAttributes(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String)">
+            <summary>
+            Gets all custom attributes on TIA project/global library itemType/subType mapped in Teamcenter.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after successful connection.</param>
+            <param name="itemType">Custom attributes for item type.(e.g. TIA project or any of its subtype, TIA Library or any of its subtype)</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.TeamcenterGateway.TeamcenterProperty&gt;</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Save(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.LocalCacheOption)">
+            <summary>
+            Save TIA project/Global library to Teamcenter.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="localCacheOption">TcGateway LocalCacheOption to overwrite TIA project/ Global library in TC cache.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveAsNewItem(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.ItemDetailsDelegate,System.Collections.Generic.IEnumerable{Siemens.Engineering.TeamcenterGateway.TeamcenterProperty})">
+            <summary>
+            Save TIA project/global library as a new item in Teamcenter. Custom attributes parameter is optional.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="itemDetailsdelegate">TIA project/global library standard properties for item creation in Teamcenter.</param>
+            <param name="customAttributes">Additional properties mapped on TIA project/global library item type in Teamcenter.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveAsNewItemWithProxyObject(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.ItemDetailsDelegate,System.Collections.Generic.IEnumerable{Siemens.Engineering.TeamcenterGateway.TeamcenterProperty})">
+            <summary>
+            Save TIA project/global library as a new item in Teamcenter with proxy objects. Custom attributes parameter is optional. If custom attributes are required during item creation it can be fetched using GetTeamcenterCustomAttributes API, if custom attributes are not required during item creation pass null.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="itemDetailsdelegate">TIA project/global library standard properties for item creation in Teamcenter.</param>
+            <param name="customAttributes">Additional properties mapped on TIA project/global library item type in Teamcenter.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveAsNewRevision(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.RevisionDetailsDelegate,System.Collections.Generic.IEnumerable{Siemens.Engineering.TeamcenterGateway.TeamcenterProperty})">
+            <summary>
+            Save TIA project  / Global library as a new revision in Teamcenter. Custom attributes parameter is optional.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="revisionDetailsDelegate">TIA project / Global library standard properties for revision creation in Teamcenter.</param>
+            <param name="customAttributes">Revision level additional properties mapped on TIA project / Global library item type in Teamcenter.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveAsNewRevisionWithProxyObject(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.RevisionDetailsDelegate,System.Collections.Generic.IEnumerable{Siemens.Engineering.TeamcenterGateway.TeamcenterProperty})">
+            <summary>
+            Save TIA project  / Global library as a new revision in Teamcenterwith proxy objects. Custom attributes parameter is optional. If custom attributes are required during item revision creation it can be fetched using GetTeamcenterCustomAttributes API, if custom attributes are not required during item creation pass null.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="revisionDetailsDelegate">TIA project / Global library standard properties for revision creation in Teamcenter.</param>
+            <param name="customAttributes">Revision details type for setting standard properties on TIA project / Global library.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveToItem(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.LocalCacheOption)">
+            <summary>
+            Save TIA Project / Global library to an existing item/revision in Teamcenter.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after successful connection.</param>
+            <param name="itemId">ItemId of Project / GlobalLibrary in Teamcenter.</param>
+            <param name="revisionId">Revision Id of the Project / GlobalLibrary in Teamcenter.</param>
+            <param name="localCacheOption">TcGateway LocalCacheOption to overwrite TIA project/ Global library in TC cache.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveToItemWithProxyObject(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,System.String,System.String,Siemens.Engineering.TeamcenterGateway.LocalCacheOption)">
+            <summary>
+            Save TIA Project / Global library to an existing item/revision in Teamcenter with proxy objects.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after successful connection.</param>
+            <param name="itemId">ItemId of Project / GlobalLibrary in Teamcenter.</param>
+            <param name="revisionId">Revision Id of the Project / GlobalLibrary in Teamcenter.</param>
+            <param name="localCacheOption">TcGateway LocalCacheOption to overwrite TIA project/ Global library in TC cache.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.SaveWithProxyObject(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo,Siemens.Engineering.TeamcenterGateway.LocalCacheOption)">
+            <summary>
+            Save TIA project/ Global library to Teamcenter with proxy objects(e.g. Plc, Program blocks, UDTs and supported types).
+            </summary>
+            <param name="tcGatewayConnectionInfo">Teamcenter connectionInfo obtained after sucessful connection.</param>
+            <param name="localCacheOption">TcGateway Save option to overwrite TIA project/ Global library in TC cache.</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.ItemInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcGatewayWorkflowProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo">
+            <summary>
+            Teamcenter property list of values information.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.LovUsageType">
+            <summary>
+            List of values usage type (Exhaustive, Suggestive and Range)
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.LowerLimit">
+            <summary>
+            Lower limit of LOV.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.UpperLimit">
+            <summary>
+            Upper limit of LOV.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Values">
+            <summary>
+            List of values.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TcPropertyListOfValueInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider">
+            <summary>
+            Connection Provider service for connection and disconnection of TIA Portal with Teamcenter server.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Connect(System.String,System.Security.SecureString,System.String,System.String,System.String,System.String)">
+            <summary>
+            Connect to Teamcenter using http/https protocol. Returns TcGatewayConnectionInfo.
+            </summary>
+            <param name="userName">Teamcenter user name.</param>
+            <param name="password">Teamcenter user password.</param>
+            <param name="group">Teamcenter user group.</param>
+            <param name="role">Teamcenter user role.</param>
+            <param name="hostURL">The http/https address of Teamcenter 4 tier installation along with port number</param>
+            <param name="instance">Teamcenter server instance</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException">This exception will be thrown when there is an error while executing TcGateway-Openness API call</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.ConnectSSO(System.String,System.String,System.String,System.String)">
+            <summary>
+            Connect to Teamcenter using Single Sign On and PKI card. Returns TcGatewayConnectionInfo.
+            </summary>
+            <param name="hostURL">The http/https address of Teamcenter 4 tier installation along with port number</param>
+            <param name="instance">Teamcenter server instance</param>
+            <param name="loginURL">Specifies the URL for the Login Service configured as part of Teamcenter Security Services</param>
+            <param name="applicationID">Application ID configured in Teamcenter Application registry via Identity service</param>
+            <returns>Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo</returns>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException">This exception will be thrown when there is an error while executing TcGateway-Openness API call</exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException">This exception is raised when TIA Portal Teamcenter Gateway license is not found to execute a TIA portal Teamcenter TcGateway operation using openness API.</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Disconnect(Siemens.Engineering.TeamcenterGateway.TcGatewayConnectionInfo)">
+            <summary>
+            Disconnect from Teamcenter server.
+            </summary>
+            <param name="tcGatewayConnectionInfo">Valid session token acquired after successful connection to Teamcenter</param>
+            <exception cref="T:Siemens.Engineering.TeamcenterGateway.TcGatewayException">This exception will be thrown when there is an error while executing TcGateway-Openness API call</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterConnectionProvider.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty">
+            <summary>
+            Teamcenter custom property for item or revision.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.DataType">
+            <summary>
+            Teamcenter custom property data type.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.DefaultValue">
+            <summary>
+            Value of the attribute
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.IsReadOnly">
+            <summary>
+            Teamcenter custom property readonly attribute field
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.IsRequired">
+            <summary>
+            Teamcenter custom property mandatory attribute field
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.ListOfValueInfo">
+            <summary>
+            ListofValue(LOV) info of Teamcenter custom property.If ListofValue(LOV) info is not available on Teamcenter custom property it is null.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.LowerBound">
+            <summary>
+            Lower bound for the attribute
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.MappingLevel">
+            <summary>
+            Level of context at which the attributes are mapped.  The level can be 0-Item, 1-ItemMaster, 2-ItemRevision and 3-ItemRevisionMaster
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.MaxFieldLength">
+            <summary>
+            Maximum field length for string values
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Name">
+            <summary>
+            Teamcenter custom property name.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.UpperBound">
+            <summary>
+            Upper bound for the attribute
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.SetValue(System.String,Siemens.Engineering.TeamcenterGateway.ErrorCallback)">
+            <summary>
+            Set Teamcenter property value.
+            </summary>
+            <param name="value">Property value.</param>
+            <param name="errorCallback">Error callback invoked when error occurs during property value set.</param>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.TeamcenterGateway.TeamcenterProperty.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+    </members>
+</doc>

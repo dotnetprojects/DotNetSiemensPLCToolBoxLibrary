@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.AddIn.Utilities</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.AddIn.Utilities.Process">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.StartInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.ToSystemStartInfo(Siemens.Engineering.AddIn.Utilities.ProcessStartInfo)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.FromSystemStartInfo(System.Diagnostics.ProcessStartInfo)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.HasExited">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.ExitCode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.Responding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.Id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.StartTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.ExitTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.ProcessName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.StandardOutput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.StandardError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.StandardInput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.Process.EnableRaisingEvents">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:Siemens.Engineering.AddIn.Utilities.Process.OutputDataReceived">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:Siemens.Engineering.AddIn.Utilities.Process.ErrorDataReceived">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:Siemens.Engineering.AddIn.Utilities.Process.Exited">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.#ctor(System.Diagnostics.Process)">
+            <summary>
+            
+            </summary>
+            <param name="process"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Start">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Start(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fileName"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Start(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fileName"></param>
+            <param name="arguments"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Start(System.String,System.String,System.Security.SecureString,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fileName"></param>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Start(System.String,System.String,System.String,System.Security.SecureString,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="fileName"></param>
+            <param name="arguments"></param>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <param name="domain"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Close">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Kill">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Refresh">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.WaitForExit(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="milliseconds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.WaitForExit">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.BeginErrorReadLine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.BeginOutputReadLine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.CancelErrorRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.CancelOutputRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.Process.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.InternalStartInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.FileName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.op_Explicit(System.Diagnostics.ProcessStartInfo)~Siemens.Engineering.AddIn.Utilities.ProcessStartInfo">
+            <summary>
+            
+            </summary>
+            <param name="v"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.op_Implicit(Siemens.Engineering.AddIn.Utilities.ProcessStartInfo)~System.Diagnostics.ProcessStartInfo">
+            <summary>
+            
+            </summary>
+            <param name="v"></param>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.Arguments">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.WorkingDirectory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.Verb">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.Verbs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.WindowStyle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.ErrorDialog">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.ErrorDialogParentHandle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.UseShellExecute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.UserName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.Domain">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.Password">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.PasswordInClearText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.LoadUserProfile">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.RedirectStandardInput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.RedirectStandardOutput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.RedirectStandardError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.StandardOutputEncoding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.StandardErrorEncoding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.CreateNoWindow">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Siemens.Engineering.AddIn.Utilities.ProcessStartInfo.EnvironmentVariables">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

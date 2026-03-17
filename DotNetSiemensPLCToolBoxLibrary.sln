@@ -105,6 +105,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSiemensPLCToolBoxLibrary.TIAV20", "DotNetSiemensPLCToolBoxLibrary.TIAV20\DotNetSiemensPLCToolBoxLibrary.TIAV20.csproj", "{47AFC1C0-C7BA-4299-9C62-17FDE1676167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSiemensPLCToolBoxLibrary.TIAV21", "DotNetSiemensPLCToolBoxLibrary.TIAV21\DotNetSiemensPLCToolBoxLibrary.TIAV21.csproj", "{42C91E85-7052-F066-3257-5F05F7258BAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -805,6 +807,26 @@ Global
 		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|x86.ActiveCfg = Release|Any CPU
 		{47AFC1C0-C7BA-4299-9C62-17FDE1676167}.Release|x86.Build.0 = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Debug|x86.Build.0 = Debug|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|iPhone.Build.0 = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{42C91E85-7052-F066-3257-5F05F7258BAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

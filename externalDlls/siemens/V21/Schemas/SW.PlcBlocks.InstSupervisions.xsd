@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens 2008 - 2025. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="InstancePath" type="xs:string"/>
+	<xs:element name="SupervisedOperand" type="xs:string"/>
+	<xs:element name="SupervisionName" type="xs:string"/>
+	<xs:element name="InstanceLabel" type="xs:string"/>
+	<xs:element name="StateStructName" type="xs:string"/>
+	<xs:element name="SupervisionId" type="xs:int"/>
+
+	<xs:element name="InstSupervision" type="InstSupervision_T"/>
+	
+	<xs:complexType name="InstSupervision_T">
+		<xs:sequence>
+			<xs:element ref="InstancePath"/>
+			<xs:element ref="SupervisedOperand"/>
+			<xs:element ref="SupervisionName"/>
+			<xs:element ref="InstanceLabel"/>
+			<xs:element ref="StateStructName" minOccurs="0"/>
+			<xs:element ref="SupervisionId" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="InstSupervisions" type="InstSupervisions_T"/>
+	
+	<xs:complexType name="InstSupervisions_T">
+		<xs:sequence>
+			<xs:element ref="InstSupervision" minOccurs="0" maxOccurs="10000"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

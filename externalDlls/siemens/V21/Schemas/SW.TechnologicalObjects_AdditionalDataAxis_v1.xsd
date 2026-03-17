@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2019. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/Axis/v1"
+           xmlns:tns="http://www.siemens.com/automation/Openness/SW/Motion/Axis/v1"
+           elementFormDefault="qualified">
+  <!-- Root element AdditionalData-->
+  <xs:element name="AdditionalData" type="tns:AdditionalData_T"/>
+
+  <!-- Complex type AdditionalData_T-->
+  <xs:complexType name="AdditionalData_T">
+    <xs:annotation>
+      <xs:documentation>Describes additional data, such as Connections, for Axis and ExternalEncoder TOs.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Connection" type="tns:Connection_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SynchronousAxisMasterValues" type="tns:SynchronousAxisMasterValues_T" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type Connection_T-->
+  <xs:complexType name="Connection_T">
+    <xs:annotation>
+      <xs:documentation>Describes a connection of a TO interface.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Interface" type="tns:Interface_TE" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the Interface of the TO that is connected.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="InputAddress" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation>Input bit address.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OutputAddress" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation>Output bit address.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ConnectOption" type="tns:ConnectOption_TE" use="optional" default="Default">
+      <xs:annotation>
+        <xs:documentation>Connect option used when the connection has been created.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SensorIndexInActorTelegram" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation>Index of sensor in actor telegram if connected to same telegram.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="PathToDBMember" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Path to a DB member.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OutputTag" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Name of a connected tag for analog connection.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Enumeration type Interface_TE-->
+  <xs:simpleType name="Interface_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Actor"/>
+      <xs:enumeration value="Sensor"/>
+      <xs:enumeration value="Sensor[1]"/>
+      <xs:enumeration value="Sensor[2]"/>
+      <xs:enumeration value="Sensor[3]"/>
+      <xs:enumeration value="Sensor[4]"/>
+      <xs:enumeration value="Torque"/>
+      <xs:enumeration value="OutputCam"/>
+      <xs:enumeration value="MeasuringInput"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Enumeration type ConnectOption_TE-->
+  <xs:simpleType name="ConnectOption_TE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default"/>
+      <xs:enumeration value="AllowAllModules"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Complex type SynchronousAxisMasterValues_T-->
+  <xs:complexType name="SynchronousAxisMasterValues_T">
+    <xs:annotation>
+      <xs:documentation>Contains a list of master values for TO_SynchronousAxis.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SetPointCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a master value TO that is coupled via set points.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ActualValueCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a master value TO that is coupled via actual values.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DelayedCoupling" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a master value TO that is coupled via delayed values.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LeadingAxisProxy" type="tns:TechnologicalObjectReference_T" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Describes a reference to a master value TO of type LeadingAxisProxy.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type TechnologicalObjectReference_T-->
+  <xs:complexType name="TechnologicalObjectReference_T">
+    <xs:annotation>
+      <xs:documentation>Describes a reference to a Technological Object.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Ref" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the name of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Type" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the type of the referenced Technological Object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+</xs:schema>

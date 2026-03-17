@@ -1,3 +1,9 @@
 Infos zum DBF Format
 
 http://independent-software.com/dbase-dbf-dbt-file-format.html
+
+
+MDX Format
+
+https://unpkg.com/dbffile-helmac@1.4.4/doc/xbase-file-format-description.html
+https://unpkg.com/dbffile-helmac@1.4.4/doc/xbase-file-format-description.html#MDX_STRUCT

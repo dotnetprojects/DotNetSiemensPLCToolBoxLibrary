@@ -38,6 +38,7 @@
 	</ProjectReference>
 	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV19\DotNetSiemensPLCToolBoxLibrary.TIAV19.csproj" />
 	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV20\DotNetSiemensPLCToolBoxLibrary.TIAV20.csproj" />
+	<ProjectReference Include="..\DotNetSiemensPLCToolBoxLibrary.TIAV21\DotNetSiemensPLCToolBoxLibrary.TIAV21.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary.WinForms\DotNetSiemensPLCToolBoxLibrary.WinForms.csproj" />
     <ProjectReference Include="..\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj" />
   </ItemGroup>

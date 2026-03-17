@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:mapping="http://www.siemens.com/automation/Openness/SW/Motion/InterpreterMapping/v1"
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/InterpreterMapping/v1"
+           elementFormDefault="qualified">
+
+  <xs:complexType name="TechnologicalObjectMappingT">
+    <xs:annotation>
+      <xs:documentation>Describes a mapping for a technological object.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Alias" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the available symbolic name in executed interpreter program.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Ref" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the name of the referenced technological object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Type" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the version independent type of the referenced TO.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="DBMemberMappingT">
+    <xs:annotation>
+      <xs:documentation>Describes a mapping for a data block member.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Alias" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the available symbolic name in executed interpreter program.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="MemberPath" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the full path of the referenced member as displayed in UI.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="DataType" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the data type in the interpeter program.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Readonly" type="xs:boolean" use="optional" default="false">
+      <xs:annotation>
+        <xs:documentation>Optionally specifies the access right. Will be false if not specified.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="StartIndex" type="xs:integer" use="optional">
+      <xs:annotation>
+        <xs:documentation>Optionally defines the start index in the data block array member; mapping will start at begin of array if not specified.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <!-- Begin of our actual nodes -->
+  <xs:element name="InterpreterMappings">
+    <xs:annotation>
+      <xs:documentation>Contains the definition of mapped PLC variables of TO_InterpreterMapping</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TechnologicalObjectMapping" type="mapping:TechnologicalObjectMappingT"/>
+        <xs:element name="DBMemberMapping" type="mapping:DBMemberMappingT"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

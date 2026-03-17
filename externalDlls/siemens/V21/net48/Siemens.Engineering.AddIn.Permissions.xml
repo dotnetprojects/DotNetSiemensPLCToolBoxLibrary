@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.AddIn.Permissions</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission">
+            <summary>
+            Custom Permission to block the ProcessStart class
+            </summary>
+            
+        </member>
+        <member name="F:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.m_IsUnrestricted">
+            <summary>
+            permissionState
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.#ctor(System.Security.Permissions.PermissionState)">
+            <summary>
+            Sets the restriction state
+            </summary>
+            <param name="state">The permission State</param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.#ctor(System.Boolean)">
+            <summary>
+            Set the permission restriction
+            </summary>
+            <param name="isUnrestricted">Is the permission unrestriced</param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.Union(System.Security.IPermission)">
+            <summary>
+            
+            </summary>
+            <param name="target">The target permission</param>
+            <returns>a new unrestricted ProcessStartPermission</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.ToXml">
+            <summary>
+            Converts the permission to xml
+            </summary>
+            <returns>The permission as a SecurityElement</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.FromXml(System.Security.SecurityElement)">
+            <summary>
+            Converts the Permiission from xml
+            </summary>
+            <param name="elem">The permission as a SecurityElement</param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.Copy">
+            <summary>
+            Creates a copy of this
+            </summary>
+            <returns>a copy of this ProcessStartPermission</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.Intersect(System.Security.IPermission)">
+            <summary>
+            creates a new ProcessStart Permission
+            </summary>
+            <param name="target"> the permission to compare against</param>
+            <returns> new ProcessStartPermission</returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.IsSubsetOf(System.Security.IPermission)">
+            <summary>
+            determined if target permission is a subset of current permission
+            </summary>
+            <param name="target"> the permission to compare against</param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermission.IsUnrestricted">
+            <summary>
+            
+            </summary>
+            <returns>bool if permission is unrestricted</returns>
+        </member>
+        <member name="T:Siemens.Engineering.AddIn.Permissions.ProcessStartPermissionAttribute">
+            <summary>
+            Attribute class for the ProcessStart Permission
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermissionAttribute.#ctor(System.Security.Permissions.SecurityAction)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Siemens.Engineering.AddIn.Permissions.ProcessStartPermissionAttribute.CreatePermission">
+            <summary>
+            Creates the Permission with an unrestricted state
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

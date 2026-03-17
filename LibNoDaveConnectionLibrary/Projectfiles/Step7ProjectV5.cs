@@ -74,7 +74,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
 
             ProjectFile = projectfile;
-            ProjectFolder = _projectfilename.Substring(0, _projectfilename.LastIndexOf(_DirSeperator)) + _DirSeperator;
+            ProjectFolder = "";
+
+            // Check if the s7p file is at the root level (so no / in the path) or in a subfolder and set the ProjectFolder accordingly
+            if (_projectfilename.IndexOf(_DirSeperator) != -1)
+            {
+                ProjectFolder = _projectfilename.Substring(0, _projectfilename.LastIndexOf(_DirSeperator)) + _DirSeperator;
+            }
 
             ProjectEncoding = (prEn ?? Encoding.GetEncoding("ISO-8859-1"));
             var lngFile = _ziphelper.GetReadStream(ProjectFolder + "Global" + _DirSeperator + "Language");

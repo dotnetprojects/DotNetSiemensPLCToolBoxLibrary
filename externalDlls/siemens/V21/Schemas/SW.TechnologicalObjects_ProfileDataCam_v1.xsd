@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © Siemens AG 2008-2018. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Motion/Cam/v1"
+           xmlns:cam="http://www.siemens.com/automation/Openness/SW/Motion/Cam/v1"
+           elementFormDefault="qualified">
+  
+  <!-- Global types -->
+  
+  <xs:simpleType name="ProfileContinuity">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="Position"/>
+    <xs:enumeration value="Velocity"/>
+    <xs:enumeration value="Acceleration"/>
+    <xs:enumeration value="Jerk"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ElementContinuity">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="AsProfile"/>
+    <xs:enumeration value="Position"/>
+    <xs:enumeration value="Velocity"/>
+    <xs:enumeration value="Acceleration"/>
+    <xs:enumeration value="Jerk"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ProfileOptimizationGoal">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="None"/>
+    <xs:enumeration value="Velocity"/>
+    <xs:enumeration value ="Acceleration"/>
+    <xs:enumeration value ="Jerk"/>
+    <xs:enumeration value ="DynamicMoment"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ElementOptimizationGoal">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="AsProfile"/>
+    <xs:enumeration value="None"/>
+    <xs:enumeration value="Velocity"/>
+    <xs:enumeration value="Acceleration"/>
+    <xs:enumeration value="Jerk"/>
+    <xs:enumeration value="DynamicMoment"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ValueMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Relative"/>
+      <xs:enumeration value="Absolute"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ProfileInterpolationMode">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="Linear"/>
+    <xs:enumeration value="CubicSpline"/>
+    <xs:enumeration value="BezierSpline"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="BoundaryConditions">
+    <xs:restriction base="xs:string">
+    <xs:enumeration value="NoConstraint"/>
+    <xs:enumeration value="FirstDerivative"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="DefinitionRange">
+    <xs:attribute name="Start" type="xs:float"/>
+    <xs:attribute name="End" type="xs:float"/>
+  </xs:complexType>
+  
+  <xs:complexType name="TrigonometricValues">
+    <xs:attribute name="Amplitude" type="xs:float" default="1" />
+
+    <!-- two of four are required and at least StartPhase or EndPhase is required -->
+    <xs:attribute name="StartPhase" type="xs:float" default="0" />
+    <xs:attribute name="EndPhase" type="xs:float" default="6.2831853071795862" />
+    <xs:attribute name="Frequency" type="xs:float" default="1" />
+    <xs:attribute name="PeriodLength" type="xs:float" default="1" />
+  </xs:complexType>
+  
+  <xs:complexType name="SegmentBase">
+    <xs:attribute name="StartX" type="xs:float" use="required" />
+    <xs:attribute name="EndX" type="xs:float" use="required" />
+  </xs:complexType>
+
+  <xs:simpleType name="PointGroupApproximationMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PointApproximation" />
+      <xs:enumeration value="SegmentApproximation" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PointGroupInterpolationMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CubicSpline" />
+      <xs:enumeration value="BezierSpline" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Due to multiple usage, we place that element type explicitly here -->
+  <xs:complexType name="PointElementType">
+    <xs:attribute name="X" type="xs:float" use="required" />
+    <xs:attribute name="Y" type="xs:float" use="required" />
+    <xs:attribute name="Velocity" type="xs:float" />
+    <xs:attribute name="Acceleration" type="xs:float" />
+    <xs:attribute name="Jerk" type="xs:float" />
+  </xs:complexType>
+
+  <!-- Begin of our actual nodes -->
+  <xs:element name="ProfileData">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <xs:element name="GeneralConfiguration" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- Requires start < end validity - default is [0;360] -->
+              <xs:element name="DesignLeadingRange" type="cam:DefinitionRange" minOccurs="1" maxOccurs="1" />
+              <!-- Requires start < end validity - default is [-1;1] -->
+              <xs:element name="DesignFollowingRange" type="cam:DefinitionRange" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            
+            <!-- Attributes -->
+            <xs:attribute name="StandardContinuity" type="cam:ProfileContinuity" default="Acceleration" />
+            <xs:attribute name="StandardOptimizationGoal" type="cam:ProfileOptimizationGoal" default="None" />
+            <xs:attribute name="InterpolationMode" type="cam:ProfileInterpolationMode" default="CubicSpline" />
+            <xs:attribute name="BoundaryConditions" type="cam:BoundaryConditions" default="NoConstraint" />
+          </xs:complexType>
+        </xs:element>
+        
+        <!-- The node of listed elements -->
+        <xs:element name="Elements" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              
+              <xs:element name="Point" type="cam:PointElementType" />
+
+              <xs:element name="Line">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                      <!-- Two out of three are required here -->
+                      <xs:attribute name="StartY" type="xs:float" />
+                      <xs:attribute name="EndY" type="xs:float" />
+                      <xs:attribute name="Gradient" type="xs:float" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="Polynomial">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                      <xs:sequence>
+                        
+                        <!-- With or without trigonometric portion ? If node doesn't exist, we simply use a non-trig. polynomial -->
+                        <!-- 2 out of 4 : startPhase, endPhase, frequency, periodLength -->
+                        <xs:element name="TrigonometricValues" type="cam:TrigonometricValues" minOccurs="0" maxOccurs="1" />
+
+                        <!-- For V3, one of these nodes is required. -->
+
+                        <xs:choice>
+                          <xs:element name="Coefficients" >
+                            <xs:complexType>
+                              <xs:attribute name="C0" type="xs:float" default="0" />
+                              <xs:attribute name="C1" type="xs:float" default="0" />
+                              <xs:attribute name="C2" type="xs:float" default="0" />
+                              <xs:attribute name="C3" type="xs:float" default="0" />
+                              <xs:attribute name="C4" type="xs:float" default="0" />
+                              <xs:attribute name="C5" type="xs:float" default="0" />
+                              <xs:attribute name="C6" type="xs:float" default="0" />
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element name="Constraints" >
+                            <xs:complexType>
+                              <xs:attribute name="LeftValue" type="xs:float" />
+                              <xs:attribute name="RightValue" type="xs:float" />
+                              <xs:attribute name="LeftVelocity" type="xs:float" />
+                              <xs:attribute name="RightVelocity" type="xs:float" />
+                              <xs:attribute name="LeftAcceleration" type="xs:float" />
+                              <xs:attribute name="RightAcceleration" type="xs:float" />
+                        
+                              <!-- For V3, only one of these three parameters is allowed and lambda is always assumed to be absolute there. -->
+                              <xs:attribute name="LeftJerk" type="xs:float" />
+                              <xs:attribute name="RightJerk" type="xs:float" />
+                              <xs:attribute name="Lambda" type="xs:float" />
+                              <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:choice>
+                      </xs:sequence>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="VDITransition">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                  
+                      <!-- The VDI-rules we know so far -->
+                      <!-- If a VDI-rule occurs, the transition is handled as a VDI transition -->
+                      <!-- For V3, lambda is always expected to be absolute -> mode is ignored there. -->
+                      <xs:choice minOccurs="1" maxOccurs="1">
+                        <xs:element name="DoubleHarmonicTransition" />
+                        <xs:element name="InclinedSine">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Linear" />
+                        <xs:element name="HarmonicCombination">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="ModifiedAccelerationTrapezoid">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />     
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="ModifiedSine">
+                          <xs:complexType>
+                            <!-- Choose one of three -->
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="Ca" type="xs:float" />
+                            <xs:attribute name="CaStar" type="xs:float" />
+                        
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Polynomial">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="QuadraticParabola">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Sine">
+                          <xs:complexType>
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="SineLineCombination">
+                          <xs:complexType>
+                            <!-- Both parameters can be used -->
+                            <xs:attribute name="Lambda" type="xs:float" />
+                            <xs:attribute name="C" type="xs:float" />
+                        
+                            <xs:attribute name="LambdaMode" type="cam:ValueMode" default="Absolute" />
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:choice>
+
+                      <xs:attribute name="LeftContinuity" type="cam:ElementContinuity" default="AsProfile" />
+                      <xs:attribute name="RightContinuity" type="cam:ElementContinuity" default="AsProfile" />
+                      <xs:attribute name="OptimizationGoal" type="cam:ElementOptimizationGoal" default="AsProfile" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="InverseSine">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                      <xs:attribute name="InterpolationPointCount" type="xs:integer" default="32" />
+                      <xs:attribute name="MaxFollowingValueTolerance" type="xs:float" default="0.01" />
+                      <xs:attribute name="MathStartX" type="xs:float" default="-0.95" />
+                      <xs:attribute name="MathEndX" type="xs:float" default="0.95" />
+                      <xs:attribute name="Minimum" type="xs:float" />
+                      <xs:attribute name="Maximum" type="xs:float" />
+                      <xs:attribute name="Inversed" type="xs:boolean" default="false" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="Sine">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                      <xs:attribute name="Amplitude" type="xs:float" default="1" />
+                      <!-- two of four are required and at least StartPhase or EndPhase is required -->
+                      <xs:attribute name="StartPhase" type="xs:float" default="0" />
+                      <xs:attribute name="EndPhase" type="xs:float" default="6.2831853071795862" />
+                      <xs:attribute name="Frequency" type="xs:float" default="1" />
+                      <xs:attribute name="PeriodLength" type="xs:float" default="1" />
+                      <!-- Two out of three are required here -->
+                      <xs:attribute name="Inclination" type="xs:float" default="0" />
+                      <xs:attribute name="StartOffset" type="xs:float" default="0" />
+                      <xs:attribute name="EndOffset" type="xs:float" default="0" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="PointGroup">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="cam:SegmentBase">
+                      
+                      <!-- Allow points to be sub-elements of the group-->
+                      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="Point" type="cam:PointElementType" />
+                      </xs:sequence>
+                      
+                      <xs:attribute name="ApproximationDataPoints" type="xs:integer" default="32" />
+                      <xs:attribute name="ApproximationTolerance" type="xs:float" default="0.01" />
+                      <xs:attribute name="LeadingValueMode" type="cam:ValueMode" default="Absolute" />
+                      <xs:attribute name="FollowingValueMode" type="cam:ValueMode" default="Absolute" />
+                      <xs:attribute name="ApproximationMode" type="cam:PointGroupApproximationMode" default="SegmentApproximation" />
+                      <xs:attribute name="InterpolationMode" type="cam:PointGroupInterpolationMode" default="CubicSpline" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

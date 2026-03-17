@@ -8,7 +8,8 @@
         " Width="400" Title="TiaGitHandler">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TIA Projekt - Öffnen oder an Instanz hängen?" VerticalAlignment="Top"/>
-        <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
+        <Button Content="Anhängen V21" HorizontalAlignment="Left" Margin="211,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV21_Click"/>
+        <Button Content="Öffnen" HorizontalAlignment="Left" Margin="211,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdOpen_Click"/>
         <Button Content="Anhängen V14SP1" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV14SP1_Click"/>
         <Button Content="Anhängen V15.1" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV151_Click"/>
         <Button Content="Anhängen V16" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="119" Height="42" Click="CmdAttachV16_Click"/>

@@ -1,0 +1,2225 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Siemens.Engineering.SafetyValidation</name>
+    </assembly>
+    <members>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTest">
+            <summary>
+            Represents a Safety Activation Test
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.SafetyFunctions">
+            <summary>
+            Composition of SafetyFunctions
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.Author">
+            <summary>
+            Author of the ActivationTest
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.EvaluationDeviceName">
+            <summary>
+            Name of the EvaluationDevice
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.Name">
+            <summary>
+            Name of the ActivationTest
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTest.OverallState">
+            <summary>
+            Overall state of the ActivationTest
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.AvailableDevices">
+            <summary>
+            List of DeviceItems which can be used in the SafetyFunction
+            </summary>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.HW.DeviceItem&gt;</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.ChangeEvaluationDevice(Siemens.Engineering.HW.DeviceItem)">
+            <summary>
+            Change the EvaluationDevice of the ActivationTest
+            </summary>
+            <param name="newEvaluationDevice">The new evaluation device</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Export(System.IO.FileInfo,Siemens.Engineering.ExportOptions)">
+            <summary>
+            Simatic ML export of an ActivationTest
+            </summary>
+            <param name="path">path of export</param>
+            <param name="exportOptions">Export options</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Export(System.IO.FileInfo,Siemens.Engineering.ExportOptions,Siemens.Engineering.DocumentInfoOptions)">
+            <summary>
+            Simatic ML export of an ActivationTest with DocumentInfoOptions
+            </summary>
+            <param name="path">path of export</param>
+            <param name="exportOptions">Export options</param>
+            <param name="documentInfoOptions">Possible ways to configure document info during export (None, ExportSetting, InstalledProducts, CreatedTimeStamp, All)</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTest.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTestComposition">
+            <summary>
+            Composition of ActivationTests
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Contains(Siemens.Engineering.SafetyValidation.ActivationTest)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.IndexOf(Siemens.Engineering.SafetyValidation.ActivationTest)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.CreateFrom(Siemens.Engineering.Library.MasterCopies.MasterCopy)">
+            <summary>
+            Create ActivationTest from MasterCopy
+            </summary>
+            <param name="sourceMasterCopy">The source MasterCopy</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTest</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.CreateFrom(Siemens.Engineering.SafetyValidation.ActivationTest)">
+            <summary>
+            Create a new ActivationTest based on an existing ActivationTest
+            </summary>
+            <param name="existingActivationTest">Existing ActivationTest</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTest</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Import(System.IO.FileInfo,Siemens.Engineering.SafetyValidation.ActivationTestImportOptions)">
+            <summary>
+            Simatic ML import of an ActivationTest
+            </summary>
+            <param name="path">Path to the Simatic ML file</param>
+            <param name="importOptions">Options to use for Import</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.SafetyValidation.ActivationTest&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Create(System.String,Siemens.Engineering.HW.DeviceItem)">
+            <summary>
+            Create an ActivationTest using the specified parameters
+            </summary>
+            <param name="name">Name of the ActivationTest</param>
+            <param name="evaluationDevice">Evaluation device</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTest</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Find(System.String)">
+            <summary>
+            Finds a given ActivationTest
+            </summary>
+            <param name="name">Name of the ActivationTest</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTest</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions">
+            <summary>
+            Import options for safety activation tests
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions.None">
+            <summary>
+            If an existing object with the same identification criteria is found when trying to import an object, stop import and throw an exception.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions.Override">
+            <summary>
+            If an existing object with the same identification criteria is found when trying to import an object, delete the existing object and create a new object with the imported data.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions.Rename">
+            <summary>
+            If an existing object with the same identification criteria is found when trying to import an object, the new object will be automatically renamed after import
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions.SkipInactiveCultures">
+            <summary>
+            Skip the cultures and texts If the cultures indicated in a SimaticML file are not active in the project where it is being imported.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ActivationTestImportOptions.ActivateInactiveCultures">
+            <summary>
+            Activate the cultures and import the texts as well, if the cultures indicated in a SimaticML file are valid and supported in the project where it is being imported but are not active.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTestPrintout">
+            <summary>
+            Service providing printout functionality for ActivationTests
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Generate(System.IO.FileInfo)">
+            <summary>
+            Save a report to a file. If the file already exists, it is overridden
+            </summary>
+            <param name="file">Output path to a file</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestPrintout.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup">
+            <summary>
+            User group containing Activation Tests &amp; Activation Test user groups
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.ActivationTests">
+            <summary>
+            Composition of ActivationTests
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Groups">
+            <summary>
+            Composition of ActivationTest user groups
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Name">
+            <summary>
+            The name of the ActivationTest user group
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroup.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition">
+            <summary>
+            Composition of ActivationTestUserGroups
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Contains(Siemens.Engineering.SafetyValidation.ActivationTestUserGroup)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.IndexOf(Siemens.Engineering.SafetyValidation.ActivationTestUserGroup)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.CreateFrom(Siemens.Engineering.Library.MasterCopies.MasterCopy)">
+            <summary>
+            Create ActivationTest from MasterCopy
+            </summary>
+            <param name="sourceMasterCopy">The source master copy</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTestUserGroup</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Create(System.String)">
+            <summary>
+            Create user folder for ActivationTest collection
+            </summary>
+            <param name="name">Name of group to be created</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTestUserGroup</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Find(System.String)">
+            <summary>
+            Finds given ActivationTest user group
+            </summary>
+            <param name="name">Name of the ActivationTest user group</param>
+            <returns>Siemens.Engineering.SafetyValidation.ActivationTestUserGroup</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ActivationTestUserGroupComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.Condition">
+            <summary>
+            A test condition of a SafetyFunction
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.Comment">
+            <summary>
+            Comment of the Signal
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.DeviceName">
+            <summary>
+            The name of the device
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.ExecutedInput">
+            <summary>
+            The expected executed state of the Signal
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.InitialInput">
+            <summary>
+            The expected initial state of the Signal
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.Response">
+            <summary>
+            The expected response state of the Signal
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.SignalName">
+            <summary>
+            The name of the Signal
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.Condition.SignalUsage">
+            <summary>
+            The signal type of the Condition
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.Condition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ConditionComposition">
+            <summary>
+            Represents the SafetyFunction Conditions
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ConditionComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ConditionComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ConditionComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.ConditionComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.Contains(Siemens.Engineering.SafetyValidation.Condition)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.IndexOf(Siemens.Engineering.SafetyValidation.Condition)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.Create(Siemens.Engineering.HW.DeviceItem,Siemens.Engineering.SafetyValidation.SignalUsage,System.String)">
+            <summary>
+            Create a Condition
+            </summary>
+            <param name="deviceItem">DeviceItem of the Signal</param>
+            <param name="signalUsage">Signal usage type</param>
+            <param name="signalName">Name of the signal</param>
+            <returns>Siemens.Engineering.SafetyValidation.Condition</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.ConditionComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.ConditionValue">
+            <summary>
+            Expected value of the condition
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ConditionValue.FALSE">
+            <summary>
+            Expected value is false
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ConditionValue.TRUE">
+            <summary>
+            Expected value is true
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.ConditionValue.NotRelevant">
+            <summary>
+            Value of the signal is not relevant
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.DeviceQuery">
+            <summary>
+            Service that provide query for Safety Validation Assistant relevant devices
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.DeviceQuery.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.EvaluationDevices">
+            <summary>
+            Possible evaluation devices in the project
+            </summary>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.HW.DeviceItem&gt;</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.DeviceQuery.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.SafetyFunction">
+            <summary>
+            Represents a Safety function for an ActivationTest
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.Conditions">
+            <summary>
+            Composition of Conditions
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.TraceConfiguration">
+            <summary>
+            Trace configuration of the SafetyFunction
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.Description">
+            <summary>
+            Description of the SafetyFunction
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.Name">
+            <summary>
+            Name of the SafetyFunction (e.g. SF 1)
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.TestName">
+            <summary>
+            Test name of the SafetyFunction
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunction.TestState">
+            <summary>
+            Test state of the SafetyFunction
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Export(System.IO.FileInfo,Siemens.Engineering.ExportOptions)">
+            <summary>
+            Simatic ML export of a SafetyFunction
+            </summary>
+            <param name="path">path of export</param>
+            <param name="exportOptions">Export options</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Export(System.IO.FileInfo,Siemens.Engineering.ExportOptions,Siemens.Engineering.DocumentInfoOptions)">
+            <summary>
+            Simatic ML export of an SafetyFunction with DocumentInfoOptions
+            </summary>
+            <param name="path">path of export</param>
+            <param name="exportOptions">Export options</param>
+            <param name="documentInfoOptions">Possible ways to configure document info during export (None, ExportSetting, InstalledProducts, CreatedTimeStamp, All)</param>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.ResetTestResult">
+            <summary>
+            Reset the Test Result of the SafetyFunction
+            </summary>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Delete">
+            <summary>
+            Deletes this instance.
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunction.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition">
+            <summary>
+            Composition of SafetyFunctions
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Parent">
+            <summary>
+            Gets the parent.
+            </summary>
+            <returns>The parent.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <returns>The count.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <returns>The value.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Item(System.Int32)">
+            <summary>
+            Gets the element at the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The zero-based index of the item to get.</param>
+            <returns>The element at the specified <paramref name="index"/>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Any">
+            <summary>
+            Determines if any item is contained within.
+            </summary>
+            <returns><c>true</c> if any item is contained within; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Contains(Siemens.Engineering.SafetyValidation.SafetyFunction)">
+            <summary>
+            Determines if <paramref name="item"/> is contained within.
+            </summary>
+            <param name="item">The item being sought.</param>
+            <returns><c>true</c> if <paramref name="item"/> is contained within; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.IndexOf(Siemens.Engineering.SafetyValidation.SafetyFunction)">
+            <summary>
+            Searches for <paramref name="item"/> and returns the zero-based index of the first occurrence within.
+            </summary>
+            <param name="item">The item for which an index is sought.</param>
+            <returns>The zero-based index of <paramref name="item"/> of the first occurrence within.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.CreateFrom(Siemens.Engineering.SafetyValidation.SafetyFunction)">
+            <summary>
+            Create a new SafetyFunction based on an existing SafetyFunction
+            </summary>
+            <param name="existingSafetyFunction">Existing SafetyFunction</param>
+            <returns>Siemens.Engineering.SafetyValidation.SafetyFunction</returns>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Import(System.IO.FileInfo,Siemens.Engineering.ImportOptions)">
+            <summary>
+            Simatic ML import of a SafetyFunction
+            </summary>
+            <param name="path">Path to the Simatic ML file</param>
+            <param name="importOption">Options to use for Import</param>
+            <returns>System.Collections.Generic.IList&lt;Siemens.Engineering.SafetyValidation.SafetyFunction&gt;</returns>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Create">
+            <summary>
+            Create a new SafetyFunction
+            </summary>
+            <returns>Siemens.Engineering.SafetyValidation.SafetyFunction</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyFunctionComposition.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant">
+            <summary>
+            Provide access to Safety Validation Assistant related information and configuration
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.ActivationTestGroups">
+            <summary>
+            ActivationTestGroups in the project
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.ActivationTests">
+            <summary>
+            ActivationTests in the project
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value>Parent</value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.SafetyValidationAssistant.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.SignalUsage">
+            <summary>
+            Signal usage type
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.SignalUsage.OperatingMode">
+            <summary>
+            Operating mode type Signal
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.SignalUsage.InputCondition">
+            <summary>
+            Input condition type Signal
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.SignalUsage.Response">
+            <summary>
+            Response type Signal
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.TestState">
+            <summary>
+            Last executed state of the SafetyFunction
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.TestState.NotTested">
+            <summary>
+            The test was not executed
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.TestState.Succeeded">
+            <summary>
+            The test was executed successfully
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.TestState.Failed">
+            <summary>
+            The test was executed with an error
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.TestValidationResult">
+            <summary>
+            Result of the validity of the activation test
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TestValidationResult.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TestValidationResult.ErrorCount">
+            <summary>
+            The number of errors in a given validation scenario
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TestValidationResult.Messages">
+            <summary>
+            The error messages in a given validation scenario
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TestValidationResult.State">
+            <summary>
+            Final state of a given validation scenario
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidationResult.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.TestValidationResultState">
+            <summary>
+            Overall state of the test validation check for the given object
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.TestValidationResultState.Okay">
+            <summary>
+            No error.
+            </summary>
+        </member>
+        <member name="F:Siemens.Engineering.SafetyValidation.TestValidationResultState.Error">
+            <summary>
+            Errors found during test validity check. Read the messages for more information.
+            </summary>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.TestValidity">
+            <summary>
+            Service that provide the validity of an ActivationTest relevant item
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TestValidity.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.CheckValidity">
+            <summary>
+            Checks the validity of the item
+            </summary>
+            <returns>Siemens.Engineering.SafetyValidation.TestValidationResult</returns>
+            <exception cref="T:Siemens.Engineering.LicenseNotFoundException"></exception>
+            <exception cref="T:Siemens.Engineering.FunctionRightNotFoundException"></exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TestValidity.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:Siemens.Engineering.SafetyValidation.TraceConfiguration">
+            <summary>
+            Trace configuration for the SafetyFunction
+            </summary>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#GetComposition(System.String)">
+            <summary>
+            Gets an <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the <c>IEngineeringCompositionOrObject</c> to get.</param>
+            <returns>The <c>IEngineeringCompositionOrObject</c> with the given <paramref name="name"/>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#GetCompositionInfos">
+            <summary>
+            Gets the list of composition infos available for the object.
+            </summary>
+            <returns>The list of composition infos available for the object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute with the given <paramref name="name"/>.
+            </summary>
+            <param name="name">The name of the attribute to get.</param>
+            <returns>The attribute with the given <paramref name="name"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute with given <paramref name="name"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetAttributes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets a list of attributes for the given <paramref name="names"/>.
+            </summary>
+            <param name="names">The names of the attributes to get.</param>
+            <returns>A list of the attributes for the given <paramref name="names"/>.</returns>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute for any of the <paramref name="names"/> does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetAttributes(Siemens.Engineering.AttributeAccessOptions)">
+            <summary>
+            Gets a list of attribute names/attribute values for the given access options.
+            </summary>
+            <param name="attributeAccessOptions">The access options of the attributes to get.</param>
+            <returns>A list of pairs of attribute names and values for the given access options</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetAttributeInfos">
+            <summary>
+            Returns a collection of EngineeringAttributeInfo objects describing the different attributes on this object.
+            </summary>
+            <returns>A collection of EngineeringAttributeInfo objects describing the different attributes on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets value of the attribute.
+            </summary>
+            <param name="name">The name of the attribute to set.</param>
+            <param name="value">The value of the attribute to set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when attribute name given does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Sets a list of values for the given <paramref name="attributes"/>.
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.SetAttributes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},Siemens.Engineering.AttributeDelegate)">
+            <summary>
+            Sets the attributes with the given names to the given values as indicated in <paramref name="attributes"/>. Errors will be communicated through <paramref name="errorHandler"/>
+            </summary>
+            <param name="attributes">A <c>KeyValuePair</c> list containing the names and values of attributes to be set.</param>
+            <param name="errorHandler">A callback handler to decide how to proceed in a case of error</param>
+            <exception cref="T:Siemens.Engineering.EngineeringNotSupportedException">Throws when any of the attribute name given in the list does not exist</exception>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#GetInvocationInfos">
+            <summary>
+            Returns a collection of EngineeringInvocationInfo objects describing the different actions on this object.
+            </summary>
+            <returns>A collection of EngineeringInvocationInfo objects describing the different actions on this object.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#Invoke(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Object}})">
+            <summary>
+            Invokes the method represented by the current instance, using the specified parameters.
+            </summary>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="parameters">An argument list for the invoked method. This is an collection of objects with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters, parameters should be null.</param>
+            <returns>An object containing the return value of the invoked method, otherwise null.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#Create(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Creates an <c>IEngineeringObject</c> of indicated <paramref name="type"/> initialized with values as indicated in <paramref name="compositionName"/> within the <paramref name="parameters"/>.
+            </summary>
+            <param name="compositionName">The name of the Composition where the object is to be created.</param>
+            <param name="type">The specific type of object to be created.</param>
+            <param name="parameters">The initial value of the attribute for the object to be created.</param>
+            <returns>An <c>IEngineeringObject</c> of <paramref name="type"/> initialized with values as indicated in <paramref name="parameters"/> within the <paramref name="compositionName"/>; otherwise an informative exception is thrown.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringObject#GetCreationInfos(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="compositionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetService``1">
+            <summary>
+            Gets an instance of type <c>T</c>.
+            </summary>
+            <typeparam name="T">The service type.</typeparam>
+            <returns>The instance of type <c>T</c>; otherwise a <c>null</c>.</returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Siemens#Engineering#IEngineeringServiceProvider#GetServiceInfos">
+            <summary>
+            Returns a collection of EngineeringServiceInfo objects describing the different services on this object.
+            </summary>
+            <returns>A collection of EngineeringServiceInfo objects describing the different services on this object.</returns>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TraceConfiguration.Parent">
+            <summary>
+            EOM parent of this object
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Siemens.Engineering.SafetyValidation.TraceConfiguration.IsTraced">
+            <summary>
+            Trace is enabled during test execution
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:Siemens.Engineering.SafetyValidation.TraceConfiguration.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+    </members>
+</doc>

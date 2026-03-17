@@ -674,6 +674,99 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
             }
         }
 
+        private static Func<string, Credentials, Project> _createV21ProjectInstance;
+
+        private static Func<string, Credentials, Project> createV21ProjectInstance
+        {
+            get
+            {
+                if (_createV21ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_createV21ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null ||
+                                _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null || _createV20ProjectInstance != null)
+                            {
+                                throw new Exception("You cannot open a project in V21 if you already have a project open in another version. You need to restart the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV21.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V21.Step7ProjectV21");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV21ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV21ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV21ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _createV21ProjectInstance;
+            }
+        }
+
+        private static Func<Project> _attachV21ProjectInstance;
+
+        private static Func<Project> attachV21ProjectInstance
+        {
+            get
+            {
+                if (_attachV21ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_attachV21ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null ||
+                                _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null || _createV20ProjectInstance != null)
+                            {
+                                throw new Exception("You cannot open a project in V21 if you already have a project open in another version. You need to restart the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV21.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V21.Step7ProjectV21");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV21ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV21ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV21ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _attachV21ProjectInstance;
+            }
+        }
+
+        private static Func<string, Project> _attachV21ProjectInstanceWithFilename;
+
+        private static Func<string, Project> attachV21ProjectInstanceWithFilename
+        {
+            get
+            {
+                if (_attachV21ProjectInstance == null)
+                {
+                    lock (_lockObject)
+                    {
+                        if (_attachV21ProjectInstance == null)
+                        {
+                            if (_createV13ProjectInstance != null || _createV14SP1ProjectInstance != null || _createV15ProjectInstance != null || _createV15_1ProjectInstance != null ||
+                                _createV16ProjectInstance != null || _createV17ProjectInstance != null || _createV18ProjectInstance != null || _createV19ProjectInstance != null || _createV20ProjectInstance != null)
+                            {
+                                throw new Exception("You cannot open a project in V21 if you already have a project open in another version. You need to restart the Application!");
+                            }
+                            var path = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location) ?? "";
+                            var assembly = Assembly.LoadFrom(Path.Combine(path, "DotNetSiemensPLCToolBoxLibrary.TIAV21.dll"));
+                            var type = assembly.GetType("DotNetSiemensPLCToolBoxLibrary.Projectfiles.V21.Step7ProjectV21");
+                            var mth = type.GetMethod("AttachToInstanceWithFilename");
+                            _createV21ProjectInstance = (file, credentials) => (Project)Activator.CreateInstance(type, new object[] { file, null, credentials });
+                            _attachV21ProjectInstance = () => (Project)Activator.CreateInstance(type);
+                            _attachV21ProjectInstanceWithFilename = (file) => (Project)mth.Invoke(null, new object[] { file });
+                        }
+                    }
+                }
+                return _attachV21ProjectInstanceWithFilename;
+            }
+        }
+
         /// <summary>
         /// This Function Returens a Step7 Project Instance for every Project Folder in the Path.
         /// </summary>
@@ -762,6 +855,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (fls.Length > 0)
                             retVal.Add(createV20ProjectInstance(fls[0], credentials));
 
+                        fls = System.IO.Directory.GetFiles(subd, "*.ap21");
+                        if (fls.Length > 0)
+                            retVal.Add(createV21ProjectInstance(fls[0], credentials));
+
                         fls = System.IO.Directory.GetFiles(subd, "*.al11");
                         if (fls.Length > 0)
                             retVal.Add(createV13ProjectInstance(fls[0]));
@@ -805,6 +902,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         fls = System.IO.Directory.GetFiles(subd, "*.al20");
                         if (fls.Length > 0)
                             retVal.Add(createV20ProjectInstance(fls[0], credentials));
+
+                        fls = System.IO.Directory.GetFiles(subd, "*.al21");
+                        if (fls.Length > 0)
+                            retVal.Add(createV21ProjectInstance(fls[0], credentials));
 
                         fls = System.IO.Directory.GetFiles(subd, "*.s5d");
                         if (fls.Length > 0)
@@ -872,6 +973,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV20ProjectInstance(entr, credentials));
 
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.ap21");
+                        if (entr != null)
+                            retVal.Add(createV21ProjectInstance(entr, credentials));
+
                         entr = zipfile.GetFirstZipEntryWithEnding("*.al11");
                         if (entr != null)
                             retVal.Add(createV13ProjectInstance(entr));
@@ -916,6 +1021,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         if (entr != null)
                             retVal.Add(createV20ProjectInstance(entr, credentials));
 
+                        entr = zipfile.GetFirstZipEntryWithEnding("*.al21");
+                        if (entr != null)
+                            retVal.Add(createV21ProjectInstance(entr, credentials));
+
                         entr = zipfile.GetFirstZipEntryWithEnding(".s5d");
                         if (entr != null)
                             retVal.Add(new Step5Project(zipfile, zip, false));
@@ -944,6 +1053,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return attachV19ProjectInstance();
             else if (tiaVersion == "20")
                 return attachV20ProjectInstance();
+            else if (tiaVersion == "21")
+                return attachV21ProjectInstance();
 
             return null;
         }
@@ -962,6 +1073,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return attachV19ProjectInstanceWithFilename(filename);
             if (tiaVersion == "20")
                 return attachV20ProjectInstanceWithFilename(filename);
+            if (tiaVersion == "21")
+                return attachV21ProjectInstanceWithFilename(filename);
 
             return null;
         }
@@ -1001,6 +1114,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV19ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".ap20"))
                 return createV20ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".ap21"))
+                return createV21ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al11"))
                 return createV13ProjectInstance(file);
             else if (file.ToLower().EndsWith(".al12"))
@@ -1023,6 +1138,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                 return createV19ProjectInstance(file, credentials);
             else if (file.ToLower().EndsWith(".al20"))
                 return createV20ProjectInstance(file, credentials);
+            else if (file.ToLower().EndsWith(".al21"))
+                return createV21ProjectInstance(file, credentials);
             else
             {
                 var zh = ZipHelper.GetZipHelper(file);

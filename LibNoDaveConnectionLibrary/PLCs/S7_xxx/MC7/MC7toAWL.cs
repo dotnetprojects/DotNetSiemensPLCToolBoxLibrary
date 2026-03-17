@@ -2357,7 +2357,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                             else
                                 retVal.Add(new S7FunctionBlockRow()
                                 {
-                                    Command = Mnemonic.opU[MN],
+                                    Command = Mnemonic.opUN[MN],
                                     Parameter = Mnemonic.adA[MN] + Convert.ToString(BD[pos + 1] & 0x7F) + "." +
                                          Convert.ToString(BD[pos] - 0xE0)
                                 });

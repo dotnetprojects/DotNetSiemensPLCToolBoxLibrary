@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © Siemens AG 2008-2018. All rights reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.siemens.com/automation/Openness/SW/Parameters/v1"
+           xmlns:tns="http://www.siemens.com/automation/Openness/SW/Parameters/v1"
+           elementFormDefault="qualified">
+  <!-- Root element Parameters-->
+  <xs:element name="Parameters" type="tns:Parameters_T"/>
+
+  <!-- Complex type Parameters_T-->
+  <xs:complexType name="Parameters_T">
+    <xs:annotation>
+      <xs:documentation>Describes a list of parameters.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Parameter" type="tns:Parameter_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Complex type Parameter_T-->
+  <xs:complexType name="Parameter_T">
+    <xs:annotation>
+      <xs:documentation>Describes a single parameter, having Name and Value. If the Value is missing, the default value of the Parameter is used.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Name" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>Name of the Parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Value" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Value of the Parameter</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>
