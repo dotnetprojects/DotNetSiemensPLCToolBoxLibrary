@@ -164,7 +164,7 @@ namespace TiaGitHandler
 
                     prj = Projects.AttachProject(ver);
                     exportPath = Path.GetDirectoryName(prj.ProjectFile);
-                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\out\\Export"));
+                    exportPath = Path.GetFullPath(Path.Combine(exportPath, "..\\Export"));
                 }
                 else
                 {
