@@ -224,6 +224,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         /// </summary>
         public static bool HasTimestampConflict(DateTime dt1, DateTime dt2)
         {
+            // A MinValue timestamp means the corresponding record (offline plaintext or
+            // online MC7) was never present, so there is nothing to compare and no
+            // conflict to flag. Without this guard, a block that only has one of the
+            // two interface records reports a spurious conflict against MinValue.
+            if (dt1 == DateTime.MinValue || dt2 == DateTime.MinValue)
+            {
+                return false;
+            }
+
             if (!dt1.Equals(dt2))
             {
                 return true;
