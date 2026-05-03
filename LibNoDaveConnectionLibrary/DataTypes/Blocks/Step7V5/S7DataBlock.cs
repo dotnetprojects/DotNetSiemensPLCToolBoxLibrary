@@ -57,10 +57,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
 
                 if ((!checkIFaceConflict && StructureFromString != null) || (checkIFaceConflict && !HasTimestampConflict(LastInterfaceChange, LastInterfaceChangeHistory)))
                 {
-                    return StructureFromString;
+                    return StructureFromString ?? StructureFromMC7;
                 }
 
-                return StructureFromMC7;
+                // Fall back to the other source if the preferred one is missing — for
+                // example a DB whose SUBBLKTYP 10 record has an empty SSBPART (no MC7
+                // interface) yet the timestamps disagree.
+                return StructureFromMC7 ?? StructureFromString;
             }
             set
             {
