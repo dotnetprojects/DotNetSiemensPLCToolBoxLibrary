@@ -66,11 +66,6 @@
         FFUP = 33,
 
         /// <summary>
-        /// Same as SCL but for Safty blocks
-        /// </summary>
-        FSCL = 34,
-
-        /// <summary>
         /// Same as DB but for Safty blocks
         /// </summary>
         FDB = 34,
