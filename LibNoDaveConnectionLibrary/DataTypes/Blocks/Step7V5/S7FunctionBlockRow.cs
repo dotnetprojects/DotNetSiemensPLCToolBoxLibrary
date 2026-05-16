@@ -743,7 +743,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
                 var fld = (this.Parent).ParentFolder as BlocksOfflineFolder;
                 if (fld != null)
                 {
-                    var sym = this.Parent.SymbolTable.GetEntryFromOperand(paras[0]);
+                    var sym = this.Parent.SymbolTable?.GetEntryFromOperand(paras[0]);
 
                     if (sym != null) 
                         par = "\"" + sym.Symbol + "\"";
