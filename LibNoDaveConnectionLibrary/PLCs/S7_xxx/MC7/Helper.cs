@@ -173,16 +173,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
         public static string ValueToString(object Value, S7DataRowType DataType)
         {
-            if (DataType == S7DataRowType.S5_KY) return ((UInt16)Value / 256).ToString().PadLeft(3, '0') + "," + ((UInt16)Value % 256).ToString().PadLeft(3, '0');
-            else if (DataType == S7DataRowType.S5_KF) return ((Int16)Value > 0 ? "+" : "") + Value.ToString();
-            else if (DataType == S7DataRowType.S5_KH) return ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
-            else if (DataType == S7DataRowType.S5_KG) return SingleExtensions.ToS5(((float)Value));
-            else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC) return "'" + ((string)Value) + "'"; //.PadLeft(4, ' ') 
-            else if (DataType == S7DataRowType.S5_KC) return "'" + ((string)Value).PadLeft(2, ' ') + "'";
-            else if (DataType == S7DataRowType.S5_KT) return Helper.GetS5TimeFromTimeSpan(((TimeSpan)Value));
+            if (DataType == S7DataRowType.S5_KY) return ((UInt16)(Value ?? 0) / 256).ToString().PadLeft(3, '0') + "," + ((UInt16)(Value ?? 0) % 256).ToString().PadLeft(3, '0');
+            else if (DataType == S7DataRowType.S5_KF) return ((Int16)(Value ?? 0) > 0 ? "+" : "") + Value.ToString();
+            else if (DataType == S7DataRowType.S5_KH) return ((UInt16)(Value ?? 0)).ToString("X", NumberFormatInfo.CurrentInfo).PadLeft(4, '0');
+            else if (DataType == S7DataRowType.S5_KG) return SingleExtensions.ToS5(((float)(Value ?? 0)));
+            else if (DataType == S7DataRowType.S5_C || DataType == S7DataRowType.S5_KC) return "'" + ((string)(Value ?? "")) + "'"; //.PadLeft(4, ' ') 
+            else if (DataType == S7DataRowType.S5_KC) return "'" + ((string)(Value ?? "")).PadLeft(2, ' ') + "'";
+            else if (DataType == S7DataRowType.S5_KT) return Helper.GetS5TimeFromTimeSpan(((TimeSpan)(Value ?? 0)));
             else if (DataType == S7DataRowType.S5_KM)
             {
-                var bt = BitConverter.GetBytes((UInt16)Value);
+                var bt = BitConverter.GetBytes((UInt16)(Value ?? 0));
                 string ret = "";
                 foreach (byte b in bt)
                 {
@@ -192,21 +192,21 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 return ret;
             }
-            else if (DataType == S7DataRowType.WORD) return "W#16#" + ((UInt16)Value).ToString("X", NumberFormatInfo.CurrentInfo);
-            else if (DataType == S7DataRowType.BYTE) return "B#16#" + ((byte)Value).ToString("X", NumberFormatInfo.CurrentInfo);
-            else if (DataType == S7DataRowType.DWORD) return "DW#16#" + ((UInt32)Value).ToString("X", NumberFormatInfo.CurrentInfo);
-            else if (DataType == S7DataRowType.INT) return ((Int16)Value).ToString();
-            else if (DataType == S7DataRowType.DINT) return "L#" + ((Int32)Value).ToString();
-            else if (DataType == S7DataRowType.REAL) return ((Single)Value).ToString("0.000000e+000", CultureInfo.InvariantCulture);
+            else if (DataType == S7DataRowType.WORD) return "W#16#" + ((UInt16)(Value ?? 0)).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.BYTE) return "B#16#" + ((byte)(Value ?? 0)).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.DWORD) return "DW#16#" + ((UInt32)(Value ?? 0)).ToString("X", NumberFormatInfo.CurrentInfo);
+            else if (DataType == S7DataRowType.INT) return ((Int16)(Value ?? 0)).ToString();
+            else if (DataType == S7DataRowType.DINT) return "L#" + ((Int32)(Value ?? 0)).ToString();
+            else if (DataType == S7DataRowType.REAL) return ((Single)(Value ?? 0)).ToString("0.000000e+000", CultureInfo.InvariantCulture);
             else if (DataType == S7DataRowType.S5TIME)
             {
                 var bt = new byte[2];
-                libnodave.putS5Timeat(bt, 0, (TimeSpan)Value);
+                libnodave.putS5Timeat(bt, 0, (TimeSpan)(Value ?? 0));
                 return Helper.GetS5Time(bt[0], bt[1]);
             }
             else if (DataType == S7DataRowType.TIME)
             {
-                var tm = (TimeSpan)Value;
+                var tm = (TimeSpan)(Value ?? 0);
                 var ret = new StringBuilder("T#");
                 if (tm.TotalMilliseconds < 0) ret.Append("-");
                 if (tm.Days != 0) ret.Append(tm.Days + "D");
@@ -219,7 +219,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             }
             else if (DataType == S7DataRowType.DATE)
             {
-                DateTime ak = (DateTime)Value;
+                DateTime ak = (DateTime)(Value ?? 0);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("D#");
                 sb.Append(ak.Year);
@@ -231,7 +231,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
             }
             else if (DataType == S7DataRowType.TIME_OF_DAY)
             {
-                DateTime ak = (DateTime)Value;
+                DateTime ak = (DateTime)(Value ?? 0);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("TOD#");
                 sb.Append(ak.Hour);
@@ -243,10 +243,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 sb.Append(ak.Millisecond.ToString().PadRight(3, '0'));
                 return sb.ToString();
             }
-            else if (DataType == S7DataRowType.CHAR) return ((char)Value).ToString();
+            else if (DataType == S7DataRowType.CHAR) return ((char)(Value ?? 0)).ToString();
             else if (DataType == S7DataRowType.DATE_AND_TIME)
             {
-                DateTime ak = (DateTime)Value;
+                DateTime ak = (DateTime)(Value ?? 0);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("DT#");
                 sb.Append(ak.Year.ToString().Substring(2));
