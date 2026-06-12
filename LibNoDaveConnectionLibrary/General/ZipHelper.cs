@@ -133,7 +133,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             if (_zipFile == null)
             {
 #endif
-                return new FileStream(file, FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite);
+                return new FileStream(ResolveCaseInsensitivePath(file), FileMode.Open, FileAccess.Read, System.IO.FileShare.ReadWrite);
 #if SHARPZIPLIB
             }
             else
@@ -161,7 +161,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             if (_zipFile == null)
             {
 #endif
-                return new FileStream(file, FileMode.Open, FileAccess.Write, System.IO.FileShare.ReadWrite);
+                return new FileStream(ResolveCaseInsensitivePath(file), FileMode.Open, FileAccess.Write, System.IO.FileShare.ReadWrite);
 #if SHARPZIPLIB
             }
             else
@@ -249,13 +249,51 @@ namespace DotNetSiemensPLCToolBoxLibrary.General
             }
 #endif
         }
+        // STEP7 legt Dateien gemischt groß/klein ab (z.B. SUBBLK.DBT), die Library baut Pfade aber
+        // mit fester Schreibweise (z.B. ".dbt" klein in ParseDBF.openMemoFile). Auf case-sensitiven
+        // Dateisystemen (Linux) wird die Datei dann nicht gefunden -> Block-Code bleibt leer.
+        // Diese Methode löst einen Pfad case-insensitiv gegen das echte Dateisystem auf.
+        // Auf Windows (case-insensitiv) ist das ein No-Op über den File.Exists-Fastpath.
+        private static string ResolveCaseInsensitivePath(string file)
+        {
+            if (string.IsNullOrEmpty(file) || File.Exists(file) || Directory.Exists(file))
+                return file;
+            try
+            {
+                bool rooted = Path.IsPathRooted(file);
+                var parts = file.Split('/', '\\');
+                string cur = rooted ? "/" : ".";
+                for (int i = (rooted ? 1 : 0); i < parts.Length; i++)
+                {
+                    var part = parts[i];
+                    if (part.Length == 0) continue;
+                    string next = Path.Combine(cur, part);
+                    if (File.Exists(next) || Directory.Exists(next)) { cur = next; continue; }
+                    string match = null;
+                    try
+                    {
+                        foreach (var entry in Directory.GetFileSystemEntries(cur))
+                        {
+                            if (string.Equals(Path.GetFileName(entry), part, StringComparison.OrdinalIgnoreCase))
+                            { match = entry; break; }
+                        }
+                    }
+                    catch { }
+                    if (match == null) return file;
+                    cur = match;
+                }
+                return cur;
+            }
+            catch { return file; }
+        }
+
         public bool FileExists(string file)
         {
 #if SHARPZIPLIB
             if (_zipFile == null)
             {
 #endif
-                return System.IO.File.Exists(file);
+                return File.Exists(ResolveCaseInsensitivePath(file));
 #if SHARPZIPLIB
             }
             else
