@@ -27,6 +27,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
         const int objectType_EternetInCPU3xxF = 2364818;
         const int objectType_EternetInCPU4xx = 2364763;
         const int objectType_EternetInCPURTX = 2364315; // E.g. 6ES7 611-4SB00-0YB7
+        const int objectType_EternetInCP443 = 2367462;
         const int objectType_MpiDPinCPU = 1314972;
         const int objectType_MpiDP400 = 1315038;
         const int objectType_MpiDP300 = 1315016;
@@ -1092,7 +1093,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             var cpu = CPUFolders.FirstOrDefault(x => x.ID == Convert.ToInt32(row["UNITID"]));
                             if (cpu != null) cpu.IdTobjId = Convert.ToInt32(row["ID"]);
                         }
-                        else if ( objType == 2364971 || objType == 2367589 )
+                        else if ( objType == 2364971 || objType == 2367589 || objType == objectType_EternetInCP443 )
                         {
                             var cp = CPFolders.FirstOrDefault(x => x.ID == (int)row["UNITID"]);
                             if (cp != null)
