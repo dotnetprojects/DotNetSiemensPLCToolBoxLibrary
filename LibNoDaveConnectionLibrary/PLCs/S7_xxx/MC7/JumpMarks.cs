@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
@@ -93,11 +94,20 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     {
                         if (jumpNames.Count > arrPos)
                         {
-                            if (!ChangeLabelList.ContainsKey(plcFunctionBlockRow.Parameter))
-                                ChangeLabelList.Add(plcFunctionBlockRow.Parameter, jumpNames[arrPos]);
-                            byte[] backup = plcFunctionBlockRow.MC7;
-                            plcFunctionBlockRow.Parameter = jumpNames[arrPos];
-                            plcFunctionBlockRow.MC7 = backup;
+                            string newName = jumpNames[arrPos];
+                            string mappedName;
+                            if (ChangeLabelList.TryGetValue(plcFunctionBlockRow.Parameter, out mappedName))
+                            {
+                                if (mappedName != newName)
+                                    return myBlk;
+                            }
+                            else
+                            {
+                                //The jump mark table is not always decoded correctly. Keep the generated labels (M001...) instead of emitting invalid or duplicate ones.
+                                if (!IsValidLabel(newName) || ChangeLabelList.ContainsValue(newName))
+                                    return myBlk;
+                                ChangeLabelList.Add(plcFunctionBlockRow.Parameter, newName);
+                            }
                         }
                     }
                 }
@@ -106,11 +116,22 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 
             foreach (S7FunctionBlockRow plcFunctionBlockRow in myBlk)
             {
+                if (Helper.IsJump(plcFunctionBlockRow, (int)options.Mnemonic) && ChangeLabelList.ContainsKey(plcFunctionBlockRow.Parameter))
+                {
+                    byte[] backup = plcFunctionBlockRow.MC7;
+                    plcFunctionBlockRow.Parameter = ChangeLabelList[plcFunctionBlockRow.Parameter];
+                    plcFunctionBlockRow.MC7 = backup;
+                }
                 if (ChangeLabelList.ContainsKey(plcFunctionBlockRow.Label))
                     plcFunctionBlockRow.Label = ChangeLabelList[plcFunctionBlockRow.Label];
             }
 
             return myBlk;
+        }
+
+        private static bool IsValidLabel(string name)
+        {
+            return Regex.IsMatch(name, "^[A-Za-z_][A-Za-z0-9_]{0,3}$");
         }
     }
 }

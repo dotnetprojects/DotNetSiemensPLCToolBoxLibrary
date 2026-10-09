@@ -1272,7 +1272,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     break;
                 case S7DataRowType.WORD:
                     { // 'WORD';
-                        Result = BitConverter.ToInt16(data, valpos);
+                        Result = BitConverter.ToUInt16(data, valpos);
                         valpos += 2;
                     }
                     break;
@@ -1284,7 +1284,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                     break;
                 case S7DataRowType.DWORD:
                     { // 'DWORD';
-                        Result = BitConverter.ToInt32(data, valpos);
+                        Result = BitConverter.ToUInt32(data, valpos);
                         valpos += 4;
                     }
                     break;

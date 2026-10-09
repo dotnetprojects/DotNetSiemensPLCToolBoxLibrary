@@ -41,7 +41,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                 }
                 foreach (S7FunctionBlockRow plcFunctionBlockRow in myFct.AWLCode)
                 {
-                    if (!plcFunctionBlockRow.Parameter.Contains("'") && !plcFunctionBlockRow.Parameter.Contains("[AR")  && plcFunctionBlockRow.Parameter.Contains("["))
+                    if (!plcFunctionBlockRow.Parameter.Contains("'") && !plcFunctionBlockRow.Parameter.Contains("[AR")  && plcFunctionBlockRow.Parameter.Contains("[") && plcFunctionBlockRow.Parameter.IndexOf("]") > plcFunctionBlockRow.Parameter.IndexOf("["))
                     {
                         
                             int pos1 = plcFunctionBlockRow.Parameter.IndexOf("[")+1;
