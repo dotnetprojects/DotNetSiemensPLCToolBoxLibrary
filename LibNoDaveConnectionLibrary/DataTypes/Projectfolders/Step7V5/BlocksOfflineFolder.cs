@@ -66,6 +66,19 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         }
 
         /// <summary>
+        /// Drops the converted blocks cached on this folder's block infos, so they can be garbage collected.
+        /// Call this when converting many blocks one after another, otherwise every converted block stays in memory.
+        /// </summary>
+        public void ClearBlockCache()
+        {
+            if (_intBlockList == null)
+                return;
+
+            foreach (var blkInfo in _intBlockList)
+                blkInfo._Block = null;
+        }
+
+        /// <summary>
         /// Read all blocks from the S7 Project and cache them into the 'tmpBlocks' field.
         /// </summary>
         /// <returns></returns>
