@@ -30,6 +30,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks
            return blkFld.GetBlock(this);
        }
 
+        /// <summary>
+        /// Drops the converted block cached on this block info, so it can be garbage collected.
+        /// Other blocks stay cached, so blocks referenced by many others (UDTs, FBs) are not converted again.
+        /// </summary>
+        public void ClearCachedBlock()
+        {
+            _Block = null;
+        }
+
         public virtual string GetSourceBlock(bool useSymbols = true)
         {
             if (ParentFolder is BlocksOfflineFolder)
