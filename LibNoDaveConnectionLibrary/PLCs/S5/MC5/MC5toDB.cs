@@ -88,6 +88,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                     {
                         s7DataRow = new S7DataRow(string.Empty, S7DataRowType.S5_KH, retVal);
                         main.Add(s7DataRow);
+                        //Rows not described by a pre-header are still referenced by line number in the comment block
+                        zeilenListe.Add(s7DataRow);
                     }
 
                     switch (s7DataRow.DataType)
