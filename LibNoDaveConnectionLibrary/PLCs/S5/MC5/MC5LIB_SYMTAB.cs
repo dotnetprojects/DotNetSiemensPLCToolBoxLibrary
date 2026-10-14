@@ -132,7 +132,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S5.MC5
                                      new object[] {0x5B80, 0x0000, 9, 7, 0xff80, 0x007f, "T", "AD", "PrintNummer",ReferenceDataAccessMode.Write},
                                      new object[] {0x5C00, 0x0000, 8, 8, 0xff00, 0x00ff, "S", "Z", "PrintNummer",ReferenceDataAccessMode.Write},
                                      new object[] {0x5D00, 0x0000, 8, 8, 0xff00, 0x00ff, "SPB", "SB", "PrintNummer",ReferenceDataAccessMode.Call},
-                                     new object[] {0x5F00, 0x0000, 8, 6, 0xff00, 0x00ff, "L", "QB", "PrintNummer",ReferenceDataAccessMode.Read},
+                                     new object[] {0x5F00, 0x0000, 8, 8, 0xff00, 0x00ff, "L", "QB", "PrintNummer",ReferenceDataAccessMode.Read},
                                      new object[] {0x6000, 0x0000, 16, 0, 0xffff, 0x0000, ":F", null, null,ReferenceDataAccessMode.None},
                                      new object[] {0x6003, 0x0000, 16, 0, 0xffff, 0x0000, ":G", null, null,ReferenceDataAccessMode.None},
                                      new object[] {0x6004, 0x0000, 16, 0, 0xffff, 0x0000, "xF", null, null,ReferenceDataAccessMode.None},

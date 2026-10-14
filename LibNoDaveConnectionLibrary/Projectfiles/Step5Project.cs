@@ -176,8 +176,16 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                         int len = 0;
 
                         ByteAddressOFExistingBlocks.Add(n);
+                        int blockStart = n;
                         var tmp = AddBlockInfo(s5ProjectByteArray, ref n, blkFld,
                                                bstHeaders[akanz - 1]);
+
+                        //Comment blocks (PK, FK, DK, ...) can carry the type byte of their parent block (PB, FB, DB, ...),
+                        //so they would be read as a second PB, FB, DB. The type of the section they are stored in is the real one.
+                        int blockTypeByte = s5ProjectByteArray[blockStart] == 0x70 ? s5ProjectByteArray[blockStart + 2] : s5ProjectByteArray[blockStart];
+                        if (tmp != null && blockTypeByte != section_header_type)
+                            tmp.BlockType = (PLCBlockType)(section_header_type | 0xf00);
+
                         if (tmp != null)
                             blkFld.step5BlocksinfoList.Add(tmp);
 

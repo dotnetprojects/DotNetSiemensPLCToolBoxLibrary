@@ -36,7 +36,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step5
 
         internal S5ProjectBlockInfo GetBlockInfo(string BlockName)
         {
-            var nm = BlockName.Replace(" ", "");
+            //Callers pass both "FB1" and "S5_FB1"; the comparison below is without the "S5_" prefix
+            var nm = BlockName.Replace(" ", "").Replace("S5_", "");
 
             lock (step5BlocksinfoList)
             {
