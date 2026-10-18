@@ -13,6 +13,10 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
         internal int SubModulNumber;
         internal CPFolder SubModul;
 
+        public string MLFB_OrderNumber { get; set; }
+
+        public string FirmwareVersion { get; set; }
+
         public int Rack { get; set; }
         public int Slot { get; set; }
 
