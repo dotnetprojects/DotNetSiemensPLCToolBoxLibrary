@@ -14,6 +14,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5
 
         public string MLFB_OrderNumber { get; set; }
 
+        public string FirmwareVersion { get; set; }
+
         public string PasswdHard { get; set; }
 
         public int Rack { get; set; }

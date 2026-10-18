@@ -604,7 +604,8 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     string[] checkSequences = {
                         ASCIIEncoding.ASCII.GetString(new byte[] { 0x0a, 0x00, 0x03 }),// 319-3 (EL00/01), 317-2DP
                         ASCIIEncoding.ASCII.GetString(new byte[] { 0x0c, 0x00, 0x03 }),// 317T-3 PN/DP
-                        ASCIIEncoding.ASCII.GetString(new byte[] { 0x09, 0x00, 0x03 }) // PLCType.SimaticRTX
+                        ASCIIEncoding.ASCII.GetString(new byte[] { 0x09, 0x00, 0x03 }),// PLCType.SimaticRTX
+                        ASCIIEncoding.ASCII.GetString(new byte[] { 0x0b, 0x00, 0x03 }) // IM151-8F PN/DP CPU
                     };
                     string buffer = ASCIIEncoding.ASCII.GetString(completeBuffer);
                     List<IEnumerable<int>> hitsList = new List<IEnumerable<int>>();
@@ -641,6 +642,49 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                     string descr3 = ASCIIEncoding.ASCII.GetString(completeBuffer, dscr3_position, dscr3_length);
 
                     y.MLFB_OrderNumber = descr3;
+
+                    //The firmware version follows the MLFB, again with its length in the byte before (e.g. "V5.3")
+                    int firmware_position = dscr3_position + dscr3_length;
+                    y.FirmwareVersion = ASCIIEncoding.ASCII.GetString(completeBuffer, firmware_position + 1, completeBuffer[firmware_position]);
+                }
+                catch
+                { }
+            }
+
+            //Get The CP order number (MLFB) and firmware version. The CPs are in the s7h file of the station's CPU (the UnitID of a CP does not point to it).
+            foreach (var y in CPUFolders)
+            {
+                // A damaged s7h file only leaves the order number and firmware version of its CPs empty
+                try
+                {
+                    string filepath = ProjectFolder + "hOmSave7" + _DirSeperator +
+                        "s7hstatx" + _DirSeperator + y.UnitID.ToString("x") + ".s7h";
+                    if (y.Parent == null || !_ziphelper.FileExists(filepath))
+                        continue;
+
+                    Stream s7h = _ziphelper.GetReadStream(filepath);
+                    BinaryReader rd = new BinaryReader(s7h);
+                    byte[] completeBuffer = rd.ReadBytes((int)_ziphelper.GetStreamLength(filepath, s7h));
+                    rd.Close();
+                    s7h.Close();
+                    string buffer = ASCIIEncoding.ASCII.GetString(completeBuffer);
+
+                    foreach (var cp in y.Parent.SubItems.OfType<CPFolder>())
+                    {
+                        // The module's record starts with byte 0x03, its slot as text ("  4") and its name (length in the byte before),
+                        // followed by 0x03, the slot and a name again, then the MLFB and the firmware version, each with its length in the byte before.
+                        byte[] name = ProjectEncoding.GetBytes(cp.Name);
+                        string recordStart = (char)0x03 + cp.Slot.ToString().PadLeft(3) + (char)name.Length + ASCIIEncoding.ASCII.GetString(name);
+                        int position = buffer.IndexOf(recordStart, StringComparison.Ordinal);
+                        if (position < 0)
+                            continue;
+
+                        position += recordStart.Length + 4; // skip 0x03 and the slot
+                        position += 1 + completeBuffer[position]; // skip the second name
+                        cp.MLFB_OrderNumber = ASCIIEncoding.ASCII.GetString(completeBuffer, position + 1, completeBuffer[position]);
+                        position += 1 + completeBuffer[position];
+                        cp.FirmwareVersion = ASCIIEncoding.ASCII.GetString(completeBuffer, position + 1, completeBuffer[position]);
+                    }
                 }
                 catch
                 { }
