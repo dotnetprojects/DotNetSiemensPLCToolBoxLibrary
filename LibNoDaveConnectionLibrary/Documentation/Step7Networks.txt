@@ -1,0 +1,51 @@
+STEP 7 Classic network information
+=================================
+
+Step7ProjectV5.NetworkConfiguration is loaded with the project, from either
+an unpacked project or a ZIP archive. It provides:
+
+  Networks: Ethernet, MPI and PROFIBUS subnets, with their member interfaces.
+  Nodes: stations and other hardware elements present in the saved layout.
+  Interfaces: named ports, addresses, subnet, hardware reference and PLC/CP links.
+  Connections: configured S7 and TCP communication connections and endpoints.
+  Diagnostics: errors in optional network data; missing files are allowed.
+
+The same interface objects are exposed by Network.Members, NetworkNode.Interfaces
+and the corresponding CPUFolder/CPFolder.NetworkInterfaces lists. A CP interface
+links to its CP and, when the station has exactly one CPU, to that PLC as well.
+Unresolved, external and ambiguous PLC references remain null.
+
+Example:
+
+  var configuration = project.NetworkConfiguration;
+  foreach (var subnet in configuration.Networks)
+      foreach (var member in subnet.Members)
+      {
+          var plc = member.Plc;
+          var position = member.Node?.Layout?.Position
+              ?? member.Node?.Layout?.AutomaticPosition;
+      }
+
+Layout.Position and AutomaticPosition preserve the two coordinate pairs in
+Global/s7netpro.npa (falling back to s7netpro.npa). Coordinates use native NetPro
+units. The unset pair (-1,-1) is represented by null, not an invented location.
+Subnet layouts are available through Network.Layout. Projects without saved
+layout data have null layouts.
+
+Topology comes from S7Netze/S7NONFGX.tab and its .lnk file. Attribute searches
+are bounded to individual objects. STEP 7 object IDs must be compared together
+with their object type and owning unit (Step7ObjectReference).
+
+Configured connections come from CONN/VERBTAB.DBF, CO_n/HOMOVERB.DBF and
+S7wntcps/IPVERB.DBF, with their binary relation files. Each configured end is
+retained separately; PartnerConnection identifies its other end when available.
+ConnectionType distinguishes S7 and TCP. Transport identifies Ethernet, MPI or
+PROFIBUS through the local interface. Unknown connection types retain RawType
+and original DBF Attributes. Binary character columns in Attributes use Latin-1;
+Name and Comment use the project encoding. TCP ports, TSAPs and remote IPs are
+decoded when their recorded length fields specify them.
+
+This is a read-only parser for the observed STEP 7 Classic formats. It does not
+synthesize missing coordinates, infer runtime connections from PLC code, or
+create connections merely because two ports share a subnet. Additional vendor
+connection tables and layout format revisions may require further decoding.

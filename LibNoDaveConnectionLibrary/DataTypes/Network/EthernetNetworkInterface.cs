@@ -23,7 +23,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Network
 
         public override string ToString()
         {
-            return (this.Name ?? "") + ", Ip: " + IpAddress.ToString();
+            return (this.Name ?? "") + ", Ip: " + IpAddress;
         }
     }
 }
