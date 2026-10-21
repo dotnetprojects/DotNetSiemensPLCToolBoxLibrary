@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Text;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes;
+﻿using DotNetSiemensPLCToolBoxLibrary.DataTypes;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.AWL.Step7V5;
-using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Projectfolders.Step7V5;
-using System.Linq;
 
 namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
 {
@@ -16,71 +9,50 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
     {
         public static void ReplaceStaticAccess(S7FunctionBlock myFct, S7ProgrammFolder myFld, S7ConvertingOptions myOpt)
         {
-            if (myOpt.ReplaceDIAccessesWithSymbolNames && myFct.BlockType==PLCBlockType.FB)
+            if (myOpt.ReplaceDIAccessesWithSymbolNames && myFct.BlockType == PLCBlockType.FB)
             {
-                List<FunctionBlockRow> retVal = new List<FunctionBlockRow>();
-                List<FunctionBlockRow> tempList = new List<FunctionBlockRow>();
+                bool largeAccess = false;
 
-                bool LargeAccess = false;
-                int add_adresse = 0;
-
+                // Only replace operands in place. Unsupported AR2 sequences must
+                // retain every instruction, including sequences at the end of a block.
                 foreach (var functionBlockRow in myFct.AWLCode)
                 {
                     if (functionBlockRow.Command == "TAR2")
                     {
-                        tempList.Add(functionBlockRow);
-                        LargeAccess = true;
+                        largeAccess = true;
                     }
-                    else if (functionBlockRow.Command == "+AR2" && LargeAccess)
+                    else if (functionBlockRow.Command == "+AR2" && largeAccess)
                     {
-                        tempList.Add(functionBlockRow);
-                        add_adresse += Convert.ToInt32(Convert.ToDouble(((S7FunctionBlockRow) functionBlockRow).Parameter.Substring(2), new NumberFormatInfo() {NumberDecimalSeparator = "."}));
+                        // Offset-based symbolic replacement is not implemented.
+                        continue;
                     }
-                    else if (((S7FunctionBlockRow)functionBlockRow).Parameter.Contains("[AR2,P#") && ((S7FunctionBlockRow)functionBlockRow).Parameter.Substring(0, 2) == "DI" && !LargeAccess)
+                    else if (((S7FunctionBlockRow)functionBlockRow).Parameter.Contains("[AR2,P#") && ((S7FunctionBlockRow)functionBlockRow).Parameter.Substring(0, 2) == "DI" && !largeAccess)
                     {
-                        string para = ((S7FunctionBlockRow) functionBlockRow).Parameter;
+                        string para = ((S7FunctionBlockRow)functionBlockRow).Parameter;
                         ByteBitAddress adr = new ByteBitAddress(para.Substring(10, para.Length - 11));
                         var parRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter, adr, true);
                         if (parRow != null)
                         {
-                            byte[] tmp = ((S7FunctionBlockRow) functionBlockRow).MC7;
-                            ((S7FunctionBlockRow) functionBlockRow).Parameter = "#" + parRow.StructuredName.Substring(parRow.StructuredName.IndexOf('.') + 1);
-                            ((S7FunctionBlockRow) functionBlockRow).MC7 = tmp;
-                        }
-                        retVal.Add(functionBlockRow);
-                    }
-                    else if (((S7FunctionBlockRow)functionBlockRow).Parameter.Contains("[AR2,P#") && ((S7FunctionBlockRow)functionBlockRow).Parameter.Substring(0, 2) == "DI" && LargeAccess)
-                    {
-                        /*
-                        string para = ((S7FunctionBlockRow)functionBlockRow).Parameter;
-                        ByteBitAddress adr = new ByteBitAddress(para.Substring(10, para.Length - 11));
-                        adr.ByteAddress += add_adresse;
-                        var parRow = S7DataRow.GetDataRowWithAddress(myFct.Parameter, adr);
-                        if (parRow != null)
-                        {
                             byte[] tmp = ((S7FunctionBlockRow)functionBlockRow).MC7;
-                            ((S7FunctionBlockRow)functionBlockRow).Parameter = "#" + parRow.StructuredName;
+                            ((S7FunctionBlockRow)functionBlockRow).Parameter = "#" + parRow.StructuredName.Substring(parRow.StructuredName.IndexOf('.') + 1);
                             ((S7FunctionBlockRow)functionBlockRow).MC7 = tmp;
                         }
-                        retVal.Add(functionBlockRow);
-                        */
-                        LargeAccess = false;
+                    }
+                    else if (((S7FunctionBlockRow)functionBlockRow).Parameter.Contains("[AR2,P#") && ((S7FunctionBlockRow)functionBlockRow).Parameter.Substring(0, 2) == "DI" && largeAccess)
+                    {
+                        // Keep the indirect access unchanged until its offset can be resolved.
+                        largeAccess = false;
                     }
                     else if (functionBlockRow.Command == "LAR2")
                     {
-
+                        continue;
                     }
                     else
                     {
-                        LargeAccess = false;
-                        retVal.AddRange(tempList);
-                        tempList.Clear();
-                        retVal.Add(functionBlockRow);
+                        largeAccess = false;
                     }
                 }
-
-                myFct.AWLCode = retVal;
-            }            
+            }
         }
     }
 }
