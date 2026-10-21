@@ -522,7 +522,15 @@ namespace DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7
                                 addRW.StringSize = Convert.ToInt32(tmpType.Substring(pos1 + 1, pos2 - pos1 - 2));
                             }
                             else
-                                addRW.DataType = (S7DataRowType)Enum.Parse(typeof(S7DataRowType), tmpType.Replace("\0", "").Replace("\t", "").Replace(";", "").Trim().ToUpper());
+                            {
+                                string typeName = tmpType.Replace("\0", "").Replace("\t", "").Replace(";", "").Trim().ToUpper();
+                                // STEP 7 accepts these short forms as type keywords
+                                if (typeName == "TOD")
+                                    typeName = "TIME_OF_DAY";
+                                else if (typeName == "DT")
+                                    typeName = "DATE_AND_TIME";
+                                addRW.DataType = (S7DataRowType)Enum.Parse(typeof(S7DataRowType), typeName);
+                            }
 
                             addRW.DataTypeBlockNumber = akRowTypeNumber;
 
