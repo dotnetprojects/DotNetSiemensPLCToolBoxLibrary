@@ -99,5 +99,21 @@ namespace ToolBoxLibUnitTests
 			var rw = test.Children[0] as S7DataRow;
 			var callStr = rw.GetCallingString();
 		}
+
+		[Test]
+		public void TestDBShortTypeNames()
+		{
+			var txt = "\r\n  STRUCT \t\r\n   a : TOD ;\t\r\n   b : DT ;\t\r\n  END_STRUCT ;\t";
+			var par1 = new List<string>();
+			var test =
+				DotNetSiemensPLCToolBoxLibrary.PLCs.S7_xxx.MC7.Parameter.GetInterfaceOrDBFromStep7ProjectString(txt,
+																												ref par1,
+																											   PLCBlockType
+																													.DB,
+																												false,
+																												new BlocksOfflineFolder(), new S7Block(), new S7ConvertingOptions());
+			ClassicAssert.AreEqual(S7DataRowType.TIME_OF_DAY, ((S7DataRow)test.Children[0]).DataType);
+			ClassicAssert.AreEqual(S7DataRowType.DATE_AND_TIME, ((S7DataRow)test.Children[1]).DataType);
+		}
 	}
 }
