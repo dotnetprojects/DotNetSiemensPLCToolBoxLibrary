@@ -224,8 +224,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
         }
 
         /// <summary>
+        /// The Step 7 timestamp epoch. An all-zero timestamp in the project files decodes to this value
+        /// (see Helper.GetDT), which means the timestamp was never written.
+        /// </summary>
+        private static readonly DateTime Step7Epoch = new DateTime(1984, 1, 1, 0, 0, 0, 0);
+
+        /// <summary>
         /// Returns true if dt1 and dt2 are not equal
-        /// Also checks that both values are not the default value (DateTime.MinValue)
+        /// Also checks that both values are set (not DateTime.MinValue or the Step 7 epoch)
         /// </summary>
         public static bool HasTimestampConflict(DateTime dt1, DateTime dt2)
         {
@@ -234,6 +240,14 @@ namespace DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5
             // conflict to flag. Without this guard, a block that only has one of the
             // two interface records reports a spurious conflict against MinValue.
             if (dt1 == DateTime.MinValue || dt2 == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            // Step 7 leaves the interface history timestamp zeroed for some blocks (e.g. a DB
+            // declared from a UDT), which decodes to the epoch. Treat it as unset as well,
+            // otherwise the named plaintext interface is discarded for the MC7 one (STAT0, STAT1, ...).
+            if (dt1 == Step7Epoch || dt2 == Step7Epoch)
             {
                 return false;
             }
