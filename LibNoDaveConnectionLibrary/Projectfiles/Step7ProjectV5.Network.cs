@@ -216,7 +216,12 @@ namespace DotNetSiemensPLCToolBoxLibrary.Projectfiles
                             SubnetMask = NetIp(tab, obj, 0xfe5), Router = NetIp(tab, obj, 0xfe3),
                             UseIp = NetBool(tab, obj, 0xfea), UseIso = NetBool(tab, obj, 0xfed), UseRouter = NetBool(tab, obj, 0xfe8) };
                         string mac = NetString(tab, obj, 0xfa2);
-                        if (mac != null && mac.Length == 12 && mac.All(Uri.IsHexDigit)) ethernet.Mac = PhysicalAddress.Parse(mac);
+                        if (mac != null && mac.Length == 12 && mac.All(Uri.IsHexDigit))
+                        {
+                            // System.Net.NetworkInformation is not supported on every platform (e.g. browser-wasm)
+                            try { ethernet.Mac = PhysicalAddress.Parse(mac); }
+                            catch (PlatformNotSupportedException) { }
+                        }
                         member = ethernet;
                     }
                     else
